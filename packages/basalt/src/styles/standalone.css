@@ -155,6 +155,8 @@
 		2 *
 		var(--basalt-space-layout-lg)
 	);
+  --basalt-size-sidebar-logo: 1.5rem;
+  --basalt-size-sidebar-row: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg));
   --basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 :root, .light, [data-mode="light"] {
@@ -623,6 +625,15 @@
     inline-size: var(--basalt-size-sidebar-brand-slot);
     block-size: var(--basalt-size-sidebar-brand-slot);
   }
+  .basalt-sidebar-brand-logo {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--basalt-size-sidebar-logo);
+    block-size: var(--basalt-size-sidebar-logo);
+    margin-inline-start: calc(	(var(--basalt-size-sidebar-brand-slot) - var(--basalt-size-sidebar-logo)) /	2	);
+  }
   .basalt-action-inset {
     border-width: 0;
     min-block-size: calc(1lh + 2 * var(--basalt-space-control-y));
@@ -684,14 +695,22 @@
   }
   [data-basalt-sidebar][data-collapsed] [data-slot="sidebar-nav"] {
     padding-inline: calc((var(--basalt-size-rail) - var(--basalt-size-control)) / 2);
-    padding-block-start: calc(var(--basalt-size-control-sm) + var(--basalt-space-lg));
+    padding-block-start: calc(var(--basalt-size-sidebar-row) + var(--basalt-space-lg));
   }
   [data-basalt-sidebar][data-collapsed] [data-slot="sidebar-brand-action"] {
     position: absolute;
     inset-block-start: 100%;
-    inset-inline-start: calc(	(var(--basalt-size-sidebar-brand-slot) - var(--basalt-size-control-sm)) /	2	);
+    inset-inline-start: calc(	(var(--basalt-size-sidebar-brand-slot) - var(--basalt-size-control)) /	2	);
     z-index: 1;
     margin: 0;
+  }
+  [data-basalt-sidebar][data-collapsed] [data-slot="sidebar-toggle"] {
+    inline-size: var(--basalt-size-control);
+    max-inline-size: var(--basalt-size-control);
+    min-inline-size: var(--basalt-size-control);
+    block-size: var(--basalt-size-sidebar-row);
+    max-block-size: var(--basalt-size-sidebar-row);
+    min-block-size: var(--basalt-size-sidebar-row);
   }
   @media (prefers-reduced-motion: reduce) {
     .basalt-nav-item {
@@ -1645,10 +1664,6 @@
     width: var(--basalt-size-icon-sm);
     height: var(--basalt-size-icon-sm);
   }
-  .size-basalt-sidebar-brand-slot {
-    width: var(--basalt-size-sidebar-brand-slot);
-    height: var(--basalt-size-sidebar-brand-slot);
-  }
   .size-full {
     width: 100%;
     height: 100%;
@@ -1901,9 +1916,6 @@
   }
   .w-basalt-rail {
     width: var(--basalt-size-rail);
-  }
-  .w-basalt-sidebar-brand-slot {
-    width: var(--basalt-size-sidebar-brand-slot);
   }
   .w-fit {
     width: fit-content;
@@ -3811,6 +3823,9 @@
   .\[\&_\[data-title\]\]\:text-basalt-warning [data-title] {
     color: hsl(var(--basalt-warning));
   }
+  .\[\&_img\]\:object-contain img {
+    object-fit: contain;
+  }
   .has-\[\[data-slot\=input-group-addon-end\]\]\:\[\&_input\]\:pr-basalt-space-lg:has(:is([data-slot=input-group-addon-end])) input {
     padding-right: var(--basalt-space-lg);
   }
@@ -3869,6 +3884,31 @@
     border-top-right-radius: var(--basalt-radius-md);
     border-bottom-right-radius: var(--basalt-radius-md);
   }
+  .\[\&\>a\]\:flex > a {
+    display: flex;
+  }
+  .\[\&\>a\]\:size-full > a {
+    width: 100%;
+    height: 100%;
+  }
+  .\[\&\>a\]\:items-center > a {
+    align-items: center;
+  }
+  .\[\&\>a\]\:justify-center > a {
+    justify-content: center;
+  }
+  .\[\&\>a\>img\]\:size-full > a > img {
+    width: 100%;
+    height: 100%;
+  }
+  .\[\&\>a\>svg\]\:size-full > a > svg {
+    width: 100%;
+    height: 100%;
+  }
+  .\[\&\>img\]\:size-full > img {
+    width: 100%;
+    height: 100%;
+  }
   .\[\&\>svg\]\:mt-\[calc\(\(var\(--basalt-line-row\)-var\(--basalt-size-icon-sm\)\)\/2\)\] > svg {
     margin-top: calc((var(--basalt-line-row) - var(--basalt-size-icon-sm)) / 2);
   }
@@ -3879,6 +3919,10 @@
   .\[\&\>svg\]\:size-basalt-icon-lg > svg {
     width: var(--basalt-size-icon-lg);
     height: var(--basalt-size-icon-lg);
+  }
+  .\[\&\>svg\]\:size-full > svg {
+    width: 100%;
+    height: 100%;
   }
   .\[\&\>svg\]\:shrink-0 > svg {
     flex-shrink: 0;

@@ -512,11 +512,7 @@ export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebar
 					<SidebarBrand
 						logo={
 							<Link href="/" aria-label={t("nav.home")} className="no-underline hover:no-underline">
-								<BasaltLogo
-									alt=""
-									data-sidebar-brand-image=""
-									className="size-basalt-5 shrink-0 object-contain"
-								/>
+								<BasaltLogo alt="" data-sidebar-brand-image="" className="object-contain" />
 							</Link>
 						}
 						name="basalt."

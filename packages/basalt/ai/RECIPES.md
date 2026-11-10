@@ -67,10 +67,7 @@ export default function AppFrameRecipe() {
 						<SidebarHeader>
 							<SidebarBrand
 								logo={
-									<span
-										className="flex size-basalt-sidebar-brand-slot items-center justify-center"
-										aria-hidden="true"
-									>
+									<span className="flex size-full items-center justify-center" aria-hidden="true">
 										A
 									</span>
 								}

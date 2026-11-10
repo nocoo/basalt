@@ -72,7 +72,7 @@ describe("Sidebar", () => {
 		);
 	});
 
-	it("keeps the brand slot fixed while exposing a 12px version and action", () => {
+	it("keeps the brand slot fixed while exposing a version badge and action", () => {
 		const { container, rerender } = render(
 			<SidebarBrand
 				logo={
@@ -87,10 +87,25 @@ describe("Sidebar", () => {
 		);
 		expect(container.querySelector('[data-slot="sidebar-brand"]')).toBeInTheDocument();
 		expect(container.querySelector('[data-slot="sidebar-brand-logo"]')).toHaveClass(
-			"w-basalt-sidebar-brand-slot",
+			"basalt-sidebar-brand-logo",
+			"[&>img]:size-full",
+			"[&>svg]:size-full",
+			"[&>a>img]:size-full",
+		);
+		const brandName = screen.getByText("Atlas");
+		expect(brandName).toHaveAttribute("data-slot", "sidebar-brand-name");
+		// The badge follows the name instead of being pushed against the action.
+		expect(brandName).not.toHaveClass("flex-1");
+		expect(brandName.nextElementSibling).toHaveTextContent("v1.2.3");
+		const version = screen.getByText("v1.2.3");
+		expect(version).toHaveAttribute("data-slot", "sidebar-brand-version");
+		expect(version).toHaveClass(
+			"basalt-inline",
+			"rounded-basalt-full",
+			"bg-basalt-secondary",
+			"text-basalt-muted-foreground",
 			"shrink-0",
 		);
-		expect(screen.getByText("v1.2.3")).toHaveClass("text-basalt-sm");
 		expect(container.querySelector('[data-slot="sidebar-brand-action"]')).toHaveClass(
 			"basalt-sidebar-brand-action",
 		);
@@ -110,6 +125,7 @@ describe("Sidebar", () => {
 		const toggle = screen.getByRole("button", { name: "Collapse sidebar" });
 		expect(toggle).toHaveAttribute("aria-expanded", "true");
 		expect(toggle).toHaveClass("basalt-action-icon-sm");
+		expect(toggle).toHaveAttribute("data-slot", "sidebar-toggle");
 		fireEvent.click(toggle);
 		expect(onClick).toHaveBeenCalledOnce();
 		expect(onCollapsedChange).toHaveBeenCalledWith(true);
@@ -576,6 +592,53 @@ describe("Sidebar", () => {
 		fireEvent.click(search);
 		expect(onClick).toHaveBeenCalledOnce();
 		act(() => search.focus());
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
+	});
+
+	it("does not carry an expanded hover into the collapsed search tooltip", async () => {
+		function HoverThenCollapse() {
+			const { collapsed, setCollapsed } = useSidebar();
+			return (
+				<>
+					<button type="button" onClick={() => setCollapsed(!collapsed)}>
+						Toggle collapse
+					</button>
+					<Sidebar>
+						<SidebarNav>
+							<SidebarSearch>Search</SidebarSearch>
+						</SidebarNav>
+					</Sidebar>
+				</>
+			);
+		}
+		render(
+			<SidebarProvider>
+				<HoverThenCollapse />
+			</SidebarProvider>,
+		);
+		const search = screen.getByRole("button", { name: /Search/ });
+		const pointer = (type: "pointermove" | "pointerout") => {
+			// React derives onPointerLeave from a bubbling pointerout to an outside target.
+			const event = new MouseEvent(type, { bubbles: true, relatedTarget: document.body });
+			Object.defineProperty(event, "pointerType", { value: "mouse" });
+			act(() => {
+				search.dispatchEvent(event);
+			});
+		};
+		// Pointer crosses the expanded search row on its way to the collapse toggle.
+		pointer("pointermove");
+		await act(async () => {
+			await new Promise((resolve) => setTimeout(resolve, 20));
+		});
+		pointer("pointerout");
+		fireEvent.click(screen.getByRole("button", { name: "Toggle collapse" }));
+		expect(screen.getByRole("button", { name: "Search (⌘K)" })).toBe(search);
+		await act(async () => {
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		});
+		expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+		// A real hover in the collapsed rail still opens it.
+		pointer("pointermove");
 		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
 	});
 

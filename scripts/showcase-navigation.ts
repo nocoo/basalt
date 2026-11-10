@@ -100,6 +100,15 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 					sidebarWidth: sidebarBox.width,
 				},
 				toggleCenterX: toggleBox.x + toggleBox.width / 2 - sidebarBox.x,
+				toggleBox: {
+					x: toggleBox.x - sidebarBox.x,
+					width: toggleBox.width,
+					height: toggleBox.height,
+				},
+				searchRow: (() => {
+					const row = search.parentElement?.getBoundingClientRect();
+					return row ? { x: row.x - sidebarBox.x, width: row.width, height: row.height } : null;
+				})(),
 				chevronCenterX: chevronBox ? chevronBox.x + chevronBox.width / 2 - sidebarBox.x : null,
 				search: {
 					x: search.getBoundingClientRect().x - sidebarBox.x,
@@ -116,8 +125,16 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 			};
 		});
 	const expanded = await measure();
-	assert.ok(Math.abs(expanded.logo.x - 24) <= 0.5, JSON.stringify(expanded));
-	assert.ok(Math.abs(expanded.logo.width - 20) <= 0.5, JSON.stringify(expanded));
+	// 24px mark centered on the 34px rail axis (x = 22), wider than the 20px icon column.
+	assert.ok(Math.abs(expanded.logo.x - 22) <= 0.5, JSON.stringify(expanded));
+	assert.ok(Math.abs(expanded.logo.width - 24) <= 0.5, JSON.stringify(expanded));
+	assert.ok(Math.abs(expanded.logo.height - 24) <= 0.5, JSON.stringify(expanded));
+	assert.ok(
+		Math.abs(
+			expanded.logo.x + expanded.logo.width / 2 - (expanded.nav.x + expanded.nav.width / 2),
+		) <= 0.5,
+		JSON.stringify(expanded),
+	);
 	assert.ok(expanded.chevronCenterX !== null, JSON.stringify(expanded));
 	for (const icon of [expanded.search, expanded.nav]) {
 		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(expanded));
@@ -177,6 +194,17 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	}
 	assert.ok(Math.abs(collapsed.avatar.x - 16) <= 0.5, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.avatar.width - 36) <= 0.5, JSON.stringify(collapsed));
+	// The collapsed expand toggle is a full rail row: same box as search and nav icon rows.
+	assert.ok(collapsed.searchRow, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.toggleBox.x - 17) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.toggleBox.width - 34) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.toggleBox.height - 38) <= 0.5, JSON.stringify(collapsed));
+	for (const key of ["x", "width", "height"] as const) {
+		assert.ok(
+			Math.abs(collapsed.toggleBox[key] - (collapsed.searchRow?.[key] ?? Number.NaN)) <= 0.5,
+			JSON.stringify(collapsed),
+		);
+	}
 	const geometry = {
 		expanded: expanded.logo,
 		collapsed: collapsed.logo,
@@ -458,10 +486,11 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 	if (collapsed) {
 		assert.equal(geometry.width, 68);
 		assert.equal(geometry.paddingInline, "17px");
-		assert.equal(geometry.paddingTop, "36px");
+		// Collapsed nav reserves the 38px toggle row plus the 8px gap above search.
+		assert.equal(geometry.paddingTop, "46px");
 		assert.equal(geometry.paddingBottom, "8px");
-		assert.deepEqual(geometry.directDestinationTops, [78, 120, 162], JSON.stringify(geometry));
-		assert.equal(geometry.search.top, 36, JSON.stringify(geometry));
+		assert.deepEqual(geometry.directDestinationTops, [88, 130, 172], JSON.stringify(geometry));
+		assert.equal(geometry.search.top, 46, JSON.stringify(geometry));
 		assert.equal(geometry.search.height, 38, JSON.stringify(geometry));
 		assert.equal(geometry.search.hoverItem, true, JSON.stringify(geometry));
 		assert.equal(geometry.search.left, 17, JSON.stringify(geometry));

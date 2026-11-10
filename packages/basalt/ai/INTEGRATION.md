@@ -423,14 +423,14 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. NavigationMenuList retains its focus/selection-following behavior. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
-Place `SidebarBrand` in `SidebarHeader` with a 20px mark and `SidebarToggle` in its action slot. The fixed mark slot starts at 24px and ends at 44px, keeping its center on the 34px rail axis throughout the width transition. The version uses the 12px auxiliary tier and comes from the app `package.json` at build time. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
+Place `SidebarBrand` in `SidebarHeader` with a 24px mark and `SidebarToggle` in its action slot. The fixed mark slot starts at 22px and ends at 46px, keeping its center on the 34px rail axis throughout the width transition. Pass the version as plain text: `SidebarBrand` renders it as a secondary badge (version pill) in the 12px auxiliary tier. It comes from the app `package.json` at build time. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
 
 ```tsx excerpt:sidebar-expanded-structure
 <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
 	<Sidebar>
 		<SidebarHeader>
 			<SidebarBrand
-				logo={<BasaltMark className="size-basalt-sidebar-brand-slot" />}
+				logo={<BasaltMark />}
 				name="Acme"
 				version={`v${version}`}
 				action={<SidebarToggle />}
@@ -465,14 +465,14 @@ SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, sem
 
 Control `collapsed` through `SidebarProvider`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
 
-The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary and moves its action below the header; the footer remains left-aligned with the avatar fixed 16px from the rail edge. `SidebarSearch` and `SidebarIconItem` keep the 34px control width and 20px sidebar icon size, and derive their 38px minimum height from the sidebar line box and padding. The navigation region centers icon rows on that same rail axis without caller margin overrides. `SidebarSearch` automatically exposes its collapsed tooltip and accessible name; keep the same instance in both states.
+The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary at the 24px `--basalt-size-sidebar-logo` size, centered on the rail axis (pass an `img`/`svg`, optionally wrapped in one link, without size classes), and moves its action below the header, where a `SidebarToggle` takes the same 34×38px row box as `SidebarSearch` and `SidebarIconItem`; the footer remains left-aligned with the avatar fixed 16px from the rail edge. `SidebarSearch` and `SidebarIconItem` keep the 34px control width and 20px sidebar icon size, and derive their 38px minimum height from the sidebar line box and padding. The navigation region centers icon rows on that same rail axis without caller margin overrides. `SidebarSearch` automatically exposes its collapsed tooltip and accessible name; keep the same instance in both states.
 
 ```tsx excerpt:sidebar-collapsed-structure
 <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
 	<Sidebar>
 		<SidebarHeader>
 			<SidebarBrand
-				logo={<BasaltMark className="size-basalt-sidebar-brand-slot" />}
+				logo={<BasaltMark />}
 				name="Acme"
 				version={`v${version}`}
 				action={<SidebarToggle />}

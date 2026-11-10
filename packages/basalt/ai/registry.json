@@ -23491,7 +23491,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "7b8706336008a479",
+			"sourceHash": "75af373590b283a9",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23854,7 +23854,7 @@
 									"name": "logo",
 									"type": "React.ReactNode",
 									"required": true,
-									"description": "Brand mark rendered in the fixed collapsed-rail slot."
+									"description": "Brand mark rendered in the fixed collapsed-rail slot. The slot sizes a direct\n`img`/`svg` child (or one wrapped in a single link) to `--basalt-size-sidebar-logo`\nand centers it on the rail axis; pass the mark without size classes."
 								},
 								{
 									"name": "name",
@@ -23866,7 +23866,7 @@
 									"name": "version",
 									"type": "React.ReactNode",
 									"required": false,
-									"description": "Optional version or release metadata, rendered at the auxiliary type size."
+									"description": "Optional version or release metadata, rendered as a secondary badge at the auxiliary type size."
 								},
 								{
 									"name": "action",
@@ -24232,7 +24232,7 @@
 							"name": "logo",
 							"type": "React.ReactNode",
 							"required": true,
-							"description": "Brand mark rendered in the fixed collapsed-rail slot."
+							"description": "Brand mark rendered in the fixed collapsed-rail slot. The slot sizes a direct\n`img`/`svg` child (or one wrapped in a single link) to `--basalt-size-sidebar-logo`\nand centers it on the rail axis; pass the mark without size classes."
 						},
 						{
 							"name": "name",
@@ -24244,7 +24244,7 @@
 							"name": "version",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Optional version or release metadata, rendered at the auxiliary type size."
+							"description": "Optional version or release metadata, rendered as a secondary badge at the auxiliary type size."
 						},
 						{
 							"name": "action",
@@ -36408,7 +36408,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "7b8706336008a479",
+			"sourceHash": "75af373590b283a9",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -36508,7 +36508,7 @@
 							"name": "logo",
 							"type": "React.ReactNode",
 							"required": true,
-							"description": "Brand mark rendered in the fixed collapsed-rail slot."
+							"description": "Brand mark rendered in the fixed collapsed-rail slot. The slot sizes a direct\n`img`/`svg` child (or one wrapped in a single link) to `--basalt-size-sidebar-logo`\nand centers it on the rail axis; pass the mark without size classes."
 						},
 						{
 							"name": "name",
@@ -36520,7 +36520,7 @@
 							"name": "version",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Optional version or release metadata, rendered at the auxiliary type size."
+							"description": "Optional version or release metadata, rendered as a secondary badge at the auxiliary type size."
 						},
 						{
 							"name": "action",

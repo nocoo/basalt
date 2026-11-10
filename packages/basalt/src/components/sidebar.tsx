@@ -19,6 +19,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { NAV_ITEM_CLASS, NAV_LIST_CLASS, NAV_ROW_CLASS } from "../utils/navigation";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
+import { Badge } from "./badge";
 import { Button, type ButtonProps } from "./button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
@@ -416,12 +417,19 @@ export function SidebarHeader({ className, ...props }: SidebarHeaderProps) {
 	);
 }
 
+const SIDEBAR_BRAND_LOGO_CLASS =
+	"basalt-sidebar-brand-logo [&>a]:flex [&>a]:size-full [&>a]:items-center [&>a]:justify-center [&>a>img]:size-full [&>a>svg]:size-full [&>img]:size-full [&>svg]:size-full [&_img]:object-contain";
+
 export interface SidebarBrandProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-	/** Brand mark rendered in the fixed collapsed-rail slot. */
+	/**
+	 * Brand mark rendered in the fixed collapsed-rail slot. The slot sizes a direct
+	 * `img`/`svg` child (or one wrapped in a single link) to `--basalt-size-sidebar-logo`
+	 * and centers it on the rail axis; pass the mark without size classes.
+	 */
 	logo: ReactNode;
 	/** Product or workspace name. */
 	name: ReactNode;
-	/** Optional version or release metadata, rendered at the auxiliary type size. */
+	/** Optional version or release metadata, rendered as a secondary badge at the auxiliary type size. */
 	version?: ReactNode;
 	/** Optional trailing action, conventionally a `SidebarToggle`. */
 	action?: ReactNode;
@@ -444,16 +452,24 @@ export function SidebarBrand({
 			)}
 			{...props}
 		>
-			<span
-				data-slot="sidebar-brand-logo"
-				className="flex w-basalt-sidebar-brand-slot shrink-0 items-center justify-center"
-			>
+			<span data-slot="sidebar-brand-logo" className={SIDEBAR_BRAND_LOGO_CLASS}>
 				{logo}
 			</span>
 			<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap overflow-hidden whitespace-nowrap">
-				<span className="min-w-0 flex-1 truncate text-basalt-base font-semibold">{name}</span>
+				<span
+					data-slot="sidebar-brand-name"
+					className="min-w-0 truncate text-basalt-base font-semibold"
+				>
+					{name}
+				</span>
 				{version != null ? (
-					<span className="shrink-0 text-basalt-sm text-basalt-muted-foreground">{version}</span>
+					<Badge
+						data-slot="sidebar-brand-version"
+						variant="secondary"
+						className="shrink-0 text-basalt-muted-foreground"
+					>
+						{version}
+					</Badge>
 				) : null}
 			</div>
 			{action ? (
@@ -489,6 +505,7 @@ export function SidebarToggle({
 				<TooltipTrigger asChild>
 					<Button
 						{...props}
+						data-slot="sidebar-toggle"
 						variant={variant}
 						size="icon-sm"
 						aria-expanded={!collapsed}
@@ -525,7 +542,16 @@ export function SidebarSearch({
 	...props
 }: SidebarSearchProps) {
 	const context = useContext(SidebarContext);
-	const collapsed = context?.collapsed && !(context.peek && context.peeking);
+	const collapsed = Boolean(context?.collapsed && !(context.peek && context.peeking));
+	const buttonRef = useRef<HTMLButtonElement>(null);
+	// The tooltip only exists in the collapsed rail. Radix closes a hoverable tooltip from its
+	// mounted content, so a hover that crossed the expanded row (no content) would otherwise
+	// stay "open" and appear the moment the rail collapses. Reset on every rail transition:
+	// only focus still on the button (keyboard users) carries the tooltip across.
+	const [tooltipOpen, setTooltipOpen] = useState(false);
+	useLayoutEffect(() => {
+		setTooltipOpen(collapsed && buttonRef.current === document.activeElement);
+	}, [collapsed]);
 	const button = (
 		<button
 			type="button"
@@ -542,6 +568,7 @@ export function SidebarSearch({
 				className,
 			)}
 			{...props}
+			ref={buttonRef}
 		>
 			<Search className="text-basalt-foreground" strokeWidth={1.5} aria-hidden="true" />
 			<span
@@ -561,7 +588,7 @@ export function SidebarSearch({
 	);
 	return (
 		<TooltipProvider>
-			<Tooltip delayDuration={0}>
+			<Tooltip delayDuration={0} open={collapsed && tooltipOpen} onOpenChange={setTooltipOpen}>
 				<TooltipTrigger asChild>{button}</TooltipTrigger>
 				{collapsed ? (
 					<TooltipContent side={context?.side === "right" ? "left" : "right"} sideOffset={8}>
