@@ -8,13 +8,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 }> = {
 	"button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "bf946e717c65ceff",
+		"hash": "d0e3fff86d3718b7",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
 	"link-button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "bf946e717c65ceff",
+		"hash": "d0e3fff86d3718b7",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
@@ -380,7 +380,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "2da3a93b55792b9d",
+		"hash": "32b8c398c8002dc8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},

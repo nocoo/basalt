@@ -153,7 +153,8 @@ The shared classes calculate natural size as follows:
 - `basalt-action`: 14px font, 24px line box + 4px vertical padding each side +
   1px border each side = 34px. Explicit `sm` (28px) and `lg` (40px) are shared
   size variants, not ad-hoc height utilities. Icon-only actions use a minimum
-  derived from `1lh`, not a fixed height; icons are normally 14px.
+  derived from `1lh`; `icon-sm` is an actual 28px by 28px control, while `icon`
+  retains the default 34px contract. Icons are normally 14px.
 - `basalt-banner`: 14px font, 22px line box + 12px vertical padding = 46px.
   The outer boundary uses 16px horizontal / 12px vertical panel insets; internal
   icons and actions retain compact control spacing.
@@ -254,10 +255,15 @@ interaction contracts; do not change their containment as a global workaround.
   uppercase, 16px top spacing). SidebarGroup is a compact disclosure label
   (12px / `text-basalt-sm`, semibold, uppercase, 22px line box, 8px inset, 12px
   group separation), not a destination or hover-highlight target. Ordinary sidebar
-  destinations use 14px (`text-basalt-base`) text and 8px row insets. Groups preserve
-  keyboard expansion and chevron motion; collapsed rails omit labels. Icons stay centered on the 68px collapsed rail, and the brand
-  mark keeps the same center when expanded. Do not trade that axis for a global
-  left-edge alignment.
+  destinations use 14px (`text-basalt-base`) text and 8px row insets. Sidebar owns
+  a private 24px content column: its 16px region inset composes with the row's
+  8px inset, without changing the shared 8px navigation inset used by other
+  components. Header, footer, search, group and destination content align to that
+  column. `SidebarBrand` reserves a fixed 20px logo slot at 24px, keeping the logo
+  center on the 68px rail axis during the width transition. Its action remains
+  reachable below the header when collapsed. Groups preserve keyboard expansion
+  and chevron motion; collapsed rails omit labels. Icons stay centered on the 68px
+  collapsed rail. Do not trade the rail axis for a global left-edge alignment.
 - Content wells use the actual surface hierarchy, not selected tokens or muted
   fills. Skeletons, progress tracks and decorative code marks may remain subdued.
   Skeleton shimmer uses foreground at 10% opacity so it remains visible in both themes.

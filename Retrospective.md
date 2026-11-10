@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11: Shared header sizing crossed page boundaries
+
+- **What:** The first compact HexlyLink change broke the landing header's equal-size action geometry.
+- **Why:** The link is shared by the dashboard and the independently styled landing page.
+- **Follow-up:** Inspect all callers before changing shared controls, and run both landing and dashboard browser checks.
+
 ## 2026-11: Chart wrapper call site was missed
 
 - **What:** The first typecheck after requiring chart labels failed because `MiniDonutCard` also calls the shared chart wrapper.

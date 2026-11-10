@@ -11,6 +11,14 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+### Added
+
+- Add SidebarBrand and SidebarToggle, compact icon buttons, and linkable sidebar items.
+
+### Changed
+
+- Align sidebar content to a 24px column and keep the brand mark stationary during collapse.
+
 ## [3.2.3] - 2026-11-05
 
 ### Changed

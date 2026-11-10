@@ -1,6 +1,8 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ChevronUp, Search } from "lucide-react";
+import { Slot } from "@radix-ui/react-slot";
+import { ChevronUp, PanelLeft, Search } from "lucide-react";
 import {
+	type AnchorHTMLAttributes,
 	type ButtonHTMLAttributes,
 	createContext,
 	type HTMLAttributes,
@@ -17,10 +19,13 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { NAV_ITEM_CLASS, NAV_LIST_CLASS, NAV_ROW_CLASS } from "../utils/navigation";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
+import { Button, type ButtonProps } from "./button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
+import { Link } from "./link";
 import { FOCUS_INSET, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 import { SkeletonLine } from "./skeleton-line";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 export type SidebarSide = "left" | "right";
 
@@ -393,11 +398,102 @@ export function SidebarHeader({ className, ...props }: SidebarHeaderProps) {
 		<div
 			data-slot="sidebar-header"
 			className={cn(
-				"flex h-basalt-14 shrink-0 items-center gap-basalt-row-gap px-basalt-nav-inset",
+				"flex h-basalt-14 shrink-0 items-center gap-basalt-row-gap px-basalt-layout-lg",
 				className,
 			)}
 			{...props}
 		/>
+	);
+}
+
+export interface SidebarBrandProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+	/** Brand mark rendered in the fixed collapsed-rail slot. */
+	logo: ReactNode;
+	/** Product or workspace name. */
+	name: ReactNode;
+	/** Optional version or release metadata, rendered at the auxiliary type size. */
+	version?: ReactNode;
+	/** Optional trailing action, conventionally a `SidebarToggle`. */
+	action?: ReactNode;
+}
+
+export function SidebarBrand({
+	logo,
+	name,
+	version,
+	action,
+	className,
+	...props
+}: SidebarBrandProps) {
+	return (
+		<div
+			data-slot="sidebar-brand"
+			className={cn(
+				"relative flex h-full min-w-0 flex-1 items-center gap-basalt-row-gap",
+				className,
+			)}
+			{...props}
+		>
+			<span
+				data-slot="sidebar-brand-logo"
+				className="flex w-basalt-sidebar-brand-slot shrink-0 items-center justify-center"
+			>
+				{logo}
+			</span>
+			<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap overflow-hidden whitespace-nowrap">
+				<span className="min-w-0 flex-1 truncate text-basalt-base font-semibold">{name}</span>
+				{version != null ? (
+					<span className="shrink-0 text-basalt-sm text-basalt-muted-foreground">{version}</span>
+				) : null}
+			</div>
+			{action ? (
+				<div data-slot="sidebar-brand-action" className="basalt-sidebar-brand-action">
+					{action}
+				</div>
+			) : null}
+		</div>
+	);
+}
+
+export interface SidebarToggleProps
+	extends Omit<ButtonProps, "children" | "size" | "aria-expanded"> {
+	/** Accessible label while the sidebar is collapsed. @default "Expand sidebar" */
+	expandLabel?: string;
+	/** Accessible label while the sidebar is expanded. @default "Collapse sidebar" */
+	collapseLabel?: string;
+}
+
+export function SidebarToggle({
+	"aria-label": ariaLabel,
+	expandLabel = "Expand sidebar",
+	collapseLabel = "Collapse sidebar",
+	onClick,
+	variant = "ghost",
+	...props
+}: SidebarToggleProps) {
+	const { collapsed, setCollapsed, side } = useSidebar();
+	const label = ariaLabel ?? (collapsed ? expandLabel : collapseLabel);
+	return (
+		<TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						{...props}
+						variant={variant}
+						size="icon-sm"
+						aria-expanded={!collapsed}
+						aria-label={label}
+						onClick={(event) => {
+							onClick?.(event);
+							if (!event.defaultPrevented) setCollapsed(!collapsed);
+						}}
+					>
+						<PanelLeft aria-hidden="true" />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side={side === "right" ? "left" : "right"}>{label}</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
 	);
 }
 
@@ -451,7 +547,7 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
 			data-slot="sidebar-nav"
 			className={cn(
 				NAV_LIST_CLASS,
-				"min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain",
+				"basalt-sidebar-nav min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain",
 				className,
 			)}
 			{...props}
@@ -474,55 +570,140 @@ export function SidebarPartition({ className, ...props }: SidebarPartitionProps)
 	);
 }
 
-export type SidebarItemProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-	/**
-	 * Mark the item as the current page.
-	 * @default false
-	 */
+type SidebarRowProps = {
+	/** Mark the item as the current page. @default false */
 	active?: boolean;
+	/** Item content. */
+	children?: ReactNode;
+	/** Additional CSS classes. */
+	className?: string;
 };
 
-export function SidebarItem({ active = false, className, ...props }: SidebarItemProps) {
+type SidebarButtonRowProps = Omit<
+	ButtonHTMLAttributes<HTMLButtonElement>,
+	"children" | "className"
+> &
+	SidebarRowProps & {
+		/** Render the item onto its single child element. */
+		asChild?: boolean;
+		href?: never;
+	};
+
+type SidebarLinkRowProps = Omit<
+	AnchorHTMLAttributes<HTMLAnchorElement>,
+	"children" | "className" | "href"
+> &
+	SidebarRowProps & {
+		/** Application route interpreted by LinkProvider. */
+		href: string;
+		asChild?: never;
+	};
+
+export type SidebarItemProps = SidebarButtonRowProps | SidebarLinkRowProps;
+
+export function SidebarItem(props: SidebarItemProps) {
+	const rowClass = cn(
+		NAV_ITEM_CLASS,
+		SIDEBAR_ROW_CLASS,
+		"w-full text-inherit no-underline hover:no-underline",
+		props.className,
+	);
+	if (typeof props.href === "string") {
+		const { href, active = false, children, className: _className, ...linkProps } = props;
+		return (
+			<Link
+				{...linkProps}
+				href={href}
+				aria-current={active ? "page" : undefined}
+				data-basalt-hover-item=""
+				data-sidebar-row=""
+				data-hover-selected={active}
+				className={rowClass}
+			>
+				{children}
+			</Link>
+		);
+	}
+	const {
+		asChild = false,
+		type = "button",
+		active = false,
+		children,
+		className: _className,
+		...buttonProps
+	} = props;
+	const sharedProps = {
+		"aria-current": active ? ("page" as const) : undefined,
+		"data-basalt-hover-item": "",
+		"data-sidebar-row": "",
+		"data-hover-selected": active,
+		className: rowClass,
+	};
+	if (asChild) {
+		return (
+			<Slot {...buttonProps} {...sharedProps}>
+				{children}
+			</Slot>
+		);
+	}
 	return (
-		<button
-			type="button"
-			aria-current={active ? "page" : undefined}
-			data-basalt-hover-item=""
-			data-sidebar-row=""
-			data-hover-selected={active}
-			className={cn(NAV_ITEM_CLASS, SIDEBAR_ROW_CLASS, "w-full", className)}
-			{...props}
-		/>
+		<button {...buttonProps} type={type} {...sharedProps}>
+			{children}
+		</button>
 	);
 }
 
-/**
- * Props for `SidebarIconItem`. Accepts standard button HTML attributes. The caller is responsible for providing accessible labeling via `aria-label` or `aria-labelledby` as icon buttons do not automatically generate accessible names.
- */
-export interface SidebarIconItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	/**
-	 * Mark the icon button as active page item.
-	 * @default false
-	 */
-	active?: boolean;
-}
+export type SidebarIconItemProps = SidebarButtonRowProps | SidebarLinkRowProps;
 
-export function SidebarIconItem({ active = false, className, ...props }: SidebarIconItemProps) {
+export function SidebarIconItem(props: SidebarIconItemProps) {
+	const rowClass = cn(
+		NAV_ITEM_CLASS,
+		SIDEBAR_ROW_CLASS,
+		"relative w-basalt-control justify-center text-inherit no-underline hover:no-underline",
+		props.className,
+	);
+	if (typeof props.href === "string") {
+		const { href, active = false, children, className: _className, ...linkProps } = props;
+		return (
+			<Link
+				{...linkProps}
+				href={href}
+				aria-current={active ? "page" : undefined}
+				data-basalt-hover-item=""
+				data-sidebar-row=""
+				data-hover-selected={active}
+				className={rowClass}
+			>
+				{children}
+			</Link>
+		);
+	}
+	const {
+		asChild = false,
+		type = "button",
+		active = false,
+		children,
+		className: _className,
+		...buttonProps
+	} = props;
+	const sharedProps = {
+		"aria-current": active ? ("page" as const) : undefined,
+		"data-basalt-hover-item": "",
+		"data-sidebar-row": "",
+		"data-hover-selected": active,
+		className: rowClass,
+	};
+	if (asChild) {
+		return (
+			<Slot {...buttonProps} {...sharedProps}>
+				{children}
+			</Slot>
+		);
+	}
 	return (
-		<button
-			type="button"
-			aria-current={active ? "page" : undefined}
-			data-basalt-hover-item=""
-			data-sidebar-row=""
-			data-hover-selected={active}
-			className={cn(
-				NAV_ITEM_CLASS,
-				SIDEBAR_ROW_CLASS,
-				"relative w-basalt-control justify-center",
-				className,
-			)}
-			{...props}
-		/>
+		<button {...buttonProps} type={type} {...sharedProps}>
+			{children}
+		</button>
 	);
 }
 
@@ -588,7 +769,7 @@ export function SidebarFooter({ className, ...props }: SidebarFooterProps) {
 		<div
 			data-slot="sidebar-footer"
 			className={cn(
-				"flex shrink-0 flex-col gap-basalt-content-gap px-basalt-layout pt-basalt-space-lg pb-basalt-layout",
+				"flex shrink-0 flex-col gap-basalt-content-gap px-basalt-layout-lg pt-basalt-space-lg pb-basalt-layout",
 				className,
 			)}
 			{...props}

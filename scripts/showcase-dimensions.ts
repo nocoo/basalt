@@ -60,6 +60,17 @@ export async function assertDimensionTokens(page: Page, baseUrl: string) {
 		heights.every((height) => height === 34 || height === 28),
 		JSON.stringify(heights),
 	);
+	const compactIcon = page
+		.locator('[data-scenario="button-icon-only"]')
+		.getByRole("button", { name: "Add item compact", exact: true });
+	const compactIconBox = await compactIcon.boundingBox();
+	assert.ok(compactIconBox, "icon-sm must render a measurable button");
+	assert.deepEqual(
+		{ width: compactIconBox.width, height: compactIconBox.height },
+		{ width: 28, height: 28 },
+		JSON.stringify(compactIconBox),
+	);
+	console.log(`Sidebar/icon geometry ${JSON.stringify({ iconSm: compactIconBox })}`);
 	const first = buttons.first();
 	await first.evaluate((node) => {
 		node.textContent = "A deliberately long label that wraps without clipping";

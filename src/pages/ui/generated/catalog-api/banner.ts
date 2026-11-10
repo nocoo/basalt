@@ -63,7 +63,7 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"default\" | \"icon\" | \"lg\" | \"sm\" | null",
+				type: "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
 				required: false,
 				description: "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size.",
 			},

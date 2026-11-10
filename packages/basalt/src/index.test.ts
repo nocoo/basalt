@@ -32,6 +32,8 @@ describe("root barrel", () => {
 		expect(Toast).toBe(Toaster);
 		expect(root.ThemeProvider).toBeTruthy();
 		expect(root.ThemeToggle).toBeTruthy();
+		expect(root.SidebarBrand).toBeTruthy();
+		expect(root.SidebarToggle).toBeTruthy();
 		expect(root.LinkProvider).toBeTruthy();
 		expect(root.ScrollArea).toBeTruthy();
 		expect(root.SegmentControl).toBeTruthy();

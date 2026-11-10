@@ -248,7 +248,7 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 	});
 	assert.equal(expandedRail.rowHeight, 38, JSON.stringify(expandedRail));
 	assert.equal(expandedRail.rowPadding, "8px");
-	assert.equal(expandedRail.logoX, 20);
+	assert.equal(expandedRail.logoX, 24);
 	await page.getByRole("button", { name: "Collapse sidebar", exact: true }).click();
 	await page.waitForFunction(() => {
 		const island = document.querySelector("[data-doc-scroll]");

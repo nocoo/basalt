@@ -41,6 +41,133 @@ async function highlightMotion(nav: Locator) {
 	});
 }
 
+type SidebarBrandSample = {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	sidebarWidth: number;
+};
+
+async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
+	await page.setViewportSize({ width: 1440, height: 1000 });
+	await page.emulateMedia({ reducedMotion: "no-preference" });
+	await page.goto(`${baseUrl}/dashboard`);
+	const sidebar = page.locator("[data-dashboard-shell] > [data-basalt-sidebar]");
+	await sidebar.waitFor();
+	const logo = sidebar.locator("[data-sidebar-brand-image]");
+	const toggle = sidebar.locator("[data-sidebar-toggle]");
+	await logo.waitFor();
+	await toggle.waitFor();
+	const dashboardLink = sidebar.getByRole("link", { name: "Dashboard", exact: true });
+	const linkHref = await dashboardLink.getAttribute("href");
+	assert.equal(linkHref, "/dashboard");
+	const [newTab] = await Promise.all([
+		page.context().waitForEvent("page"),
+		dashboardLink.click({ button: "middle" }),
+	]);
+	try {
+		await newTab.waitForURL(`${baseUrl}/dashboard`);
+	} finally {
+		await newTab.close();
+	}
+	const measure = () =>
+		page.evaluate(() => {
+			const sidebar = document.querySelector("[data-dashboard-shell] > [data-basalt-sidebar]");
+			const logo = sidebar?.querySelector<HTMLElement>("[data-sidebar-brand-image]");
+			const toggle = sidebar?.querySelector<HTMLElement>("[data-sidebar-toggle]");
+			const chevron = sidebar?.querySelector<SVGElement>('[data-slot="sidebar-group-label"] svg');
+			const columnItems = [
+				sidebar?.querySelector("button > svg.lucide-search"),
+				sidebar?.querySelector("[data-sidebar-row] > svg"),
+				sidebar?.querySelector('[data-slot="sidebar-group-label"] > span'),
+				sidebar?.querySelector('[data-slot="sidebar-footer"] > div > :first-child'),
+			];
+			if (!sidebar || !logo || !toggle) throw new Error("Missing sidebar geometry");
+			const sidebarBox = sidebar.getBoundingClientRect();
+			const logoBox = logo.getBoundingClientRect();
+			const toggleBox = toggle.getBoundingClientRect();
+			const chevronBox = chevron?.getBoundingClientRect();
+			return {
+				logo: {
+					x: logoBox.x - sidebarBox.x,
+					y: logoBox.y,
+					width: logoBox.width,
+					height: logoBox.height,
+					sidebarWidth: sidebarBox.width,
+				},
+				toggleCenterX: toggleBox.x + toggleBox.width / 2 - sidebarBox.x,
+				chevronCenterX: chevronBox ? chevronBox.x + chevronBox.width / 2 - sidebarBox.x : null,
+				columnX: columnItems.map((item) => item && item.getBoundingClientRect().x - sidebarBox.x),
+			};
+		});
+	const expanded = await measure();
+	assert.ok(Math.abs(expanded.logo.x - 24) <= 0.5, JSON.stringify(expanded));
+	assert.ok(Math.abs(expanded.logo.width - 20) <= 0.5, JSON.stringify(expanded));
+	assert.ok(expanded.chevronCenterX !== null, JSON.stringify(expanded));
+	assert.ok(
+		expanded.columnX.every((position) => position !== null && Math.abs(position - 24) <= 0.5),
+		JSON.stringify(expanded),
+	);
+	assert.ok(
+		Math.abs(expanded.toggleCenterX - expanded.chevronCenterX) <= 0.5,
+		JSON.stringify(expanded),
+	);
+	const samples = await page.evaluate(async () => {
+		const logo = document.querySelector<HTMLElement>("[data-sidebar-brand-image]");
+		const sidebar = document.querySelector<HTMLElement>(
+			"[data-dashboard-shell] > [data-basalt-sidebar]",
+		);
+		const toggle = document.querySelector<HTMLButtonElement>("[data-sidebar-toggle]");
+		if (!logo || !sidebar || !toggle) throw new Error("Missing sidebar transition geometry");
+		const sample = (): SidebarBrandSample => {
+			const logoBox = logo.getBoundingClientRect();
+			const sidebarBox = sidebar.getBoundingClientRect();
+			return {
+				x: logoBox.x - sidebarBox.x,
+				y: logoBox.y,
+				width: logoBox.width,
+				height: logoBox.height,
+				sidebarWidth: sidebarBox.width,
+			};
+		};
+		const frames = [sample()];
+		toggle.click();
+		await new Promise<void>((resolve) => {
+			const started = performance.now();
+			const next = () => {
+				frames.push(sample());
+				if (performance.now() - started >= 260) resolve();
+				else requestAnimationFrame(next);
+			};
+			requestAnimationFrame(next);
+		});
+		return frames;
+	});
+	await page.waitForFunction(
+		() =>
+			document.querySelector("[data-dashboard-shell] > [data-basalt-sidebar]")?.clientWidth === 68,
+	);
+	const collapsed = await measure();
+	for (const sample of samples) {
+		assert.ok(Math.abs(sample.x - expanded.logo.x) <= 0.5, JSON.stringify(samples));
+		assert.ok(Math.abs(sample.y - expanded.logo.y) <= 0.5, JSON.stringify(samples));
+	}
+	assert.ok(Math.abs(collapsed.logo.x - expanded.logo.x) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.logo.y - expanded.logo.y) <= 0.5, JSON.stringify(collapsed));
+	const geometry = {
+		expanded: expanded.logo,
+		collapsed: collapsed.logo,
+		logoDx: collapsed.logo.x - expanded.logo.x,
+		logoDy: collapsed.logo.y - expanded.logo.y,
+		toggleChevronDx: expanded.toggleCenterX - expanded.chevronCenterX,
+		transitionSamples: samples,
+		linkHref,
+	};
+	console.log(`Sidebar brand geometry ${JSON.stringify(geometry)}`);
+	return geometry;
+}
+
 async function itemOffsetY(item: Locator) {
 	return item.evaluate((node) => {
 		const root = node.closest("nav");
@@ -222,14 +349,16 @@ async function assertSidebarPointerHover(
 	assert.equal(focused.offset, "-2px", JSON.stringify(focused));
 }
 
-async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, inset = 8) {
+async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, inset = 16) {
 	const geometry = await sidebar.evaluate((node) => {
 		const nav = node.querySelector("nav") as HTMLElement;
 		const box = node.getBoundingClientRect();
 		const rows = Array.from(nav.querySelectorAll<HTMLElement>("[data-basalt-hover-item]"));
 		return {
 			width: box.width,
-			padding: getComputedStyle(nav).padding,
+			paddingInline: getComputedStyle(nav).paddingInlineStart,
+			paddingTop: getComputedStyle(nav).paddingTop,
+			paddingBottom: getComputedStyle(nav).paddingBottom,
 			firstTop:
 				rows[0].getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop,
 			rows: rows.map((row) => ({
@@ -237,25 +366,35 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 				height: row.getBoundingClientRect().height,
 				padding: getComputedStyle(row).padding,
 			})),
-			centers: Array.from(node.querySelectorAll("button svg"), (icon) => {
-				const rect = icon.getBoundingClientRect();
-				return rect.x + rect.width / 2 - box.x;
-			}),
+			centers: Array.from(
+				node.querySelectorAll(
+					'[data-slot="sidebar-brand-action"] svg, [data-basalt-hover-item] svg',
+				),
+				(icon) => {
+					const rect = icon.getBoundingClientRect();
+					return rect.x + rect.width / 2 - box.x;
+				},
+			),
 		};
 	});
-	assert.equal(geometry.padding, `${inset}px`);
-	assert.equal(geometry.firstTop, inset);
 	assert.ok(
 		geometry.rows.every((row) => row.height === 38),
 		JSON.stringify(geometry),
 	);
 	if (collapsed) {
 		assert.equal(geometry.width, 68);
+		assert.equal(geometry.paddingInline, "17px");
+		assert.equal(geometry.paddingTop, "36px");
+		assert.equal(geometry.paddingBottom, "8px");
+		assert.equal(geometry.firstTop, 36);
 		assert.ok(
 			geometry.centers.every((center) => Math.abs(center - 34) < 1),
 			JSON.stringify(geometry),
 		);
 	} else {
+		assert.equal(geometry.paddingInline, `${inset}px`);
+		assert.equal(geometry.paddingTop, "8px");
+		assert.equal(geometry.firstTop, 8);
 		assert.ok(
 			geometry.rows.every((row) => row.left === inset && row.padding === "8px"),
 			JSON.stringify(geometry),
@@ -265,6 +404,7 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 
 export async function assertNavigationLists(page: Page, baseUrl: string) {
 	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+	const brandGeometry = await assertSidebarBrandGeometry(page, baseUrl);
 	for (const width of [390, 1280]) {
 		await page.setViewportSize({ width, height: 1000 });
 		for (const dark of [false, true]) {
@@ -275,6 +415,8 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 			await sidebar.waitFor();
 			await setShowcaseTheme(page, dark);
 			await sidebar.evaluate((node) => ((node as HTMLElement).style.height = "480px"));
+			const homeLink = sidebar.getByRole("link", { name: "Home", exact: true });
+			assert.equal(await homeLink.getAttribute("href"), "/ui/sidebar?destination=home");
 			await assertNavigationGeometry(sidebar, false);
 			const expanded = await sidebar.evaluate((node) => node.outerHTML);
 			const nav = sidebar.getByRole("navigation");
@@ -286,11 +428,11 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 			await sidebar.evaluate((node) => (node as HTMLElement).style.setProperty("--spacing", "9px"));
 			await assertNavigationGeometry(sidebar, false);
 			await sidebar.evaluate((node) =>
-				(node as HTMLElement).style.setProperty("--basalt-space-nav-inset", "4px"),
+				(node as HTMLElement).style.setProperty("--basalt-space-sidebar-inset", "4px"),
 			);
 			await assertNavigationGeometry(sidebar, false, 4);
 			await sidebar.evaluate((node) =>
-				(node as HTMLElement).style.removeProperty("--basalt-space-nav-inset"),
+				(node as HTMLElement).style.removeProperty("--basalt-space-sidebar-inset"),
 			);
 			const last = nav.getByRole("button", { name: "Daily activity notes" });
 			await last.focus();
@@ -312,7 +454,7 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 			await assertSidebarPointerHover(page, sidebar, nav, true);
 			await assertMovingHighlight(nav);
 			await page.emulateMedia({ reducedMotion: "reduce" });
-			await nav.getByRole("button", { name: "New chat" }).hover();
+			await nav.getByRole("link", { name: "New chat" }).hover();
 			assert.equal(
 				await nav.evaluate((node) => getComputedStyle(node, "::before").transitionDuration),
 				"0s",
@@ -337,7 +479,10 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 		const list = page.locator("[data-hero-scenario] .basalt-hover-list");
 		await list.waitFor();
 		await assertMovingHighlight(list);
-		assert.equal(await list.evaluate((node) => getComputedStyle(node).padding), "8px");
+		assert.equal(
+			await list.evaluate((node) => getComputedStyle(node).padding),
+			slug === "navigation-menu" ? "8px" : "8px 16px",
+		);
 	}
 	return {
 		viewports: 2,
@@ -345,7 +490,8 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 		cssEntrypoints: 2,
 		rowHeight: 38,
 		railAxis: 34,
-		inset: 8,
+		inset: 24,
 		navigationFamilies: 3,
+		brandGeometry,
 	};
 }

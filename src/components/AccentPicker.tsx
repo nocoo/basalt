@@ -12,7 +12,7 @@ export function AccentPicker() {
 		<Popover>
 			<HeaderTooltip label={t("common.themePalette")}>
 				<PopoverTrigger asChild>
-					<Button variant="ghost" size="icon" className="w-8" aria-label={t("common.themePalette")}>
+					<Button variant="ghost" size="icon-sm" aria-label={t("common.themePalette")}>
 						<span
 							className="h-3.5 w-3.5 rounded-basalt-full ring-1 ring-basalt-border"
 							style={{ background: "hsl(var(--basalt-primary))" }}

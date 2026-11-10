@@ -157,8 +157,10 @@
 	--spacing-basalt-row-content: var(--basalt-space-row-content);
 	--spacing-basalt-action: var(--basalt-size-action);
 	--spacing-basalt-nav-inset: var(--basalt-space-nav-inset);
+	--spacing-basalt-sidebar-inset: var(--basalt-space-sidebar-inset);
 	--spacing-basalt-nav-gap: var(--basalt-space-nav-gap);
 	--spacing-basalt-rail: var(--basalt-size-rail);
+	--spacing-basalt-sidebar-brand-slot: var(--basalt-size-sidebar-brand-slot);
 	--color-basalt-background: hsl(var(--basalt-background));
 	--color-basalt-foreground: hsl(var(--basalt-foreground));
 	--color-basalt-card: hsl(var(--basalt-card));

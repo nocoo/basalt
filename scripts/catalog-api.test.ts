@@ -1915,7 +1915,7 @@ describe("catalog API generator contract", () => {
 			},
 			{
 				name: "size",
-				type: '"default" | "icon" | "lg" | "sm" | null',
+				type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | null',
 				required: false,
 				default: '"default"',
 				description: "Sizing preset.",
@@ -2004,7 +2004,7 @@ describe("catalog API generator contract", () => {
 			},
 			{
 				name: "size",
-				type: '"default" | "icon" | "lg" | "sm" | null',
+				type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | null',
 				required: false,
 				default: '"default"',
 				description: "Sizing preset.",
@@ -3186,7 +3186,7 @@ export interface WidgetProps {
 					},
 					{
 						name: "size",
-						type: '"default" | "icon" | "lg" | "sm" | null',
+						type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | null',
 						required: false,
 						default: "icon",
 						description: "Size for the nested action.",
@@ -4936,7 +4936,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"61f704acdfb7e4f896105725408e92bce3b3f348e2ac49c8eab637550f29c951",
+			"78430494269ad64dac91c75f83012430bbb3c47aa82a587a95f9991f233a4648",
 		);
 	}, 60_000);
 

@@ -26,7 +26,7 @@ describe("Button", () => {
 			expect(screen.getByRole("button")).not.toHaveClass("basalt-choice");
 		},
 	);
-	it.each(["default", "sm", "icon", "lg"] as const)(
+	it.each(["default", "sm", "icon", "icon-sm", "lg"] as const)(
 		"sizes icons proportionally for %s buttons",
 		(size) => {
 			render(<Button size={size}>Action</Button>);
@@ -36,6 +36,14 @@ describe("Button", () => {
 			expect(screen.getByRole("button")).toHaveClass("gap-basalt-control-gap");
 		},
 	);
+
+	it("renders icon-sm with the fixed 28px action contract", () => {
+		render(<Button size="icon-sm" aria-label="Compact" />);
+		expect(screen.getByRole("button", { name: "Compact" })).toHaveClass(
+			"basalt-action-icon-sm",
+			"shrink-0",
+		);
+	});
 
 	it("allows an explicit consumer icon size override", () => {
 		render(

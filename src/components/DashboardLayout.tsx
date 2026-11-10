@@ -41,6 +41,7 @@ export function DashboardLayout() {
 	const { theme } = useTheme();
 
 	const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
+	const mobileSheetRef = useRef<HTMLDivElement | null>(null);
 	const catalogSlug = location.pathname.startsWith("/ui/")
 		? location.pathname.slice("/ui/".length).split("/")[0]
 		: undefined;
@@ -119,8 +120,14 @@ export function DashboardLayout() {
 			) : (
 				<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
 					<SheetContent
+						ref={mobileSheetRef}
 						side="left"
+						tabIndex={-1}
 						className="w-[16.25rem] max-w-[16.25rem] border-0 bg-basalt-background p-0"
+						onOpenAutoFocus={(event) => {
+							event.preventDefault();
+							mobileSheetRef.current?.focus();
+						}}
 						onCloseAutoFocus={(event) => {
 							const trigger = mobileTriggerRef.current;
 							if (isTriggerVisible(trigger)) {
@@ -143,8 +150,7 @@ export function DashboardLayout() {
 								<Button
 									ref={mobileTriggerRef}
 									variant="ghost"
-									size="icon"
-									className="w-8"
+									size="icon-sm"
 									onClick={() => setMobileOpen(true)}
 									aria-label={t("common.openNav")}
 								>
@@ -162,12 +168,12 @@ export function DashboardLayout() {
 							<HeaderTooltip label={t("common.github")}>
 								<LinkButton
 									variant="ghost"
-									size="icon"
+									size="icon-sm"
 									href="https://github.com/nocoo/basalt"
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={t("common.github")}
-									className="w-8 rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[1.125rem]"
+									className="rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[1.125rem]"
 								>
 									<Github
 										className="h-[1.125rem] w-[1.125rem]"
@@ -176,7 +182,7 @@ export function DashboardLayout() {
 									/>
 								</LinkButton>
 							</HeaderTooltip>
-							<HexlyLink />
+							<HexlyLink size="icon-sm" />
 							<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 						</>
 					}
