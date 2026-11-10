@@ -1,6 +1,6 @@
-import { AppHeader } from "@nocoo/basalt/components/app-header";
+import { AppHeader, ProjectLinks } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
-import { Button, LinkButton } from "@nocoo/basalt/components/button";
+import { Button } from "@nocoo/basalt/components/button";
 import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
@@ -10,14 +10,13 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router";
 import { AccentPicker } from "@/components/AccentPicker";
 import { AppSidebar } from "@/components/AppSidebar";
-import { Github } from "@/components/icons/github";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useSiteTitle } from "@/hooks/use-site-title";
 import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
 import { catalogCategory, catalogCategoryPath } from "@/pages/ui/catalog-categories";
-import { HeaderTooltip, HexlyLink } from "./header-links";
+import { HeaderTooltip } from "./header-links";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -168,24 +167,12 @@ export function DashboardLayout() {
 						<>
 							<LanguageToggle />
 							<AccentPicker />
-							<HeaderTooltip label={t("common.github")}>
-								<LinkButton
-									variant="ghost"
-									size="icon-sm"
-									href="https://github.com/nocoo/basalt"
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label={t("common.github")}
-									className="rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[1.125rem]"
-								>
-									<Github
-										className="h-[1.125rem] w-[1.125rem]"
-										aria-hidden="true"
-										strokeWidth={1.5}
-									/>
-								</LinkButton>
-							</HeaderTooltip>
-							<HexlyLink size="icon-sm" />
+							<ProjectLinks
+								github="nocoo/basalt"
+								hexly="basalt"
+								name="Basalt"
+								githubLabel={t("common.github")}
+							/>
 							<ThemeToggle
 								labels={{
 									light: t("common.themeLight"),

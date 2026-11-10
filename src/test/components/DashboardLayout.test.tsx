@@ -174,7 +174,8 @@ describe("DashboardLayout", () => {
 
 	it("places the project links before the final theme button", () => {
 		renderLayout("/");
-		const github = screen.getByRole("link", { name: "GitHub repository" });
+		const github = screen.getByRole("link", { name: "GitHub repository (opens in a new tab)" });
+		expect(github).toHaveAttribute("href", "https://github.com/nocoo/basalt");
 		const hexly = screen.getByRole("link", { name: "Basalt on hexly.ai (opens in a new tab)" });
 		const theme = screen.getByRole("button", {
 			name: /^(Switch to (light|dark) theme|Use system theme)$/,

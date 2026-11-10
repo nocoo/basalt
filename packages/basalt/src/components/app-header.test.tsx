@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { HeaderAction } from "./app-header";
+import { GitHubLink, HeaderAction, HexlyLink, ProjectLinks } from "./app-header";
 
 function Glyph() {
 	return <svg data-testid="glyph" aria-hidden="true" />;
@@ -72,5 +72,76 @@ describe("HeaderAction", () => {
 		const external = screen.getByRole("link", { name: "文档 （新标签页打开）" });
 		act(() => external.focus());
 		expect(await screen.findByRole("tooltip")).toHaveTextContent("打开文档");
+	});
+});
+
+describe("project links", () => {
+	it("links GitHub repositories from owner/name or a full URL", () => {
+		const { rerender } = render(<GitHubLink repo="nocoo/surety" />);
+		const link = screen.getByRole("link", { name: "GitHub repository (opens in a new tab)" });
+		expect(link).toHaveAttribute("href", "https://github.com/nocoo/surety");
+		expect(link).toHaveAttribute("data-project-link", "github");
+		expect(link.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+		rerender(<GitHubLink repo="https://github.com/nocoo/basalt" label="GitHub 仓库" />);
+		expect(screen.getByRole("link", { name: "GitHub 仓库 (opens in a new tab)" })).toHaveAttribute(
+			"href",
+			"https://github.com/nocoo/basalt",
+		);
+	});
+
+	it("links hexly.ai projects by slug with a product-name label", () => {
+		const { rerender } = render(<HexlyLink project="surety" name="Surety" />);
+		const link = screen.getByRole("link", { name: "Surety on hexly.ai (opens in a new tab)" });
+		expect(link).toHaveAttribute("href", "https://hexly.ai/projects/surety");
+		expect(link).toHaveAttribute("data-project-link", "hexly");
+		rerender(<HexlyLink project="lyre" />);
+		expect(
+			screen.getByRole("link", { name: "lyre on hexly.ai (opens in a new tab)" }),
+		).toBeVisible();
+		rerender(<HexlyLink project="lyre" label="在 hexly.ai 查看" newTabLabel="（新标签页）" />);
+		expect(screen.getByRole("link", { name: "在 hexly.ai 查看 （新标签页）" })).toBeVisible();
+	});
+
+	it("renders the GitHub then hexly pair and omits missing links", () => {
+		const { container, rerender } = render(
+			<div>
+				<ProjectLinks
+					github="nocoo/surety"
+					hexly="surety"
+					name="Surety"
+					githubLabel="GitHub 仓库"
+					hexlyLabel="Surety 在 hexly.ai"
+					newTabLabel="（新标签页打开）"
+				/>
+			</div>,
+		);
+		const links = screen.getAllByRole("link");
+		expect(links.map((link) => link.getAttribute("data-project-link"))).toEqual([
+			"github",
+			"hexly",
+		]);
+		expect(links[0]).toHaveAccessibleName("GitHub 仓库 （新标签页打开）");
+		expect(links[1]).toHaveAccessibleName("Surety 在 hexly.ai （新标签页打开）");
+		rerender(
+			<div>
+				<ProjectLinks hexly="surety" />
+			</div>,
+		);
+		expect(screen.getAllByRole("link")).toHaveLength(1);
+		expect(screen.getByRole("link")).toHaveAccessibleName(
+			"surety on hexly.ai (opens in a new tab)",
+		);
+		rerender(
+			<div>
+				<ProjectLinks github="nocoo/surety" />
+			</div>,
+		);
+		expect(screen.getByRole("link")).toHaveAccessibleName("GitHub repository (opens in a new tab)");
+		rerender(
+			<div>
+				<ProjectLinks />
+			</div>,
+		);
+		expect(container.querySelector("a")).toBeNull();
 	});
 });

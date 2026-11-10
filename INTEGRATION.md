@@ -671,6 +671,8 @@ Every top-right icon control in `AppHeader.actions` is a `HeaderAction` (`@nocoo
 - **`href?: string`**: Renders a link instead of a button. External by default: `external` (default `true`) adds `target="_blank"`, `rel="noopener noreferrer"` and appends `newTabLabel` (default `"(opens in a new tab)"`) to the accessible name; a screen-reader copy of `label` is always inside the link.
 - Other props go to the underlying `button` (or `a`). It forwards its ref and carries its own `TooltipProvider`, so it works directly as a `SheetTrigger asChild` or `DropdownMenuTrigger asChild` child.
 
+**Project links.** `GitHubLink` (`repo`: `owner/name` or URL; `label` default "GitHub repository") and `HexlyLink` (`project`: hexly.ai slug; `name` for the default label "`<name>` on hexly.ai") are `HeaderAction` links with the brand glyphs built in. `ProjectLinks` renders the standard pair in order, GitHub then hexly, and omits whichever prop is missing: `<ProjectLinks github="nocoo/surety" hexly="surety" name="Surety" />`. Place it directly before `ThemeToggle`. Pass `githubLabel`, `hexlyLabel` and `newTabLabel` to localize. Do not copy the svg paths or `HexlyLink` helpers into the app.
+
 ```tsx excerpt:header-action
 <AppHeader
 	breadcrumbs={crumbs}

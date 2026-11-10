@@ -115,6 +115,156 @@ export const HeaderAction = forwardRef<HTMLButtonElement | HTMLAnchorElement, He
 	},
 );
 
+function GitHubGlyph() {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.5}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden="true"
+		>
+			<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+			<path d="M9 18c-4.51 2-5-2-7-2" />
+		</svg>
+	);
+}
+
+function HexlyGlyph() {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.5}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden="true"
+		>
+			<path d="m12 2 8.66 5v10L12 22l-8.66-5V7Z" />
+			<path d="M12 2v20M3.34 7l17.32 10m0-10L3.34 17" />
+		</svg>
+	);
+}
+
+export interface GitHubLinkProps
+	extends Omit<HeaderActionProps, "label" | "children" | "href" | "external"> {
+	/**
+	 * Repository as `owner/name`, or a full URL.
+	 */
+	repo: string;
+	/**
+	 * Accessible name and tooltip.
+	 * @default "GitHub repository"
+	 */
+	label?: string;
+}
+
+/** Header link to the project's GitHub repository (new tab), drawn with the GitHub glyph. */
+export function GitHubLink({ repo, label = "GitHub repository", ...props }: GitHubLinkProps) {
+	const href = /^https?:\/\//.test(repo) ? repo : `https://github.com/${repo}`;
+	return (
+		<HeaderAction {...props} label={label} href={href} data-project-link="github">
+			<GitHubGlyph />
+		</HeaderAction>
+	);
+}
+
+export interface HexlyLinkProps
+	extends Omit<HeaderActionProps, "label" | "children" | "href" | "external"> {
+	/**
+	 * hexly.ai project slug, as in `https://hexly.ai/projects/<project>`.
+	 */
+	project: string;
+	/**
+	 * Product name used in the default label.
+	 * @default project
+	 */
+	name?: string;
+	/**
+	 * Accessible name and tooltip.
+	 * @default "<name> on hexly.ai"
+	 */
+	label?: string;
+}
+
+/** Header link to the project's hexly.ai page (new tab), drawn with the hexly glyph. */
+export function HexlyLink({ project, name, label, ...props }: HexlyLinkProps) {
+	return (
+		<HeaderAction
+			{...props}
+			label={label ?? `${name ?? project} on hexly.ai`}
+			href={`https://hexly.ai/projects/${encodeURIComponent(project)}`}
+			data-project-link="hexly"
+		>
+			<HexlyGlyph />
+		</HeaderAction>
+	);
+}
+
+export interface ProjectLinksProps {
+	/**
+	 * GitHub repository (`owner/name` or URL); omitted renders no GitHub link.
+	 */
+	github?: string;
+	/**
+	 * hexly.ai project slug; omitted renders no hexly link.
+	 */
+	hexly?: string;
+	/**
+	 * Product name for the hexly label.
+	 * @default hexly
+	 */
+	name?: string;
+	/**
+	 * GitHub link label.
+	 * @default "GitHub repository"
+	 */
+	githubLabel?: string;
+	/**
+	 * hexly link label.
+	 * @default "<name> on hexly.ai"
+	 */
+	hexlyLabel?: string;
+	/**
+	 * Suffix for both links' accessible names.
+	 * @default "(opens in a new tab)"
+	 */
+	newTabLabel?: string;
+}
+
+/** The standard GitHub + hexly.ai pair, in that order, for `AppHeader.actions` before `ThemeToggle`. */
+export function ProjectLinks({
+	github,
+	hexly,
+	name,
+	githubLabel,
+	hexlyLabel,
+	newTabLabel,
+}: ProjectLinksProps) {
+	return (
+		<>
+			{github ? (
+				<GitHubLink
+					repo={github}
+					{...(githubLabel !== undefined ? { label: githubLabel } : {})}
+					{...(newTabLabel !== undefined ? { newTabLabel } : {})}
+				/>
+			) : null}
+			{hexly ? (
+				<HexlyLink
+					project={hexly}
+					{...(name !== undefined ? { name } : {})}
+					{...(hexlyLabel !== undefined ? { label: hexlyLabel } : {})}
+					{...(newTabLabel !== undefined ? { newTabLabel } : {})}
+				/>
+			) : null}
+		</>
+	);
+}
+
 export function AppHeader({
 	leading,
 	breadcrumbs,
