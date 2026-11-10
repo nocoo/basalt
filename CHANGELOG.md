@@ -11,7 +11,7 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
-Target 3.2.5 (unreleased).
+## [3.2.5] - 2026-11-10
 
 ### Fixed
 
