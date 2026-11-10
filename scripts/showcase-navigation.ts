@@ -375,19 +375,36 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 	const geometry = await sidebar.evaluate((node) => {
 		const nav = node.querySelector("nav") as HTMLElement;
 		const box = node.getBoundingClientRect();
-		const rows = Array.from(nav.querySelectorAll<HTMLElement>("[data-basalt-hover-item]"));
+		const search = nav.querySelector<HTMLElement>('[data-slot="sidebar-search"]');
+		if (!search) throw new Error("Missing sidebar search geometry");
+		const top = (element: HTMLElement) =>
+			element.getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop;
+		const destinations = Array.from(
+			nav.querySelectorAll<HTMLElement>("[data-basalt-hover-item]"),
+		).filter((row) => row !== search);
+		const directDestinations = Array.from(nav.children).filter(
+			(child): child is HTMLElement =>
+				child instanceof HTMLElement &&
+				child.hasAttribute("data-basalt-hover-item") &&
+				child !== search,
+		);
+		const rowGeometry = (row: HTMLElement) => ({
+			top: top(row),
+			left: row.getBoundingClientRect().left - box.left,
+			height: row.getBoundingClientRect().height,
+			padding: getComputedStyle(row).padding,
+		});
 		return {
 			width: box.width,
 			paddingInline: getComputedStyle(nav).paddingInlineStart,
 			paddingTop: getComputedStyle(nav).paddingTop,
 			paddingBottom: getComputedStyle(nav).paddingBottom,
-			firstTop:
-				rows[0].getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop,
-			rows: rows.map((row) => ({
-				left: row.getBoundingClientRect().left - box.left,
-				height: row.getBoundingClientRect().height,
-				padding: getComputedStyle(row).padding,
-			})),
+			search: {
+				...rowGeometry(search),
+				hoverItem: search.hasAttribute("data-basalt-hover-item"),
+			},
+			destinations: destinations.map(rowGeometry),
+			directDestinationTops: directDestinations.map(top),
 			centers: Array.from(
 				node.querySelectorAll(
 					'[data-slot="sidebar-brand-action"] svg, [data-basalt-hover-item] svg',
@@ -400,7 +417,7 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		};
 	});
 	assert.ok(
-		geometry.rows.every((row) => row.height === 38),
+		geometry.destinations.every((row) => row.height === 38),
 		JSON.stringify(geometry),
 	);
 	if (collapsed) {
@@ -408,7 +425,21 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		assert.equal(geometry.paddingInline, "17px");
 		assert.equal(geometry.paddingTop, "36px");
 		assert.equal(geometry.paddingBottom, "8px");
-		assert.equal(geometry.firstTop, 36);
+		assert.deepEqual(geometry.directDestinationTops, [78, 120, 162], JSON.stringify(geometry));
+		assert.equal(geometry.search.top, 36, JSON.stringify(geometry));
+		assert.equal(geometry.search.height, 38, JSON.stringify(geometry));
+		assert.equal(geometry.search.hoverItem, true, JSON.stringify(geometry));
+		assert.equal(geometry.search.left, 17, JSON.stringify(geometry));
+		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		assert.equal(
+			geometry.directDestinationTops[0] - geometry.search.top - geometry.search.height,
+			4,
+			JSON.stringify(geometry),
+		);
+		assert.ok(
+			geometry.destinations.every((row) => row.left === 17 && row.padding === "8px"),
+			JSON.stringify(geometry),
+		);
 		assert.ok(
 			geometry.centers.every((center) => Math.abs(center - 34) < 1),
 			JSON.stringify(geometry),
@@ -416,9 +447,20 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 	} else {
 		assert.equal(geometry.paddingInline, `${inset}px`);
 		assert.equal(geometry.paddingTop, "8px");
-		assert.equal(geometry.firstTop, 8);
+		assert.equal(geometry.search.top, 8, JSON.stringify(geometry));
+		assert.equal(geometry.search.hoverItem, false, JSON.stringify(geometry));
+		assert.equal(geometry.search.left, inset, JSON.stringify(geometry));
+		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		const firstDestinationTop = geometry.search.top + geometry.search.height + 4;
+		assert.equal(geometry.directDestinationTops.length, 3, JSON.stringify(geometry));
+		geometry.directDestinationTops.forEach((top, index) => {
+			assert.ok(
+				Math.abs(top - (firstDestinationTop + index * 42)) < 0.01,
+				JSON.stringify(geometry),
+			);
+		});
 		assert.ok(
-			geometry.rows.every((row) => row.left === inset && row.padding === "8px"),
+			geometry.destinations.every((row) => row.left === inset && row.padding === "8px"),
 			JSON.stringify(geometry),
 		);
 	}
