@@ -39,11 +39,7 @@ jobs:
       l3-browsers: "chromium webkit"
       l3-prepare-command: bun run --cwd packages/basalt build && bun run build
       l3-command: |
-        bun run consumer:tailwind
-        bun run consumer:standalone
-        bun run consumer:heavy
         bun run consumer:next
-        bun run consumer:docs
         bun run test:showcase
         bun run test:layouts
       env-json: '{"WRANGLER_SEND_METRICS": "false", "CI": "true"}'
@@ -60,6 +56,22 @@ jobs:
         "L3": {"status": "impl"},
         "P1": {"status": "impl"},
         "Z1": {"status": "impl"}}
+
+  l3-consumer-gates:
+    name: L3 consumer gates (extended)
+    uses: nocoo/base-ci/.github/workflows/test-job.yml@1ea10ecab22b72512399485391603fe03a161016 # v2026.12
+    with:
+      runtime-version: "1.4.0"
+      node-version: "26.12.1"
+      install-policy: trusted
+      browser: chromium
+      timeout-minutes: 30
+      pre-command: "bun run --cwd packages/basalt build"
+      command: |
+        bun run consumer:tailwind
+        bun run consumer:standalone
+        bun run consumer:heavy
+        bun run consumer:docs
 
   l1-precommit-self-test:
     name: L1 pre-commit self-test
