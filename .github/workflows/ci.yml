@@ -38,10 +38,7 @@ jobs:
       l3: true
       l3-browsers: "chromium webkit"
       l3-prepare-command: bun run --cwd packages/basalt build && bun run build
-      l3-command: |
-        bun run consumer:next
-        bun run test:showcase
-        bun run test:layouts
+      l3-command: bun run test:showcase
       env-json: '{"WRANGLER_SEND_METRICS": "false", "CI": "true"}'
       slot-status: >-
         {"S1": {"status": "impl"},
@@ -65,13 +62,16 @@ jobs:
       node-version: "26.12.1"
       install-policy: trusted
       browser: chromium
-      timeout-minutes: 30
-      pre-command: "bun run --cwd packages/basalt build"
+      timeout-minutes: 45
+      pre-command: "bun run --cwd packages/basalt build && bun run build"
       command: |
         bun run consumer:tailwind
         bun run consumer:standalone
         bun run consumer:heavy
+        bun run consumer:next
         bun run consumer:docs
+        bunx --no-install playwright install --with-deps webkit
+        bun run test:layouts
 
   l1-precommit-self-test:
     name: L1 pre-commit self-test
