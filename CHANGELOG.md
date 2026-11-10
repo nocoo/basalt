@@ -20,7 +20,6 @@ were prepared but never published are folded into the next published version.
 - `Breadcrumbs` accepts `aria-label` and `AppHeader` accepts `breadcrumbsLabel` to localize the breadcrumb landmark name (default "Breadcrumb").
 - Add `AppHeaderMenuButton` to `@nocoo/basalt/components/app-header`: the mobile `AppHeader.leading` navigation button (`HeaderAction` with the `Menu` glyph, default label "Open navigation", forwarded ref, usable as `SheetTrigger asChild`), paired with `SidebarToggle mode="dismiss"`.
 
-
 ### Changed
 
 - `ThemeToggle` is now a `HeaderAction`: it shows a bottom tooltip naming the next theme, `aria-label` is optional (defaults to that name), and new `labels` (`light`/`dark`/`system`) and `tooltip` props localize or hide it. Its glyph is muted and 18px like the other header actions.
