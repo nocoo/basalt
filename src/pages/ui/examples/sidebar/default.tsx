@@ -41,7 +41,7 @@ export default function SidebarDefault() {
 					<SidebarBrand
 						logo={<BasaltMark aria-hidden="true" />}
 						name="Creamery Ops"
-						version="v3.2.3"
+						version="v1.0.0"
 						action={
 							<SidebarToggle
 								collapseLabel="Collapse navigation example"

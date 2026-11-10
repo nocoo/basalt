@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11: Changelog cleanup preceded its version bump
+
+- **What:** The pre-commit gate rejected removing unpublished version headings while the manifest still referenced one of them.
+- **Why:** The release-evidence test requires a heading for the current package version.
+- **Follow-up:** Stage changelog consolidation together with the version bump and generated release metadata.
+
 ## 2026-11: Sidebar Escape fix crossed overlay layers
 
 - **What:** An initial fix captured every Escape inside the sidebar, which could also close it while a nested overlay was active.

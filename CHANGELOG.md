@@ -11,33 +11,25 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.2.4] - 2026-11-10
+
+Includes the prepared but unpublished 3.2.2 and 3.2.3 notes.
+
 ### Added
 
 - Add SidebarBrand and SidebarToggle, compact icon buttons, and linkable sidebar items.
+- Refine the landing page, dashboard and template gallery.
 
 ### Changed
 
 - Align sidebar content to a 24px column and keep the brand mark stationary during collapse.
-
-## [3.2.3] - 2026-11-05
-
-### Changed
-
+- Harden the pre-commit coverage gate and add repeatable self-tests.
 - Bump @swc/core (#616)
 - Bump @types/node (#613)
 - Bump react-router (#612)
 - Bump postcss (#609)
 - Bump i18next-browser-languagedetector (#606)
 - Bump i18next (#605)
-
-### Fixed
-
-- Freeze November 2026 clock in DatePicker keyboard focus tests
-
-## [3.2.2] - 2026-10-25
-
-### Changed
-
 - Override undici for security (#602)
 - Bump i18next-browser-languagedetector (#601)
 - Bump react-i18next (#600)
@@ -48,6 +40,11 @@ were prepared but never published are folded into the next published version.
 - Bump wrangler (#593)
 - Bump react-router (#592)
 - Bump i18next (#591)
+
+### Fixed
+
+- Freeze November 2026 clock in DatePicker keyboard focus tests.
+- Return HTTP 404 for unknown paths and improve landing-page accessibility and loading.
 
 ## [3.2.1] - 2026-10-21
 
