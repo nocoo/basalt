@@ -723,7 +723,7 @@ P7 包含原拆分表未单列的 Data 页面搜索/筛选闭环；P9 包含实�
 | ---- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Q01  | `987f99c`                       | 在真实 `/bin/sh -e` 下，成功路径依序执行四项；build/coverage/lint/OSV 分别注入 exit 41，均原样非零退出且不执行后续命令                                                                  |
 | Q02  | `b5cb086`                       | shared CI 明确运行 `bun run typecheck`，不再使用 `true`                                                                                                                                 |
-| Q03  | `b66f457`                       | 同一 CI workflow 的独立 job 包含 package build、双模块类型、pack、publint 与四类 consumer；Node 24、Chromium 系统依赖明确配置                                                           |
+| Q03  | `b66f457`                       | 同一 CI workflow 的独立 job 包含 package build、双模块类型、pack、publint 与四类 consumer；Node 26、Chromium 系统依赖明确配置                                                           |
 | Q04  | `2881a59`、`a4418fd`            | 正式 Vitest 命令下 19 个 release 测试通过；另以隔离 Git/GitHub 响应执行实际工作流 shell，13 个正负用例全部通过；验证精确 SHA、最新 CI、完整 tag ref、祖先/checkout/版本匹配和零实际发布 |
 | Q06  | `fbc85b7`、`007cc8c`、`e99b4b1` | manifest 与全部 CI/CD Bun 均为 1.4.0；锁文件未变；过期 9 条豁免全部移除，扫描配置保持启用                                                                                               |
 

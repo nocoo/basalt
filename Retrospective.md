@@ -81,7 +81,7 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 
 - **What:** The v2.1.3 main deployment succeeded, but existing static pages on www returned 200 instead of redirecting to the apex, and lacked the Worker's security headers. `/api/live` redirected correctly.
 - **Why:** `wrangler-action@v3` installed Wrangler 3.90.0, which warned about and ignored `assets.run_worker_first`. Unit tests exercised the handler directly and could not detect the deployment tool ignoring its routing configuration.
-- **Follow-up:** Pin Wrangler 4.130.0 and Node 24 in both CD paths. After deployment, check real static and API redirects, security headers, prerendered HTML, and the version from the root manifest. Verify the checks fail against the old deployment and pass against the Wrangler 4 local asset runtime.
+- **Follow-up:** Pin Wrangler 4.130.0 and Node 26 in both CD paths. After deployment, check real static and API redirects, security headers, prerendered HTML, and the version from the root manifest. Verify the checks fail against the old deployment and pass against the Wrangler 4 local asset runtime.
 
 ## 2026-09: Release generation used stale installed dependencies
 

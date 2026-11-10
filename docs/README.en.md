@@ -97,7 +97,7 @@ See [INTEGRATION.md](../INTEGRATION.md) for themes, routing adapters, forms, and
 
 ## Development
 
-The repository uses Bun workspaces and pins Bun 1.4.0 in `packageManager`. Node.js 24 or newer is recommended.
+The repository uses Bun workspaces and pins Bun 1.4.0 in `packageManager`. Node.js 26 or newer is recommended.
 
 ```bash
 git clone https://github.com/nocoo/basalt.git
