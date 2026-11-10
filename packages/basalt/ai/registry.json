@@ -7086,7 +7086,7 @@
 			"importPath": "@nocoo/basalt/components/app-header",
 			"subpath": "./components/app-header",
 			"sourceFile": "packages/basalt/src/components/app-header.tsx",
-			"sourceHash": "fa0d7ab9a1c54059",
+			"sourceHash": "daedd00f517dc5eb",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -8342,7 +8342,7 @@
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"subpath": "./components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
-			"sourceHash": "e077ffa92760e370",
+			"sourceHash": "37e7645c1a481caf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -8400,6 +8400,13 @@
 									"type": "string",
 									"required": false,
 									"description": "Optional class name applied to the outer nav element."
+								},
+								{
+									"name": "aria-label",
+									"type": "string",
+									"required": false,
+									"default": "\"Breadcrumb\"",
+									"description": "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps."
 								}
 							]
 						}
@@ -8421,6 +8428,13 @@
 							"type": "string",
 							"required": false,
 							"description": "Optional class name applied to the outer nav element."
+						},
+						{
+							"name": "aria-label",
+							"type": "string",
+							"required": false,
+							"default": "\"Breadcrumb\"",
+							"description": "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps."
 						}
 					]
 				}
@@ -35929,7 +35943,7 @@
 			"exportName": "Breadcrumbs",
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
-			"sourceHash": "e077ffa92760e370",
+			"sourceHash": "37e7645c1a481caf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#breadcrumbs",
@@ -35948,6 +35962,13 @@
 							"type": "string",
 							"required": false,
 							"description": "Optional class name applied to the outer nav element."
+						},
+						{
+							"name": "aria-label",
+							"type": "string",
+							"required": false,
+							"default": "\"Breadcrumb\"",
+							"description": "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps."
 						}
 					]
 				}

@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { GitHubLink, HeaderAction, HexlyLink, ProjectLinks } from "./app-header";
+import { AppHeader, GitHubLink, HeaderAction, HexlyLink, ProjectLinks } from "./app-header";
 
 function Glyph() {
 	return <svg data-testid="glyph" aria-hidden="true" />;
@@ -143,5 +143,16 @@ describe("project links", () => {
 			</div>,
 		);
 		expect(container.querySelector("a")).toBeNull();
+	});
+});
+
+describe("AppHeader breadcrumbs label", () => {
+	it("passes breadcrumbsLabel to the breadcrumb landmark", () => {
+		const { rerender } = render(
+			<AppHeader breadcrumbs={[{ href: "/", label: "首页" }]} breadcrumbsLabel="面包屑导航" />,
+		);
+		expect(screen.getByRole("navigation", { name: "面包屑导航" })).toBeInTheDocument();
+		rerender(<AppHeader breadcrumbs={[{ href: "/", label: "Home" }]} />);
+		expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
 	});
 });

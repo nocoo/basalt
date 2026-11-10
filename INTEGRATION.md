@@ -655,6 +655,7 @@ export function AppFrame() {
 
 - **`title?: string`**: Current page title rendered inside an `h1` (`truncate text-sm font-normal text-basalt-foreground`). (Source type intersection is `HTMLAttributes<HTMLElement> & { title?: ReactNode }`, which narrows valid `title` values to `string | undefined`). Do not also put the current page title in `breadcrumbs`.
 - **`breadcrumbs?: { href?: string; label: ReactNode }[]`**: Breadcrumb hierarchy separated by ChevronRight. Supply ancestors with `title`, or a complete path ending in a nonlinked current item and omit `title`. No trailing separator is rendered without a title.
+- **`breadcrumbsLabel?: string`**: Accessible name of the breadcrumb `nav` landmark (default "Breadcrumb"); pass the localized name, e.g. `"面包屑导航"`. Standalone `Breadcrumbs` takes the same value as `aria-label`.
 - **`leading?: ReactNode`**: Optional slot before breadcrumbs, typically the mobile hamburger drawer trigger.
 - **`actions?: ReactNode`**: Top-right framework controls (`ThemeToggle`, account dropdown, etc.). This slot is reserved for framework controls, **not** the page-level create button.
 

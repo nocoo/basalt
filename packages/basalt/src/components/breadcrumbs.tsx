@@ -33,12 +33,17 @@ export interface BreadcrumbsProps {
 	 * Optional class name applied to the outer nav element.
 	 */
 	className?: string;
+	/**
+	 * Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps.
+	 * @default "Breadcrumb"
+	 */
+	"aria-label"?: string;
 }
 
-export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
+export function Breadcrumbs({ items, className, "aria-label": ariaLabel }: BreadcrumbsProps) {
 	return (
 		<nav
-			aria-label="Breadcrumb"
+			aria-label={ariaLabel ?? "Breadcrumb"}
 			className={cn(
 				BASALT_UI_CLASS,
 				"flex items-center gap-basalt-space-sm text-basalt-base font-normal text-basalt-muted-foreground",

@@ -17,6 +17,7 @@ were prepared but never published are folded into the next published version.
 - `SidebarUser` now collapses with the rail: inside a collapsed `SidebarProvider` it renders only the avatar with a right-side tooltip (new `tooltip` prop, default `name`) and hides email and action, so apps no longer hand-write the collapsed avatar tooltip.
 - Add `HeaderAction` to `@nocoo/basalt/components/app-header`: the standard top-right icon button or link, with `label` as accessible name and bottom tooltip, a 34px ghost box, an 18px muted glyph and a forwarded ref.
 - Add `GitHubLink`, `HexlyLink` and `ProjectLinks` to `@nocoo/basalt/components/app-header`: the GitHub repository and hexly.ai project links as `HeaderAction` links with built-in glyphs, so apps stop copying the svg and link markup.
+- `Breadcrumbs` accepts `aria-label` and `AppHeader` accepts `breadcrumbsLabel` to localize the breadcrumb landmark name (default "Breadcrumb").
 
 
 ### Changed

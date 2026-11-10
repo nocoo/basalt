@@ -23,6 +23,17 @@ function expectHierarchyType(el: Element) {
 }
 
 describe("Breadcrumbs", () => {
+	it("localizes the breadcrumb landmark name", () => {
+		render(
+			<Breadcrumbs
+				aria-label="面包屑导航"
+				items={[{ href: "/", label: "首页" }, { label: "保单" }]}
+			/>,
+		);
+		expect(screen.getByRole("navigation", { name: "面包屑导航" })).toBeInTheDocument();
+		expect(screen.queryByLabelText("Breadcrumb")).toBeNull();
+	});
+
 	it("marks the current crumb", () => {
 		render(<Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "Settings" }]} />);
 		expect(screen.getByLabelText("Breadcrumb")).toBeInTheDocument();

@@ -268,6 +268,7 @@ export function ProjectLinks({
 export function AppHeader({
 	leading,
 	breadcrumbs,
+	breadcrumbsLabel,
 	title,
 	actions,
 	sticky = false,
@@ -277,6 +278,8 @@ export function AppHeader({
 }: HTMLAttributes<HTMLElement> & {
 	leading?: ReactNode;
 	breadcrumbs?: { href?: string; label: ReactNode }[];
+	/** Accessible name of the breadcrumb landmark; defaults to Breadcrumbs' "Breadcrumb". */
+	breadcrumbsLabel?: string;
 	title?: ReactNode;
 	actions?: ReactNode;
 	/** Keep this row visible in its current scroll owner, including the shell safe area. */
@@ -306,7 +309,11 @@ export function AppHeader({
 				<div className="flex min-w-0 items-center gap-basalt-space-sm">
 					{breadcrumbs && breadcrumbs.length > 0 ? (
 						<>
-							<Breadcrumbs items={breadcrumbs} className="min-w-0" />
+							<Breadcrumbs
+								items={breadcrumbs}
+								className="min-w-0"
+								{...(breadcrumbsLabel !== undefined ? { "aria-label": breadcrumbsLabel } : {})}
+							/>
 							{title ? (
 								<ChevronRight
 									className="size-basalt-icon-sm shrink-0 text-basalt-muted-foreground"

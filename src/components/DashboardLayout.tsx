@@ -162,6 +162,7 @@ export function DashboardLayout() {
 						) : null
 					}
 					breadcrumbs={crumbs}
+					breadcrumbsLabel={t("common.breadcrumb")}
 					title={undefined}
 					actions={
 						<>

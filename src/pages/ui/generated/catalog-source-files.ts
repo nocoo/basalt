@@ -338,7 +338,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"breadcrumbs": {
 		"file": "packages/basalt/src/components/breadcrumbs.tsx",
-		"hash": "e077ffa92760e370",
+		"hash": "37e7645c1a481caf",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/breadcrumbs.js.map (sourcesContent[0])"
 	},
