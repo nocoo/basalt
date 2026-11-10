@@ -1,10 +1,8 @@
-import { AppHeader, ProjectLinks } from "@nocoo/basalt/components/app-header";
+import { AppHeader, AppHeaderMenuButton, ProjectLinks } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
-import { Button } from "@nocoo/basalt/components/button";
 import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
-import { Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router";
@@ -16,7 +14,6 @@ import { useSiteTitle } from "@/hooks/use-site-title";
 import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
 import { catalogCategory, catalogCategoryPath } from "@/pages/ui/catalog-categories";
-import { HeaderTooltip } from "./header-links";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -148,17 +145,11 @@ export function DashboardLayout() {
 					className="max-sm:[&_nav]:max-w-[42vw] max-sm:[&_nav]:overflow-x-auto max-sm:[&_nav]:whitespace-nowrap max-sm:[&_nav>span]:shrink-0"
 					leading={
 						isMobile ? (
-							<HeaderTooltip label={t("common.openNav")}>
-								<Button
-									ref={mobileTriggerRef}
-									variant="ghost"
-									size="icon-sm"
-									onClick={() => setMobileOpen(true)}
-									aria-label={t("common.openNav")}
-								>
-									<Menu aria-hidden="true" />
-								</Button>
-							</HeaderTooltip>
+							<AppHeaderMenuButton
+								ref={mobileTriggerRef}
+								label={t("common.openNav")}
+								onClick={() => setMobileOpen(true)}
+							/>
 						) : null
 					}
 					breadcrumbs={crumbs}

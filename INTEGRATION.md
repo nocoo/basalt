@@ -545,7 +545,7 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 
 Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, MenuBar, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
 
-`AppHeader` `leading` is the menu button on mobile only. Use `density="compact"` with `Button variant="ghost" size="icon"`; compact header controls have a 44px minimum target.
+`AppHeader` `leading` is the menu button on mobile only: render `AppHeaderMenuButton` (a `HeaderAction` with the `Menu` glyph, default label "Open navigation", forwarded ref). Keep its ref for focus restore, or use it as `SheetTrigger asChild`. Inside the drawer, close with `SidebarToggle mode="dismiss"`. With `density="compact"`, compact header controls have a 44px minimum target.
 
 Header actions use a stable hand cursor and compact 12px `TooltipContent`. `Button`, `LinkButton`, `Toggle`, and `ToggleGroupItem` keep their full rectangular pointer target with a transparent `::before`, including rounded corners. Wrap the actual button or link in `TooltipTrigger asChild` so the trigger retains one focusable hit target. `Toggle` and `ToggleGroupItem` selection styling follows `aria-pressed` / `aria-checked`, independently of the tooltip's `data-state`. Icon-only links must include a screen-reader label inside the link as well as an accessible name.
 
@@ -578,7 +578,6 @@ export function AppFrame() {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const mobileTriggerRef = useRef<HTMLButtonElement>(null);
 	const location = useLocation();
-	const { theme } = useTheme();
 	const crumbs = [{ href: "/", label: "Home" }];
 	const title = "Projects";
 
@@ -619,20 +618,17 @@ export function AppFrame() {
 				<AppHeader
 					leading={
 						isMobile ? (
-							<Button
-								ref={mobileTriggerRef}
-								variant="ghost"
-								size="icon-sm"
-								onClick={() => setMobileOpen(true)}
-								aria-label="Open navigation"
-							>
-								<Menu aria-hidden="true" />
-							</Button>
+							<AppHeaderMenuButton ref={mobileTriggerRef} onClick={() => setMobileOpen(true)} />
 						) : null
 					}
 					breadcrumbs={crumbs}
 					title={title}
-					actions={<ThemeToggle aria-label={`Toggle theme (now ${theme})`} />}
+					actions={
+						<>
+							<ProjectLinks github="nocoo/acme" hexly="acme" name="Acme" />
+							<ThemeToggle />
+						</>
+					}
 				/>
 				<div className="flex min-h-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm">
 					<ContentIsland>

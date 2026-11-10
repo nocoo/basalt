@@ -18,6 +18,7 @@ were prepared but never published are folded into the next published version.
 - Add `HeaderAction` to `@nocoo/basalt/components/app-header`: the standard top-right icon button or link, with `label` as accessible name and bottom tooltip, a 34px ghost box, an 18px muted glyph and a forwarded ref.
 - Add `GitHubLink`, `HexlyLink` and `ProjectLinks` to `@nocoo/basalt/components/app-header`: the GitHub repository and hexly.ai project links as `HeaderAction` links with built-in glyphs, so apps stop copying the svg and link markup.
 - `Breadcrumbs` accepts `aria-label` and `AppHeader` accepts `breadcrumbsLabel` to localize the breadcrumb landmark name (default "Breadcrumb").
+- Add `AppHeaderMenuButton` to `@nocoo/basalt/components/app-header`: the mobile `AppHeader.leading` navigation button (`HeaderAction` with the `Menu` glyph, default label "Open navigation", forwarded ref, usable as `SheetTrigger asChild`), paired with `SidebarToggle mode="dismiss"`.
 
 
 ### Changed

@@ -89,6 +89,8 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
 		summary: "Application frame top navigation bar component",
 		knownSymbols: [
 			"AppHeader",
+			"AppHeaderMenuButton",
+			"AppHeaderMenuButtonProps",
 			"GitHubLink",
 			"GitHubLinkProps",
 			"HeaderAction",

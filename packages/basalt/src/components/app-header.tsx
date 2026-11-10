@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Menu } from "lucide-react";
 import {
 	type AnchorHTMLAttributes,
 	type ButtonHTMLAttributes,
@@ -111,6 +111,35 @@ export const HeaderAction = forwardRef<HTMLButtonElement | HTMLAnchorElement, He
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
+		);
+	},
+);
+
+export interface AppHeaderMenuButtonProps
+	extends Omit<HeaderActionProps, "label" | "children" | "href" | "external" | "newTabLabel"> {
+	/**
+	 * Accessible name and tooltip.
+	 * @default "Open navigation"
+	 */
+	label?: string;
+	/**
+	 * Custom glyph.
+	 * @default lucide `Menu`
+	 */
+	children?: ReactNode;
+}
+
+/**
+ * Mobile `AppHeader.leading` button that opens the navigation drawer. A `HeaderAction` button with
+ * a forwarded ref: keep the ref to restore focus when the drawer closes, or use it as
+ * `SheetTrigger asChild`. Pair it with `SidebarToggle mode="dismiss"` inside the drawer.
+ */
+export const AppHeaderMenuButton = forwardRef<HTMLButtonElement, AppHeaderMenuButtonProps>(
+	function AppHeaderMenuButton({ label = "Open navigation", children, ...props }, ref) {
+		return (
+			<HeaderAction {...props} ref={ref} label={label} data-app-header-menu="">
+				{children ?? <Menu aria-hidden="true" strokeWidth={1.5} />}
+			</HeaderAction>
 		);
 	},
 );

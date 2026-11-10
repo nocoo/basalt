@@ -1,7 +1,15 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { AppHeader, GitHubLink, HeaderAction, HexlyLink, ProjectLinks } from "./app-header";
+import {
+	AppHeader,
+	AppHeaderMenuButton,
+	GitHubLink,
+	HeaderAction,
+	HexlyLink,
+	ProjectLinks,
+} from "./app-header";
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./sheet";
 
 function Glyph() {
 	return <svg data-testid="glyph" aria-hidden="true" />;
@@ -154,5 +162,44 @@ describe("AppHeader breadcrumbs label", () => {
 		expect(screen.getByRole("navigation", { name: "面包屑导航" })).toBeInTheDocument();
 		rerender(<AppHeader breadcrumbs={[{ href: "/", label: "Home" }]} />);
 		expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
+	});
+});
+
+describe("AppHeaderMenuButton", () => {
+	it("opens navigation with a default label, Menu glyph and forwarded ref", async () => {
+		const onClick = vi.fn();
+		const ref = createRef<HTMLButtonElement>();
+		render(<AppHeader leading={<AppHeaderMenuButton ref={ref} onClick={onClick} />} />);
+		const button = screen.getByRole("button", { name: "Open navigation" });
+		expect(ref.current).toBe(button);
+		expect(button).toHaveAttribute("data-app-header-menu");
+		expect(button).toHaveClass("basalt-action-icon");
+		expect(button.querySelector("svg.lucide-menu")).toHaveAttribute("aria-hidden", "true");
+		fireEvent.click(button);
+		expect(onClick).toHaveBeenCalledOnce();
+		act(() => button.focus());
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Open navigation");
+	});
+
+	it("works as a SheetTrigger child with a custom label and glyph", () => {
+		render(
+			<Sheet>
+				<SheetTrigger asChild>
+					<AppHeaderMenuButton label="打开导航菜单" tooltip={false}>
+						<Glyph />
+					</AppHeaderMenuButton>
+				</SheetTrigger>
+				<SheetContent side="left">
+					<SheetTitle>导航</SheetTitle>
+					<SheetDescription>站点导航</SheetDescription>
+				</SheetContent>
+			</Sheet>,
+		);
+		const trigger = screen.getByRole("button", { name: "打开导航菜单" });
+		expect(screen.getByTestId("glyph")).toBeInTheDocument();
+		expect(trigger).toHaveAttribute("aria-expanded", "false");
+		fireEvent.click(trigger);
+		expect(trigger).toHaveAttribute("aria-expanded", "true");
+		expect(screen.getByRole("dialog", { name: "导航" })).toBeInTheDocument();
 	});
 });
