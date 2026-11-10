@@ -559,15 +559,16 @@ export function SidebarSearch({
 			) : null}
 		</button>
 	);
-	if (!collapsed) return button;
 	return (
 		<TooltipProvider>
 			<Tooltip delayDuration={0}>
 				<TooltipTrigger asChild>{button}</TooltipTrigger>
-				<TooltipContent side={context?.side === "right" ? "left" : "right"} sideOffset={8}>
-					{children}
-					{shortcut ? ` (${shortcut})` : null}
-				</TooltipContent>
+				{collapsed ? (
+					<TooltipContent side={context?.side === "right" ? "left" : "right"} sideOffset={8}>
+						{children}
+						{shortcut ? ` (${shortcut})` : null}
+					</TooltipContent>
+				) : null}
 			</Tooltip>
 		</TooltipProvider>
 	);
@@ -827,7 +828,7 @@ export function SidebarFooter({ className, ...props }: SidebarFooterProps) {
 		<div
 			data-slot="sidebar-footer"
 			className={cn(
-				"basalt-sidebar-footer flex shrink-0 flex-col gap-basalt-content-gap pt-basalt-space-lg pb-basalt-layout",
+				"basalt-sidebar-footer shrink-0 gap-basalt-content-gap pt-basalt-space-lg pb-basalt-layout",
 				className,
 			)}
 			{...props}

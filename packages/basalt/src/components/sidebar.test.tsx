@@ -579,6 +579,58 @@ describe("Sidebar", () => {
 		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
 	});
 
+	it("preserves search focus and DOM identity across collapse and peek transitions", async () => {
+		function SearchTransitions() {
+			const { collapsed, setCollapsed } = useSidebar();
+			return (
+				<>
+					<button type="button" onClick={() => setCollapsed(!collapsed)}>
+						Toggle collapse
+					</button>
+					<Sidebar>
+						<SidebarNav>
+							<SidebarSearch>Search</SidebarSearch>
+						</SidebarNav>
+					</Sidebar>
+				</>
+			);
+		}
+		const { container } = render(
+			<SidebarProvider peek>
+				<SearchTransitions />
+			</SidebarProvider>,
+		);
+		const sidebar = container.querySelector<HTMLElement>("[data-basalt-sidebar]");
+		const toggle = screen.getByRole("button", { name: "Toggle collapse" });
+		const search = screen.getByRole("button", { name: /Search/ });
+		const icon = search.querySelector("svg");
+		if (!sidebar || !icon) throw new Error("Missing sidebar search transition fixture");
+
+		act(() => search.focus());
+		fireEvent.click(toggle);
+		expect(screen.getByRole("button", { name: "Search (⌘K)" })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
+
+		fireEvent.mouseEnter(sidebar);
+		expect(screen.getByRole("button", { name: /Search/ })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
+		expect(search).not.toHaveAttribute("data-basalt-hover-item");
+
+		fireEvent.mouseLeave(sidebar);
+		expect(screen.getByRole("button", { name: "Search (⌘K)" })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
+
+		fireEvent.click(toggle);
+		expect(screen.getByRole("button", { name: /Search/ })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
+	});
+
 	it("relaxes destination rows locally without a fixed height", () => {
 		render(<SidebarItem>Home</SidebarItem>);
 		const row = screen.getByRole("button", { name: "Home" });

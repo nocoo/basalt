@@ -376,7 +376,33 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		const nav = node.querySelector("nav") as HTMLElement;
 		const box = node.getBoundingClientRect();
 		const search = nav.querySelector<HTMLElement>('[data-slot="sidebar-search"]');
-		if (!search) throw new Error("Missing sidebar search geometry");
+		const footerControl = node.querySelector<HTMLElement>(
+			'[data-slot="sidebar-footer"] > .basalt-action',
+		);
+		if (!search || !footerControl) throw new Error("Missing sidebar control geometry");
+		const footer = footerControl.parentElement;
+		if (!footer) throw new Error("Missing sidebar footer geometry");
+		const footerProbeCenters = node.hasAttribute("data-collapsed")
+			? (
+					[
+						["a", 20],
+						["button", 30],
+						["span", 36],
+					] as const
+				).map(([tag, width]) => {
+					const probe = document.createElement(tag);
+					probe.style.boxSizing = "border-box";
+					probe.style.inlineSize = `${width}px`;
+					probe.style.blockSize = "20px";
+					probe.style.border = "0";
+					probe.style.padding = "0";
+					footer.append(probe);
+					const probeBox = probe.getBoundingClientRect();
+					const center = probeBox.left + probeBox.width / 2 - box.left;
+					probe.remove();
+					return center;
+				})
+			: [];
 		const top = (element: HTMLElement) =>
 			element.getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop;
 		const destinations = Array.from(
@@ -403,6 +429,15 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 				...rowGeometry(search),
 				hoverItem: search.hasAttribute("data-basalt-hover-item"),
 			},
+			footerControl: (() => {
+				const controlBox = footerControl.getBoundingClientRect();
+				return {
+					left: controlBox.left - box.left,
+					center: controlBox.left + controlBox.width / 2 - box.left,
+					width: controlBox.width,
+				};
+			})(),
+			footerProbeCenters,
 			destinations: destinations.map(rowGeometry),
 			directDestinationTops: directDestinations.map(top),
 			centers: Array.from(
@@ -431,6 +466,16 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		assert.equal(geometry.search.hoverItem, true, JSON.stringify(geometry));
 		assert.equal(geometry.search.left, 17, JSON.stringify(geometry));
 		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		assert.deepEqual(
+			geometry.footerControl,
+			{ left: 20, center: 34, width: 28 },
+			JSON.stringify(geometry),
+		);
+		assert.ok(
+			geometry.footerProbeCenters.length === 3 &&
+				geometry.footerProbeCenters.every((center) => Math.abs(center - 34) <= 0.5),
+			JSON.stringify(geometry),
+		);
 		assert.equal(
 			geometry.directDestinationTops[0] - geometry.search.top - geometry.search.height,
 			4,
@@ -451,6 +496,8 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		assert.equal(geometry.search.hoverItem, false, JSON.stringify(geometry));
 		assert.equal(geometry.search.left, inset, JSON.stringify(geometry));
 		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		assert.equal(geometry.footerControl.left, 16, JSON.stringify(geometry));
+		assert.equal(geometry.footerControl.width, geometry.width - 32, JSON.stringify(geometry));
 		const firstDestinationTop = geometry.search.top + geometry.search.height + 4;
 		assert.equal(geometry.directDestinationTops.length, 3, JSON.stringify(geometry));
 		geometry.directDestinationTops.forEach((top, index) => {
