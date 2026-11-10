@@ -1,8 +1,7 @@
-import { Button } from "@nocoo/basalt/components/button";
+import { HeaderAction } from "@nocoo/basalt/components/app-header";
 import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
 import { useAccent } from "@nocoo/basalt/providers/accent";
 import { useTranslation } from "react-i18next";
-import { HeaderTooltip } from "./header-links";
 
 export function AccentPicker() {
 	const { t } = useTranslation();
@@ -10,17 +9,15 @@ export function AccentPicker() {
 
 	return (
 		<Popover>
-			<HeaderTooltip label={t("common.themePalette")}>
-				<PopoverTrigger asChild>
-					<Button variant="ghost" size="icon-sm" aria-label={t("common.themePalette")}>
-						<span
-							className="h-3.5 w-3.5 rounded-basalt-full ring-1 ring-basalt-border"
-							style={{ background: "hsl(var(--basalt-primary))" }}
-							aria-hidden="true"
-						/>
-					</Button>
-				</PopoverTrigger>
-			</HeaderTooltip>
+			<PopoverTrigger asChild>
+				<HeaderAction label={t("common.themePalette")}>
+					<span
+						className="h-3.5 w-3.5 rounded-basalt-full ring-1 ring-basalt-border"
+						style={{ background: "hsl(var(--basalt-primary))" }}
+						aria-hidden="true"
+					/>
+				</HeaderAction>
+			</PopoverTrigger>
 			<PopoverContent align="end" className="w-56 p-basalt-space-lg">
 				<p className="mb-basalt-space-lg px-basalt-space-sm text-basalt-sm text-basalt-muted-foreground">
 					{t("common.themePalette")}

@@ -174,9 +174,12 @@ describe("DashboardLayout", () => {
 
 	it("places the project links before the final theme button", () => {
 		renderLayout("/");
-		const github = screen.getByRole("link", { name: "GitHub repository" });
+		const github = screen.getByRole("link", { name: "GitHub repository (opens in a new tab)" });
+		expect(github).toHaveAttribute("href", "https://github.com/nocoo/basalt");
 		const hexly = screen.getByRole("link", { name: "Basalt on hexly.ai (opens in a new tab)" });
-		const theme = screen.getByRole("button", { name: /Toggle theme/ });
+		const theme = screen.getByRole("button", {
+			name: /^(Switch to (light|dark) theme|Use system theme)$/,
+		});
 		expect(github.nextElementSibling).toBe(hexly);
 		expect(hexly).toHaveAttribute("href", "https://hexly.ai/projects/basalt");
 		expect(hexly.nextElementSibling).toBe(theme);
@@ -230,14 +233,16 @@ describe("DashboardLayout", () => {
 		expect(document.body.style.overflow).toBe("");
 	});
 
-	it("restores focus to the trigger button when dismissed via the collapse sidebar button inside drawer", async () => {
+	it("restores focus to the trigger button when dismissed via the drawer close button", async () => {
 		renderLayout("/");
 		const openButton = screen.getByLabelText("Open navigation menu");
 		fireEvent.click(openButton);
 
-		// Inside the drawer, click the collapse/toggle button
-		const collapseButton = screen.getByRole("button", { name: "Collapse sidebar" });
-		fireEvent.click(collapseButton);
+		// Inside the drawer, the brand action is a dismiss-mode SidebarToggle
+		expect(screen.queryByRole("button", { name: "Collapse sidebar" })).not.toBeInTheDocument();
+		const closeButton = screen.getByRole("button", { name: "Close navigation menu" });
+		expect(closeButton).toHaveAttribute("data-mode", "dismiss");
+		fireEvent.click(closeButton);
 
 		await waitFor(() => {
 			expect(openButton).toHaveFocus();

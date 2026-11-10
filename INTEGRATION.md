@@ -465,7 +465,7 @@ SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, sem
 
 Control `collapsed` through `SidebarProvider`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
 
-The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary at the 24px `--basalt-size-sidebar-logo` size, centered on the rail axis (pass an `img`/`svg`, optionally wrapped in one link, without size classes), and moves its action below the header, where a `SidebarToggle` takes the same 34×38px row box as `SidebarSearch` and `SidebarIconItem`; the footer remains left-aligned with the avatar fixed 16px from the rail edge. `SidebarSearch` and `SidebarIconItem` keep the 34px control width and 20px sidebar icon size, and derive their 38px minimum height from the sidebar line box and padding. The navigation region centers icon rows on that same rail axis without caller margin overrides. `SidebarSearch` automatically exposes its collapsed tooltip and accessible name; keep the same instance in both states.
+The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary at the 24px `--basalt-size-sidebar-logo` size, centered on the rail axis (pass an `img`/`svg`, optionally wrapped in one link, without size classes), and moves its action below the header, where a `SidebarToggle` takes the same 34×38px row box as `SidebarSearch` and `SidebarIconItem`; the footer remains left-aligned with the avatar fixed 16px from the rail edge. `SidebarSearch` and `SidebarIconItem` keep the 34px control width and 20px sidebar icon size, and derive their 38px minimum height from the sidebar line box and padding. The navigation region centers icon rows on that same rail axis without caller margin overrides. `SidebarSearch` automatically exposes its collapsed tooltip and accessible name; keep the same instance in both states. `SidebarUser` does the same for the footer: on a collapsed, non-peeking rail it renders only its `avatar` (in the same position as the expanded row) with a right-side tooltip showing `tooltip` (default `name`), and hides `email` and `action`. Render one `SidebarUser` in both states; do not branch on `collapsed` or hand-write an avatar tooltip.
 
 ```tsx excerpt:sidebar-collapsed-structure
 <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
@@ -492,10 +492,7 @@ The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationar
 			))}
 		</SidebarNav>
 		<SidebarFooter>
-			<Tooltip delayDuration={0}>
-				<TooltipTrigger asChild><span className="inline-flex">{avatar}</span></TooltipTrigger>
-				<TooltipContent side="right" sideOffset={8}>{name}</TooltipContent>
-			</Tooltip>
+			<SidebarUser name={name} email={email} avatar={avatar} />
 		</SidebarFooter>
 	</Sidebar>
 </SidebarProvider>;
@@ -510,6 +507,8 @@ Portaled UI (`CommandPalette`, dialogs) may be a sibling of these regions inside
 ## 8. Collapse, peek, overlay
 
 Standard product shell: pass React state `collapsed` and `onCollapsedChange` to `SidebarProvider`; `SidebarToggle` updates that state. Motion is already on `Sidebar`. The provider also supports peek-on-hover, overlay mode and resize. Set `resizable={false}` on a Sidebar inside a fixed-width Sheet.
+
+Inside a mobile `Sheet` that hosts the sidebar, use `<SidebarToggle mode="dismiss" onDismiss={() => setOpen(false)} dismissLabel="Close navigation" />` in the `SidebarBrand` action slot. Dismiss mode keeps the same 28px icon button and `data-slot="sidebar-toggle"`, never changes the collapsed state, does not need a `SidebarProvider` and renders no tooltip, so a drawer that auto-focuses it still closes on the first Escape.
 
 ---
 
@@ -546,7 +545,7 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 
 Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, MenuBar, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
 
-`AppHeader` `leading` is the menu button on mobile only. Use `density="compact"` with `Button variant="ghost" size="icon"`; compact header controls have a 44px minimum target.
+`AppHeader` `leading` is the menu button on mobile only: render `AppHeaderMenuButton` (a `HeaderAction` with the `Menu` glyph, default label "Open navigation", forwarded ref). Keep its ref for focus restore, or use it as `SheetTrigger asChild`. Inside the drawer, close with `SidebarToggle mode="dismiss"`. With `density="compact"`, compact header controls have a 44px minimum target.
 
 Header actions use a stable hand cursor and compact 12px `TooltipContent`. `Button`, `LinkButton`, `Toggle`, and `ToggleGroupItem` keep their full rectangular pointer target with a transparent `::before`, including rounded corners. Wrap the actual button or link in `TooltipTrigger asChild` so the trigger retains one focusable hit target. `Toggle` and `ToggleGroupItem` selection styling follows `aria-pressed` / `aria-checked`, independently of the tooltip's `data-state`. Icon-only links must include a screen-reader label inside the link as well as an accessible name.
 
@@ -579,7 +578,6 @@ export function AppFrame() {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const mobileTriggerRef = useRef<HTMLButtonElement>(null);
 	const location = useLocation();
-	const { theme } = useTheme();
 	const crumbs = [{ href: "/", label: "Home" }];
 	const title = "Projects";
 
@@ -620,20 +618,17 @@ export function AppFrame() {
 				<AppHeader
 					leading={
 						isMobile ? (
-							<Button
-								ref={mobileTriggerRef}
-								variant="ghost"
-								size="icon-sm"
-								onClick={() => setMobileOpen(true)}
-								aria-label="Open navigation"
-							>
-								<Menu aria-hidden="true" />
-							</Button>
+							<AppHeaderMenuButton ref={mobileTriggerRef} onClick={() => setMobileOpen(true)} />
 						) : null
 					}
 					breadcrumbs={crumbs}
 					title={title}
-					actions={<ThemeToggle aria-label={`Toggle theme (now ${theme})`} />}
+					actions={
+						<>
+							<ProjectLinks github="nocoo/acme" hexly="acme" name="Acme" />
+							<ThemeToggle />
+						</>
+					}
 				/>
 				<div className="flex min-h-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm">
 					<ContentIsland>
@@ -656,9 +651,38 @@ export function AppFrame() {
 
 - **`title?: string`**: Current page title rendered inside an `h1` (`truncate text-sm font-normal text-basalt-foreground`). (Source type intersection is `HTMLAttributes<HTMLElement> & { title?: ReactNode }`, which narrows valid `title` values to `string | undefined`). Do not also put the current page title in `breadcrumbs`.
 - **`breadcrumbs?: { href?: string; label: ReactNode }[]`**: Breadcrumb hierarchy separated by ChevronRight. Supply ancestors with `title`, or a complete path ending in a nonlinked current item and omit `title`. No trailing separator is rendered without a title.
+- **`breadcrumbsLabel?: string`**: Accessible name of the breadcrumb `nav` landmark (default "Breadcrumb"); pass the localized name, e.g. `"面包屑导航"`. Standalone `Breadcrumbs` takes the same value as `aria-label`.
 - **`leading?: ReactNode`**: Optional slot before breadcrumbs, typically the mobile hamburger drawer trigger.
 - **`actions?: ReactNode`**: Top-right framework controls (`ThemeToggle`, account dropdown, etc.). This slot is reserved for framework controls, **not** the page-level create button.
+
+`ThemeToggle` is a `HeaderAction`: it cycles system → light → dark → system, shows the current theme's icon and names the **next** theme in its accessible name and bottom tooltip. `labels?: { light?, dark?, system? }` localizes those names (defaults "Switch to light theme", "Switch to dark theme", "Use system theme"); `tooltip={false}` hides the tooltip; `aria-label` pins a fixed accessible name. Do not wrap it in another tooltip or build a local theme toggle for labels.
 - **Native & Ref Boundary**: Inherits native `HTMLAttributes<HTMLElement>`, but does not forward ref.
+
+### HeaderAction
+
+Every top-right icon control in `AppHeader.actions` is a `HeaderAction` (`@nocoo/basalt/components/app-header`): a 34px ghost icon button with an 18px muted glyph that turns to the foreground color on hover. `label` is both the accessible name and the tooltip shown 6px below the action. Do not hand-write a `HeaderTooltip` wrapper, size classes or color overrides.
+
+- **`label: string`**: Accessible name and default tooltip.
+- **`children`**: The icon (lucide icon or inline `svg` with `aria-hidden`).
+- **`tooltip?: ReactNode | false`**: Tooltip content (default `label`); `false` renders none.
+- **`href?: string`**: Renders a link instead of a button. External by default: `external` (default `true`) adds `target="_blank"`, `rel="noopener noreferrer"` and appends `newTabLabel` (default `"(opens in a new tab)"`) to the accessible name; a screen-reader copy of `label` is always inside the link.
+- Other props go to the underlying `button` (or `a`). It forwards its ref and carries its own `TooltipProvider`, so it works directly as a `SheetTrigger asChild` or `DropdownMenuTrigger asChild` child.
+
+**Project links.** `GitHubLink` (`repo`: `owner/name` or URL; `label` default "GitHub repository") and `HexlyLink` (`project`: hexly.ai slug; `name` for the default label "`<name>` on hexly.ai") are `HeaderAction` links with the brand glyphs built in. `ProjectLinks` renders the standard pair in order, GitHub then hexly, and omits whichever prop is missing: `<ProjectLinks github="nocoo/surety" hexly="surety" name="Surety" />`. Place it directly before `ThemeToggle`. Pass `githubLabel`, `hexlyLabel` and `newTabLabel` to localize. Do not copy the svg paths or `HexlyLink` helpers into the app.
+
+```tsx excerpt:header-action
+<AppHeader
+	breadcrumbs={crumbs}
+	actions={
+		<>
+			<HeaderAction label="Notifications" onClick={openInbox}>
+				<Bell aria-hidden="true" strokeWidth={1.5} />
+			</HeaderAction>
+			<ThemeToggle />
+		</>
+	}
+/>;
+```
 
 Product title and version live in `SidebarHeader`, not in `AppHeader`. Read the version from the app `package.json` at build time. Do not hardcode it.
 

@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.2.6",
 	"totalModules": 131,
-	"totalSymbols": 787,
-	"totalValues": 410,
-	"totalTypes": 377,
+	"totalSymbols": 798,
+	"totalValues": 415,
+	"totalTypes": 383,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2483,9 +2483,89 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Application frame top navigation bar component",
 			"symbols": [
 				{
+					"name": "GitHubLink",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HexlyLink",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "ProjectLinks",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
 					"name": "AppHeader",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderActionProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderAction",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "AppHeaderMenuButtonProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "AppHeaderMenuButton",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "GitHubLinkProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HexlyLinkProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "ProjectLinksProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
 					"ownerKind": "framework-chrome",
 					"originModule": "@nocoo/basalt/components/app-header"
@@ -6960,6 +7040,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "ThemeToggle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/theme-toggle",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/theme-toggle"
+				},
+				{
+					"name": "ThemeToggleLabels",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/theme-toggle",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/theme-toggle"

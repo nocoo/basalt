@@ -1,24 +1,19 @@
-import { AppHeader } from "@nocoo/basalt/components/app-header";
+import { AppHeader, AppHeaderMenuButton, ProjectLinks } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
-import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
-import { useTheme } from "@nocoo/basalt/providers/theme";
-import { Menu } from "lucide-react";
+import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router";
 import { AccentPicker } from "@/components/AccentPicker";
 import { AppSidebar } from "@/components/AppSidebar";
-import { Github } from "@/components/icons/github";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useSiteTitle } from "@/hooks/use-site-title";
 import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
 import { catalogCategory, catalogCategoryPath } from "@/pages/ui/catalog-categories";
-import { HeaderTooltip, HexlyLink } from "./header-links";
-import { ThemeToggle } from "./theme-toggle";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -38,7 +33,6 @@ export function DashboardLayout() {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const location = useLocation();
 	const { t } = useTranslation();
-	const { theme } = useTheme();
 
 	const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
 	const mobileSheetRef = useRef<HTMLDivElement | null>(null);
@@ -137,7 +131,12 @@ export function DashboardLayout() {
 						}}
 					>
 						<SheetTitle className="sr-only">{t("common.openNav")}</SheetTitle>
-						<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} resizable={false} />
+						<AppSidebar
+							collapsed={false}
+							onToggle={() => setMobileOpen(false)}
+							resizable={false}
+							drawer
+						/>
 					</SheetContent>
 				</Sheet>
 			)}
@@ -146,44 +145,33 @@ export function DashboardLayout() {
 					className="max-sm:[&_nav]:max-w-[42vw] max-sm:[&_nav]:overflow-x-auto max-sm:[&_nav]:whitespace-nowrap max-sm:[&_nav>span]:shrink-0"
 					leading={
 						isMobile ? (
-							<HeaderTooltip label={t("common.openNav")}>
-								<Button
-									ref={mobileTriggerRef}
-									variant="ghost"
-									size="icon-sm"
-									onClick={() => setMobileOpen(true)}
-									aria-label={t("common.openNav")}
-								>
-									<Menu aria-hidden="true" />
-								</Button>
-							</HeaderTooltip>
+							<AppHeaderMenuButton
+								ref={mobileTriggerRef}
+								label={t("common.openNav")}
+								onClick={() => setMobileOpen(true)}
+							/>
 						) : null
 					}
 					breadcrumbs={crumbs}
+					breadcrumbsLabel={t("common.breadcrumb")}
 					title={undefined}
 					actions={
 						<>
 							<LanguageToggle />
 							<AccentPicker />
-							<HeaderTooltip label={t("common.github")}>
-								<LinkButton
-									variant="ghost"
-									size="icon-sm"
-									href="https://github.com/nocoo/basalt"
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label={t("common.github")}
-									className="rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[1.125rem]"
-								>
-									<Github
-										className="h-[1.125rem] w-[1.125rem]"
-										aria-hidden="true"
-										strokeWidth={1.5}
-									/>
-								</LinkButton>
-							</HeaderTooltip>
-							<HexlyLink size="icon-sm" />
-							<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
+							<ProjectLinks
+								github="nocoo/basalt"
+								hexly="basalt"
+								name="Basalt"
+								githubLabel={t("common.github")}
+							/>
+							<ThemeToggle
+								labels={{
+									light: t("common.themeLight"),
+									dark: t("common.themeDark"),
+									system: t("common.themeSystem"),
+								}}
+							/>
 						</>
 					}
 				/>

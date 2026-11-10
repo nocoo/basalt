@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { type ReactNode, type RefObject, useState } from "react";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
 import { LinkProvider } from "../providers/link";
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from "./sheet";
 import {
 	ContentIsland,
 	Sidebar,
@@ -141,6 +142,62 @@ describe("Sidebar", () => {
 		);
 		const toggle = screen.getByRole("button", { name: "Toggle navigation" });
 		expect(toggle).toHaveAttribute("aria-expanded", "false");
+	});
+
+	it("dismisses a hosting drawer without touching collapse state or showing a tooltip", async () => {
+		const onCollapsedChange = vi.fn();
+		const onDismiss = vi.fn();
+		render(
+			<SidebarProvider onCollapsedChange={onCollapsedChange}>
+				<SidebarToggle mode="dismiss" onDismiss={onDismiss} />
+			</SidebarProvider>,
+		);
+		const close = screen.getByRole("button", { name: "Close navigation" });
+		expect(close).toHaveAttribute("data-slot", "sidebar-toggle");
+		expect(close).toHaveAttribute("data-mode", "dismiss");
+		expect(close).not.toHaveAttribute("aria-expanded");
+		expect(close).toHaveClass("basalt-action-icon-sm");
+		act(() => close.focus());
+		await new Promise((resolve) => setTimeout(resolve, 20));
+		expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+		fireEvent.click(close);
+		expect(onDismiss).toHaveBeenCalledOnce();
+		expect(onCollapsedChange).not.toHaveBeenCalled();
+	});
+
+	it("lets a dismiss toggle skip onDismiss when the click is prevented and works without a provider", () => {
+		const onDismiss = vi.fn();
+		render(
+			<SidebarToggle
+				mode="dismiss"
+				dismissLabel="关闭导航"
+				onDismiss={onDismiss}
+				onClick={(event) => event.preventDefault()}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "关闭导航" }));
+		expect(onDismiss).not.toHaveBeenCalled();
+	});
+
+	it("closes an auto-focused drawer on the first Escape in dismiss mode", async () => {
+		function Drawer() {
+			const [open, setOpen] = useState(true);
+			return (
+				<Sheet open={open} onOpenChange={setOpen}>
+					<SheetContent side="left">
+						<SheetTitle>Navigation</SheetTitle>
+						<SheetDescription>Drawer</SheetDescription>
+						<SidebarToggle mode="dismiss" onDismiss={() => setOpen(false)} />
+					</SheetContent>
+				</Sheet>
+			);
+		}
+		render(<Drawer />);
+		const close = await screen.findByRole("button", { name: "Close navigation" });
+		act(() => close.focus());
+		expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+		fireEvent.keyDown(document.activeElement ?? document, { key: "Escape" });
+		await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
 	});
 
 	it("honors a prevented toggle click and custom labels", () => {
@@ -739,6 +796,74 @@ describe("Sidebar", () => {
 		expect(button).toHaveAttribute("aria-current", "page");
 		expect(button).toHaveClass("basalt-nav-item");
 		expect(button).toHaveClass("rail-item");
+	});
+
+	it("collapses SidebarUser to its avatar with a rail tooltip", async () => {
+		const { rerender } = render(
+			<SidebarProvider collapsed>
+				<Sidebar>
+					<SidebarFooter>
+						<SidebarUser
+							name="Ada"
+							email="ada@hexly.ai"
+							avatar={<span>AV</span>}
+							action={<button type="button">Menu</button>}
+						/>
+					</SidebarFooter>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("AV")).toBeInTheDocument();
+		expect(screen.queryByText("ada@hexly.ai")).toBeNull();
+		expect(screen.queryByRole("button", { name: "Menu" })).toBeNull();
+		const user = screen.getByText("AV").closest('[data-slot="sidebar-user"]');
+		expect(user).toHaveAttribute("data-collapsed");
+		const trigger = screen.getByText("AV").closest('[data-slot="sidebar-user-avatar"]');
+		if (!trigger) throw new Error("Missing collapsed avatar trigger");
+		const event = new MouseEvent("pointermove", { bubbles: true });
+		Object.defineProperty(event, "pointerType", { value: "mouse" });
+		act(() => {
+			trigger.dispatchEvent(event);
+		});
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Ada");
+		rerender(
+			<SidebarProvider collapsed>
+				<Sidebar>
+					<SidebarFooter>
+						<SidebarUser name="Ada" tooltip="Ada (owner)" />
+					</SidebarFooter>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByText("AV")).toBeNull();
+		expect(document.querySelector('[data-slot="sidebar-user"]')).toBeNull();
+	});
+
+	it("shows the full SidebarUser row while a collapsed rail peeks", () => {
+		const { container } = render(
+			<SidebarProvider collapsed peek>
+				<Sidebar>
+					<SidebarFooter>
+						<SidebarUser
+							name="Ada"
+							email="ada@hexly.ai"
+							avatar={<span>AV</span>}
+							tooltip="Ada (owner)"
+						/>
+					</SidebarFooter>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByText("ada@hexly.ai")).toBeNull();
+		const sidebar = container.querySelector<HTMLElement>("[data-basalt-sidebar]");
+		if (!sidebar) throw new Error("Missing sidebar");
+		fireEvent.mouseEnter(sidebar);
+		expect(screen.getByText("ada@hexly.ai")).toBeInTheDocument();
+		expect(screen.getByText("Ada")).toBeInTheDocument();
+		expect(screen.queryByText("Ada (owner)")).toBeNull();
+		expect(screen.getByText("AV").closest('[data-slot="sidebar-user"]')).not.toHaveAttribute(
+			"data-collapsed",
+		);
 	});
 
 	it("renders SidebarUser slots and drops email when omitted", () => {

@@ -459,9 +459,16 @@ interface AppSidebarProps {
 	collapsed: boolean;
 	onToggle: () => void;
 	resizable?: boolean;
+	/** Rendered inside the mobile Sheet: the brand action closes the drawer instead of collapsing. */
+	drawer?: boolean;
 }
 
-export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebarProps) {
+export function AppSidebar({
+	collapsed,
+	onToggle,
+	resizable = true,
+	drawer = false,
+}: AppSidebarProps) {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const { t } = useTranslation();
@@ -518,11 +525,20 @@ export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebar
 						name="basalt."
 						version={`v${APP_VERSION}`}
 						action={
-							<SidebarToggle
-								data-sidebar-toggle=""
-								collapseLabel={t("common.collapseSidebar")}
-								expandLabel={t("common.expandSidebar")}
-							/>
+							drawer ? (
+								<SidebarToggle
+									data-sidebar-toggle=""
+									mode="dismiss"
+									dismissLabel={t("common.closeNav")}
+									onDismiss={onToggle}
+								/>
+							) : (
+								<SidebarToggle
+									data-sidebar-toggle=""
+									collapseLabel={t("common.collapseSidebar")}
+									expandLabel={t("common.expandSidebar")}
+								/>
+							)
 						}
 					/>
 				</SidebarHeader>
@@ -545,40 +561,26 @@ export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebar
 					)}
 				</SidebarNav>
 				<SidebarFooter>
-					{collapsed ? (
-						<Tooltip delayDuration={0}>
-							<TooltipTrigger asChild>
-								<Avatar className="h-9 w-9 cursor-pointer">
-									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-								</Avatar>
-							</TooltipTrigger>
-							<TooltipContent side="right" sideOffset={8}>
-								Zheng Li
-							</TooltipContent>
-						</Tooltip>
-					) : (
-						<SidebarUser
-							name="Zheng Li"
-							email="zhengli@example.com"
-							avatar={
-								<Avatar className="h-9 w-9 shrink-0">
-									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-								</Avatar>
-							}
-							action={
-								<Button
-									variant="ghost"
-									size="icon-sm"
-									className="shrink-0"
-									aria-label={t("common.logOut")}
-								>
-									<LogOut aria-hidden="true" />
-								</Button>
-							}
-						/>
-					)}
+					<SidebarUser
+						name="Zheng Li"
+						email="zhengli@example.com"
+						avatar={
+							<Avatar className="h-9 w-9 shrink-0">
+								<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+								<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
+							</Avatar>
+						}
+						action={
+							<Button
+								variant="ghost"
+								size="icon-sm"
+								className="shrink-0"
+								aria-label={t("common.logOut")}
+							>
+								<LogOut aria-hidden="true" />
+							</Button>
+						}
+					/>
 				</SidebarFooter>
 				<CommandPalette
 					open={searchOpen}

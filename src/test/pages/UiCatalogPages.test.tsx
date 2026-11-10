@@ -1471,6 +1471,8 @@ describe("ui catalog", () => {
 		expect(CATALOG_DOCS["theme-toggle"]?.api).toEqual(CATALOG_API["theme-toggle"]);
 		expect(CATALOG_API["theme-toggle"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"aria-label",
+			"tooltip",
+			"labels",
 		]);
 		expect(CATALOG_API["theme-toggle"]).toEqual([
 			{
@@ -1479,8 +1481,23 @@ describe("ui catalog", () => {
 					{
 						name: "aria-label",
 						type: "string",
-						required: true,
-						description: "Accessible name for the toggle.",
+						required: false,
+						description:
+							"Fixed accessible name. Defaults to the label of the theme the next click switches to.",
+					},
+					{
+						name: "tooltip",
+						type: "boolean",
+						required: false,
+						default: "true",
+						description: "Show a bottom tooltip naming the theme the next click switches to.",
+					},
+					{
+						name: "labels",
+						type: "Partial<ThemeToggleLabels>",
+						required: false,
+						description:
+							"Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults.",
 					},
 				],
 			},
@@ -1488,11 +1505,11 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/theme-toggle");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
 		expect(api).toHaveTextContent("aria-label");
-		expect(api).not.toHaveTextContent("aria-label?");
 		expect(api).toHaveTextContent("string");
-		expect(api).toHaveTextContent("Accessible name for the toggle.");
+		expect(api).toHaveTextContent("Fixed accessible name.");
+		expect(api).toHaveTextContent("Partial<ThemeToggleLabels>");
 		expect(api).toHaveTextContent("—");
 		expect(api).not.toHaveTextContent("variant");
 		expect(api).not.toHaveTextContent("size");
@@ -1508,10 +1525,13 @@ describe("ui catalog", () => {
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain(
-			"- aria-label (string, required, default —): Accessible name for the toggle.",
+			"- aria-label (string, optional, default —): Fixed accessible name.",
 		);
 		expect(markdown).toContain(
 			'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+		);
+		expect(markdown).toContain(
+			"- tooltip (boolean, optional, default true): Show a bottom tooltip",
 		);
 		expect(markdown).not.toContain("- variant (");
 		expect(markdown).not.toContain("- size (");

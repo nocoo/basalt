@@ -8,8 +8,21 @@ export const API = [
 			{
 				name: "aria-label",
 				type: "string",
-				required: true,
-				description: "Accessible name for the toggle.",
+				required: false,
+				description: "Fixed accessible name. Defaults to the label of the theme the next click switches to.",
+			},
+			{
+				name: "tooltip",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Show a bottom tooltip naming the theme the next click switches to.",
+			},
+			{
+				name: "labels",
+				type: "Partial<ThemeToggleLabels>",
+				required: false,
+				description: "Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults.",
 			},
 		],
 	},

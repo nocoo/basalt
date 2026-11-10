@@ -487,16 +487,71 @@ export interface SidebarToggleProps
 	expandLabel?: string;
 	/** Accessible label while the sidebar is expanded. @default "Collapse sidebar" */
 	collapseLabel?: string;
+	/**
+	 * `toggle` collapses or expands the sidebar through context and shows a tooltip.
+	 * `dismiss` closes a drawer that hosts the sidebar (for example a mobile `Sheet`): it calls
+	 * `onDismiss`, never changes the collapsed state and renders no tooltip, so a drawer that
+	 * auto-focuses the button still closes on the first Escape.
+	 * @default "toggle"
+	 */
+	mode?: "toggle" | "dismiss";
+	/** Called on click in `dismiss` mode unless the click handler prevented default. */
+	onDismiss?: () => void;
+	/** Accessible label in `dismiss` mode. @default "Close navigation" */
+	dismissLabel?: string;
 }
 
 export function SidebarToggle({
 	"aria-label": ariaLabel,
 	expandLabel = "Expand sidebar",
 	collapseLabel = "Collapse sidebar",
+	mode = "toggle",
+	onDismiss,
+	dismissLabel = "Close navigation",
 	onClick,
 	variant = "ghost",
 	...props
 }: SidebarToggleProps) {
+	if (mode === "dismiss") {
+		return (
+			<Button
+				{...props}
+				data-slot="sidebar-toggle"
+				data-mode="dismiss"
+				variant={variant}
+				size="icon-sm"
+				aria-label={ariaLabel ?? dismissLabel}
+				onClick={(event) => {
+					onClick?.(event);
+					if (!event.defaultPrevented) onDismiss?.();
+				}}
+			>
+				<PanelLeft aria-hidden="true" />
+			</Button>
+		);
+	}
+	return (
+		<SidebarCollapseToggle
+			{...{ ariaLabel, expandLabel, collapseLabel, onClick, variant, props }}
+		/>
+	);
+}
+
+function SidebarCollapseToggle({
+	ariaLabel,
+	expandLabel,
+	collapseLabel,
+	onClick,
+	variant,
+	props,
+}: {
+	ariaLabel: string | undefined;
+	expandLabel: string;
+	collapseLabel: string;
+	onClick: SidebarToggleProps["onClick"];
+	variant: SidebarToggleProps["variant"];
+	props: Omit<ButtonProps, "children" | "size" | "aria-expanded">;
+}) {
 	const { collapsed, setCollapsed, side } = useSidebar();
 	const label = ariaLabel ?? (collapsed ? expandLabel : collapseLabel);
 	return (
@@ -877,18 +932,55 @@ export interface SidebarUserProps {
 	 */
 	avatar?: ReactNode;
 	/**
-	 * Trailing action slot (e.g. settings or logout button).
+	 * Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail.
 	 */
 	action?: ReactNode;
+	/**
+	 * Tooltip shown beside the avatar on the collapsed rail.
+	 * @default name
+	 */
+	tooltip?: ReactNode;
 	/**
 	 * Additional CSS class name.
 	 */
 	className?: string;
 }
 
-export function SidebarUser({ name, email, avatar, action, className }: SidebarUserProps) {
+/**
+ * Footer identity row. Inside a collapsed `SidebarProvider` rail (and not peeking) it renders only
+ * the avatar, with `tooltip` (default `name`) on hover, so apps do not branch on `collapsed`.
+ */
+export function SidebarUser({ name, email, avatar, action, tooltip, className }: SidebarUserProps) {
+	const context = useContext(SidebarContext);
+	const collapsed = Boolean(context?.collapsed && !(context.peek && context.peeking));
+	if (collapsed) {
+		if (!avatar) return null;
+		return (
+			<div
+				data-slot="sidebar-user"
+				data-collapsed=""
+				className={cn("flex items-center", className)}
+			>
+				<TooltipProvider>
+					<Tooltip delayDuration={0}>
+						<TooltipTrigger asChild>
+							<span data-slot="sidebar-user-avatar" className="inline-flex shrink-0">
+								{avatar}
+							</span>
+						</TooltipTrigger>
+						<TooltipContent side={context?.side === "right" ? "left" : "right"} sideOffset={8}>
+							{tooltip ?? name}
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</div>
+		);
+	}
 	return (
-		<div className={cn("flex items-center gap-basalt-space-lg", className)}>
+		<div
+			data-slot="sidebar-user"
+			className={cn("flex items-center gap-basalt-space-lg", className)}
+		>
 			{avatar}
 			<div className="min-w-0 flex-1">
 				<p className="truncate text-basalt-base font-medium text-basalt-foreground">{name}</p>

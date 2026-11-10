@@ -2231,15 +2231,34 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 	}, 60_000);
 
-	it("extracts ThemeToggle props from ThemeToggleProps as a single required aria-label", () => {
+	it("extracts ThemeToggle props from ThemeToggleProps as optional aria-label, tooltip and labels", () => {
 		const generated = generateProductionProps();
-		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual([
+			"aria-label",
+			"tooltip",
+			"labels",
+		]);
 		expect(generated["theme-toggle"]).toEqual([
 			{
 				name: "aria-label",
 				type: "string",
-				required: true,
-				description: "Accessible name for the toggle.",
+				required: false,
+				description:
+					"Fixed accessible name. Defaults to the label of the theme the next click switches to.",
+			},
+			{
+				name: "tooltip",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Show a bottom tooltip naming the theme the next click switches to.",
+			},
+			{
+				name: "labels",
+				type: "Partial<ThemeToggleLabels>",
+				required: false,
+				description:
+					"Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults.",
 			},
 		]);
 		expect(generated["theme-toggle"]?.[0]).not.toHaveProperty("default");
@@ -2346,7 +2365,11 @@ describe("catalog API generator contract", () => {
 			"delayDuration",
 			"disableHoverableContent",
 		]);
-		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual([
+			"aria-label",
+			"tooltip",
+			"labels",
+		]);
 	}, 60_000);
 
 	it("extracts BasaltMark props from BasaltMarkProps as a single optional className", () => {
@@ -2399,7 +2422,11 @@ describe("catalog API generator contract", () => {
 			"delayDuration",
 			"disableHoverableContent",
 		]);
-		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual([
+			"aria-label",
+			"tooltip",
+			"labels",
+		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
 			"outlined",
@@ -2502,7 +2529,11 @@ describe("catalog API generator contract", () => {
 			"delayDuration",
 			"disableHoverableContent",
 		]);
-		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual([
+			"aria-label",
+			"tooltip",
+			"labels",
+		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
 			"outlined",
@@ -2581,7 +2612,11 @@ describe("catalog API generator contract", () => {
 			"delayDuration",
 			"disableHoverableContent",
 		]);
-		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual([
+			"aria-label",
+			"tooltip",
+			"labels",
+		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
 			"outlined",
@@ -2670,7 +2705,11 @@ describe("catalog API generator contract", () => {
 			"delayDuration",
 			"disableHoverableContent",
 		]);
-		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual([
+			"aria-label",
+			"tooltip",
+			"labels",
+		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
 			"outlined",
@@ -4953,6 +4992,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "ResourceList"');
 		expect(joined).toContain('name: "DeleteResource"');
 		expect(joined).toContain('type: "ChartSeriesDescriptor[]"');
+		expect(joined).toContain('name: "dismissLabel"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -4960,7 +5000,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"19da779b96d29a0b73db23a2403a72c860149c1b61e6363e348591ccd50c0746",
+			"65acd4164a8256b22314f5d4ff8bd1b8d3bcf065ac6801931b9bd1142b82cbf1",
 		);
 	}, 60_000);
 

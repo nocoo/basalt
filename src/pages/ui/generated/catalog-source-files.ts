@@ -56,7 +56,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"theme-toggle": {
 		"file": "packages/basalt/src/components/theme-toggle.tsx",
-		"hash": "44af241746ba04bd",
+		"hash": "2356ddf792191ed8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/theme-toggle.js.map (sourcesContent[0])"
 	},
@@ -338,7 +338,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"breadcrumbs": {
 		"file": "packages/basalt/src/components/breadcrumbs.tsx",
-		"hash": "e077ffa92760e370",
+		"hash": "37e7645c1a481caf",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/breadcrumbs.js.map (sourcesContent[0])"
 	},
@@ -380,7 +380,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "75af373590b283a9",
+		"hash": "b5e4b490f898773e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},

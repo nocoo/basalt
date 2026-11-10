@@ -17,6 +17,13 @@ export const API = [
 				required: false,
 				description: "Optional class name applied to the outer nav element.",
 			},
+			{
+				name: "aria-label",
+				type: "string",
+				required: false,
+				default: "\"Breadcrumb\"",
+				description: "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps.",
+			},
 		],
 	},
 ];

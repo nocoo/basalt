@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.2.6",
 	"totalModules": 131,
-	"totalSymbols": 787,
-	"totalValues": 410,
-	"totalTypes": 377,
+	"totalSymbols": 798,
+	"totalValues": 415,
+	"totalTypes": 383,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 120,
 	"modules": [
@@ -7081,12 +7081,12 @@
 			]
 		},
 		{
-			"displayName": "AppHeader",
-			"exportName": "AppHeader",
+			"displayName": "GitHubLink",
+			"exportName": "GitHubLink",
 			"importPath": "@nocoo/basalt/components/app-header",
 			"subpath": "./components/app-header",
 			"sourceFile": "packages/basalt/src/components/app-header.tsx",
-			"sourceHash": "7168edf082e8e66b",
+			"sourceHash": "f0fc5e4614c73323",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -7097,9 +7097,89 @@
 			"optionalPeers": [],
 			"symbols": [
 				{
+					"name": "GitHubLink",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HexlyLink",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "ProjectLinks",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
 					"name": "AppHeader",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderActionProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderAction",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "AppHeaderMenuButtonProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "AppHeaderMenuButton",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "GitHubLinkProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HexlyLinkProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "ProjectLinksProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
 					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
 					"originModule": "@nocoo/basalt/components/app-header"
@@ -8278,7 +8358,7 @@
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"subpath": "./components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
-			"sourceHash": "e077ffa92760e370",
+			"sourceHash": "37e7645c1a481caf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -8336,6 +8416,13 @@
 									"type": "string",
 									"required": false,
 									"description": "Optional class name applied to the outer nav element."
+								},
+								{
+									"name": "aria-label",
+									"type": "string",
+									"required": false,
+									"default": "\"Breadcrumb\"",
+									"description": "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps."
 								}
 							]
 						}
@@ -8357,6 +8444,13 @@
 							"type": "string",
 							"required": false,
 							"description": "Optional class name applied to the outer nav element."
+						},
+						{
+							"name": "aria-label",
+							"type": "string",
+							"required": false,
+							"default": "\"Breadcrumb\"",
+							"description": "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps."
 						}
 					]
 				}
@@ -23491,7 +23585,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "75af373590b283a9",
+			"sourceHash": "b5e4b490f898773e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23892,6 +23986,26 @@
 									"required": false,
 									"default": "\"Collapse sidebar\"",
 									"description": "Accessible label while the sidebar is expanded."
+								},
+								{
+									"name": "mode",
+									"type": "\"dismiss\" | \"toggle\"",
+									"required": false,
+									"default": "\"toggle\"",
+									"description": "`toggle` collapses or expands the sidebar through context and shows a tooltip.\n`dismiss` closes a drawer that hosts the sidebar (for example a mobile `Sheet`): it calls\n`onDismiss`, never changes the collapsed state and renders no tooltip, so a drawer that\nauto-focuses the button still closes on the first Escape."
+								},
+								{
+									"name": "onDismiss",
+									"type": "() => void",
+									"required": false,
+									"description": "Called on click in `dismiss` mode unless the click handler prevented default."
+								},
+								{
+									"name": "dismissLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Close navigation\"",
+									"description": "Accessible label in `dismiss` mode."
 								}
 							]
 						},
@@ -24040,7 +24154,14 @@
 									"name": "action",
 									"type": "React.ReactNode",
 									"required": false,
-									"description": "Trailing action slot (e.g. settings or logout button)."
+									"description": "Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail."
+								},
+								{
+									"name": "tooltip",
+									"type": "React.ReactNode",
+									"required": false,
+									"default": "name",
+									"description": "Tooltip shown beside the avatar on the collapsed rail."
 								},
 								{
 									"name": "className",
@@ -24270,6 +24391,26 @@
 							"required": false,
 							"default": "\"Collapse sidebar\"",
 							"description": "Accessible label while the sidebar is expanded."
+						},
+						{
+							"name": "mode",
+							"type": "\"dismiss\" | \"toggle\"",
+							"required": false,
+							"default": "\"toggle\"",
+							"description": "`toggle` collapses or expands the sidebar through context and shows a tooltip.\n`dismiss` closes a drawer that hosts the sidebar (for example a mobile `Sheet`): it calls\n`onDismiss`, never changes the collapsed state and renders no tooltip, so a drawer that\nauto-focuses the button still closes on the first Escape."
+						},
+						{
+							"name": "onDismiss",
+							"type": "() => void",
+							"required": false,
+							"description": "Called on click in `dismiss` mode unless the click handler prevented default."
+						},
+						{
+							"name": "dismissLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Close navigation\"",
+							"description": "Accessible label in `dismiss` mode."
 						}
 					]
 				},
@@ -24418,7 +24559,14 @@
 							"name": "action",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Trailing action slot (e.g. settings or logout button)."
+							"description": "Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail."
+						},
+						{
+							"name": "tooltip",
+							"type": "React.ReactNode",
+							"required": false,
+							"default": "name",
+							"description": "Tooltip shown beside the avatar on the collapsed rail."
 						},
 						{
 							"name": "className",
@@ -26653,7 +26801,7 @@
 			"importPath": "@nocoo/basalt/components/theme-toggle",
 			"subpath": "./components/theme-toggle",
 			"sourceFile": "packages/basalt/src/components/theme-toggle.tsx",
-			"sourceHash": "44af241746ba04bd",
+			"sourceHash": "2356ddf792191ed8",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -26667,6 +26815,14 @@
 					"name": "ThemeToggle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/theme-toggle",
+					"packageDoc": "ai/registry.json#theme-toggle",
+					"originModule": "@nocoo/basalt/components/theme-toggle"
+				},
+				{
+					"name": "ThemeToggleLabels",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/theme-toggle",
 					"packageDoc": "ai/registry.json#theme-toggle",
 					"originModule": "@nocoo/basalt/components/theme-toggle"
@@ -26695,8 +26851,21 @@
 								{
 									"name": "aria-label",
 									"type": "string",
-									"required": true,
-									"description": "Accessible name for the toggle."
+									"required": false,
+									"description": "Fixed accessible name. Defaults to the label of the theme the next click switches to."
+								},
+								{
+									"name": "tooltip",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show a bottom tooltip naming the theme the next click switches to."
+								},
+								{
+									"name": "labels",
+									"type": "Partial<ThemeToggleLabels>",
+									"required": false,
+									"description": "Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults."
 								}
 							]
 						}
@@ -26710,8 +26879,21 @@
 						{
 							"name": "aria-label",
 							"type": "string",
-							"required": true,
-							"description": "Accessible name for the toggle."
+							"required": false,
+							"description": "Fixed accessible name. Defaults to the label of the theme the next click switches to."
+						},
+						{
+							"name": "tooltip",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show a bottom tooltip naming the theme the next click switches to."
+						},
+						{
+							"name": "labels",
+							"type": "Partial<ThemeToggleLabels>",
+							"required": false,
+							"description": "Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults."
 						}
 					]
 				}
@@ -30380,7 +30562,7 @@
 			"exportName": "ThemeToggle",
 			"importPath": "@nocoo/basalt/components/theme-toggle",
 			"sourceFile": "packages/basalt/src/components/theme-toggle.tsx",
-			"sourceHash": "44af241746ba04bd",
+			"sourceHash": "2356ddf792191ed8",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#theme-toggle",
@@ -30391,8 +30573,21 @@
 						{
 							"name": "aria-label",
 							"type": "string",
-							"required": true,
-							"description": "Accessible name for the toggle."
+							"required": false,
+							"description": "Fixed accessible name. Defaults to the label of the theme the next click switches to."
+						},
+						{
+							"name": "tooltip",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show a bottom tooltip naming the theme the next click switches to."
+						},
+						{
+							"name": "labels",
+							"type": "Partial<ThemeToggleLabels>",
+							"required": false,
+							"description": "Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults."
 						}
 					]
 				}
@@ -35764,7 +35959,7 @@
 			"exportName": "Breadcrumbs",
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
-			"sourceHash": "e077ffa92760e370",
+			"sourceHash": "37e7645c1a481caf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#breadcrumbs",
@@ -35783,6 +35978,13 @@
 							"type": "string",
 							"required": false,
 							"description": "Optional class name applied to the outer nav element."
+						},
+						{
+							"name": "aria-label",
+							"type": "string",
+							"required": false,
+							"default": "\"Breadcrumb\"",
+							"description": "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps."
 						}
 					]
 				}
@@ -36408,7 +36610,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "75af373590b283a9",
+			"sourceHash": "b5e4b490f898773e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -36546,6 +36748,26 @@
 							"required": false,
 							"default": "\"Collapse sidebar\"",
 							"description": "Accessible label while the sidebar is expanded."
+						},
+						{
+							"name": "mode",
+							"type": "\"dismiss\" | \"toggle\"",
+							"required": false,
+							"default": "\"toggle\"",
+							"description": "`toggle` collapses or expands the sidebar through context and shows a tooltip.\n`dismiss` closes a drawer that hosts the sidebar (for example a mobile `Sheet`): it calls\n`onDismiss`, never changes the collapsed state and renders no tooltip, so a drawer that\nauto-focuses the button still closes on the first Escape."
+						},
+						{
+							"name": "onDismiss",
+							"type": "() => void",
+							"required": false,
+							"description": "Called on click in `dismiss` mode unless the click handler prevented default."
+						},
+						{
+							"name": "dismissLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Close navigation\"",
+							"description": "Accessible label in `dismiss` mode."
 						}
 					]
 				},
@@ -36694,7 +36916,14 @@
 							"name": "action",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Trailing action slot (e.g. settings or logout button)."
+							"description": "Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail."
+						},
+						{
+							"name": "tooltip",
+							"type": "React.ReactNode",
+							"required": false,
+							"default": "name",
+							"description": "Tooltip shown beside the avatar on the collapsed rail."
 						},
 						{
 							"name": "className",
