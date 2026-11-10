@@ -18,6 +18,20 @@ jobs:
       test-command: "bun run test:coverage"
       typecheck-command: "bun run typecheck"
 
+  l1-precommit-self-test:
+    name: L1 pre-commit self-test
+    uses: nocoo/base-ci/.github/workflows/test-job.yml@ac635753a869cb85fad1f52aae4ccbd6119f3cae # main 2026-10-22
+    with:
+      runtime-version: "1.4.0"
+      install-policy: "trusted"
+      timeout-minutes: 60
+      pre-command: |
+        mkdir -p .ci-bin
+        curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.24.2/gitleaks_8.24.2_linux_x64.tar.gz | tar -xz -C .ci-bin gitleaks
+        chmod +x .ci-bin/gitleaks
+        bun run --cwd packages/basalt build
+      command: "PATH=$GITHUB_WORKSPACE/.ci-bin:$PATH bun scripts/l1-gate-self-test.ts --probes-only"
+
   package-gates:
     name: Package Gates & Consumers
     uses: nocoo/base-ci/.github/workflows/test-job.yml@ac635753a869cb85fad1f52aae4ccbd6119f3cae # main 2026-10-22
