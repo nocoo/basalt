@@ -3847,6 +3847,10 @@
   .\[\&_svg\]\:pointer-events-none svg {
     pointer-events: none;
   }
+  .\[\&_svg\]\:size-\[1\.125rem\] svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
   .\[\&_svg\]\:size-basalt-8 svg {
     width: var(--basalt-space-8);
     height: var(--basalt-space-8);
