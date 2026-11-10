@@ -30,7 +30,7 @@ jobs:
         curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.24.2/gitleaks_8.24.2_linux_x64.tar.gz | tar -xz -C .ci-bin gitleaks
         chmod +x .ci-bin/gitleaks
         bun run --cwd packages/basalt build
-      command: "PATH=$GITHUB_WORKSPACE/.ci-bin:$PATH bun run test:l1-gate -- --probes-only"
+      command: "PATH=$GITHUB_WORKSPACE/.ci-bin:$PATH bun scripts/l1-gate-self-test.ts --probes-only"
 
   package-gates:
     name: Package Gates & Consumers
