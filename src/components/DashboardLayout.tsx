@@ -3,7 +3,7 @@ import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-she
 import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
-import { useTheme } from "@nocoo/basalt/providers/theme";
+import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,6 @@ import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
 import { catalogCategory, catalogCategoryPath } from "@/pages/ui/catalog-categories";
 import { HeaderTooltip, HexlyLink } from "./header-links";
-import { ThemeToggle } from "./theme-toggle";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -38,7 +37,6 @@ export function DashboardLayout() {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const location = useLocation();
 	const { t } = useTranslation();
-	const { theme } = useTheme();
 
 	const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
 	const mobileSheetRef = useRef<HTMLDivElement | null>(null);
@@ -188,7 +186,13 @@ export function DashboardLayout() {
 								</LinkButton>
 							</HeaderTooltip>
 							<HexlyLink size="icon-sm" />
-							<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
+							<ThemeToggle
+								labels={{
+									light: t("common.themeLight"),
+									dark: t("common.themeDark"),
+									system: t("common.themeSystem"),
+								}}
+							/>
 						</>
 					}
 				/>

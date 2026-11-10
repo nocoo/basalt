@@ -176,7 +176,9 @@ describe("DashboardLayout", () => {
 		renderLayout("/");
 		const github = screen.getByRole("link", { name: "GitHub repository" });
 		const hexly = screen.getByRole("link", { name: "Basalt on hexly.ai (opens in a new tab)" });
-		const theme = screen.getByRole("button", { name: /Toggle theme/ });
+		const theme = screen.getByRole("button", {
+			name: /^(Switch to (light|dark) theme|Use system theme)$/,
+		});
 		expect(github.nextElementSibling).toBe(hexly);
 		expect(hexly).toHaveAttribute("href", "https://hexly.ai/projects/basalt");
 		expect(hexly.nextElementSibling).toBe(theme);

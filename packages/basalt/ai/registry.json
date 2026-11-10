@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.2.6",
 	"totalModules": 131,
-	"totalSymbols": 789,
+	"totalSymbols": 790,
 	"totalValues": 411,
-	"totalTypes": 378,
+	"totalTypes": 379,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 120,
 	"modules": [
@@ -26723,7 +26723,7 @@
 			"importPath": "@nocoo/basalt/components/theme-toggle",
 			"subpath": "./components/theme-toggle",
 			"sourceFile": "packages/basalt/src/components/theme-toggle.tsx",
-			"sourceHash": "44af241746ba04bd",
+			"sourceHash": "2356ddf792191ed8",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -26737,6 +26737,14 @@
 					"name": "ThemeToggle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/theme-toggle",
+					"packageDoc": "ai/registry.json#theme-toggle",
+					"originModule": "@nocoo/basalt/components/theme-toggle"
+				},
+				{
+					"name": "ThemeToggleLabels",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/theme-toggle",
 					"packageDoc": "ai/registry.json#theme-toggle",
 					"originModule": "@nocoo/basalt/components/theme-toggle"
@@ -26765,8 +26773,21 @@
 								{
 									"name": "aria-label",
 									"type": "string",
-									"required": true,
-									"description": "Accessible name for the toggle."
+									"required": false,
+									"description": "Fixed accessible name. Defaults to the label of the theme the next click switches to."
+								},
+								{
+									"name": "tooltip",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show a bottom tooltip naming the theme the next click switches to."
+								},
+								{
+									"name": "labels",
+									"type": "Partial<ThemeToggleLabels>",
+									"required": false,
+									"description": "Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults."
 								}
 							]
 						}
@@ -26780,8 +26801,21 @@
 						{
 							"name": "aria-label",
 							"type": "string",
-							"required": true,
-							"description": "Accessible name for the toggle."
+							"required": false,
+							"description": "Fixed accessible name. Defaults to the label of the theme the next click switches to."
+						},
+						{
+							"name": "tooltip",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show a bottom tooltip naming the theme the next click switches to."
+						},
+						{
+							"name": "labels",
+							"type": "Partial<ThemeToggleLabels>",
+							"required": false,
+							"description": "Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults."
 						}
 					]
 				}
@@ -30450,7 +30484,7 @@
 			"exportName": "ThemeToggle",
 			"importPath": "@nocoo/basalt/components/theme-toggle",
 			"sourceFile": "packages/basalt/src/components/theme-toggle.tsx",
-			"sourceHash": "44af241746ba04bd",
+			"sourceHash": "2356ddf792191ed8",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#theme-toggle",
@@ -30461,8 +30495,21 @@
 						{
 							"name": "aria-label",
 							"type": "string",
-							"required": true,
-							"description": "Accessible name for the toggle."
+							"required": false,
+							"description": "Fixed accessible name. Defaults to the label of the theme the next click switches to."
+						},
+						{
+							"name": "tooltip",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show a bottom tooltip naming the theme the next click switches to."
+						},
+						{
+							"name": "labels",
+							"type": "Partial<ThemeToggleLabels>",
+							"required": false,
+							"description": "Labels naming each next theme (`light`, `dark`, `system`); omitted keys keep the English\ndefaults."
 						}
 					]
 				}

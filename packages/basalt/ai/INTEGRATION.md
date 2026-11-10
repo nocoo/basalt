@@ -657,6 +657,8 @@ export function AppFrame() {
 - **`breadcrumbs?: { href?: string; label: ReactNode }[]`**: Breadcrumb hierarchy separated by ChevronRight. Supply ancestors with `title`, or a complete path ending in a nonlinked current item and omit `title`. No trailing separator is rendered without a title.
 - **`leading?: ReactNode`**: Optional slot before breadcrumbs, typically the mobile hamburger drawer trigger.
 - **`actions?: ReactNode`**: Top-right framework controls (`ThemeToggle`, account dropdown, etc.). This slot is reserved for framework controls, **not** the page-level create button.
+
+`ThemeToggle` is a `HeaderAction`: it cycles system → light → dark → system, shows the current theme's icon and names the **next** theme in its accessible name and bottom tooltip. `labels?: { light?, dark?, system? }` localizes those names (defaults "Switch to light theme", "Switch to dark theme", "Use system theme"); `tooltip={false}` hides the tooltip; `aria-label` pins a fixed accessible name. Do not wrap it in another tooltip or build a local theme toggle for labels.
 - **Native & Ref Boundary**: Inherits native `HTMLAttributes<HTMLElement>`, but does not forward ref.
 
 ### HeaderAction

@@ -17,6 +17,10 @@ were prepared but never published are folded into the next published version.
 - `SidebarUser` now collapses with the rail: inside a collapsed `SidebarProvider` it renders only the avatar with a right-side tooltip (new `tooltip` prop, default `name`) and hides email and action, so apps no longer hand-write the collapsed avatar tooltip.
 - Add `HeaderAction` to `@nocoo/basalt/components/app-header`: the standard top-right icon button or link, with `label` as accessible name and bottom tooltip, a 34px ghost box, an 18px muted glyph and a forwarded ref.
 
+### Changed
+
+- `ThemeToggle` is now a `HeaderAction`: it shows a bottom tooltip naming the next theme, `aria-label` is optional (defaults to that name), and new `labels` (`light`/`dark`/`system`) and `tooltip` props localize or hide it. Its glyph is muted and 18px like the other header actions.
+
 ## [3.2.6] - 2026-11-10
 
 ### Changed

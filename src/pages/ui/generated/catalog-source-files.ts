@@ -56,7 +56,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"theme-toggle": {
 		"file": "packages/basalt/src/components/theme-toggle.tsx",
-		"hash": "44af241746ba04bd",
+		"hash": "2356ddf792191ed8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/theme-toggle.js.map (sourcesContent[0])"
 	},

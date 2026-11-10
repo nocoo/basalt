@@ -250,6 +250,8 @@ describe("catalog source contract", () => {
 		expect(foundation["theme-toggle"]?.docs.api).toEqual(CATALOG_API["theme-toggle"]);
 		expect(CATALOG_API["theme-toggle"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"aria-label",
+			"tooltip",
+			"labels",
 		]);
 		expect(implementationFileFor(entry("layer-card"))).toBe(
 			"packages/basalt/src/components/layer-card.tsx",

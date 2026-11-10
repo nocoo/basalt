@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.2.6",
 	"totalModules": 131,
-	"totalSymbols": 789,
+	"totalSymbols": 790,
 	"totalValues": 411,
-	"totalTypes": 378,
+	"totalTypes": 379,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -6976,6 +6976,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "ThemeToggle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/theme-toggle",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/theme-toggle"
+				},
+				{
+					"name": "ThemeToggleLabels",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/theme-toggle",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/theme-toggle"
