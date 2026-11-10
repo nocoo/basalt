@@ -590,6 +590,53 @@ describe("Sidebar", () => {
 		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
 	});
 
+	it("does not carry an expanded hover into the collapsed search tooltip", async () => {
+		function HoverThenCollapse() {
+			const { collapsed, setCollapsed } = useSidebar();
+			return (
+				<>
+					<button type="button" onClick={() => setCollapsed(!collapsed)}>
+						Toggle collapse
+					</button>
+					<Sidebar>
+						<SidebarNav>
+							<SidebarSearch>Search</SidebarSearch>
+						</SidebarNav>
+					</Sidebar>
+				</>
+			);
+		}
+		render(
+			<SidebarProvider>
+				<HoverThenCollapse />
+			</SidebarProvider>,
+		);
+		const search = screen.getByRole("button", { name: /Search/ });
+		const pointer = (type: "pointermove" | "pointerout") => {
+			// React derives onPointerLeave from a bubbling pointerout to an outside target.
+			const event = new MouseEvent(type, { bubbles: true, relatedTarget: document.body });
+			Object.defineProperty(event, "pointerType", { value: "mouse" });
+			act(() => {
+				search.dispatchEvent(event);
+			});
+		};
+		// Pointer crosses the expanded search row on its way to the collapse toggle.
+		pointer("pointermove");
+		await act(async () => {
+			await new Promise((resolve) => setTimeout(resolve, 20));
+		});
+		pointer("pointerout");
+		fireEvent.click(screen.getByRole("button", { name: "Toggle collapse" }));
+		expect(screen.getByRole("button", { name: "Search (⌘K)" })).toBe(search);
+		await act(async () => {
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		});
+		expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+		// A real hover in the collapsed rail still opens it.
+		pointer("pointermove");
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
+	});
+
 	it("preserves search focus and DOM identity across collapse and peek transitions", async () => {
 		function SearchTransitions() {
 			const { collapsed, setCollapsed } = useSidebar();

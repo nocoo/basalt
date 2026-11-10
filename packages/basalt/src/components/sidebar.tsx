@@ -537,7 +537,16 @@ export function SidebarSearch({
 	...props
 }: SidebarSearchProps) {
 	const context = useContext(SidebarContext);
-	const collapsed = context?.collapsed && !(context.peek && context.peeking);
+	const collapsed = Boolean(context?.collapsed && !(context.peek && context.peeking));
+	const buttonRef = useRef<HTMLButtonElement>(null);
+	// The tooltip only exists in the collapsed rail. Radix closes a hoverable tooltip from its
+	// mounted content, so a hover that crossed the expanded row (no content) would otherwise
+	// stay "open" and appear the moment the rail collapses. Reset on every rail transition:
+	// only focus still on the button (keyboard users) carries the tooltip across.
+	const [tooltipOpen, setTooltipOpen] = useState(false);
+	useLayoutEffect(() => {
+		setTooltipOpen(collapsed && buttonRef.current === document.activeElement);
+	}, [collapsed]);
 	const button = (
 		<button
 			type="button"
@@ -554,6 +563,7 @@ export function SidebarSearch({
 				className,
 			)}
 			{...props}
+			ref={buttonRef}
 		>
 			<Search className="text-basalt-foreground" strokeWidth={1.5} aria-hidden="true" />
 			<span
@@ -573,7 +583,7 @@ export function SidebarSearch({
 	);
 	return (
 		<TooltipProvider>
-			<Tooltip delayDuration={0}>
+			<Tooltip delayDuration={0} open={collapsed && tooltipOpen} onOpenChange={setTooltipOpen}>
 				<TooltipTrigger asChild>{button}</TooltipTrigger>
 				{collapsed ? (
 					<TooltipContent side={context?.side === "right" ? "left" : "right"} sideOffset={8}>
