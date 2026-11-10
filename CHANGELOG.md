@@ -15,6 +15,7 @@ were prepared but never published are folded into the next published version.
 
 - Add a `dismiss` mode to `SidebarToggle` for closing a drawer that hosts the sidebar; it renders no tooltip, so the first Escape closes an auto-focused drawer.
 - `SidebarUser` now collapses with the rail: inside a collapsed `SidebarProvider` it renders only the avatar with a right-side tooltip (new `tooltip` prop, default `name`) and hides email and action, so apps no longer hand-write the collapsed avatar tooltip.
+- Add `HeaderAction` to `@nocoo/basalt/components/app-header`: the standard top-right icon button or link, with `label` as accessible name and bottom tooltip, a 34px ghost box, an 18px muted glyph and a forwarded ref.
 
 ## [3.2.6] - 2026-11-10
 

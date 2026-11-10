@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.2.6",
 	"totalModules": 131,
-	"totalSymbols": 787,
-	"totalValues": 410,
-	"totalTypes": 377,
+	"totalSymbols": 789,
+	"totalValues": 411,
+	"totalTypes": 378,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 120,
 	"modules": [
@@ -7086,7 +7086,7 @@
 			"importPath": "@nocoo/basalt/components/app-header",
 			"subpath": "./components/app-header",
 			"sourceFile": "packages/basalt/src/components/app-header.tsx",
-			"sourceHash": "7168edf082e8e66b",
+			"sourceHash": "4bc3a1888d577971",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -7098,6 +7098,22 @@
 			"symbols": [
 				{
 					"name": "AppHeader",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderActionProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"packageDoc": "ai/INTEGRATION.md#appheader-and-breadcrumbs",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderAction",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",

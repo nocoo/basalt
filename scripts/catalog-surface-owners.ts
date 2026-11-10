@@ -87,7 +87,7 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
 		ownerDoc: "INTEGRATION.md#appheader-and-breadcrumbs",
 		kind: "framework-chrome",
 		summary: "Application frame top navigation bar component",
-		knownSymbols: ["AppHeader"],
+		knownSymbols: ["AppHeader", "HeaderAction", "HeaderActionProps"],
 	},
 	"@nocoo/basalt/components/app-shell": {
 		ownerDoc: "INTEGRATION.md#root-geometry",

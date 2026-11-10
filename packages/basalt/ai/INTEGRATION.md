@@ -659,6 +659,30 @@ export function AppFrame() {
 - **`actions?: ReactNode`**: Top-right framework controls (`ThemeToggle`, account dropdown, etc.). This slot is reserved for framework controls, **not** the page-level create button.
 - **Native & Ref Boundary**: Inherits native `HTMLAttributes<HTMLElement>`, but does not forward ref.
 
+### HeaderAction
+
+Every top-right icon control in `AppHeader.actions` is a `HeaderAction` (`@nocoo/basalt/components/app-header`): a 34px ghost icon button with an 18px muted glyph that turns to the foreground color on hover. `label` is both the accessible name and the tooltip shown 6px below the action. Do not hand-write a `HeaderTooltip` wrapper, size classes or color overrides.
+
+- **`label: string`**: Accessible name and default tooltip.
+- **`children`**: The icon (lucide icon or inline `svg` with `aria-hidden`).
+- **`tooltip?: ReactNode | false`**: Tooltip content (default `label`); `false` renders none.
+- **`href?: string`**: Renders a link instead of a button. External by default: `external` (default `true`) adds `target="_blank"`, `rel="noopener noreferrer"` and appends `newTabLabel` (default `"(opens in a new tab)"`) to the accessible name; a screen-reader copy of `label` is always inside the link.
+- Other props go to the underlying `button` (or `a`). It forwards its ref and carries its own `TooltipProvider`, so it works directly as a `SheetTrigger asChild` or `DropdownMenuTrigger asChild` child.
+
+```tsx excerpt:header-action
+<AppHeader
+	breadcrumbs={crumbs}
+	actions={
+		<>
+			<HeaderAction label="Notifications" onClick={openInbox}>
+				<Bell aria-hidden="true" strokeWidth={1.5} />
+			</HeaderAction>
+			<ThemeToggle />
+		</>
+	}
+/>;
+```
+
 Product title and version live in `SidebarHeader`, not in `AppHeader`. Read the version from the app `package.json` at build time. Do not hardcode it.
 
 ---

@@ -1,8 +1,119 @@
 import { ChevronRight } from "lucide-react";
-import type { HTMLAttributes, ReactNode } from "react";
+import {
+	type AnchorHTMLAttributes,
+	type ButtonHTMLAttributes,
+	forwardRef,
+	type HTMLAttributes,
+	type ReactNode,
+	type Ref,
+} from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Breadcrumbs } from "./breadcrumbs";
+import { Button, LinkButton } from "./button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+
+/** Muted 34px ghost icon control with an 18px glyph, shared by every top-right header action. */
+const HEADER_ACTION_CLASS =
+	"text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[1.125rem]";
+
+export interface HeaderActionProps
+	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children" | "aria-label"> {
+	/**
+	 * Accessible name and default tooltip text.
+	 */
+	label: string;
+	/**
+	 * Icon glyph (lucide icon or inline `svg` with `aria-hidden`). Sized to 18px by the action.
+	 */
+	children: ReactNode;
+	/**
+	 * Tooltip content below the action; `false` renders no tooltip.
+	 * @default label
+	 */
+	tooltip?: ReactNode | false;
+	/**
+	 * Renders an anchor instead of a button.
+	 */
+	href?: string;
+	/**
+	 * With `href`: open in a new tab (`target="_blank"`, `rel="noopener noreferrer"`) and append
+	 * `newTabLabel` to the accessible name.
+	 * @default true
+	 */
+	external?: boolean;
+	/**
+	 * Suffix appended to the accessible name of an external link.
+	 * @default "(opens in a new tab)"
+	 */
+	newTabLabel?: string;
+}
+
+/**
+ * Top-right `AppHeader` icon action: a ghost icon button (or link with `href`) whose `label` is
+ * both the accessible name and a bottom tooltip. Carries its own `TooltipProvider` and forwards
+ * its ref, so it also works as a `SheetTrigger`/`DropdownMenuTrigger` child.
+ */
+export const HeaderAction = forwardRef<HTMLButtonElement | HTMLAnchorElement, HeaderActionProps>(
+	function HeaderAction(
+		{
+			label,
+			children,
+			tooltip,
+			href,
+			external = true,
+			newTabLabel = "(opens in a new tab)",
+			className,
+			type,
+			...props
+		},
+		ref,
+	) {
+		const classes = cn(HEADER_ACTION_CLASS, className);
+		const control =
+			href !== undefined ? (
+				<LinkButton
+					ref={ref as Ref<HTMLAnchorElement>}
+					data-slot="header-action"
+					variant="ghost"
+					size="icon"
+					href={href}
+					aria-label={external ? `${label} ${newTabLabel}` : label}
+					target={external ? "_blank" : undefined}
+					rel={external ? "noopener noreferrer" : undefined}
+					className={classes}
+					{...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
+				>
+					{children}
+					<span className="sr-only">{label}</span>
+				</LinkButton>
+			) : (
+				<Button
+					ref={ref as Ref<HTMLButtonElement>}
+					data-slot="header-action"
+					type={type ?? "button"}
+					variant="ghost"
+					size="icon"
+					aria-label={label}
+					className={classes}
+					{...props}
+				>
+					{children}
+				</Button>
+			);
+		if (tooltip === false) return control;
+		return (
+			<TooltipProvider delayDuration={0}>
+				<Tooltip>
+					<TooltipTrigger asChild>{control}</TooltipTrigger>
+					<TooltipContent side="bottom" sideOffset={6}>
+						{tooltip ?? label}
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		);
+	},
+);
 
 export function AppHeader({
 	leading,

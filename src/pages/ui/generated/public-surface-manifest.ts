@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.2.6",
 	"totalModules": 131,
-	"totalSymbols": 787,
-	"totalValues": 410,
-	"totalTypes": 377,
+	"totalSymbols": 789,
+	"totalValues": 411,
+	"totalTypes": 378,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2484,6 +2484,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"symbols": [
 				{
 					"name": "AppHeader",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderActionProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
+					"ownerKind": "framework-chrome",
+					"originModule": "@nocoo/basalt/components/app-header"
+				},
+				{
+					"name": "HeaderAction",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "INTEGRATION.md#appheader-and-breadcrumbs",
