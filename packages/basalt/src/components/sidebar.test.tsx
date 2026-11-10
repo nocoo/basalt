@@ -798,6 +798,74 @@ describe("Sidebar", () => {
 		expect(button).toHaveClass("rail-item");
 	});
 
+	it("collapses SidebarUser to its avatar with a rail tooltip", async () => {
+		const { rerender } = render(
+			<SidebarProvider collapsed>
+				<Sidebar>
+					<SidebarFooter>
+						<SidebarUser
+							name="Ada"
+							email="ada@hexly.ai"
+							avatar={<span>AV</span>}
+							action={<button type="button">Menu</button>}
+						/>
+					</SidebarFooter>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("AV")).toBeInTheDocument();
+		expect(screen.queryByText("ada@hexly.ai")).toBeNull();
+		expect(screen.queryByRole("button", { name: "Menu" })).toBeNull();
+		const user = screen.getByText("AV").closest('[data-slot="sidebar-user"]');
+		expect(user).toHaveAttribute("data-collapsed");
+		const trigger = screen.getByText("AV").closest('[data-slot="sidebar-user-avatar"]');
+		if (!trigger) throw new Error("Missing collapsed avatar trigger");
+		const event = new MouseEvent("pointermove", { bubbles: true });
+		Object.defineProperty(event, "pointerType", { value: "mouse" });
+		act(() => {
+			trigger.dispatchEvent(event);
+		});
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Ada");
+		rerender(
+			<SidebarProvider collapsed>
+				<Sidebar>
+					<SidebarFooter>
+						<SidebarUser name="Ada" tooltip="Ada (owner)" />
+					</SidebarFooter>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByText("AV")).toBeNull();
+		expect(document.querySelector('[data-slot="sidebar-user"]')).toBeNull();
+	});
+
+	it("shows the full SidebarUser row while a collapsed rail peeks", () => {
+		const { container } = render(
+			<SidebarProvider collapsed peek>
+				<Sidebar>
+					<SidebarFooter>
+						<SidebarUser
+							name="Ada"
+							email="ada@hexly.ai"
+							avatar={<span>AV</span>}
+							tooltip="Ada (owner)"
+						/>
+					</SidebarFooter>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByText("ada@hexly.ai")).toBeNull();
+		const sidebar = container.querySelector<HTMLElement>("[data-basalt-sidebar]");
+		if (!sidebar) throw new Error("Missing sidebar");
+		fireEvent.mouseEnter(sidebar);
+		expect(screen.getByText("ada@hexly.ai")).toBeInTheDocument();
+		expect(screen.getByText("Ada")).toBeInTheDocument();
+		expect(screen.queryByText("Ada (owner)")).toBeNull();
+		expect(screen.getByText("AV").closest('[data-slot="sidebar-user"]')).not.toHaveAttribute(
+			"data-collapsed",
+		);
+	});
+
 	it("renders SidebarUser slots and drops email when omitted", () => {
 		const { rerender, container } = render(
 			<SidebarUser

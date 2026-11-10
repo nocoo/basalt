@@ -465,7 +465,7 @@ SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, sem
 
 Control `collapsed` through `SidebarProvider`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
 
-The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary at the 24px `--basalt-size-sidebar-logo` size, centered on the rail axis (pass an `img`/`svg`, optionally wrapped in one link, without size classes), and moves its action below the header, where a `SidebarToggle` takes the same 34×38px row box as `SidebarSearch` and `SidebarIconItem`; the footer remains left-aligned with the avatar fixed 16px from the rail edge. `SidebarSearch` and `SidebarIconItem` keep the 34px control width and 20px sidebar icon size, and derive their 38px minimum height from the sidebar line box and padding. The navigation region centers icon rows on that same rail axis without caller margin overrides. `SidebarSearch` automatically exposes its collapsed tooltip and accessible name; keep the same instance in both states.
+The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary at the 24px `--basalt-size-sidebar-logo` size, centered on the rail axis (pass an `img`/`svg`, optionally wrapped in one link, without size classes), and moves its action below the header, where a `SidebarToggle` takes the same 34×38px row box as `SidebarSearch` and `SidebarIconItem`; the footer remains left-aligned with the avatar fixed 16px from the rail edge. `SidebarSearch` and `SidebarIconItem` keep the 34px control width and 20px sidebar icon size, and derive their 38px minimum height from the sidebar line box and padding. The navigation region centers icon rows on that same rail axis without caller margin overrides. `SidebarSearch` automatically exposes its collapsed tooltip and accessible name; keep the same instance in both states. `SidebarUser` does the same for the footer: on a collapsed, non-peeking rail it renders only its `avatar` (in the same position as the expanded row) with a right-side tooltip showing `tooltip` (default `name`), and hides `email` and `action`. Render one `SidebarUser` in both states; do not branch on `collapsed` or hand-write an avatar tooltip.
 
 ```tsx excerpt:sidebar-collapsed-structure
 <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
@@ -492,10 +492,7 @@ The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationar
 			))}
 		</SidebarNav>
 		<SidebarFooter>
-			<Tooltip delayDuration={0}>
-				<TooltipTrigger asChild><span className="inline-flex">{avatar}</span></TooltipTrigger>
-				<TooltipContent side="right" sideOffset={8}>{name}</TooltipContent>
-			</Tooltip>
+			<SidebarUser name={name} email={email} avatar={avatar} />
 		</SidebarFooter>
 	</Sidebar>
 </SidebarProvider>;

@@ -932,18 +932,55 @@ export interface SidebarUserProps {
 	 */
 	avatar?: ReactNode;
 	/**
-	 * Trailing action slot (e.g. settings or logout button).
+	 * Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail.
 	 */
 	action?: ReactNode;
+	/**
+	 * Tooltip shown beside the avatar on the collapsed rail.
+	 * @default name
+	 */
+	tooltip?: ReactNode;
 	/**
 	 * Additional CSS class name.
 	 */
 	className?: string;
 }
 
-export function SidebarUser({ name, email, avatar, action, className }: SidebarUserProps) {
+/**
+ * Footer identity row. Inside a collapsed `SidebarProvider` rail (and not peeking) it renders only
+ * the avatar, with `tooltip` (default `name`) on hover, so apps do not branch on `collapsed`.
+ */
+export function SidebarUser({ name, email, avatar, action, tooltip, className }: SidebarUserProps) {
+	const context = useContext(SidebarContext);
+	const collapsed = Boolean(context?.collapsed && !(context.peek && context.peeking));
+	if (collapsed) {
+		if (!avatar) return null;
+		return (
+			<div
+				data-slot="sidebar-user"
+				data-collapsed=""
+				className={cn("flex items-center", className)}
+			>
+				<TooltipProvider>
+					<Tooltip delayDuration={0}>
+						<TooltipTrigger asChild>
+							<span data-slot="sidebar-user-avatar" className="inline-flex shrink-0">
+								{avatar}
+							</span>
+						</TooltipTrigger>
+						<TooltipContent side={context?.side === "right" ? "left" : "right"} sideOffset={8}>
+							{tooltip ?? name}
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</div>
+		);
+	}
 	return (
-		<div className={cn("flex items-center gap-basalt-space-lg", className)}>
+		<div
+			data-slot="sidebar-user"
+			className={cn("flex items-center gap-basalt-space-lg", className)}
+		>
 			{avatar}
 			<div className="min-w-0 flex-1">
 				<p className="truncate text-basalt-base font-medium text-basalt-foreground">{name}</p>

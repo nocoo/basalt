@@ -303,7 +303,14 @@ export const API = [
 				name: "action",
 				type: "React.ReactNode",
 				required: false,
-				description: "Trailing action slot (e.g. settings or logout button).",
+				description: "Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail.",
+			},
+			{
+				name: "tooltip",
+				type: "React.ReactNode",
+				required: false,
+				default: "name",
+				description: "Tooltip shown beside the avatar on the collapsed rail.",
 			},
 			{
 				name: "className",

@@ -23491,7 +23491,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "91b229981baef312",
+			"sourceHash": "b5e4b490f898773e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -24060,7 +24060,14 @@
 									"name": "action",
 									"type": "React.ReactNode",
 									"required": false,
-									"description": "Trailing action slot (e.g. settings or logout button)."
+									"description": "Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail."
+								},
+								{
+									"name": "tooltip",
+									"type": "React.ReactNode",
+									"required": false,
+									"default": "name",
+									"description": "Tooltip shown beside the avatar on the collapsed rail."
 								},
 								{
 									"name": "className",
@@ -24458,7 +24465,14 @@
 							"name": "action",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Trailing action slot (e.g. settings or logout button)."
+							"description": "Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail."
+						},
+						{
+							"name": "tooltip",
+							"type": "React.ReactNode",
+							"required": false,
+							"default": "name",
+							"description": "Tooltip shown beside the avatar on the collapsed rail."
 						},
 						{
 							"name": "className",
@@ -36448,7 +36462,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "91b229981baef312",
+			"sourceHash": "b5e4b490f898773e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -36754,7 +36768,14 @@
 							"name": "action",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Trailing action slot (e.g. settings or logout button)."
+							"description": "Trailing action slot (e.g. settings or logout button). Hidden on the collapsed rail."
+						},
+						{
+							"name": "tooltip",
+							"type": "React.ReactNode",
+							"required": false,
+							"default": "name",
+							"description": "Tooltip shown beside the avatar on the collapsed rail."
 						},
 						{
 							"name": "className",

@@ -561,40 +561,26 @@ export function AppSidebar({
 					)}
 				</SidebarNav>
 				<SidebarFooter>
-					{collapsed ? (
-						<Tooltip delayDuration={0}>
-							<TooltipTrigger asChild>
-								<Avatar className="h-9 w-9 cursor-pointer">
-									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-								</Avatar>
-							</TooltipTrigger>
-							<TooltipContent side="right" sideOffset={8}>
-								Zheng Li
-							</TooltipContent>
-						</Tooltip>
-					) : (
-						<SidebarUser
-							name="Zheng Li"
-							email="zhengli@example.com"
-							avatar={
-								<Avatar className="h-9 w-9 shrink-0">
-									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-								</Avatar>
-							}
-							action={
-								<Button
-									variant="ghost"
-									size="icon-sm"
-									className="shrink-0"
-									aria-label={t("common.logOut")}
-								>
-									<LogOut aria-hidden="true" />
-								</Button>
-							}
-						/>
-					)}
+					<SidebarUser
+						name="Zheng Li"
+						email="zhengli@example.com"
+						avatar={
+							<Avatar className="h-9 w-9 shrink-0">
+								<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+								<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
+							</Avatar>
+						}
+						action={
+							<Button
+								variant="ghost"
+								size="icon-sm"
+								className="shrink-0"
+								aria-label={t("common.logOut")}
+							>
+								<LogOut aria-hidden="true" />
+							</Button>
+						}
+					/>
 				</SidebarFooter>
 				<CommandPalette
 					open={searchOpen}
