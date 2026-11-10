@@ -136,6 +136,26 @@ export const API = [
 				default: "\"Collapse sidebar\"",
 				description: "Accessible label while the sidebar is expanded.",
 			},
+			{
+				name: "mode",
+				type: "\"dismiss\" | \"toggle\"",
+				required: false,
+				default: "\"toggle\"",
+				description: "`toggle` collapses or expands the sidebar through context and shows a tooltip.\n`dismiss` closes a drawer that hosts the sidebar (for example a mobile `Sheet`): it calls\n`onDismiss`, never changes the collapsed state and renders no tooltip, so a drawer that\nauto-focuses the button still closes on the first Escape.",
+			},
+			{
+				name: "onDismiss",
+				type: "() => void",
+				required: false,
+				description: "Called on click in `dismiss` mode unless the click handler prevented default.",
+			},
+			{
+				name: "dismissLabel",
+				type: "string",
+				required: false,
+				default: "\"Close navigation\"",
+				description: "Accessible label in `dismiss` mode.",
+			},
 		],
 	},
 	{

@@ -9,6 +9,7 @@
 		"expandSidebar": "展开侧栏",
 		"collapseSidebar": "折叠侧栏",
 		"openNav": "打开导航菜单",
+		"closeNav": "关闭导航菜单",
 		"logOut": "退出登录",
 		"github": "GitHub 仓库",
 		"toggleTheme": "切换主题，当前：{{theme}}",

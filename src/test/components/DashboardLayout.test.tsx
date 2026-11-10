@@ -230,14 +230,16 @@ describe("DashboardLayout", () => {
 		expect(document.body.style.overflow).toBe("");
 	});
 
-	it("restores focus to the trigger button when dismissed via the collapse sidebar button inside drawer", async () => {
+	it("restores focus to the trigger button when dismissed via the drawer close button", async () => {
 		renderLayout("/");
 		const openButton = screen.getByLabelText("Open navigation menu");
 		fireEvent.click(openButton);
 
-		// Inside the drawer, click the collapse/toggle button
-		const collapseButton = screen.getByRole("button", { name: "Collapse sidebar" });
-		fireEvent.click(collapseButton);
+		// Inside the drawer, the brand action is a dismiss-mode SidebarToggle
+		expect(screen.queryByRole("button", { name: "Collapse sidebar" })).not.toBeInTheDocument();
+		const closeButton = screen.getByRole("button", { name: "Close navigation menu" });
+		expect(closeButton).toHaveAttribute("data-mode", "dismiss");
+		fireEvent.click(closeButton);
 
 		await waitFor(() => {
 			expect(openButton).toHaveFocus();

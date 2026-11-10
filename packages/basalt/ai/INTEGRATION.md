@@ -511,6 +511,8 @@ Portaled UI (`CommandPalette`, dialogs) may be a sibling of these regions inside
 
 Standard product shell: pass React state `collapsed` and `onCollapsedChange` to `SidebarProvider`; `SidebarToggle` updates that state. Motion is already on `Sidebar`. The provider also supports peek-on-hover, overlay mode and resize. Set `resizable={false}` on a Sidebar inside a fixed-width Sheet.
 
+Inside a mobile `Sheet` that hosts the sidebar, use `<SidebarToggle mode="dismiss" onDismiss={() => setOpen(false)} dismissLabel="Close navigation" />` in the `SidebarBrand` action slot. Dismiss mode keeps the same 28px icon button and `data-slot="sidebar-toggle"`, never changes the collapsed state, does not need a `SidebarProvider` and renders no tooltip, so a drawer that auto-focuses it still closes on the first Escape.
+
 ---
 
 ## 9. Mobile

@@ -137,7 +137,12 @@ export function DashboardLayout() {
 						}}
 					>
 						<SheetTitle className="sr-only">{t("common.openNav")}</SheetTitle>
-						<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} resizable={false} />
+						<AppSidebar
+							collapsed={false}
+							onToggle={() => setMobileOpen(false)}
+							resizable={false}
+							drawer
+						/>
 					</SheetContent>
 				</Sheet>
 			)}

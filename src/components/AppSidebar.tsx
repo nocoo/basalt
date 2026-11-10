@@ -459,9 +459,16 @@ interface AppSidebarProps {
 	collapsed: boolean;
 	onToggle: () => void;
 	resizable?: boolean;
+	/** Rendered inside the mobile Sheet: the brand action closes the drawer instead of collapsing. */
+	drawer?: boolean;
 }
 
-export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebarProps) {
+export function AppSidebar({
+	collapsed,
+	onToggle,
+	resizable = true,
+	drawer = false,
+}: AppSidebarProps) {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const { t } = useTranslation();
@@ -518,11 +525,20 @@ export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebar
 						name="basalt."
 						version={`v${APP_VERSION}`}
 						action={
-							<SidebarToggle
-								data-sidebar-toggle=""
-								collapseLabel={t("common.collapseSidebar")}
-								expandLabel={t("common.expandSidebar")}
-							/>
+							drawer ? (
+								<SidebarToggle
+									data-sidebar-toggle=""
+									mode="dismiss"
+									dismissLabel={t("common.closeNav")}
+									onDismiss={onToggle}
+								/>
+							) : (
+								<SidebarToggle
+									data-sidebar-toggle=""
+									collapseLabel={t("common.collapseSidebar")}
+									expandLabel={t("common.expandSidebar")}
+								/>
+							)
 						}
 					/>
 				</SidebarHeader>

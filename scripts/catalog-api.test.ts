@@ -4953,6 +4953,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "ResourceList"');
 		expect(joined).toContain('name: "DeleteResource"');
 		expect(joined).toContain('type: "ChartSeriesDescriptor[]"');
+		expect(joined).toContain('name: "dismissLabel"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -4960,7 +4961,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"19da779b96d29a0b73db23a2403a72c860149c1b61e6363e348591ccd50c0746",
+			"ff7e315370c536b70d0d301861a016861bcaccd19eadff20d5a76d3ac8372989",
 		);
 	}, 60_000);
 

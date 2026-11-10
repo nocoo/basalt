@@ -9,6 +9,7 @@
 		"expandSidebar": "Expand sidebar",
 		"collapseSidebar": "Collapse sidebar",
 		"openNav": "Open navigation menu",
+		"closeNav": "Close navigation menu",
 		"logOut": "Log out",
 		"github": "GitHub repository",
 		"toggleTheme": "Toggle theme, currently {{theme}}",
