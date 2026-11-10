@@ -486,10 +486,11 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 	if (collapsed) {
 		assert.equal(geometry.width, 68);
 		assert.equal(geometry.paddingInline, "17px");
-		assert.equal(geometry.paddingTop, "36px");
+		// Collapsed nav reserves the 38px toggle row plus the 8px gap above search.
+		assert.equal(geometry.paddingTop, "46px");
 		assert.equal(geometry.paddingBottom, "8px");
-		assert.deepEqual(geometry.directDestinationTops, [78, 120, 162], JSON.stringify(geometry));
-		assert.equal(geometry.search.top, 36, JSON.stringify(geometry));
+		assert.deepEqual(geometry.directDestinationTops, [88, 130, 172], JSON.stringify(geometry));
+		assert.equal(geometry.search.top, 46, JSON.stringify(geometry));
 		assert.equal(geometry.search.height, 38, JSON.stringify(geometry));
 		assert.equal(geometry.search.hoverItem, true, JSON.stringify(geometry));
 		assert.equal(geometry.search.left, 17, JSON.stringify(geometry));
