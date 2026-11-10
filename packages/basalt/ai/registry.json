@@ -23491,7 +23491,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "87c2b37abaff2bcf",
+			"sourceHash": "e716e0e0c6411d15",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23866,7 +23866,7 @@
 									"name": "version",
 									"type": "React.ReactNode",
 									"required": false,
-									"description": "Optional version or release metadata, rendered at the auxiliary type size."
+									"description": "Optional version or release metadata, rendered as a secondary badge at the auxiliary type size."
 								},
 								{
 									"name": "action",
@@ -24244,7 +24244,7 @@
 							"name": "version",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Optional version or release metadata, rendered at the auxiliary type size."
+							"description": "Optional version or release metadata, rendered as a secondary badge at the auxiliary type size."
 						},
 						{
 							"name": "action",
@@ -36408,7 +36408,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "87c2b37abaff2bcf",
+			"sourceHash": "e716e0e0c6411d15",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -36520,7 +36520,7 @@
 							"name": "version",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Optional version or release metadata, rendered at the auxiliary type size."
+							"description": "Optional version or release metadata, rendered as a secondary badge at the auxiliary type size."
 						},
 						{
 							"name": "action",

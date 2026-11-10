@@ -19,6 +19,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { NAV_ITEM_CLASS, NAV_LIST_CLASS, NAV_ROW_CLASS } from "../utils/navigation";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
+import { Badge } from "./badge";
 import { Button, type ButtonProps } from "./button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
@@ -428,7 +429,7 @@ export interface SidebarBrandProps extends Omit<HTMLAttributes<HTMLDivElement>, 
 	logo: ReactNode;
 	/** Product or workspace name. */
 	name: ReactNode;
-	/** Optional version or release metadata, rendered at the auxiliary type size. */
+	/** Optional version or release metadata, rendered as a secondary badge at the auxiliary type size. */
 	version?: ReactNode;
 	/** Optional trailing action, conventionally a `SidebarToggle`. */
 	action?: ReactNode;
@@ -457,7 +458,13 @@ export function SidebarBrand({
 			<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap overflow-hidden whitespace-nowrap">
 				<span className="min-w-0 flex-1 truncate text-basalt-base font-semibold">{name}</span>
 				{version != null ? (
-					<span className="shrink-0 text-basalt-sm text-basalt-muted-foreground">{version}</span>
+					<Badge
+						data-slot="sidebar-brand-version"
+						variant="secondary"
+						className="shrink-0 text-basalt-muted-foreground"
+					>
+						{version}
+					</Badge>
 				) : null}
 			</div>
 			{action ? (

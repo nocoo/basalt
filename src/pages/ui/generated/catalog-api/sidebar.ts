@@ -109,7 +109,7 @@ export const API = [
 				name: "version",
 				type: "React.ReactNode",
 				required: false,
-				description: "Optional version or release metadata, rendered at the auxiliary type size.",
+				description: "Optional version or release metadata, rendered as a secondary badge at the auxiliary type size.",
 			},
 			{
 				name: "action",

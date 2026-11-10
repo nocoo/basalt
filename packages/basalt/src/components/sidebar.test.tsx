@@ -72,7 +72,7 @@ describe("Sidebar", () => {
 		);
 	});
 
-	it("keeps the brand slot fixed while exposing a 12px version and action", () => {
+	it("keeps the brand slot fixed while exposing a version badge and action", () => {
 		const { container, rerender } = render(
 			<SidebarBrand
 				logo={
@@ -92,7 +92,15 @@ describe("Sidebar", () => {
 			"[&>svg]:size-full",
 			"[&>a>img]:size-full",
 		);
-		expect(screen.getByText("v1.2.3")).toHaveClass("text-basalt-sm");
+		const version = screen.getByText("v1.2.3");
+		expect(version).toHaveAttribute("data-slot", "sidebar-brand-version");
+		expect(version).toHaveClass(
+			"basalt-inline",
+			"rounded-basalt-full",
+			"bg-basalt-secondary",
+			"text-basalt-muted-foreground",
+			"shrink-0",
+		);
 		expect(container.querySelector('[data-slot="sidebar-brand-action"]')).toHaveClass(
 			"basalt-sidebar-brand-action",
 		);
