@@ -13,6 +13,7 @@ import { Link } from "@nocoo/basalt/components/link";
 import { Separator } from "@nocoo/basalt/components/separator";
 import {
 	Sidebar,
+	SidebarBrand,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
@@ -20,7 +21,9 @@ import {
 	SidebarItem,
 	SidebarNav,
 	SidebarPartition,
+	SidebarProvider,
 	SidebarSearch,
+	SidebarToggle,
 	SidebarUser,
 } from "@nocoo/basalt/components/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@nocoo/basalt/components/tooltip";
@@ -119,7 +122,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
 import { BasaltLogo } from "@/components/BasaltLogo";
-import { cn } from "@/lib/utils";
 import { APP_VERSION } from "@/lib/version";
 import {
 	CATALOG,
@@ -333,8 +335,6 @@ const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category, index) => (
 
 const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), ...LIBRARY_LEAD];
 
-const SIDEBAR_MARK_SLOT_CLASS = "flex w-full items-center";
-
 function itemTitle(item: NavItem, t: (key: string) => string) {
 	return item.title ?? t(item.titleKey ?? "");
 }
@@ -354,24 +354,10 @@ function catalogCommandValue(entry: CatalogEntry) {
 }
 
 function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: string }) {
-	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const isPlanned = item.pageStatus === "planned";
-	return (
-		<SidebarItem
-			aria-label={item.accessibleTitle}
-			active={!isPlanned && !item.external && currentPath === item.path}
-			disabled={isPlanned}
-			data-catalog-slug={item.catalogSlug}
-			onClick={
-				isPlanned
-					? undefined
-					: () =>
-							item.external
-								? window.open(item.path, "_blank", "noopener,noreferrer")
-								: navigate(item.path)
-			}
-		>
+	const content = (
+		<>
 			<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 			<span className="flex-1 truncate text-left">{itemTitle(item, t)}</span>
 			{item.external ? (
@@ -391,6 +377,25 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 					Planned
 				</Badge>
 			) : null}
+		</>
+	);
+	if (isPlanned) {
+		return (
+			<SidebarItem aria-label={item.accessibleTitle} disabled data-catalog-slug={item.catalogSlug}>
+				{content}
+			</SidebarItem>
+		);
+	}
+	return (
+		<SidebarItem
+			href={item.path}
+			aria-label={item.accessibleTitle}
+			active={!item.external && currentPath === item.path}
+			data-catalog-slug={item.catalogSlug}
+			target={item.external ? "_blank" : undefined}
+			rel={item.external ? "noopener noreferrer" : undefined}
+		>
+			{content}
 		</SidebarItem>
 	);
 }
@@ -422,19 +427,16 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 }
 
 function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: string }) {
-	const navigate = useNavigate();
 	const { t } = useTranslation();
 	return (
 		<Tooltip delayDuration={0}>
 			<TooltipTrigger asChild>
 				<SidebarIconItem
+					href={item.path}
 					active={!item.external && currentPath === item.path}
 					aria-label={itemTitle(item, t)}
-					onClick={() =>
-						item.external
-							? window.open(item.path, "_blank", "noopener,noreferrer")
-							: navigate(item.path)
-					}
+					target={item.external ? "_blank" : undefined}
+					rel={item.external ? "noopener noreferrer" : undefined}
 				>
 					<item.icon className="h-4 w-4" strokeWidth={1.5} />
 					{item.badge ? (
@@ -456,9 +458,10 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 interface AppSidebarProps {
 	collapsed: boolean;
 	onToggle: () => void;
+	resizable?: boolean;
 }
 
-export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
+export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebarProps) {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const { t } = useTranslation();
@@ -503,189 +506,175 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 	);
 
 	return (
-		<Sidebar collapsed={collapsed}>
-			<SidebarHeader>
-				<div
-					className={cn(
-						SIDEBAR_MARK_SLOT_CLASS,
-						collapsed ? "justify-center" : "justify-between pl-basalt-layout-sm",
-					)}
-				>
-					<Link
-						href="/"
-						aria-label={t("nav.home")}
-						className="flex items-center gap-basalt-space-lg text-basalt-foreground no-underline hover:no-underline"
-					>
-						<BasaltLogo alt="" className="h-7 w-7 shrink-0 object-contain" />
-						{collapsed ? null : (
-							<>
-								<span className="text-basalt-xl font-semibold text-basalt-foreground">basalt.</span>
-								<span className="rounded-basalt-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-basalt-sm leading-basalt-tight font-medium text-basalt-muted-foreground">
-									v{APP_VERSION}
-								</span>
-							</>
-						)}
-					</Link>
-					{collapsed ? null : (
-						<Button
-							variant="ghost"
-							size="icon"
-							className="w-7"
-							onClick={onToggle}
-							aria-label={t("common.collapseSidebar")}
-						>
-							<PanelLeft aria-hidden="true" />
-						</Button>
-					)}
-				</div>
-			</SidebarHeader>
-			{collapsed ? (
-				<>
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={onToggle}
-						aria-label={t("common.expandSidebar")}
-						className="mb-basalt-space-sm self-center"
-					>
-						<PanelLeft aria-hidden="true" />
-					</Button>
-					<SidebarNav>
-						<Tooltip delayDuration={0}>
-							<TooltipTrigger asChild>
-								<SidebarIconItem
-									onClick={() => setSearchOpen(true)}
-									aria-label={`${t("common.search")} (⌘K)`}
-								>
-									<Search aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
-								</SidebarIconItem>
-							</TooltipTrigger>
-							<TooltipContent side="right" sideOffset={8}>
-								{t("common.search")} (⌘K)
-							</TooltipContent>
-						</Tooltip>
-						{ALL_NAV_ITEMS.map((item) => (
-							<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
-						))}
-					</SidebarNav>
-					<SidebarFooter>
-						<Tooltip delayDuration={0}>
-							<TooltipTrigger asChild>
-								<Avatar className="h-9 w-9 cursor-pointer">
-									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-								</Avatar>
-							</TooltipTrigger>
-							<TooltipContent side="right" sideOffset={8}>
-								Zheng Li
-							</TooltipContent>
-						</Tooltip>
-					</SidebarFooter>
-				</>
-			) : (
-				<>
-					<div className="px-basalt-nav-inset">
-						<SidebarSearch onClick={() => setSearchOpen(true)}>{t("common.search")}</SidebarSearch>
-					</div>
-					<SidebarNav>
-						<SidebarPartition>{t("nav.examples")}</SidebarPartition>
-						{NAV_GROUPS.map((group) => (
-							<NavGroupSection key={group.labelKey} group={group} currentPath={pathname} />
-						))}
-						<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
-						<SidebarPartition>{t("nav.kit")}</SidebarPartition>
-						<LibraryNav currentPath={pathname} />
-					</SidebarNav>
-					<SidebarFooter>
-						<SidebarUser
-							name="Zheng Li"
-							email="zhengli@example.com"
-							avatar={
-								<Avatar className="h-9 w-9 shrink-0">
-									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-								</Avatar>
-							}
-							action={
-								<Button
-									variant="ghost"
-									size="icon"
-									className="w-8 shrink-0"
-									aria-label={t("common.logOut")}
-								>
-									<LogOut aria-hidden="true" />
-								</Button>
-							}
-						/>
-					</SidebarFooter>
-				</>
-			)}
-			<CommandPalette open={searchOpen} onOpenChange={handleSearchOpenChange} shouldFilter={false}>
-				<CommandInput
-					placeholder={t("common.searchPages")}
-					value={searchQuery}
-					onValueChange={setSearchQuery}
-				/>
-				<CommandList>
-					<CommandEmpty>{t("common.noResults")}</CommandEmpty>
-					{commandNavGroups.map((group) => (
-						<CommandGroup key={group.labelKey} heading={groupLabel(group, t)}>
-							{group.items.map((item) => (
-								<CommandItem
-									key={item.path}
-									value={itemTitle(item, t)}
-									onSelect={() => handleSelect(item.path)}
-									className="cursor-pointer gap-basalt-space-lg"
-								>
-									<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-									<span>{itemTitle(item, t)}</span>
-								</CommandItem>
-							))}
-						</CommandGroup>
-					))}
-					{commandLibraryLead.length > 0 || commandCatalogEntries.length > 0 ? (
-						<CommandGroup heading={t("nav.kit")}>
-							{commandLibraryLead.map((item) => (
-								<CommandItem
-									key={item.path}
-									value={`${item.accessibleTitle ?? itemTitle(item, t)} ${item.path}`}
-									onSelect={() => handleSelect(item.path)}
-									className="cursor-pointer gap-basalt-space-lg"
-								>
-									<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-									<span>{item.accessibleTitle ?? itemTitle(item, t)}</span>
-								</CommandItem>
-							))}
-							{commandCatalogEntries.map((entry) => {
-								const isPlanned = CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug) === "planned";
-								return (
-									<CommandItem
-										key={entry.slug}
-										value={catalogCommandValue(entry)}
-										disabled={isPlanned}
-										data-catalog-slug={entry.slug}
-										onSelect={isPlanned ? undefined : () => handleSelect(`/ui/${entry.slug}`)}
-										className={
-											isPlanned ? "gap-basalt-space-lg" : "cursor-pointer gap-basalt-space-lg"
-										}
+		<SidebarProvider collapsed={collapsed} onCollapsedChange={onToggle}>
+			<Sidebar resizable={resizable}>
+				<SidebarHeader>
+					<SidebarBrand
+						logo={
+							<Link href="/" aria-label={t("nav.home")} className="no-underline hover:no-underline">
+								<BasaltLogo
+									alt=""
+									data-sidebar-brand-image=""
+									className="size-basalt-5 shrink-0 object-contain"
+								/>
+							</Link>
+						}
+						name="basalt."
+						version={`v${APP_VERSION}`}
+						action={
+							<SidebarToggle
+								data-sidebar-toggle=""
+								collapseLabel={t("common.collapseSidebar")}
+								expandLabel={t("common.expandSidebar")}
+							/>
+						}
+					/>
+				</SidebarHeader>
+				{collapsed ? (
+					<>
+						<SidebarNav>
+							<Tooltip delayDuration={0}>
+								<TooltipTrigger asChild>
+									<SidebarIconItem
+										onClick={() => setSearchOpen(true)}
+										aria-label={`${t("common.search")} (⌘K)`}
 									>
-										<span>{catalogNavName(entry)}</span>
-										{isPlanned ? (
-											<Badge
-												variant="outline"
-												data-page-status="planned"
-												className="ml-auto shrink-0"
-											>
-												Planned
-											</Badge>
-										) : null}
+										<Search aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+									</SidebarIconItem>
+								</TooltipTrigger>
+								<TooltipContent side="right" sideOffset={8}>
+									{t("common.search")} (⌘K)
+								</TooltipContent>
+							</Tooltip>
+							{ALL_NAV_ITEMS.map((item) => (
+								<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
+							))}
+						</SidebarNav>
+						<SidebarFooter>
+							<Tooltip delayDuration={0}>
+								<TooltipTrigger asChild>
+									<Avatar className="h-9 w-9 cursor-pointer">
+										<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+										<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
+									</Avatar>
+								</TooltipTrigger>
+								<TooltipContent side="right" sideOffset={8}>
+									Zheng Li
+								</TooltipContent>
+							</Tooltip>
+						</SidebarFooter>
+					</>
+				) : (
+					<>
+						<div className="px-basalt-layout">
+							<SidebarSearch onClick={() => setSearchOpen(true)}>
+								{t("common.search")}
+							</SidebarSearch>
+						</div>
+						<SidebarNav>
+							<SidebarPartition>{t("nav.examples")}</SidebarPartition>
+							{NAV_GROUPS.map((group) => (
+								<NavGroupSection key={group.labelKey} group={group} currentPath={pathname} />
+							))}
+							<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
+							<SidebarPartition>{t("nav.kit")}</SidebarPartition>
+							<LibraryNav currentPath={pathname} />
+						</SidebarNav>
+						<SidebarFooter>
+							<SidebarUser
+								name="Zheng Li"
+								email="zhengli@example.com"
+								avatar={
+									<Avatar className="h-9 w-9 shrink-0">
+										<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+										<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
+									</Avatar>
+								}
+								action={
+									<Button
+										variant="ghost"
+										size="icon-sm"
+										className="shrink-0"
+										aria-label={t("common.logOut")}
+									>
+										<LogOut aria-hidden="true" />
+									</Button>
+								}
+							/>
+						</SidebarFooter>
+					</>
+				)}
+				<CommandPalette
+					open={searchOpen}
+					onOpenChange={handleSearchOpenChange}
+					shouldFilter={false}
+				>
+					<CommandInput
+						placeholder={t("common.searchPages")}
+						value={searchQuery}
+						onValueChange={setSearchQuery}
+					/>
+					<CommandList>
+						<CommandEmpty>{t("common.noResults")}</CommandEmpty>
+						{commandNavGroups.map((group) => (
+							<CommandGroup key={group.labelKey} heading={groupLabel(group, t)}>
+								{group.items.map((item) => (
+									<CommandItem
+										key={item.path}
+										value={itemTitle(item, t)}
+										onSelect={() => handleSelect(item.path)}
+										className="cursor-pointer gap-basalt-space-lg"
+									>
+										<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+										<span>{itemTitle(item, t)}</span>
 									</CommandItem>
-								);
-							})}
-						</CommandGroup>
-					) : null}
-				</CommandList>
-			</CommandPalette>
-		</Sidebar>
+								))}
+							</CommandGroup>
+						))}
+						{commandLibraryLead.length > 0 || commandCatalogEntries.length > 0 ? (
+							<CommandGroup heading={t("nav.kit")}>
+								{commandLibraryLead.map((item) => (
+									<CommandItem
+										key={item.path}
+										value={`${item.accessibleTitle ?? itemTitle(item, t)} ${item.path}`}
+										onSelect={() => handleSelect(item.path)}
+										className="cursor-pointer gap-basalt-space-lg"
+									>
+										<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+										<span>{item.accessibleTitle ?? itemTitle(item, t)}</span>
+									</CommandItem>
+								))}
+								{commandCatalogEntries.map((entry) => {
+									const isPlanned = CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug) === "planned";
+									return (
+										<CommandItem
+											key={entry.slug}
+											value={catalogCommandValue(entry)}
+											disabled={isPlanned}
+											data-catalog-slug={entry.slug}
+											onSelect={isPlanned ? undefined : () => handleSelect(`/ui/${entry.slug}`)}
+											className={
+												isPlanned ? "gap-basalt-space-lg" : "cursor-pointer gap-basalt-space-lg"
+											}
+										>
+											<span>{catalogNavName(entry)}</span>
+											{isPlanned ? (
+												<Badge
+													variant="outline"
+													data-page-status="planned"
+													className="ml-auto shrink-0"
+												>
+													Planned
+												</Badge>
+											) : null}
+										</CommandItem>
+									);
+								})}
+							</CommandGroup>
+						) : null}
+					</CommandList>
+				</CommandPalette>
+			</Sidebar>
+		</SidebarProvider>
 	);
 }

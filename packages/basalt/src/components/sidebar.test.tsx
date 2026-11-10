@@ -1,17 +1,22 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { type RefObject, useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { type ReactNode, type RefObject, useState } from "react";
+import { describe, expect, expectTypeOf, it, vi } from "vitest";
+import { LinkProvider } from "../providers/link";
 import {
 	ContentIsland,
 	Sidebar,
+	SidebarBrand,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
 	SidebarIconItem,
+	type SidebarIconItemProps,
 	SidebarItem,
+	type SidebarItemProps,
 	SidebarNav,
 	SidebarProvider,
 	SidebarSearch,
+	SidebarToggle,
 	SidebarUser,
 	useSidebar,
 } from "./sidebar";
@@ -30,7 +35,11 @@ describe("Sidebar", () => {
 				<SidebarFooter>Footer</SidebarFooter>
 			</Sidebar>,
 		);
-		expect(screen.getByRole("navigation")).toHaveClass("basalt-hover-list", "p-basalt-nav-inset");
+		expect(screen.getByRole("navigation")).toHaveClass(
+			"basalt-hover-list",
+			"basalt-nav-list",
+			"basalt-sidebar-nav",
+		);
 		for (const name of ["Home", "Report"]) {
 			expect(screen.getByRole("button", { name })).toHaveClass(
 				"px-basalt-row-x",
@@ -51,15 +60,85 @@ describe("Sidebar", () => {
 		);
 		expect(group.closest('[data-slot="sidebar-group"]')).toHaveClass("pt-basalt-layout-sm");
 		expect(screen.getByRole("button", { name: "Home" })).toHaveClass("basalt-focus-inset");
-		expect(screen.getByText("Header")).toHaveClass("px-basalt-nav-inset");
+		expect(screen.getByText("Header")).toHaveClass("px-basalt-layout-lg");
 		expect(screen.getByText("Footer").closest('[data-slot="sidebar-footer"]')).toHaveClass(
-			"px-basalt-layout",
+			"px-basalt-layout-lg",
 			"pt-basalt-space-lg",
 			"pb-basalt-layout",
 		);
 		expect(screen.getByText("Footer").closest('[data-slot="sidebar-footer"]')).not.toHaveClass(
 			"px-basalt-nav-inset",
 		);
+	});
+
+	it("keeps the brand slot fixed while exposing a 12px version and action", () => {
+		const { container, rerender } = render(
+			<SidebarBrand
+				logo={
+					<span role="img" aria-label="Atlas logo">
+						A
+					</span>
+				}
+				name="Atlas"
+				version="v1.2.3"
+				action={<button type="button">Action</button>}
+			/>,
+		);
+		expect(container.querySelector('[data-slot="sidebar-brand"]')).toBeInTheDocument();
+		expect(container.querySelector('[data-slot="sidebar-brand-logo"]')).toHaveClass(
+			"w-basalt-sidebar-brand-slot",
+			"shrink-0",
+		);
+		expect(screen.getByText("v1.2.3")).toHaveClass("text-basalt-sm");
+		expect(container.querySelector('[data-slot="sidebar-brand-action"]')).toHaveClass(
+			"basalt-sidebar-brand-action",
+		);
+		rerender(<SidebarBrand logo="A" name="Atlas" />);
+		expect(screen.queryByText("v1.2.3")).not.toBeInTheDocument();
+		expect(container.querySelector('[data-slot="sidebar-brand-action"]')).toBeNull();
+	});
+
+	it("toggles through context with accessible expanded state", () => {
+		const onCollapsedChange = vi.fn();
+		const onClick = vi.fn();
+		render(
+			<SidebarProvider onCollapsedChange={onCollapsedChange}>
+				<SidebarToggle onClick={onClick} />
+			</SidebarProvider>,
+		);
+		const toggle = screen.getByRole("button", { name: "Collapse sidebar" });
+		expect(toggle).toHaveAttribute("aria-expanded", "true");
+		expect(toggle).toHaveClass("basalt-action-icon-sm");
+		fireEvent.click(toggle);
+		expect(onClick).toHaveBeenCalledOnce();
+		expect(onCollapsedChange).toHaveBeenCalledWith(true);
+		expect(toggle).toHaveAttribute("aria-expanded", "false");
+		expect(toggle).toHaveAccessibleName("Expand sidebar");
+	});
+
+	it("uses an explicit label on a right-side collapsed toggle", () => {
+		render(
+			<SidebarProvider defaultCollapsed side="right">
+				<SidebarToggle aria-label="Toggle navigation" />
+			</SidebarProvider>,
+		);
+		const toggle = screen.getByRole("button", { name: "Toggle navigation" });
+		expect(toggle).toHaveAttribute("aria-expanded", "false");
+	});
+
+	it("honors a prevented toggle click and custom labels", () => {
+		const onCollapsedChange = vi.fn();
+		render(
+			<SidebarProvider onCollapsedChange={onCollapsedChange}>
+				<SidebarToggle
+					expandLabel="Open navigation"
+					collapseLabel="Close navigation"
+					onClick={(event) => event.preventDefault()}
+				/>
+			</SidebarProvider>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Close navigation" }));
+		expect(onCollapsedChange).not.toHaveBeenCalled();
 	});
 	it("renders children on the L0 chrome", () => {
 		render(<Sidebar>Nav</Sidebar>);
@@ -94,15 +173,17 @@ describe("Sidebar", () => {
 		expect(nav).toHaveAttribute("data-collapsed");
 	});
 
-	it("shows loading placeholders", () => {
+	it("shows loading placeholders on the sidebar content column", () => {
 		render(
 			<SidebarProvider loading>
 				<Sidebar>Nav</Sidebar>
 			</SidebarProvider>,
 		);
 		expect(screen.queryByText("Nav")).not.toBeInTheDocument();
-		expect(screen.getByRole("status")).toBeInTheDocument();
-		expect(screen.getByRole("status").closest("aside")).toHaveAttribute("aria-busy");
+		const status = screen.getByRole("status");
+		expect(status).toHaveClass("px-basalt-layout-lg", "py-basalt-space-lg");
+		expect(status).not.toHaveClass("p-basalt-space-lg");
+		expect(status.closest("aside")).toHaveAttribute("aria-busy");
 	});
 
 	it("keeps a controlled collapsed value", () => {
@@ -175,6 +256,54 @@ describe("Sidebar", () => {
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 	});
 
+	it("closes a focused generic overlay on the first Escape and restores focus", async () => {
+		function Toggle() {
+			const { setCollapsed } = useSidebar();
+			return (
+				<button type="button" onClick={() => setCollapsed(false)}>
+					Open
+				</button>
+			);
+		}
+		render(
+			<SidebarProvider overlay defaultCollapsed>
+				<Toggle />
+				<Sidebar>
+					<SidebarToggle />
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		const open = screen.getByRole("button", { name: "Open" });
+		open.focus();
+		fireEvent.click(open);
+		const panel = screen.getByRole("dialog", { name: "Sidebar" });
+		await waitFor(() => expect(panel).toHaveFocus());
+		fireEvent.keyDown(document, { key: "Escape" });
+		await waitFor(() => {
+			expect(screen.queryByRole("dialog", { name: "Sidebar" })).not.toBeInTheDocument();
+			expect(open).toHaveFocus();
+		});
+	});
+
+	it("dismisses an active tooltip before its overlay", async () => {
+		render(
+			<SidebarProvider overlay>
+				<Sidebar>
+					<SidebarToggle />
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		act(() => screen.getByRole("button", { name: "Collapse sidebar" }).focus());
+		expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+		fireEvent.keyDown(document, { key: "Escape" });
+		await waitFor(() => expect(screen.queryByRole("tooltip")).not.toBeInTheDocument());
+		expect(screen.getByRole("dialog", { name: "Sidebar" })).toBeInTheDocument();
+		fireEvent.keyDown(document, { key: "Escape" });
+		await waitFor(() =>
+			expect(screen.queryByRole("dialog", { name: "Sidebar" })).not.toBeInTheDocument(),
+		);
+	});
+
 	it("captures focus when overlay is enabled while expanded", () => {
 		let lastFocus: RefObject<HTMLElement | null> | undefined;
 		function Probe() {
@@ -237,6 +366,22 @@ describe("Sidebar", () => {
 			</SidebarProvider>,
 		);
 		expect(screen.getByText("Nav")).toHaveStyle({ width: "400px" });
+	});
+
+	it("allows fixed compositions to opt out without changing provider defaults", () => {
+		const { unmount } = render(
+			<SidebarProvider>
+				<Sidebar resizable={false}>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByRole("separator", { name: "Resize sidebar" })).not.toBeInTheDocument();
+		unmount();
+		render(
+			<SidebarProvider>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByRole("separator", { name: "Resize sidebar" })).toBeInTheDocument();
 	});
 
 	it("resizes the expanded rail from the handle", () => {
@@ -323,6 +468,65 @@ describe("Sidebar", () => {
 		expect(screen.getByRole("button", { name: "Dashboard" })).toHaveAttribute(
 			"aria-current",
 			"page",
+		);
+	});
+
+	it("renders router-backed and asChild sidebar links", () => {
+		function RouterLink({ href, ...props }: { href: string; children?: ReactNode }) {
+			return <a href={`/app${href}`} {...props} />;
+		}
+		render(
+			<LinkProvider render={RouterLink}>
+				<SidebarItem href="/home" active target="_blank">
+					Home
+				</SidebarItem>
+				<SidebarItem asChild>
+					<a href="/settings">Settings</a>
+				</SidebarItem>
+				<SidebarIconItem href="/mail" aria-label="Mail">
+					M
+				</SidebarIconItem>
+				<SidebarIconItem asChild aria-label="Account">
+					<a href="/account">A</a>
+				</SidebarIconItem>
+			</LinkProvider>,
+		);
+		const home = screen.getByRole("link", { name: "Home" });
+		expect(home).toHaveAttribute("href", "/app/home");
+		expect(home).toHaveAttribute("target", "_blank");
+		expect(home).toHaveAttribute("data-basalt-hover-item");
+		expect(home).toHaveAttribute("aria-current", "page");
+		expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/settings");
+		expect(screen.getByRole("link", { name: "Mail" })).toHaveAttribute("href", "/app/mail");
+		expect(screen.getByRole("link", { name: "Account" })).toHaveAttribute("href", "/account");
+	});
+
+	it("rejects disabled asChild rows at the type and runtime boundaries", () => {
+		type DisabledItemSlot = {
+			asChild: true;
+			disabled: true;
+			children: ReactNode;
+		} extends SidebarItemProps
+			? true
+			: false;
+		type DisabledIconSlot = {
+			asChild: true;
+			disabled: true;
+			children: ReactNode;
+		} extends SidebarIconItemProps
+			? true
+			: false;
+		expectTypeOf<DisabledItemSlot>().toEqualTypeOf<false>();
+		expectTypeOf<DisabledIconSlot>().toEqualTypeOf<false>();
+
+		const invalid = {
+			asChild: true,
+			disabled: true,
+			children: <a href="/account">Account</a>,
+		} as unknown as SidebarItemProps;
+		expect(() => SidebarItem(invalid)).toThrow(/native button row/);
+		expect(() => SidebarIconItem(invalid as unknown as SidebarIconItemProps)).toThrow(
+			/native button row/,
 		);
 	});
 

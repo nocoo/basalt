@@ -1,16 +1,20 @@
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
+import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { MemoryRouter, useLocation } from "react-router";
+import type { ReactNode } from "react";
+import { MemoryRouter, Link as RouterLink, useLocation } from "react-router";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { AppSidebar } from "@/components/AppSidebar";
 import { CATALOG, catalogNavName } from "@/pages/ui/catalog";
 import { CATALOG_CATEGORIES, catalogCategoryPath } from "@/pages/ui/catalog-categories";
 
-function catalogButtons() {
-	return Array.from(
-		document.querySelectorAll<HTMLButtonElement>("aside button[data-catalog-slug]"),
-	);
+function catalogRows() {
+	return Array.from(document.querySelectorAll<HTMLElement>("aside [data-catalog-slug]"));
+}
+
+function navRows(name: string | RegExp) {
+	return [...screen.queryAllByRole("link", { name }), ...screen.queryAllByRole("button", { name })];
 }
 
 const PLANNED_SLUGS = ["maps"];
@@ -20,13 +24,28 @@ function RouterProbe() {
 	return <span hidden data-testid="router-location" data-pathname={pathname} />;
 }
 
-function renderSidebar(path = "/ui/button", collapsed = false) {
+function TestLink({
+	href,
+	className,
+	children,
+	...props
+}: { href: string; className?: string; children?: ReactNode } & Record<string, unknown>) {
+	return (
+		<RouterLink to={href} className={className} {...props}>
+			{children}
+		</RouterLink>
+	);
+}
+
+function renderSidebar(path = "/ui/button", collapsed = false, resizable = true) {
 	return render(
 		<ThemeProvider>
 			<TooltipProvider>
 				<MemoryRouter initialEntries={[path]}>
-					<RouterProbe />
-					<AppSidebar collapsed={collapsed} onToggle={() => undefined} />
+					<LinkProvider render={TestLink}>
+						<RouterProbe />
+						<AppSidebar collapsed={collapsed} onToggle={() => undefined} resizable={resizable} />
+					</LinkProvider>
 				</MemoryRouter>
 			</TooltipProvider>
 		</ThemeProvider>,
@@ -42,98 +61,61 @@ describe("AppSidebar", () => {
 		renderSidebar();
 		expect(screen.getByText("Examples")).toBeInTheDocument();
 		expect(screen.getByText("Library")).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Component library" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Layout" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Color Palette" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Component library" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Layout" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Color Palette" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Settings" })).toBeInTheDocument();
 		expect(screen.queryByText("System")).not.toBeInTheDocument();
 		expect(screen.queryByText("Controls")).not.toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Dashboard" })).toBeInTheDocument();
 		const following = Node.DOCUMENT_POSITION_FOLLOWING;
+		const links = [
+			"Component library",
+			"Color Palette",
+			"Layout",
+			"Loading",
+			"Animation",
+			"Tables",
+			"Interactive",
+			"Data",
+			"Forms",
+			"Navigation",
+			"Dialogs",
+			"Chat",
+		] as const;
+		for (let index = 0; index < links.length - 1; index += 1) {
+			const currentRows = screen.getAllByRole("link", { name: links[index] });
+			const nextRows = screen.getAllByRole("link", { name: links[index + 1] });
+			const current = currentRows[currentRows.length - 1];
+			const next = nextRows[nextRows.length - 1];
+			expect(current && next && current.compareDocumentPosition(next) & following).toBeTruthy();
+		}
 		expect(
 			screen
-				.getByRole("button", { name: "Component library" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Color Palette" })) & following,
+				.getByRole("link", { name: /Interactions/ })
+				.compareDocumentPosition(screen.getByRole("link", { name: "Settings" })) & following,
 		).toBeTruthy();
 		expect(
 			screen
-				.getByRole("button", { name: "Color Palette" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Layout" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Layout" })
-				.compareDocumentPosition(screen.getAllByRole("button", { name: "Loading" })[1]) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getAllByRole("button", { name: "Loading" })[1]
-				.compareDocumentPosition(screen.getByRole("button", { name: "Animation" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Animation" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Tables" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Tables" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Interactive" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Interactive" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Data" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Data" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Forms" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Forms" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Navigation" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Navigation" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Dialogs" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Dialogs" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Chat" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: /Interactions/ })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Settings" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("button", { name: "Settings" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Wearable Health" })) &
-				following,
+				.getByRole("link", { name: "Settings" })
+				.compareDocumentPosition(screen.getByRole("link", { name: "Wearable Health" })) & following,
 		).toBeTruthy();
 		for (const entry of CATALOG) {
-			expect(
-				screen.getAllByRole("button", { name: new RegExp(`^${catalogNavName(entry)}`) }).length,
-			).toBeGreaterThan(0);
+			expect(navRows(new RegExp(`^${catalogNavName(entry)}`))).not.toHaveLength(0);
 		}
 		expect(screen.queryByRole("button", { name: /^Installation$/ })).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /^Changelog$/ })).not.toBeInTheDocument();
-		expect(screen.getByRole("button", { name: /^Clipboard Text/ })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Section Rule" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: /^Clipboard Text/ })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Page Header" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Section Rule" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: /^Maps.*Planned$/ })).toBeDisabled();
 		const components = screen.getByRole("button", { name: "Actions", expanded: true });
 		expect(components).toHaveAttribute("aria-expanded", "true");
 		fireEvent.click(components);
 		expect(components).toHaveAttribute("aria-expanded", "false");
-		expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
-		expect(screen.getAllByRole("button", { name: "Charts" }).length).toBeGreaterThan(1);
-		expect(screen.getAllByRole("button", { name: "Blocks" }).length).toBeGreaterThan(1);
+		expect(screen.getByRole("link", { name: "Dashboard" })).toBeInTheDocument();
+		expect(navRows("Charts").length).toBeGreaterThan(1);
+		expect(navRows("Blocks").length).toBeGreaterThan(1);
 	});
 
 	it("disables exactly the planned sidebar entries without changing ready navigation", () => {
@@ -143,13 +125,13 @@ describe("AppSidebar", () => {
 		unmount();
 
 		renderSidebar();
-		const catalogButtons = Array.from(
-			document.querySelectorAll<HTMLButtonElement>("aside button[data-catalog-slug]"),
+		const rows = catalogRows();
+		const disabledButtons = rows.filter(
+			(row): row is HTMLButtonElement => row instanceof HTMLButtonElement && row.disabled,
 		);
-		const disabledButtons = catalogButtons.filter((button) => button.disabled);
 
-		expect(catalogButtons).toHaveLength(121);
-		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(120);
+		expect(rows).toHaveLength(121);
+		expect(rows.length - disabledButtons.length).toBe(120);
 		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const button of disabledButtons) {
 			expect(button).toHaveTextContent("Planned");
@@ -165,7 +147,7 @@ describe("AppSidebar", () => {
 		fireEvent.keyUp(maps, { key: " " });
 		expect(screen.getByTestId("router-location")).toHaveAttribute("data-pathname", "/ui/button");
 
-		fireEvent.click(screen.getByRole("button", { name: /^Clipboard Text/ }));
+		fireEvent.click(screen.getByRole("link", { name: /^Clipboard Text/ }));
 		expect(screen.getByTestId("router-location")).toHaveAttribute(
 			"data-pathname",
 			"/ui/clipboard-text",
@@ -175,7 +157,7 @@ describe("AppSidebar", () => {
 	it("starts every library group with an accessible overview and navigates to it", () => {
 		renderSidebar();
 		for (const category of CATALOG_CATEGORIES) {
-			const overview = screen.getByRole("button", { name: `${category.label} overview` });
+			const overview = screen.getByRole("link", { name: `${category.label} overview` });
 			expect(overview.textContent).toBe("Overview");
 			expect(overview.parentElement?.firstElementChild).toBe(overview);
 			fireEvent.click(overview);
@@ -260,42 +242,48 @@ describe("AppSidebar", () => {
 
 	it("does not show pending maturity badges in the components sidebar", () => {
 		renderSidebar();
-		const buttons = catalogButtons();
-		expect(buttons).toHaveLength(121);
+		const rows = catalogRows();
+		expect(rows).toHaveLength(121);
 		expect(document.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
 		expect(document.querySelector("aside")?.textContent).not.toContain("待规范");
-		for (const button of buttons) {
-			expect(button).not.toHaveTextContent("待规范");
-			expect(button.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
+		for (const row of rows) {
+			expect(row).not.toHaveTextContent("待规范");
+			expect(row.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
 		}
 	});
 
-	it("keeps the collapsed mark centered and matches it with an expanded rail inset", () => {
+	it("keeps the collapsed mark in the fixed expanded rail slot", () => {
 		const { unmount } = renderSidebar();
 		const expandedHome = screen.getByRole("link", { name: "Home" });
 		expect(expandedHome).toHaveAttribute("href", "/");
 		const expanded = expandedHome.querySelector("img");
-		expect(expanded).toHaveClass("h-7", "w-7");
-		expect(expandedHome.parentElement).toHaveClass("pl-basalt-layout-sm", "justify-between");
-		expect(expandedHome.parentElement).not.toHaveClass("justify-center");
-		expect(expanded?.closest(".flex.h-basalt-14")).not.toHaveClass("pl-basalt-space-lg");
+		expect(expanded).toHaveClass("size-basalt-5");
+		expect(expanded?.closest("[data-slot=sidebar-brand-logo]")).toHaveClass(
+			"w-basalt-sidebar-brand-slot",
+		);
 		unmount();
 		renderSidebar("/ui/button", true);
 		const collapsedHome = screen.getByRole("link", { name: "Home" });
 		expect(collapsedHome).toHaveAttribute("href", "/");
 		const collapsed = collapsedHome.querySelector("img");
-		expect(collapsed).toHaveClass("h-7", "w-7");
-		expect(collapsed?.closest("[data-slot=sidebar-header]")).toHaveClass("px-basalt-nav-inset");
-		expect(collapsedHome.parentElement).toHaveClass("justify-center");
-		expect(collapsedHome.parentElement).not.toHaveClass("pl-basalt-layout-sm");
+		expect(collapsed).toHaveClass("size-basalt-5");
+		expect(collapsed?.closest("[data-slot=sidebar-header]")).toHaveClass("px-basalt-layout-lg");
+		expect(collapsed?.closest("[data-slot=sidebar-brand-logo]")).toHaveClass(
+			"w-basalt-sidebar-brand-slot",
+		);
 	});
 
 	it("aligns collapsed search with the icon rail", () => {
 		renderSidebar("/ui/button", true);
 		const search = screen.getByRole("button", { name: "Search (⌘K)" });
 		const nav = document.querySelector("aside nav");
-		const icons = Array.from(nav?.querySelectorAll(":scope > button") ?? []);
-		expect(nav).toHaveClass("basalt-hover-list", "gap-basalt-nav-gap", "p-basalt-nav-inset");
+		const icons = Array.from(nav?.querySelectorAll(":scope > [data-sidebar-row]") ?? []);
+		expect(nav).toHaveClass(
+			"basalt-hover-list",
+			"basalt-nav-list",
+			"basalt-sidebar-nav",
+			"gap-basalt-nav-gap",
+		);
 		expect(icons[0]).toBe(search);
 		expect(icons.length).toBeGreaterThan(1);
 		for (const icon of icons) {
@@ -306,6 +294,14 @@ describe("AppSidebar", () => {
 			);
 			expect(icon).not.toHaveClass("min-h-basalt-control");
 		}
+	});
+
+	it("keeps resizing by default and allows fixed compositions to disable it", () => {
+		const { unmount } = renderSidebar();
+		expect(screen.getByRole("separator", { name: "Resize sidebar" })).toBeInTheDocument();
+		unmount();
+		renderSidebar("/ui/button", false, false);
+		expect(screen.queryByRole("separator", { name: "Resize sidebar" })).not.toBeInTheDocument();
 	});
 
 	it("does not nest a second full-viewport column inside the rail", () => {

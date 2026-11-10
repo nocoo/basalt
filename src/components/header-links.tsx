@@ -22,17 +22,23 @@ export function HeaderTooltip({ label, children }: { label: string; children: Re
 	);
 }
 
-export function HexlyLink({ className }: { className?: string } = {}) {
+export function HexlyLink({
+	className,
+	size = "icon",
+}: {
+	className?: string;
+	size?: "icon" | "icon-sm";
+} = {}) {
 	return (
 		<HeaderTooltip label="Basalt on hexly.ai">
 			<LinkButton
 				variant="ghost"
-				size="icon"
+				size={size}
 				href="https://hexly.ai/projects/basalt"
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Basalt on hexly.ai (opens in a new tab)"
-				className={`${className ?? "w-8 rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground"} [&_svg]:size-[1.125rem]`}
+				className={`${className ?? "rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground"} [&_svg]:size-[1.125rem]`}
 			>
 				<span className="sr-only">Basalt on hexly.ai</span>
 				<svg

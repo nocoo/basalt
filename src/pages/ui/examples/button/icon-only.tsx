@@ -1,9 +1,15 @@
 import { Button } from "@nocoo/basalt/components/button";
+import { Plus } from "lucide-react";
 
 export default function ButtonIconOnly() {
 	return (
-		<Button size="icon" aria-label="Add">
-			+
-		</Button>
+		<div className="flex items-center gap-basalt-space-lg">
+			<Button size="icon" aria-label="Add item">
+				<Plus aria-hidden="true" />
+			</Button>
+			<Button size="icon-sm" aria-label="Add item compact">
+				<Plus aria-hidden="true" />
+			</Button>
+		</div>
 	);
 }

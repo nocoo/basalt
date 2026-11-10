@@ -1,7 +1,9 @@
 import { AccentProvider } from "@nocoo/basalt/providers/accent";
+import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router";
+import type { ReactNode } from "react";
+import { MemoryRouter, Route, Link as RouterLink, Routes } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DashboardLayout } from "@/components/DashboardLayout";
 
@@ -11,23 +13,44 @@ vi.mock("@/hooks/use-mobile", () => ({
 	useIsMobile: () => mockIsMobile,
 }));
 
+function TestLink({
+	href,
+	className,
+	children,
+	...props
+}: { href: string; className?: string; children?: ReactNode } & Record<string, unknown>) {
+	return (
+		<RouterLink to={href} className={className} {...props}>
+			{children}
+		</RouterLink>
+	);
+}
+
 function renderLayout(initialPath = "/") {
 	return render(
 		<ThemeProvider>
 			<AccentProvider>
 				<MemoryRouter initialEntries={[initialPath]}>
-					<Routes>
-						<Route element={<DashboardLayout />}>
-							<Route path="/ui" element={<div>Library</div>} />
-							<Route path="/dashboard" element={<div>Dashboard</div>} />
-							<Route path="/ui/:slug/source" element={<div>Source</div>} />
-							<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
-							<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
-							<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
-							<Route path="/ui/:slug" element={<div data-testid="catalog-outlet">Catalog</div>} />
-							<Route path="/ui/overview/:category" element={<div>Overview</div>} />
-						</Route>
-					</Routes>
+					<LinkProvider render={TestLink}>
+						<Routes>
+							<Route element={<DashboardLayout />}>
+								<Route path="/ui" element={<div>Library</div>} />
+								<Route path="/dashboard" element={<div>Dashboard</div>} />
+								<Route path="/ui/:slug/source" element={<div>Source</div>} />
+								<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
+								<Route
+									path="/accounts"
+									element={<div data-testid="accounts-outlet">Accounts</div>}
+								/>
+								<Route
+									path="/settings"
+									element={<div data-testid="settings-outlet">Settings</div>}
+								/>
+								<Route path="/ui/:slug" element={<div data-testid="catalog-outlet">Catalog</div>} />
+								<Route path="/ui/overview/:category" element={<div>Overview</div>} />
+							</Route>
+						</Routes>
+					</LinkProvider>
 				</MemoryRouter>
 			</AccentProvider>
 		</ThemeProvider>,
@@ -160,10 +183,11 @@ describe("DashboardLayout", () => {
 		expect(screen.getByRole("button", { name: "Theme Palette" })).toBeInTheDocument();
 	});
 
-	it("opens the mobile drawer and locks body scroll when the menu button is clicked", () => {
+	it("opens the fixed mobile drawer without resizing and locks body scroll", () => {
 		renderLayout("/");
 		fireEvent.click(screen.getByLabelText("Open navigation menu"));
 		expect(document.body.style.overflow).toBe("hidden");
+		expect(screen.queryByRole("separator", { name: "Resize sidebar" })).not.toBeInTheDocument();
 	});
 
 	it("closes the mobile drawer when navigating to a new route", () => {
@@ -176,9 +200,9 @@ describe("DashboardLayout", () => {
 		// Click a nav item that lives in the drawer (there are two Accounts buttons
 		// after opening — desktop sidebar is hidden by the mock, so the last visible
 		// nav item is the drawer's).
-		const accountsButtons = screen.getAllByRole("button", { name: /Accounts/i });
+		const accountLinks = screen.getAllByRole("link", { name: /Accounts/i });
 		act(() => {
-			fireEvent.click(accountsButtons[accountsButtons.length - 1]);
+			fireEvent.click(accountLinks[accountLinks.length - 1]);
 		});
 
 		// Route change must reset the drawer state — body scroll unlocks.
@@ -234,11 +258,13 @@ describe("DashboardLayout", () => {
 			<ThemeProvider>
 				<AccentProvider>
 					<MemoryRouter initialEntries={["/"]}>
-						<Routes>
-							<Route element={<DashboardLayout />}>
-								<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
-							</Route>
-						</Routes>
+						<LinkProvider render={TestLink}>
+							<Routes>
+								<Route element={<DashboardLayout />}>
+									<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
+								</Route>
+							</Routes>
+						</LinkProvider>
 					</MemoryRouter>
 				</AccentProvider>
 			</ThemeProvider>,
@@ -254,11 +280,13 @@ describe("DashboardLayout", () => {
 			<ThemeProvider>
 				<AccentProvider>
 					<MemoryRouter initialEntries={["/"]}>
-						<Routes>
-							<Route element={<DashboardLayout />}>
-								<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
-							</Route>
-						</Routes>
+						<LinkProvider render={TestLink}>
+							<Routes>
+								<Route element={<DashboardLayout />}>
+									<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
+								</Route>
+							</Routes>
+						</LinkProvider>
 					</MemoryRouter>
 				</AccentProvider>
 			</ThemeProvider>,

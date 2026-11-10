@@ -34,7 +34,7 @@ describe("NavigationMenu", () => {
 				</NavigationMenuList>
 			</NavigationMenu>,
 		);
-		expect(ref.current).toHaveClass("basalt-hover-list", "p-basalt-nav-inset", "custom-list");
+		expect(ref.current).toHaveClass("basalt-hover-list", "basalt-nav-list", "custom-list");
 		expect(ref.current).toHaveAttribute("data-orientation", "vertical");
 		expect(screen.getByRole("link")).toHaveAttribute("data-hover-selected", "true");
 		expect(screen.getByRole("link")).toHaveAttribute("aria-current", "page");

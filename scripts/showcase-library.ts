@@ -169,7 +169,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 			}
 			if (width === 390)
 				await page.getByRole("button", { name: "Open navigation menu", exact: true }).click();
-			const actionOverview = page.getByRole("button", { name: "Actions overview", exact: true });
+			const actionOverview = page.getByRole("link", { name: "Actions overview", exact: true });
 			await actionOverview.focus();
 			await page.keyboard.press("Enter");
 			await page.waitForURL(`**${catalogCategoryPath("action")}`);

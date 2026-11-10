@@ -19,10 +19,12 @@ import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
 	ContentIsland,
 	Sidebar,
+	SidebarBrand,
 	SidebarHeader,
 	SidebarItem,
 	SidebarNav,
 	SidebarProvider,
+	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
@@ -63,7 +65,18 @@ export default function AppFrameRecipe() {
 							</>
 						)}
 						<SidebarHeader>
-							<strong>Atlas workspace</strong>
+							<SidebarBrand
+								logo={
+									<span
+										className="flex size-basalt-sidebar-brand-slot items-center justify-center"
+										aria-hidden="true"
+									>
+										A
+									</span>
+								}
+								name="Atlas workspace"
+								action={<SidebarToggle />}
+							/>
 						</SidebarHeader>
 						<SidebarNav aria-label="Workspace navigation">
 							{["Projects", "Members", "Activity"].map((name) => (

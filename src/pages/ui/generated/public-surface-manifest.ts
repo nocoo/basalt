@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.2.3",
 	"totalModules": 131,
-	"totalSymbols": 781,
-	"totalValues": 406,
-	"totalTypes": 375,
+	"totalSymbols": 787,
+	"totalValues": 410,
+	"totalTypes": 377,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -553,6 +553,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sidebar"
 				},
 				{
+					"name": "SidebarBrand",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
 					"name": "SidebarFooter",
 					"isValue": true,
 					"isType": false,
@@ -618,6 +626,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "SidebarSearch",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarToggle",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/sidebar",
@@ -6117,6 +6133,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sidebar"
 				},
 				{
+					"name": "SidebarBrand",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarToggle",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
 					"name": "SidebarSearch",
 					"isValue": true,
 					"isType": false,
@@ -6222,6 +6254,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "SidebarHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarBrandProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarToggleProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/sidebar",

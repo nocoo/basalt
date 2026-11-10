@@ -33,9 +33,9 @@ describe("package registry generator and AI package assets", () => {
 		expect(registry.packageName).toBe("@nocoo/basalt");
 		expect(registry.packageVersion).toBe(rootPkg.version);
 		expect(registry.totalModules).toBe(131);
-		expect(registry.totalSymbols).toBe(781);
-		expect(registry.totalValues).toBe(406);
-		expect(registry.totalTypes).toBe(375);
+		expect(registry.totalSymbols).toBe(787);
+		expect(registry.totalValues).toBe(410);
+		expect(registry.totalTypes).toBe(377);
 		expect(registry.totalCssExports).toBe(3);
 		expect(registry.totalCatalogEntries).toBe(120);
 
@@ -87,6 +87,20 @@ describe("package registry generator and AI package assets", () => {
 		const dismissCallable = toastCat?.api.find((s) => s.name === "toast.dismiss");
 		expect(dismissCallable).toBeDefined();
 		expect(dismissCallable?.description).toContain("returns `undefined` at runtime");
+	});
+
+	it("includes brand and toggle props in the sidebar registry entry", () => {
+		const sidebar = referenceRegistry.catalogEntries.find((entry) => entry.slug === "sidebar");
+		expect(
+			sidebar?.api
+				.find((surface) => surface.name === "SidebarBrand")
+				?.props.map((prop) => prop.name),
+		).toEqual(expect.arrayContaining(["logo", "name", "version", "action"]));
+		expect(
+			sidebar?.api
+				.find((surface) => surface.name === "SidebarToggle")
+				?.props.map((prop) => prop.name),
+		).toEqual(expect.arrayContaining(["expandLabel", "collapseLabel"]));
 	});
 
 	it("accurately derives rootAvailable per catalog entry from hasRootBarrel and symbols", () => {

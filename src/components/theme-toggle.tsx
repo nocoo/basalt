@@ -15,8 +15,7 @@ export function ThemeToggle({ "aria-label": ariaLabel = "Toggle theme" }: ThemeT
 		<HeaderTooltip label={ariaLabel}>
 			<Button
 				variant="ghost"
-				size="icon"
-				className="w-8"
+				size="icon-sm"
 				onClick={() => setTheme(nextTheme)}
 				aria-label={ariaLabel}
 			>

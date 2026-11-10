@@ -79,6 +79,13 @@ describe("dimension token contract", () => {
 			expect(block).not.toMatch(/(?:^|\n)\s*(?:height|max-height):/);
 		}
 		expect(tokens).not.toContain(".basalt-action-icon::after");
+		for (const css of [tokens, standalone]) {
+			const iconSm = css.match(/\.basalt-action-icon-sm \{([^}]+)\}/)?.[1];
+			expect(iconSm).toContain("inline-size: var(--basalt-size-control-sm)");
+			expect(iconSm).toContain("block-size: var(--basalt-size-control-sm)");
+			expect(iconSm).toContain("min-inline-size: var(--basalt-size-control-sm)");
+			expect(iconSm).toContain("min-block-size: var(--basalt-size-control-sm)");
+		}
 	});
 	it("keeps scoped resets below components and caller utilities in both entrypoints", () => {
 		for (const css of [tailwind, standalone]) {
@@ -122,6 +129,8 @@ describe("dimension token contract", () => {
 		expect(tokens).toContain("--basalt-space-control-y: var(--basalt-space-sm)");
 		expect(tokens).toContain("--basalt-space-row-y: var(--basalt-space-md)");
 		expect(tokens).toContain("--basalt-space-nav-inset: var(--basalt-space-lg)");
+		expect(tokens).toContain("--basalt-space-sidebar-inset: var(--basalt-space-layout)");
+		expect(tokens).toContain("--basalt-size-sidebar-brand-slot:");
 		expect(tokens).toContain("--basalt-space-panel-x: var(--basalt-space-card)");
 		expect(tokens).toContain("--basalt-space-panel-y: var(--basalt-space-card-sm)");
 		expect(tokens).toContain("--basalt-space-table-edge: var(--basalt-space-panel-x)");
@@ -178,6 +187,7 @@ describe("dimension token contract", () => {
 			"row-gap",
 			"row-content",
 			"nav-inset",
+			"sidebar-inset",
 			"nav-gap",
 		]) {
 			expect(tokens).toContain(`--basalt-space-${role}:`);

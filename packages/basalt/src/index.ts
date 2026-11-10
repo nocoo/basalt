@@ -73,6 +73,7 @@ export {
 export {
 	ContentIsland,
 	Sidebar,
+	SidebarBrand,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
@@ -82,6 +83,7 @@ export {
 	SidebarPartition,
 	SidebarProvider,
 	SidebarSearch,
+	SidebarToggle,
 	SidebarUser,
 } from "./components/sidebar";
 export { StatStrip } from "./components/stat-strip";
