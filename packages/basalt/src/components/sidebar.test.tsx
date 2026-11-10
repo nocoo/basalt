@@ -92,6 +92,11 @@ describe("Sidebar", () => {
 			"[&>svg]:size-full",
 			"[&>a>img]:size-full",
 		);
+		const brandName = screen.getByText("Atlas");
+		expect(brandName).toHaveAttribute("data-slot", "sidebar-brand-name");
+		// The badge follows the name instead of being pushed against the action.
+		expect(brandName).not.toHaveClass("flex-1");
+		expect(brandName.nextElementSibling).toHaveTextContent("v1.2.3");
 		const version = screen.getByText("v1.2.3");
 		expect(version).toHaveAttribute("data-slot", "sidebar-brand-version");
 		expect(version).toHaveClass(

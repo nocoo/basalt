@@ -456,7 +456,12 @@ export function SidebarBrand({
 				{logo}
 			</span>
 			<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap overflow-hidden whitespace-nowrap">
-				<span className="min-w-0 flex-1 truncate text-basalt-base font-semibold">{name}</span>
+				<span
+					data-slot="sidebar-brand-name"
+					className="min-w-0 truncate text-basalt-base font-semibold"
+				>
+					{name}
+				</span>
 				{version != null ? (
 					<Badge
 						data-slot="sidebar-brand-version"
