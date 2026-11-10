@@ -29,7 +29,7 @@ jobs:
        github.event.workflow_run.head_branch == 'main' &&
        github.event.workflow_run.head_repository.full_name == github.repository &&
        github.event.workflow_run.conclusion == 'success')
-    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@633a5545fcfec91b688840650d4edf3e9cc1abbd # v2026.10
+    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@1ea10ecab22b72512399485391603fe03a161016 # v2026.12
     with:
       expected-workflow-path: ".github/workflows/ci.yml"
       expected-workflow-name: "CI"

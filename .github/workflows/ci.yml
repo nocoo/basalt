@@ -1,3 +1,5 @@
+# CI slot standard v1 (nocoo/base-ci docs/slots.md): impl S1, S2, S3, G1, G2, B1, L1, L3, P1, Z1 via quality.yml;
+# na L1.5, L2 in slot-status. nocoo/base-ci v2026.12: top-level slot jobs, L3 browsers/artifacts.
 name: CI
 
 on:
@@ -7,23 +9,76 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  ci:
-    uses: nocoo/base-ci/.github/workflows/quality.yml@633a5545fcfec91b688840650d4edf3e9cc1abbd # v2026.10
+  quality:
+    uses: nocoo/base-ci/.github/workflows/quality.yml@1ea10ecab22b72512399485391603fe03a161016 # v2026.12
     with:
       runtime-version: "1.4.0"
-      install-policy: "trusted"
-      coverage-path: "coverage"
-      prepare-command: "bun run --cwd packages/basalt build && bun run build"
-      test-command: "bun run test:coverage"
-      typecheck-command: "bun run typecheck"
+      node-version: "26.12.1"
+      install-policy: trusted
+      coverage-path: coverage
+      typecheck-command: bun run typecheck
+      prepare-command: bun run --cwd packages/basalt build
+      test-command: bun run test:coverage
+      osv-config: osv-scanner.toml
+      gitleaks-config: .gitleaks.toml
+      build: true
+      build-command: bun run --cwd packages/basalt build && bun run build
+      workflow-lint: true
+      workflow-lint-required-workflow: nocoo/base-ci/.github/workflows/deploy-worker.yml
+      workflow-lint-yamllint: true
+      package-check: true
+      package-command: |
+        bun run --cwd packages/basalt types:check
+        bun run --cwd packages/basalt pack:check
+        bun run --cwd packages/basalt publint
+      l3: true
+      l3-browsers: "chromium webkit"
+      l3-prepare-command: bun run --cwd packages/basalt build && bun run build
+      l3-command: bun run test:showcase
+      env-json: '{"WRANGLER_SEND_METRICS": "false", "CI": "true"}'
+      slot-status: >-
+        {"S1": {"status": "impl"},
+        "S2": {"status": "impl"},
+        "S3": {"status": "impl"},
+        "G1": {"status": "impl"},
+        "G2": {"status": "impl"},
+        "B1": {"status": "impl"},
+        "L1": {"status": "impl"},
+        "L1.5": {"status": "na", "reason": "无 @cloudflare/vitest-pool-workers / miniflare Worker 运行时测试套件；Worker 路由由 L1 vitest 模拟 ASSETS"},
+        "L2": {"status": "na", "reason": "无独立 test:api；HTTP/SSR 断言已编入 L3 consumer 门（Playwright 驱动本地 HTTP 服务）"},
+        "L3": {"status": "impl"},
+        "P1": {"status": "impl"},
+        "Z1": {"status": "impl"}}
+
+  l3-consumer-gates:
+    name: L3 consumer gates (extended)
+    uses: nocoo/base-ci/.github/workflows/test-job.yml@1ea10ecab22b72512399485391603fe03a161016 # v2026.12
+    with:
+      runtime-version: "1.4.0"
+      node-version: "26.12.1"
+      install-policy: trusted
+      browser: chromium
+      timeout-minutes: 45
+      pre-command: "bun run --cwd packages/basalt build && bun run build"
+      command: |
+        bun run consumer:tailwind
+        bun run consumer:standalone
+        bun run consumer:heavy
+        bun run consumer:next
+        bun run consumer:docs
+        bunx --no-install playwright install --with-deps webkit
+        bun run test:layouts
 
   l1-precommit-self-test:
     name: L1 pre-commit self-test
-    uses: nocoo/base-ci/.github/workflows/test-job.yml@ac635753a869cb85fad1f52aae4ccbd6119f3cae # main 2026-10-22
+    uses: nocoo/base-ci/.github/workflows/test-job.yml@1ea10ecab22b72512399485391603fe03a161016 # v2026.12
     with:
       runtime-version: "1.4.0"
-      install-policy: "trusted"
+      install-policy: trusted
       timeout-minutes: 60
       pre-command: |
         mkdir -p .ci-bin
@@ -31,26 +86,3 @@ jobs:
         chmod +x .ci-bin/gitleaks
         bun run --cwd packages/basalt build
       command: "PATH=$GITHUB_WORKSPACE/.ci-bin:$PATH bun scripts/l1-gate-self-test.ts --probes-only"
-
-  package-gates:
-    name: Package Gates & Consumers
-    uses: nocoo/base-ci/.github/workflows/test-job.yml@633a5545fcfec91b688840650d4edf3e9cc1abbd # v2026.10
-    with:
-      runtime-version: "1.4.0"
-      node-version: "26.12.1"
-      install-policy: "trusted"
-      browser: "chromium"
-      timeout-minutes: 30
-      pre-command: "bun run --cwd packages/basalt build"
-      command: |
-        bun run --cwd packages/basalt types:check
-        bun run --cwd packages/basalt pack:check
-        bun run --cwd packages/basalt publint
-        bun run consumer:tailwind
-        bun run consumer:standalone
-        bun run consumer:next
-        bun run consumer:heavy
-        bun run consumer:docs
-        bun run test:showcase
-        bunx --no-install playwright install --with-deps webkit
-        bun run test:layouts
