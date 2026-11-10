@@ -675,6 +675,18 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "sidebar",
 		sourceFile: "packages/basalt/src/components/sidebar.tsx",
+		propsType: "SidebarBrandProps",
+		surface: "SidebarBrand",
+	},
+	{
+		slug: "sidebar",
+		sourceFile: "packages/basalt/src/components/sidebar.tsx",
+		propsType: "SidebarToggleProps",
+		surface: "SidebarToggle",
+	},
+	{
+		slug: "sidebar",
+		sourceFile: "packages/basalt/src/components/sidebar.tsx",
 		propsType: "SidebarSearchProps",
 		surface: "SidebarSearch",
 	},

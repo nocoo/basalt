@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11: Sidebar Escape fix crossed overlay layers
+
+- **What:** An initial fix captured every Escape inside the sidebar, which could also close it while a nested overlay was active.
+- **Why:** The first-Escape failure came from automatic focus opening a tooltip, not from the dialog's dismissal handler.
+- **Follow-up:** Focus the overlay container on open and test nested dismissal order as well as focus restoration.
+
 ## 2026-11: Shared header sizing crossed page boundaries
 
 - **What:** The first compact HexlyLink change broke the landing header's equal-size action geometry.

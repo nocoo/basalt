@@ -37,14 +37,14 @@ function TestLink({
 	);
 }
 
-function renderSidebar(path = "/ui/button", collapsed = false) {
+function renderSidebar(path = "/ui/button", collapsed = false, resizable = true) {
 	return render(
 		<ThemeProvider>
 			<TooltipProvider>
 				<MemoryRouter initialEntries={[path]}>
 					<LinkProvider render={TestLink}>
 						<RouterProbe />
-						<AppSidebar collapsed={collapsed} onToggle={() => undefined} />
+						<AppSidebar collapsed={collapsed} onToggle={() => undefined} resizable={resizable} />
 					</LinkProvider>
 				</MemoryRouter>
 			</TooltipProvider>
@@ -294,6 +294,14 @@ describe("AppSidebar", () => {
 			);
 			expect(icon).not.toHaveClass("min-h-basalt-control");
 		}
+	});
+
+	it("keeps resizing by default and allows fixed compositions to disable it", () => {
+		const { unmount } = renderSidebar();
+		expect(screen.getByRole("separator", { name: "Resize sidebar" })).toBeInTheDocument();
+		unmount();
+		renderSidebar("/ui/button", false, false);
+		expect(screen.queryByRole("separator", { name: "Resize sidebar" })).not.toBeInTheDocument();
 	});
 
 	it("does not nest a second full-viewport column inside the rail", () => {

@@ -89,6 +89,20 @@ describe("package registry generator and AI package assets", () => {
 		expect(dismissCallable?.description).toContain("returns `undefined` at runtime");
 	});
 
+	it("includes brand and toggle props in the sidebar registry entry", () => {
+		const sidebar = referenceRegistry.catalogEntries.find((entry) => entry.slug === "sidebar");
+		expect(
+			sidebar?.api
+				.find((surface) => surface.name === "SidebarBrand")
+				?.props.map((prop) => prop.name),
+		).toEqual(expect.arrayContaining(["logo", "name", "version", "action"]));
+		expect(
+			sidebar?.api
+				.find((surface) => surface.name === "SidebarToggle")
+				?.props.map((prop) => prop.name),
+		).toEqual(expect.arrayContaining(["expandLabel", "collapseLabel"]));
+	});
+
 	it("accurately derives rootAvailable per catalog entry from hasRootBarrel and symbols", () => {
 		const registry = structuredClone(referenceRegistry);
 

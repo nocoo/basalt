@@ -156,7 +156,7 @@ Root barrel is small leaves and providers. Shell chrome is granular.
 
 | From                                      | Import                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@nocoo/basalt`                           | `Button`, `Input`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarHeader`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
+| `@nocoo/basalt`                           | `Button`, `Input`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarProvider`, `SidebarHeader`, `SidebarBrand`, `SidebarToggle`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
 | `@nocoo/basalt/components/app-shell`      | `AppShell`, `AppMain`, `AppSkipLink`                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `@nocoo/basalt/components/app-header`     | `AppHeader`                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `@nocoo/basalt/components/page-header`    | `PageHeader`                                                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -419,125 +419,97 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 ### Shared navigation geometry
 
-`SidebarNav` and `NavigationMenuList` own one `--basalt-space-nav-inset` (8px) boundary and `--basalt-space-nav-gap` (4px) between rows. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. This is local to Sidebar: editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. Header and search wrapper use the navigation inset. SidebarFooter instead owns 16px horizontal and bottom padding plus 8px top padding; keep the same 68px rail centering and expanded layout without duplicating that inset. Do not add caller-owned padding to compensate for missing package geometry.
+`SidebarNav` uses a 16px horizontal inset plus the row's 8px inset, placing row content on a 24px column. `NavigationMenuList` retains its 8px navigation inset; both use a 4px row gap. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. Editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. Header and footer use a 24px horizontal inset; footer keeps 8px top and 16px bottom padding. Wrap search in `px-basalt-layout` so its row inset reaches the same column.
 
 Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. NavigationMenuList retains its focus/selection-following behavior. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
-`SidebarHeader` pads horizontally by the navigation inset; `SidebarFooter` owns its larger footer boundary. Brand, version pill, and collapse control go directly in the header. The version string is read from the app `package.json` at build time. Never hardcode it. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
+Place `SidebarBrand` in `SidebarHeader` with a 20px mark and `SidebarToggle` in its action slot. The fixed mark slot starts at 24px and ends at 44px, keeping its center on the 34px rail axis throughout the width transition. The version uses the 12px auxiliary tier and comes from the app `package.json` at build time. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
 
 ```tsx excerpt:sidebar-expanded-structure
-<Sidebar collapsed={collapsed}>
-	<SidebarHeader>
-		<div className="flex w-full items-center justify-between">
-			<div className="flex min-w-0 items-center gap-basalt-space-lg">
-				<BasaltMark className="h-5 w-5 shrink-0" />
-				<span className="truncate text-lg font-semibold text-basalt-foreground md:text-xl">
-					Acme
-				</span>
-				<span className="shrink-0 rounded-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-[10px] leading-none font-medium text-basalt-muted-foreground">
-					v{version}
-				</span>
-			</div>
-			<Button
-				variant="ghost"
-				size="icon"
-				className="h-7 w-7 shrink-0"
-				onClick={onToggle}
-				aria-label="Collapse sidebar"
-			>
-				<PanelLeft aria-hidden="true" />
-			</Button>
+<SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
+	<Sidebar>
+		<SidebarHeader>
+			<SidebarBrand
+				logo={<BasaltMark className="size-basalt-sidebar-brand-slot" />}
+				name="Acme"
+				version={`v${version}`}
+				action={<SidebarToggle />}
+			/>
+		</SidebarHeader>
+		<div className="px-basalt-layout">
+			<SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
 		</div>
-	</SidebarHeader>
-	<div className="px-basalt-nav-inset">
-		<SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
-	</div>
-	<SidebarNav>
-		{groups.map((group) => (
-			<div key={group.label}>
-				<SidebarPartition>{group.label}</SidebarPartition>
-				<div className="flex flex-col gap-basalt-nav-gap">
-					{group.items.map((item) => (
-						<SidebarItem
-							key={item.href}
-							active={active(item.href)}
-							onClick={() => navigate(item.href)}
-						>
-							<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-							<span className="flex-1 truncate text-left">{item.label}</span>
-						</SidebarItem>
-					))}
+		<SidebarNav>
+			{groups.map((group) => (
+				<div key={group.label}>
+					<SidebarPartition>{group.label}</SidebarPartition>
+					<div className="flex flex-col gap-basalt-nav-gap">
+						{group.items.map((item) => (
+							<SidebarItem key={item.href} active={active(item.href)} href={item.href}>
+								<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+								<span className="flex-1 truncate text-left">{item.label}</span>
+							</SidebarItem>
+						))}
+					</div>
 				</div>
-			</div>
-		))}
-	</SidebarNav>
-	<SidebarFooter>
-		<SidebarUser name={name} email={email} avatar={avatar} />
-	</SidebarFooter>
-</Sidebar>;
+			))}
+		</SidebarNav>
+		<SidebarFooter>
+			<SidebarUser name={name} email={email} avatar={avatar} />
+		</SidebarFooter>
+	</Sidebar>
+</SidebarProvider>;
 ```
 
 SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, semibold disclosure label with a 22px line box, 8px insets and 12px group separation. Group labels do not participate in the destination hover layer. Do not restyle them as ordinary SidebarItem rows or add per-page indentation repairs.
 
 ### Collapsed tree
 
-Pass `collapsed` on `Sidebar`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
+Control `collapsed` through `SidebarProvider`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
 
-The 68px rail uses `--basalt-size-rail`. Header and footer center their content automatically; SidebarIconItem keeps the 34px control width and derives its 38px minimum height from the sidebar line box and padding. The navigation region centers its icon rows on that same rail axis without caller margin overrides. Render icon-only content with an accessible name and tooltip when collapsed; the library does not hide arbitrary application text. Keep a brand mark's expanded inset consistent with the collapsed axis instead of adding collapse-only offsets.
+The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary and moves its action below the header; the footer centers its content. SidebarIconItem keeps the 34px control width and derives its 38px minimum height from the sidebar line box and padding. The navigation region centers its icon rows on that same rail axis without caller margin overrides. Render icon-only content with an accessible name and tooltip when collapsed; the library does not hide arbitrary application text.
 
 ```tsx excerpt:sidebar-collapsed-structure
-<Sidebar collapsed={collapsed}>
-	<SidebarHeader>
-		<BasaltMark className="h-5 w-5" />
-	</SidebarHeader>
-	<Button
-		variant="ghost"
-		size="icon"
-		className="mb-basalt-space-sm self-center"
-		onClick={onToggle}
-		aria-label="Expand sidebar"
-	>
-		<PanelLeft aria-hidden="true" />
-	</Button>
-	<SidebarNav>
-		<Tooltip delayDuration={0}>
-			<TooltipTrigger asChild>
-				<SidebarIconItem onClick={() => setSearchOpen(true)} aria-label="Search (⌘K)">
-					<Search className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-				</SidebarIconItem>
-			</TooltipTrigger>
-			<TooltipContent side="right" sideOffset={8}>
-				Search (⌘K)
-			</TooltipContent>
-		</Tooltip>
-		{items.map((item) => (
-			<Tooltip key={item.href} delayDuration={0}>
+<SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
+	<Sidebar>
+		<SidebarHeader>
+			<SidebarBrand
+				logo={<BasaltMark className="size-basalt-sidebar-brand-slot" />}
+				name="Acme"
+				version={`v${version}`}
+				action={<SidebarToggle />}
+			/>
+		</SidebarHeader>
+		<SidebarNav>
+			<Tooltip delayDuration={0}>
 				<TooltipTrigger asChild>
-					<SidebarIconItem
-						active={active(item.href)}
-						aria-label={item.label}
-						onClick={() => navigate(item.href)}
-					>
-						<item.icon className="h-4 w-4" strokeWidth={1.5} />
+					<SidebarIconItem onClick={() => setSearchOpen(true)} aria-label="Search (⌘K)">
+						<Search className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
 					</SidebarIconItem>
 				</TooltipTrigger>
 				<TooltipContent side="right" sideOffset={8}>
-					{item.label}
+					Search (⌘K)
 				</TooltipContent>
 			</Tooltip>
-		))}
-	</SidebarNav>
-	<SidebarFooter>
-		<Tooltip delayDuration={0}>
-			<TooltipTrigger asChild>
-				<span className="inline-flex">{avatar}</span>
-			</TooltipTrigger>
-			<TooltipContent side="right" sideOffset={8}>
-				{name}
-			</TooltipContent>
-		</Tooltip>
-	</SidebarFooter>
-</Sidebar>;
+			{items.map((item) => (
+				<Tooltip key={item.href} delayDuration={0}>
+					<TooltipTrigger asChild>
+						<SidebarIconItem active={active(item.href)} aria-label={item.label} href={item.href}>
+							<item.icon className="h-4 w-4" strokeWidth={1.5} />
+						</SidebarIconItem>
+					</TooltipTrigger>
+					<TooltipContent side="right" sideOffset={8}>{item.label}</TooltipContent>
+				</Tooltip>
+			))}
+		</SidebarNav>
+		<SidebarFooter>
+			<Tooltip delayDuration={0}>
+				<TooltipTrigger asChild><span className="inline-flex">{avatar}</span></TooltipTrigger>
+				<TooltipContent side="right" sideOffset={8}>{name}</TooltipContent>
+			</Tooltip>
+		</SidebarFooter>
+	</Sidebar>
+</SidebarProvider>;
 ```
 
 Render expanded **or** collapsed regions from the same `collapsed` flag. One `Sidebar`. The flag is the animation.
@@ -548,9 +520,7 @@ Portaled UI (`CommandPalette`, dialogs) may be a sibling of these regions inside
 
 ## 8. Collapse, peek, overlay
 
-Standard product shell: React state `collapsed` passed into `Sidebar`. A header button flips it. Motion is already on `Sidebar`.
-
-`SidebarProvider` is for peek-on-hover, overlay mode, and resize. Use it when those behaviors are required. A normal app shell does not need a second sidebar context.
+Standard product shell: pass React state `collapsed` and `onCollapsedChange` to `SidebarProvider`; `SidebarToggle` updates that state. Motion is already on `Sidebar`. The provider also supports peek-on-hover, overlay mode and resize. Set `resizable={false}` on a Sidebar inside a fixed-width Sheet.
 
 ---
 
@@ -560,14 +530,30 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 
 ```tsx excerpt:mobile-sheet-sidebar
 <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-	<SheetContent side="left" className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0">
+	<SheetContent
+		side="left"
+		tabIndex={-1}
+		className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
+		onOpenAutoFocus={(event) => {
+			if (event.target instanceof HTMLElement) {
+				event.preventDefault();
+				event.target.focus();
+			}
+		}}
+		onCloseAutoFocus={(event) => {
+			if (mobileTriggerRef.current) {
+				event.preventDefault();
+				mobileTriggerRef.current.focus();
+			}
+		}}
+	>
 		<SheetTitle className="sr-only">Navigation</SheetTitle>
-		<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
+		<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} resizable={false} />
 	</SheetContent>
 </Sheet>;
 ```
 
-`SheetContent` bounds its Sidebar to the available height. Sidebar owns the 260px column and the portal safe area. Close the sheet on pathname change. Radix Sheet owns modal scroll locking and focus restoration; do not set body overflow separately.
+`SheetContent` bounds its Sidebar to the available height. Sidebar owns the 260px column and the portal safe area. Close the sheet on pathname change. Focus the sheet itself on open so the focused toggle's tooltip does not consume the first Escape; restore focus to the menu button referenced by `mobileTriggerRef`. Radix Sheet owns modal scroll locking; do not set body overflow separately.
 
 Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, MenuBar, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
 
@@ -602,6 +588,7 @@ export function AppFrame() {
 	const [collapsed, setCollapsed] = useState(false);
 	const isMobile = useIsMobile();
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const mobileTriggerRef = useRef<HTMLButtonElement>(null);
 	const location = useLocation();
 	const { theme } = useTheme();
 	const crumbs = [{ href: "/", label: "Home" }];
@@ -620,10 +607,23 @@ export function AppFrame() {
 				<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
 					<SheetContent
 						side="left"
+						tabIndex={-1}
 						className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
+						onOpenAutoFocus={(event) => {
+							if (event.target instanceof HTMLElement) {
+								event.preventDefault();
+								event.target.focus();
+							}
+						}}
+						onCloseAutoFocus={(event) => {
+							if (mobileTriggerRef.current) {
+								event.preventDefault();
+								mobileTriggerRef.current.focus();
+							}
+						}}
 					>
 						<SheetTitle className="sr-only">Navigation</SheetTitle>
-						<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
+						<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} resizable={false} />
 					</SheetContent>
 				</Sheet>
 			)}
@@ -632,9 +632,9 @@ export function AppFrame() {
 					leading={
 						isMobile ? (
 							<Button
+								ref={mobileTriggerRef}
 								variant="ghost"
-								size="icon"
-								className="h-8 w-8"
+								size="icon-sm"
 								onClick={() => setMobileOpen(true)}
 								aria-label="Open navigation"
 							>

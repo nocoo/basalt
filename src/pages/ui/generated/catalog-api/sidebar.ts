@@ -77,11 +77,66 @@ export const API = [
 				default: "false",
 				description: "Collapse the rail when no provider is present.",
 			},
+			{
+				name: "resizable",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Show the resize handle for an expanded provider-backed sidebar.",
+			},
 		],
 	},
 	{
 		name: "SidebarHeader",
 		props: [],
+	},
+	{
+		name: "SidebarBrand",
+		props: [
+			{
+				name: "logo",
+				type: "React.ReactNode",
+				required: true,
+				description: "Brand mark rendered in the fixed collapsed-rail slot.",
+			},
+			{
+				name: "name",
+				type: "React.ReactNode",
+				required: true,
+				description: "Product or workspace name.",
+			},
+			{
+				name: "version",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional version or release metadata, rendered at the auxiliary type size.",
+			},
+			{
+				name: "action",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional trailing action, conventionally a `SidebarToggle`.",
+			},
+		],
+	},
+	{
+		name: "SidebarToggle",
+		props: [
+			{
+				name: "expandLabel",
+				type: "string",
+				required: false,
+				default: "\"Expand sidebar\"",
+				description: "Accessible label while the sidebar is collapsed.",
+			},
+			{
+				name: "collapseLabel",
+				type: "string",
+				required: false,
+				default: "\"Collapse sidebar\"",
+				description: "Accessible label while the sidebar is expanded.",
+			},
+		],
 	},
 	{
 		name: "SidebarSearch",
@@ -129,7 +184,7 @@ export const API = [
 				name: "asChild",
 				type: "boolean",
 				required: false,
-				description: "Render the item onto its single child element.",
+				description: "Render the item onto its single enabled child element.",
 			},
 			{
 				name: "href",
@@ -165,7 +220,7 @@ export const API = [
 				name: "asChild",
 				type: "boolean",
 				required: false,
-				description: "Render the item onto its single child element.",
+				description: "Render the item onto its single enabled child element.",
 			},
 			{
 				name: "href",

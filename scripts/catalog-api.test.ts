@@ -753,6 +753,18 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "sidebar",
 				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarBrandProps",
+				surface: "SidebarBrand",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarToggleProps",
+				surface: "SidebarToggle",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
 				propsType: "SidebarSearchProps",
 				surface: "SidebarSearch",
 			},
@@ -1727,7 +1739,7 @@ describe("catalog API generator contract", () => {
 				surface: "PromptBar",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(261);
+		expect(CATALOG_API_TARGETS).toHaveLength(263);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -2967,6 +2979,8 @@ export interface WidgetProps {
 				"SidebarProvider",
 				"Sidebar",
 				"SidebarHeader",
+				"SidebarBrand",
+				"SidebarToggle",
 				"SidebarSearch",
 				"SidebarNav",
 				"SidebarPartition",
@@ -3134,6 +3148,16 @@ export interface WidgetProps {
 			"link-provider": ["LinkProvider"],
 		});
 	}, 60_000);
+
+	it("documents brand and toggle props in the sidebar API", () => {
+		const sidebar = generateProductionApi().sidebar;
+		expect(
+			sidebar.find((surface) => surface.name === "SidebarBrand")?.props.map((prop) => prop.name),
+		).toEqual(expect.arrayContaining(["logo", "name", "version", "action"]));
+		expect(
+			sidebar.find((surface) => surface.name === "SidebarToggle")?.props.map((prop) => prop.name),
+		).toEqual(expect.arrayContaining(["expandLabel", "collapseLabel"]));
+	});
 
 	it("extracts five InputGroup surfaces with wrapper defaults and an empty Suffix", () => {
 		const generated = generateProductionApi();
@@ -4936,7 +4960,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"78430494269ad64dac91c75f83012430bbb3c47aa82a587a95f9991f233a4648",
+			"4ca083bda7d8f03dc48eda52bf6a9990e3b32de044683540195577a7e8f01530",
 		);
 	}, 60_000);
 

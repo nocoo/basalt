@@ -23491,7 +23491,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "32b8c398c8002dc8",
+			"sourceHash": "7c0840f0ba297c38",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23833,12 +23833,67 @@
 									"required": false,
 									"default": "false",
 									"description": "Collapse the rail when no provider is present."
+								},
+								{
+									"name": "resizable",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show the resize handle for an expanded provider-backed sidebar."
 								}
 							]
 						},
 						{
 							"name": "SidebarHeader",
 							"props": []
+						},
+						{
+							"name": "SidebarBrand",
+							"props": [
+								{
+									"name": "logo",
+									"type": "React.ReactNode",
+									"required": true,
+									"description": "Brand mark rendered in the fixed collapsed-rail slot."
+								},
+								{
+									"name": "name",
+									"type": "React.ReactNode",
+									"required": true,
+									"description": "Product or workspace name."
+								},
+								{
+									"name": "version",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional version or release metadata, rendered at the auxiliary type size."
+								},
+								{
+									"name": "action",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional trailing action, conventionally a `SidebarToggle`."
+								}
+							]
+						},
+						{
+							"name": "SidebarToggle",
+							"props": [
+								{
+									"name": "expandLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Expand sidebar\"",
+									"description": "Accessible label while the sidebar is collapsed."
+								},
+								{
+									"name": "collapseLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Collapse sidebar\"",
+									"description": "Accessible label while the sidebar is expanded."
+								}
+							]
 						},
 						{
 							"name": "SidebarSearch",
@@ -23886,7 +23941,7 @@
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
-									"description": "Render the item onto its single child element."
+									"description": "Render the item onto its single enabled child element."
 								},
 								{
 									"name": "href",
@@ -23922,7 +23977,7 @@
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
-									"description": "Render the item onto its single child element."
+									"description": "Render the item onto its single enabled child element."
 								},
 								{
 									"name": "href",
@@ -24156,12 +24211,67 @@
 							"required": false,
 							"default": "false",
 							"description": "Collapse the rail when no provider is present."
+						},
+						{
+							"name": "resizable",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the resize handle for an expanded provider-backed sidebar."
 						}
 					]
 				},
 				{
 					"name": "SidebarHeader",
 					"props": []
+				},
+				{
+					"name": "SidebarBrand",
+					"props": [
+						{
+							"name": "logo",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Brand mark rendered in the fixed collapsed-rail slot."
+						},
+						{
+							"name": "name",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Product or workspace name."
+						},
+						{
+							"name": "version",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional version or release metadata, rendered at the auxiliary type size."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional trailing action, conventionally a `SidebarToggle`."
+						}
+					]
+				},
+				{
+					"name": "SidebarToggle",
+					"props": [
+						{
+							"name": "expandLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Expand sidebar\"",
+							"description": "Accessible label while the sidebar is collapsed."
+						},
+						{
+							"name": "collapseLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Collapse sidebar\"",
+							"description": "Accessible label while the sidebar is expanded."
+						}
+					]
 				},
 				{
 					"name": "SidebarSearch",
@@ -24209,7 +24319,7 @@
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
-							"description": "Render the item onto its single child element."
+							"description": "Render the item onto its single enabled child element."
 						},
 						{
 							"name": "href",
@@ -24245,7 +24355,7 @@
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
-							"description": "Render the item onto its single child element."
+							"description": "Render the item onto its single enabled child element."
 						},
 						{
 							"name": "href",
@@ -36298,7 +36408,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "32b8c398c8002dc8",
+			"sourceHash": "7c0840f0ba297c38",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -36377,12 +36487,67 @@
 							"required": false,
 							"default": "false",
 							"description": "Collapse the rail when no provider is present."
+						},
+						{
+							"name": "resizable",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the resize handle for an expanded provider-backed sidebar."
 						}
 					]
 				},
 				{
 					"name": "SidebarHeader",
 					"props": []
+				},
+				{
+					"name": "SidebarBrand",
+					"props": [
+						{
+							"name": "logo",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Brand mark rendered in the fixed collapsed-rail slot."
+						},
+						{
+							"name": "name",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Product or workspace name."
+						},
+						{
+							"name": "version",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional version or release metadata, rendered at the auxiliary type size."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional trailing action, conventionally a `SidebarToggle`."
+						}
+					]
+				},
+				{
+					"name": "SidebarToggle",
+					"props": [
+						{
+							"name": "expandLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Expand sidebar\"",
+							"description": "Accessible label while the sidebar is collapsed."
+						},
+						{
+							"name": "collapseLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Collapse sidebar\"",
+							"description": "Accessible label while the sidebar is expanded."
+						}
+					]
 				},
 				{
 					"name": "SidebarSearch",
@@ -36430,7 +36595,7 @@
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
-							"description": "Render the item onto its single child element."
+							"description": "Render the item onto its single enabled child element."
 						},
 						{
 							"name": "href",
@@ -36466,7 +36631,7 @@
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
-							"description": "Render the item onto its single child element."
+							"description": "Render the item onto its single enabled child element."
 						},
 						{
 							"name": "href",

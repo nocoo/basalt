@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type ReactNode, type RefObject, useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, expectTypeOf, it, vi } from "vitest";
 import { LinkProvider } from "../providers/link";
 import {
 	ContentIsland,
@@ -10,7 +10,9 @@ import {
 	SidebarGroup,
 	SidebarHeader,
 	SidebarIconItem,
+	type SidebarIconItemProps,
 	SidebarItem,
+	type SidebarItemProps,
 	SidebarNav,
 	SidebarProvider,
 	SidebarSearch,
@@ -171,15 +173,17 @@ describe("Sidebar", () => {
 		expect(nav).toHaveAttribute("data-collapsed");
 	});
 
-	it("shows loading placeholders", () => {
+	it("shows loading placeholders on the sidebar content column", () => {
 		render(
 			<SidebarProvider loading>
 				<Sidebar>Nav</Sidebar>
 			</SidebarProvider>,
 		);
 		expect(screen.queryByText("Nav")).not.toBeInTheDocument();
-		expect(screen.getByRole("status")).toBeInTheDocument();
-		expect(screen.getByRole("status").closest("aside")).toHaveAttribute("aria-busy");
+		const status = screen.getByRole("status");
+		expect(status).toHaveClass("px-basalt-layout-lg", "py-basalt-space-lg");
+		expect(status).not.toHaveClass("p-basalt-space-lg");
+		expect(status.closest("aside")).toHaveAttribute("aria-busy");
 	});
 
 	it("keeps a controlled collapsed value", () => {
@@ -252,6 +256,54 @@ describe("Sidebar", () => {
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 	});
 
+	it("closes a focused generic overlay on the first Escape and restores focus", async () => {
+		function Toggle() {
+			const { setCollapsed } = useSidebar();
+			return (
+				<button type="button" onClick={() => setCollapsed(false)}>
+					Open
+				</button>
+			);
+		}
+		render(
+			<SidebarProvider overlay defaultCollapsed>
+				<Toggle />
+				<Sidebar>
+					<SidebarToggle />
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		const open = screen.getByRole("button", { name: "Open" });
+		open.focus();
+		fireEvent.click(open);
+		const panel = screen.getByRole("dialog", { name: "Sidebar" });
+		await waitFor(() => expect(panel).toHaveFocus());
+		fireEvent.keyDown(document, { key: "Escape" });
+		await waitFor(() => {
+			expect(screen.queryByRole("dialog", { name: "Sidebar" })).not.toBeInTheDocument();
+			expect(open).toHaveFocus();
+		});
+	});
+
+	it("dismisses an active tooltip before its overlay", async () => {
+		render(
+			<SidebarProvider overlay>
+				<Sidebar>
+					<SidebarToggle />
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		act(() => screen.getByRole("button", { name: "Collapse sidebar" }).focus());
+		expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+		fireEvent.keyDown(document, { key: "Escape" });
+		await waitFor(() => expect(screen.queryByRole("tooltip")).not.toBeInTheDocument());
+		expect(screen.getByRole("dialog", { name: "Sidebar" })).toBeInTheDocument();
+		fireEvent.keyDown(document, { key: "Escape" });
+		await waitFor(() =>
+			expect(screen.queryByRole("dialog", { name: "Sidebar" })).not.toBeInTheDocument(),
+		);
+	});
+
 	it("captures focus when overlay is enabled while expanded", () => {
 		let lastFocus: RefObject<HTMLElement | null> | undefined;
 		function Probe() {
@@ -314,6 +366,22 @@ describe("Sidebar", () => {
 			</SidebarProvider>,
 		);
 		expect(screen.getByText("Nav")).toHaveStyle({ width: "400px" });
+	});
+
+	it("allows fixed compositions to opt out without changing provider defaults", () => {
+		const { unmount } = render(
+			<SidebarProvider>
+				<Sidebar resizable={false}>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByRole("separator", { name: "Resize sidebar" })).not.toBeInTheDocument();
+		unmount();
+		render(
+			<SidebarProvider>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByRole("separator", { name: "Resize sidebar" })).toBeInTheDocument();
 	});
 
 	it("resizes the expanded rail from the handle", () => {
@@ -431,6 +499,35 @@ describe("Sidebar", () => {
 		expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/settings");
 		expect(screen.getByRole("link", { name: "Mail" })).toHaveAttribute("href", "/app/mail");
 		expect(screen.getByRole("link", { name: "Account" })).toHaveAttribute("href", "/account");
+	});
+
+	it("rejects disabled asChild rows at the type and runtime boundaries", () => {
+		type DisabledItemSlot = {
+			asChild: true;
+			disabled: true;
+			children: ReactNode;
+		} extends SidebarItemProps
+			? true
+			: false;
+		type DisabledIconSlot = {
+			asChild: true;
+			disabled: true;
+			children: ReactNode;
+		} extends SidebarIconItemProps
+			? true
+			: false;
+		expectTypeOf<DisabledItemSlot>().toEqualTypeOf<false>();
+		expectTypeOf<DisabledIconSlot>().toEqualTypeOf<false>();
+
+		const invalid = {
+			asChild: true,
+			disabled: true,
+			children: <a href="/account">Account</a>,
+		} as unknown as SidebarItemProps;
+		expect(() => SidebarItem(invalid)).toThrow(/native button row/);
+		expect(() => SidebarIconItem(invalid as unknown as SidebarIconItemProps)).toThrow(
+			/native button row/,
+		);
 	});
 
 	it("toggles a nav group", () => {

@@ -207,6 +207,11 @@ export type SidebarProps = HTMLAttributes<HTMLElement> & {
 	 * @default false
 	 */
 	collapsed?: boolean;
+	/**
+	 * Show the resize handle for an expanded provider-backed sidebar.
+	 * @default true
+	 */
+	resizable?: boolean;
 };
 
 function clampSidebarWidth(next: number) {
@@ -270,6 +275,7 @@ function SidebarResize({
 
 export function Sidebar({
 	collapsed: collapsedProp,
+	resizable = true,
 	className,
 	children,
 	onMouseEnter,
@@ -286,7 +292,7 @@ export function Sidebar({
 	const width = context?.width ?? 260;
 	const body = context?.loading ? (
 		<div
-			className="flex flex-col gap-basalt-space-lg p-basalt-space-lg"
+			className="flex flex-col gap-basalt-space-lg px-basalt-layout-lg py-basalt-space-lg"
 			role="status"
 			aria-live="polite"
 		>
@@ -298,7 +304,7 @@ export function Sidebar({
 		children
 	);
 	const resize =
-		context && !collapsed ? (
+		context && resizable && !collapsed ? (
 			<SidebarResize side={side} width={context.width} onWidth={context.setWidth} />
 		) : null;
 	const frameClass = cn(
@@ -333,6 +339,10 @@ export function Sidebar({
 							const from = "relatedTarget" in event ? event.relatedTarget : null;
 							if (from instanceof HTMLElement) {
 								context.lastFocusRef.current = from;
+							}
+							if (event.target instanceof HTMLElement) {
+								event.preventDefault();
+								event.target.focus();
 							}
 						}}
 						onCloseAutoFocus={(event) => {
@@ -581,11 +591,22 @@ type SidebarRowProps = {
 
 type SidebarButtonRowProps = Omit<
 	ButtonHTMLAttributes<HTMLButtonElement>,
-	"children" | "className"
+	"children" | "className" | "disabled"
 > &
 	SidebarRowProps & {
-		/** Render the item onto its single child element. */
-		asChild?: boolean;
+		asChild?: false;
+		disabled?: boolean;
+		href?: never;
+	};
+
+type SidebarSlotRowProps = Omit<
+	ButtonHTMLAttributes<HTMLButtonElement>,
+	"children" | "className" | "disabled"
+> &
+	SidebarRowProps & {
+		/** Render the item onto its single enabled child element. */
+		asChild: true;
+		disabled?: never;
 		href?: never;
 	};
 
@@ -599,9 +620,16 @@ type SidebarLinkRowProps = Omit<
 		asChild?: never;
 	};
 
-export type SidebarItemProps = SidebarButtonRowProps | SidebarLinkRowProps;
+export type SidebarItemProps = SidebarButtonRowProps | SidebarSlotRowProps | SidebarLinkRowProps;
+
+function rejectDisabledAsChild(props: { asChild?: boolean; disabled?: boolean }) {
+	if (props.asChild && props.disabled) {
+		throw new Error("Sidebar asChild rows do not support disabled; use a native button row");
+	}
+}
 
 export function SidebarItem(props: SidebarItemProps) {
+	rejectDisabledAsChild(props);
 	const rowClass = cn(
 		NAV_ITEM_CLASS,
 		SIDEBAR_ROW_CLASS,
@@ -653,9 +681,13 @@ export function SidebarItem(props: SidebarItemProps) {
 	);
 }
 
-export type SidebarIconItemProps = SidebarButtonRowProps | SidebarLinkRowProps;
+export type SidebarIconItemProps =
+	| SidebarButtonRowProps
+	| SidebarSlotRowProps
+	| SidebarLinkRowProps;
 
 export function SidebarIconItem(props: SidebarIconItemProps) {
+	rejectDisabledAsChild(props);
 	const rowClass = cn(
 		NAV_ITEM_CLASS,
 		SIDEBAR_ROW_CLASS,

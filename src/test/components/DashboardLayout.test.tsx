@@ -183,10 +183,11 @@ describe("DashboardLayout", () => {
 		expect(screen.getByRole("button", { name: "Theme Palette" })).toBeInTheDocument();
 	});
 
-	it("opens the mobile drawer and locks body scroll when the menu button is clicked", () => {
+	it("opens the fixed mobile drawer without resizing and locks body scroll", () => {
 		renderLayout("/");
 		fireEvent.click(screen.getByLabelText("Open navigation menu"));
 		expect(document.body.style.overflow).toBe("hidden");
+		expect(screen.queryByRole("separator", { name: "Resize sidebar" })).not.toBeInTheDocument();
 	});
 
 	it("closes the mobile drawer when navigating to a new route", () => {

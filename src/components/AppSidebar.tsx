@@ -458,9 +458,10 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 interface AppSidebarProps {
 	collapsed: boolean;
 	onToggle: () => void;
+	resizable?: boolean;
 }
 
-export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
+export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebarProps) {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const { t } = useTranslation();
@@ -506,7 +507,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 
 	return (
 		<SidebarProvider collapsed={collapsed} onCollapsedChange={onToggle}>
-			<Sidebar>
+			<Sidebar resizable={resizable}>
 				<SidebarHeader>
 					<SidebarBrand
 						logo={
@@ -565,7 +566,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 					</>
 				) : (
 					<>
-						<div className="px-basalt-sidebar-inset">
+						<div className="px-basalt-layout">
 							<SidebarSearch onClick={() => setSearchOpen(true)}>
 								{t("common.search")}
 							</SidebarSearch>
