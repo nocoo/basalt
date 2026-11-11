@@ -895,6 +895,67 @@ describe("Sidebar", () => {
 		expect(screen.getByRole("button", { name: "Menu" })).toBeInTheDocument();
 	});
 
+	it("renders the standard SidebarUser sign-out button with a top tooltip", async () => {
+		const onSignOut = vi.fn();
+		render(
+			<SidebarUser
+				name="Ada"
+				avatar={<span>AV</span>}
+				action={<button type="button">Menu</button>}
+				onSignOut={onSignOut}
+			/>,
+		);
+		const signOut = screen.getByRole("button", { name: "Sign out" });
+		expect(signOut).toHaveAttribute("data-slot", "sidebar-user-sign-out");
+		expect(signOut).toHaveAttribute("type", "button");
+		expect(signOut.querySelector("svg.lucide-log-out")).not.toBeNull();
+		const menu = screen.getByRole("button", { name: "Menu" });
+		expect(menu.compareDocumentPosition(signOut) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		fireEvent.click(signOut);
+		expect(onSignOut).toHaveBeenCalledTimes(1);
+		const event = new MouseEvent("pointermove", { bubbles: true });
+		Object.defineProperty(event, "pointerType", { value: "mouse" });
+		act(() => {
+			signOut.dispatchEvent(event);
+		});
+		const tooltip = await screen.findByRole("tooltip");
+		expect(tooltip).toHaveTextContent("Sign out");
+		expect(document.querySelector('[data-side="top"]')).not.toBeNull();
+	});
+
+	it("renders SidebarUser sign-out as a link with a custom label", () => {
+		const onSignOut = vi.fn();
+		render(
+			<SidebarUser
+				name="Ada"
+				avatar={<span>AV</span>}
+				signOutHref="/cdn-cgi/access/logout"
+				onSignOut={onSignOut}
+				signOutLabel="退出登录"
+			/>,
+		);
+		const link = screen.getByRole("link", { name: "退出登录" });
+		expect(link).toHaveAttribute("href", "/cdn-cgi/access/logout");
+		expect(link).toHaveAttribute("data-slot", "sidebar-user-sign-out");
+		expect(screen.queryByRole("button", { name: "退出登录" })).toBeNull();
+	});
+
+	it("hides the SidebarUser sign-out on the collapsed rail and omits it by default", () => {
+		const { rerender } = render(
+			<SidebarProvider collapsed>
+				<Sidebar>
+					<SidebarFooter>
+						<SidebarUser name="Ada" avatar={<span>AV</span>} onSignOut={() => {}} />
+					</SidebarFooter>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("AV")).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Sign out" })).toBeNull();
+		rerender(<SidebarUser name="Ada" avatar={<span>AV</span>} />);
+		expect(document.querySelector('[data-slot="sidebar-user-sign-out"]')).toBeNull();
+	});
+
 	it("keeps the footer pinned and contains nav overscroll", () => {
 		render(
 			<Sidebar>

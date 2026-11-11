@@ -313,6 +313,25 @@ export const API = [
 				description: "Tooltip shown beside the avatar on the collapsed rail.",
 			},
 			{
+				name: "onSignOut",
+				type: "() => void",
+				required: false,
+				description: "Renders the standard sign-out icon button (LogOut glyph, top tooltip) after `action` in the\nexpanded row. Hidden on the collapsed rail.",
+			},
+			{
+				name: "signOutHref",
+				type: "string",
+				required: false,
+				description: "Renders the standard sign-out control as a link to this URL (for example a Cloudflare Access\nlogout endpoint). Takes precedence over `onSignOut`.",
+			},
+			{
+				name: "signOutLabel",
+				type: "string",
+				required: false,
+				default: "\"Sign out\"",
+				description: "Accessible name and tooltip of the sign-out control.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

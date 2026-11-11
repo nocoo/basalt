@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
-import { Button } from "@nocoo/basalt/components/button";
 import {
 	CommandEmpty,
 	CommandGroup,
@@ -79,7 +78,6 @@ import {
 	List,
 	Loader,
 	LogIn,
-	LogOut,
 	Megaphone,
 	Menu,
 	MessageCircle,
@@ -570,16 +568,8 @@ export function AppSidebar({
 								<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
 							</Avatar>
 						}
-						action={
-							<Button
-								variant="ghost"
-								size="icon-sm"
-								className="shrink-0"
-								aria-label={t("common.logOut")}
-							>
-								<LogOut aria-hidden="true" />
-							</Button>
-						}
+						onSignOut={() => {}}
+						signOutLabel={t("common.logOut")}
 					/>
 				</SidebarFooter>
 				<CommandPalette

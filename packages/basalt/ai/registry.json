@@ -23585,7 +23585,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "b5e4b490f898773e",
+			"sourceHash": "6fbfe5c9b0573734",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -24164,6 +24164,25 @@
 									"description": "Tooltip shown beside the avatar on the collapsed rail."
 								},
 								{
+									"name": "onSignOut",
+									"type": "() => void",
+									"required": false,
+									"description": "Renders the standard sign-out icon button (LogOut glyph, top tooltip) after `action` in the\nexpanded row. Hidden on the collapsed rail."
+								},
+								{
+									"name": "signOutHref",
+									"type": "string",
+									"required": false,
+									"description": "Renders the standard sign-out control as a link to this URL (for example a Cloudflare Access\nlogout endpoint). Takes precedence over `onSignOut`."
+								},
+								{
+									"name": "signOutLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Sign out\"",
+									"description": "Accessible name and tooltip of the sign-out control."
+								},
+								{
 									"name": "className",
 									"type": "string",
 									"required": false,
@@ -24567,6 +24586,25 @@
 							"required": false,
 							"default": "name",
 							"description": "Tooltip shown beside the avatar on the collapsed rail."
+						},
+						{
+							"name": "onSignOut",
+							"type": "() => void",
+							"required": false,
+							"description": "Renders the standard sign-out icon button (LogOut glyph, top tooltip) after `action` in the\nexpanded row. Hidden on the collapsed rail."
+						},
+						{
+							"name": "signOutHref",
+							"type": "string",
+							"required": false,
+							"description": "Renders the standard sign-out control as a link to this URL (for example a Cloudflare Access\nlogout endpoint). Takes precedence over `onSignOut`."
+						},
+						{
+							"name": "signOutLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Sign out\"",
+							"description": "Accessible name and tooltip of the sign-out control."
 						},
 						{
 							"name": "className",
@@ -36610,7 +36648,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "b5e4b490f898773e",
+			"sourceHash": "6fbfe5c9b0573734",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -36924,6 +36962,25 @@
 							"required": false,
 							"default": "name",
 							"description": "Tooltip shown beside the avatar on the collapsed rail."
+						},
+						{
+							"name": "onSignOut",
+							"type": "() => void",
+							"required": false,
+							"description": "Renders the standard sign-out icon button (LogOut glyph, top tooltip) after `action` in the\nexpanded row. Hidden on the collapsed rail."
+						},
+						{
+							"name": "signOutHref",
+							"type": "string",
+							"required": false,
+							"description": "Renders the standard sign-out control as a link to this URL (for example a Cloudflare Access\nlogout endpoint). Takes precedence over `onSignOut`."
+						},
+						{
+							"name": "signOutLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Sign out\"",
+							"description": "Accessible name and tooltip of the sign-out control."
 						},
 						{
 							"name": "className",

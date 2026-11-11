@@ -1,6 +1,6 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Slot } from "@radix-ui/react-slot";
-import { ChevronUp, PanelLeft, Search } from "lucide-react";
+import { ChevronUp, LogOut, PanelLeft, Search } from "lucide-react";
 import {
 	type AnchorHTMLAttributes,
 	type ButtonHTMLAttributes,
@@ -20,7 +20,7 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { NAV_ITEM_CLASS, NAV_LIST_CLASS, NAV_ROW_CLASS } from "../utils/navigation";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Badge } from "./badge";
-import { Button, type ButtonProps } from "./button";
+import { Button, type ButtonProps, LinkButton } from "./button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
 import { Link } from "./link";
@@ -941,16 +941,89 @@ export interface SidebarUserProps {
 	 */
 	tooltip?: ReactNode;
 	/**
+	 * Renders the standard sign-out icon button (LogOut glyph, top tooltip) after `action` in the
+	 * expanded row. Hidden on the collapsed rail.
+	 */
+	onSignOut?: () => void;
+	/**
+	 * Renders the standard sign-out control as a link to this URL (for example a Cloudflare Access
+	 * logout endpoint). Takes precedence over `onSignOut`.
+	 */
+	signOutHref?: string;
+	/**
+	 * Accessible name and tooltip of the sign-out control.
+	 * @default "Sign out"
+	 */
+	signOutLabel?: string;
+	/**
 	 * Additional CSS class name.
 	 */
 	className?: string;
 }
 
+function SidebarUserSignOut({
+	href,
+	onSignOut,
+	label,
+}: {
+	href: string | undefined;
+	onSignOut: (() => void) | undefined;
+	label: string;
+}) {
+	const glyph = <LogOut aria-hidden="true" strokeWidth={1.5} />;
+	const control =
+		href !== undefined ? (
+			<LinkButton
+				data-slot="sidebar-user-sign-out"
+				variant="ghost"
+				size="icon-sm"
+				href={href}
+				aria-label={label}
+				className="shrink-0 text-basalt-muted-foreground hover:text-basalt-foreground"
+			>
+				{glyph}
+			</LinkButton>
+		) : (
+			<Button
+				data-slot="sidebar-user-sign-out"
+				type="button"
+				variant="ghost"
+				size="icon-sm"
+				aria-label={label}
+				className="shrink-0 text-basalt-muted-foreground hover:text-basalt-foreground"
+				onClick={onSignOut}
+			>
+				{glyph}
+			</Button>
+		);
+	return (
+		<TooltipProvider delayDuration={0}>
+			<Tooltip>
+				<TooltipTrigger asChild>{control}</TooltipTrigger>
+				<TooltipContent side="top" sideOffset={6}>
+					{label}
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
+	);
+}
+
 /**
  * Footer identity row. Inside a collapsed `SidebarProvider` rail (and not peeking) it renders only
  * the avatar, with `tooltip` (default `name`) on hover, so apps do not branch on `collapsed`.
+ * Pass `onSignOut` or `signOutHref` for the standard expanded-row sign-out button.
  */
-export function SidebarUser({ name, email, avatar, action, tooltip, className }: SidebarUserProps) {
+export function SidebarUser({
+	name,
+	email,
+	avatar,
+	action,
+	tooltip,
+	onSignOut,
+	signOutHref,
+	signOutLabel = "Sign out",
+	className,
+}: SidebarUserProps) {
 	const context = useContext(SidebarContext);
 	const collapsed = Boolean(context?.collapsed && !(context.peek && context.peeking));
 	if (collapsed) {
@@ -989,6 +1062,9 @@ export function SidebarUser({ name, email, avatar, action, tooltip, className }:
 				) : null}
 			</div>
 			{action}
+			{signOutHref !== undefined || onSignOut ? (
+				<SidebarUserSignOut href={signOutHref} onSignOut={onSignOut} label={signOutLabel} />
+			) : null}
 		</div>
 	);
 }
