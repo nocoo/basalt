@@ -135,7 +135,7 @@ export type SidebarProviderProps = {
 	overlay?: boolean;
 	/**
 	 * Initial expanded width in pixels, clamped between 180 and 400.
-	 * @default 260
+	 * @default {@link SIDEBAR_DEFAULT_WIDTH_PX}
 	 */
 	defaultWidth?: number;
 	/**
@@ -152,7 +152,7 @@ export function SidebarProvider({
 	loading = false,
 	peek = false,
 	overlay = false,
-	defaultWidth = 260,
+	defaultWidth = SIDEBAR_DEFAULT_WIDTH_PX,
 	children,
 }: SidebarProviderProps) {
 	const [uncontrolled, setUncontrolled] = useState(defaultCollapsed);
@@ -227,6 +227,11 @@ function clampSidebarWidth(next: number) {
 	return Math.min(400, Math.max(180, next));
 }
 
+/**
+ * Default expanded sidebar width in pixels. Matches `--basalt-size-sidebar-width` (16.25rem at a 16px root).
+ */
+export const SIDEBAR_DEFAULT_WIDTH_PX = 260;
+
 function SidebarResize({
 	side,
 	width,
@@ -298,7 +303,7 @@ export function Sidebar({
 		: (collapsedProp ?? false);
 	const side = context?.side ?? "left";
 	const overlay = context?.overlay ?? false;
-	const width = context?.width ?? 260;
+	const width = context?.width ?? SIDEBAR_DEFAULT_WIDTH_PX;
 	const body = context?.loading ? (
 		<div
 			className="flex flex-col gap-basalt-space-lg px-basalt-layout-lg py-basalt-space-lg"
@@ -1099,11 +1104,6 @@ export interface SidebarDrawerProps {
 	 */
 	id?: string;
 	/**
-	 * Expanded sidebar width passed to the inner provider, clamped between 180 and 400.
-	 * @default 260
-	 */
-	defaultWidth?: number;
-	/**
 	 * Element to restore focus to when the drawer closes.
 	 */
 	returnFocusRef?: RefObject<HTMLElement | null>;
@@ -1132,7 +1132,6 @@ export function SidebarDrawer({
 	onOpenChange,
 	children,
 	id,
-	defaultWidth = 260,
 	returnFocusRef,
 	title = "Navigation",
 	description = "Application navigation links and actions.",
@@ -1156,9 +1155,7 @@ export function SidebarDrawer({
 					<SheetTitle>{title}</SheetTitle>
 					<SheetDescription>{description}</SheetDescription>
 				</SheetHeader>
-				<SidebarProvider collapsed={false} defaultWidth={defaultWidth}>
-					{children}
-				</SidebarProvider>
+				<SidebarProvider collapsed={false}>{children}</SidebarProvider>
 			</SheetContent>
 		</Sheet>
 	);

@@ -2,8 +2,8 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.3.2",
 	"totalModules": 131,
-	"totalSymbols": 801,
-	"totalValues": 417,
+	"totalSymbols": 802,
+	"totalValues": 418,
 	"totalTypes": 384,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 120,
@@ -23593,7 +23593,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "bab8566491d43474",
+			"sourceHash": "f3f06f8ea23bd5ee",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23759,6 +23759,14 @@
 					"name": "SidebarProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"packageDoc": "ai/registry.json#sidebar",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SIDEBAR_DEFAULT_WIDTH_PX",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/sidebar",
 					"packageDoc": "ai/registry.json#sidebar",
 					"originModule": "@nocoo/basalt/components/sidebar"
@@ -23931,7 +23939,7 @@
 									"name": "defaultWidth",
 									"type": "number",
 									"required": false,
-									"default": "260",
+									"default": "{@link SIDEBAR_DEFAULT_WIDTH_PX}",
 									"description": "Initial expanded width in pixels, clamped between 180 and 400."
 								},
 								{
@@ -24020,13 +24028,6 @@
 									"type": "string",
 									"required": false,
 									"description": "Sheet content id for wiring `aria-controls` on the menu trigger."
-								},
-								{
-									"name": "defaultWidth",
-									"type": "number",
-									"required": false,
-									"default": "260",
-									"description": "Expanded sidebar width passed to the inner provider, clamped between 180 and 400."
 								},
 								{
 									"name": "returnFocusRef",
@@ -24418,7 +24419,7 @@
 							"name": "defaultWidth",
 							"type": "number",
 							"required": false,
-							"default": "260",
+							"default": "{@link SIDEBAR_DEFAULT_WIDTH_PX}",
 							"description": "Initial expanded width in pixels, clamped between 180 and 400."
 						},
 						{
@@ -24507,13 +24508,6 @@
 							"type": "string",
 							"required": false,
 							"description": "Sheet content id for wiring `aria-controls` on the menu trigger."
-						},
-						{
-							"name": "defaultWidth",
-							"type": "number",
-							"required": false,
-							"default": "260",
-							"description": "Expanded sidebar width passed to the inner provider, clamped between 180 and 400."
 						},
 						{
 							"name": "returnFocusRef",
@@ -36798,7 +36792,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "bab8566491d43474",
+			"sourceHash": "f3f06f8ea23bd5ee",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -36857,7 +36851,7 @@
 							"name": "defaultWidth",
 							"type": "number",
 							"required": false,
-							"default": "260",
+							"default": "{@link SIDEBAR_DEFAULT_WIDTH_PX}",
 							"description": "Initial expanded width in pixels, clamped between 180 and 400."
 						},
 						{
@@ -36946,13 +36940,6 @@
 							"type": "string",
 							"required": false,
 							"description": "Sheet content id for wiring `aria-controls` on the menu trigger."
-						},
-						{
-							"name": "defaultWidth",
-							"type": "number",
-							"required": false,
-							"default": "260",
-							"description": "Expanded sidebar width passed to the inner provider, clamped between 180 and 400."
 						},
 						{
 							"name": "returnFocusRef",

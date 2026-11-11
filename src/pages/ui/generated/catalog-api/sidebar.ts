@@ -56,7 +56,7 @@ export const API = [
 				name: "defaultWidth",
 				type: "number",
 				required: false,
-				default: "260",
+				default: "{@link SIDEBAR_DEFAULT_WIDTH_PX}",
 				description: "Initial expanded width in pixels, clamped between 180 and 400.",
 			},
 			{
@@ -145,13 +145,6 @@ export const API = [
 				type: "string",
 				required: false,
 				description: "Sheet content id for wiring `aria-controls` on the menu trigger.",
-			},
-			{
-				name: "defaultWidth",
-				type: "number",
-				required: false,
-				default: "260",
-				description: "Expanded sidebar width passed to the inner provider, clamped between 180 and 400.",
 			},
 			{
 				name: "returnFocusRef",

@@ -5,6 +5,7 @@ import { LinkProvider } from "../providers/link";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "./sheet";
 import {
 	ContentIsland,
+	SIDEBAR_DEFAULT_WIDTH_PX,
 	Sidebar,
 	SidebarBrand,
 	SidebarDrawer,
@@ -1040,6 +1041,9 @@ describe("Sidebar", () => {
 		expect(dialog).toHaveAttribute("data-slot", "sidebar-drawer");
 		expect(dialog.className).toContain("basalt-sidebar-drawer");
 		expect(document.querySelector("[data-basalt-sidebar]")).not.toHaveAttribute("data-collapsed");
+		expect(document.querySelector("[data-basalt-sidebar]")).toHaveStyle({
+			width: `${SIDEBAR_DEFAULT_WIDTH_PX}px`,
+		});
 		expect(screen.getByText("Atlas")).toBeVisible();
 		expect(screen.getByText("Home")).toBeVisible();
 		expect(screen.getByText("Primary navigation").closest(".sr-only")).not.toBeNull();

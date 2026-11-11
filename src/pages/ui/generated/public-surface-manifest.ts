@@ -3,8 +3,8 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.3.2",
 	"totalModules": 131,
-	"totalSymbols": 801,
-	"totalValues": 417,
+	"totalSymbols": 802,
+	"totalValues": 418,
 	"totalTypes": 384,
 	"totalCssExports": 3,
 	"modules": [
@@ -6344,6 +6344,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "SidebarProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SIDEBAR_DEFAULT_WIDTH_PX",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/sidebar",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/sidebar"

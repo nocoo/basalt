@@ -514,7 +514,7 @@ Inside a mobile `Sheet` that hosts the sidebar, use `<SidebarToggle mode="dismis
 
 ## 9. Mobile
 
-Breakpoint: `768px`. Below that, the in-flow rail is omitted. Host the same sidebar tree in `SidebarDrawer`, which owns the left `Sheet`, standard sidebar width (`--basalt-size-sidebar-width`, default 260px), zero padding/border overrides, sr-only title/description, a forced-expanded inner `SidebarProvider`, optional `returnFocusRef`, and an `id` for `aria-controls`.
+Breakpoint: `768px`. Below that, the in-flow rail is omitted. Host the same sidebar tree in `SidebarDrawer`, which owns the left `Sheet`, standard sidebar width (`--basalt-size-sidebar-width`, aligned with `SidebarProvider`’s default via `SIDEBAR_DEFAULT_WIDTH_PX`), zero padding/border overrides, sr-only title/description, a forced-expanded inner `SidebarProvider` at that default width (no width override prop), optional `returnFocusRef`, and an `id` for `aria-controls`.
 
 ```tsx excerpt:mobile-sidebar-drawer
 <SidebarDrawer

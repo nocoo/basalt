@@ -93,8 +93,8 @@ describe("public surface documentation ownership and freshness", () => {
 
 		expect(manifest.packageVersion).toBe(rootPkg.version);
 		expect(manifest.totalModules).toBe(131);
-		expect(manifest.totalSymbols).toBe(801);
-		expect(manifest.totalValues).toBe(417);
+		expect(manifest.totalSymbols).toBe(802);
+		expect(manifest.totalValues).toBe(418);
 		expect(manifest.totalTypes).toBe(384);
 		expect(manifest.totalCssExports).toBe(3);
 
