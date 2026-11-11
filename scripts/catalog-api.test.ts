@@ -759,6 +759,12 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "sidebar",
 				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarDrawerProps",
+				surface: "SidebarDrawer",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
 				propsType: "SidebarToggleProps",
 				surface: "SidebarToggle",
 			},
@@ -1739,7 +1745,7 @@ describe("catalog API generator contract", () => {
 				surface: "PromptBar",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(263);
+		expect(CATALOG_API_TARGETS).toHaveLength(264);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -3019,6 +3025,7 @@ export interface WidgetProps {
 				"Sidebar",
 				"SidebarHeader",
 				"SidebarBrand",
+				"SidebarDrawer",
 				"SidebarToggle",
 				"SidebarSearch",
 				"SidebarNav",
@@ -5000,7 +5007,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"52efac991ee842f9512168489b16e8e7bdbdb589243d658dffba4bea72306b0d",
+			"b0c0ad54724e7d74bc7be33cb53f4f8febdd155d3452af6a03af1e53e548076b",
 		);
 	}, 60_000);
 

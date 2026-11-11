@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { SIDEBAR_DEFAULT_WIDTH_PX } from "../components/sidebar";
 
 const tokens = readFileSync("packages/basalt/src/styles/tokens.css", "utf8");
 const tailwind = readFileSync("packages/basalt/src/styles/tailwind.css", "utf8");
@@ -131,14 +132,20 @@ describe("dimension token contract", () => {
 		expect(tokens).toContain("--basalt-space-nav-inset: var(--basalt-space-lg)");
 		expect(tokens).toContain("--basalt-space-sidebar-inset: var(--basalt-space-layout)");
 		expect(tokens).toContain("--basalt-size-sidebar-brand-slot:");
-		for (const css of [tokens, standalone])
+		for (const css of [tokens, standalone]) {
+			expect(css).toContain("--basalt-size-sidebar-width: 16.25rem");
 			expect(css).toContain("--basalt-size-sidebar-logo: 1.5rem");
+		}
+		expect(SIDEBAR_DEFAULT_WIDTH_PX).toBe(16.25 * 16);
 		for (const css of [tokens, standalone]) {
 			expect(css).toContain(
 				"--basalt-size-sidebar-row: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg))",
 			);
 			expect(css).toMatch(
 				/\[data-basalt-sidebar\]\[data-collapsed\] \[data-slot="sidebar-toggle"\] \{[^}]*inline-size: var\(--basalt-size-control\);[^}]*block-size: var\(--basalt-size-sidebar-row\);/,
+			);
+			expect(css).toMatch(
+				/\[data-basalt-sidebar\]\[data-collapsed\] \[data-slot="sidebar-brand-copy"\] \{[^}]*display: none;/,
 			);
 		}
 		expect(tokens).toContain("--basalt-space-panel-x: var(--basalt-space-card)");

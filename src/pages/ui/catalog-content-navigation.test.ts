@@ -23,7 +23,7 @@ const NAVIGATION_SCENARIOS = {
 		"table-of-contents-no-active-item",
 		"table-of-contents-without-title",
 	],
-	sidebar: ["sidebar-default", "sidebar-provider"],
+	sidebar: ["sidebar-default", "sidebar-drawer", "sidebar-provider"],
 } as const;
 
 const NAVIGATION_DESCRIPTIONS = {
@@ -53,7 +53,7 @@ describe("navigation catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(120);
 	});
 
-	it("keeps the twenty-two scenarios in their audited order", () => {
+	it("keeps the twenty-three scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(NAVIGATION_SCENARIOS)) {
 			const examples = navigation[slug]?.examples ?? [];
@@ -72,7 +72,7 @@ describe("navigation catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(22);
+		expect(count).toBe(23);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

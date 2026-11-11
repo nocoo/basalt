@@ -316,6 +316,7 @@ export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
 	"@nocoo/basalt/components/sidebar": [
 		"ContentIsland",
 		"ContentIslandProps",
+		"SIDEBAR_DEFAULT_WIDTH_PX",
 		"SidebarContextValue",
 		"SidebarFooterProps",
 		"SidebarGroupProps",

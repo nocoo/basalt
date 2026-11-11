@@ -1,6 +1,6 @@
 # Basalt AI & Machine Usage Guide
 
-This document describes how AI code assistants, automated agents, and developers can consume `@nocoo/basalt` (v3.3.1).
+This document describes how AI code assistants, automated agents, and developers can consume `@nocoo/basalt` (v3.3.2).
 
 ---
 
@@ -14,7 +14,7 @@ Document anchors formatted as `ai/registry.json#<slug>` reference specific catal
 It contains:
 - **131 Exported Modules** (1 root barrel, components, charts, providers)
 - **120 Ready Catalog Entries** with full API definitions
-- **798 Public Symbols** (415 runtime values, 383 TypeScript types)
+- **802 Public Symbols** (418 runtime values, 384 TypeScript types)
 - **Detailed Component API**: Props, types, defaults, descriptions, and function callable signatures (including all `toast()` variants)
 - **Exact Peer Dependency Closures**: Identifies optional peers required per subpath (e.g., Recharts)
 

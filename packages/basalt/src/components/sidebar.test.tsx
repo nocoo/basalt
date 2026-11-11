@@ -1,12 +1,14 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { type ReactNode, type RefObject, useState } from "react";
+import { type ReactNode, type RefObject, useRef, useState } from "react";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
 import { LinkProvider } from "../providers/link";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "./sheet";
 import {
 	ContentIsland,
+	SIDEBAR_DEFAULT_WIDTH_PX,
 	Sidebar,
 	SidebarBrand,
+	SidebarDrawer,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
@@ -113,6 +115,49 @@ describe("Sidebar", () => {
 		rerender(<SidebarBrand logo="A" name="Atlas" />);
 		expect(screen.queryByText("v1.2.3")).not.toBeInTheDocument();
 		expect(container.querySelector('[data-slot="sidebar-brand-action"]')).toBeNull();
+	});
+
+	it("hides brand copy on the collapsed rail and restores it when expanded or peeking", () => {
+		const brand = (
+			<SidebarHeader>
+				<SidebarBrand logo={<span>A</span>} name="Atlas" version="v3.3.2" />
+			</SidebarHeader>
+		);
+		const { container, rerender } = render(
+			<SidebarProvider collapsed={false}>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("Atlas")).toBeVisible();
+		expect(screen.getByText("v3.3.2")).toBeVisible();
+
+		rerender(
+			<SidebarProvider collapsed>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(container.querySelector("[data-basalt-sidebar]")).toHaveAttribute("data-collapsed");
+		expect(container.querySelector('[data-slot="sidebar-brand-copy"]')).toBeInTheDocument();
+
+		rerender(
+			<SidebarProvider collapsed={false}>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(container.querySelector("[data-basalt-sidebar]")).not.toHaveAttribute("data-collapsed");
+
+		rerender(
+			<SidebarProvider collapsed peek>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		const sidebar = container.querySelector<HTMLElement>("[data-basalt-sidebar]");
+		if (!sidebar) throw new Error("Missing sidebar");
+		expect(sidebar).toHaveAttribute("data-collapsed");
+		fireEvent.mouseEnter(sidebar);
+		expect(sidebar).not.toHaveAttribute("data-collapsed");
+		expect(screen.getByText("Atlas")).toBeInTheDocument();
+		expect(screen.getByText("v3.3.2")).toBeInTheDocument();
 	});
 
 	it("toggles through context with accessible expanded state", () => {
@@ -954,6 +999,57 @@ describe("Sidebar", () => {
 		expect(screen.queryByRole("button", { name: "Sign out" })).toBeNull();
 		rerender(<SidebarUser name="Ada" avatar={<span>AV</span>} />);
 		expect(document.querySelector('[data-slot="sidebar-user-sign-out"]')).toBeNull();
+	});
+
+	it("opens and closes SidebarDrawer with accessible name, forced expansion and focus return", async () => {
+		function Shell() {
+			const [open, setOpen] = useState(false);
+			const menuButton = useRef<HTMLButtonElement>(null);
+			return (
+				<>
+					<button ref={menuButton} type="button" onClick={() => setOpen(true)}>
+						Open menu
+					</button>
+					<SidebarDrawer
+						open={open}
+						onOpenChange={setOpen}
+						id="mobile-navigation"
+						returnFocusRef={menuButton}
+						description="Primary navigation"
+					>
+						<Sidebar resizable={false}>
+							<SidebarHeader>
+								<SidebarBrand
+									logo={<span>A</span>}
+									name="Atlas"
+									action={<SidebarToggle mode="dismiss" onDismiss={() => setOpen(false)} />}
+								/>
+							</SidebarHeader>
+							<SidebarNav aria-label="Main">
+								<SidebarItem>Home</SidebarItem>
+							</SidebarNav>
+						</Sidebar>
+					</SidebarDrawer>
+				</>
+			);
+		}
+		render(<Shell />);
+		const menu = screen.getByRole("button", { name: "Open menu" });
+		fireEvent.click(menu);
+		const dialog = await screen.findByRole("dialog", { name: "Navigation" });
+		expect(dialog).toHaveAttribute("id", "mobile-navigation");
+		expect(dialog).toHaveAttribute("data-slot", "sidebar-drawer");
+		expect(dialog.className).toContain("basalt-sidebar-drawer");
+		expect(document.querySelector("[data-basalt-sidebar]")).not.toHaveAttribute("data-collapsed");
+		expect(document.querySelector("[data-basalt-sidebar]")).toHaveStyle({
+			width: `${SIDEBAR_DEFAULT_WIDTH_PX}px`,
+		});
+		expect(screen.getByText("Atlas")).toBeVisible();
+		expect(screen.getByText("Home")).toBeVisible();
+		expect(screen.getByText("Primary navigation").closest(".sr-only")).not.toBeNull();
+		fireEvent.click(screen.getByRole("button", { name: "Close navigation" }));
+		await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+		expect(menu).toHaveFocus();
 	});
 
 	it("keeps the footer pinned and contains nav overscroll", () => {

@@ -86,6 +86,7 @@ describe("content scenario truth", () => {
 		]);
 		expect(UI_EXAMPLES.sidebar?.map((item) => item.id)).toEqual([
 			"sidebar-default",
+			"sidebar-drawer",
 			"sidebar-provider",
 		]);
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);

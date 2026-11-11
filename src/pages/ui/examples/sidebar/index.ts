@@ -2,6 +2,7 @@ import { loadModuleScenarios } from "../../catalog-scenario";
 
 const SIDEBAR_SCENARIO_META = [
 	{ key: "default", title: "Default" },
+	{ key: "drawer", title: "Drawer" },
 	{ key: "provider", title: "Provider" },
 ] as const;
 

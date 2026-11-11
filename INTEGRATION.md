@@ -156,7 +156,7 @@ Root barrel is small leaves and providers. Shell chrome is granular.
 
 | From                                      | Import                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@nocoo/basalt`                           | `Button`, `Input`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarProvider`, `SidebarHeader`, `SidebarBrand`, `SidebarToggle`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
+| `@nocoo/basalt`                           | `Button`, `Input`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarProvider`, `SidebarHeader`, `SidebarBrand`, `SidebarDrawer`, `SidebarToggle`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
 | `@nocoo/basalt/components/app-shell`      | `AppShell`, `AppMain`, `AppSkipLink`                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `@nocoo/basalt/components/app-header`     | `AppHeader`                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `@nocoo/basalt/components/page-header`    | `PageHeader`                                                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -423,7 +423,7 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. NavigationMenuList retains its focus/selection-following behavior. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
-Place `SidebarBrand` in `SidebarHeader` with a 24px mark and `SidebarToggle` in its action slot. The fixed mark slot starts at 22px and ends at 46px, keeping its center on the 34px rail axis throughout the width transition. Pass the version as plain text: `SidebarBrand` renders it as a secondary badge (version pill) in the 12px auxiliary tier. It comes from the app `package.json` at build time. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
+Place `SidebarBrand` in `SidebarHeader` with a 24px mark and `SidebarToggle` in its action slot. The fixed mark slot starts at 22px and ends at 46px, keeping its center on the 34px rail axis throughout the width transition. Pass the version as plain text: `SidebarBrand` renders it as a secondary badge (version pill) in the 12px auxiliary tier. It comes from the app `package.json` at build time. On a collapsed rail that is not peeking, the product name and version hide through `[data-basalt-sidebar][data-collapsed]` on `[data-slot="sidebar-brand-copy"]`; the mark slot stays visible. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
 
 ```tsx excerpt:sidebar-expanded-structure
 <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
@@ -514,34 +514,24 @@ Inside a mobile `Sheet` that hosts the sidebar, use `<SidebarToggle mode="dismis
 
 ## 9. Mobile
 
-Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar component opens inside a left `Sheet`, always expanded (`collapsed={false}`).
+Breakpoint: `768px`. Below that, the in-flow rail is omitted. Host the same sidebar tree in `SidebarDrawer`, which owns the left `Sheet`, standard sidebar width (`--basalt-size-sidebar-width`, aligned with `SidebarProvider`’s default via `SIDEBAR_DEFAULT_WIDTH_PX`), zero padding/border overrides, sr-only title/description, a forced-expanded inner `SidebarProvider` at that default width (no width override prop), optional `returnFocusRef`, and an `id` for `aria-controls`.
 
-```tsx excerpt:mobile-sheet-sidebar
-<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-	<SheetContent
-		side="left"
-		tabIndex={-1}
-		className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
-		onOpenAutoFocus={(event) => {
-			if (event.target instanceof HTMLElement) {
-				event.preventDefault();
-				event.target.focus();
-			}
-		}}
-		onCloseAutoFocus={(event) => {
-			if (mobileTriggerRef.current) {
-				event.preventDefault();
-				mobileTriggerRef.current.focus();
-			}
-		}}
-	>
-		<SheetTitle className="sr-only">Navigation</SheetTitle>
-		<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} resizable={false} />
-	</SheetContent>
-</Sheet>;
+```tsx excerpt:mobile-sidebar-drawer
+<SidebarDrawer
+	open={mobileOpen}
+	onOpenChange={setMobileOpen}
+	id={mobileSheetId}
+	returnFocusRef={mobileTriggerRef}
+>
+	<AppSidebar resizable={false} onToggle={() => setMobileOpen(false)} />
+</SidebarDrawer>;
 ```
 
-`SheetContent` bounds its Sidebar to the available height. Sidebar owns the 260px column and the portal safe area. Close the sheet on pathname change. Focus the sheet itself on open so the focused toggle's tooltip does not consume the first Escape; restore focus to the menu button referenced by `mobileTriggerRef`. Radix Sheet owns modal scroll locking; do not set body overflow separately.
+Pass `resizable={false}` on the inner `Sidebar`. Put `<SidebarToggle mode="dismiss" onDismiss={() => setMobileOpen(false)} />` in the `SidebarBrand` action slot (see §8). Close the drawer on pathname change.
+
+**Migration from a hand-written `Sheet`:** replace the outer `Sheet`, padded `SheetContent`, sr-only `SheetTitle`/`SheetDescription`, and inner `SidebarProvider collapsed={false}` with one `SidebarDrawer`; drop `className` width/padding/border overrides and move `onCloseAutoFocus` focus restore to `returnFocusRef`.
+
+`SidebarDrawer` bounds its sidebar to the available height. The drawer owns the sidebar-width column and the portal safe area. Radix Sheet owns modal scroll locking; do not set body overflow separately.
 
 Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, MenuBar, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
 

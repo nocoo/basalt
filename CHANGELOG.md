@@ -11,6 +11,16 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.2] - 2026-11-11
+
+### Added
+
+- `SidebarDrawer` hosts mobile navigation in a left `Sheet` at `--basalt-size-sidebar-width` with sr-only title/description, a forced-expanded `SidebarProvider`, `returnFocusRef`, and `id` passthrough for `aria-controls`.
+
+### Fixed
+
+- Hide `SidebarBrand` product name and version badge on the collapsed rail (still visible when expanded or peeking).
+
 ## [3.3.1] - 2026-11-11
 
 ### Added
