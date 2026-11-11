@@ -11,6 +11,8 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.1] - 2026-11-11
+
 ### Added
 
 - `SidebarUser` gets a standard sign-out control: `onSignOut` (button) or `signOutHref` (link) with `signOutLabel` (default "Sign out") renders a muted LogOut icon button with a top tooltip at the end of the expanded row; the collapsed rail stays avatar-only.
