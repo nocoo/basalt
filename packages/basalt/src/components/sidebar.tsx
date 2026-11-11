@@ -1143,7 +1143,7 @@ export function SidebarDrawer({
 				id={id}
 				data-slot="sidebar-drawer"
 				side="left"
-				className="basalt-sidebar-drawer max-h-dvh"
+				className="basalt-sidebar-drawer max-h-dvh p-0 sm:p-0"
 				onCloseAutoFocus={(event) => {
 					if (returnFocusRef?.current) {
 						event.preventDefault();

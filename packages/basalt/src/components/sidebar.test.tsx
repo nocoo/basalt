@@ -1001,6 +1001,34 @@ describe("Sidebar", () => {
 		expect(document.querySelector('[data-slot="sidebar-user-sign-out"]')).toBeNull();
 	});
 
+	it.each([
+		["mobile", 390],
+		["tablet", 834],
+	])(
+		"keeps SidebarDrawer sheet content at zero padding on %s viewport widths",
+		async (_label, viewportWidth) => {
+			Object.defineProperty(window, "innerWidth", {
+				configurable: true,
+				writable: true,
+				value: viewportWidth,
+			});
+			render(
+				<SidebarDrawer open>
+					<Sidebar resizable={false}>
+						<SidebarNav aria-label="Main">
+							<SidebarItem>Home</SidebarItem>
+						</SidebarNav>
+					</Sidebar>
+				</SidebarDrawer>,
+			);
+			const dialog = screen.getByRole("dialog", { name: "Navigation" });
+			expect(dialog.className).toContain("p-0");
+			expect(dialog.className).toContain("sm:p-0");
+			expect(dialog.className).not.toMatch(/\bp-basalt-card\b/);
+			expect(dialog.className).not.toContain("sm:p-basalt-card-lg");
+		},
+	);
+
 	it("opens and closes SidebarDrawer with accessible name, forced expansion and focus return", async () => {
 		function Shell() {
 			const [open, setOpen] = useState(false);
