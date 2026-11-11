@@ -140,6 +140,9 @@ describe("dimension token contract", () => {
 			expect(css).toMatch(
 				/\[data-basalt-sidebar\]\[data-collapsed\] \[data-slot="sidebar-toggle"\] \{[^}]*inline-size: var\(--basalt-size-control\);[^}]*block-size: var\(--basalt-size-sidebar-row\);/,
 			);
+			expect(css).toMatch(
+				/\[data-basalt-sidebar\]\[data-collapsed\] \[data-slot="sidebar-brand-copy"\] \{[^}]*display: none;/,
+			);
 		}
 		expect(tokens).toContain("--basalt-space-panel-x: var(--basalt-space-card)");
 		expect(tokens).toContain("--basalt-space-panel-y: var(--basalt-space-card-sm)");

@@ -115,6 +115,49 @@ describe("Sidebar", () => {
 		expect(container.querySelector('[data-slot="sidebar-brand-action"]')).toBeNull();
 	});
 
+	it("hides brand copy on the collapsed rail and restores it when expanded or peeking", () => {
+		const brand = (
+			<SidebarHeader>
+				<SidebarBrand logo={<span>A</span>} name="Atlas" version="v3.3.2" />
+			</SidebarHeader>
+		);
+		const { container, rerender } = render(
+			<SidebarProvider collapsed={false}>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("Atlas")).toBeVisible();
+		expect(screen.getByText("v3.3.2")).toBeVisible();
+
+		rerender(
+			<SidebarProvider collapsed>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(container.querySelector("[data-basalt-sidebar]")).toHaveAttribute("data-collapsed");
+		expect(container.querySelector('[data-slot="sidebar-brand-copy"]')).toBeInTheDocument();
+
+		rerender(
+			<SidebarProvider collapsed={false}>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(container.querySelector("[data-basalt-sidebar]")).not.toHaveAttribute("data-collapsed");
+
+		rerender(
+			<SidebarProvider collapsed peek>
+				<Sidebar>{brand}</Sidebar>
+			</SidebarProvider>,
+		);
+		const sidebar = container.querySelector<HTMLElement>("[data-basalt-sidebar]");
+		if (!sidebar) throw new Error("Missing sidebar");
+		expect(sidebar).toHaveAttribute("data-collapsed");
+		fireEvent.mouseEnter(sidebar);
+		expect(sidebar).not.toHaveAttribute("data-collapsed");
+		expect(screen.getByText("Atlas")).toBeInTheDocument();
+		expect(screen.getByText("v3.3.2")).toBeInTheDocument();
+	});
+
 	it("toggles through context with accessible expanded state", () => {
 		const onCollapsedChange = vi.fn();
 		const onClick = vi.fn();

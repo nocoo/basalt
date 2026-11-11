@@ -380,7 +380,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "6fbfe5c9b0573734",
+		"hash": "177948115b04121b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},

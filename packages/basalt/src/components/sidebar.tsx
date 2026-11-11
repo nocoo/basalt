@@ -455,7 +455,10 @@ export function SidebarBrand({
 			<span data-slot="sidebar-brand-logo" className={SIDEBAR_BRAND_LOGO_CLASS}>
 				{logo}
 			</span>
-			<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap overflow-hidden whitespace-nowrap">
+			<div
+				data-slot="sidebar-brand-copy"
+				className="flex min-w-0 flex-1 items-center gap-basalt-row-gap overflow-hidden whitespace-nowrap"
+			>
 				<span
 					data-slot="sidebar-brand-name"
 					className="min-w-0 truncate text-basalt-base font-semibold"
