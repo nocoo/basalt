@@ -11,6 +11,12 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.3] - 2026-11-12
+
+### Fixed
+
+- `SidebarDrawer` resets default `SheetContent` side padding at every breakpoint (`p-0 sm:p-0`) so the 260px sidebar stays flush inside the drawer on tablet and desktop widths.
+
 ## [3.3.2] - 2026-11-11
 
 ### Added
