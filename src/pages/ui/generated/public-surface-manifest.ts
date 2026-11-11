@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.3.1",
 	"totalModules": 131,
-	"totalSymbols": 798,
-	"totalValues": 415,
-	"totalTypes": 383,
+	"totalSymbols": 801,
+	"totalValues": 417,
+	"totalTypes": 384,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -554,6 +554,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "SidebarBrand",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarDrawer",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/sidebar",
@@ -6293,6 +6301,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sidebar"
 				},
 				{
+					"name": "SidebarDrawer",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
 					"name": "ContentIsland",
 					"isValue": true,
 					"isType": false,
@@ -6414,6 +6430,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "SidebarUserProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarDrawerProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/sidebar",

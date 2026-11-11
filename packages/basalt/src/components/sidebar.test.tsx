@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { type ReactNode, type RefObject, useState } from "react";
+import { type ReactNode, type RefObject, useRef, useState } from "react";
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
 import { LinkProvider } from "../providers/link";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "./sheet";
@@ -7,6 +7,7 @@ import {
 	ContentIsland,
 	Sidebar,
 	SidebarBrand,
+	SidebarDrawer,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
@@ -997,6 +998,54 @@ describe("Sidebar", () => {
 		expect(screen.queryByRole("button", { name: "Sign out" })).toBeNull();
 		rerender(<SidebarUser name="Ada" avatar={<span>AV</span>} />);
 		expect(document.querySelector('[data-slot="sidebar-user-sign-out"]')).toBeNull();
+	});
+
+	it("opens and closes SidebarDrawer with accessible name, forced expansion and focus return", async () => {
+		function Shell() {
+			const [open, setOpen] = useState(false);
+			const menuButton = useRef<HTMLButtonElement>(null);
+			return (
+				<>
+					<button ref={menuButton} type="button" onClick={() => setOpen(true)}>
+						Open menu
+					</button>
+					<SidebarDrawer
+						open={open}
+						onOpenChange={setOpen}
+						id="mobile-navigation"
+						returnFocusRef={menuButton}
+						description="Primary navigation"
+					>
+						<Sidebar resizable={false}>
+							<SidebarHeader>
+								<SidebarBrand
+									logo={<span>A</span>}
+									name="Atlas"
+									action={<SidebarToggle mode="dismiss" onDismiss={() => setOpen(false)} />}
+								/>
+							</SidebarHeader>
+							<SidebarNav aria-label="Main">
+								<SidebarItem>Home</SidebarItem>
+							</SidebarNav>
+						</Sidebar>
+					</SidebarDrawer>
+				</>
+			);
+		}
+		render(<Shell />);
+		const menu = screen.getByRole("button", { name: "Open menu" });
+		fireEvent.click(menu);
+		const dialog = await screen.findByRole("dialog", { name: "Navigation" });
+		expect(dialog).toHaveAttribute("id", "mobile-navigation");
+		expect(dialog).toHaveAttribute("data-slot", "sidebar-drawer");
+		expect(dialog.className).toContain("basalt-sidebar-drawer");
+		expect(document.querySelector("[data-basalt-sidebar]")).not.toHaveAttribute("data-collapsed");
+		expect(screen.getByText("Atlas")).toBeVisible();
+		expect(screen.getByText("Home")).toBeVisible();
+		expect(screen.getByText("Primary navigation").closest(".sr-only")).not.toBeNull();
+		fireEvent.click(screen.getByRole("button", { name: "Close navigation" }));
+		await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+		expect(menu).toHaveFocus();
 	});
 
 	it("keeps the footer pinned and contains nav overscroll", () => {

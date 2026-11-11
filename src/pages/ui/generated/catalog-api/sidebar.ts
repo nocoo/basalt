@@ -120,6 +120,69 @@ export const API = [
 		],
 	},
 	{
+		name: "SidebarDrawer",
+		props: [
+			{
+				name: "open",
+				type: "boolean",
+				required: false,
+				description: "Controlled open state of the navigation drawer.",
+			},
+			{
+				name: "onOpenChange",
+				type: "(open: boolean) => void",
+				required: false,
+				description: "Called when the drawer open state changes.",
+			},
+			{
+				name: "children",
+				type: "React.ReactNode",
+				required: true,
+				description: "Sidebar chrome rendered inside a forced-expanded `SidebarProvider`.\nConventionally a `Sidebar` with `resizable={false}` and a dismiss `SidebarToggle` in the brand action slot.",
+			},
+			{
+				name: "id",
+				type: "string",
+				required: false,
+				description: "Sheet content id for wiring `aria-controls` on the menu trigger.",
+			},
+			{
+				name: "defaultWidth",
+				type: "number",
+				required: false,
+				default: "260",
+				description: "Expanded sidebar width passed to the inner provider, clamped between 180 and 400.",
+			},
+			{
+				name: "returnFocusRef",
+				type: "React.RefObject<HTMLElement | null>",
+				required: false,
+				description: "Element to restore focus to when the drawer closes.",
+			},
+			{
+				name: "title",
+				type: "React.ReactNode",
+				required: false,
+				default: "\"Navigation\"",
+				description: "Accessible sheet title rendered visually hidden.",
+			},
+			{
+				name: "description",
+				type: "React.ReactNode",
+				required: false,
+				default: "\"Application navigation links and actions.\"",
+				description: "Accessible sheet description rendered visually hidden.",
+			},
+			{
+				name: "modal",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Whether the sheet is modal.",
+			},
+		],
+	},
+	{
 		name: "SidebarToggle",
 		props: [
 			{

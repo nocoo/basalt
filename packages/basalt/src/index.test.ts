@@ -33,6 +33,7 @@ describe("root barrel", () => {
 		expect(root.ThemeProvider).toBeTruthy();
 		expect(root.ThemeToggle).toBeTruthy();
 		expect(root.SidebarBrand).toBeTruthy();
+		expect(root.SidebarDrawer).toBeTruthy();
 		expect(root.SidebarToggle).toBeTruthy();
 		expect(root.LinkProvider).toBeTruthy();
 		expect(root.ScrollArea).toBeTruthy();

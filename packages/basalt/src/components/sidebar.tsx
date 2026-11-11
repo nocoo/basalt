@@ -25,6 +25,14 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsib
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
 import { Link } from "./link";
 import { FOCUS_INSET, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	type SheetProps,
+	SheetTitle,
+} from "./sheet";
 import { SkeletonLine } from "./skeleton-line";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
@@ -1069,6 +1077,90 @@ export function SidebarUser({
 				<SidebarUserSignOut href={signOutHref} onSignOut={onSignOut} label={signOutLabel} />
 			) : null}
 		</div>
+	);
+}
+
+export interface SidebarDrawerProps {
+	/**
+	 * Controlled open state of the navigation drawer.
+	 */
+	open?: boolean;
+	/**
+	 * Called when the drawer open state changes.
+	 */
+	onOpenChange?: (open: boolean) => void;
+	/**
+	 * Sidebar chrome rendered inside a forced-expanded `SidebarProvider`.
+	 * Conventionally a `Sidebar` with `resizable={false}` and a dismiss `SidebarToggle` in the brand action slot.
+	 */
+	children: ReactNode;
+	/**
+	 * Sheet content id for wiring `aria-controls` on the menu trigger.
+	 */
+	id?: string;
+	/**
+	 * Expanded sidebar width passed to the inner provider, clamped between 180 and 400.
+	 * @default 260
+	 */
+	defaultWidth?: number;
+	/**
+	 * Element to restore focus to when the drawer closes.
+	 */
+	returnFocusRef?: RefObject<HTMLElement | null>;
+	/**
+	 * Accessible sheet title rendered visually hidden.
+	 * @default "Navigation"
+	 */
+	title?: ReactNode;
+	/**
+	 * Accessible sheet description rendered visually hidden.
+	 * @default "Application navigation links and actions."
+	 */
+	description?: ReactNode;
+	/**
+	 * Whether the sheet is modal.
+	 * @default true
+	 */
+	modal?: SheetProps["modal"];
+}
+
+/**
+ * Mobile navigation drawer: a left `Sheet` hosting a forced-expanded `SidebarProvider` at the standard sidebar width.
+ */
+export function SidebarDrawer({
+	open,
+	onOpenChange,
+	children,
+	id,
+	defaultWidth = 260,
+	returnFocusRef,
+	title = "Navigation",
+	description = "Application navigation links and actions.",
+	modal,
+}: SidebarDrawerProps) {
+	return (
+		<Sheet open={open} onOpenChange={onOpenChange} modal={modal}>
+			<SheetContent
+				id={id}
+				data-slot="sidebar-drawer"
+				side="left"
+				className="basalt-sidebar-drawer max-h-dvh"
+				onCloseAutoFocus={(event) => {
+					if (returnFocusRef?.current) {
+						event.preventDefault();
+						returnFocusRef.current.focus();
+					}
+				}}
+			>
+				<SheetHeader className="sr-only">
+					<SheetTitle>{title}</SheetTitle>
+					<SheetDescription>{description}</SheetDescription>
+				</SheetHeader>
+				<SidebarProvider collapsed={false} defaultWidth={defaultWidth}>
+					{children}
+				</SidebarProvider>
+			</SheetContent>
+		</Sheet>
 	);
 }
 

@@ -74,6 +74,7 @@ export {
 	ContentIsland,
 	Sidebar,
 	SidebarBrand,
+	SidebarDrawer,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
