@@ -1,4 +1,5 @@
 import { BasaltMark } from "@nocoo/basalt/components/basalt-mark";
+import { Button } from "@nocoo/basalt/components/button";
 import {
 	Sidebar,
 	SidebarBrand,
@@ -23,15 +24,15 @@ export default function SidebarDrawerExample() {
 
 	return (
 		<div className="flex flex-col gap-basalt-layout">
-			<button
+			<Button
 				ref={menuRef}
-				type="button"
-				className="self-start rounded-basalt-md border border-basalt-border px-basalt-card py-basalt-space-lg text-basalt-base"
+				variant="outline"
+				className="self-start"
 				aria-controls="sidebar-drawer-example"
 				onClick={() => setOpen(true)}
 			>
 				Open navigation
-			</button>
+			</Button>
 			<SidebarDrawer
 				open={open}
 				onOpenChange={setOpen}
