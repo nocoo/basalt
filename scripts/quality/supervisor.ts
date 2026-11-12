@@ -34,17 +34,53 @@ async function readStdin(): Promise<string> {
 	return Buffer.concat(chunks).toString("utf8");
 }
 
-async function terminateTree(pgid: number): Promise<void> {
-	killProcessGroup(pgid, "SIGTERM");
-	await sleep(1500);
-	killProcessGroup(pgid, "SIGKILL");
-	for (const owned of PgidRegistry.list(registryDir)) {
-		killProcessGroup(owned, "SIGKILL");
-	}
+let child: ReturnType<typeof Bun.spawn> | undefined;
+let settled = false;
+let exitCode = 1;
+let cleaning: Promise<void> | undefined;
+
+function ownedGroups(): number[] {
+	const groups = new Set(PgidRegistry.list(registryDir));
+	if (child) groups.add(child.pid);
+	return [...groups];
 }
 
-function cleanup(): void {
-	rmSync(registryDir, { recursive: true, force: true });
+async function terminateOwnedGroups(): Promise<void> {
+	const groups = ownedGroups();
+	for (const pgid of groups) killProcessGroup(pgid, "SIGTERM");
+	if (child) await Promise.race([child.exited, sleep(1500)]);
+	for (const pgid of new Set([...groups, ...ownedGroups()])) killProcessGroup(pgid, "SIGKILL");
+	if (child) await child.exited;
+}
+
+/**
+ * The single exit path for interrupts, the deadline, a normal child exit and an
+ * unexpected failure: terminate every owned process group, drop the registry
+ * and leave with the recorded code.
+ */
+async function finish(code: number, message?: string): Promise<void> {
+	if (!settled) {
+		settled = true;
+		exitCode = code;
+		if (message) console.error(message);
+		cleaning = (async () => {
+			await terminateOwnedGroups();
+			rmSync(registryDir, { recursive: true, force: true });
+		})();
+	}
+	await cleaning;
+	process.exit(exitCode);
+}
+
+const SIGNAL_CODES: Array<[NodeJS.Signals, number]> = [
+	["SIGINT", 130],
+	["SIGTERM", 143],
+	["SIGHUP", 129],
+];
+for (const [signal, code] of SIGNAL_CODES) {
+	process.on(signal, () => {
+		void finish(code, `${stage}: ${signal} received — killing the process tree`);
+	});
 }
 
 let stdinTimer: ReturnType<typeof setTimeout> | undefined;
@@ -57,12 +93,10 @@ const stdinRead = await Promise.race([
 if (stdinTimer) clearTimeout(stdinTimer);
 
 if (stdinRead === "timeout") {
-	console.error(`${stage}: hook lifecycle exceeded ${formatMs(budgetMs)} while reading stdin`);
-	cleanup();
-	process.exit(1);
+	await finish(1, `${stage}: hook lifecycle exceeded ${formatMs(budgetMs)} while reading stdin`);
 }
 
-const child = Bun.spawn(["sh", hookPath], {
+child = Bun.spawn(["sh", hookPath], {
 	cwd: root,
 	env: {
 		...process.env,
@@ -95,14 +129,10 @@ const finished = await Promise.race([
 if (deadlineTimer) clearTimeout(deadlineTimer);
 
 if (finished === "timeout") {
-	console.error(
+	await finish(
+		1,
 		`${stage}: hook lifecycle exceeded ${formatMs(budgetMs)} — killing the process tree`,
 	);
-	await terminateTree(child.pid);
-	await child.exited;
-	cleanup();
-	process.exit(1);
 }
 
-cleanup();
-process.exit(finished);
+await finish(finished);

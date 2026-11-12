@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import {
 	cpSync,
 	existsSync,
@@ -44,6 +44,36 @@ function run(
 function record(id: string, ok: boolean, detail: string) {
 	results.push({ id, ok, detail });
 	console.log(`[gate-self-test] ${id}: ${ok ? "pass" : "FAIL"} — ${detail}`);
+}
+
+function sleep(ms: number): Promise<void> {
+	return new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
+}
+
+function spawnAsync(
+	command: string,
+	args: string[],
+	options: { cwd?: string; env?: NodeJS.ProcessEnv; keepStdinOpen?: boolean } = {},
+) {
+	const child = spawn(command, args, {
+		cwd: options.cwd,
+		env: { ...process.env, ...options.env },
+		stdio: ["pipe", "pipe", "pipe"],
+	});
+	let output = "";
+	child.stdout?.on("data", (chunk) => {
+		output += String(chunk);
+	});
+	child.stderr?.on("data", (chunk) => {
+		output += String(chunk);
+	});
+	if (!options.keepStdinOpen) child.stdin.end();
+	const exited = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>(
+		(resolveExit) => {
+			child.once("exit", (code, signal) => resolveExit({ code, signal }));
+		},
+	);
+	return { child, exited, output: () => output };
 }
 
 function expectReject(id: string, result: ReturnType<typeof run>, pattern?: RegExp) {
@@ -577,6 +607,76 @@ function fingerprintProbes() {
 	);
 }
 
+async function supervisorSignalProbes() {
+	for (const [signal, code] of [
+		["SIGTERM", 143],
+		["SIGINT", 130],
+	] as const) {
+		const root = tempRoot("basalt-supervisor-signal-");
+		cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), {
+			recursive: true,
+		});
+		const marker = join(root, "descendant.txt");
+		writeFileSync(
+			join(root, "scripts/quality/hook-pre-push.sh"),
+			`#!/usr/bin/env sh
+( sleep 3; touch ${JSON.stringify(marker)} ) &
+wait
+`,
+		);
+		const { child, exited, output } = spawnAsync(
+			"bun",
+			["scripts/quality/supervisor.ts", "--hook=pre-push"],
+			{ cwd: root, env: { GATE_HOOK_TIMEOUT_MS: "60000" } },
+		);
+		await sleep(1200);
+		child.kill(signal);
+		const result = await exited;
+		record(
+			`supervisor-${signal.toLowerCase()}-exit-code`,
+			result.code === code,
+			`code=${result.code} signal=${result.signal} output=${output().slice(-200)}`,
+		);
+		await sleep(4000);
+		record(
+			`supervisor-${signal.toLowerCase()}-kills-tree`,
+			!existsSync(marker),
+			`descendant marker ${existsSync(marker) ? "exists" : "absent"}`,
+		);
+	}
+}
+
+async function supervisorSignalBeforeChildProbe() {
+	const root = tempRoot("basalt-supervisor-signal-");
+	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), { recursive: true });
+	const marker = join(root, "descendant.txt");
+	writeFileSync(
+		join(root, "scripts/quality/hook-pre-push.sh"),
+		`#!/usr/bin/env sh
+touch ${JSON.stringify(marker)}
+`,
+	);
+	const { child, exited, output } = spawnAsync(
+		"bun",
+		["scripts/quality/supervisor.ts", "--hook=pre-push"],
+		{ cwd: root, env: { GATE_HOOK_TIMEOUT_MS: "60000" }, keepStdinOpen: true },
+	);
+	await sleep(800);
+	child.kill("SIGTERM");
+	const result = await exited;
+	record(
+		"supervisor-sigterm-before-child-exit-code",
+		result.code === 143,
+		`code=${result.code} output=${output().slice(-200)}`,
+	);
+	await sleep(300);
+	record(
+		"supervisor-sigterm-before-child-never-started",
+		!existsSync(marker),
+		`hook body marker ${existsSync(marker) ? "exists" : "absent"}`,
+	);
+}
+
 function timeoutProbes() {
 	const root = tempRoot("basalt-timeout-");
 	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), {
@@ -783,6 +883,8 @@ try {
 	pushHookProbes();
 	newRefRangeProbes();
 	fingerprintProbes();
+	await supervisorSignalProbes();
+	await supervisorSignalBeforeChildProbe();
 	timeoutProbes();
 	missingToolProbe();
 	z1Probes();
