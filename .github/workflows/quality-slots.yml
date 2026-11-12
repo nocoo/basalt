@@ -306,6 +306,8 @@ jobs:
           install-policy: project
       - name: Build the publishable package
         run: bun run --cwd packages/basalt build
+      - name: Install Chromium
+        run: bunx playwright install --with-deps chromium
       - name: Type declarations, pack contents and publint
         run: |
           set -euo pipefail
