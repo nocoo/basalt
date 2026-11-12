@@ -69,23 +69,18 @@ link_tree() {
 
 prepare_dependencies() {
 	worktree=$1
-	if cmp -s "$worktree/package.json" "$repo/package.json" && cmp -s "$worktree/bun.lock" "$repo/bun.lock"; then
+	if (
+		cd "$worktree" &&
+		bun run scripts/quality/install-fingerprint.ts verify --installed="$repo" --target="$worktree"
+	); then
+		echo "▸ install fingerprint verified — reusing the installed tree"
 		link_tree "$repo" "$worktree"
-	else
-		echo "▸ manifests differ from the installed tree — frozen install in the worktree"
-		install_in "$worktree"
-	fi
-	if [ -f "$worktree/packages/basalt/package.json" ] && [ -f "$worktree/packages/basalt/bun.lock" ]; then
-		if cmp -s "$worktree/packages/basalt/package.json" "$repo/packages/basalt/package.json" &&
-			cmp -s "$worktree/packages/basalt/bun.lock" "$repo/packages/basalt/bun.lock"; then
+		if [ -d "$worktree/packages/basalt" ] && [ -d "$repo/packages/basalt/node_modules" ]; then
 			link_tree "$repo/packages/basalt" "$worktree/packages/basalt"
-		else
-			echo "▸ package manifests differ — frozen install in packages/basalt"
-			install_in "$worktree/packages/basalt"
 		fi
-	fi
-	if [ -d "$repo/packages/basalt/node_modules" ] && [ ! -d "$worktree/packages/basalt/node_modules" ]; then
-		link_tree "$repo/packages/basalt" "$worktree/packages/basalt"
+	else
+		echo "▸ install proof missing or stale — frozen install in the worktree"
+		install_in "$worktree"
 	fi
 }
 

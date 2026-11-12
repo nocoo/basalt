@@ -38,6 +38,11 @@ for manifest in package.json bun.lock packages/basalt/package.json vitest.config
 	fi
 done
 
+if ! bun run scripts/quality/install-fingerprint.ts verify --installed="$repo" --target="$snapshot"; then
+	echo "pre-commit: the installed modules are not proven for the staged manifests" >&2
+	exit 1
+fi
+
 link_modules() {
 	src=$1
 	dst=$2

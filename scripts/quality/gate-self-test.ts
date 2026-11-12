@@ -392,8 +392,8 @@ console.log("stub gate ok");
 `,
 	);
 	writeFileSync(join(root, "package.json"), '{"name":"push-fixture","private":true}\n');
-	writeFileSync(join(root, "bun.lock"), "{}\n");
 	writeFileSync(join(root, "state.txt"), "good\n");
+	run("bun", ["scripts/quality/install-fingerprint.ts", "write"], { cwd: root });
 }
 
 function pushHookProbes() {
@@ -479,6 +479,51 @@ function newRefRangeProbes() {
 		"new-ref-range-scans-commits",
 		resolved.ok && resolved.commits > 0,
 		`range=${range} ${resolved.detail}`,
+	);
+}
+
+function fingerprintProbes() {
+	const root = tempRoot("basalt-push-fingerprint-");
+	pushFixture(root);
+	run("git", ["add", "."], { cwd: root });
+	run("git", ["commit", "-qm", "good"], { cwd: root });
+	const good = run("git", ["rev-parse", "HEAD"], { cwd: root }).stdout.trim();
+	const input = `refs/heads/good ${good} refs/heads/good 0000000000000000000000000000000000000000\n`;
+
+	const matching = run(".husky/pre-push", [], { cwd: root, input });
+	const matchingOutput = `${matching.stdout}\n${matching.stderr}`;
+	record(
+		"push-reuses-proven-install",
+		matching.status === 0 && /install fingerprint verified/.test(matchingOutput),
+		`exit=${matching.status} reused=${/install fingerprint verified/.test(matchingOutput)}`,
+	);
+	record(
+		"push-does-not-reinstall-proven-tree",
+		!/frozen install/.test(matchingOutput),
+		`reinstalled=${/frozen install/.test(matchingOutput)}`,
+	);
+
+	rmSync(join(root, "node_modules/.cache/basalt-install-fingerprint.json"), {
+		force: true,
+	});
+	const missing = run(".husky/pre-push", [], { cwd: root, input });
+	const missingOutput = `${missing.stdout}\n${missing.stderr}`;
+	record(
+		"push-missing-fingerprint-installs",
+		missing.status === 0 && /frozen install in the worktree/.test(missingOutput),
+		`exit=${missing.status} installed=${/frozen install in the worktree/.test(missingOutput)}`,
+	);
+
+	writeFileSync(
+		join(root, "node_modules/.cache/basalt-install-fingerprint.json"),
+		`${JSON.stringify({ version: 2, toolchain: "bun@0.0.0", digest: "stale" })}\n`,
+	);
+	const stale = run(".husky/pre-push", [], { cwd: root, input });
+	const staleOutput = `${stale.stdout}\n${stale.stderr}`;
+	record(
+		"push-stale-fingerprint-installs",
+		stale.status === 0 && /frozen install in the worktree/.test(staleOutput),
+		`exit=${stale.status} installed=${/frozen install in the worktree/.test(staleOutput)}`,
 	);
 }
 
@@ -687,6 +732,7 @@ try {
 	g1Probes();
 	pushHookProbes();
 	newRefRangeProbes();
+	fingerprintProbes();
 	timeoutProbes();
 	missingToolProbe();
 	z1Probes();
