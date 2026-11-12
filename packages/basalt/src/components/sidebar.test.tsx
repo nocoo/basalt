@@ -1001,6 +1001,39 @@ describe("Sidebar", () => {
 		expect(document.querySelector('[data-slot="sidebar-user-sign-out"]')).toBeNull();
 	});
 
+	it.each([
+		["~390px (Sheet p-basalt-card / 16px)", 390],
+		["≥640px sm (Sheet sm:p-basalt-card-lg / 24px)", 640],
+	])(
+		"merges zero padding utilities over SheetContent side padding at %s",
+		(_label, viewportWidth) => {
+			// Viewport width is for scenario labeling; jsdom does not evaluate @media.
+			// Regression was utilities-layer card padding beating components-layer
+			// `.basalt-sidebar-drawer { padding: 0 }`. We assert cn/tailwind-merge
+			// drops `p-basalt-card` and `sm:p-basalt-card-lg` from the dialog class list.
+			Object.defineProperty(window, "innerWidth", {
+				configurable: true,
+				writable: true,
+				value: viewportWidth,
+			});
+			render(
+				<SidebarDrawer open>
+					<Sidebar resizable={false}>
+						<SidebarNav aria-label="Main">
+							<SidebarItem>Home</SidebarItem>
+						</SidebarNav>
+					</Sidebar>
+				</SidebarDrawer>,
+			);
+			const dialog = screen.getByRole("dialog", { name: "Navigation" });
+			expect(dialog.className).toContain("basalt-sidebar-drawer");
+			expect(dialog.className).toContain("p-0");
+			expect(dialog.className).toContain("sm:p-0");
+			expect(dialog.className).not.toMatch(/\bp-basalt-card\b/);
+			expect(dialog.className).not.toContain("sm:p-basalt-card-lg");
+		},
+	);
+
 	it("opens and closes SidebarDrawer with accessible name, forced expansion and focus return", async () => {
 		function Shell() {
 			const [open, setOpen] = useState(false);

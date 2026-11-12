@@ -11,6 +11,12 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.3] - 2026-11-12
+
+### Fixed
+
+- `SidebarDrawer` merges `p-0 sm:p-0` on `SheetContent` so utilities-layer sheet padding (`p-basalt-card` / `sm:p-basalt-card-lg`, ~16px / ~24px) no longer overrides the components-layer drawer rule; the 260px sidebar stays flush at every breakpoint.
+
 ## [3.3.2] - 2026-11-11
 
 ### Added
