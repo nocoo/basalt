@@ -812,3 +812,24 @@ gate with G1 2.6s, G2 1.5s, B1 10.3s, L1 82.6s, L4 129.1s and P1 91.0s, so the
 2.5-minute pre-push target still holds. The staged-secret probe now exports a
 real Git index: the fake secret is staged, deleted from the working tree and
 recovered by `git checkout-index`, and G1 rejects the exported snapshot.
+
+A second review round found four more false-green paths in the same tooling. The
+supervisor only reacted to its own deadline, so an interrupt left the detached
+hook body and its tree running; interrupts, the deadline, a normal exit and an
+unexpected failure now share one idempotent cleanup path that terminates every
+owned process group, drops the registry and leaves with 130, 143, 129 or the
+recorded code. The tool version queries, the frozen-lockfile dry run and the
+detached HTTP server of the consumer gate started their own process groups
+without registering them, so a step timeout could leave them alive; every
+detached group is now registered with its owner, removed on completion and
+killed by the step that started it or by the supervisor that owns the run.
+
+The coverage merger still accepted a branch whose hit array was shorter than
+the branch locations, and `addHits` follows the first array, so a missing hit
+could turn a true 50% into 1/1 100%; the length is now checked in every shard,
+in any input position. The coverage verifier still trusted the reported
+percentage, so a report of `{total: 100, covered: 0, pct: 100}` passed; the
+percentage is now derived from the counts with the same two-decimal rule the
+merger uses, and a reported percentage that disagrees with its counts is
+rejected even when it is above the floor. The coverage denominator and the four
+95% floors are unchanged.
