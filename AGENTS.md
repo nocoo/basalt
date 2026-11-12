@@ -53,31 +53,49 @@ bun run package:prepublish
 
 ## Testing and quality contract
 
-6DQ keeps its name with unified L1, L2/L3, G2 and D1; the owner merged former G1 into L1 on 2026-09-21. Statuses: `enforced`, `planned`, `manual`, `N/A`.
+System0 uses 12 fixed slots. Statuses are `impl`, `todo`, `na`; every selected check is
+check-only and every stage has a timeout. The measured column is warm Home wall time
+from the 2026-11-12 migration unless marked otherwise.
 
-| Dimension                     | Required proof                                                                                                                                                          | Status   | Current enforcement / gap                                                                                                                                                          |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| L1 unified pre-commit quality | Statements, branches, functions and lines each ≥95%; no skipped/focused/empty runs; strict types and check-only lint with zero errors/warnings; index snapshot and <30s | enforced | Index snapshot gate enforced (see **L1 measured evidence** below); `bun run test:l1-gate` reproduces negative probes in CI and locally. Wall time remains above **<30s**.          |
-| L2 HTTP/package               | Real HTTP consumer/SSR and build artifact contracts                                                                                                                     | enforced | CI package gates build real external consumers and validate HTTP responses; no business CRUD API or database exists                                                                |
-| L3 UI                         | Real component integration and catalog journeys                                                                                                                         | enforced | CI `consumer:next`, other browser consumers and `test:showcase` run Chromium                                                                                                       |
-| G2 security                   | Dependency and secret scans; missing scanner fails                                                                                                                      | enforced | Staged Gitleaks at commit, OSV at push, shared CI scans; push-ref secret selection is still incomplete locally                                                                     |
-| D1 isolation                  | Per-run local consumers/browser state, guarded cleanup, no daily-dev/prod                                                                                               | planned  | Consumer scripts allocate checked external temp roots, ephemeral ports and browser profiles; showcase rebuilds shared `dist/`, so complete per-run build isolation remains missing |
-| Build                         | Site and published package built separately                                                                                                                             | enforced | Pre-push/CI site build; CI package-gates build library                                                                                                                             |
-| Docs / npm                    | Public API, version and verified tarball review                                                                                                                         | manual   | Integration/compatibility docs and authorized npm publication                                                                                                                      |
+| Slot | Status | Command and check object                                                                                                    | Stage                      | Measured |
+| ---- | ------ | --------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -------- |
+| S1   | impl   | `bun run typecheck`: catalog/API/content/SEO checks plus app and node `tsc --noEmit`                                        | pre-commit, CI             | 6–9s     |
+| S2   | impl   | `bun run lint`: Biome check-only, 0 errors and 0 warnings                                                                   | pre-commit, CI             | 0.3s     |
+| S3   | impl   | `bun run scripts/quality/workflow-lint.ts`: actionlint plus full-SHA `uses:` refs                                           | pre-commit (workflows), CI | <1s      |
+| G1   | impl   | Gitleaks with `[extend] useDefault = true`: staged index, pushed range, or CI checkout                                      | pre-commit, pre-push, CI   | 5s       |
+| G2   | impl   | `osv-scanner scan --lockfile=bun.lock --config=osv-scanner.toml`                                                            | pre-push, CI               | 1.5s     |
+| B1   | impl   | `bun run --cwd packages/basalt build` and `bun run build`                                                                   | pre-push, CI               | 10s      |
+| L1   | impl   | package build for dist guards, `bun run test:coverage`, `scripts/verify-pre-commit-coverage.ts`; four 95% floors            | pre-commit, CI             | 80–160s  |
+| L2   | na     | No `@cloudflare/vitest-pool-workers`/workerd suite; `worker/index.ts` tests run in Node with a mocked `ASSETS` binding (L1) | CI (skipped)               | -        |
+| L3   | na     | Static Vite catalog and static-asset Worker; no service, protocol or storage boundary to integrate                          | CI (skipped)               | -        |
+| L4   | impl   | `bun run design:check` plus `bun run test:showcase:smoke`, Chromium against the built catalog                               | pre-push, CI               | 129s     |
+| P1   | impl   | package build, `types:check`, `pack:check`, `publint`, then tarball-installed standalone/Tailwind/heavy consumers           | pre-push, CI               | 103s     |
+| Z1   | impl   | native aggregate over all slots plus blocking `Next.js consumer` and `Hook self-test`; checks results, skips and tested SHA | CI                         | -        |
 
-| Hook       | Current behavior                                                                                                                                  | Required follow-up                                                         |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| pre-commit | Staged index snapshot: package build, typecheck, lint, vitest coverage + coverage verifier, skip/only rejection, staged gitleaks; see L1 evidence | Reduce wall time toward **<30s** without skipping checks (~273–280s today) |
-| pre-push   | Working-tree build/coverage/lint, OSV                                                                                                             | Applicable integration+G2 on stdin push refs, <3min                        |
+`L3` is not hidden inside L4: `test:showcase:smoke` is a browser journey, while external
+package consumption is P1. `consumer:next` is the blocking Next.js SSR/hydration/HTTP
+consumer outside the 12 slots. `Cross-browser layouts (nightly)` and
+`Full showcase sweep (nightly)` are non-blocking extensions; they are not in Z1 because
+the default gates deliberately keep Chromium and a focused journey set.
 
-Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch pushes. CI uses pinned `base-ci/quality.yml` and `deploy-worker.yml` at `1ea10ecab22b72512399485391603fe03a161016` (`v2026.12`, CI slot standard v1).
+| Hook       | Behavior                                                                                                                                                                                     | Measured |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| pre-commit | Exports the Git index, rejects manifest/toolchain drift, runs S1, S2, S3 when workflows are staged, G1 over the index and L1; 10-minute stage budget                                         | 92–175s  |
+| pre-push   | Reads stdin; skips deletions; creates a detached worktree per local OID; reuses modules only for matching manifests, otherwise frozen installs; runs G2, B1, L4, P1 with that OID's G1 range | 243s     |
 
-### L1 measured evidence (2026-11-09)
+Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch
+pushes. CI calls only `./.github/workflows/quality-slots.yml` from job `quality`, so the
+required check is `quality / Z1: Gate`. base-ci composites are pinned to
+`777bbe4f9bacab8a91d8c01974480a6ee23d28e0` (`v2026.15`); `deploy-worker.yml` uses the same
+SHA and passes `required-quality-check: "quality / Z1: Gate"`.
 
-- **Commands:** `bun install --frozen-lockfile`; timing via `bash .husky/pre-commit` (after `git add package.json bun.lock packages/basalt/package.json`); hook negatives via `bun run test:l1-gate -- --probes-only` (isolated worktree, auto cleanup).
-- **Coverage (scoped vitest denominator):** statements **98.07%**, branches **96.62%**, functions **99.08%**, lines **98.30%**; floors **95%** each.
-- **Wall time:** cold **280.2s**, warm **273.6s** (snapshot uses a fresh `.cache` per run).
-- **Self-test probes:** `healthy`; rejects — `missing-gitleaks`, `missing-bun`, `lint-error`, `lint-warning-only`, `type-error`, `index-bad-worktree-good`, `staged-vitest-config-without-thresholds`, `vitest-only`, `vitest-skip`, `ut-failure`, `coverage-shortfall`, `interrupt` (SIGINT, exit 130). Per-metric coverage floors are additionally asserted in `scripts/verify-pre-commit-coverage.test.ts`.
+### Measured evidence (2026-11-12)
+
+- **Coverage (scoped Vitest denominator):** statements **98.10%**, branches **96.62%**, functions **99.09%**, lines **98.33%**; floors **95%** each.
+- **pre-commit:** cold/warm samples are recorded in [Retrospective.md](Retrospective.md); the current gap is above the 15s target and the 30s limit because L1 alone takes 77–158s.
+- **pre-push:** 243s on the first successful native push; L4 129s and P1 103s are the critical path, above the 2.5-minute target.
+- **Self-test:** `bun run test:gate-self-test` covers healthy execution, S1/S2/L1/B1/L4/P1 failure, missing Gitleaks, timeout, lockfile drift, staged and range secrets, pushed OID selection and deleted refs.
+- **Isolation gap:** consumer gates allocate external temp roots, loopback ports and browser profiles; the showcase build still writes the shared `dist/`.
 
 ## Resources and isolation
 
@@ -85,7 +103,7 @@ Dev uses 7003 (`https://basalt.dev.hexly.ai`); browser consumers allocate loopba
 
 ## Operations / release
 
-Authorized maintainers use `bun run release` to align root/package versions and changelog, push `main`, verify CI, then publish the matching `vX.Y.Z` tag. `release.yml` proves source/run/version before Worker deployment and runs `scripts/deploy-smoke.ts` for production redirects, headers and version.
+Authorized maintainers use `bun run release` to align root/package versions and changelog, push `main`, verify CI, then publish the matching `vX.Y.Z` tag. `release.yml` proves source/run/version, requires `quality / Z1: Gate` on the same SHA, deploys `theme-basalt`, and runs `scripts/deploy-smoke.ts` for production redirects, headers and version. Workers Builds still deploys on push without waiting for Z1; GitHub release deployment is the Z1-gated path.
 For npm, pass `bun run package:prepublish`, then publish from `packages/basalt` with the owner's 2FA and the approved registry path. Never publish the repository root. Verify site behavior and `npm view @nocoo/basalt version`; npm and site deployment are distinct results.
 
 ## Retrospective

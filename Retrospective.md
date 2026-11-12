@@ -672,3 +672,47 @@ The manual resume command also used `$sha:refs/heads/main` in zsh, where the col
 was parsed as a parameter modifier. Git rejected the malformed refspec before
 any push. Shell-composed refspecs must delimit the revision as
 `${sha}:refs/heads/main`; do not rely on Bash interpolation rules in zsh.
+
+## 2026-11-12: System0 native migration and base-ci v2026.15
+
+Adoption verification repeated the four checks instead of trusting the brief:
+`git rev-parse v2026.15^{commit}` returned
+`777bbe4f9bacab8a91d8c01974480a6ee23d28e0` while the annotated tag object is
+`d71915fad5b0755a43d6d3ab0c77b3201c6cf76a`; `git ls-remote` matched the `^{}`
+line; the internal provider pin `ed44600d70fba413c2d932e39c16c86e0ad153d3`
+exists and is an ancestor of `origin/main`; and the tag commit has 63 check runs
+with 36 `success` and 27 `skipped`, including all four self-tests. `deploy-worker`
+and `release-source` forward `required-quality-check` on that version.
+
+Two false greens were structural. `.gitleaks.toml` only contained an allowlist,
+so the default rules never ran; adding `[extend] useDefault = true` made a
+`glpat-` fixture fail both the index snapshot and a pushed commit range. The old
+pre-push hook scanned the working tree. The new hook reads stdin, skips deleted
+refs, creates a detached worktree for each local OID and runs G1 over that ref's
+pushed range. A fixture with a good working tree and a bad pushed commit now
+fails, and a deletion-only push exits without source checks.
+
+The local gate now owns every stage timeout, refuses missing scanners,
+distinguishes scanner failure from findings, checks the declared Bun toolchain
+and a frozen lockfile, and rejects empty runs. `bun run test:gate-self-test`
+reproduces healthy execution, S1/S2/L1/B1/L4/P1 failures, missing Gitleaks, a
+forced timeout and lockfile drift. CI uses native mode: `ci.yml` only calls
+`quality-slots.yml`, all slots are named `<ID>: <Name>`, and Z1 verifies impl
+success, na skips and tested-SHA equality plus the blocking Next.js consumer and
+hook self-test.
+
+Performance remained the largest gap. The original two-worker Vitest run spent
+158s; `maxWorkers: 4` brought the same 2,280-test, 98% coverage run to 77–90s
+warm. `isolate: false` looked faster but caused 570 cross-file DOM failures, so
+it was rejected rather than weakening isolation. The full showcase gate exceeded
+its six-minute pre-push timeout; L4 now runs a focused Chromium smoke and the
+full sweep is a non-blocking nightly job. The first successful native pre-push
+measured 243s: L4 129s and P1 103s. This remains above the 2.5-minute target even
+though all checks ran. The pre-commit hook remains above both the 15s target and
+the 30s limit because L1 alone takes 77–158s.
+
+Workers Builds still deploys on every push without waiting for Z1. GitHub release
+deployment is now the Z1-gated path; the automatic Workers Builds tension is
+recorded rather than disabling the owner-approved auto-deploy. The showcase gate
+also still builds into the shared `dist/`, so complete per-run artifact isolation
+remains a D1 gap.
