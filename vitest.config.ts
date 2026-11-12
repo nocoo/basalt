@@ -7,7 +7,7 @@ export default defineConfig({
 	test: {
 		environment: "jsdom",
 		globals: true,
-		maxWorkers: 2,
+		maxWorkers: 4,
 		testTimeout: 30_000,
 		allowOnly: false,
 		passWithNoTests: false,
@@ -53,21 +53,21 @@ export default defineConfig({
 		alias: [
 			{
 				find: "@nocoo/basalt/components",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/components"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/components"),
 			},
 			{
 				find: "@nocoo/basalt/providers",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/providers"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/providers"),
 			},
 			{
 				find: "@nocoo/basalt/charts",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/charts"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/charts"),
 			},
 			{
 				find: "@nocoo/basalt",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/index.ts"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/index.ts"),
 			},
-			{ find: "@", replacement: path.resolve(__dirname, "./src") },
+			{ find: "@", replacement: path.resolve(import.meta.dirname, "./src") },
 		],
 	},
 });
