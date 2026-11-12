@@ -84,6 +84,9 @@ prepare_dependencies() {
 			install_in "$worktree/packages/basalt"
 		fi
 	fi
+	if [ -d "$repo/packages/basalt/node_modules" ] && [ ! -d "$worktree/packages/basalt/node_modules" ]; then
+		link_tree "$repo/packages/basalt" "$worktree/packages/basalt"
+	fi
 }
 
 status=0
