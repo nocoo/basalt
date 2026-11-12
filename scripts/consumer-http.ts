@@ -1,6 +1,7 @@
 import { type ChildProcess, spawn, spawnSync } from "node:child_process";
 import { createServer } from "node:net";
 import { join } from "node:path";
+import { PgidRegistry } from "./quality/process";
 
 export const NEXT_HTTP_MARKER = "basalt-next19-ok";
 
@@ -184,6 +185,8 @@ export async function startHttpServer(options: {
 		stdio: ["ignore", "pipe", "pipe"],
 		detached: true,
 	});
+	const registry = new PgidRegistry();
+	if (child.pid) registry.add(child.pid);
 	let stdout = "";
 	let stderr = "";
 	let exited = false;
@@ -195,6 +198,7 @@ export async function startHttpServer(options: {
 	});
 	child.once("exit", () => {
 		exited = true;
+		if (child.pid) registry.remove(child.pid);
 	});
 	try {
 		const response = await waitForUrl(options.url, options.timeoutMs ?? 60_000, {

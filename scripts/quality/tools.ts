@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { killProcessGroup } from "./process";
+import { killProcessGroup, PgidRegistry } from "./process";
 
 export interface ToolCheck {
 	name: string;
@@ -42,8 +42,14 @@ export function compareVersions(a: string, b: string): number {
 }
 
 const TOOL_TIMEOUT_MS = 60_000;
+const LOCKFILE_TIMEOUT_MS = 120_000;
 
-async function run(bin: string, args: string[], timeoutMs = TOOL_TIMEOUT_MS) {
+export function toolTimeoutMs(): number {
+	const override = Number.parseInt(process.env.GATE_TOOL_TIMEOUT_MS ?? "", 10);
+	return Number.isFinite(override) && override > 0 ? override : TOOL_TIMEOUT_MS;
+}
+
+async function run(bin: string, args: string[], timeoutMs = toolTimeoutMs()) {
 	const binary = Bun.which(bin);
 	if (!binary) return undefined;
 	const proc = Bun.spawn([binary, ...args], {
@@ -52,6 +58,8 @@ async function run(bin: string, args: string[], timeoutMs = TOOL_TIMEOUT_MS) {
 		detached: true,
 	});
 	const pgid = proc.pid;
+	const registry = new PgidRegistry();
+	registry.add(pgid);
 	let timedOut = false;
 	const timer = setTimeout(() => {
 		timedOut = true;
@@ -63,6 +71,7 @@ async function run(bin: string, args: string[], timeoutMs = TOOL_TIMEOUT_MS) {
 	]);
 	const code = await proc.exited;
 	clearTimeout(timer);
+	registry.remove(pgid);
 	return { code, text: `${stdout}\n${stderr}`, timedOut };
 }
 
@@ -80,7 +89,7 @@ export async function checkTool(key: keyof typeof TOOLS): Promise<ToolCheck> {
 		return {
 			name: key,
 			ok: false,
-			detail: `${spec.bin} did not answer within ${TOOL_TIMEOUT_MS}ms`,
+			detail: `${spec.bin} did not answer within ${toolTimeoutMs()}ms`,
 		};
 	}
 	const match = spec.pattern.exec(result.text);
@@ -110,7 +119,7 @@ export async function checkBun(root: string): Promise<ToolCheck> {
 	const declared = declaredPackageManager(root);
 	const result = await run("bun", ["--version"]);
 	if (result?.timedOut) {
-		return { name: "bun", ok: false, detail: `bun did not answer within ${TOOL_TIMEOUT_MS}ms` };
+		return { name: "bun", ok: false, detail: `bun did not answer within ${toolTimeoutMs()}ms` };
 	}
 	if (result?.code !== 0) {
 		return { name: "bun", ok: false, detail: "bun is required" };
@@ -136,7 +145,7 @@ export async function checkBun(root: string): Promise<ToolCheck> {
 export async function checkNode(): Promise<ToolCheck> {
 	const result = await run("node", ["--version"]);
 	if (result?.timedOut) {
-		return { name: "node", ok: false, detail: `node did not answer within ${TOOL_TIMEOUT_MS}ms` };
+		return { name: "node", ok: false, detail: `node did not answer within ${toolTimeoutMs()}ms` };
 	}
 	if (result?.code !== 0) {
 		return { name: "node", ok: false, detail: "node is required" };
@@ -155,7 +164,7 @@ export async function verifyLockfile(root: string): Promise<ToolCheck> {
 	if (!existsSync(manifest) || !existsSync(lockfile)) {
 		return { name: "lockfile", ok: false, detail: "package.json and bun.lock are required" };
 	}
-	const timeoutMs = 120_000;
+	const timeoutMs = LOCKFILE_TIMEOUT_MS;
 	const proc = Bun.spawn(["bun", "install", "--frozen-lockfile", "--dry-run"], {
 		cwd: root,
 		stdout: "ignore",
@@ -163,6 +172,8 @@ export async function verifyLockfile(root: string): Promise<ToolCheck> {
 		detached: true,
 	});
 	const pgid = proc.pid;
+	const registry = new PgidRegistry();
+	registry.add(pgid);
 	let timedOut = false;
 	const timer = setTimeout(() => {
 		timedOut = true;
@@ -170,6 +181,7 @@ export async function verifyLockfile(root: string): Promise<ToolCheck> {
 	}, timeoutMs);
 	const code = await proc.exited;
 	clearTimeout(timer);
+	registry.remove(pgid);
 	return {
 		name: "lockfile",
 		ok: code === 0,

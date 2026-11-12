@@ -95,6 +95,7 @@ async function runStep(
 	timeoutMs: number,
 	expect: { pattern: RegExp; label: string; min: number } | undefined,
 	label: string,
+	owner: string,
 ): Promise<StepResult> {
 	const started = performance.now();
 	const effectiveTimeout = Math.max(
@@ -105,17 +106,22 @@ async function runStep(
 	);
 	const proc = Bun.spawn(["sh", "-c", command], {
 		cwd: root,
-		env: { ...process.env, CI: process.env.CI ?? "" },
+		env: {
+			...process.env,
+			CI: process.env.CI ?? "",
+			GATE_PROCESS_OWNER: owner,
+		},
 		stdout: "pipe",
 		stderr: "pipe",
 		detached: true,
 	});
 	const pgid = proc.pid;
-	registry.add(pgid);
+	registry.add(pgid, owner);
 	let killedByTimer = false;
 	const timer = setTimeout(() => {
 		killedByTimer = true;
 		killProcessGroup(pgid, "SIGKILL");
+		for (const owned of registry.listOwned(owner)) killProcessGroup(owned, "SIGKILL");
 	}, effectiveTimeout);
 
 	let output = "";
@@ -246,6 +252,7 @@ async function executeSlot(slot: SlotDefinition): Promise<SlotResult> {
 			Math.min(step.timeoutMs, remainingMs),
 			step.expect,
 			step.label,
+			`${slot.id}:${step.label}`,
 		);
 		stepResults.push(result);
 		console.log(

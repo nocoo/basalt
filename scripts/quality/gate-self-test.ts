@@ -5,6 +5,7 @@ import {
 	existsSync,
 	mkdirSync,
 	mkdtempSync,
+	readdirSync,
 	readFileSync,
 	rmSync,
 	writeFileSync,
@@ -172,7 +173,7 @@ function writeExecutable(path: string, contents: string) {
 function toolBin(options: {
 	actionlint?: "missing" | "fail";
 	osv?: "missing" | "fail";
-	gitleaks?: "missing" | "fail" | "error";
+	gitleaks?: "missing" | "fail" | "error" | "hang";
 }): string {
 	const bin = tempRoot("basalt-tools-");
 	for (const name of ["bun", "node"]) {
@@ -224,6 +225,15 @@ if [ "\${1:-}" = "version" ]; then
   exit 0
 fi
 exit 2
+`,
+		);
+	}
+	if (options.gitleaks === "hang") {
+		writeExecutable(
+			join(bin, "gitleaks"),
+			`#!/bin/sh
+( sleep "\${GATE_PROBE_MARKER_DELAY:-30}"; touch "$GATE_PROBE_MARKER" ) &
+sleep "\${GATE_PROBE_MARKER_DELAY:-30}"
 `,
 		);
 	}
@@ -677,6 +687,136 @@ touch ${JSON.stringify(marker)}
 	);
 }
 
+async function hangingToolProbe() {
+	const root = tempRoot("basalt-hanging-tool-");
+	mkdirSync(join(root, "packages/basalt"), { recursive: true });
+	copyGate(root);
+	writeFixturePackage(root, undefined);
+	installFixture(root);
+	const marker = join(root, "tool-descendant.txt");
+	const registry = join(tempRoot("basalt-hanging-tool-registry-"), "groups");
+	mkdirSync(registry, { recursive: true });
+	const result = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=G1"], {
+		cwd: root,
+		env: {
+			PATH: `${toolBin({ gitleaks: "hang" })}:/usr/bin:/bin`,
+			GATE_SNAPSHOT_ROOT: root,
+			GATE_TOOL_TIMEOUT_MS: "800",
+			GATE_PROBE_MARKER: marker,
+			GATE_PROBE_MARKER_DELAY: "2",
+			GATE_PGID_REGISTRY: registry,
+		},
+	});
+	expectReject("hanging-tool-query", result, /did not answer/);
+	await sleep(3000);
+	record(
+		"hanging-tool-kills-descendants",
+		!existsSync(marker),
+		`tool descendant marker ${existsSync(marker) ? "exists" : "absent"}`,
+	);
+	const left = readdirSync(registry);
+	record(
+		"hanging-tool-registers-and-cleans-group",
+		left.length === 0,
+		`registry entries=${left.join(",")}`,
+	);
+}
+
+async function detachedServerProbe() {
+	const root = tempRoot("basalt-detached-server-");
+	mkdirSync(join(root, "packages/basalt"), { recursive: true });
+	copyGate(root);
+	writeFixturePackage(root, undefined);
+	installFixture(root);
+	const pidFile = join(root, "server.pid");
+	writeFileSync(
+		join(root, "scripts/hang-server.ts"),
+		`import { writeFileSync } from "node:fs";
+import { startHttpServer } from ${JSON.stringify(join(repoRoot, "scripts/consumer-http.ts"))};
+const port = 20000 + (process.pid % 20000);
+const started = await startHttpServer({
+	cwd: process.cwd(),
+	command: "node",
+	args: [
+		"-e",
+		"require('http').createServer((q,s)=>s.end('ok')).listen(Number(process.argv[1]),'127.0.0.1')",
+		String(port),
+	],
+	url: \`http://127.0.0.1:\${port}/\`,
+	timeoutMs: 15000,
+});
+writeFileSync(process.env.GATE_PROBE_PID_FILE ?? "/dev/null", String(started.child.pid ?? 0));
+await new Promise(() => {});
+`,
+	);
+	setFixtureScript(root, "typecheck", "bun run scripts/hang-server.ts");
+	const registry = join(tempRoot("basalt-detached-server-registry-"), "groups");
+	mkdirSync(registry, { recursive: true });
+	const result = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1"], {
+		cwd: root,
+		env: {
+			GATE_OVERRIDE_TIMEOUT_MS: "3000",
+			GATE_PROBE_PID_FILE: pidFile,
+			GATE_PGID_REGISTRY: registry,
+		},
+	});
+	expectReject("detached-server-step-timeout", result, /timeout/);
+	const pid = existsSync(pidFile) ? Number.parseInt(readFileSync(pidFile, "utf8").trim(), 10) : 0;
+	record("detached-server-started", pid > 0, `pid=${pid}`);
+	let alive = false;
+	try {
+		process.kill(pid, 0);
+		alive = true;
+	} catch {
+		alive = false;
+	}
+	record("detached-server-killed-on-step-timeout", pid > 0 && !alive, `pid=${pid} alive=${alive}`);
+}
+
+async function supervisorKillsRegisteredToolProbe() {
+	const root = tempRoot("basalt-supervisor-tool-");
+	mkdirSync(join(root, "packages/basalt"), { recursive: true });
+	copyGate(root);
+	writeFixturePackage(root, undefined);
+	installFixture(root);
+	const marker = join(root, "tool-descendant.txt");
+	writeFileSync(
+		join(root, "scripts/quality/hook-pre-push.sh"),
+		`#!/usr/bin/env sh
+exec bun run scripts/quality/gate.ts --stage=pre-commit --only=G1
+`,
+	);
+	const { child, exited, output } = spawnAsync(
+		"bun",
+		["scripts/quality/supervisor.ts", "--hook=pre-push"],
+		{
+			cwd: root,
+			env: {
+				PATH: `${toolBin({ gitleaks: "hang" })}:${process.env.PATH ?? ""}`,
+				GATE_HOOK_TIMEOUT_MS: "60000",
+				GATE_TOOL_TIMEOUT_MS: "60000",
+				GATE_PROBE_MARKER: marker,
+				GATE_PROBE_MARKER_DELAY: "6",
+				GATE_SNAPSHOT_ROOT: root,
+			},
+		},
+	);
+	await sleep(2500);
+	child.kill("SIGTERM");
+	const result = await exited;
+	record(
+		"supervisor-kills-registered-tool-exit-code",
+		result.code === 143,
+		`code=${result.code} output=${output().slice(-200)}`,
+	);
+	await sleep(5000);
+	record(
+		"supervisor-kills-registered-tool-tree",
+		!existsSync(marker),
+		`tool descendant marker ${existsSync(marker) ? "exists" : "absent"}`,
+	);
+}
+
 function timeoutProbes() {
 	const root = tempRoot("basalt-timeout-");
 	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), {
@@ -885,12 +1025,15 @@ try {
 	fingerprintProbes();
 	await supervisorSignalProbes();
 	await supervisorSignalBeforeChildProbe();
+	await supervisorKillsRegisteredToolProbe();
 	timeoutProbes();
 	missingToolProbe();
 	z1Probes();
 	if (!probesOnly) {
 		gateFixtureProbes();
 		gateDescendantProbe();
+		await hangingToolProbe();
+		await detachedServerProbe();
 	}
 } finally {
 	for (const root of roots) {
