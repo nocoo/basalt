@@ -144,6 +144,15 @@ export function validateCoverageShard(input: string, coverage: unknown): FileCov
 			for (const hit of value) {
 				assertNonNegativeNumber(hit, `${label}: ${path} branch ${key}`);
 			}
+			const locations = branchMap[key]?.locations;
+			if (!Array.isArray(locations)) {
+				throw new Error(`${label}: ${path} branch ${key} has no branch locations`);
+			}
+			if (value.length !== locations.length) {
+				throw new Error(
+					`${label}: ${path} branch ${key} has ${value.length} hits but ${locations.length} branch locations`,
+				);
+			}
 		}
 	}
 	const validated = files.map(([, file]) => file as unknown as FileCoverage);

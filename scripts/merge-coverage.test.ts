@@ -119,6 +119,29 @@ describe("mergeCoverage", () => {
 		}
 	});
 
+	it("rejects a shard with a short branch hit array in any position", () => {
+		const root = mkdtempSync(join(tmpdir(), "basalt-coverage-merge-"));
+		try {
+			const path = join(root, "src/example.ts");
+			const corrupt = fileCoverage(path);
+			corrupt.b = { 0: [1] };
+			const valid = shard(root, "valid", { [path]: fileCoverage(path) });
+			const broken = shard(root, "broken", { [path]: corrupt });
+
+			expect(() => mergeCoverage([valid, broken], join(root, "coverage"), root)).toThrow(
+				/branch 0 has 1 hits but 2 branch locations/,
+			);
+			expect(() => mergeCoverage([broken, valid], join(root, "coverage"), root)).toThrow(
+				/branch 0 has 1 hits but 2 branch locations/,
+			);
+			expect(() => mergeCoverage([broken, broken], join(root, "coverage"), root)).toThrow(
+				/branch 0 has 1 hits but 2 branch locations/,
+			);
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
+
 	it("rejects a shard whose counters do not match its maps", () => {
 		const root = mkdtempSync(join(tmpdir(), "basalt-coverage-merge-"));
 		try {
