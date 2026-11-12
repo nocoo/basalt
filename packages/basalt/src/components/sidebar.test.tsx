@@ -1002,11 +1002,15 @@ describe("Sidebar", () => {
 	});
 
 	it.each([
-		["mobile", 390],
-		["tablet", 834],
+		["~390px (Sheet p-basalt-card / 16px)", 390],
+		["≥640px sm (Sheet sm:p-basalt-card-lg / 24px)", 640],
 	])(
-		"keeps SidebarDrawer sheet content at zero padding on %s viewport widths",
-		async (_label, viewportWidth) => {
+		"merges zero padding utilities over SheetContent side padding at %s",
+		(_label, viewportWidth) => {
+			// Viewport width is for scenario labeling; jsdom does not evaluate @media.
+			// Regression was utilities-layer card padding beating components-layer
+			// `.basalt-sidebar-drawer { padding: 0 }`. We assert cn/tailwind-merge
+			// drops `p-basalt-card` and `sm:p-basalt-card-lg` from the dialog class list.
 			Object.defineProperty(window, "innerWidth", {
 				configurable: true,
 				writable: true,
@@ -1022,6 +1026,7 @@ describe("Sidebar", () => {
 				</SidebarDrawer>,
 			);
 			const dialog = screen.getByRole("dialog", { name: "Navigation" });
+			expect(dialog.className).toContain("basalt-sidebar-drawer");
 			expect(dialog.className).toContain("p-0");
 			expect(dialog.className).toContain("sm:p-0");
 			expect(dialog.className).not.toMatch(/\bp-basalt-card\b/);

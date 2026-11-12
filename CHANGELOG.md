@@ -15,7 +15,7 @@ were prepared but never published are folded into the next published version.
 
 ### Fixed
 
-- `SidebarDrawer` resets default `SheetContent` side padding at every breakpoint (`p-0 sm:p-0`) so the 260px sidebar stays flush inside the drawer on tablet and desktop widths.
+- `SidebarDrawer` merges `p-0 sm:p-0` on `SheetContent` so utilities-layer sheet padding (`p-basalt-card` / `sm:p-basalt-card-lg`, ~16px / ~24px) no longer overrides the components-layer drawer rule; the 260px sidebar stays flush at every breakpoint.
 
 ## [3.3.2] - 2026-11-11
 
