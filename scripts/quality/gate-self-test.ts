@@ -11,6 +11,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { checkGitRange } from "./git-range";
 
 const repoRoot = resolve(import.meta.dir, "../..");
 const probesOnly = process.argv.includes("--probes-only");
@@ -443,6 +444,44 @@ function pushHookProbes() {
 	record("push-range-recorded", ranges.includes(`${good}..${bad}`), `ranges=${ranges.join("|")}`);
 }
 
+function newRefRangeProbes() {
+	const root = tempRoot("basalt-push-remote-");
+	const remote = tempRoot("basalt-push-remote-bare-");
+	run("git", ["init", "-q", "--bare", remote], { cwd: remote });
+	pushFixture(root);
+	run("git", ["add", "."], { cwd: root });
+	run("git", ["commit", "-qm", "good"], { cwd: root });
+	const good = run("git", ["rev-parse", "HEAD"], { cwd: root }).stdout.trim();
+	run("git", ["remote", "add", "origin", remote], { cwd: root });
+	run("git", ["push", "-q", "origin", "HEAD:refs/heads/main"], { cwd: root });
+	run("git", ["fetch", "-q", "origin"], { cwd: root });
+
+	const excluded = run("git", ["rev-list", "--count", good, "--not", "--remotes"], {
+		cwd: root,
+	});
+	record(
+		"new-ref-remote-range-is-empty",
+		excluded.stdout.trim() === "0",
+		`rev-list --not --remotes=${excluded.stdout.trim()}`,
+	);
+
+	const rangeFile = join(tempRoot("basalt-push-range-"), "ranges.txt");
+	const push = run(".husky/pre-push", [], {
+		cwd: root,
+		env: { GATE_PROBE_RANGE_FILE: rangeFile },
+		input: `refs/heads/feature ${good} refs/heads/feature 0000000000000000000000000000000000000000\n`,
+	});
+	record("new-ref-push-accepted", push.status === 0, `exit=${push.status}`);
+	const range = existsSync(rangeFile) ? readFileSync(rangeFile, "utf8").trim() : "";
+	record("new-ref-range-is-full-history", range === good, `range=${range}`);
+	const resolved = checkGitRange(range, root);
+	record(
+		"new-ref-range-scans-commits",
+		resolved.ok && resolved.commits > 0,
+		`range=${range} ${resolved.detail}`,
+	);
+}
+
 function timeoutProbes() {
 	const root = tempRoot("basalt-timeout-");
 	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), {
@@ -647,6 +686,7 @@ try {
 	focusGuardProbe();
 	g1Probes();
 	pushHookProbes();
+	newRefRangeProbes();
 	timeoutProbes();
 	missingToolProbe();
 	z1Probes();

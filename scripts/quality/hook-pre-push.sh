@@ -114,7 +114,10 @@ while read -r local_ref local_sha remote_ref remote_sha; do
 
 	commit=$(git rev-parse --verify "$local_sha^{commit}")
 	if [ "$remote_sha" = "$zero" ]; then
-		range="$commit --not --remotes"
+		# A new ref has no remote to diff against, and `--not --remotes` would
+		# skip commits that already exist on an unrelated remote. Scan the full
+		# reachable history of the pushed commit instead.
+		range="$commit"
 	else
 		range="$remote_sha..$commit"
 	fi
