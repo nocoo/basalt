@@ -127,7 +127,7 @@ async function runStep(
 	if (expect) {
 		const plain = output.replace(ANSI, "");
 		const matches = [...plain.matchAll(new RegExp(expect.pattern.source, "g"))];
-		const count = matches.reduce((sum, match) => sum + Number(match[1] ?? 0), 0);
+		const count = matches.reduce((sum, match) => sum + Number(match[1] ?? 1), 0);
 		if (count < expect.min) {
 			return {
 				label,
