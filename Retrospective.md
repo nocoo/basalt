@@ -803,3 +803,12 @@ their maps, non-negative hits, something actually measured) and the merged
 totals must have a positive denominator for statements, branches, functions and
 lines. The real denominator is unchanged: 265 files, 2281 tests, 4603/4692
 statements, 4498/4655 branches, 1211/1222 functions and 4309/4382 lines.
+
+A real pre-push on the review fixes kept the fast path: the hook printed
+`install fingerprint verified — reusing the installed tree`, so no reinstall
+happened, and the new-ref G1 range resolved to 1860 commits and scanned them in
+2.6s instead of silently scanning none. The same push measured 143.7s for the
+gate with G1 2.6s, G2 1.5s, B1 10.3s, L1 82.6s, L4 129.1s and P1 91.0s, so the
+2.5-minute pre-push target still holds. The staged-secret probe now exports a
+real Git index: the fake secret is staged, deleted from the working tree and
+recovered by `git checkout-index`, and G1 rejects the exported snapshot.
