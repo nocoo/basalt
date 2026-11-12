@@ -8,6 +8,16 @@ export const coverageFloors = {
 	lines: 95,
 } as const;
 
+/**
+ * The project reports percentages with two decimals, truncated towards zero.
+ * The same rule is used by the coverage merger, so a report and the counts it
+ * was derived from always agree.
+ */
+export function coveragePercent(covered: number, total: number): number {
+	if (total <= 0) return 100;
+	return Math.floor((covered / total) * 10_000) / 100;
+}
+
 export function verifyCoverageReports(root: string): void {
 	const summaryPath = resolve(root, "coverage/coverage-summary.json");
 	const lcovPath = resolve(root, "coverage/lcov.info");
@@ -42,8 +52,17 @@ export function verifyCoverageReports(root: string): void {
 			failures.push(`coverage ${metric} covered ${covered} exceeds total ${total}`);
 			continue;
 		}
-		if (typeof pct !== "number" || pct < floor) {
-			failures.push(`coverage ${metric} ${pct ?? "missing"}% is below ${floor}%`);
+		const computed = coveragePercent(covered, total);
+		if (typeof pct !== "number" || !Number.isFinite(pct)) {
+			failures.push(`coverage ${metric} pct ${pct ?? "missing"} is not a number`);
+			continue;
+		}
+		if (Math.abs(pct - computed) > 0.000001) {
+			failures.push(`coverage ${metric} reports ${pct}% but ${covered}/${total} is ${computed}%`);
+			continue;
+		}
+		if (computed < floor) {
+			failures.push(`coverage ${metric} ${computed}% is below ${floor}%`);
 		}
 	}
 	if (failures.length > 0) {
