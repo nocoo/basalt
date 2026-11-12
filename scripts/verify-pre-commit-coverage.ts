@@ -19,14 +19,29 @@ export function verifyCoverageReports(root: string): void {
 	}
 
 	const summary = JSON.parse(readFileSync(summaryPath, "utf8")) as {
-		total: Record<keyof typeof coverageFloors, { pct: number }>;
+		total: Record<keyof typeof coverageFloors, { pct: number; total?: number; covered?: number }>;
 	};
 
 	const failures: string[] = [];
 	for (const [metric, floor] of Object.entries(coverageFloors) as Array<
 		[keyof typeof coverageFloors, number]
 	>) {
-		const pct = summary.total[metric]?.pct;
+		const report = summary.total?.[metric];
+		const pct = report?.pct;
+		const total = report?.total;
+		const covered = report?.covered;
+		if (typeof total !== "number" || !Number.isFinite(total) || total <= 0) {
+			failures.push(`coverage ${metric} total ${total ?? "missing"} is not a positive count`);
+			continue;
+		}
+		if (typeof covered !== "number" || !Number.isFinite(covered) || covered < 0) {
+			failures.push(`coverage ${metric} covered ${covered ?? "missing"} is not a count`);
+			continue;
+		}
+		if (covered > total) {
+			failures.push(`coverage ${metric} covered ${covered} exceeds total ${total}`);
+			continue;
+		}
 		if (typeof pct !== "number" || pct < floor) {
 			failures.push(`coverage ${metric} ${pct ?? "missing"}% is below ${floor}%`);
 		}

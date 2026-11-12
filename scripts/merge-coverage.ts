@@ -63,6 +63,100 @@ function locationKey(location: Location): string {
 	return `${location.start.line}:${location.start.column ?? ""}:${location.end.line}:${location.end.column ?? ""}`;
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function assertNonNegativeNumber(value: unknown, where: string): void {
+	if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+		throw new Error(`${where} must be a non-negative number (got ${JSON.stringify(value)})`);
+	}
+}
+
+/**
+ * A shard is only usable when it actually measured something. Empty shards,
+ * missing files and counters that do not match their maps are rejected instead
+ * of silently shrinking the coverage denominator.
+ */
+export function validateCoverageShard(input: string, coverage: unknown): FileCoverage[] {
+	const label = `coverage shard ${input}`;
+	if (!isPlainObject(coverage)) {
+		throw new Error(`${label} is not a coverage report`);
+	}
+	const files = Object.entries(coverage);
+	if (files.length === 0) {
+		throw new Error(`${label} contains no files`);
+	}
+	for (const [path, file] of files) {
+		if (!isPlainObject(file)) {
+			throw new Error(`${label} has an invalid entry for ${path}`);
+		}
+		const maps = {
+			statementMap: file.statementMap,
+			fnMap: file.fnMap,
+			branchMap: file.branchMap,
+		};
+		const counters = { s: file.s, f: file.f, b: file.b };
+		for (const [name, map] of Object.entries(maps)) {
+			if (!isPlainObject(map)) {
+				throw new Error(`${label}: ${path} has no ${name}`);
+			}
+		}
+		for (const [name, counter] of Object.entries(counters)) {
+			if (!isPlainObject(counter)) {
+				throw new Error(`${label}: ${path} has no ${name} counters`);
+			}
+		}
+		const statementMap = file.statementMap as Record<string, Location>;
+		const fnMap = file.fnMap as Record<string, FunctionEntry>;
+		const branchMap = file.branchMap as Record<string, BranchEntry>;
+		const s = file.s as Record<string, number>;
+		const f = file.f as Record<string, number>;
+		const b = file.b as Record<string, number[]>;
+		for (const [name, map, counter] of [
+			["statementMap", statementMap, s],
+			["fnMap", fnMap, f],
+			["branchMap", branchMap, b],
+		] as const) {
+			const mapKeys = Object.keys(map);
+			const counterKeys = Object.keys(counter);
+			if (mapKeys.length !== counterKeys.length) {
+				throw new Error(
+					`${label}: ${path} has ${mapKeys.length} ${name} entries but ${counterKeys.length} counters`,
+				);
+			}
+			for (const key of counterKeys) {
+				if (!(key in map)) {
+					throw new Error(`${label}: ${path} has a ${name} counter without an entry (${key})`);
+				}
+			}
+		}
+		for (const [key, value] of Object.entries(s)) {
+			assertNonNegativeNumber(value, `${label}: ${path} statement ${key}`);
+		}
+		for (const [key, value] of Object.entries(f)) {
+			assertNonNegativeNumber(value, `${label}: ${path} function ${key}`);
+		}
+		for (const [key, value] of Object.entries(b)) {
+			if (!Array.isArray(value)) {
+				throw new Error(`${label}: ${path} branch ${key} is not a list of hits`);
+			}
+			for (const hit of value) {
+				assertNonNegativeNumber(hit, `${label}: ${path} branch ${key}`);
+			}
+		}
+	}
+	const validated = files.map(([, file]) => file as unknown as FileCoverage);
+	const statements = validated.flatMap((file) => Object.values(file.s));
+	if (statements.length === 0) {
+		throw new Error(`${label} measured no statements`);
+	}
+	if (statements.every((hits) => hits === 0)) {
+		throw new Error(`${label} measured no covered statement`);
+	}
+	return validated;
+}
+
 function functionKey(fn: FunctionEntry): string {
 	return `${fn.name}\0${locationKey(fn.loc)}`;
 }
@@ -202,11 +296,11 @@ export function mergeCoverage(inputs: string[], output: string, root = process.c
 		if (!existsSync(path)) {
 			throw new Error(`missing coverage-final.json in ${input}`);
 		}
-		const coverage = JSON.parse(readFileSync(path, "utf8")) as Record<string, FileCoverage>;
-		for (const [filePath, file] of Object.entries(coverage)) {
-			const current = files.get(filePath);
+		const parsed = JSON.parse(readFileSync(path, "utf8")) as unknown;
+		for (const file of validateCoverageShard(input, parsed)) {
+			const current = files.get(file.path);
 			if (current) current.push(file);
-			else files.set(filePath, [file]);
+			else files.set(file.path, [file]);
 		}
 	}
 	if (files.size === 0) {
@@ -215,6 +309,13 @@ export function mergeCoverage(inputs: string[], output: string, root = process.c
 
 	const merged = [...files.entries()].map(([path, coverage]) => mergeFile(path, coverage));
 	const summary = mergeSummary(merged, root);
+	for (const metricName of ["statements", "branches", "functions", "lines"] as const) {
+		if (summary.total[metricName].total <= 0) {
+			throw new Error(
+				`merged coverage has no ${metricName} denominator (${summary.total[metricName].total})`,
+			);
+		}
+	}
 	const outputDir = resolve(output);
 	mkdirSync(outputDir, { recursive: true });
 	writeFileSync(
