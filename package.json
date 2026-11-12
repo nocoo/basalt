@@ -21,6 +21,7 @@
 		"test:gate-self-test": "bun scripts/quality/gate-self-test.ts",
 		"test:layouts": "bun scripts/mobile-layout-gate.ts",
 		"test:showcase": "bun scripts/showcase-gate.ts",
+		"test:showcase:smoke": "bun scripts/showcase-smoke.ts",
 		"test:watch": "vitest --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
 		"test:browser": "vitest run scripts/consumer-browser.test.ts scripts/consumer-gate.browser.test.ts --maxWorkers=1",
 		"prepare": "husky",

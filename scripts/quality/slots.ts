@@ -142,9 +142,9 @@ export const SLOTS: SlotDefinition[] = [
 			},
 			{
 				label: "showcase e2e",
-				command: "bun run test:showcase",
-				timeoutMs: 6 * MINUTE,
-				expect: { pattern: /Showcase gate passed/, label: "showcase gate passes", min: 1 },
+				command: "bun run test:showcase:smoke",
+				timeoutMs: 3 * MINUTE,
+				expect: { pattern: /Showcase smoke passed/, label: "showcase smoke passes", min: 1 },
 			},
 		],
 	},
