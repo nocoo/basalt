@@ -68,7 +68,7 @@ export const SLOTS: SlotDefinition[] = [
 			{
 				label: ctx.g1Range ? `range ${ctx.g1Range}` : "index snapshot",
 				command: ctx.g1Range
-					? `bun run scripts/quality/secrets.ts --range=${ctx.g1Range}`
+					? `bun run scripts/quality/secrets.ts --range=${shellQuote(ctx.g1Range)}`
 					: "bun run scripts/quality/secrets.ts --index-snapshot",
 				timeoutMs: 3 * MINUTE,
 			},
@@ -201,4 +201,8 @@ export const NOT_APPLICABLE = [
 
 export function slotsForStage(stage: Stage): SlotDefinition[] {
 	return SLOTS.filter((slot) => slot.stages.includes(stage));
+}
+
+function shellQuote(value: string): string {
+	return `'${value.replaceAll("'", "'\\''")}'`;
 }
