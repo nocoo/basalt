@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { existsSync, realpathSync } from "node:fs";
 import { join } from "node:path";
+import { checkGitRange } from "./git-range";
 import { checkTool } from "./tools";
 
 const args = process.argv.slice(2);
@@ -46,6 +47,15 @@ if (!config) {
 }
 
 const target = range ? `range ${range}` : "index snapshot";
+if (range) {
+	const resolved = checkGitRange(range, cwd);
+	if (!resolved.ok) {
+		console.error(`G1: invalid range "${range}" — ${resolved.detail}`);
+		process.exit(3);
+	}
+	console.log(`G1: range "${range}" resolves to ${resolved.commits} commit(s)`);
+}
+
 const invocation = range
 	? ["gitleaks", "git", `--log-opts=${range}`, "--no-banner", "--redact"]
 	: ["gitleaks", "dir", ".", "--no-banner", "--redact"];
@@ -64,4 +74,4 @@ if (code === 1) {
 	process.exit(1);
 }
 console.error(`G1: gitleaks itself failed (exit ${code}) for ${target}`);
-process.exit(1);
+process.exit(4);

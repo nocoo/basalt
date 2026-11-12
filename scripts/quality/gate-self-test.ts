@@ -354,6 +354,17 @@ function g1Probes() {
 		env: { PATH: `${toolBin({ gitleaks: "error" })}:/usr/bin:/bin` },
 	});
 	expectReject("g1-scanner-error", scannerError, /gitleaks itself failed/);
+
+	const invalidRange = run("bun", ["scripts/quality/secrets.ts", "--range=not-a-ref..HEAD"], {
+		cwd: root,
+	});
+	expectReject("g1-invalid-range", invalidRange, /invalid range/);
+
+	const head = run("git", ["rev-parse", "HEAD"], { cwd: root }).stdout.trim();
+	const emptyRange = run("bun", ["scripts/quality/secrets.ts", `--range=${head}..${head}`], {
+		cwd: root,
+	});
+	expectReject("g1-empty-range", emptyRange, /zero commits/);
 }
 
 function pushFixture(root: string) {
