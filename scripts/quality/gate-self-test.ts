@@ -335,12 +335,41 @@ function g1Probes() {
 		env: { GATE_SNAPSHOT_ROOT: staged },
 	});
 	record("g1-clean-index", clean.status === 0, `exit=${clean.status}`);
-	writeFileSync(join(staged, ".env"), `TOKEN="${fakeToken()}"\n`);
-	const leaked = run("bun", ["scripts/quality/secrets.ts", "--index-snapshot"], {
-		cwd: staged,
-		env: { GATE_SNAPSHOT_ROOT: staged },
+
+	const indexRepo = tempRoot("basalt-g1-index-repo-");
+	run("git", ["init", "-q"], { cwd: indexRepo });
+	run("git", ["config", "user.email", "self-test@example.invalid"], { cwd: indexRepo });
+	run("git", ["config", "user.name", "Gate Self Test"], { cwd: indexRepo });
+	cpSync(join(repoRoot, ".gitleaks.toml"), join(indexRepo, ".gitleaks.toml"));
+	cpSync(join(repoRoot, "scripts/quality"), join(indexRepo, "scripts/quality"), {
+		recursive: true,
 	});
-	expectReject("g1-staged-secret", leaked, /leaks found/);
+	writeFileSync(join(indexRepo, "README.md"), "clean\n");
+	run("git", ["add", "."], { cwd: indexRepo });
+	run("git", ["commit", "-qm", "clean"], { cwd: indexRepo });
+
+	writeFileSync(join(indexRepo, ".env"), `TOKEN="${fakeToken()}"\n`);
+	run("git", ["add", ".env"], { cwd: indexRepo });
+	rmSync(join(indexRepo, ".env"));
+	const exported = tempRoot("basalt-g1-index-export-");
+	const exportedResult = run("git", ["checkout-index", "--all", `--prefix=${exported}/`], {
+		cwd: indexRepo,
+	});
+	record(
+		"g1-index-export",
+		exportedResult.status === 0 && existsSync(join(exported, ".env")),
+		`exit=${exportedResult.status}`,
+	);
+	const stagedLeak = run("bun", ["scripts/quality/secrets.ts", "--index-snapshot"], {
+		cwd: exported,
+		env: { GATE_SNAPSHOT_ROOT: exported },
+	});
+	expectReject("g1-staged-index-secret", stagedLeak, /leaks found/);
+	record(
+		"g1-staged-secret-removed-from-worktree",
+		!existsSync(join(indexRepo, ".env")),
+		"the secret only lives in the exported index",
+	);
 
 	writeFileSync(join(root, ".env"), `TOKEN="${fakeToken()}"\n`);
 	run("git", ["add", ".env"], { cwd: root });
