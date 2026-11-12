@@ -221,6 +221,12 @@ function gateFixtureProbes() {
 		expectReject(`slot-${slot}-failure`, result);
 	}
 
+	writeFixturePackage(root, "B1");
+	const l4WithoutBuild = run("bun", ["scripts/quality/gate.ts", "--stage=pre-push", "--only=L4"], {
+		cwd: root,
+	});
+	expectReject("L4-requires-B1", l4WithoutBuild, /L4: not run after B1 failed/);
+
 	writeFixturePackage(root, undefined);
 	const s3Failure = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S3"], {
 		cwd: root,

@@ -78,17 +78,12 @@ export const SLOTS: SlotDefinition[] = [
 		id: "L1",
 		name: "L1: Unit",
 		stages: ["pre-push"],
-		target: "package build for dist guards, Vitest coverage, four 95% floors",
+		target: "shared B1 package build, Vitest coverage, four 95% floors",
 		steps: [
 			{
 				label: "focus/skip guard",
 				command: "bun run scripts/quality/test-focus-guard.ts",
 				timeoutMs: MINUTE,
-			},
-			{
-				label: "package build",
-				command: "bun run --cwd packages/basalt build",
-				timeoutMs: 3 * MINUTE,
 			},
 			{
 				label: "coverage",
@@ -147,7 +142,7 @@ export const SLOTS: SlotDefinition[] = [
 			},
 			{
 				label: "showcase e2e",
-				command: "bun run test:showcase:smoke",
+				command: "BASALT_SKIP_SHOWCASE_BUILD=1 bun run test:showcase:smoke",
 				timeoutMs: 3 * MINUTE,
 				expect: { pattern: /Showcase smoke passed/, label: "showcase smoke passes", min: 1 },
 			},
@@ -159,11 +154,6 @@ export const SLOTS: SlotDefinition[] = [
 		stages: ["pre-push"],
 		target: "fresh package tarball installed by external standalone and heavy consumers",
 		steps: [
-			{
-				label: "package build",
-				command: "bun run --cwd packages/basalt build",
-				timeoutMs: 4 * MINUTE,
-			},
 			{
 				label: "pack and publint",
 				command:

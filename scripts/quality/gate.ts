@@ -38,7 +38,12 @@ const effectiveStageBudgetMs =
 		? Math.min(stageBudgetMs, overrideStageTimeoutMs)
 		: stageBudgetMs;
 
-const selected = slotsForStage(stage).filter((slot) => !only || only.split(",").includes(slot.id));
+const requested = slotsForStage(stage).filter((slot) => !only || only.split(",").includes(slot.id));
+const selectedIds = new Set(requested.map((slot) => slot.id));
+if (stage === "pre-push" && ["L1", "L4", "P1"].some((id) => selectedIds.has(id))) {
+	selectedIds.add("B1");
+}
+const selected = slotsForStage(stage).filter((slot) => selectedIds.has(slot.id));
 
 if (selected.some((slot) => slot.id === "G1") && stage === "pre-push" && !g1Range) {
 	console.error("gate: pre-push G1 requires --g1-range=<remote>..<local>");
@@ -179,31 +184,19 @@ if (!preflightOk) {
 const results: SlotResult[] = [];
 let abortAfter: string | undefined;
 
-for (const slot of selected) {
-	if (abortAfter) {
-		results.push({
-			slot,
-			outcome: "skip",
-			ms: 0,
-			steps: [],
-			note: `not run after ${abortAfter} failed`,
-		});
-		continue;
-	}
+async function executeSlot(slot: SlotDefinition): Promise<SlotResult> {
 	if (performance.now() - startedAt > effectiveStageBudgetMs) {
-		results.push({
+		return {
 			slot,
 			outcome: "timeout",
 			ms: 0,
 			steps: [],
 			note: `stage budget ${Math.round(effectiveStageBudgetMs / 1000)}s exceeded before this slot`,
-		});
-		continue;
+		};
 	}
 	if (slot.stagedOnly && !stagedPaths.some((path) => slot.stagedOnly?.test(path))) {
-		results.push({ slot, outcome: "skip", ms: 0, steps: [], note: "no staged change" });
 		console.log(`\n▸ ${slot.name} — skipped (no matching staged change)`);
-		continue;
+		return { slot, outcome: "skip", ms: 0, steps: [], note: "no staged change" };
 	}
 
 	const steps = slot.stepsFor?.({ root, gitRoot, g1Range }) ?? slot.steps ?? [];
@@ -231,14 +224,51 @@ for (const slot of selected) {
 		}
 	}
 	const failed = stepResults.find((step) => step.outcome === "fail" || step.outcome === "timeout");
-	results.push({
+	return {
 		slot,
 		outcome: failed ? failed.outcome : "pass",
 		ms: performance.now() - slotStarted,
 		steps: stepResults,
 		note: failed?.note ?? "",
-	});
-	if (failed) abortAfter = slot.id;
+	};
+}
+
+const prePushSerial = stage === "pre-push" ? new Set(["G1", "G2", "B1"]) : undefined;
+const serial = prePushSerial ? selected.filter((slot) => prePushSerial.has(slot.id)) : selected;
+const parallel = prePushSerial ? selected.filter((slot) => !prePushSerial.has(slot.id)) : [];
+
+for (const slot of serial) {
+	if (abortAfter) {
+		results.push({
+			slot,
+			outcome: "skip",
+			ms: 0,
+			steps: [],
+			note: `not run after ${abortAfter} failed`,
+		});
+		continue;
+	}
+	const result = await executeSlot(slot);
+	results.push(result);
+	if (result.outcome === "fail" || result.outcome === "timeout") {
+		abortAfter = slot.id;
+	}
+}
+
+if (parallel.length > 0) {
+	if (abortAfter) {
+		for (const slot of parallel) {
+			results.push({
+				slot,
+				outcome: "skip",
+				ms: 0,
+				steps: [],
+				note: `not run after ${abortAfter} failed`,
+			});
+		}
+	} else {
+		results.push(...(await Promise.all(parallel.map((slot) => executeSlot(slot)))));
+	}
 }
 
 const totalMs = performance.now() - startedAt;

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { build } from "vite";
 import { showcaseBuildConfig } from "./catalog-page-status-build";
@@ -17,8 +17,14 @@ import { assertPageLayout } from "./showcase-page-layout";
 import { assertSelectionHierarchy } from "./showcase-selection";
 
 export async function runShowcaseSmoke() {
-	await build({ ...showcaseBuildConfig(), logLevel: "warn" });
-	prerenderHtml(resolve("dist"), readFileSync(resolve("dist/index.html"), "utf8"));
+	if (process.env.BASALT_SKIP_SHOWCASE_BUILD === "1") {
+		if (!existsSync(resolve("dist/index.html"))) {
+			throw new Error("BASALT_SKIP_SHOWCASE_BUILD requires the B1 site build output");
+		}
+	} else {
+		await build({ ...showcaseBuildConfig(), logLevel: "warn" });
+		prerenderHtml(resolve("dist"), readFileSync(resolve("dist/index.html"), "utf8"));
+	}
 	const port = await allocatePort();
 	const url = `http://127.0.0.1:${port}`;
 	const { child } = await startHttpServer({
