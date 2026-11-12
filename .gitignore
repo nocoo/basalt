@@ -25,3 +25,6 @@ dist-ssr
 coverage/
 
 /fixtures/next19/next-env.d.ts
+
+# npm pack artifacts (never commit tarballs)
+*.tgz
