@@ -76,7 +76,7 @@ function writeFixturePackage(
 		"test:coverage": failing === "L1" ? "exit 1" : "echo 'Tests 1 passed'; echo 'coverage ok'",
 		"verify-pre-commit-coverage": "true",
 		"design:check": "true",
-		"test:showcase": failing === "L4" ? "exit 1" : "echo 'Showcase gate passed'",
+		"test:showcase:smoke": failing === "L4" ? "exit 1" : "echo 'Showcase smoke passed'",
 		"pack:check": failing === "P1" ? "exit 1" : "true",
 		publint: "true",
 		"consumer:standalone": "true",
@@ -203,7 +203,7 @@ function gateFixtureProbes() {
 	writeFixturePackage(root, undefined);
 	installFixture(root);
 
-	const healthy = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1,S2,L1"], {
+	const healthy = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1,S2"], {
 		cwd: root,
 	});
 	record(
@@ -214,7 +214,7 @@ function gateFixtureProbes() {
 
 	for (const slot of ["S1", "S2", "L1", "B1", "L4", "P1"] as const) {
 		writeFixturePackage(root, slot);
-		const stage = ["B1", "L4", "P1"].includes(slot) ? "pre-push" : "pre-commit";
+		const stage = ["B1", "L1", "L4", "P1"].includes(slot) ? "pre-push" : "pre-commit";
 		const result = run("bun", ["scripts/quality/gate.ts", `--stage=${stage}`, `--only=${slot}`], {
 			cwd: root,
 		});
@@ -289,7 +289,7 @@ function gateFixtureProbes() {
 
 	writeFixturePackage(root, undefined);
 	setFixtureScript(root, "test:coverage", "echo coverage only");
-	const emptyCoverage = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=L1"], {
+	const emptyCoverage = run("bun", ["scripts/quality/gate.ts", "--stage=pre-push", "--only=L1"], {
 		cwd: root,
 	});
 	expectReject("empty-coverage", emptyCoverage, /empty run/);

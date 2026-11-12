@@ -77,7 +77,7 @@ export const SLOTS: SlotDefinition[] = [
 	{
 		id: "L1",
 		name: "L1: Unit",
-		stages: ["pre-commit"],
+		stages: ["pre-push"],
 		target: "package build for dist guards, Vitest coverage, four 95% floors",
 		steps: [
 			{

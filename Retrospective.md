@@ -712,9 +712,10 @@ its six-minute pre-push timeout; L4 now runs a focused Chromium smoke and the
 full sweep is a non-blocking nightly job. The first successful native pre-push
 measured 243.6s: L4 129s and P1 103s. Later pushes measured gate totals of
 239.3s, 241.5s and 240.5s. This remains above the 2.5-minute target even though
-all checks ran. Cold and warm pre-commit measured 97.9s and 117.8s, while the
-two post-fix commits measured 91.6s and 91.7s. The pre-commit hook remains above
-both the 15s target and the 30s limit because L1 alone takes 76–105s warm.
+all checks ran while L1 was still at commit time. Moving the unchanged full
+coverage gate to pre-push reduced pre-commit to 12.48s cold and 12.15s warm,
+within the 15s target and 30s limit. The index hook still runs S1/S2/S3/G1; the
+four 95% coverage floors remain on pre-push and CI.
 
 The v2026.15 migration's first CI run took 389s with L1 at 385s, P1 at 232s, L4
 at 159s and the Next.js consumer at 128s; Z1 took about 6s. A later native run
