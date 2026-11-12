@@ -18,7 +18,7 @@
 		"preview": "vite preview",
 		"test": "vitest run --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
 		"test:coverage": "vitest run --coverage --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
-		"test:l1-gate": "bun scripts/l1-gate-self-test.ts",
+		"test:gate-self-test": "bun scripts/quality/gate-self-test.ts",
 		"test:layouts": "bun scripts/mobile-layout-gate.ts",
 		"test:showcase": "bun scripts/showcase-gate.ts",
 		"test:watch": "vitest --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",

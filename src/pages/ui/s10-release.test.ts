@@ -12,7 +12,7 @@ describe("S10 release evidence", () => {
 		expect(catalogPageStatus("maps")).toBe("planned");
 	});
 
-	it("locks 6DQ coverage thresholds and the prepublish plus osv gates", () => {
+	it("locks System0 coverage thresholds and the prepublish plus dependency gates", () => {
 		const vitest = readFileSync(path.join(ROOT, "vitest.config.ts"), "utf8");
 		expect(vitest).toContain("statements: 95");
 		expect(vitest).toContain("branches: 95");
@@ -27,7 +27,12 @@ describe("S10 release evidence", () => {
 		expect(pkg.scripts["package:prepublish"]).toContain("pack:check");
 		expect(pkg.scripts["package:prepublish"]).toContain("publint");
 		expect(pkg.scripts["package:prepublish"]).toContain("consumer:next");
-		expect(readFileSync(path.join(ROOT, ".husky/pre-push"), "utf8")).toContain("osv-scanner");
+		expect(readFileSync(path.join(ROOT, ".husky/pre-push"), "utf8")).toContain(
+			"gate.ts --stage=pre-push",
+		);
+		expect(readFileSync(path.join(ROOT, "scripts/quality/slots.ts"), "utf8")).toContain(
+			"osv-scanner scan",
+		);
 		expect(readFileSync(path.join(ROOT, "CHANGELOG.md"), "utf8")).toContain(`## [${pkg.version}]`);
 		const packed = JSON.parse(
 			readFileSync(path.join(ROOT, "packages/basalt/package.json"), "utf8"),

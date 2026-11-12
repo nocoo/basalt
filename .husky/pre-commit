@@ -1,10 +1,12 @@
-# === Quality Gate: pre-commit (L1 + G1 + G2a, staged index snapshot) ===
+#!/usr/bin/env sh
+
+# System0 pre-commit: S1, S2, S3 (workflow changes only), G1 and L1 against the
+# exported Git index, never the working tree.
 set -e
 
 command -v git >/dev/null 2>&1 || { echo "pre-commit: git is required" >&2; exit 1; }
 command -v bun >/dev/null 2>&1 || { echo "pre-commit: bun is required" >&2; exit 1; }
 command -v node >/dev/null 2>&1 || { echo "pre-commit: node is required" >&2; exit 1; }
-command -v gitleaks >/dev/null 2>&1 || { echo "pre-commit: gitleaks is required" >&2; exit 1; }
 
 snapshot=
 cleanup() {
@@ -21,29 +23,17 @@ trap "exit 130" INT
 trap "exit 143" TERM
 trap "exit 129" HUP
 
-snapshot=$(mktemp -d "${TMPDIR:-/tmp}/basalt-index-XXXXXX")
-physical_snapshot=$(cd "$snapshot" && pwd -P)
-snapshot=$physical_snapshot
-mkdir -p "$snapshot/.cache"
-
-# G2a: gitleaks reads the real commit index; keep Git's hook env until after it.
-gitleaks protect --staged --no-banner
-
-# L1/G1 check the staged index snapshot, not the working tree.
-git checkout-index --all --prefix="$snapshot/"
 repo=$(git rev-parse --show-toplevel)
+GATE_STAGED_FILES=$(git diff --cached --name-only)
+export GATE_STAGED_FILES
 
-for manifest in \
-	package.json \
-	bun.lock \
-	packages/basalt/package.json \
-	vitest.config.ts \
-	biome.json \
-	tsconfig.app.json \
-	tsconfig.node.json
-do
+snapshot=$(mktemp -d "${TMPDIR:-/tmp}/basalt-index-XXXXXX")
+snapshot=$(cd "$snapshot" && pwd -P)
+git checkout-index --all --prefix="$snapshot/"
+
+for manifest in package.json bun.lock packages/basalt/package.json vitest.config.ts biome.json tsconfig.app.json tsconfig.node.json; do
 	if [ ! -f "$snapshot/$manifest" ] || ! cmp -s "$snapshot/$manifest" "$repo/$manifest"; then
-		echo "pre-commit: staged $manifest is required and must match the installed worktree copy" >&2
+		echo "pre-commit: staged $manifest must match the installed worktree copy (run bun install)" >&2
 		exit 1
 	fi
 done
@@ -74,19 +64,16 @@ if [ ! -d "$repo/node_modules" ] || [ ! -d "$repo/packages/basalt/node_modules" 
 fi
 link_modules "$repo/node_modules" "$snapshot/node_modules"
 link_modules "$repo/packages/basalt/node_modules" "$snapshot/packages/basalt/node_modules"
+mkdir -p "$snapshot/.cache"
 
 unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_PREFIX
 unset GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES
 export XDG_CACHE_HOME="$snapshot/.cache"
 export XDG_STATE_HOME="$snapshot/.cache"
+export GATE_GIT_ROOT="$repo"
+export GATE_SNAPSHOT_ROOT="$snapshot"
 PATH="$snapshot/node_modules/.bin:$PATH"
-cd "$snapshot"
+export PATH
 
-# Build the publishable package from staged sources so dist-guard tests execute.
-bun run --cwd packages/basalt build
-bun run typecheck
-bun run lint
-bunx vitest run --coverage \
-	--exclude scripts/consumer-browser.test.ts \
-	--exclude scripts/consumer-gate.browser.test.ts
-bun scripts/verify-pre-commit-coverage.ts
+cd "$snapshot"
+bun run scripts/quality/gate.ts --stage=pre-commit

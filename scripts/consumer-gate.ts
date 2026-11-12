@@ -1031,7 +1031,9 @@ export async function runConsumerGate(repoRoot: string, config: ConsumerGateConf
 	const fixtureRoot = join(repoRoot, config.fixtureDir);
 	assertFixtureSources(fixtureRoot, config);
 
-	run("bun", ["run", "--cwd", "packages/basalt", "build"], repoRoot);
+	if (process.env.BASALT_SKIP_PACKAGE_BUILD !== "1") {
+		run("bun", ["run", "--cwd", "packages/basalt", "build"], repoRoot);
+	}
 
 	const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), config.tempPrefix)));
 	if (!isOutsideRepo(tempRoot, realpathSync(repoRoot))) {
