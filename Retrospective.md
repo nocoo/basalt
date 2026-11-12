@@ -765,3 +765,41 @@ deployment is now the Z1-gated path; the automatic Workers Builds tension is
 recorded rather than disabling the owner-approved auto-deploy. The showcase gate
 also still builds into the shared `dist/`, so complete per-run artifact isolation
 remains a D1 gap.
+
+An independent review of the System0 migration found five false-green defects
+that the previous green runs could not see. Gitleaks 8.30.1 answers an
+unresolvable revision range with an error message, zero scanned commits and
+exit code 0, so `scripts/quality/secrets.ts` now resolves the range with
+`git rev-list` before invoking the scanner and rejects an unresolvable or empty
+range with its own exit code. A new pushed ref used the range
+`<commit> --not --remotes`, which skips every commit that already exists on an
+unrelated remote and can scan nothing; the pre-push hook now scans the full
+reachable history of the pushed commit for a new ref and keeps
+`remote..commit` for an existing ref.
+
+Dependency reuse was decided by comparing manifests with the working tree, and
+`bun install --dry-run` only proves the lockfile still resolves, not that the
+installed tree was built from it. `bun install` now writes an install
+fingerprint (every workspace manifest hash, the lockfile hash and the Bun
+toolchain version) into `node_modules/.cache/`, and the hooks link an installed
+tree only when that fingerprint matches the tree under test; otherwise they run
+a frozen install inside the target worktree. The unconditional fallback that
+linked the package `node_modules` without proof was removed.
+
+The stage timeout only compared elapsed time after a step finished and the
+fallback killed the shell but not its descendants, while the pre-push install
+and preflight ran outside the gate. A supervisor now owns the whole hook
+lifecycle: it reads stdin, spawns the hook body in its own process group,
+enforces a real deadline and terminates the whole owned tree. Inside the gate
+each step is capped by the remaining stage budget and a step is refused once the
+budget is gone, and the tool and preflight subprocesses have their own
+timeouts. `timeout` and `gtimeout` are no longer required.
+
+The coverage merger accepted one real shard next to three `{}` shards, so a
+sharded run could report a healthy percentage over a fraction of the
+denominator, and the verifier only looked at percentages. Shards are now
+validated (nonempty file map, well-formed maps and counters, counters matching
+their maps, non-negative hits, something actually measured) and the merged
+totals must have a positive denominator for statements, branches, functions and
+lines. The real denominator is unchanged: 265 files, 2281 tests, 4603/4692
+statements, 4498/4655 branches, 1211/1222 functions and 4309/4382 lines.
