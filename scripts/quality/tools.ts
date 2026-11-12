@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { killProcessGroup } from "./process";
 
 export interface ToolCheck {
 	name: string;
@@ -40,15 +41,29 @@ export function compareVersions(a: string, b: string): number {
 	return 0;
 }
 
-async function run(bin: string, args: string[]) {
+const TOOL_TIMEOUT_MS = 60_000;
+
+async function run(bin: string, args: string[], timeoutMs = TOOL_TIMEOUT_MS) {
 	const binary = Bun.which(bin);
 	if (!binary) return undefined;
-	const proc = Bun.spawn([binary, ...args], { stdout: "pipe", stderr: "pipe" });
+	const proc = Bun.spawn([binary, ...args], {
+		stdout: "pipe",
+		stderr: "pipe",
+		detached: true,
+	});
+	const pgid = proc.pid;
+	let timedOut = false;
+	const timer = setTimeout(() => {
+		timedOut = true;
+		killProcessGroup(pgid, "SIGKILL");
+	}, timeoutMs);
 	const [stdout, stderr] = await Promise.all([
 		new Response(proc.stdout).text(),
 		new Response(proc.stderr).text(),
 	]);
-	return { code: await proc.exited, text: `${stdout}\n${stderr}` };
+	const code = await proc.exited;
+	clearTimeout(timer);
+	return { code, text: `${stdout}\n${stderr}`, timedOut };
 }
 
 export async function checkTool(key: keyof typeof TOOLS): Promise<ToolCheck> {
@@ -59,6 +74,13 @@ export async function checkTool(key: keyof typeof TOOLS): Promise<ToolCheck> {
 			name: key,
 			ok: false,
 			detail: `${spec.bin} not found on PATH (need >= ${spec.minimum})`,
+		};
+	}
+	if (result.timedOut) {
+		return {
+			name: key,
+			ok: false,
+			detail: `${spec.bin} did not answer within ${TOOL_TIMEOUT_MS}ms`,
 		};
 	}
 	const match = spec.pattern.exec(result.text);
@@ -87,6 +109,9 @@ export function declaredPackageManager(
 export async function checkBun(root: string): Promise<ToolCheck> {
 	const declared = declaredPackageManager(root);
 	const result = await run("bun", ["--version"]);
+	if (result?.timedOut) {
+		return { name: "bun", ok: false, detail: `bun did not answer within ${TOOL_TIMEOUT_MS}ms` };
+	}
 	if (result?.code !== 0) {
 		return { name: "bun", ok: false, detail: "bun is required" };
 	}
@@ -110,6 +135,9 @@ export async function checkBun(root: string): Promise<ToolCheck> {
 
 export async function checkNode(): Promise<ToolCheck> {
 	const result = await run("node", ["--version"]);
+	if (result?.timedOut) {
+		return { name: "node", ok: false, detail: `node did not answer within ${TOOL_TIMEOUT_MS}ms` };
+	}
 	if (result?.code !== 0) {
 		return { name: "node", ok: false, detail: "node is required" };
 	}
@@ -127,18 +155,29 @@ export async function verifyLockfile(root: string): Promise<ToolCheck> {
 	if (!existsSync(manifest) || !existsSync(lockfile)) {
 		return { name: "lockfile", ok: false, detail: "package.json and bun.lock are required" };
 	}
+	const timeoutMs = 120_000;
 	const proc = Bun.spawn(["bun", "install", "--frozen-lockfile", "--dry-run"], {
 		cwd: root,
 		stdout: "ignore",
 		stderr: "ignore",
+		detached: true,
 	});
+	const pgid = proc.pid;
+	let timedOut = false;
+	const timer = setTimeout(() => {
+		timedOut = true;
+		killProcessGroup(pgid, "SIGKILL");
+	}, timeoutMs);
 	const code = await proc.exited;
+	clearTimeout(timer);
 	return {
 		name: "lockfile",
 		ok: code === 0,
 		detail:
 			code === 0
 				? "bun.lock matches package.json"
-				: "bun install --frozen-lockfile --dry-run failed; run bun install and commit the lockfile",
+				: timedOut
+					? `bun install --frozen-lockfile --dry-run timed out after ${timeoutMs}ms`
+					: "bun install --frozen-lockfile --dry-run failed; run bun install and commit the lockfile",
 	};
 }

@@ -30,6 +30,14 @@ export const STAGE_TIMEOUT_MS: Record<Stage, number> = {
 	"pre-push": 10 * MINUTE,
 };
 
+// Hard deadline for the whole hook lifecycle (stdin, snapshots, installs,
+// preflight, every ref and cleanup). The stage budget above still applies to
+// each gate run; this is the outer stop that kills the owned process tree.
+export const HOOK_TIMEOUT_MS: Record<Stage, number> = {
+	"pre-commit": 12 * MINUTE,
+	"pre-push": 30 * MINUTE,
+};
+
 export const SLOTS: SlotDefinition[] = [
 	{
 		id: "S1",

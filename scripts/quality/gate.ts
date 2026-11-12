@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { resolve } from "node:path";
 import { preflight } from "./deps";
+import { killProcessGroup, PgidRegistry } from "./process";
 import {
 	NOT_APPLICABLE,
 	type SlotDefinition,
@@ -27,16 +28,30 @@ const root = resolve(import.meta.dir, "../..");
 const gitRoot = process.env.GATE_GIT_ROOT ?? root;
 const startedAt = performance.now();
 const stageBudgetMs = STAGE_TIMEOUT_MS[stage];
-const timeoutBin = Bun.which("timeout") ?? Bun.which("gtimeout");
+const registry = new PgidRegistry();
 const overrideTimeoutMs = Number.parseInt(process.env.GATE_OVERRIDE_TIMEOUT_MS ?? "", 10);
 const overrideStageTimeoutMs = Number.parseInt(
 	process.env.GATE_OVERRIDE_STAGE_TIMEOUT_MS ?? "",
 	10,
 );
-const effectiveStageBudgetMs =
+const hookDeadlineMs = Number.parseInt(process.env.GATE_HOOK_DEADLINE_MS ?? "", 10);
+const hookRemainingMs = Number.isFinite(hookDeadlineMs)
+	? hookDeadlineMs - Date.now()
+	: Number.POSITIVE_INFINITY;
+const effectiveStageBudgetMs = Math.min(
+	stageBudgetMs,
+	hookRemainingMs,
 	Number.isFinite(overrideStageTimeoutMs) && overrideStageTimeoutMs > 0
-		? Math.min(stageBudgetMs, overrideStageTimeoutMs)
-		: stageBudgetMs;
+		? overrideStageTimeoutMs
+		: Number.POSITIVE_INFINITY,
+);
+
+for (const signal of ["SIGTERM", "SIGINT"] as const) {
+	process.on(signal, () => {
+		for (const pgid of PgidRegistry.list()) killProcessGroup(pgid, "SIGKILL");
+		process.exit(signal === "SIGTERM" ? 143 : 130);
+	});
+}
 
 const requested = slotsForStage(stage).filter((slot) => !only || only.split(",").includes(slot.id));
 const selectedIds = new Set(requested.map((slot) => slot.id));
@@ -82,27 +97,26 @@ async function runStep(
 	label: string,
 ): Promise<StepResult> {
 	const started = performance.now();
-	const effectiveTimeout =
+	const effectiveTimeout = Math.max(
+		1,
 		Number.isFinite(overrideTimeoutMs) && overrideTimeoutMs > 0
 			? Math.min(timeoutMs, overrideTimeoutMs)
-			: timeoutMs;
-	const seconds = (effectiveTimeout / 1000).toFixed(3);
-	const invocation = timeoutBin
-		? [timeoutBin, "-s", "KILL", seconds, "sh", "-c", command]
-		: ["sh", "-c", command];
-	const proc = Bun.spawn(invocation, {
+			: timeoutMs,
+	);
+	const proc = Bun.spawn(["sh", "-c", command], {
 		cwd: root,
 		env: { ...process.env, CI: process.env.CI ?? "" },
 		stdout: "pipe",
 		stderr: "pipe",
+		detached: true,
 	});
+	const pgid = proc.pid;
+	registry.add(pgid);
 	let killedByTimer = false;
-	const timer = timeoutBin
-		? undefined
-		: setTimeout(() => {
-				killedByTimer = true;
-				proc.kill("SIGKILL");
-			}, effectiveTimeout);
+	const timer = setTimeout(() => {
+		killedByTimer = true;
+		killProcessGroup(pgid, "SIGKILL");
+	}, effectiveTimeout);
 
 	let output = "";
 	const pump = async (
@@ -123,6 +137,7 @@ async function runStep(
 	]);
 	const code = await proc.exited;
 	if (timer) clearTimeout(timer);
+	registry.remove(pgid);
 	const ms = performance.now() - started;
 
 	if (code === 124 || code === 137 || killedByTimer) {
@@ -204,8 +219,34 @@ async function executeSlot(slot: SlotDefinition): Promise<SlotResult> {
 	const slotStarted = performance.now();
 	const stepResults: StepResult[] = [];
 	for (const [index, step] of steps.entries()) {
+		const remainingMs = effectiveStageBudgetMs - (performance.now() - startedAt);
+		if (remainingMs <= 0) {
+			stepResults.push({
+				label: step.label,
+				command: step.command,
+				outcome: "timeout",
+				ms: 0,
+				note: "stage budget exhausted before this step",
+			});
+			console.log(`  ✗ ${step.label} — stage budget exhausted before this step`);
+			for (const rest of steps.slice(index + 1)) {
+				stepResults.push({
+					label: rest.label,
+					command: rest.command,
+					outcome: "skip",
+					ms: 0,
+					note: "not run",
+				});
+			}
+			break;
+		}
 		console.log(`  $ ${step.command}`);
-		const result = await runStep(step.command, step.timeoutMs, step.expect, step.label);
+		const result = await runStep(
+			step.command,
+			Math.min(step.timeoutMs, remainingMs),
+			step.expect,
+			step.label,
+		);
 		stepResults.push(result);
 		console.log(
 			`  ${result.outcome === "pass" ? "✓" : "✗"} ${result.label} ${formatMs(result.ms)}${result.note ? ` — ${result.note}` : ""}`,

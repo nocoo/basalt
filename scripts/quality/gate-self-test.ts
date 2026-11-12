@@ -1,6 +1,14 @@
 #!/usr/bin/env bun
 import { spawnSync } from "node:child_process";
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+	cpSync,
+	existsSync,
+	mkdirSync,
+	mkdtempSync,
+	readFileSync,
+	rmSync,
+	writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -348,17 +356,37 @@ function g1Probes() {
 	expectReject("g1-scanner-error", scannerError, /gitleaks itself failed/);
 }
 
-function pushHookProbes() {
-	const root = tempRoot("basalt-push-");
+function pushFixture(root: string) {
 	run("git", ["init", "-q"], { cwd: root });
 	run("git", ["config", "user.email", "self-test@example.invalid"], { cwd: root });
 	run("git", ["config", "user.name", "Gate Self Test"], { cwd: root });
 	mkdirSync(join(root, ".husky"), { recursive: true });
 	mkdirSync(join(root, "node_modules"), { recursive: true });
 	cpSync(join(repoRoot, ".husky/pre-push"), join(root, ".husky/pre-push"));
+	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), {
+		recursive: true,
+	});
+	writeFileSync(
+		join(root, "scripts/quality/gate.ts"),
+		`import { appendFileSync, readFileSync } from "node:fs";
+const args = process.argv.slice(2);
+const range = args.find((arg) => arg.startsWith("--g1-range="))?.slice("--g1-range=".length);
+if (range) appendFileSync(process.env.GATE_PROBE_RANGE_FILE ?? "/dev/null", \`\${range}\\n\`);
+if (readFileSync("state.txt", "utf8").includes("bad")) {
+	console.error("stub gate rejected the pushed snapshot");
+	process.exit(1);
+}
+console.log("stub gate ok");
+`,
+	);
 	writeFileSync(join(root, "package.json"), '{"name":"push-fixture","private":true}\n');
 	writeFileSync(join(root, "bun.lock"), "{}\n");
 	writeFileSync(join(root, "state.txt"), "good\n");
+}
+
+function pushHookProbes() {
+	const root = tempRoot("basalt-push-");
+	pushFixture(root);
 	run("git", ["add", "."], { cwd: root });
 	run("git", ["commit", "-qm", "good"], { cwd: root });
 	const good = run("git", ["rev-parse", "HEAD"], { cwd: root }).stdout.trim();
@@ -371,40 +399,66 @@ function pushHookProbes() {
 	run("git", ["checkout", "-q", "-"], { cwd: root });
 	writeFileSync(join(root, "state.txt"), "good\n");
 
-	const stubDir = tempRoot("basalt-push-bin-");
-	writeFileSync(
-		join(stubDir, "bun"),
-		`#!/bin/sh
-if grep -q '^bad$' state.txt; then
-  echo "stub bun rejected the pushed snapshot" >&2
-  exit 1
-fi
-exit 0
-`,
-	);
-	run("chmod", ["+x", join(stubDir, "bun")]);
-	const path = `${stubDir}:${process.env.PATH ?? ""}`;
+	const rangeFile = join(tempRoot("basalt-push-range-"), "ranges.txt");
+	const env = { GATE_PROBE_RANGE_FILE: rangeFile };
 
 	const badPush = run(".husky/pre-push", [], {
 		cwd: root,
-		env: { PATH: path },
+		env,
 		input: `refs/heads/bad ${bad} refs/heads/bad ${good}\n`,
 	});
-	expectReject("push-non-current-oid", badPush, /stub bun rejected/);
+	expectReject("push-non-current-oid", badPush, /stub gate rejected/);
 
 	const goodPush = run(".husky/pre-push", [], {
 		cwd: root,
-		env: { PATH: path },
+		env,
 		input: `refs/heads/good ${good} refs/heads/good 0000000000000000000000000000000000000000\n`,
 	});
 	record("push-good-oid", goodPush.status === 0, `exit=${goodPush.status}`);
 
 	const deletion = run(".husky/pre-push", [], {
 		cwd: root,
-		env: { PATH: path },
+		env,
 		input: `(delete) 0000000000000000000000000000000000000000 refs/heads/gone ${good}\n`,
 	});
 	record("push-deletion-skip", deletion.status === 0, `exit=${deletion.status}`);
+
+	const ranges = existsSync(rangeFile)
+		? readFileSync(rangeFile, "utf8")
+				.split("\n")
+				.map((line) => line.trim())
+				.filter(Boolean)
+		: [];
+	record("push-range-recorded", ranges.includes(`${good}..${bad}`), `ranges=${ranges.join("|")}`);
+}
+
+function timeoutProbes() {
+	const root = tempRoot("basalt-timeout-");
+	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), {
+		recursive: true,
+	});
+	const marker = join(root, "descendant.txt");
+	writeFileSync(
+		join(root, "scripts/quality/hook-pre-push.sh"),
+		`#!/usr/bin/env sh
+( sleep 5; touch ${JSON.stringify(marker)} ) &
+wait
+`,
+	);
+	const started = Date.now();
+	const result = run("bun", ["scripts/quality/supervisor.ts", "--hook=pre-push"], {
+		cwd: root,
+		env: { GATE_HOOK_TIMEOUT_MS: "1200" },
+	});
+	const elapsed = Date.now() - started;
+	expectReject("hook-deadline", result, /killing the process tree/);
+	record("hook-deadline-is-real", elapsed < 20_000, `elapsed=${elapsed}ms exit=${result.status}`);
+	run("sleep", ["6"]);
+	record(
+		"hook-deadline-kills-descendants",
+		!existsSync(marker),
+		`descendant marker ${existsSync(marker) ? "exists" : "absent"}`,
+	);
 }
 
 function missingToolProbe() {
@@ -582,6 +636,7 @@ try {
 	focusGuardProbe();
 	g1Probes();
 	pushHookProbes();
+	timeoutProbes();
 	missingToolProbe();
 	z1Probes();
 	if (!probesOnly) gateFixtureProbes();
