@@ -57,20 +57,20 @@ System0 uses 12 fixed slots. Statuses are `impl`, `todo`, `na`; every selected c
 check-only and every stage has a timeout. The measured column is warm Home wall time
 from the 2026-11-12 migration unless marked otherwise.
 
-| Slot | Status | Command and check object                                                                                                    | Stage                      | Measured |
-| ---- | ------ | --------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -------- |
-| S1   | impl   | `bun run typecheck`: catalog/API/content/SEO checks plus app and node `tsc --noEmit`                                        | pre-commit, CI             | 6.1–6.7s |
-| S2   | impl   | `bun run lint`: Biome check-only, 0 errors and 0 warnings                                                                   | pre-commit, CI             | 0.3s     |
-| S3   | impl   | `bun run scripts/quality/workflow-lint.ts`: actionlint plus full-SHA `uses:` refs                                           | pre-commit (workflows), CI | <1s      |
-| G1   | impl   | Gitleaks with `[extend] useDefault = true`: staged index, pushed range, or CI checkout                                      | pre-commit, pre-push, CI   | 4.6–5.0s |
-| G2   | impl   | `osv-scanner scan --lockfile=bun.lock --config=osv-scanner.toml`                                                            | pre-push, CI               | 1.1–1.2s |
-| B1   | impl   | `bun run --cwd packages/basalt build` and `bun run build`; shared once at pre-push before L1/L4/P1                          | pre-push, CI               | 9.4s     |
-| L1   | impl   | `bun run test:coverage`, `scripts/verify-pre-commit-coverage.ts`; consumes shared B1 package output; four 95% floors        | pre-push, CI               | 79.4s    |
-| L2   | na     | No `@cloudflare/vitest-pool-workers`/workerd suite; `worker/index.ts` tests run in Node with a mocked `ASSETS` binding (L1) | CI (skipped)               | -        |
-| L3   | na     | Static Vite catalog and static-asset Worker; no service, protocol or storage boundary to integrate                          | CI (skipped)               | -        |
-| L4   | impl   | `bun run design:check` plus `bun run test:showcase:smoke`, Chromium against shared B1 `dist/`                               | pre-push, CI               | 130.9s   |
-| P1   | impl   | `types:check`, `pack:check`, `publint`, then shared-B1 tarball-installed standalone/Tailwind/heavy consumers                | pre-push, CI               | 93.1s    |
-| Z1   | impl   | native aggregate over all slots plus blocking `Next.js consumer` and `Hook self-test`; checks results, skips and tested SHA | CI                         | -        |
+| Slot | Status | Command and check object                                                                                                    | Stage                      | Measured     |
+| ---- | ------ | --------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ------------ |
+| S1   | impl   | `bun run typecheck`: catalog/API/content/SEO checks plus app and node `tsc --noEmit`                                        | pre-commit, CI             | 6.1–6.8s     |
+| S2   | impl   | `bun run lint`: Biome check-only, 0 errors and 0 warnings                                                                   | pre-commit, CI             | 0.3s         |
+| S3   | impl   | `bun run scripts/quality/workflow-lint.ts`: actionlint plus full-SHA `uses:` refs                                           | pre-commit (workflows), CI | <1s          |
+| G1   | impl   | Gitleaks with `[extend] useDefault = true`: staged index, pushed range, or CI checkout                                      | pre-commit, pre-push, CI   | 4.6–5.0s     |
+| G2   | impl   | `osv-scanner scan --lockfile=bun.lock --config=osv-scanner.toml`                                                            | pre-push, CI               | 1.1–1.4s     |
+| B1   | impl   | `bun run --cwd packages/basalt build` and `bun run build`; shared once at pre-push before L1/L4/P1                          | pre-push, CI               | 9.4–9.7s     |
+| L1   | impl   | `bun run test:coverage`, `scripts/verify-pre-commit-coverage.ts`; consumes shared B1 package output; four 95% floors        | pre-push, CI               | 79.4–83.5s   |
+| L2   | na     | No `@cloudflare/vitest-pool-workers`/workerd suite; `worker/index.ts` tests run in Node with a mocked `ASSETS` binding (L1) | CI (skipped)               | -            |
+| L3   | na     | Static Vite catalog and static-asset Worker; no service, protocol or storage boundary to integrate                          | CI (skipped)               | -            |
+| L4   | impl   | `bun run design:check` plus `bun run test:showcase:smoke`, Chromium against shared B1 `dist/`                               | pre-push, CI               | 130.7–130.9s |
+| P1   | impl   | `types:check`, `pack:check`, `publint`, then shared-B1 tarball-installed standalone/Tailwind/heavy consumers                | pre-push, CI               | 93.1–96.8s   |
+| Z1   | impl   | native aggregate over all slots plus blocking `Next.js consumer` and `Hook self-test`; checks results, skips and tested SHA | CI                         | -            |
 
 `L3` is not hidden inside L4: `test:showcase:smoke` is a browser journey, while external
 package consumption is P1. `consumer:next` is the blocking Next.js SSR/hydration/HTTP
@@ -78,10 +78,10 @@ consumer outside the 12 slots. `Cross-browser layouts (nightly)` and
 `Full showcase sweep (nightly)` are non-blocking extensions; they are not in Z1 because
 the default gates deliberately keep Chromium and a focused journey set.
 
-| Hook       | Behavior                                                                                                                                                                                                                   | Measured                      |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| pre-commit | Exports the Git index, rejects manifest/toolchain drift, runs S1, S2, S3 when workflows are staged, and G1 over the index; 10-minute stage budget                                                                          | 12.15–12.48s                  |
-| pre-push   | Reads stdin; skips deletions; creates a detached worktree per local OID; reuses modules only for matching manifests, otherwise frozen installs; runs G1/G2/B1 serially, then L1/L4/P1 in parallel on the same B1 artifacts | 145.6s full hook; gate 141.8s |
+| Hook       | Behavior                                                                                                                                                                                                                   | Measured                 |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| pre-commit | Exports the Git index, rejects manifest/toolchain drift, runs S1, S2, S3 when workflows are staged, and G1 over the index; 10-minute stage budget                                                                          | 11.5–12.48s              |
+| pre-push   | Reads stdin; skips deletions; creates a detached worktree per local OID; reuses modules only for matching manifests, otherwise frozen installs; runs G1/G2/B1 serially, then L1/L4/P1 in parallel on the same B1 artifacts | gate 141.9s; push 147.0s |
 
 Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch
 pushes. CI calls only `./.github/workflows/quality-slots.yml` from job `quality`, so the
@@ -92,10 +92,10 @@ SHA and passes `required-quality-check: "quality / Z1: Gate"`.
 ### Measured evidence (2026-11-12)
 
 - **Environment:** Home, Bun 1.4.4 against declared `bun@1.4.0`, Node 26.13.0, actionlint 1.7.12, Gitleaks 8.30.1, OSV Scanner 2.7.0, Python 3.9.6.
-- **Coverage (scoped Vitest denominator):** 261 files / 2280 tests; statements **98.10%**, branches **96.62%**, functions **99.09%**, lines **98.33%**; floors **95%** each.
-- **pre-commit:** cold **12.48s**, warm **12.15s** after moving full L1 coverage to pre-push. The stage is within the 15s target and the 30s limit; S1 is **6.6–6.8s** and G1 is **4.7–4.8s**.
-- **pre-push:** **145.6s** full hook / **141.8s** gate on `ce9cc833` after sharing B1 and running L1/L4/P1 in parallel. B1 **9.4s**, L1 **79.4s**, L4 **130.9s**, P1 **93.1s**; L4 is now the critical path and the 2.5-minute target is met.
-- **CI:** native runs measured **389–396s** end to end; the five-minute target is missed, while the ten-minute limit is met. L1 is the critical path at roughly six minutes.
+- **Coverage (scoped Vitest denominator):** 265 files / 2281 tests; statements **98.10%** (4603/4692), branches **96.62%** (4498/4655), functions **99.09%** (1211/1222), lines **98.33%** (4309/4382); floors **95%** each.
+- **pre-commit:** **11.5s** on the latest real commit, within the 15s target and 30s limit; cold/warm baselines were **12.48s**/**12.15s**. S1 is **6.1–6.8s** and G1 is **4.6–5.0s**.
+- **pre-push:** **141.9s** gate / **147.0s** push on `a828295f` after sharing B1 and running L1/L4/P1 in parallel. B1 **9.7s**, L1 **83.5s**, L4 **130.7s**, P1 **96.8s**; L4 remains the critical path and the 2.5-minute target is met.
+- **CI:** **274s (4:34)** end to end on `a828295f`, inside both the five-minute target and ten-minute limit. Queue delay was **0s** and job setup about **2s**. B1 **46s**; four unit shards **114–148s** (67/66/66/66 files, 422/469/748/642 tests); L1 merge/verify **19s**; L4 **149s**; P1 **258s**; Z1 **8s**. P1 is now the critical path. The four shards use `scripts/merge-coverage.ts` rather than Vitest's blob merge because the latter dropped one duplicate same-location function from the denominator; the merged denominator remains 4603/4692 statements, 4498/4655 branches, 1211/1222 functions and 4309/4382 lines.
 - **Self-test:** `bun run test:gate-self-test` covers healthy execution; S1/S2/S3/G1/G2/B1/L1/L4/P1 failures; missing Gitleaks/actionlint/OSV; scanner failure versus findings; step and stage timeouts; toolchain and lockfile drift; empty coverage; staged/range secrets; pushed OID selection; deleted refs; focus guard; Z1 result, skip, SHA, declaration, blocking-job and output checks.
 - **Isolation gap:** consumer gates allocate external temp roots, loopback ports and browser profiles; the showcase build still writes the shared `dist/`.
 

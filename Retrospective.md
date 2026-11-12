@@ -728,6 +728,25 @@ took 396s. The five-minute target is therefore missed and the ten-minute limit
 is met; full CI job timing is in the run logs rather than inferred from local
 serial timings. The longest path is L1, followed by P1 and L4.
 
+The final CI pass replaced the single L1 job with four file-sharded Vitest jobs
+behind B1, then merged their `coverage-final.json` reports in a small Z1-blocking
+L1 job. Vitest's own blob merge was rejected because it collapsed two
+same-location anonymous functions from 1222 to 1221; the custom merger keys
+functions by name and location and preserves the full denominator. A first
+sharded run still took 357s because all 99 `scripts/catalog-api.test.ts` cases
+live in one 262s file, and file sharding cannot split it. Splitting that suite
+into four files behind a shared fixture helper reduced the slowest shard to
+148s.
+
+Run `a828295f` then completed CI in **274s (4:34)**: B1 46s, four unit shards
+114–148s, L1 merge/verify 19s, L4 149s, P1 258s, Z1 8s, with zero queue delay
+and about 2s of job setup. The five-minute target and ten-minute limit are both
+met. P1 is now the critical path rather than L1. Coverage still reports 265 files
+and 2281 tests, with the four 95% floors unchanged at 98.10% statements,
+96.62% branches, 99.09% functions and 98.33% lines. The same pre-push design
+measured 141.9s for the gate and 147.0s for the push; pre-commit remained
+11.5s on the latest real commit.
+
 Review found two defects after the first green native runs: the new-branch G1
 range was passed as multiple shell words and needed quoting, and Z1 had no
 `tested-sha` output for downstream release consumers. Both were fixed in
