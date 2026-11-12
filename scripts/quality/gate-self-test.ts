@@ -316,6 +316,27 @@ function gateFixtureProbes() {
 	expectReject("lockfile-drift", drift, /preflight/);
 }
 
+function gateDescendantProbe() {
+	const root = tempRoot("basalt-gate-descendant-");
+	mkdirSync(join(root, "packages/basalt"), { recursive: true });
+	copyGate(root);
+	writeFixturePackage(root, undefined);
+	installFixture(root);
+	const marker = join(root, "descendant.txt");
+	setFixtureScript(root, "typecheck", `( sleep 5; touch ${JSON.stringify(marker)} ) & sleep 5`);
+	const result = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1"], {
+		cwd: root,
+		env: { GATE_OVERRIDE_TIMEOUT_MS: "500" },
+	});
+	expectReject("gate-step-timeout", result, /timeout/);
+	run("sleep", ["6"]);
+	record(
+		"gate-step-timeout-kills-descendants",
+		!existsSync(marker),
+		`descendant marker ${existsSync(marker) ? "exists" : "absent"}`,
+	);
+}
+
 function g1Probes() {
 	const root = tempRoot("basalt-g1-");
 	run("git", ["init", "-q"], { cwd: root });
@@ -765,7 +786,10 @@ try {
 	timeoutProbes();
 	missingToolProbe();
 	z1Probes();
-	if (!probesOnly) gateFixtureProbes();
+	if (!probesOnly) {
+		gateFixtureProbes();
+		gateDescendantProbe();
+	}
 } finally {
 	for (const root of roots) {
 		rmSync(root, { recursive: true, force: true });
