@@ -709,13 +709,18 @@ Performance remained the largest gap. The original two-worker Vitest run spent
 warm. `isolate: false` looked faster but caused 570 cross-file DOM failures, so
 it was rejected rather than weakening isolation. The full showcase gate exceeded
 its six-minute pre-push timeout; L4 now runs a focused Chromium smoke and the
-full sweep is a non-blocking nightly job. The first successful native pre-push
+full sweep is a non-blocking nightly job. The first serial native pre-push
 measured 243.6s: L4 129s and P1 103s. Later pushes measured gate totals of
-239.3s, 241.5s and 240.5s. This remains above the 2.5-minute target even though
-all checks ran while L1 was still at commit time. Moving the unchanged full
-coverage gate to pre-push reduced pre-commit to 12.48s cold and 12.15s warm,
-within the 15s target and 30s limit. The index hook still runs S1/S2/S3/G1; the
-four 95% coverage floors remain on pre-push and CI.
+239.3s, 241.5s and 240.5s.
+
+Moving the unchanged full coverage gate to pre-push reduced pre-commit to 12.48s
+cold and 12.15s warm, within the 15s target and 30s limit. The index hook still
+runs S1/S2/S3/G1; the four 95% coverage floors remain on pre-push and CI.
+Run `ce9cc833` then made B1 a single shared pre-push build: L1 consumes its
+package output, L4 serves its `dist/`, and P1 packs its tarball, while those
+three slots run in parallel after B1. The same real push took 145.6s wall time
+for the full hook and 141.8s for the gate; B1 was 9.4s, L1 79.4s, L4 130.9s and
+P1 93.1s. L4 is now the critical path and the 2.5-minute pre-push target is met.
 
 The v2026.15 migration's first CI run took 389s with L1 at 385s, P1 at 232s, L4
 at 159s and the Next.js consumer at 128s; Z1 took about 6s. A later native run
