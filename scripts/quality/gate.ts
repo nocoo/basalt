@@ -29,6 +29,14 @@ const startedAt = performance.now();
 const stageBudgetMs = STAGE_TIMEOUT_MS[stage];
 const timeoutBin = Bun.which("timeout") ?? Bun.which("gtimeout");
 const overrideTimeoutMs = Number.parseInt(process.env.GATE_OVERRIDE_TIMEOUT_MS ?? "", 10);
+const overrideStageTimeoutMs = Number.parseInt(
+	process.env.GATE_OVERRIDE_STAGE_TIMEOUT_MS ?? "",
+	10,
+);
+const effectiveStageBudgetMs =
+	Number.isFinite(overrideStageTimeoutMs) && overrideStageTimeoutMs > 0
+		? Math.min(stageBudgetMs, overrideStageTimeoutMs)
+		: stageBudgetMs;
 
 const selected = slotsForStage(stage).filter((slot) => !only || only.split(",").includes(slot.id));
 
@@ -182,13 +190,13 @@ for (const slot of selected) {
 		});
 		continue;
 	}
-	if (performance.now() - startedAt > stageBudgetMs) {
+	if (performance.now() - startedAt > effectiveStageBudgetMs) {
 		results.push({
 			slot,
 			outcome: "timeout",
 			ms: 0,
 			steps: [],
-			note: `stage budget ${Math.round(stageBudgetMs / 1000)}s exceeded before this slot`,
+			note: `stage budget ${Math.round(effectiveStageBudgetMs / 1000)}s exceeded before this slot`,
 		});
 		continue;
 	}
@@ -251,7 +259,9 @@ for (const entry of NOT_APPLICABLE) {
 	);
 }
 console.log(`${"─".repeat(78)}`);
-console.log(`total ${formatMs(totalMs)} (stage budget ${Math.round(stageBudgetMs / 1000)}s)`);
+console.log(
+	`total ${formatMs(totalMs)} (stage budget ${Math.round(effectiveStageBudgetMs / 1000)}s)`,
+);
 
 const failedSlots = results.filter(
 	(result) => result.outcome === "fail" || result.outcome === "timeout",
@@ -264,6 +274,12 @@ if (failedSlots.length > 0) {
 }
 if (results.every((result) => result.outcome === "skip")) {
 	console.error(`\n❌ ${stage} gate failed: no slot ran`);
+	process.exit(1);
+}
+if (totalMs > effectiveStageBudgetMs) {
+	console.error(
+		`\n❌ ${stage} gate failed: stage budget ${effectiveStageBudgetMs}ms exceeded (${Math.round(totalMs)}ms)`,
+	);
 	process.exit(1);
 }
 console.log(`\n✅ ${stage} gate passed`);

@@ -81,6 +81,11 @@ export const SLOTS: SlotDefinition[] = [
 		target: "package build for dist guards, Vitest coverage, four 95% floors",
 		steps: [
 			{
+				label: "focus/skip guard",
+				command: "bun run scripts/quality/test-focus-guard.ts",
+				timeoutMs: MINUTE,
+			},
+			{
 				label: "package build",
 				command: "bun run --cwd packages/basalt build",
 				timeoutMs: 3 * MINUTE,

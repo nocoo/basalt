@@ -52,6 +52,7 @@ function copyGate(destination: string) {
 		recursive: true,
 	});
 	cpSync(join(repoRoot, ".gitleaks.toml"), join(destination, ".gitleaks.toml"));
+	cpSync(join(repoRoot, "osv-scanner.toml"), join(destination, "osv-scanner.toml"));
 }
 
 function installFixture(root: string) {
@@ -63,7 +64,11 @@ function installFixture(root: string) {
 	mkdirSync(join(root, "packages/basalt/node_modules"), { recursive: true });
 }
 
-function writeFixturePackage(root: string, failing: string | undefined) {
+function writeFixturePackage(
+	root: string,
+	failing: string | undefined,
+	packageManager = "bun@1.4.0",
+) {
 	const scripts: Record<string, string> = {
 		typecheck: failing === "S1" ? "exit 1" : "true",
 		lint: failing === "S2" ? "exit 1" : "true",
@@ -83,7 +88,7 @@ function writeFixturePackage(root: string, failing: string | undefined) {
 			{
 				name: "gate-fixture",
 				private: true,
-				packageManager: "bun@1.4.0",
+				packageManager,
 				workspaces: ["packages/*"],
 				dependencies: { "@fixture/basalt": "workspace:*" },
 				scripts,
@@ -111,10 +116,90 @@ function writeFixturePackage(root: string, failing: string | undefined) {
 	);
 }
 
+function setFixtureScript(root: string, name: string, value: string) {
+	const path = join(root, "package.json");
+	const manifest = JSON.parse(readFileSync(path, "utf8")) as {
+		scripts: Record<string, string>;
+	};
+	manifest.scripts[name] = value;
+	writeFileSync(path, `${JSON.stringify(manifest, null, "\t")}\n`);
+}
+
+function writeExecutable(path: string, contents: string) {
+	writeFileSync(path, contents);
+	run("chmod", ["+x", path]);
+}
+
+function toolBin(options: {
+	actionlint?: "missing" | "fail";
+	osv?: "missing" | "fail";
+	gitleaks?: "missing" | "fail" | "error";
+}): string {
+	const bin = tempRoot("basalt-tools-");
+	for (const name of ["bun", "node"]) {
+		const resolved = Bun.which(name);
+		if (resolved) run("ln", ["-s", resolved, join(bin, name)]);
+	}
+	if (options.actionlint === "fail") {
+		writeExecutable(
+			join(bin, "actionlint"),
+			`#!/bin/sh
+if [ "\${1:-}" = "--version" ]; then
+  echo "1.7.12"
+  exit 0
+fi
+exit 1
+`,
+		);
+	}
+	if (options.osv === "fail") {
+		writeExecutable(
+			join(bin, "osv-scanner"),
+			`#!/bin/sh
+if [ "\${1:-}" = "--version" ]; then
+  echo "osv-scanner version: 2.5.1"
+  exit 0
+fi
+exit 1
+`,
+		);
+	}
+	if (options.gitleaks === "fail") {
+		writeExecutable(
+			join(bin, "gitleaks"),
+			`#!/bin/sh
+if [ "\${1:-}" = "version" ]; then
+  echo "8.30.1"
+  exit 0
+fi
+exit 1
+`,
+		);
+	}
+	if (options.gitleaks === "error") {
+		writeExecutable(
+			join(bin, "gitleaks"),
+			`#!/bin/sh
+if [ "\${1:-}" = "version" ]; then
+  echo "8.30.1"
+  exit 0
+fi
+exit 2
+`,
+		);
+	}
+	return bin;
+}
+
 function gateFixtureProbes() {
 	const root = tempRoot("basalt-gate-fixture-");
 	mkdirSync(join(root, "packages/basalt"), { recursive: true });
+	mkdirSync(join(root, ".github/workflows"), { recursive: true });
 	copyGate(root);
+	writeFileSync(
+		join(root, ".github/workflows/ci.yml"),
+		"name: fixture\non: workflow_call\njobs:\n  fixture:\n    runs-on: ubuntu-latest\n    steps:\n      - run: true\n",
+	);
 	writeFixturePackage(root, undefined);
 	installFixture(root);
 
@@ -137,11 +222,77 @@ function gateFixtureProbes() {
 	}
 
 	writeFixturePackage(root, undefined);
+	const s3Failure = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S3"], {
+		cwd: root,
+		env: {
+			PATH: `${toolBin({ actionlint: "fail" })}:/usr/bin:/bin`,
+			GATE_STAGED_FILES: ".github/workflows/ci.yml",
+		},
+	});
+	expectReject("slot-S3-failure", s3Failure, /actionlint failed/);
+
+	const missingActionlint = run(
+		"bun",
+		["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S3"],
+		{
+			cwd: root,
+			env: {
+				PATH: `${toolBin({ actionlint: "missing" })}:/usr/bin:/bin`,
+				GATE_STAGED_FILES: ".github/workflows/ci.yml",
+			},
+		},
+	);
+	expectReject("missing-actionlint", missingActionlint, /actionlint not found/);
+
+	const g2Failure = run("bun", ["scripts/quality/gate.ts", "--stage=pre-push", "--only=G2"], {
+		cwd: root,
+		env: { PATH: `${toolBin({ osv: "fail" })}:/usr/bin:/bin` },
+	});
+	expectReject("slot-G2-failure", g2Failure, /osv-scanner/);
+
+	const missingOsv = run("bun", ["scripts/quality/gate.ts", "--stage=pre-push", "--only=G2"], {
+		cwd: root,
+		env: { PATH: `${toolBin({ osv: "missing" })}:/usr/bin:/bin` },
+	});
+	expectReject("missing-osv", missingOsv, /osv-scanner not found/);
+
+	const g1Failure = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=G1"], {
+		cwd: root,
+		env: {
+			PATH: `${toolBin({ gitleaks: "fail" })}:/usr/bin:/bin`,
+			GATE_SNAPSHOT_ROOT: root,
+		},
+	});
+	expectReject("slot-G1-failure", g1Failure, /leaks found/);
+
+	writeFixturePackage(root, undefined);
 	const timeout = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1"], {
 		cwd: root,
 		env: { GATE_OVERRIDE_TIMEOUT_MS: "1" },
 	});
 	expectReject("timeout", timeout, /timeout/);
+
+	setFixtureScript(root, "typecheck", "sleep 0.05");
+	const stageTimeout = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1"], {
+		cwd: root,
+		env: { GATE_OVERRIDE_STAGE_TIMEOUT_MS: "1" },
+	});
+	expectReject("stage-timeout", stageTimeout, /stage budget/);
+
+	writeFixturePackage(root, undefined, "bun@1.3.0");
+	const toolchainDrift = run(
+		"bun",
+		["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1"],
+		{ cwd: root },
+	);
+	expectReject("toolchain-drift", toolchainDrift, /does not match packageManager/);
+
+	writeFixturePackage(root, undefined);
+	setFixtureScript(root, "test:coverage", "echo coverage only");
+	const emptyCoverage = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=L1"], {
+		cwd: root,
+	});
+	expectReject("empty-coverage", emptyCoverage, /empty run/);
 
 	writeFileSync(join(root, "bun.lock"), "{}\n");
 	const drift = run("bun", ["scripts/quality/gate.ts", "--stage=pre-commit", "--only=S1"], {
@@ -183,6 +334,12 @@ function g1Probes() {
 		cwd: root,
 	});
 	expectReject("g1-push-range-secret", range, /leaks found/);
+
+	const scannerError = run("bun", ["scripts/quality/secrets.ts", "--range=HEAD~1..HEAD"], {
+		cwd: root,
+		env: { PATH: `${toolBin({ gitleaks: "error" })}:/usr/bin:/bin` },
+	});
+	expectReject("g1-scanner-error", scannerError, /gitleaks itself failed/);
 }
 
 function pushHookProbes() {
@@ -271,11 +428,136 @@ function slotMapProbe() {
 	);
 }
 
+function focusGuardProbe() {
+	const root = tempRoot("basalt-focus-");
+	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), { recursive: true });
+	mkdirSync(join(root, "src"), { recursive: true });
+	writeFileSync(
+		join(root, "src/focused.test.ts"),
+		'import { it } from "vitest";\nit' + '.only("focused", () => {});\n',
+	);
+	const result = run("bun", ["scripts/quality/test-focus-guard.ts"], { cwd: root });
+	expectReject("focused-test-guard", result, /focused or skipped/);
+}
+
+function z1Probes() {
+	const root = tempRoot("basalt-z1-");
+	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), { recursive: true });
+	const declarations = Object.fromEntries(
+		["S1", "S2", "S3", "G1", "G2", "B1", "L1", "L4", "P1"].map((slot) => [
+			slot,
+			{ status: "impl" },
+		]),
+	) as Record<string, { status: string; reason?: string }>;
+	declarations.L2 = {
+		status: "na",
+		reason: "Node tests use a mocked ASSETS binding; no workerd suite",
+	};
+	declarations.L3 = {
+		status: "na",
+		reason: "No service, protocol or storage boundary",
+	};
+	declarations.Z1 = { status: "impl" };
+	const needs = Object.fromEntries(
+		[
+			"s1-types",
+			"s2-lint",
+			"s3-workflow",
+			"g1-secrets",
+			"g2-dependencies",
+			"b1-build",
+			"l1-unit",
+			"l4-e2e",
+			"p1-package",
+		].map((job) => [job, { result: "success", outputs: { "tested-sha": "a".repeat(40) } }]),
+	);
+	needs["l2-runtime"] = { result: "skipped", outputs: {} };
+	needs["l3-integration"] = { result: "skipped", outputs: {} };
+	needs["consumer-next"] = {
+		result: "success",
+		outputs: { "tested-sha": "a".repeat(40) },
+	};
+	needs["hook-self-test"] = {
+		result: "success",
+		outputs: { "tested-sha": "a".repeat(40) },
+	};
+
+	const runZ1 = (nextNeeds: unknown, nextDeclarations: unknown, sha = "a".repeat(40)) =>
+		run("python3", ["scripts/quality/z1-gate.py"], {
+			cwd: root,
+			env: {
+				NEEDS_JSON: JSON.stringify(nextNeeds),
+				SLOT_STATUS: JSON.stringify(nextDeclarations),
+				EXPECTED_SHA: sha,
+				GITHUB_TOKEN: "",
+				GITHUB_REPOSITORY: "",
+				GITHUB_RUN_ID: "",
+				GITHUB_STEP_SUMMARY: "",
+			},
+		});
+
+	const healthy = runZ1(needs, declarations);
+	record("z1-healthy", healthy.status === 0, `exit=${healthy.status}`);
+
+	const implFailure = structuredClone(needs);
+	implFailure["s1-types"].result = "failure";
+	expectReject("z1-impl-failure", runZ1(implFailure, declarations), /declared impl/);
+
+	const naRan = structuredClone(needs);
+	naRan["l2-runtime"].result = "success";
+	expectReject("z1-na-ran", runZ1(naRan, declarations), /declared na/);
+
+	const shaMismatch = structuredClone(needs);
+	shaMismatch["s2-lint"].outputs["tested-sha"] = "b".repeat(40);
+	expectReject("z1-sha-mismatch", runZ1(shaMismatch, declarations), /different commits/);
+
+	const missingSha = structuredClone(needs);
+	missingSha["p1-package"].outputs["tested-sha"] = "";
+	expectReject("z1-missing-sha", runZ1(missingSha, declarations), /no tested SHA/);
+
+	const unknown = structuredClone(declarations);
+	unknown.S4 = { status: "impl" };
+	expectReject("z1-unknown-slot", runZ1(needs, unknown), /unknown slots/);
+
+	const missingDeclaration = structuredClone(declarations);
+	delete missingDeclaration.L1;
+	expectReject(
+		"z1-missing-declaration",
+		runZ1(needs, missingDeclaration),
+		/missing slot declarations/,
+	);
+
+	const invalidStatus = structuredClone(declarations);
+	invalidStatus.S1.status = "enforced";
+	expectReject("z1-invalid-status", runZ1(needs, invalidStatus), /invalid status/);
+
+	const z1NotImpl = structuredClone(declarations);
+	z1NotImpl.Z1.status = "na";
+	expectReject("z1-not-impl", runZ1(needs, z1NotImpl), /Z1 must be declared impl/);
+
+	const noReason = structuredClone(declarations);
+	delete noReason.L3.reason;
+	expectReject("z1-na-without-reason", runZ1(needs, noReason), /without a reason/);
+
+	const extraFailure = structuredClone(needs);
+	extraFailure["consumer-next"].result = "cancelled";
+	expectReject("z1-extra-blocking-failure", runZ1(extraFailure, declarations), /blocking job/);
+
+	const extraMissingSha = structuredClone(needs);
+	extraMissingSha["hook-self-test"].outputs["tested-sha"] = "";
+	expectReject("z1-extra-missing-sha", runZ1(extraMissingSha, declarations), /no tested SHA/);
+
+	const expectedMismatch = runZ1(needs, declarations, "c".repeat(40));
+	expectReject("z1-expected-sha", expectedMismatch, /this run/);
+}
+
 try {
 	slotMapProbe();
+	focusGuardProbe();
 	g1Probes();
 	pushHookProbes();
 	missingToolProbe();
+	z1Probes();
 	if (!probesOnly) gateFixtureProbes();
 } finally {
 	for (const root of roots) {
