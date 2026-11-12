@@ -23,6 +23,10 @@ SLOT_JOBS = {
 EXTRA_BLOCKING = {
     "consumer-next": "Next.js consumer",
     "hook-self-test": "Hook self-test",
+    "unit-shard-1": "Unit shard 1/4",
+    "unit-shard-2": "Unit shard 2/4",
+    "unit-shard-3": "Unit shard 3/4",
+    "unit-shard-4": "Unit shard 4/4",
 }
 VALID = ("impl", "na", "todo")
 TARGET_SECONDS = 5 * 60

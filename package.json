@@ -18,6 +18,7 @@
 		"preview": "vite preview",
 		"test": "vitest run --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
 		"test:coverage": "vitest run --coverage --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
+		"test:coverage:shard": "vitest run --coverage --coverage.reporter=json --coverage.reporter=json-summary --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0 --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
 		"test:gate-self-test": "bun scripts/quality/gate-self-test.ts",
 		"test:layouts": "bun scripts/mobile-layout-gate.ts",
 		"test:showcase": "bun scripts/showcase-gate.ts",

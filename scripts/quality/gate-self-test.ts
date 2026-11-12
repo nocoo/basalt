@@ -487,6 +487,12 @@ function z1Probes() {
 		result: "success",
 		outputs: { "tested-sha": "a".repeat(40) },
 	};
+	for (const shard of [1, 2, 3, 4]) {
+		needs[`unit-shard-${shard}`] = {
+			result: "success",
+			outputs: { "tested-sha": "a".repeat(40) },
+		};
+	}
 
 	const runZ1 = (
 		nextNeeds: unknown,

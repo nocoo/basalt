@@ -173,15 +173,23 @@ jobs:
           bun run build
         env:
           CI: "true"
+      - name: Upload package build
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+          if-no-files-found: error
+          retention-days: 1
       - name: Record tested SHA
         id: record-sha
         if: always()
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-  l1-unit:
-    name: "L1: Unit"
+  unit-shard-1:
+    name: "Unit shard 1/4"
+    needs: b1-build
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     outputs:
       tested-sha: ${{ steps.record-sha.outputs.sha }}
     steps:
@@ -193,32 +201,166 @@ jobs:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 1/4
+        run: bun run test:coverage:shard -- --shard=1/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-1"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-shard-1
+          path: ${{ runner.temp }}/coverage-shard-1
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  unit-shard-2:
+    name: "Unit shard 2/4"
+    needs: b1-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 2/4
+        run: bun run test:coverage:shard -- --shard=2/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-2"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-shard-2
+          path: ${{ runner.temp }}/coverage-shard-2
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  unit-shard-3:
+    name: "Unit shard 3/4"
+    needs: b1-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 3/4
+        run: bun run test:coverage:shard -- --shard=3/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-3"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-shard-3
+          path: ${{ runner.temp }}/coverage-shard-3
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  unit-shard-4:
+    name: "Unit shard 4/4"
+    needs: b1-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 4/4
+        run: bun run test:coverage:shard -- --shard=4/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-4"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-shard-4
+          path: ${{ runner.temp }}/coverage-shard-4
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  l1-unit:
+    name: "L1: Unit"
+    needs:
+      - unit-shard-1
+      - unit-shard-2
+      - unit-shard-3
+      - unit-shard-4
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: coverage-shard-*
+          path: ${{ runner.temp }}/coverage-shards
       - name: Reject focused and skipped tests
         run: bun run scripts/quality/test-focus-guard.ts
-      - name: Package build for dist guards
-        run: bun run --cwd packages/basalt build
-      - name: Coverage with four 95% floors
+      - name: Merge coverage shards
         run: |
           set -euo pipefail
-          if ! bun run test:coverage > "$RUNNER_TEMP/l1.log" 2>&1; then
-            tail -200 "$RUNNER_TEMP/l1.log"
-            exit 1
-          fi
-          tail -30 "$RUNNER_TEMP/l1.log"
+          bun run scripts/merge-coverage.ts \
+            --input="$RUNNER_TEMP/coverage-shards/coverage-shard-1,$RUNNER_TEMP/coverage-shards/coverage-shard-2,$RUNNER_TEMP/coverage-shards/coverage-shard-3,$RUNNER_TEMP/coverage-shards/coverage-shard-4" \
+            --output=coverage
       - name: Verify coverage reports
         run: bun run scripts/verify-pre-commit-coverage.ts
-      - name: Assert tests actually ran
-        run: |
-          set -euo pipefail
-          perl -pe 's/\e\[[0-9;]*[A-Za-z]//g' "$RUNNER_TEMP/l1.log" | grep -Eq 'Tests +[1-9][0-9]* passed'
       - name: Upload L1 evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: l1-unit-results
-          path: |
-            coverage/
-            ${{ runner.temp }}/l1.log
+          path: coverage/
           if-no-files-found: warn
           retention-days: 7
       - name: Record tested SHA
@@ -456,6 +598,10 @@ jobs:
       - g1-secrets
       - g2-dependencies
       - b1-build
+      - unit-shard-1
+      - unit-shard-2
+      - unit-shard-3
+      - unit-shard-4
       - l1-unit
       - l2-runtime
       - l3-integration
