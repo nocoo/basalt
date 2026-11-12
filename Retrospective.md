@@ -738,14 +738,14 @@ live in one 262s file, and file sharding cannot split it. Splitting that suite
 into four files behind a shared fixture helper reduced the slowest shard to
 148s.
 
-Run `a828295f` then completed CI in **274s (4:34)**: B1 46s, four unit shards
-114–148s, L1 merge/verify 19s, L4 149s, P1 258s, Z1 8s, with zero queue delay
-and about 2s of job setup. The five-minute target and ten-minute limit are both
-met. P1 is now the critical path rather than L1. Coverage still reports 265 files
-and 2281 tests, with the four 95% floors unchanged at 98.10% statements,
-96.62% branches, 99.09% functions and 98.33% lines. The same pre-push design
-measured 141.9s for the gate and 147.0s for the push; pre-commit remained
-11.5s on the latest real commit.
+Runs `a828295f` and `dea25554` then completed CI in **274s and 275s (4:34–4:35)**:
+B1 46–49s, four unit shards 95–153s, L1 merge/verify 19–21s, L4 149–161s,
+P1 258–263s, Z1 7–8s, with zero queue delay and about 2–3s of job setup. The
+five-minute target and ten-minute limit are both met. P1 is now the critical path
+rather than L1. Coverage still reports 265 files and 2281 tests, with the four
+95% floors unchanged at 98.10% statements, 96.62% branches, 99.09% functions and
+98.33% lines. The same pre-push design measured 138.4–141.9s for the gate and
+143.5–147.0s for the push; pre-commit remained 11.5s on the latest real commit.
 
 Review found two defects after the first green native runs: the new-branch G1
 range was passed as multiple shell words and needed quoting, and Z1 had no
