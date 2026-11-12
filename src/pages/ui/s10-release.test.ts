@@ -28,6 +28,9 @@ describe("S10 release evidence", () => {
 		expect(pkg.scripts["package:prepublish"]).toContain("publint");
 		expect(pkg.scripts["package:prepublish"]).toContain("consumer:next");
 		expect(readFileSync(path.join(ROOT, ".husky/pre-push"), "utf8")).toContain(
+			"supervisor.ts --hook=pre-push",
+		);
+		expect(readFileSync(path.join(ROOT, "scripts/quality/hook-pre-push.sh"), "utf8")).toContain(
 			"gate.ts --stage=pre-push",
 		);
 		expect(readFileSync(path.join(ROOT, "scripts/quality/slots.ts"), "utf8")).toContain(
