@@ -482,7 +482,12 @@ function z1Probes() {
 		outputs: { "tested-sha": "a".repeat(40) },
 	};
 
-	const runZ1 = (nextNeeds: unknown, nextDeclarations: unknown, sha = "a".repeat(40)) =>
+	const runZ1 = (
+		nextNeeds: unknown,
+		nextDeclarations: unknown,
+		sha = "a".repeat(40),
+		outputFile = "",
+	) =>
 		run("python3", ["scripts/quality/z1-gate.py"], {
 			cwd: root,
 			env: {
@@ -493,11 +498,20 @@ function z1Probes() {
 				GITHUB_REPOSITORY: "",
 				GITHUB_RUN_ID: "",
 				GITHUB_STEP_SUMMARY: "",
+				GITHUB_OUTPUT: outputFile,
 			},
 		});
 
 	const healthy = runZ1(needs, declarations);
 	record("z1-healthy", healthy.status === 0, `exit=${healthy.status}`);
+	const outputFile = join(tempRoot("basalt-z1-output-"), "output");
+	const outputRun = runZ1(needs, declarations, "a".repeat(40), outputFile);
+	const output = outputRun.status === 0 ? readFileSync(outputFile, "utf8").trim() : "";
+	record(
+		"z1-tested-sha-output",
+		output === `tested-sha=${"a".repeat(40)}`,
+		`exit=${outputRun.status} output=${output}`,
+	);
 
 	const implFailure = structuredClone(needs);
 	implFailure["s1-types"].result = "failure";

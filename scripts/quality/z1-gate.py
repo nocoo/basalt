@@ -173,6 +173,11 @@ def main():
                 f"slot jobs tested {tested_sha} but this run is {expected_sha}"
             )
 
+        output_file = os.environ.get("GITHUB_OUTPUT")
+        if output_file:
+            with open(output_file, "a", encoding="utf-8") as output:
+                output.write(f"tested-sha={tested_sha}\n")
+
         verdict = ""
         if wall is not None:
             if wall <= TARGET_SECONDS:

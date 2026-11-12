@@ -447,6 +447,8 @@ jobs:
   z1-gate:
     name: "Z1: Gate"
     if: always()
+    outputs:
+      tested-sha: ${{ steps.gate.outputs.tested-sha }}
     needs:
       - s1-types
       - s2-lint
@@ -468,6 +470,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Verify slot declarations, results and tested SHA
+        id: gate
         env:
           NEEDS_JSON: ${{ toJSON(needs) }}
           EXPECTED_SHA: ${{ github.sha }}
