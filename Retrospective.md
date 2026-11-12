@@ -695,11 +695,14 @@ fails, and a deletion-only push exits without source checks.
 The local gate now owns every stage timeout, refuses missing scanners,
 distinguishes scanner failure from findings, checks the declared Bun toolchain
 and a frozen lockfile, and rejects empty runs. `bun run test:gate-self-test`
-reproduces healthy execution, S1/S2/L1/B1/L4/P1 failures, missing Gitleaks, a
-forced timeout and lockfile drift. CI uses native mode: `ci.yml` only calls
-`quality-slots.yml`, all slots are named `<ID>: <Name>`, and Z1 verifies impl
-success, na skips and tested-SHA equality plus the blocking Next.js consumer and
-hook self-test.
+reproduces healthy execution; S1/S2/S3/G1/G2/B1/L1/L4/P1 failures; missing
+Gitleaks/actionlint/OSV; scanner errors versus findings; step and stage
+timeouts; toolchain and lockfile drift; empty coverage; staged and pushed-range
+secrets; non-current pushed OIDs; deleted refs; focus guards; and Z1 failures
+for result, skip, SHA, declaration, blocking-job and output combinations. CI
+uses native mode: `ci.yml` only calls `quality-slots.yml`, all slots are named
+`<ID>: <Name>`, and Z1 verifies impl success, na skips and tested-SHA equality
+plus the blocking Next.js consumer and hook self-test.
 
 Performance remained the largest gap. The original two-worker Vitest run spent
 158s; `maxWorkers: 4` brought the same 2,280-test, 98% coverage run to 77–90s
@@ -707,9 +710,30 @@ warm. `isolate: false` looked faster but caused 570 cross-file DOM failures, so
 it was rejected rather than weakening isolation. The full showcase gate exceeded
 its six-minute pre-push timeout; L4 now runs a focused Chromium smoke and the
 full sweep is a non-blocking nightly job. The first successful native pre-push
-measured 243s: L4 129s and P1 103s. This remains above the 2.5-minute target even
-though all checks ran. The pre-commit hook remains above both the 15s target and
-the 30s limit because L1 alone takes 77–158s.
+measured 243.6s: L4 129s and P1 103s. Later pushes measured gate totals of
+239.3s, 241.5s and 240.5s. This remains above the 2.5-minute target even though
+all checks ran. Cold and warm pre-commit measured 97.9s and 117.8s, while the
+two post-fix commits measured 91.6s and 91.7s. The pre-commit hook remains above
+both the 15s target and the 30s limit because L1 alone takes 76–105s warm.
+
+The v2026.15 migration's first CI run took 389s with L1 at 385s, P1 at 232s, L4
+at 159s and the Next.js consumer at 128s; Z1 took about 6s. A later native run
+took 396s. The five-minute target is therefore missed and the ten-minute limit
+is met; full CI job timing is in the run logs rather than inferred from local
+serial timings. The longest path is L1, followed by P1 and L4.
+
+Review found two defects after the first green native runs: the new-branch G1
+range was passed as multiple shell words and needed quoting, and Z1 had no
+`tested-sha` output for downstream release consumers. Both were fixed in
+separate commits and covered by self-tests. The old `scripts/l1-gate-self-test*`
+runner was deleted; all slot, secret, OID, timeout, drift and Z1 fixtures now
+live in `scripts/quality/gate-self-test.ts`, with Z1 validation extracted to
+`scripts/quality/z1-gate.py`.
+
+The branch ruleset read back from the API as `main quality gate` (id 27098459):
+active, target `branch`, required check `quality / Z1: Gate`, strict disabled,
+non-fast-forward and deletion blocked, and repository-role bypass for the admin
+role. This confirms the configured check name rather than trusting YAML alone.
 
 Workers Builds still deploys on every push without waiting for Z1. GitHub release
 deployment is now the Z1-gated path; the automatic Workers Builds tension is
