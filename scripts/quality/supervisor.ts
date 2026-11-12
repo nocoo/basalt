@@ -75,8 +75,12 @@ const child = Bun.spawn(["sh", hookPath], {
 	detached: true,
 });
 
-child.stdin.write(stdinRead);
-child.stdin.end();
+try {
+	child.stdin.write(stdinRead);
+	child.stdin.end();
+} catch {
+	// The hook body exited before reading stdin; its exit code decides the result.
+}
 
 let deadlineTimer: ReturnType<typeof setTimeout> | undefined;
 const finished = await Promise.race([
