@@ -1,5 +1,8 @@
 title = "gitleaks config"
 
+[extend]
+  useDefault = true
+
 [allowlist]
   paths = [
     '.*\.test\.ts',
