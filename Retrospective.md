@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11-13: Sidebar jitter verification missed package boundaries
+
+- **What:** The first fix commit was blocked by stale package source hashes. A standalone browser probe also reused catalog-only `h-9 w-9` avatar classes, producing invalid geometry.
+- **Why:** A private class change still updates the package integrity contract, and catalog Tailwind utilities are not guaranteed in the standalone stylesheet.
+- **Follow-up:** Regenerate API metadata and standalone CSS with component changes. Exercise standalone geometry with the package's intrinsic `h-basalt-9 w-basalt-9` avatar classes rather than catalog overrides.
+
 ## 2026-11: Changelog cleanup preceded its version bump
 
 - **What:** The pre-commit gate rejected removing unpublished version headings while the manifest still referenced one of them.

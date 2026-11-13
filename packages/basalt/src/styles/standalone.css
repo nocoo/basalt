@@ -2959,6 +2959,10 @@
     --tw-leading: var(--basalt-leading-banner);
     line-height: var(--basalt-leading-banner);
   }
+  .leading-\[var\(--basalt-leading-inline\)\] {
+    --tw-leading: var(--basalt-leading-inline);
+    line-height: var(--basalt-leading-inline);
+  }
   .leading-\[var\(--basalt-line-body\)\] {
     --tw-leading: var(--basalt-line-body);
     line-height: var(--basalt-line-body);
