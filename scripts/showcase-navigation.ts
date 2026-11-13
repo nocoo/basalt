@@ -47,6 +47,8 @@ type SidebarBrandSample = {
 	width: number;
 	height: number;
 	sidebarWidth: number;
+	avatarY: number;
+	avatarHeight: number;
 };
 
 async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
@@ -81,9 +83,7 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 			const navIcon = sidebar?.querySelector<SVGElement>(
 				'[data-sidebar-row]:not([data-slot="sidebar-search"]) > svg',
 			);
-			const avatar =
-				sidebar?.querySelector<HTMLElement>('[data-slot="sidebar-footer"] > div > :first-child') ??
-				sidebar?.querySelector<HTMLElement>('[data-slot="sidebar-footer"] > :first-child');
+			const avatar = sidebar?.querySelector<HTMLElement>('[data-slot="sidebar-user"] .relative');
 			if (!sidebar || !logo || !toggle || !search || !navIcon || !avatar) {
 				throw new Error("Missing sidebar geometry");
 			}
@@ -120,7 +120,9 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 				},
 				avatar: {
 					x: avatar.getBoundingClientRect().x - sidebarBox.x,
+					y: avatar.getBoundingClientRect().y,
 					width: avatar.getBoundingClientRect().width,
+					height: avatar.getBoundingClientRect().height,
 				},
 			};
 		});
@@ -146,37 +148,44 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 		Math.abs(expanded.toggleCenterX - expanded.chevronCenterX) <= 0.5,
 		JSON.stringify(expanded),
 	);
-	const samples = await page.evaluate(async () => {
-		const logo = document.querySelector<HTMLElement>("[data-sidebar-brand-image]");
-		const sidebar = document.querySelector<HTMLElement>(
-			"[data-dashboard-shell] > [data-basalt-sidebar]",
-		);
-		const toggle = document.querySelector<HTMLButtonElement>("[data-sidebar-toggle]");
-		if (!logo || !sidebar || !toggle) throw new Error("Missing sidebar transition geometry");
-		const sample = (): SidebarBrandSample => {
-			const logoBox = logo.getBoundingClientRect();
-			const sidebarBox = sidebar.getBoundingClientRect();
-			return {
-				x: logoBox.x - sidebarBox.x,
-				y: logoBox.y,
-				width: logoBox.width,
-				height: logoBox.height,
-				sidebarWidth: sidebarBox.width,
+	const sampleTransition = () =>
+		page.evaluate(async () => {
+			const logo = document.querySelector<HTMLElement>("[data-sidebar-brand-image]");
+			const sidebar = document.querySelector<HTMLElement>(
+				"[data-dashboard-shell] > [data-basalt-sidebar]",
+			);
+			const toggle = document.querySelector<HTMLButtonElement>("[data-sidebar-toggle]");
+			if (!logo || !sidebar || !toggle) throw new Error("Missing sidebar transition geometry");
+			const sample = (): SidebarBrandSample => {
+				const avatar = sidebar.querySelector<HTMLElement>('[data-slot="sidebar-user"] .relative');
+				if (!avatar) throw new Error("Missing sidebar avatar geometry");
+				const logoBox = logo.getBoundingClientRect();
+				const sidebarBox = sidebar.getBoundingClientRect();
+				const avatarBox = avatar.getBoundingClientRect();
+				return {
+					x: logoBox.x - sidebarBox.x,
+					y: logoBox.y,
+					width: logoBox.width,
+					height: logoBox.height,
+					sidebarWidth: sidebarBox.width,
+					avatarY: avatarBox.y,
+					avatarHeight: avatarBox.height,
+				};
 			};
-		};
-		const frames = [sample()];
-		toggle.click();
-		await new Promise<void>((resolve) => {
-			const started = performance.now();
-			const next = () => {
-				frames.push(sample());
-				if (performance.now() - started >= 260) resolve();
-				else requestAnimationFrame(next);
-			};
-			requestAnimationFrame(next);
+			const frames = [sample()];
+			toggle.click();
+			await new Promise<void>((resolve) => {
+				const started = performance.now();
+				const next = () => {
+					frames.push(sample());
+					if (performance.now() - started >= 260) resolve();
+					else requestAnimationFrame(next);
+				};
+				requestAnimationFrame(next);
+			});
+			return frames;
 		});
-		return frames;
-	});
+	const samples = await sampleTransition();
 	await page.waitForFunction(
 		() =>
 			document.querySelector("[data-dashboard-shell] > [data-basalt-sidebar]")?.clientWidth === 68,
@@ -205,6 +214,20 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 			JSON.stringify(collapsed),
 		);
 	}
+	const expandingSamples = await sampleTransition();
+	const reexpanded = await measure();
+	for (const sample of [...samples, ...expandingSamples]) {
+		assert.ok(
+			Math.abs(sample.avatarY - expanded.avatar.y) < 0.01,
+			`Sidebar avatar moved vertically: ${JSON.stringify(sample)}; expanded: ${JSON.stringify(expanded.avatar)}`,
+		);
+		assert.ok(
+			Math.abs(sample.avatarHeight - expanded.avatar.height) < 0.01,
+			JSON.stringify(sample),
+		);
+	}
+	assert.deepEqual(collapsed.avatar, expanded.avatar);
+	assert.deepEqual(reexpanded.avatar, expanded.avatar);
 	const geometry = {
 		expanded: expanded.logo,
 		collapsed: collapsed.logo,
@@ -212,6 +235,12 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 		logoDy: collapsed.logo.y - expanded.logo.y,
 		toggleChevronDx: expanded.toggleCenterX - expanded.chevronCenterX,
 		transitionSamples: samples,
+		expandingSamples,
+		avatar: {
+			expanded: expanded.avatar,
+			collapsed: collapsed.avatar,
+			reexpanded: reexpanded.avatar,
+		},
 		linkHref,
 	};
 	console.log(`Sidebar brand geometry ${JSON.stringify(geometry)}`);
