@@ -11,6 +11,12 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.4] - 2026-11-13
+
+### Fixed
+
+- `SidebarUser` pins the email line to `--basalt-leading-inline` (16px) so the footer text block matches the 36px avatar and the avatar no longer shifts about 1px vertically between expanded and collapsed sidebar states.
+
 ## [3.3.3] - 2026-11-12
 
 ### Fixed
