@@ -1074,7 +1074,9 @@ export function SidebarUser({
 			<div className="min-w-0 flex-1">
 				<p className="truncate text-basalt-base font-medium text-basalt-foreground">{name}</p>
 				{email ? (
-					<p className="truncate text-basalt-sm text-basalt-muted-foreground">{email}</p>
+					<p className="truncate text-basalt-sm leading-[var(--basalt-leading-inline)] text-basalt-muted-foreground">
+						{email}
+					</p>
 				) : null}
 			</div>
 			{action}
