@@ -11,6 +11,27 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.5] - 2026-11-14
+
+### Changed
+
+- Bump vite 8.3.5 → 8.3.8
+- Bump @swc/core 1.16.21 → 1.16.22
+- Bump vitest 5.0.5 → 5.1.0
+- Bump tailwindcss 4.3.3 → 4.3.5
+- Bump @vitest/coverage-v8 5.0.5 → 5.1.0
+- Bump @tailwindcss/vite 4.3.3 → 4.3.5
+- Bump @biomejs/biome 2.6.3 → 2.6.7
+- Bump lucide-react 1.61.0 → 1.72.0
+- Bump marked 18.1.1 → 18.2.0
+
+### Fixed
+
+- Format changelog section for biome markdown rules
+- Write install fingerprint during release
+- Drop w-basalt-80 on SidebarDrawer to prevent right white bar (#646)
+- Drop w-basalt-80 on SidebarDrawer to prevent right white bar
+
 ## [3.3.4] - 2026-11-13
 
 ### Fixed
