@@ -86,7 +86,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.6.7",
-		"@swc/core": "1.16.21",
+		"@swc/core": "1.16.22",
 		"@tailwindcss/vite": "4.3.5",
 		"@testing-library/dom": "10.4.2",
 		"@testing-library/jest-dom": "7.0.1",
