@@ -222,7 +222,6 @@ The comparison sidebar exposed a gap in the previous token migration: top-level 
 
 While integrating the shared rules, inspection found standalone CSS declared the components layer after utilities implicitly. Declare the full layer order explicitly so native utility overrides retain the same precedence as Tailwind consumers. Browser execution in this session is blocked by the macOS sandbox's Chromium MachPort permission; do not report the new geometry checks as passed without running them.
 
-
 ## 2026-10-06: A token migration must preserve layout meaning
 
 A mechanical spacing migration exposed controls that used oversized right padding
