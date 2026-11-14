@@ -702,6 +702,8 @@
     display: none;
   }
   [data-basalt-sheet][data-slot="sidebar-drawer"].basalt-sidebar-drawer {
+    width: var(--basalt-size-sidebar-width);
+    max-width: var(--basalt-size-sidebar-width);
     inline-size: var(--basalt-size-sidebar-width);
     max-inline-size: var(--basalt-size-sidebar-width);
     gap: 0;
