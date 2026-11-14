@@ -1032,6 +1032,7 @@ describe("Sidebar", () => {
 			expect(dialog.className).toContain("w-[var(--basalt-size-sidebar-width)]");
 			expect(dialog.className).toContain("max-w-[var(--basalt-size-sidebar-width)]");
 			expect(dialog.className).toContain("border-r-0");
+			expect(dialog.className).toContain("bg-basalt-background");
 			expect(dialog.className).not.toMatch(/\bp-basalt-card\b/);
 			expect(dialog.className).not.toContain("sm:p-basalt-card-lg");
 			expect(dialog.className).not.toMatch(/\bw-basalt-80\b/);

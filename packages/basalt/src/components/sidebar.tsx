@@ -1145,7 +1145,7 @@ export function SidebarDrawer({
 				id={id}
 				data-slot="sidebar-drawer"
 				side="left"
-				className="basalt-sidebar-drawer max-h-dvh w-[var(--basalt-size-sidebar-width)] max-w-[var(--basalt-size-sidebar-width)] border-r-0 p-0 sm:p-0"
+				className="basalt-sidebar-drawer max-h-dvh w-[var(--basalt-size-sidebar-width)] max-w-[var(--basalt-size-sidebar-width)] border-r-0 bg-basalt-background p-0 sm:p-0"
 				onCloseAutoFocus={(event) => {
 					if (returnFocusRef?.current) {
 						event.preventDefault();
