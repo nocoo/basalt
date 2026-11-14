@@ -11,6 +11,12 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.6] - 2026-11-14
+
+### Fixed
+
+- Eliminate mobile drawer white bar and enforce release package build (#647)
+
 ## [3.3.5] - 2026-11-14
 
 ### Changed
