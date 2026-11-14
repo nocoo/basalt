@@ -259,7 +259,7 @@ export function formatChangelogSection(version: string, sections: ChangelogSecti
 		if (items.length === 0) {
 			continue;
 		}
-		lines.push("", `### ${heading}`);
+		lines.push("", `### ${heading}`, "");
 		for (const item of items) {
 			lines.push(`- ${item}`);
 		}
@@ -505,6 +505,7 @@ export async function executeRelease(
 	}
 
 	ctx.updateChangelog(changelog);
+	await ctx.run("bun", ["run", "biome", "format", "--write", "CHANGELOG.md"]);
 
 	// Regenerate public surface manifest and package registry with new version
 	const genResult = await ctx.run("bun", ["scripts/catalog-api-cli.ts", "generate"]);
