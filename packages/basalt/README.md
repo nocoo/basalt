@@ -40,6 +40,7 @@ bun add @nocoo/basalt lucide-react
 ---
 
 <a id="css-setup"></a>
+
 ## Styling Contracts
 
 ### Contract 1: Tailwind CSS v4
@@ -78,11 +79,13 @@ Standalone CSS contains compiled design tokens, scoped control classes, keyframe
 ---
 
 <a id="component-usage"></a>
+
 ## Import Architecture
 
 ### 1. Root Barrel (`@nocoo/basalt`)
 
 Contains lightweight base components, inputs, layout surfaces, and providers:
+
 ```tsx compile:pkg-readme-root-import
 import {
 	Button,
@@ -99,6 +102,7 @@ import {
 ### 2. Granular Subpaths (`@nocoo/basalt/components/*`, `@nocoo/basalt/charts/*`, `@nocoo/basalt/providers/*`)
 
 Keeps initial bundle size small by isolating complex or specialized dependencies:
+
 ```tsx compile:pkg-readme-granular-import
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
@@ -153,6 +157,7 @@ To eliminate theme flashing (FOUC), inject the theme class before React renders:
 ## Upgrades & Compatibility Policy
 
 Basalt follows strict [Semantic Versioning (SemVer)](https://semver.org/):
+
 - **PATCH** (`2.0.x`): Bug fixes, internal optimizations, visual refinements that do not break layout contracts.
 - **MINOR** (`2.x.0`): New components, additive props, opt-in features, and backward-compatible changes.
 - **MAJOR** (`3.0.0`): Breaking changes to public component signatures, DOM/ARIA structures, or removal of deprecated export paths.

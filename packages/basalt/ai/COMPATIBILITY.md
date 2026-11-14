@@ -40,6 +40,7 @@ All 110 entrypoints, their export targets, 3 CSS paths, and all 572 exported sym
 ### Root Barrel (`@nocoo/basalt`)
 
 The root barrel is reserved for lightweight, frequently-used leaves, standard inputs, core surfaces, and global providers.
+
 - **Included on root:** `Button`, `Input`, `Checkbox`, `Switch`, `Badge`, `Text`, `Label`, `Separator`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarBrand`, `SidebarToggle`, `Dialog`, `Sheet`, `Popover`, `Tooltip`, `Toast`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`.
 - **Excluded from root:**
   - Radio inputs (`@nocoo/basalt/components/radio`)
@@ -52,11 +53,13 @@ The root barrel is reserved for lightweight, frequently-used leaves, standard in
 
 <a id="wildcard-subpaths"></a>
 In `v2.0.3`, wildcard exports (`./components/*`, `./charts/*`, `./providers/*`) exposed all non-test modules in the package, including internal building blocks:
+
 - **`@nocoo/basalt/components/typeahead-field`**: Internal composite input controller for autocomplete and combobox (`TypeaheadField`, `TypeaheadItem`). Provides popup list and keyboard navigation wiring.
 - **`@nocoo/basalt/components/overlay`**: Internal class generators and styling constants for overlay menus and select (`overlayPanelClass`, `overlayItemClass`, `FOCUS_RING`, `FOCUS_BORDER`, `MENU_GAP`, `OVERLAY_GAP`, `OVERLAY_LAYER`, `OVERLAY_MOTION`).
 - **`@nocoo/basalt/charts/sample`**: Static mock datasets used for fallback preview rendering (`SAMPLE`, `BULLET_SAMPLE`, `DONUT_SAMPLE`, `FUNNEL_SAMPLE`, `RADAR_SAMPLE`, `SANKEY_SAMPLE`).
 
 **Policy:**
+
 1. In accordance with zero-breaking-change guarantees, **no existing export path will be removed in 2.x**.
 2. Internal modules are marked as `@internal` or `@legacy` in documentation and metadata.
 3. Callers should import public controls via their designated official export paths.
@@ -76,6 +79,7 @@ Basalt strictly follows [SemVer 2.0.0](https://semver.org/):
 ### Layout & Default Geometry Policy
 
 Changes to default geometry (such as outer padding, default margins, or intrinsic dimensions) alter the visual balance of consuming applications.
+
 - **Bug Fixes vs Breaking Changes:** Correcting an unintended layout collapse or overflow bug (e.g., popup clipping in cards or chart height collapsing to 0px) is considered a patch/minor fix. Altering default container padding (e.g. changing `LayerCard` padding from `none` to `md`) affects caller assumptions.
 - If default geometry must evolve, before/after migration notes must be published in `CHANGELOG.md`, and backward-compatible props or opt-ins must be offered.
 
@@ -96,9 +100,11 @@ Changes to default geometry (such as outer padding, default margins, or intrinsi
 Basalt chart components build upon modular configuration tokens and series utilities designed for Recharts integration.
 
 <a id="chart-config"></a>
+
 ### Chart Configuration (`@nocoo/basalt/charts/config`)
 
 Defines shared tokens, styles, and props for cartesian charts:
+
 - **Constants**:
   - `CHART_TYPE`: Font sizes (`axisFontSize: 11`, `legendFontSize: 12`, `tooltipTitleSize: 12`, `tooltipBodySize: 12`), `tooltipDot: 8`, stroke width (`strokeWidth: 2`), `gridDash: "3 3"`, `gridOpacity: 0.15`, and `areaFillAlpha: 0.2`.
   - `AXIS_CONFIG` & `cartesianAxisProps(hidden: boolean = false)`: Standard tick styling (`chartTickStyle("axis")`), `axisLine: false`, `tickLine: false`. Returns `{ hide: boolean, tick: { fontSize: number, fill: string }, axisLine: false, tickLine: false }`.
@@ -121,9 +127,11 @@ Defines shared tokens, styles, and props for cartesian charts:
   - `chartTooltipProps(options?: { formatter?: (value: number) => string; cursor?: "bar" | "line" | false; customTooltip?: (props: { active?: boolean; payload?: readonly ChartTooltipItem[]; label?: string | number }) => ReactNode })`: Assembles complete Recharts tooltip props with custom `ChartTooltipContent` element renderer or caller-provided `customTooltip` callback.
 
 <a id="chart-series"></a>
+
 ### Chart Series Utilities (`@nocoo/basalt/charts/series`)
 
 Manages series descriptor shapes, point definitions, and data key fallbacks:
+
 - **Types**:
   - `ChartSeriesDescriptor`: `{ key: string, label?: string, color?: string }`.
   - `XYSeriesDescriptor`: Restricts `key` to `XYSeriesKey` (`"y" | "y2" | "y3"`).
@@ -142,6 +150,7 @@ Manages series descriptor shapes, point definitions, and data key fallbacks:
 ---
 
 <a id="6-unreleased-migration-notes-p1p10"></a>
+
 ## 6. v2.1.0 migration notes (P1–P10)
 
 These notes cover the components, documentation, examples and palette changes included in **v2.1.0**. The original v2.0.3 110-entrypoint / 572-symbol baseline remains byte-for-byte frozen. New entries are recorded in the current registry rather than rewriting that historical baseline.

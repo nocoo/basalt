@@ -1193,11 +1193,9 @@ P4 阶段补键盘回归时发现，日期为 `275760-09-13` 时 PageDown 错误
 
 DashboardLayout 的移动 Sheet 关闭后焦点落到 BODY；390px 双主题 **2/2** 复现。由 `2f7b20d` 修复为回到原来仍存在的触发器，并清理背景滚动锁。独立移动路径 **10/10**、Library **12/12** 通过，详见 12.4 的 13d 记录。证据：`p5-13d-acceptance.json`。
 
-
 #### C24 · P2 · 生产压缩内联默认函数导致选择指示器重复更新【已于 P9 修正】
 
 Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React #185，Vite 与 Next webpack 开发模式不能复现。实际产物把 selection-indicator 的函数默认参数内联，导致每次 render 创建新的 mapGeometry，继而重跑 layout effect 和 setState。修正把默认函数选择移到稳定回调内部，依赖保留调用方的可选参数；不更改控件接口或禁用生产压缩。正式 Next gate 覆盖两个 picker、编辑、标签、导航及 master/detail 的手机/桌面与主题组合，作为持续回归。另补显式 hydration 就绪标记，避免将 SSR 可见但尚未绑定的按钮当成可交互。证据：p9-direct-next-diagnosis、p9-next-production-component-stack；最终通过记录见 P9 验收。
-
 
 ### 12.6 最终分类台账
 
