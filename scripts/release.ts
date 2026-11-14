@@ -499,6 +499,11 @@ export async function executeRelease(
 	}
 	ctx.log("synchronized bun.lock and installed locked dependencies");
 
+	const fpResult = await ctx.run("bun", ["run", "scripts/quality/install-fingerprint.ts", "write"]);
+	if (fpResult.code !== 0) {
+		throw new Error(`Failed to write install fingerprint: ${fpResult.stderr.trim()}`);
+	}
+
 	ctx.updateChangelog(changelog);
 
 	// Regenerate public surface manifest and package registry with new version
