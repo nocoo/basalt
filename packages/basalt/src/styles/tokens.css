@@ -707,6 +707,11 @@
 		padding: 0;
 		background-color: hsl(var(--basalt-background));
 	}
+	[data-basalt-sheet][data-slot="sidebar-drawer"] aside[data-basalt-sidebar] {
+		max-width: 100%;
+		height: 100%;
+		border-width: 0;
+	}
 	[data-basalt-sidebar][data-collapsed] [data-slot="sidebar-brand-action"] {
 		position: absolute;
 		inset-block-start: 100%;

@@ -517,6 +517,11 @@ export async function executeRelease(
 		throw new Error(`Failed to regenerate site metadata: ${seoResult.stderr.trim()}`);
 	}
 
+	const buildResult = await ctx.run("bun", ["run", "--cwd", "packages/basalt", "build"]);
+	if (buildResult.code !== 0) {
+		throw new Error(`Failed to build packages/basalt: ${buildResult.stderr.trim()}`);
+	}
+
 	const filesToStage = [
 		...VERSION_TARGETS,
 		"bun.lock",
@@ -589,7 +594,7 @@ export async function executeRelease(
 	}
 
 	ctx.log(`release ${tag} complete`);
-	ctx.log("npm: cd packages/basalt && npm publish --access public --tag latest --ignore-scripts");
+	ctx.log("npm: cd packages/basalt && npm publish --access public --tag latest");
 }
 
 async function main(): Promise<void> {
