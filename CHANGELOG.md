@@ -11,6 +11,12 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.4.1] - 2026-11-15
+
+### Fixed
+
+- Blend mobile Safari top and bottom chrome into dark scene
+
 ## [3.4.0] - 2026-11-15
 
 ### Added
