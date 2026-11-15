@@ -11,6 +11,12 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-11-15
+
+### Added
+
+- Redesign the homepage as a dark-only scene
+
 ## [3.3.6] - 2026-11-14
 
 ### Fixed
