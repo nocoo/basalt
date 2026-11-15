@@ -7,9 +7,17 @@
 		scroll-behavior: smooth;
 	}
 }
-:root:has([data-landing-page]) {
+:root:has([data-landing-page]),
+:root:has([data-landing-page]) body {
+	height: auto;
+	min-height: 100%;
 	background: var(--basalt-scene-night);
+	color: var(--basalt-scene-ink);
 	color-scheme: dark;
+}
+:root:has([data-landing-page]) #root {
+	height: auto;
+	min-height: 100%;
 }
 
 .landing {
@@ -66,7 +74,8 @@
 	width: 100%;
 	max-width: 80rem;
 	margin-inline: auto;
-	padding-inline: var(--landing-gutter);
+	padding-left: max(var(--landing-gutter), env(safe-area-inset-left));
+	padding-right: max(var(--landing-gutter), env(safe-area-inset-right));
 }
 .landing-main {
 	width: 100%;
@@ -195,9 +204,11 @@
 	gap: 2.5rem;
 	width: 100%;
 	max-width: 80rem;
-	height: 5rem;
+	height: calc(5rem + env(safe-area-inset-top));
 	margin-inline: auto;
-	padding-inline: var(--landing-gutter);
+	padding-top: env(safe-area-inset-top);
+	padding-left: max(var(--landing-gutter), env(safe-area-inset-left));
+	padding-right: max(var(--landing-gutter), env(safe-area-inset-right));
 }
 .landing-brand {
 	display: inline-flex;
@@ -267,7 +278,7 @@
 .landing-hero {
 	position: relative;
 	isolation: isolate;
-	padding-top: clamp(8.5rem, 16vh, 11rem);
+	padding-top: calc(clamp(8.5rem, 16vh, 11rem) + env(safe-area-inset-top));
 }
 .landing-hero > .landing-scene {
 	bottom: auto;
@@ -285,10 +296,12 @@
 	background:
 		linear-gradient(
 			180deg,
-			var(--basalt-scene-shade-45) 0%,
-			var(--basalt-scene-shade-0) 22%,
-			var(--basalt-scene-shade-0) 38%,
-			var(--basalt-scene-shade-45) 62%,
+			var(--basalt-scene-night) 0%,
+			var(--basalt-scene-shade-70) 8%,
+			var(--basalt-scene-shade-20) 20%,
+			var(--basalt-scene-shade-0) 32%,
+			var(--basalt-scene-shade-0) 42%,
+			var(--basalt-scene-shade-45) 64%,
 			var(--basalt-scene-night) 100%
 		),
 		radial-gradient(
@@ -1439,7 +1452,8 @@
 	justify-content: space-between;
 	gap: 1rem 2rem;
 	margin-top: 3.5rem;
-	padding-block: 1.75rem;
+	padding-top: 1.75rem;
+	padding-bottom: calc(1.75rem + env(safe-area-inset-bottom));
 	border-top: 1px solid var(--basalt-scene-line);
 	color: var(--basalt-scene-ink-muted);
 	font-size: var(--basalt-text-xs);
@@ -1470,7 +1484,7 @@
 		flex-wrap: wrap;
 		row-gap: 0;
 		height: auto;
-		padding-top: 1rem;
+		padding-top: calc(1rem + env(safe-area-inset-top));
 	}
 	.landing-nav {
 		order: 3;
@@ -1482,7 +1496,7 @@
 		padding-block: 0.75rem;
 	}
 	.landing-hero {
-		padding-top: 10.5rem;
+		padding-top: calc(10.5rem + env(safe-area-inset-top));
 	}
 	.landing-about,
 	.landing-showcase,

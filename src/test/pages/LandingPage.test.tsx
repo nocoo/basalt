@@ -100,4 +100,41 @@ describe("LandingPage", () => {
 		fireEvent(details, new Event("toggle"));
 		expect(frame()).toHaveAttribute("href", second.href);
 	});
+
+	it("pins theme-color meta tags to the dark scene while mounted and restores them on unmount", () => {
+		const lightMeta = document.createElement("meta");
+		lightMeta.setAttribute("name", "theme-color");
+		lightMeta.setAttribute("media", "(prefers-color-scheme: light)");
+		lightMeta.setAttribute("content", SITE.themeColorLight);
+		const darkMeta = document.createElement("meta");
+		darkMeta.setAttribute("name", "theme-color");
+		darkMeta.setAttribute("media", "(prefers-color-scheme: dark)");
+		darkMeta.setAttribute("content", SITE.themeColorDark);
+		document.head.append(lightMeta, darkMeta);
+
+		try {
+			const { unmount } = renderLanding("light");
+			expect(lightMeta).toHaveAttribute("content", "#08090b");
+			expect(darkMeta).toHaveAttribute("content", "#08090b");
+
+			unmount();
+			expect(lightMeta).toHaveAttribute("content", SITE.themeColorLight);
+			expect(darkMeta).toHaveAttribute("content", SITE.themeColorDark);
+		} finally {
+			lightMeta.remove();
+			darkMeta.remove();
+		}
+	});
+
+	it("creates and cleans up a temporary theme-color meta tag when none exist", () => {
+		const existing = Array.from(document.querySelectorAll('meta[name="theme-color"]'));
+		for (const node of existing) node.remove();
+
+		const { unmount } = renderLanding();
+		const created = document.querySelector('meta[name="theme-color"]');
+		expect(created).toHaveAttribute("content", "#08090b");
+
+		unmount();
+		expect(document.querySelector('meta[name="theme-color"]')).toBeNull();
+	});
 });

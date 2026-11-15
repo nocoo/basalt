@@ -24,6 +24,13 @@
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#edeff2" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#171717" />
+    <script>
+      if (window.location.pathname === "/") {
+        for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+          meta.setAttribute("content", "#08090b");
+        }
+      }
+    </script>
     <link rel="alternate" type="text/plain" title="llms.txt" href="https://basaltui.com/llms.txt" />
     <!--landing:preload-->
     <link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="/landing/scene-hero-960.avif 960w, /landing/scene-hero-1600.avif 1600w, /landing/scene-hero-2400.avif 2400w, /landing/scene-hero-2880.avif 2880w" imagesizes="100vw" />
