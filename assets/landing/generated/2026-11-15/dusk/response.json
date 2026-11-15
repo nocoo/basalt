@@ -1,0 +1,24 @@
+{
+	"created": 1794711510,
+	"background": "opaque",
+	"output_format": "png",
+	"quality": "high",
+	"safety_identifier": null,
+	"size": "2048x1536",
+	"usage": {
+		"input_tokens": 133,
+		"input_tokens_details": {
+			"image_tokens": 0,
+			"text_tokens": 133
+		},
+		"output_tokens": 2223,
+		"output_tokens_details": {
+			"image_tokens": 2223,
+			"text_tokens": 0
+		},
+		"total_tokens": 2356
+	},
+	"revised_prompt": null,
+	"seconds": 43.3,
+	"sha256": "171df312e9049a52186aac230059a51bf0faba1da4459bc1613afc2c6b211cfc"
+}

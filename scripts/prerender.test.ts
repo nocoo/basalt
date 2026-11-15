@@ -62,6 +62,8 @@ describe("prerender", () => {
 		expect(readFileSync(fileForPath(dist, "/ui"), "utf8")).toContain(
 			`href="/ui/${CATALOG[0].slug}"`,
 		);
-		expect(readFileSync(fileForPath(dist, "/dashboard"), "utf8")).toContain("dashboard-light.webp");
+		expect(readFileSync(fileForPath(dist, "/dashboard"), "utf8")).toContain(
+			"dashboard-dark-1200.webp",
+		);
 	});
 });

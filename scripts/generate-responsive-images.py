@@ -9,15 +9,16 @@ from hashlib import sha256
 from pathlib import Path
 import json
 
-from PIL import Image, ImageFilter, __version__ as pillow_version
+from PIL import Image, __version__ as pillow_version
 
 root = Path(__file__).resolve().parents[1]
 public = root / "public"
-landing = public / "landing"
 outputs = []
 
 WEBP = {"format": "WEBP", "quality": 82, "method": 6}
 AVIF = {"format": "AVIF", "quality": 60, "speed": 4}
+# Photographic scenes are mostly soft haze; a lower AVIF quality stays clean and halves bytes.
+AVIF_SCENE = {"format": "AVIF", "quality": 52, "speed": 4}
 # The tower is a detailed, transparent illustration; keep more of its fine structure.
 AVIF_DETAIL = {"format": "AVIF", "quality": 72, "speed": 4}
 
@@ -44,29 +45,21 @@ def resized(image: Image.Image, width: int) -> Image.Image:
     return image.resize((width, height), Image.Resampling.LANCZOS)
 
 
-# Template previews: 3200x2000 masters, shown from ~350px (mobile cards) to 1456px (desktop hero).
+# Template previews: 3200x2000 dark masters, shown from ~350px (mobile cards) to ~900px.
 TEMPLATE_WEBP_WIDTHS = [640, 960, 1600]  # 1200 and 3200 WebP already ship
 TEMPLATE_AVIF_WIDTHS = [640, 960, 1200, 1600, 3200]
 for name in ["dashboard", "banking", "network"]:
-    for mode in ["light", "dark"]:
-        source = f"public/landing/{name}-{mode}.webp"
-        master = Image.open(root / source).convert("RGB")
-        for width in TEMPLATE_WEBP_WIDTHS:
-            save(resized(master, width), f"landing/{name}-{mode}-{width}.webp",
-                 "template preview", source, WEBP)
-        for width in TEMPLATE_AVIF_WIDTHS:
-            suffix = "" if width == master.width else f"-{width}"
-            save(resized(master, width), f"landing/{name}-{mode}{suffix}.avif",
-                 "template preview", source, AVIF)
+    source = f"public/landing/{name}-dark.webp"
+    master = Image.open(root / source).convert("RGB")
+    for width in TEMPLATE_WEBP_WIDTHS:
+        save(resized(master, width), f"landing/{name}-dark-{width}.webp",
+             "template preview", source, WEBP)
+    for width in TEMPLATE_AVIF_WIDTHS:
+        suffix = "" if width == master.width else f"-{width}"
+        save(resized(master, width), f"landing/{name}-dark{suffix}.avif",
+             "template preview", source, AVIF)
 
-# The hero has a readable narrow-screen capture instead of a scaled desktop screenshot.
-for mode in ["light", "dark"]:
-    source = f"public/landing/dashboard-{mode}-mobile.webp"
-    mobile = Image.open(root / source).convert("RGB")
-    save(mobile, f"landing/dashboard-{mode}-mobile.avif", "mobile hero preview", source, AVIF)
-
-# Brand tower: 1280px RGBA master, displayed at ~320-560 CSS px below the fold. 600w covers a
-# typical phone (about 330 CSS px at 1.75x) without stepping up to 720w.
+# Brand tower: 1280px RGBA master, displayed at ~320-560 CSS px below the fold.
 tower_source = "public/landing/tower.webp"
 tower = Image.open(root / tower_source).convert("RGBA")
 for width in [480, 600, 720, 960]:
@@ -76,27 +69,18 @@ for width in [480, 600, 720, 960, 1280]:
     save(resized(tower, width), f"landing/tower{suffix}.avif", "brand tower", tower_source,
          AVIF_DETAIL)
 
-# Scene backgrounds: re-derive from the untouched PNG masters exactly as backgrounds.json
-# records (crop + Gaussian diffusion, no resizing), encoded as AVIF instead of WebP.
-backgrounds = json.loads((root / "assets/landing/backgrounds.json").read_text())
-scenes = {scene["id"]: scene for scene in backgrounds["scenes"]}
-for asset in backgrounds["assets"]:
-    scene = scenes[asset["scene"]]
+# Scene photographs: untouched model PNG masters recorded in assets/landing/scenes.json,
+# encoded at each width the landing srcsets list. No cropping, warping or recoloring.
+scenes = json.loads((root / "assets/landing/scenes.json").read_text())
+for scene in scenes["scenes"]:
     master_path = root / scene["master"]
     if sha256(master_path.read_bytes()).hexdigest() != scene["sha256"]:
-        raise ValueError(f"Background master changed: {scene['master']}")
-    image = Image.open(master_path).convert("RGB").crop(tuple(asset["sourceCrop"]))
-    image = image.filter(ImageFilter.GaussianBlur(asset["gaussianBlurRadius"]))
-    relative = asset["path"].removeprefix("public/").removesuffix(".webp") + ".avif"
-    save(image, relative, "scene background", scene["master"], AVIF)
-    # Phones: the hero is taller than it is wide, so `cover` scales the 2:1 ridge by height and
-    # shows only its middle. A centered square crop renders the same framing at half the bytes.
-    if asset["scene"] == "mountains":
-        left = (image.width - image.height) // 2
-        square = image.crop((left, 0, left + image.height, image.height))
-        stem = asset["path"].removeprefix("public/").removesuffix(".webp") + "-square"
-        save(square, stem + ".avif", "scene background (phone crop)", scene["master"], AVIF)
-        save(square, stem + ".webp", "scene background (phone crop)", scene["master"], WEBP)
+        raise ValueError(f"Scene master changed: {scene['master']}")
+    image = Image.open(master_path).convert("RGB")
+    for width in scene["widths"]:
+        stem = f"landing/scene-{scene['id']}-{width}"
+        save(resized(image, width), f"{stem}.avif", "scene photograph", scene["master"], AVIF_SCENE)
+        save(resized(image, width), f"{stem}.webp", "scene photograph", scene["master"], WEBP)
 
 # Logo mark: shown at 24-32 CSS px in headers, so 2x/3x screens need 64-96px, not 256px.
 logo_source = "logo.png"

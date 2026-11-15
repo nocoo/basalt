@@ -112,7 +112,7 @@ export function showcaseCrawlPage(path: string, name: string): CrawlPage {
 			[
 				`<p>${escapeXml(metadata.description)}</p>`,
 				template
-					? `<img src="/landing/${template.image}-light.webp" alt="${escapeXml(template.name)} preview" width="1440" height="900" />`
+					? `<img src="/landing/${template.image}-dark-1200.webp" alt="${escapeXml(template.name)} preview" width="1440" height="900" />`
 					: "",
 				`<p>This example uses sample data. Adapt the layout with <code>${SITE.packageName}</code>, then connect your own application services.</p>`,
 				`<p><a href="/ui">Explore the component library</a> · <a href="${SITE.github}">Source and integration guides</a> · <a href="/#templates">More templates</a></p>`,

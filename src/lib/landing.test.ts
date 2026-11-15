@@ -14,6 +14,7 @@ import {
 	uiIndexCrawlPage,
 } from "./crawl";
 import {
+	LANDING_FAQS,
 	LANDING_HEADING,
 	LANDING_PRIMARY_LINKS,
 	LANDING_RELATED_LINKS,
@@ -53,7 +54,13 @@ describe("landing document", () => {
 		expect(document.querySelectorAll("h1")).toHaveLength(1);
 		expect(document.querySelector("h1")?.textContent).toBe(LANDING_HEADING);
 		expect(document.querySelector("#main-content")).not.toBeNull();
-		expect(document.querySelectorAll("details")).toHaveLength(4);
+		expect(document.querySelectorAll(".landing-faq-list details")).toHaveLength(
+			LANDING_FAQS.length,
+		);
+		expect(document.querySelectorAll(".landing-showcase-list details")).toHaveLength(
+			LANDING_TEMPLATES.length,
+		);
+		expect(document.querySelectorAll(".landing-showcase-list details[open]")).toHaveLength(1);
 		expect(document.querySelector('[href="#main-content"]')?.textContent).toBe(
 			"Skip to main content",
 		);
@@ -64,7 +71,7 @@ describe("landing document", () => {
 		}
 		for (const template of LANDING_TEMPLATES) {
 			expect(
-				document.querySelector(`.landing-template-link[href="${template.href}"]`),
+				document.querySelector(`.landing-showcase-list a[href="${template.href}"]`),
 			).not.toBeNull();
 		}
 		for (const url of [

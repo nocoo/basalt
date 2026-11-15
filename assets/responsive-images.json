@@ -3,94 +3,13 @@
 	"pillow": "13.0.0",
 	"files": [
 		{
-			"path": "public/landing/dashboard-light-640.webp",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 640,
-			"height": 400,
-			"bytes": 16580,
-			"sha256": "48c5b4eb76d0d1ab687bca1ede944a073663c6cb825558e1c6917b3a3a684b7f",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-light-960.webp",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 960,
-			"height": 600,
-			"bytes": 30384,
-			"sha256": "8b66851b9f043ddd4129b8e8cfa9ab40e3e45d4db1a4da2b147db19f03cda761",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-light-1600.webp",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 1600,
-			"height": 1000,
-			"bytes": 60174,
-			"sha256": "af0e423cc8c2782407c4f40f3b8f60606fec44bbf39c3abebd55bbb26ee74693",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-light-640.avif",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 640,
-			"height": 400,
-			"bytes": 11254,
-			"sha256": "4637d0cf62c58ac3b7c5bdbd6d6d88eaaacb6833f0bd0a799dc4956e29d5cbce",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-light-960.avif",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 960,
-			"height": 600,
-			"bytes": 21090,
-			"sha256": "5254bbfe6a7d5dd726445fc746329eb5a1d43466c50408a0be786062a5fd1be1",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-light-1200.avif",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 31734,
-			"sha256": "d9e51222b76b2503b4ab87a8eb1c539f753dce22042e18e9412395721df11c8b",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-light-1600.avif",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 1600,
-			"height": 1000,
-			"bytes": 39767,
-			"sha256": "e871423961f0f896e371d52e0f15c143a6edb98da8f0a1fd6e654dbce061f3c3",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-light.avif",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 97260,
-			"sha256": "b44baa91cddc77182e5d532acb01ee00158fc92a7c8550f2c2f9e372b93f4cd1",
-			"pillow": "11.3.0"
-		},
-		{
 			"path": "public/landing/dashboard-dark-640.webp",
 			"role": "template preview",
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
 			"bytes": 16234,
-			"sha256": "8179a39f9869985ce78944c411a7e1399a64ca42838861aa57140a70038484bd",
-			"pillow": "11.3.0"
+			"sha256": "8179a39f9869985ce78944c411a7e1399a64ca42838861aa57140a70038484bd"
 		},
 		{
 			"path": "public/landing/dashboard-dark-960.webp",
@@ -99,8 +18,7 @@
 			"width": 960,
 			"height": 600,
 			"bytes": 29474,
-			"sha256": "71d8b633e76aee2c451a749b1a4e8bc6267acd9eaf82137a57a79d360c1efd96",
-			"pillow": "11.3.0"
+			"sha256": "71d8b633e76aee2c451a749b1a4e8bc6267acd9eaf82137a57a79d360c1efd96"
 		},
 		{
 			"path": "public/landing/dashboard-dark-1600.webp",
@@ -109,8 +27,7 @@
 			"width": 1600,
 			"height": 1000,
 			"bytes": 58658,
-			"sha256": "99231f138d3ebdbdcf34467c2f27f818e8fbcad380943c248ac66ea3e2c0477d",
-			"pillow": "11.3.0"
+			"sha256": "99231f138d3ebdbdcf34467c2f27f818e8fbcad380943c248ac66ea3e2c0477d"
 		},
 		{
 			"path": "public/landing/dashboard-dark-640.avif",
@@ -118,9 +35,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 11553,
-			"sha256": "046e5bc04bd78eb5f00a4ad6e986bea1b4e90813aabe8ce39b95b2e995f03c60",
-			"pillow": "11.3.0"
+			"bytes": 13069,
+			"sha256": "bd49dea8b5d96c73ed31474bac73a0c7e0f68aed724d556a240843c912286029"
 		},
 		{
 			"path": "public/landing/dashboard-dark-960.avif",
@@ -128,9 +44,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 21163,
-			"sha256": "34dcff0c5cb580c6d4262c5bc508df5f0a0629f1284d56fad3b03d8e76ad81f6",
-			"pillow": "11.3.0"
+			"bytes": 23404,
+			"sha256": "8d77d948ceb97f785b3cca214266000bcec40aa2bf3d817461f0359c5a02e1f0"
 		},
 		{
 			"path": "public/landing/dashboard-dark-1200.avif",
@@ -138,9 +53,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 28936,
-			"sha256": "44da0a069ae602e605e7a977fa553c35e1df4cbef3eb826ae1b3bbc793338e5c",
-			"pillow": "11.3.0"
+			"bytes": 32120,
+			"sha256": "842a38d35e7901e9929c1c97316661ef4ccd490bb2ffc00d5337285129ee39cf"
 		},
 		{
 			"path": "public/landing/dashboard-dark-1600.avif",
@@ -148,9 +62,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 39652,
-			"sha256": "c37a4bf9a11fee6f4f9049002511155cbe81551b43c14b3dcac1606f564e7ffd",
-			"pillow": "11.3.0"
+			"bytes": 45952,
+			"sha256": "69a63d9ce9b9810e2aadf042aa0fac817cf6b55d24cbbe326565ffccf5e0bc75"
 		},
 		{
 			"path": "public/landing/dashboard-dark.avif",
@@ -158,89 +71,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 74662,
-			"sha256": "e2e6231e9f867bda930061cb6ddc2f653144ee4a8f6352ee9a89f9cbb5034372",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light-640.webp",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 640,
-			"height": 400,
-			"bytes": 15682,
-			"sha256": "1f3ad089b0edf3bd03c5cca6d648b7d620d115fd61124a50cd078d87dbec30aa",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light-960.webp",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 960,
-			"height": 600,
-			"bytes": 28260,
-			"sha256": "2537f9a04c3000c4b21c6b4fcc3ffed823cd6b9969969b3942ccd5ddf4596d02",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light-1600.webp",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 1600,
-			"height": 1000,
-			"bytes": 57806,
-			"sha256": "b9fead259bd8ad76cca07cf62c2e5585d61e366d0ac4962de0f54511b8dff7ba",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light-640.avif",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 640,
-			"height": 400,
-			"bytes": 10883,
-			"sha256": "ab0108457d25471d14517cf7edddc239062064b171e4329a549cc3ea16523d3c",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light-960.avif",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 960,
-			"height": 600,
-			"bytes": 21270,
-			"sha256": "701d3d79a32af639d796ed82e86328d1a8184dc153676affac6823034deb0be4",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light-1200.avif",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 26711,
-			"sha256": "29e4f54414c33b16cf6e6d24b37b0e1f33678525ada392fdb632d8e5c6e60fde",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light-1600.avif",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 1600,
-			"height": 1000,
-			"bytes": 42521,
-			"sha256": "dada301dbc26717aa48f905891a4f07ccbcce19df11274d340c0017194c7c923",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/banking-light.avif",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 90690,
-			"sha256": "906ee5e73c9bcc957505dc60d0e4722ba310a80b3a95bb7585a2782ecf8a2cb2",
-			"pillow": "11.3.0"
+			"bytes": 90863,
+			"sha256": "8fc9308aa49ce7e292afa6a9b527a07ad0fcfd36bcd7ac48940cbd22c48c48d6"
 		},
 		{
 			"path": "public/landing/banking-dark-640.webp",
@@ -249,8 +81,7 @@
 			"width": 640,
 			"height": 400,
 			"bytes": 15494,
-			"sha256": "c14b487866cc4740ab9348d6ff9692becb8522c28229e724e0d4e07a7857e0f0",
-			"pillow": "11.3.0"
+			"sha256": "c14b487866cc4740ab9348d6ff9692becb8522c28229e724e0d4e07a7857e0f0"
 		},
 		{
 			"path": "public/landing/banking-dark-960.webp",
@@ -259,8 +90,7 @@
 			"width": 960,
 			"height": 600,
 			"bytes": 27730,
-			"sha256": "e87aaa6dbe4f7e4e4169df8659f5f452567cc72ac69b03f5a0ef9a421175f2d8",
-			"pillow": "11.3.0"
+			"sha256": "e87aaa6dbe4f7e4e4169df8659f5f452567cc72ac69b03f5a0ef9a421175f2d8"
 		},
 		{
 			"path": "public/landing/banking-dark-1600.webp",
@@ -269,8 +99,7 @@
 			"width": 1600,
 			"height": 1000,
 			"bytes": 56040,
-			"sha256": "99d4e2a33d2dc341fef987a5a8d24b892bfda49ad02ba82d32eda6c462afb212",
-			"pillow": "11.3.0"
+			"sha256": "99d4e2a33d2dc341fef987a5a8d24b892bfda49ad02ba82d32eda6c462afb212"
 		},
 		{
 			"path": "public/landing/banking-dark-640.avif",
@@ -278,9 +107,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 11094,
-			"sha256": "b13ba6344368c4d2665588533ea28c158497df054b442b3540fec78efbc5aa79",
-			"pillow": "11.3.0"
+			"bytes": 12510,
+			"sha256": "73a600cbd65727eb94b58b2b83ab80824759698e1b1b40c73551e9865fc513ce"
 		},
 		{
 			"path": "public/landing/banking-dark-960.avif",
@@ -288,9 +116,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 20233,
-			"sha256": "cf355664044ed8381dc13afbf357e71a51d22f582849df0a5a5f61ef63fec5de",
-			"pillow": "11.3.0"
+			"bytes": 22142,
+			"sha256": "c857fe7eb061df1d97e4317af5bcc4d49b4f5ec7520b310a08fca1b9a9cbb414"
 		},
 		{
 			"path": "public/landing/banking-dark-1200.avif",
@@ -298,9 +125,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 27351,
-			"sha256": "c1b27f3d99f703101e4ee6d7c68614adb0e3c79a839449453da9fc5e27ed5f1b",
-			"pillow": "11.3.0"
+			"bytes": 30552,
+			"sha256": "0eac7933a61466e7a76ff453273f5c053236cf5a366d1152d27e7d9cd6e8ff3a"
 		},
 		{
 			"path": "public/landing/banking-dark-1600.avif",
@@ -308,9 +134,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 38222,
-			"sha256": "b284569590fc271b866a05487f936a4c1d6c2cf33ee9b6bbde92c023d864eda2",
-			"pillow": "11.3.0"
+			"bytes": 43782,
+			"sha256": "6a5c8dc6f570e9f36c813813344800365bb95bef4ea9b89711ae6aee7ddfde9a"
 		},
 		{
 			"path": "public/landing/banking-dark.avif",
@@ -318,89 +143,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 70548,
-			"sha256": "e0b43f15728d239d4e1f16fc55e0a9b0b28e7e1c08e0e7baa0886873e8d7c5a8",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light-640.webp",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 640,
-			"height": 400,
-			"bytes": 15260,
-			"sha256": "1d72f261278e3c550a666373b9308414c74b711a6a093271be811f9bd7209c60",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light-960.webp",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 960,
-			"height": 600,
-			"bytes": 27294,
-			"sha256": "f472bf53b6246107f3fa601380bd23f6774940e39771e6c471f46897e58962f0",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light-1600.webp",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 1600,
-			"height": 1000,
-			"bytes": 58190,
-			"sha256": "a73967257081a721fd77d4a67c3ef2dd58c3d2ef0759e09353edd9eb4d5af8ea",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light-640.avif",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 640,
-			"height": 400,
-			"bytes": 10458,
-			"sha256": "73fd1fea093ed4d4a8337ae960edc5d849301833084ddb72b853d18cfb554a40",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light-960.avif",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 960,
-			"height": 600,
-			"bytes": 20818,
-			"sha256": "7affbeecd042086247cd7a9d65e8b7684609b68cf119427b30b75e38d16d6f9e",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light-1200.avif",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 26289,
-			"sha256": "52a76c333a128d9f5ca5d9dc6948f35cc299aad5ea3914839e7aa3ad33cdd6c8",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light-1600.avif",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 1600,
-			"height": 1000,
-			"bytes": 41944,
-			"sha256": "631a39a4b51bb49d82bcaa0972698bc149cae83d2712126a1529971ecfeb4100",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/network-light.avif",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 89990,
-			"sha256": "06dda51496236055603809ae94318789f9df5a6d1a5a60b0a6d54d845fba8632",
-			"pillow": "11.3.0"
+			"bytes": 86184,
+			"sha256": "9c0e55b3678f6e3e26cae7861e68732cddadcfafd91d9be78251ca930ac1e0e0"
 		},
 		{
 			"path": "public/landing/network-dark-640.webp",
@@ -409,8 +153,7 @@
 			"width": 640,
 			"height": 400,
 			"bytes": 15210,
-			"sha256": "e12b8c0fd5ff810aea74d8464e7e805b30b72e1d85c1e8a06a4d7f4fff1eceb5",
-			"pillow": "11.3.0"
+			"sha256": "e12b8c0fd5ff810aea74d8464e7e805b30b72e1d85c1e8a06a4d7f4fff1eceb5"
 		},
 		{
 			"path": "public/landing/network-dark-960.webp",
@@ -419,8 +162,7 @@
 			"width": 960,
 			"height": 600,
 			"bytes": 26934,
-			"sha256": "e80a8b4953236e1afd20e6ee03e9b6513885e75e27f7b707c1907eb236de4dba",
-			"pillow": "11.3.0"
+			"sha256": "e80a8b4953236e1afd20e6ee03e9b6513885e75e27f7b707c1907eb236de4dba"
 		},
 		{
 			"path": "public/landing/network-dark-1600.webp",
@@ -429,8 +171,7 @@
 			"width": 1600,
 			"height": 1000,
 			"bytes": 55882,
-			"sha256": "77dc7c3a62aba2b6b24f00f3e5a0a7bb2e9c1fae61b04844034c02a24c5d678e",
-			"pillow": "11.3.0"
+			"sha256": "77dc7c3a62aba2b6b24f00f3e5a0a7bb2e9c1fae61b04844034c02a24c5d678e"
 		},
 		{
 			"path": "public/landing/network-dark-640.avif",
@@ -438,9 +179,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 10550,
-			"sha256": "c0bc9168fc785486ef4a3eecdff819167cfa16c10d3eb2edd38450ea6d3403b3",
-			"pillow": "11.3.0"
+			"bytes": 11952,
+			"sha256": "beeef557a0ba7b8eed0b4c7b6b6ebb44ecf2c09b996003111895e6b0dee98a10"
 		},
 		{
 			"path": "public/landing/network-dark-960.avif",
@@ -448,9 +188,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 19650,
-			"sha256": "f2e1fe9d0ecb7b9c93017c97798de47e4b0ca3233abac5d8b7e20939b71bae6c",
-			"pillow": "11.3.0"
+			"bytes": 22096,
+			"sha256": "d70128298ece6513850ac7a150983d52c9a7d09ec9646907e2a7c10f3dbd3b2e"
 		},
 		{
 			"path": "public/landing/network-dark-1200.avif",
@@ -458,9 +197,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 26683,
-			"sha256": "b00e6fa0b84bad961303d398820e66b136c73b6083f966edd5a38084cb879b39",
-			"pillow": "11.3.0"
+			"bytes": 30345,
+			"sha256": "dbd85d547748faafff59fe6887c02c5ac733f89c7afee78aa31a4769ed64977c"
 		},
 		{
 			"path": "public/landing/network-dark-1600.avif",
@@ -468,9 +206,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 37382,
-			"sha256": "3bae9dc4e00dd99eab1b9ce271cdc401280e3edc67917072d5f456e9afdca151",
-			"pillow": "11.3.0"
+			"bytes": 43599,
+			"sha256": "25921532e88f2a5839516c1292e795f0def7986856062645a31a8ed80a7468a8"
 		},
 		{
 			"path": "public/landing/network-dark.avif",
@@ -478,9 +215,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 87960,
-			"sha256": "07d0ed69751c0974d7b17a1413e86cbf7ca3831373faf8a2ed57bdabe55dd1bd",
-			"pillow": "11.3.0"
+			"bytes": 88106,
+			"sha256": "92f00b37b2ff59cc3909249989a2dafe79ecd19f3380edb39b4b062287249bcc"
 		},
 		{
 			"path": "public/landing/tower-480.webp",
@@ -564,76 +300,292 @@
 			"sha256": "1db838233cc8e76f7c5717c9541e5787bab0d2a7c181933915b473d4579e4878"
 		},
 		{
-			"path": "public/landing/ridge-light.avif",
-			"role": "scene background",
-			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
+			"path": "public/landing/scene-hero-960.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
+			"width": 960,
+			"height": 533,
+			"bytes": 10424,
+			"sha256": "071b1eb5cd6ff254153163662580f0fc6ca2903295521778a1aa48349b14d34f"
+		},
+		{
+			"path": "public/landing/scene-hero-960.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
+			"width": 960,
+			"height": 533,
+			"bytes": 14864,
+			"sha256": "f419fd33f3db16a6ab6812c3614094731e99f88057033001f3842b420d744fe5"
+		},
+		{
+			"path": "public/landing/scene-hero-1600.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
+			"width": 1600,
+			"height": 889,
+			"bytes": 21970,
+			"sha256": "351e99410376a1a5f689f5d94422f46579b9c8daadefc45cc57f497bd6a2e854"
+		},
+		{
+			"path": "public/landing/scene-hero-1600.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
+			"width": 1600,
+			"height": 889,
+			"bytes": 31518,
+			"sha256": "f57dd86e2e5316316709fcb885d5bcfe3208a445b9d2cb219722b446bb9e953e"
+		},
+		{
+			"path": "public/landing/scene-hero-2400.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
+			"width": 2400,
+			"height": 1333,
+			"bytes": 39510,
+			"sha256": "9b7fb29541d7213bd80864fe87e8ffdf9ba7000f1a79bdc6f9ccfb0b07408536"
+		},
+		{
+			"path": "public/landing/scene-hero-2400.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
+			"width": 2400,
+			"height": 1333,
+			"bytes": 56204,
+			"sha256": "181b8995f136abd1df6007155cc686b4ea1c9853c79558c4abce7dc34c6c82b7"
+		},
+		{
+			"path": "public/landing/scene-hero-2880.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
 			"width": 2880,
-			"height": 1440,
-			"bytes": 122942,
-			"sha256": "215c54e65c9a947adcb75715302ac994e55342c107ffbbb70f4657f3a04dc606"
+			"height": 1600,
+			"bytes": 50167,
+			"sha256": "9ff528442a5a987bf691598ca0add75ef65eed7efa5132ad3f621fbe9ddec32d"
 		},
 		{
-			"path": "public/landing/ridge-light-square.avif",
-			"role": "scene background (phone crop)",
-			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
-			"width": 1440,
-			"height": 1440,
-			"bytes": 78250,
-			"sha256": "8264584844b4ce3c555859125f778e654785cec0b022af09804f91cd655c1d00"
-		},
-		{
-			"path": "public/landing/ridge-light-square.webp",
-			"role": "scene background (phone crop)",
-			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
-			"width": 1440,
-			"height": 1440,
-			"bytes": 88218,
-			"sha256": "70c6658d688187b3f4beec61999e09e4f1884b3a028297b2b307d63a1c3c380d"
-		},
-		{
-			"path": "public/landing/ridge.avif",
-			"role": "scene background",
-			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
+			"path": "public/landing/scene-hero-2880.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
 			"width": 2880,
-			"height": 1440,
-			"bytes": 68916,
-			"sha256": "12fbfe157643169cf78cfd70573148901af6b9c875f763f34b7c5f13af71cb33"
+			"height": 1600,
+			"bytes": 73650,
+			"sha256": "9b5bca2342952196d781621f91368fe5b60e00c27b57944debd8b962caef378a"
 		},
 		{
-			"path": "public/landing/ridge-square.avif",
-			"role": "scene background (phone crop)",
-			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
-			"width": 1440,
-			"height": 1440,
-			"bytes": 43804,
-			"sha256": "9e0fc645d99ad926d72ed04e7e86de36c28d37a32068277e29a46a1c2b831300"
+			"path": "public/landing/scene-dusk-800.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 800,
+			"height": 600,
+			"bytes": 15968,
+			"sha256": "2336c5753e24de2920feca2db809e0d58a8d901f32769590e2a5d6e1ace28225"
 		},
 		{
-			"path": "public/landing/ridge-square.webp",
-			"role": "scene background (phone crop)",
-			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
-			"width": 1440,
-			"height": 1440,
-			"bytes": 49594,
-			"sha256": "e6d33aeb9c3837087c85f4c9453a94afdf0e69e4e60e60e6bde61fcf0ec1328d"
+			"path": "public/landing/scene-dusk-800.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 800,
+			"height": 600,
+			"bytes": 23898,
+			"sha256": "a8adbe12bacf23ac37914b15b656c7213a96cf8e5ee0f485750e09fd1ee2623e"
 		},
 		{
-			"path": "public/landing/palace-light.avif",
-			"role": "scene background",
-			"source": "assets/landing/generated/2026-09-09/palace/raw/generated.png",
+			"path": "public/landing/scene-dusk-1200.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 1200,
+			"height": 900,
+			"bytes": 30629,
+			"sha256": "3777e588ca0bfe3743ac52c9ea52dd9001f853851ccb8d45602042d58c8d935b"
+		},
+		{
+			"path": "public/landing/scene-dusk-1200.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 1200,
+			"height": 900,
+			"bytes": 43976,
+			"sha256": "c3c0a6a7ea4002a37599c67be13cc156c94477c46692cea487039dae9a1a5e3c"
+		},
+		{
+			"path": "public/landing/scene-dusk-1600.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 1600,
+			"height": 1200,
+			"bytes": 48367,
+			"sha256": "f17b65f5e4b61eb842442cd512a0f21c8f07df9936dfd5a769a00c3651a7fb4b"
+		},
+		{
+			"path": "public/landing/scene-dusk-1600.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 1600,
+			"height": 1200,
+			"bytes": 70196,
+			"sha256": "6ebe596bbe6d07f76dd1b4b2a964be80182fd66dd6d0f01baa29602e574d649f"
+		},
+		{
+			"path": "public/landing/scene-dusk-2048.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 2048,
+			"height": 1536,
+			"bytes": 68941,
+			"sha256": "bdfea982a892bf80918644e7a5541de344ccc7b15621911147debc1077511c91"
+		},
+		{
+			"path": "public/landing/scene-dusk-2048.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"width": 2048,
+			"height": 1536,
+			"bytes": 101270,
+			"sha256": "4611e1c586d3ab8f2623933ac72ab1622efae2c384b5ceef826152a9b0e4ce20"
+		},
+		{
+			"path": "public/landing/scene-teal-800.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 800,
+			"height": 600,
+			"bytes": 22566,
+			"sha256": "19e928d99d7a5acec8996db94c903d11789b1b8dafceab6727384a725c547bec"
+		},
+		{
+			"path": "public/landing/scene-teal-800.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 800,
+			"height": 600,
+			"bytes": 36458,
+			"sha256": "f22fb678efe344e48b76ed6b473a70b8542ea755014ae155f927b919af45f572"
+		},
+		{
+			"path": "public/landing/scene-teal-1200.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 1200,
+			"height": 900,
+			"bytes": 46234,
+			"sha256": "c2995a387e1bfbc87d781d80df694b920f0c47e4de7d000e4ca1c57bdf79d48d"
+		},
+		{
+			"path": "public/landing/scene-teal-1200.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 1200,
+			"height": 900,
+			"bytes": 74988,
+			"sha256": "e00595bcbd3dbea77e228e67d7cf31c344a2e68f85df98c35e32bce3550a509f"
+		},
+		{
+			"path": "public/landing/scene-teal-1600.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 1600,
+			"height": 1200,
+			"bytes": 76195,
+			"sha256": "7bc4f5266f47d3a0d5d873c28d936371361dfd98e08ba8b909cc51cd940ea548"
+		},
+		{
+			"path": "public/landing/scene-teal-1600.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 1600,
+			"height": 1200,
+			"bytes": 117850,
+			"sha256": "e24930e62759b05dd7d36f18e75ecd7cf66abb65ae4747f5d8a602f3a48ee085"
+		},
+		{
+			"path": "public/landing/scene-teal-2048.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 2048,
+			"height": 1536,
+			"bytes": 111228,
+			"sha256": "9fbaa5029beaca797b61f08dfda578ee6b668385e23a7226364cedc7024b4cdc"
+		},
+		{
+			"path": "public/landing/scene-teal-2048.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"width": 2048,
+			"height": 1536,
+			"bytes": 172066,
+			"sha256": "f58b0e550494cdfca114e74fa96e90446eacf1531d985e3fea7653ff64527cbd"
+		},
+		{
+			"path": "public/landing/scene-night-960.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
+			"width": 960,
+			"height": 533,
+			"bytes": 14164,
+			"sha256": "b41feba30d65bba664de349b2649ffbbe99730e6c57325257912096b9405be0b"
+		},
+		{
+			"path": "public/landing/scene-night-960.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
+			"width": 960,
+			"height": 533,
+			"bytes": 21050,
+			"sha256": "9750cd2f447ae8c0b6b8588d2f1ca63765411f974a7127715e9d3136da3250aa"
+		},
+		{
+			"path": "public/landing/scene-night-1600.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
+			"width": 1600,
+			"height": 889,
+			"bytes": 33448,
+			"sha256": "5ec356b4a05a87d302170286ad1f99a144b916f30151b3902c47d1ff0eb8607c"
+		},
+		{
+			"path": "public/landing/scene-night-1600.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
+			"width": 1600,
+			"height": 889,
+			"bytes": 51542,
+			"sha256": "7e83f1fdce2a06ea396f1b97f1fbffdb379d30e64bc655d9002ae4c573b211f9"
+		},
+		{
+			"path": "public/landing/scene-night-2400.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
+			"width": 2400,
+			"height": 1333,
+			"bytes": 66669,
+			"sha256": "b08083c9c0bd2b2d27c295d3aed3306113dd5548ce377b2f75457a18bcb5910c"
+		},
+		{
+			"path": "public/landing/scene-night-2400.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
+			"width": 2400,
+			"height": 1333,
+			"bytes": 102912,
+			"sha256": "41f818b3c0585e0bbaab123aa4e474192c6015be241c2fca4757bb24e8f770b1"
+		},
+		{
+			"path": "public/landing/scene-night-2880.avif",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
 			"width": 2880,
-			"height": 1440,
-			"bytes": 60547,
-			"sha256": "f68759859a2a6435746b6657833d6b15e23ca70ef8accc5ef22e365ce5f7eab6"
+			"height": 1600,
+			"bytes": 88266,
+			"sha256": "fd4d45b186d2951fc8ca15ed75e3dfab07de95f58e46009136872dbf0ee4386d"
 		},
 		{
-			"path": "public/landing/palace-dark.avif",
-			"role": "scene background",
-			"source": "assets/landing/generated/2026-09-09/palace/raw/generated.png",
+			"path": "public/landing/scene-night-2880.webp",
+			"role": "scene photograph",
+			"source": "assets/landing/generated/2026-11-15/night/raw/generated.png",
 			"width": 2880,
-			"height": 1440,
-			"bytes": 55684,
-			"sha256": "d2645e5c5c38bb353fd5a28f9d28ab20f8cd1a1d5acafb18d627840331e4a174"
+			"height": 1600,
+			"bytes": 139384,
+			"sha256": "d49000218c32415555ff10f3a9a459f47952435c7b3d729e51e2693cbc38458b"
 		},
 		{
 			"path": "public/logo-64.webp",
@@ -652,26 +604,6 @@
 			"height": 96,
 			"bytes": 9516,
 			"sha256": "0d17e9d9390294685728669a3b9bf519c5f33602fda6afed7d6039974d26368a"
-		},
-		{
-			"path": "public/landing/dashboard-light-mobile.avif",
-			"role": "mobile hero preview",
-			"source": "public/landing/dashboard-light-mobile.webp",
-			"width": 780,
-			"height": 840,
-			"bytes": 23267,
-			"sha256": "be1adbad1be81432f0770f292c6c378ede156e22db184520b74a395576bb35fd",
-			"pillow": "11.3.0"
-		},
-		{
-			"path": "public/landing/dashboard-dark-mobile.avif",
-			"role": "mobile hero preview",
-			"source": "public/landing/dashboard-dark-mobile.webp",
-			"width": 780,
-			"height": 840,
-			"bytes": 16997,
-			"sha256": "1dce4f4d4f5b4432ef3b5ca62634557b75e3a297ec8cb8f751d4fb49928f9144",
-			"pillow": "11.3.0"
 		}
 	]
 }

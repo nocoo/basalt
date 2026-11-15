@@ -5,13 +5,14 @@ import { applyCrawlPage, homeCrawlPage, uiIndexCrawlPage } from "./crawl";
 import { LANDING_TEMPLATES } from "./landing";
 import { applyLandingToIndexHtml } from "./landing-document";
 import {
-	HERO_IMAGE_SIZES,
 	HERO_PRELOAD_END,
 	HERO_PRELOAD_START,
 	heroPreloadBlock,
 	heroPreloadLinks,
-	PHONE_SCENE_MEDIA,
-	sceneBackgroundPreloadLinks,
+	type LandingScene,
+	SCENES,
+	sceneImageUrl,
+	sceneSrcSet,
 	stripHeroPreload,
 	TEMPLATE_IMAGE_WIDTHS,
 	TOWER_IMAGE_WIDTHS,
@@ -20,95 +21,91 @@ import {
 	towerSrcSet,
 } from "./landing-images";
 
-const publicFile = (url: string) => resolve(__dirname, "../../public", url.slice(1));
+const root = resolve(__dirname, "../..");
+const publicFile = (url: string) => resolve(root, "public", url.slice(1));
 const srcSetUrls = (srcSet: string) => srcSet.split(", ").map((entry) => entry.split(" ")[0]);
+const sceneNames = Object.keys(SCENES) as LandingScene[];
 
 describe("landing image variants", () => {
 	it("names the 3200w master without a width suffix", () => {
-		expect(templateImageUrl("dashboard", "light", 3200, "avif")).toBe(
-			"/landing/dashboard-light.avif",
-		);
-		expect(templateImageUrl("dashboard", "dark", 960, "webp")).toBe(
-			"/landing/dashboard-dark-960.webp",
-		);
+		expect(templateImageUrl("dashboard", 3200, "avif")).toBe("/landing/dashboard-dark.avif");
+		expect(templateImageUrl("dashboard", 960, "webp")).toBe("/landing/dashboard-dark-960.webp");
+		expect(sceneImageUrl("hero", 1600, "avif")).toBe("/landing/scene-hero-1600.avif");
 		expect(towerSrcSet("webp")).toContain("/landing/tower.webp 1280w");
 		expect(towerSrcSet("avif")).toContain("/landing/tower-480.avif 480w");
 	});
 
-	it("ships every referenced template and tower variant in public/", () => {
+	it("ships every referenced template, scene and tower variant in public/", () => {
 		const urls = [
 			...LANDING_TEMPLATES.flatMap((template) =>
-				(["light", "dark"] as const).flatMap((mode) =>
-					(["avif", "webp"] as const).flatMap((format) =>
-						srcSetUrls(templateSrcSet(template.image, mode, format)),
-					),
+				(["avif", "webp"] as const).flatMap((format) =>
+					srcSetUrls(templateSrcSet(template.image, format)),
 				),
+			),
+			...sceneNames.flatMap((scene) =>
+				(["avif", "webp"] as const).flatMap((format) => srcSetUrls(sceneSrcSet(scene, format))),
 			),
 			...srcSetUrls(towerSrcSet("avif")),
 			...srcSetUrls(towerSrcSet("webp")),
 		];
+		const sceneVariants = sceneNames.reduce((sum, scene) => sum + SCENES[scene].widths.length, 0);
 		expect(urls).toHaveLength(
-			LANDING_TEMPLATES.length * 4 * TEMPLATE_IMAGE_WIDTHS.length + TOWER_IMAGE_WIDTHS.length * 2,
+			LANDING_TEMPLATES.length * 2 * TEMPLATE_IMAGE_WIDTHS.length +
+				sceneVariants * 2 +
+				TOWER_IMAGE_WIDTHS.length * 2,
 		);
 		for (const url of urls) expect(existsSync(publicFile(url)), url).toBe(true);
 	});
 
+	it("derives scenes from the recorded generated masters at their native size", () => {
+		const record = JSON.parse(
+			readFileSync(resolve(root, "assets/landing/scenes.json"), "utf8"),
+		) as {
+			scenes: Array<{
+				id: LandingScene;
+				master: string;
+				nativeSize: [number, number];
+				widths: number[];
+			}>;
+		};
+		expect(record.scenes.map((scene) => scene.id).sort()).toEqual([...sceneNames].sort());
+		for (const scene of record.scenes) {
+			expect(existsSync(resolve(root, scene.master)), scene.master).toBe(true);
+			expect(scene.widths).toEqual([...SCENES[scene.id].widths]);
+			expect(scene.nativeSize).toEqual([SCENES[scene.id].width, SCENES[scene.id].height]);
+		}
+	});
+
 	it("keeps the generated manifest in step with the shipped files", () => {
 		const manifest = JSON.parse(
-			readFileSync(resolve(__dirname, "../../assets/responsive-images.json"), "utf8"),
+			readFileSync(resolve(root, "assets/responsive-images.json"), "utf8"),
 		) as { files: Array<{ path: string; bytes: number }> };
 		expect(manifest.files.length).toBeGreaterThan(0);
 		for (const { path, bytes } of manifest.files) {
-			expect(readFileSync(resolve(__dirname, "../..", path)).byteLength, path).toBe(bytes);
+			expect(readFileSync(resolve(root, path)).byteLength, path).toBe(bytes);
 		}
-	});
-});
-
-describe("scene background preload", () => {
-	it("starts each ridge AVIF the stylesheet resolves to at low priority", () => {
-		const css = readFileSync(resolve(__dirname, "../styles/landing.css"), "utf8");
-		const links = sceneBackgroundPreloadLinks();
-		expect(links).toHaveLength(4);
-		expect(css).toContain(`@media ${PHONE_SCENE_MEDIA} {`);
-		for (const link of links) {
-			expect(link).toContain('fetchpriority="low"');
-			const href = link.match(/href="([^"]+)"/)?.[1] ?? "";
-			expect(existsSync(publicFile(href)), href).toBe(true);
-			expect(css).toContain(`url("${href}") type("image/avif")`);
-		}
-		expect(links.filter((link) => link.includes(PHONE_SCENE_MEDIA))).toHaveLength(2);
 	});
 });
 
 describe("hero preload", () => {
-	it("preloads the matching mobile or desktop hero AVIF for each color scheme", () => {
+	it("preloads the hero photograph AVIF with the same srcset and sizes as its <source>", () => {
 		const links = heroPreloadLinks();
-		expect(links).toHaveLength(4);
-		for (const link of links) {
-			expect(link).toContain('fetchpriority="high"');
-			expect(link).toContain('type="image/avif"');
-		}
-		expect(links[0]).toContain("/landing/dashboard-light-mobile.avif");
-		expect(links[1]).toContain("dashboard-light-960.avif 960w");
-		expect(links[1]).toContain(`imagesizes="${HERO_IMAGE_SIZES}"`);
-		expect(links[2]).toContain("/landing/dashboard-dark-mobile.avif");
-		expect(links[3]).toContain("dashboard-dark-960.avif 960w");
-		for (const mode of ["light", "dark"]) {
-			for (const format of ["avif", "webp"]) {
-				expect(existsSync(publicFile(`/landing/dashboard-${mode}-mobile.${format}`))).toBe(true);
-			}
-		}
+		expect(links).toHaveLength(1);
+		expect(links[0]).toContain('fetchpriority="high"');
+		expect(links[0]).toContain('type="image/avif"');
+		expect(links[0]).toContain(`imagesrcset="${sceneSrcSet("hero", "avif")}"`);
+		expect(links[0]).toContain(`imagesizes="${SCENES.hero.sizes}"`);
 	});
 
 	it("is injected once into the homepage document and stripped elsewhere", () => {
-		const template = readFileSync(resolve(__dirname, "../../index.html"), "utf8");
+		const template = readFileSync(resolve(root, "index.html"), "utf8");
 		const home = applyLandingToIndexHtml(stripHeroPreload(template));
 		expect(home.split(HERO_PRELOAD_START)).toHaveLength(2);
 		expect(applyLandingToIndexHtml(home)).toBe(home);
 		expect(applyCrawlPage(home, homeCrawlPage())).toContain(HERO_PRELOAD_START);
 		const other = applyCrawlPage(home, uiIndexCrawlPage([]));
 		expect(other).not.toContain(HERO_PRELOAD_START);
-		expect(other).not.toContain("dashboard-light-960.avif 960w");
+		expect(other).not.toContain("scene-hero-960.avif 960w");
 	});
 
 	it("falls back to the end of <head> without a font preload", () => {

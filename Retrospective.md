@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11-15: Dark-only landing first fought the root ThemeProvider
+
+- **What:** The redesigned landing forced dark mode on `document.documentElement` from a page `useLayoutEffect`. Unit tests showed the visitor's theme still won and the restore captured the wrong state; the first draft also hid the header nav on narrow screens.
+- **Why:** The root `ThemeProvider` writes the document in its own effect, and parent effects run after child effects on mount, so it overwrote the page's write. The nav contract (`landing.test.ts`: every header link stays visible) was not re-read before restyling.
+- **Follow-up:** Scope page-only themes with `.dark`/`data-mode="dark"` on the route root plus `:root:has([data-landing-page])` for document color, never by mutating the document root from a child. Read the existing landing tests before changing landing layout.
+
 ## 2026-11-13: Sidebar jitter verification missed package boundaries
 
 - **What:** The first fix commit was blocked by stale package source hashes. A standalone browser probe also reused catalog-only `h-9 w-9` avatar classes, producing invalid geometry.

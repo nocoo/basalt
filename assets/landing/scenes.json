@@ -1,0 +1,55 @@
+{
+	"generatedAt": "2026-11-15",
+	"model": "gpt-image-2.5-sunburst",
+	"quality": "high",
+	"provider": "Azure OpenAI",
+	"endpoint": "images/generations",
+	"generator": "workflow/agents/skills/agi-image-generation (text-to-image, direct request)",
+	"processing": "Untouched PNG masters. scripts/generate-responsive-images.py resizes with LANCZOS to each listed width and encodes AVIF (q52) and WebP (q82). CSS supplies all darkening veils and fades.",
+	"scenes": [
+		{
+			"id": "hero",
+			"role": "Hero backdrop: layered volcanic ridges at blue hour",
+			"master": "assets/landing/generated/2026-11-15/hero/raw/generated.png",
+			"sha256": "e52b706a375e4f3e06f9799d918d40cb211980af3f757bb50bc3a36dff47d424",
+			"nativeSize": [2880, 1600],
+			"prompt": "assets/landing/generated/2026-11-15/hero/prompt.txt",
+			"request": "assets/landing/generated/2026-11-15/hero/request.json",
+			"response": "assets/landing/generated/2026-11-15/hero/response.json",
+			"widths": [960, 1600, 2400, 2880]
+		},
+		{
+			"id": "dusk",
+			"role": "Templates showcase frame: pastel dusk over forested ridges",
+			"master": "assets/landing/generated/2026-11-15/dusk/raw/generated.png",
+			"sha256": "171df312e9049a52186aac230059a51bf0faba1da4459bc1613afc2c6b211cfc",
+			"nativeSize": [2048, 1536],
+			"prompt": "assets/landing/generated/2026-11-15/dusk/prompt.txt",
+			"request": "assets/landing/generated/2026-11-15/dusk/request.json",
+			"response": "assets/landing/generated/2026-11-15/dusk/response.json",
+			"widths": [800, 1200, 1600, 2048]
+		},
+		{
+			"id": "teal",
+			"role": "Get started frame: misty teal valley",
+			"master": "assets/landing/generated/2026-11-15/teal/raw/generated.png",
+			"sha256": "3d215f9acd1fec510dfb1633df3e3ce93337c55dc3c414716e02f946f8f6d850",
+			"nativeSize": [2048, 1536],
+			"prompt": "assets/landing/generated/2026-11-15/teal/prompt.txt",
+			"request": "assets/landing/generated/2026-11-15/teal/request.json",
+			"response": "assets/landing/generated/2026-11-15/teal/response.json",
+			"widths": [800, 1200, 1600, 2048]
+		},
+		{
+			"id": "night",
+			"role": "Closing call to action: basalt columns at twilight",
+			"master": "assets/landing/generated/2026-11-15/night/raw/generated.png",
+			"sha256": "b4dd508696d4567a9d8ceb3b49c3f03e9dccbcbaa2c6767936dbc9c4eed35dcd",
+			"nativeSize": [2880, 1600],
+			"prompt": "assets/landing/generated/2026-11-15/night/prompt.txt",
+			"request": "assets/landing/generated/2026-11-15/night/request.json",
+			"response": "assets/landing/generated/2026-11-15/night/response.json",
+			"widths": [960, 1600, 2400, 2880]
+		}
+	]
+}

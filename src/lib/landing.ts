@@ -17,6 +17,7 @@ export interface LandingLink {
 export const LANDING_PRIMARY_LINKS: readonly LandingLink[] = [
 	{ href: "/ui", label: "Components" },
 	{ href: "#templates", label: "Templates" },
+	{ href: "/palette", label: "Palette" },
 	{ href: "#get-started", label: "Get started" },
 ];
 
@@ -49,6 +50,24 @@ export const LANDING_STATS = [
 	})),
 ];
 
+export const LANDING_STORY = [
+	"Dashboards collect everything: metrics, tables, alerts, forms and charts. Most UI kits make each piece look fine alone and loud together.",
+	"Basalt is built for the screens that carry the most information. Every component shares one spacing scale, one type ramp and one set of matte surfaces, so a dense page still reads calmly.",
+] as const;
+export const LANDING_STORY_CLOSE = {
+	lead: "Dense software should feel",
+	fade: "as considered as the work people do inside it: quiet, legible, and built to last.",
+} as const;
+
+export const LANDING_STACK = [
+	"React 19",
+	"TypeScript",
+	"Tailwind CSS v4",
+	"Standalone CSS",
+	"Next.js",
+	"Vite",
+] as const;
+
 export const LANDING_TEMPLATES = [
 	{
 		name: "Analytics overview",
@@ -76,21 +95,45 @@ export const LANDING_TEMPLATES = [
 export const LANDING_FACTS = [
 	{
 		title: "Components that work together",
-		body: "Buttons, inputs, menus, and dialogs share the same spacing, shape, and interaction language. Less time reconciling the details.",
+		body: "Buttons, inputs, menus, and dialogs share the same spacing, shape, and interaction language.",
 		href: "/ui",
 		link: "Explore components",
 	},
 	{
 		title: "Charts for clear data",
-		body: "From a quiet sparkline to a full analytics view. Charts and data patterns designed to make dense information easier to read.",
+		body: "From a quiet sparkline to a full analytics view, designed to make dense information easier to read.",
 		href: "/ui?category=chart",
 		link: "Explore charts",
 	},
 	{
-		title: "Matte surfaces in both themes",
-		body: "Matte surfaces, measured contrast, and a palette that feels at home in light and dark. One system, with room to make it yours.",
+		title: "Flows and agent surfaces",
+		body: "Flow diagrams, approval cards, tool chips, and chat threads ship as components, so multi-step screens start composed.",
+		href: "/ui/flow",
+		link: "Explore flow",
+	},
+	{
+		title: "Matte surfaces, measured contrast",
+		body: "Layered islands, quiet borders, and a palette tuned so long sessions stay comfortable.",
 		href: "/palette",
 		link: "Explore the palette",
+	},
+] as const;
+
+export const LANDING_STEPS = [
+	{
+		title: "Install the package",
+		body: "One package with React 19 components and optional chart peers.",
+		code: LANDING_INSTALL,
+	},
+	{
+		title: "Bring in the styles",
+		body: "Use the Tailwind v4 entry, or the standalone stylesheet without Tailwind.",
+		code: 'import "@nocoo/basalt/styles/standalone";',
+	},
+	{
+		title: "Compose your screen",
+		body: "Import only what you need from a separate path per component.",
+		code: 'import { Button } from "@nocoo/basalt/components/button";',
 	},
 ] as const;
 

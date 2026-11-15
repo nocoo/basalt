@@ -5,6 +5,8 @@ import { SITE, SITE_ORIGIN } from "../src/lib/site";
 import { assertFocusPaint } from "./showcase-focus";
 import { setShowcaseTheme } from "./showcase-theme";
 
+const LANDING_ICON_LINKS = ".landing-header-actions .landing-icon-link";
+
 async function assertLandingBounds(page: Page, width: number) {
 	const bounds = await page.locator(".landing-main").boundingBox();
 	assert.ok(bounds && bounds.x === 0 && bounds.width === width, JSON.stringify(bounds));
@@ -42,10 +44,14 @@ async function assertDashboardBounds(page: Page, width: number) {
 	if (scroll.max > 0) assert.ok(scroll.top > 0, "dashboard content must scroll within its island");
 }
 
-async function assertHeaderActions(page: Page, selector: string, { square = false } = {}) {
+async function assertHeaderActions(
+	page: Page,
+	selector: string,
+	{ square = false, tooltips = true, controlSelector = "button, a[href]" } = {},
+) {
 	const actions = page.locator(selector);
 	assert.equal(await actions.locator('a[href="https://hexly.ai/projects/basalt"]').count(), 1);
-	const controls = await actions.locator("button, a[href]").all();
+	const controls = await actions.locator(controlSelector).all();
 	if (square) {
 		const boxes = await Promise.all(controls.map((control) => control.boundingBox()));
 		const [first] = boxes;
@@ -64,13 +70,15 @@ async function assertHeaderActions(page: Page, selector: string, { square = fals
 		assert.ok(before);
 		await control.hover();
 		const tooltip = page.locator('[role="tooltip"]:not([data-state="closed"])');
-		await tooltip.waitFor();
-		assert.equal(
-			await tooltip.evaluate(
-				(node) => getComputedStyle(node.closest(".basalt-ui") as HTMLElement).fontSize,
-			),
-			"12px",
-		);
+		if (tooltips) {
+			await tooltip.waitFor();
+			assert.equal(
+				await tooltip.evaluate(
+					(node) => getComputedStyle(node.closest(".basalt-ui") as HTMLElement).fontSize,
+				),
+				"12px",
+			);
+		}
 		for (const dx of [0.5, before.width / 2, before.width - 0.5]) {
 			for (const dy of [0.5, before.height / 2, before.height - 0.5]) {
 				const x = before.x + dx;
@@ -85,7 +93,7 @@ async function assertHeaderActions(page: Page, selector: string, { square = fals
 				);
 				assert.deepEqual(hit, { cursor: "pointer", inside: true }, "corners must remain clickable");
 				assert.deepEqual(await control.boundingBox(), before, "hover must preserve the hit target");
-				assert.ok(await tooltip.isVisible());
+				if (tooltips) assert.ok(await tooltip.isVisible());
 			}
 		}
 	}
@@ -97,45 +105,52 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 	const cases: string[] = [];
 	for (const width of [320, 390, 768, 1440, 1920]) {
 		await page.setViewportSize({ width, height: 900 });
-		for (const dark of [false, true]) {
+		for (const visitorDark of [false, true]) {
 			await page.goto(baseUrl);
-			await page
-				.locator(".landing-header-actions")
-				.getByRole("button", { name: /Toggle theme/ })
-				.waitFor();
-			await setShowcaseTheme(page, dark);
-			await page.waitForFunction((dark) => {
-				const img = document.querySelector<HTMLImageElement>(".landing-preview img");
+			await page.locator(LANDING_ICON_LINKS).first().waitFor();
+			await setShowcaseTheme(page, visitorDark);
+			await page.waitForFunction(() => {
+				const img = document.querySelector<HTMLImageElement>(".landing-hero .landing-scene img");
 				return (
 					img?.complete &&
 					img.naturalWidth > 0 &&
-					new URL(img.currentSrc).pathname.startsWith(
-						`/landing/dashboard-${dark ? "dark" : "light"}`,
-					)
+					new URL(img.currentSrc).pathname.startsWith("/landing/scene-hero-")
 				);
-			}, dark);
-			const image = await page.locator(".landing-preview img").evaluate((node) => ({
-				src: (node as HTMLImageElement).currentSrc,
-				width: (node as HTMLImageElement).naturalWidth,
-				height: (node as HTMLImageElement).naturalHeight,
+			});
+			const surface = await page.locator("[data-landing-page]").evaluate((node) => ({
+				mode: node.getAttribute("data-mode"),
+				background: getComputedStyle(node).backgroundColor,
+				scheme: getComputedStyle(document.documentElement).colorScheme,
 			}));
-			assert.equal(image.src.includes("-mobile."), width <= 480, JSON.stringify(image));
-			assert.equal(image.height > image.width, width <= 480, JSON.stringify(image));
-			await assertFocusPaint(
-				page.locator(".landing-header-actions").getByRole("button", { name: /Toggle theme/ }),
-				16,
-				false,
+			assert.deepEqual(
+				surface,
+				{ mode: "dark", background: "rgb(8, 9, 11)", scheme: "dark" },
+				`the landing is dark only over a ${visitorDark ? "dark" : "light"} visitor theme`,
 			);
+			assert.equal(
+				await page
+					.locator(".landing-nav a")
+					.evaluateAll((links) =>
+						links.every((link) => (link as HTMLElement).offsetParent !== null),
+					),
+				true,
+				"every header navigation link stays visible",
+			);
+			await assertFocusPaint(page.locator(LANDING_ICON_LINKS).first(), 16, false);
 			await assertFocusPaint(page.locator(".landing-brand-motion").first(), 16, false);
 			assert.equal(await page.locator("h1").count(), 1);
 			assert.equal((await page.locator("h1").textContent()).replace(/\s+/g, " "), LANDING_HEADING);
 			await assertLandingBounds(page, width);
-			cases.push(`${width}/${dark ? "dark" : "light"}`);
+			cases.push(`${width}/${visitorDark ? "dark" : "light"}-visitor`);
 		}
 	}
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto(baseUrl);
-	await assertHeaderActions(page, ".landing-header-actions", { square: true });
+	await assertHeaderActions(page, ".landing-header-actions", {
+		square: true,
+		tooltips: false,
+		controlSelector: ".landing-icon-link",
+	});
 	await page.emulateMedia({ reducedMotion: "no-preference" });
 	await page.locator(".landing-brand-artwork").scrollIntoViewIfNeeded();
 	await page.waitForFunction(
@@ -162,10 +177,7 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 	for (const width of [390, 1440]) {
 		await page.setViewportSize({ width, height: 900 });
 		await page.goto(baseUrl);
-		await page
-			.locator(".landing-header-actions")
-			.getByRole("button", { name: /Toggle theme/ })
-			.waitFor();
+		await page.locator(LANDING_ICON_LINKS).first().waitFor();
 		await page.evaluate(() => {
 			document.body.dataset.landingSession = "preserved";
 		});
@@ -194,10 +206,7 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 		const sidebar =
 			width < 768 ? page.getByRole("dialog") : page.locator("[data-dashboard-shell] > aside");
 		await sidebar.getByRole("link", { name: "Home", exact: true }).click();
-		await page
-			.locator(".landing-header-actions")
-			.getByRole("button", { name: /Toggle theme/ })
-			.waitFor();
+		await page.locator(LANDING_ICON_LINKS).first().waitFor();
 		assert.equal(
 			await page.evaluate(() => document.body.dataset.landingSession),
 			"preserved",
@@ -230,11 +239,17 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 			);
 			if (path === "/") {
 				await assertLandingBounds(crawler, 1440);
-				await crawler.locator("details summary").first().click();
+				await crawler.locator(".landing-faq-list details summary").first().click();
 				assert.equal(
-					await crawler.locator("details[open]").count(),
+					await crawler.locator(".landing-faq-list details[open]").count(),
 					1,
 					"FAQs must work without JS",
+				);
+				await crawler.locator(".landing-showcase-list details summary").nth(1).click();
+				assert.equal(
+					await crawler.locator(".landing-showcase-list details[open]").count(),
+					1,
+					"template disclosures stay exclusive without JS",
 				);
 			} else {
 				assert.notEqual(await crawler.title(), SITE.homeTitle);

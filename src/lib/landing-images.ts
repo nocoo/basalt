@@ -1,40 +1,24 @@
 /**
- * Responsive image sources for the landing page. Variants are produced by
+ * Responsive image sources for the dark-only landing page. Variants are produced by
  * scripts/generate-responsive-images.py and recorded in assets/responsive-images.json.
  */
 
-export type LandingImageMode = "light" | "dark";
 export type LandingImageFormat = "avif" | "webp";
 
-/** Widths shipped for every template preview, in both formats; 3200 is the master. */
+/** Widths shipped for every dark template preview, in both formats; 3200 is the master. */
 export const TEMPLATE_IMAGE_WIDTHS = [640, 960, 1200, 1600, 3200] as const;
 export const TEMPLATE_MASTER_WIDTH = 3200;
+/** The template preview fills the showcase frame: full width on phones, ~55% of the row. */
+export const TEMPLATE_IMAGE_SIZES = "(max-width: 62.5rem) 88vw, (max-width: 90rem) 52vw, 46rem";
 
-/** The hero preview spans the page container; the template cards are a 3-up grid. */
-export const HERO_IMAGE_SIZES = "(min-width: 1600px) 1456px, 91vw";
-export const CARD_IMAGE_SIZES =
-	"(max-width: 30rem) 87vw, (max-width: 47.5rem) 45vw, (max-width: 100rem) 28vw, 28rem";
-
-/** The hero preview is the landing page's largest contentful paint on mobile and desktop. */
-export const HERO_TEMPLATE_IMAGE = "dashboard";
-
-export function templateImageUrl(
-	name: string,
-	mode: LandingImageMode,
-	width: number,
-	format: LandingImageFormat,
-): string {
+export function templateImageUrl(name: string, width: number, format: LandingImageFormat): string {
 	const suffix = width === TEMPLATE_MASTER_WIDTH ? "" : `-${width}`;
-	return `/landing/${name}-${mode}${suffix}.${format}`;
+	return `/landing/${name}-dark${suffix}.${format}`;
 }
 
-export function templateSrcSet(
-	name: string,
-	mode: LandingImageMode,
-	format: LandingImageFormat,
-): string {
+export function templateSrcSet(name: string, format: LandingImageFormat): string {
 	return TEMPLATE_IMAGE_WIDTHS.map(
-		(width) => `${templateImageUrl(name, mode, width, format)} ${width}w`,
+		(width) => `${templateImageUrl(name, width, format)} ${width}w`,
 	).join(", ");
 }
 
@@ -51,53 +35,45 @@ export function towerSrcSet(format: LandingImageFormat): string {
 	}).join(", ");
 }
 
-const PRELOAD_MEDIA: Record<LandingImageMode, string> = {
-	light: "(prefers-color-scheme: light)",
-	dark: "(prefers-color-scheme: dark)",
-};
+/** Generated photographs recorded in assets/landing/scenes.json. */
+export const SCENES = {
+	hero: { widths: [960, 1600, 2400, 2880], width: 2880, height: 1600, sizes: "100vw" },
+	night: { widths: [960, 1600, 2400, 2880], width: 2880, height: 1600, sizes: "100vw" },
+	dusk: {
+		widths: [800, 1200, 1600, 2048],
+		width: 2048,
+		height: 1536,
+		sizes: "(max-width: 62.5rem) 100vw, 60vw",
+	},
+	teal: { widths: [800, 1200, 1600, 2048], width: 2048, height: 1536, sizes: "100vw" },
+} as const;
+export type LandingScene = keyof typeof SCENES;
+
+export function sceneImageUrl(scene: LandingScene, width: number, format: LandingImageFormat) {
+	return `/landing/scene-${scene}-${width}.${format}`;
+}
+
+export function sceneSrcSet(scene: LandingScene, format: LandingImageFormat): string {
+	return SCENES[scene].widths
+		.map((width) => `${sceneImageUrl(scene, width, format)} ${width}w`)
+		.join(", ");
+}
 
 /**
- * Preload hints for the hero preview, emitted only into the homepage document. They mirror the
+ * The hero photograph is the landing page's largest contentful paint. The preload mirrors the
  * AVIF `<source>` exactly so the browser reuses the preloaded response instead of fetching twice.
  */
 export function heroPreloadLinks(): string[] {
-	return (["light", "dark"] as const).flatMap((mode) => [
-		`<link rel="preload" as="image" type="image/avif" fetchpriority="high" href="/landing/dashboard-${mode}-mobile.avif" media="(max-width: 30rem) and ${PRELOAD_MEDIA[mode]}" />`,
-		`<link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="${templateSrcSet(HERO_TEMPLATE_IMAGE, mode, "avif")}" imagesizes="${HERO_IMAGE_SIZES}" media="(width > 30rem) and ${PRELOAD_MEDIA[mode]}" />`,
-	]);
-}
-
-/** The phone query that swaps in the square ridge crops in src/styles/landing.css. */
-export const PHONE_SCENE_MEDIA = "(max-width: 47.5rem)";
-const RIDGE_IMAGE: Record<LandingImageMode, string> = { light: "ridge-light", dark: "ridge" };
-
-/**
- * The hero's ridge photograph is a CSS background, which Chrome fetches at high priority once it
- * is on screen, competing with the scripts that paint the hero preview. A low-priority preload of
- * the exact AVIF the stylesheet resolves to starts it early without that contention.
- */
-export function sceneBackgroundPreloadLinks(): string[] {
-	return (["light", "dark"] as const).flatMap((mode) =>
-		[
-			[`/landing/${RIDGE_IMAGE[mode]}-square.avif`, PHONE_SCENE_MEDIA],
-			[`/landing/${RIDGE_IMAGE[mode]}.avif`, "(width > 47.5rem)"],
-		].map(
-			([href, viewport]) =>
-				`<link rel="preload" as="image" type="image/avif" fetchpriority="low" href="${href}" media="${viewport} and ${PRELOAD_MEDIA[mode]}" />`,
-		),
-	);
+	return [
+		`<link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="${sceneSrcSet("hero", "avif")}" imagesizes="${SCENES.hero.sizes}" />`,
+	];
 }
 
 export const HERO_PRELOAD_START = "<!--landing:preload-->";
 export const HERO_PRELOAD_END = "<!--/landing:preload-->";
 
 export function heroPreloadBlock(): string {
-	return [
-		HERO_PRELOAD_START,
-		...heroPreloadLinks(),
-		...sceneBackgroundPreloadLinks(),
-		HERO_PRELOAD_END,
-	].join("\n    ");
+	return [HERO_PRELOAD_START, ...heroPreloadLinks(), HERO_PRELOAD_END].join("\n    ");
 }
 
 /** Other prerendered pages reuse the homepage document as a template; drop its hero hints. */
