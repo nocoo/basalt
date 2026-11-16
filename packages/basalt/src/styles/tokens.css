@@ -816,15 +816,16 @@
 		pointer-events: none;
 		left: 0;
 		top: 0;
-		transform: translate(var(--basalt-command-left), var(--basalt-command-top));
-		width: var(--basalt-command-width);
-		height: var(--basalt-command-height);
+		transform: translate3d(var(--basalt-command-left, 0px), var(--basalt-command-top, 0px), 0);
+		width: var(--basalt-command-width, 0px);
+		height: var(--basalt-command-height, 0px);
 		border-radius: var(--basalt-radius-md);
 		background: var(--basalt-hover);
+		will-change: transform;
 	}
 
 	.basalt-command-list[data-basalt-command-animated="true"]::before {
-		transition: transform var(--basalt-motion-normal) var(--basalt-motion-ease);
+		transition: transform var(--basalt-motion-fast) var(--basalt-motion-ease);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

@@ -24,11 +24,13 @@ export function useSelectionIndicator({
 	itemSelector,
 	enabled = true,
 	mapGeometry,
+	applyGeometry,
 	ref,
 }: {
 	itemSelector: string;
 	enabled?: boolean;
 	mapGeometry?: (item: HTMLElement, root: HTMLElement) => SelectionGeometry;
+	applyGeometry?: (root: HTMLElement, state: SelectionIndicatorState) => void;
 	ref?: React.Ref<HTMLElement | null>;
 }) {
 	const rootRef = React.useRef<HTMLElement | null>(null);
@@ -47,10 +49,13 @@ export function useSelectionIndicator({
 	React.useLayoutEffect(() => {
 		const root = rootRef.current;
 		if (!root || !enabled) {
-			setState({ ...EMPTY, visible: false, animated: false });
+			const emptyState = { ...EMPTY, visible: false, animated: false };
+			if (root && applyGeometry) applyGeometry(root, emptyState);
+			else setState(emptyState);
 			return;
 		}
 		let previous: HTMLElement | null = null;
+		let current: SelectionIndicatorState = { ...EMPTY, visible: false, animated: false };
 		let frame = 0;
 		const media = window.matchMedia("(prefers-reduced-motion: reduce)");
 		const sync = () => {
@@ -61,17 +66,18 @@ export function useSelectionIndicator({
 			const visible = !!item && item.offsetWidth > 0 && item.offsetHeight > 0;
 			const animated = visible && !!previous && previous !== item && !media.matches;
 			previous = visible ? item : null;
-			const next = { ...box, visible, animated };
-			setState((current) => {
-				const unchanged =
-					current.visible === visible &&
-					current.left === box.left &&
-					current.top === box.top &&
-					current.width === box.width &&
-					current.height === box.height;
-				// Initial ResizeObserver delivery must not cancel an in-flight selection.
-				return unchanged && !(media.matches && current.animated) ? current : next;
-			});
+			const next: SelectionIndicatorState = { ...box, visible, animated };
+			const unchanged =
+				current.visible === visible &&
+				current.left === box.left &&
+				current.top === box.top &&
+				current.width === box.width &&
+				current.height === box.height;
+			// Initial ResizeObserver delivery must not cancel an in-flight selection.
+			if (unchanged && !(media.matches && current.animated)) return;
+			current = next;
+			if (applyGeometry) applyGeometry(root, next);
+			else setState(next);
 		};
 		const schedule = () => {
 			if (!frame) frame = requestAnimationFrame(sync);
@@ -85,8 +91,12 @@ export function useSelectionIndicator({
 					resize.observe(child);
 		};
 		const mutations = new MutationObserver((records) => {
-			if (records.some((record) => record.type === "childList")) observe();
-			schedule();
+			if (records.some((record) => record.type === "childList")) {
+				observe();
+				schedule();
+				return;
+			}
+			sync();
 		});
 		observe();
 		sync();
@@ -110,7 +120,7 @@ export function useSelectionIndicator({
 			mutations.disconnect();
 			media.removeEventListener("change", schedule);
 		};
-	}, [enabled, itemSelector, mapGeometry]);
+	}, [applyGeometry, enabled, itemSelector, mapGeometry]);
 	return {
 		ref: composedRef,
 		state,

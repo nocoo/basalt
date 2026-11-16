@@ -4,7 +4,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { useSelectionIndicator } from "../utils/selection-indicator";
+import { type SelectionIndicatorState, useSelectionIndicator } from "../utils/selection-indicator";
 import { Dialog, DialogContent, type DialogSize, DialogTitle, DialogTrigger } from "./dialog";
 
 const Command = React.forwardRef<
@@ -213,13 +213,22 @@ function measureCommandItem(item: HTMLElement, root: HTMLElement) {
 	return { left, top, width: item.offsetWidth, height: item.offsetHeight };
 }
 
+function applyCommandGeometry(node: HTMLElement, state: SelectionIndicatorState) {
+	node.style.setProperty("--basalt-command-left", `${state.left}px`);
+	node.style.setProperty("--basalt-command-top", `${state.top}px`);
+	node.style.setProperty("--basalt-command-width", `${state.visible ? state.width : 0}px`);
+	node.style.setProperty("--basalt-command-height", `${state.visible ? state.height : 0}px`);
+	node.setAttribute("data-basalt-command-animated", String(state.animated));
+}
+
 export const CommandList = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive.List>,
 	CommandListProps
 >(({ className, style, ...props }, ref) => {
-	const { ref: listRef, state } = useSelectionIndicator({
+	const { ref: listRef } = useSelectionIndicator({
 		itemSelector: '[cmdk-item][data-selected="true"]:not([data-disabled="true"])',
 		mapGeometry: measureCommandItem,
+		applyGeometry: applyCommandGeometry,
 		ref,
 	});
 	return (
@@ -230,16 +239,7 @@ export const CommandList = React.forwardRef<
 				className,
 			)}
 			{...props}
-			data-basalt-command-animated={state.animated}
-			style={
-				{
-					"--basalt-command-left": `${state.left}px`,
-					"--basalt-command-top": `${state.top}px`,
-					"--basalt-command-width": `${state.visible ? state.width : 0}px`,
-					"--basalt-command-height": `${state.visible ? state.height : 0}px`,
-					...style,
-				} as React.CSSProperties
-			}
+			style={style}
 		/>
 	);
 });
