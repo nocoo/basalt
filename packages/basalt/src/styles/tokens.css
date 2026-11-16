@@ -322,8 +322,8 @@
 	--basalt-border: 0 0% 16%;
 	--basalt-input: 0 0% 18%;
 	--basalt-ring: var(--basalt-primary);
-	--basalt-shadow-card: none;
-	--basalt-shadow-control: none;
+	--basalt-shadow-card: 0 0 #0000;
+	--basalt-shadow-control: 0 0 #0000;
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-card);
 	--basalt-surface-elevated: var(--basalt-secondary);
@@ -507,7 +507,8 @@
 	--basalt-zebra-fill: transparent;
 }
 
-[data-basalt-table][data-density="compact"] :where(th, td) {
+[data-basalt-table][data-density="compact"] > :where(thead, tbody, tfoot) > tr > :where(th, td),
+[data-basalt-table][data-density="compact"] > tr > :where(th, td) {
 	height: var(--basalt-size-table-row-compact);
 	padding-block: var(--basalt-space-sm);
 }

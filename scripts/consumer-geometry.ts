@@ -928,6 +928,11 @@ export async function assertConsumerGeometry(
 			throw new Error("raw iframe elements missing");
 		}
 
+		const basaltSerifInput = getEl("basalt-serif-input");
+		const basaltSerifButton = getEl("basalt-serif-button");
+		const basaltSerifMonoButton = getEl("basalt-serif-mono-button");
+		const basaltFontCard = getEl("basalt-font-card");
+		const basaltInternalNativeButton = getEl("basalt-internal-native-button");
 		const basaltInput = getEl("basalt-input");
 		const basaltInputArea = getEl("basalt-input-area");
 		const basaltBtnDefault = getEl("basalt-btn-default");
@@ -977,6 +982,11 @@ export async function assertConsumerGeometry(
 		const rawTextareaStyle = rawDoc.defaultView.getComputedStyle(rawTextarea);
 		const rawTableStyle = rawDoc.defaultView.getComputedStyle(rawTable);
 
+		const basaltSerifInputStyle = window.getComputedStyle(basaltSerifInput);
+		const basaltSerifButtonStyle = window.getComputedStyle(basaltSerifButton);
+		const basaltSerifMonoButtonStyle = window.getComputedStyle(basaltSerifMonoButton);
+		const basaltFontCardStyle = window.getComputedStyle(basaltFontCard);
+		const basaltInternalNativeButtonStyle = window.getComputedStyle(basaltInternalNativeButton);
 		const basaltInputStyle = window.getComputedStyle(basaltInput);
 		const basaltInputAreaStyle = window.getComputedStyle(basaltInputArea);
 		const basaltBtnDefaultStyle = window.getComputedStyle(basaltBtnDefault);
@@ -1031,6 +1041,13 @@ export async function assertConsumerGeometry(
 				tableBorderCollapse: rawTableStyle.borderCollapse,
 			},
 			basalt: {
+				serifInputFontFamily: basaltSerifInputStyle.fontFamily,
+				serifInputFontFeatures: basaltSerifInputStyle.fontFeatureSettings,
+				serifButtonFontFamily: basaltSerifButtonStyle.fontFamily,
+				serifButtonFontFeatures: basaltSerifButtonStyle.fontFeatureSettings,
+				serifMonoButtonFontFamily: basaltSerifMonoButtonStyle.fontFamily,
+				fontCardFontFamily: basaltFontCardStyle.fontFamily,
+				internalNativeButtonFontFamily: basaltInternalNativeButtonStyle.fontFamily,
 				inputWidth: basaltInput.getBoundingClientRect().width,
 				inputHeight: basaltInput.getBoundingClientRect().height,
 				inputBoxSizing: basaltInputStyle.boxSizing,
@@ -1097,6 +1114,7 @@ export async function assertConsumerGeometry(
 
 				codeBlockMarginTop: codeBlockStyle.marginTop,
 				codeBlockMarginBottom: codeBlockStyle.marginBottom,
+				codeBlockFontFamily: codeBlockStyle.fontFamily,
 
 				textH2MarginTop: textH2Style.marginTop,
 				textH2MarginBottom: textH2Style.marginBottom,
@@ -1136,6 +1154,31 @@ export async function assertConsumerGeometry(
 				`host table border-collapse leaked: ${data.host.tableBorderCollapse} vs raw ${data.raw.tableBorderCollapse}`,
 			);
 		}
+	}
+
+	for (const [label, family, features] of [
+		["Input", data.basalt.serifInputFontFamily, data.basalt.serifInputFontFeatures],
+		["Button", data.basalt.serifButtonFontFamily, data.basalt.serifButtonFontFeatures],
+	] as const) {
+		if (!family.includes("Inter")) {
+			throw new Error(`expected ${label} to use Inter under a serif host, got ${family}`);
+		}
+		if (!features.includes('"cv02"')) {
+			throw new Error(`expected ${label} optical features under a serif host, got ${features}`);
+		}
+	}
+	if (!data.basalt.serifMonoButtonFontFamily.includes("JetBrains Mono")) {
+		throw new Error(
+			`expected caller font-basalt-mono utility to win, got ${data.basalt.serifMonoButtonFontFamily}`,
+		);
+	}
+	if (
+		!data.basalt.fontCardFontFamily.includes("Inter") ||
+		data.basalt.internalNativeButtonFontFamily !== data.basalt.fontCardFontFamily
+	) {
+		throw new Error(
+			`expected internal native descendants to inherit the Basalt root: ${JSON.stringify({ card: data.basalt.fontCardFontFamily, button: data.basalt.internalNativeButtonFontFamily })}`,
+		);
 	}
 
 	// 2. Basalt Input in 320px container: exactly 320px wide, 34px tall, border-box
@@ -1314,7 +1357,10 @@ export async function assertConsumerGeometry(
 		throw new Error(`expected dd margin-left 0px, got ${data.basalt.ddMarginLeft}`);
 	}
 
-	// CodeBlock: pre margin 0px
+	// CodeBlock: package mono typography and pre margin 0px
+	if (!data.basalt.codeBlockFontFamily.includes("JetBrains Mono")) {
+		throw new Error(`expected CodeBlock JetBrains Mono, got ${data.basalt.codeBlockFontFamily}`);
+	}
 	if (data.basalt.codeBlockMarginTop !== "0px" || data.basalt.codeBlockMarginBottom !== "0px") {
 		throw new Error(
 			`expected CodeBlock pre margin 0px, got ${data.basalt.codeBlockMarginTop}/${data.basalt.codeBlockMarginBottom}`,

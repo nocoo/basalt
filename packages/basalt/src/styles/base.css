@@ -15,14 +15,15 @@
 		border-color: currentColor;
 	}
 
-	:where(.basalt-ui) {
+	.basalt-ui {
 		font-family: var(--basalt-font-sans);
 		font-feature-settings: var(--basalt-font-features);
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
 
-	:where(.basalt-ui:is(code, kbd, samp, pre), .basalt-ui :is(code, kbd, samp, pre)) {
+	.basalt-ui:is(code, kbd, samp, pre),
+	.basalt-ui :is(code, kbd, samp, pre) {
 		font-family: var(--basalt-font-mono);
 		font-feature-settings: normal;
 	}

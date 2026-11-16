@@ -198,7 +198,45 @@ async function assertStandaloneMarkupParity(
 	}
 }
 
+async function assertNestedTableDensity(page: Page) {
+	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+	const standalone = await page.context().newPage();
+	try {
+		await standalone.setContent(`<!doctype html><html><head><style>${css}</style></head><body>
+			<table class="basalt-ui" data-basalt-table="" data-density="compact">
+				<tbody><tr><td class="h-basalt-table-row py-basalt-table-y" data-compact>Compact</td></tr></tbody>
+			</table>
+			<table class="basalt-ui" data-basalt-table="" data-density="compact">
+				<tbody><tr><td class="h-basalt-table-row py-basalt-table-y">
+					<table class="basalt-ui" data-basalt-table=""><tbody><tr><td class="h-basalt-table-row py-basalt-table-y" data-nested-default>Default</td></tr></tbody></table>
+				</td></tr></tbody>
+			</table>
+		</body></html>`);
+		const geometry = await standalone.evaluate(() => {
+			const measure = (selector: string) => {
+				const cell = document.querySelector(selector);
+				if (!(cell instanceof HTMLElement)) throw new Error(`Missing ${selector}`);
+				const style = getComputedStyle(cell);
+				return {
+					height: cell.getBoundingClientRect().height,
+					paddingTop: Number.parseFloat(style.paddingTop),
+					paddingBottom: Number.parseFloat(style.paddingBottom),
+				};
+			};
+			return {
+				compact: measure("[data-compact]"),
+				nested: measure("[data-nested-default]"),
+			};
+		});
+		assert.deepEqual(geometry.compact, { height: 36, paddingTop: 4, paddingBottom: 4 });
+		assert.deepEqual(geometry.nested, { height: 44, paddingTop: 8, paddingBottom: 8 });
+	} finally {
+		await standalone.close();
+	}
+}
+
 export async function assertRecordGeometry(page: Page, baseUrl: string) {
+	await assertNestedTableDensity(page);
 	for (const width of [390, 1280])
 		for (const dark of [false, true]) {
 			await page.setViewportSize({ width, height: 1000 });
@@ -237,7 +275,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 			const foreignRows = await table
 				.locator("tbody tr")
 				.evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height));
-			assert.deepEqual(foreignRows, [45, 45, 45, 45, 45, 44]);
+			assert.deepEqual(foreignRows, [44, 44, 44, 44, 44, 44]);
 			await page.evaluate(() => document.documentElement.style.removeProperty("--spacing"));
 			assert.deepEqual(geometry.rows, foreignRows);
 			assert.ok(geometry.heads.every((head) => head.whiteSpace === "nowrap"));

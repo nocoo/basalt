@@ -289,6 +289,18 @@ export function GeometryApp() {
 
 			{/* Basalt components in 320px container */}
 			<div id="basalt-container" style={{ width: 320, marginTop: 20 }}>
+				<div id="basalt-font-host" style={{ fontFamily: "serif", fontFeatureSettings: "normal" }}>
+					<Input id="basalt-serif-input" defaultValue="Font Input" />
+					<Button id="basalt-serif-button">Font Button</Button>
+					<Button id="basalt-serif-mono-button" className="font-basalt-mono">
+						Font Mono
+					</Button>
+				</div>
+				<LayerCard id="basalt-font-card">
+					<button id="basalt-internal-native-button" type="button">
+						Native descendant
+					</button>
+				</LayerCard>
 				<Input id="basalt-input" defaultValue="Basalt Input" />
 				<InputArea id="basalt-input-area" defaultValue="Basalt Input Area" />
 				<Button id="basalt-btn-default">Default Button</Button>

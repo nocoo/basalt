@@ -29,7 +29,7 @@ export function ClipboardText({ text, copyText, className }: ClipboardTextProps)
 				cn("inline-flex min-h-basalt-control max-w-full items-stretch shadow-xs", className),
 			)}
 		>
-			<code className="flex min-w-0 items-center truncate rounded-l-basalt-md bg-transparent px-basalt-space-lg font-mono text-basalt-base text-basalt-foreground">
+			<code className="flex min-w-0 items-center truncate rounded-l-basalt-md bg-transparent px-basalt-space-lg font-basalt-mono text-basalt-base text-basalt-foreground">
 				{text}
 			</code>
 			<Button

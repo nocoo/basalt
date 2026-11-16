@@ -4,8 +4,6 @@
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
     --spacing: 0.25rem;
     --container-3xl: 48rem;
     --font-weight-normal: 400;
@@ -345,8 +343,8 @@
   --basalt-border: 0 0% 16%;
   --basalt-input: 0 0% 18%;
   --basalt-ring: var(--basalt-primary);
-  --basalt-shadow-card: none;
-  --basalt-shadow-control: none;
+  --basalt-shadow-card: 0 0 #0000;
+  --basalt-shadow-control: 0 0 #0000;
   --basalt-control-fill: hsl(var(--basalt-secondary));
   --basalt-surface-current: var(--basalt-card);
   --basalt-surface-elevated: var(--basalt-secondary);
@@ -543,7 +541,7 @@
   --basalt-control-fill: hsl(var(--basalt-bright));
   --basalt-zebra-fill: transparent;
 }
-[data-basalt-table][data-density="compact"] :where(th, td) {
+[data-basalt-table][data-density="compact"] > :where(thead, tbody, tfoot) > tr > :where(th, td), [data-basalt-table][data-density="compact"] > tr > :where(th, td) {
   height: var(--basalt-size-table-row-compact);
   padding-block: var(--basalt-space-sm);
 }
@@ -1197,13 +1195,13 @@
     border-style: solid;
     border-color: currentColor;
   }
-  :where(.basalt-ui) {
+  .basalt-ui {
     font-family: var(--basalt-font-sans);
     font-feature-settings: var(--basalt-font-features);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  :where(.basalt-ui:is(code, kbd, samp, pre), .basalt-ui :is(code, kbd, samp, pre)) {
+  .basalt-ui:is(code, kbd, samp, pre),	.basalt-ui :is(code, kbd, samp, pre) {
     font-family: var(--basalt-font-mono);
     font-feature-settings: normal;
   }
@@ -2835,8 +2833,8 @@
   .font-basalt-display {
     font-family: var(--basalt-font-display);
   }
-  .font-mono {
-    font-family: var(--font-mono);
+  .font-basalt-mono {
+    font-family: var(--basalt-font-mono);
   }
   .text-basalt-3xl {
     font-size: var(--basalt-text-3xl);

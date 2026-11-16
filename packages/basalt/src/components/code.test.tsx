@@ -45,7 +45,7 @@ describe("Code", () => {
 	});
 	it("renders inline code without a panel", () => {
 		render(<Code>cn()</Code>);
-		expect(screen.getByText("cn()")).toHaveClass("text-basalt-sm");
+		expect(screen.getByText("cn()")).toHaveClass("text-basalt-sm", "font-basalt-mono");
 		expect(screen.getByText("cn()")).not.toHaveClass("rounded-basalt-md");
 	});
 	it.each(["plain", "highlighted"])(
@@ -60,11 +60,13 @@ describe("Code", () => {
 			);
 			expect(screen.getByRole("region", { name: "example.ts" })).toHaveClass(
 				"text-basalt-sm",
+				"font-basalt-mono",
 				"leading-[var(--basalt-line-body)]",
 			);
 			expect(screen.getByText("example.ts")).toHaveClass(
 				"text-basalt-base",
 				"font-medium",
+				"font-basalt-mono",
 				"leading-[var(--basalt-line-body)]",
 			);
 			expect(screen.getByText("example.ts").closest('[data-slot="code-header"]')).toHaveClass(

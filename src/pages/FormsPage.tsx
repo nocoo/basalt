@@ -24,8 +24,11 @@ export default function FormsPage() {
 	return (
 		<ShowcasePage title={t("pages.forms.title")} description={t("pages.forms.description")}>
 			<div className="grid grid-cols-1 gap-basalt-layout @[48rem]/island:grid-cols-2">
-				<SectionRule title={t("pages.forms.profileForm")}>
-					<LayerCard padding="lg" className="h-full">
+				<SectionRule
+					title={t("pages.forms.profileForm")}
+					className="flex flex-col space-y-0 gap-basalt-layout-sm"
+				>
+					<LayerCard padding="lg" className="flex-1">
 						<form
 							aria-label={t("pages.forms.profileForm")}
 							data-form-stack=""
@@ -97,8 +100,11 @@ export default function FormsPage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.forms.security")}>
-					<LayerCard padding="lg" className="h-full">
+				<SectionRule
+					title={t("pages.forms.security")}
+					className="flex flex-col space-y-0 gap-basalt-layout-sm"
+				>
+					<LayerCard padding="lg" className="flex-1">
 						<form
 							aria-label={t("pages.forms.security")}
 							data-form-stack=""
@@ -171,8 +177,11 @@ export default function FormsPage() {
 			</div>
 
 			<div className="grid grid-cols-1 gap-basalt-layout @[60rem]/island:grid-cols-3">
-				<SectionRule title={t("pages.forms.newsletter")}>
-					<LayerCard padding="lg" className="h-full">
+				<SectionRule
+					title={t("pages.forms.newsletter")}
+					className="flex flex-col space-y-0 gap-basalt-layout-sm"
+				>
+					<LayerCard padding="lg" className="flex-1">
 						<form
 							aria-label={t("pages.forms.newsletter")}
 							data-form-stack=""
@@ -213,8 +222,11 @@ export default function FormsPage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.forms.fileUpload")}>
-					<LayerCard padding="lg" className="h-full">
+				<SectionRule
+					title={t("pages.forms.fileUpload")}
+					className="flex flex-col space-y-0 gap-basalt-layout-sm"
+				>
+					<LayerCard padding="lg" className="flex-1">
 						<div className="space-y-basalt-card">
 							<FileDropzone
 								label={t("pages.forms.fileUpload")}
@@ -237,8 +249,11 @@ export default function FormsPage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.forms.successState")}>
-					<LayerCard padding="lg" className="h-full">
+				<SectionRule
+					title={t("pages.forms.successState")}
+					className="flex flex-col space-y-0 gap-basalt-layout-sm"
+				>
+					<LayerCard padding="lg" className="flex-1">
 						<p className="text-basalt-base font-medium text-basalt-foreground">
 							{t(
 								vm.profile.result || vm.newsletter.result || vm.security.result

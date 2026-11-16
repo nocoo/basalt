@@ -20,7 +20,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"text": {
 		"file": "packages/basalt/src/components/text.tsx",
-		"hash": "1faa3c46205e81f1",
+		"hash": "66bf09d84a94f83e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/text.js.map (sourcesContent[0])"
 	},
@@ -182,7 +182,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"loader": {
 		"file": "packages/basalt/src/components/loader.tsx",
-		"hash": "d8cad51b6a2073a1",
+		"hash": "ac13a008b8f0c907",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/loader.js.map (sourcesContent[0])"
 	},
@@ -206,19 +206,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"clipboard-text": {
 		"file": "packages/basalt/src/components/clipboard-text.tsx",
-		"hash": "7c47abd2aedc43c5",
+		"hash": "2bc6c29e4287de03",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/clipboard-text.js.map (sourcesContent[0])"
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "203c03e4b3e0d33f",
+		"hash": "a14db2b96af8c4ad",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "203c03e4b3e0d33f",
+		"hash": "a14db2b96af8c4ad",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},

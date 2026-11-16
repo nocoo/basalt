@@ -20,7 +20,7 @@ describe("Text", () => {
 		expect(node.className).toContain("text-basalt-base");
 		expect(node.className).toContain("leading-[var(--basalt-line-relaxed)]");
 		expect(node.className).not.toContain("font-semibold");
-		expect(node.className).not.toContain("font-mono");
+		expect(node.className).not.toContain("font-basalt-mono");
 		expect(ref.current).toBe(node);
 	});
 
@@ -46,7 +46,7 @@ describe("Text", () => {
 		const mono = screen.getByText("npm");
 		expect(mono.tagName).toBe("SPAN");
 		expect(mono.className).toContain("text-basalt-base");
-		expect(mono.className).toContain("font-mono");
+		expect(mono.className).toContain("font-basalt-mono");
 		rerender(
 			<Text variant="mono" as="code">
 				npm

@@ -112,7 +112,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
 				BASALT_UI_CLASS,
 				textVariants({ size: size ?? defaultSize(variant), tone }),
 				variant === "heading" && "font-semibold",
-				variant === "mono" && "font-mono",
+				variant === "mono" && "font-basalt-mono",
 				bold && "font-semibold",
 				truncate && "min-w-0 truncate",
 				className,

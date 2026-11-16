@@ -194,22 +194,24 @@ interaction contracts; do not change their containment as a global workaround.
   tokens below, with `--basalt-leading-*` for line boxes. Do not shrink text to
   fit a fixed box or introduce responsive intermediate sizes.
 
-  | Tier          | Reference         | Token / utility                           | Roles                                                                                                                                                                       |
-  | ------------- | ----------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Micro         | 11px / `.6875rem` | `--basalt-text-xs` / `text-basalt-xs`     | Dense chart labels and tertiary metadata where 12px would reduce legibility                                                                                                 |
-  | Auxiliary     | 12px / `.75rem`   | `--basalt-text-sm` / `text-basalt-sm`     | Badges, table column headers, field hints/errors, sidebar uppercase group/partition labels, secondary metadata, chart axes/legends/tooltips, inline code and compact source |
-  | Body          | 14px / `.875rem`  | `--basalt-text-base` / `text-basalt-base` | Body prose, interactive controls and option rows, PageHeader descriptions and modal/sheet descriptions                                                                      |
-  | Card title    | 15px / `.9375rem` | `--basalt-text-lg` / `text-basalt-lg`     | Card and panel headings, including structured `LayerCard.Header`, `CodeBlock`, `StatCard`, `Popover` and `Empty` titles                                                     |
-  | Section       | 18px / `1.125rem` | `--basalt-text-xl` / `text-basalt-xl`     | Section/category h2/h3 headings, SectionRule variant="heading" h2, modal/drawer titles                                                                                      |
-  | Page / metric | 24px / `1.5rem`   | `--basalt-text-3xl` / `text-basalt-3xl`   | Page main title (PageHeader h1) and primary KPI numerals (StatCard value, StatStrip value and dashboard metrics)                                                            |
+  | Tier          | Reference         | Token / utility                           | Roles                                                                                                                                                                        |
+  | ------------- | ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | Micro         | 11px / `.6875rem` | `--basalt-text-xs` / `text-basalt-xs`     | Dense chart labels and tertiary metadata where 12px would reduce legibility                                                                                                  |
+  | Auxiliary     | 12px / `.75rem`   | `--basalt-text-sm` / `text-basalt-sm`     | Badges, table column headers, field hints/errors, sidebar uppercase group/partition labels, secondary metadata, chart axes/legends/tooltips, inline code and compact source  |
+  | Body          | 14px / `.875rem`  | `--basalt-text-base` / `text-basalt-base` | Body prose, interactive controls and option rows, `LayerCard.Header asChild`, `CodeBlock`, `StatCard`, `Popover` and `Empty` titles, PageHeader and modal/sheet descriptions |
+  | Card title    | 15px / `.9375rem` | `--basalt-text-lg` / `text-basalt-lg`     | Structured non-`asChild` `LayerCard.Header` headings and dashboard panel headings                                                                                            |
+  | Section       | 18px / `1.125rem` | `--basalt-text-xl` / `text-basalt-xl`     | Section/category h2/h3 headings, SectionRule variant="heading" h2, modal/drawer titles                                                                                       |
+  | Page / metric | 24px / `1.5rem`   | `--basalt-text-3xl` / `text-basalt-3xl`   | Page main title (PageHeader h1) and primary KPI numerals (StatCard value, StatStrip value and dashboard metrics)                                                             |
 
   The only independent display-scale exemptions are LandingPage
   (`src/styles/landing.css`), LoginPage (`src/pages/LoginPage.tsx`) and the 404
   display in NotFound (`src/pages/NotFound.tsx`, `text-basalt-10xl` only). Every
   other `src/` font-size class must use one of the six canonical utilities.
 - Surfaces preserve the matte L0/L1/L2/L3 hierarchy. LayerCard adds a subtle
-  `ring-1 ring-basalt-border/50` perimeter; `outlined` strengthens it. Headers
-  use 14px medium-weight foreground text with tight tracking. Controls contrast
+  `ring-1 ring-basalt-border/80` perimeter and light-mode card shadow; `outlined`
+  strengthens the perimeter. Structured non-`asChild` headers use 15px semibold
+  foreground text with tight tracking; disclosure headers slotted with `asChild`
+  retain 14px medium text. Controls contrast
   with their parent: document/surface roots use `--basalt-secondary`, while cards
   and deeper surfaces use `--basalt-bright` for their control fill. Hover uses `--basalt-hover`,
   `--basalt-primary-hover` or `--basalt-destructive-hover`, not caller opacity.

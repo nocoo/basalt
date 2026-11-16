@@ -298,6 +298,16 @@ export default function DataPage() {
 					<LayerCard.Footer>
 						<TablePager
 							className="w-full"
+							formatRange={({ start, end, totalCount }) => (
+								<span
+									role={totalCount === 0 ? undefined : "status"}
+									aria-live={totalCount === 0 ? undefined : "polite"}
+								>
+									{totalCount === 0
+										? t("demo.noResults")
+										: t("demo.showingRange", { start, end, totalCount })}
+								</span>
+							)}
 							page={vm.page}
 							pageSize={2}
 							totalCount={vm.total}

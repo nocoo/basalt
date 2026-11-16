@@ -14,7 +14,7 @@ export function Code({ className, ...props }: CodeProps & HTMLAttributes<HTMLEle
 	return (
 		<code
 			className={cn(
-				"rounded-basalt-sm bg-basalt-secondary px-basalt-space-md py-basalt-space-xs font-mono text-basalt-sm text-basalt-foreground",
+				"rounded-basalt-sm bg-basalt-secondary px-basalt-space-md py-basalt-space-xs font-basalt-mono text-basalt-sm text-basalt-foreground",
 				className,
 			)}
 			{...props}
@@ -104,7 +104,7 @@ function CodePanel({
 						<span
 							id={id}
 							title={heading}
-							className="min-w-0 break-words font-mono text-basalt-base font-medium leading-[var(--basalt-line-body)] [overflow-wrap:anywhere]"
+							className="min-w-0 break-words font-basalt-mono text-basalt-base font-medium leading-[var(--basalt-line-body)] [overflow-wrap:anywhere]"
 						>
 							{heading}
 						</span>
@@ -141,7 +141,7 @@ function CodePanel({
 					event.currentTarget.scrollLeft +=
 						((event.key === "ArrowRight" ? 1 : -1) * event.currentTarget.clientWidth) / 4;
 				}}
-				className="basalt-focus basalt-focus-inset min-h-0 min-w-0 overflow-auto overscroll-x-contain overscroll-y-auto py-basalt-panel-y font-mono text-basalt-sm leading-[var(--basalt-line-body)]"
+				className="basalt-focus basalt-focus-inset min-h-0 min-w-0 overflow-auto overscroll-x-contain overscroll-y-auto py-basalt-panel-y font-basalt-mono text-basalt-sm leading-[var(--basalt-line-body)]"
 			>
 				<span className="flex min-w-max">
 					{lineNumbers && (
@@ -162,7 +162,7 @@ function CodePanel({
 						</span>
 					)}
 					<code
-						className="block flex-1 whitespace-pre px-basalt-panel-x font-mono"
+						className="block flex-1 whitespace-pre px-basalt-panel-x font-basalt-mono"
 						style={{ minHeight: `calc(${vm.lines.length} * var(--basalt-line-body))` }}
 					>
 						{vm.lines.map((line, index) => (

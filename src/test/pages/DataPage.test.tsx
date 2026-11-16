@@ -1,6 +1,11 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
+import i18n from "@/i18n";
 import DataPage from "@/pages/DataPage";
+
+afterEach(async () => {
+	await act(async () => i18n.changeLanguage("en"));
+});
 
 describe("DataPage", () => {
 	it("renders invoice rows through the library table", () => {
@@ -52,6 +57,22 @@ describe("DataPage", () => {
 		);
 		expect(screen.queryByText(/Showing .* of .*$/)).toHaveTextContent("Showing 1–2 of 4");
 	});
+
+	it.each([
+		["en", "Showing 1–2 of 4", "Showing 1–1 of 1"],
+		["zh", "第 1–2 条，共 4 条结果", "第 1–1 条，共 1 条结果"],
+	] as const)(
+		"announces localized %s result range updates",
+		async (language, initial, filtered) => {
+			await act(async () => i18n.changeLanguage(language));
+			render(<DataPage />);
+			const status = screen.getByRole("status");
+			expect(status).toHaveTextContent(initial);
+			expect(status).toHaveAttribute("aria-live", "polite");
+			fireEvent.change(screen.getByRole("textbox"), { target: { value: "North" } });
+			expect(status).toHaveTextContent(filtered);
+		},
+	);
 
 	it("does not paint inner wells with bg-card", () => {
 		const { container } = render(<DataPage />);

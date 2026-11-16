@@ -28,6 +28,18 @@ async function assertFormDialogSpacing(
 	}, rootSize);
 	await page.getByRole("form", { name: "Profile Form" }).waitFor();
 	const formGaps = await page.evaluate(() => {
+		const sections = Array.from(
+			document.querySelectorAll<HTMLElement>("[data-showcase-page] > .grid > section"),
+		);
+		const sectionBounds = sections.map((section) => {
+			const card = section.querySelector<HTMLElement>(":scope > [data-basalt-surface]");
+			if (!card) throw new Error("Missing form LayerCard");
+			return {
+				top: section.getBoundingClientRect().top,
+				bottom: section.getBoundingClientRect().bottom,
+				cardBottom: card.getBoundingClientRect().bottom,
+			};
+		});
 		const first = document.querySelector("#profile-first") as HTMLElement;
 		const firstLabel = document.querySelector('label[for="profile-first"]') as HTMLElement;
 		const email = document.querySelector("#profile-email") as HTMLElement;
@@ -37,6 +49,7 @@ async function assertFormDialogSpacing(
 		const names = firstField.parentElement as HTMLElement;
 		const island = document.querySelector("[data-doc-scroll]");
 		return {
+			sectionBounds,
 			labelControl: Math.round(
 				first.getBoundingClientRect().top - firstLabel.getBoundingClientRect().bottom,
 			),
@@ -49,6 +62,24 @@ async function assertFormDialogSpacing(
 			overflow: island ? island.scrollWidth - island.clientWidth : 0,
 		};
 	});
+	assert.equal(formGaps.sectionBounds.length, 5, JSON.stringify(formGaps.sectionBounds));
+	for (const section of formGaps.sectionBounds) {
+		assert.ok(section.cardBottom <= section.bottom + 1, JSON.stringify(section));
+	}
+	for (let index = 0; index < formGaps.sectionBounds.length; index += 1) {
+		const current = formGaps.sectionBounds[index];
+		if (!current) continue;
+		const nextRow = formGaps.sectionBounds
+			.slice(index + 1)
+			.find((section) => section.top > current.top + 1);
+		if (!nextRow) continue;
+		const rowBottom = Math.max(
+			...formGaps.sectionBounds
+				.filter((section) => Math.abs(section.top - current.top) <= 1)
+				.map((section) => section.cardBottom),
+		);
+		assert.ok(nextRow.top >= rowBottom - 1, JSON.stringify({ nextRow, rowBottom }));
+	}
 	assert.equal(formGaps.labelControl, compact);
 	assert.equal(formGaps.emailLabelControl, compact);
 	assert.equal(formGaps.group, layout);

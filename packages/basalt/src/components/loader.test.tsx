@@ -33,6 +33,7 @@ describe("Loader", () => {
 		expect(container.querySelector("[data-basalt-elapsed]")).toBeNull();
 		act(() => vi.advanceTimersByTime(100));
 		expect(screen.getByText("5.0s")).toHaveAttribute("aria-hidden", "true");
+		expect(screen.getByText("5.0s")).toHaveClass("font-basalt-mono");
 		act(() => vi.advanceTimersByTime(55100));
 		expect(screen.getByText("1m 0.1s")).toBeInTheDocument();
 		unmount();

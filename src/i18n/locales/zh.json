@@ -1190,6 +1190,7 @@
 		"noResults": "没有匹配这些条件的账单。",
 		"resetFilters": "重置筛选",
 		"results": "{{count}} 条结果",
+		"showingRange": "第 {{start}}–{{end}} 条，共 {{totalCount}} 条结果",
 		"profilePhoto": "选择头像文件",
 		"preferences": "已更新当前演示的偏好。",
 		"revoked": "已从当前演示移除会话。",

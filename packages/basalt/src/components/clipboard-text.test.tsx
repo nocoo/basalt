@@ -19,6 +19,7 @@ describe("ClipboardText", () => {
 		expect(root?.className).not.toContain("bg-basalt-background");
 		expect(root?.className).not.toContain("rounded-basalt-lg");
 		expect(screen.getByText("bun add @nocoo/basalt").className).toContain("rounded-l-basalt-md");
+		expect(screen.getByText("bun add @nocoo/basalt")).toHaveClass("font-basalt-mono");
 		expect(screen.getByText("bun add @nocoo/basalt").className).not.toContain("py-basalt-space-lg");
 		expect(screen.getByRole("button", { name: "Copy" }).className).toContain("rounded-r-basalt-md");
 	});

@@ -80,7 +80,7 @@ export function Loader({
 				<span
 					aria-hidden="true"
 					data-basalt-elapsed=""
-					className="font-mono text-basalt-sm tabular-nums"
+					className="font-basalt-mono text-basalt-sm tabular-nums"
 				>
 					{vm.text}
 				</span>

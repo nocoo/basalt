@@ -1190,6 +1190,7 @@
 		"noResults": "No invoices match these filters.",
 		"resetFilters": "Reset filters",
 		"results": "{{count}} results",
+		"showingRange": "Showing {{start}}–{{end}} of {{totalCount}}",
 		"profilePhoto": "Choose a profile photo",
 		"preferences": "Preferences updated for this demo.",
 		"revoked": "Session removed from this demo.",

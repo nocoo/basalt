@@ -17,6 +17,47 @@ async function assertPlots(container: Locator) {
 	for (const size of sizes) assert.ok(size.width > 0 && size.height > 0, JSON.stringify(size));
 }
 
+async function assertDarkCardRings(page: Page, baseUrl: string) {
+	await page.goto(`${baseUrl}/ui/layer-card`);
+	await page.locator('[data-status="ready"]').waitFor();
+	await setShowcaseTheme(page, true);
+	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+	const card = page
+		.locator('[data-scenario="layer-card-surface-style-card"] [data-basalt-surface]')
+		.last();
+	await card.waitFor();
+	const catalog = await card.evaluate((node) => {
+		const outlined = node.cloneNode(true) as HTMLElement;
+		outlined.dataset.reviewOutlined = "";
+		outlined.classList.add("ring-basalt-border");
+		node.after(outlined);
+		return {
+			normal: getComputedStyle(node).boxShadow,
+			outlined: getComputedStyle(outlined).boxShadow,
+			normalHtml: node.outerHTML,
+			outlinedHtml: outlined.outerHTML,
+		};
+	});
+	assert.notEqual(catalog.normal, "none", "dark catalog card ring must remain valid");
+	assert.notEqual(catalog.outlined, "none", "dark catalog outlined card ring must remain valid");
+	const standalone = await page.context().newPage();
+	try {
+		await standalone.setContent(
+			`<!doctype html><html class="dark"><head><style>${css}</style></head><body>${catalog.normalHtml}${catalog.outlinedHtml}</body></html>`,
+		);
+		const shadows = await standalone
+			.locator("[data-basalt-surface]")
+			.evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).boxShadow));
+		assert.equal(shadows.length, 2, JSON.stringify(shadows));
+		assert.ok(
+			shadows.every((shadow) => shadow !== "none"),
+			JSON.stringify(shadows),
+		);
+	} finally {
+		await standalone.close();
+	}
+}
+
 async function assertDocumentInsets(page: Page, baseUrl: string, dark: boolean) {
 	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 	for (const slug of ["tag-badge", "button"]) {
@@ -178,6 +219,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 			if (width === 390) await page.getByRole("dialog").waitFor({ state: "hidden" });
 			else assert.equal(await actionOverview.getAttribute("aria-current"), "page");
 			await assertDocumentInsets(page, baseUrl, dark);
+			if (dark && width === 1280) await assertDarkCardRings(page, baseUrl);
 			await page.goto(`${baseUrl}/ui/skeleton-line`);
 			await page.locator('[data-status="ready"]').waitFor();
 			await setShowcaseTheme(page, dark);
