@@ -1,6 +1,6 @@
 import type { SVGAttributes } from "react";
-import { basaltMarkPng } from "../assets/brand-mark";
-import { cn } from "../utils/cn";
+import { basaltMarkPng } from "@/assets/brand-mark";
+import { cn } from "@/lib/utils";
 
 export type BasaltMarkProps = Omit<SVGAttributes<SVGSVGElement>, "className"> & {
 	/**

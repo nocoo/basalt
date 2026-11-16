@@ -161,14 +161,13 @@ Root barrel is small leaves and providers. Shell chrome is granular.
 | `@nocoo/basalt/components/page-header`    | `PageHeader`                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `@nocoo/basalt/components/section-rule`   | `SectionRule`                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `@nocoo/basalt/components/loading-screen` | `LoadingScreen`                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `@nocoo/basalt/components/basalt-mark`    | `BasaltMark`                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `@nocoo/basalt/providers/theme`           | `useTheme` (if not taking `ThemeProvider` from the root)                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `@nocoo/basalt/components/chart`          | `ChartFrame`, legend, tooltip, palette and series utilities                                                                                                                                                                                                                                                                                                                                                                                              |
 | `@nocoo/basalt/components/stat-card`      | `StatCard`, `StatGrid`                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `@nocoo/basalt/components/date-picker`    | DatePicker                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `@nocoo/basalt/components/data-table`     | DataTable                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
-Off the root barrel: `AppShell`, `AppMain`, `AppSkipLink`, `AppHeader`, `PageHeader`, `SectionRule`, `LoadingScreen`, `BasaltMark`, charts, DatePicker, DataTable. Import those from the granular paths above. `LayerCard` is on the root barrel **and** `@nocoo/basalt/components/layer-card`.
+Off the root barrel: `AppShell`, `AppMain`, `AppSkipLink`, `AppHeader`, `PageHeader`, `SectionRule`, `LoadingScreen`, chart chrome, DatePicker, DataTable. Import those from the granular paths above. `LayerCard` is on the root barrel **and** `@nocoo/basalt/components/layer-card`.
 
 ---
 
@@ -419,9 +418,9 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 ### Shared navigation geometry
 
-`SidebarNav` uses a 16px horizontal inset plus the row's 8px inset, placing row content on a 24px column. `NavigationMenuList` retains its 8px navigation inset; both use a 4px row gap. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. Editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. The header uses a 24px horizontal inset; the footer uses a token-derived 16px avatar inset plus 8px top and 16px bottom padding. Place `SidebarSearch` directly in `SidebarNav`; one instance switches between the filled row and collapsed icon form.
+`SidebarNav` uses a 16px horizontal inset plus the row's 8px inset, placing row content on a 24px column with a 4px row gap. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. Editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. The header uses a 24px horizontal inset; the footer uses a token-derived 16px avatar inset plus 8px top and 16px bottom padding. Place `SidebarSearch` directly in `SidebarNav`; one instance switches between the filled row and collapsed icon form.
 
-Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. NavigationMenuList retains its focus/selection-following behavior. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
+Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`. It composes the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
 Place `SidebarBrand` in `SidebarHeader` with a 24px mark and `SidebarToggle` in its action slot. The fixed mark slot starts at 22px and ends at 46px, keeping its center on the 34px rail axis throughout the width transition. Pass the version as plain text: `SidebarBrand` renders it as a secondary badge (version pill) in the 12px auxiliary tier. It comes from the app `package.json` at build time. On a collapsed rail that is not peeking, the product name and version hide through `[data-basalt-sidebar][data-collapsed]` on `[data-slot="sidebar-brand-copy"]`; the mark slot stays visible. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
 
@@ -430,7 +429,7 @@ Place `SidebarBrand` in `SidebarHeader` with a 24px mark and `SidebarToggle` in 
 	<Sidebar>
 		<SidebarHeader>
 			<SidebarBrand
-				logo={<BasaltMark />}
+				logo={<span aria-hidden="true">B</span>}
 				name="Acme"
 				version={`v${version}`}
 				action={<SidebarToggle />}
@@ -472,7 +471,7 @@ The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationar
 	<Sidebar>
 		<SidebarHeader>
 			<SidebarBrand
-				logo={<BasaltMark />}
+				logo={<span aria-hidden="true">B</span>}
 				name="Acme"
 				version={`v${version}`}
 				action={<SidebarToggle />}
@@ -533,7 +532,7 @@ Pass `resizable={false}` on the inner `Sidebar`. Put `<SidebarToggle mode="dismi
 
 `SidebarDrawer` bounds its sidebar to the available height. The drawer owns the sidebar-width column and the portal safe area. Radix Sheet owns modal scroll locking; do not set body overflow separately.
 
-Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, MenuBar, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
+Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
 
 `AppHeader` `leading` is the menu button on mobile only: render `AppHeaderMenuButton` (a `HeaderAction` with the `Menu` glyph, default label "Open navigation", forwarded ref). Keep its ref for focus restore, or use it as `SheetTrigger asChild`. Inside the drawer, close with `SidebarToggle mode="dismiss"`. With `density="compact"`, compact header controls have a 44px minimum target.
 
@@ -727,7 +726,7 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 ### LoadingScreen API & Contracts
 
 - **`label?: string`**: Accessible status name on `aria-label` (default: `"Loading"`). Root element carries `role="status"`.
-- **`mark?: ReactNode`**: Centered brand mark slot. Defaults to `<BasaltMark className="h-8 w-8 text-basalt-foreground" />`. Note: passing children to `LoadingScreen` does not override this mark slot; custom brand icons must be provided via the `mark` prop.
+- **`mark?: ReactNode`**: Centered brand mark slot. Defaults to no mark; applications provide any brand node through `mark`. Note: passing children to `LoadingScreen` does not override this mark slot; custom brand icons must be provided via the `mark` prop.
 - **Native & Ref Boundary**: Inherits standard `HTMLAttributes<HTMLDivElement>`. Overlays full viewport (`fixed inset-0 z-50 flex items-center justify-center bg-basalt-background`). Does not forward ref.
 
 ```tsx excerpt:loading-screen-snippet
@@ -1627,7 +1626,7 @@ export function UserPreferencesForm() {
 
 Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 34px high. Explicit `sm`/`lg` sizes remain available; InputArea remains multiline. Compact application headers retain their 44px minimum touch targets. ApprovalCard uses 16px horizontal / 12px vertical panel padding and compact option spacing; ToolChips uses 14px row text and 16px glyphs with 34px reference rows.
 
-Select, DropdownMenu, ContextMenuPanel, MenuBarContent, Combobox/Autocomplete, MultiSelect, ApprovalCard and ToolChips use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
+Select, DropdownMenu, ContextMenuPanel, Autocomplete, MultiSelect, ApprovalCard and ToolChips use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
 
 Loader uses eight perimeter cells with an empty center, moving clockwise continuously. Label, shimmer and delayed elapsed-time controls are unchanged.
 

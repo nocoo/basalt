@@ -11,6 +11,7 @@ import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { StatStrip } from "@nocoo/basalt/components/stat-strip";
 import { useTranslation } from "react-i18next";
+import { BasaltMark } from "@/components/BasaltMark";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useLoadingShowcaseViewModel } from "@/viewmodels/useLoadingShowcaseViewModel";
 
@@ -311,6 +312,7 @@ export default function LoadingStatesPage() {
 						<div className="relative h-40 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
 							<LoadingScreen
 								label={t("pages.loadingStates.screenLabel")}
+								mark={<BasaltMark className="h-basalt-8 w-basalt-8 text-basalt-foreground" />}
 								className="absolute inset-0 z-0"
 							/>
 						</div>

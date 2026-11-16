@@ -942,7 +942,6 @@ export async function assertConsumerGeometry(
 		const basaltTable = getEl("basalt-table");
 		const basaltAccordionTrigger = getEl("basalt-accordion-trigger");
 		const basaltAccordionContent = getEl("basalt-accordion-content");
-		const basaltMenuBarTrigger = getEl("basalt-menubar-trigger");
 		const shortcutParent = getEl("shortcut-parent");
 		const basaltCommandShortcut = getEl("basalt-command-shortcut");
 		const portalInput = getEl("portal-input");
@@ -1062,7 +1061,6 @@ export async function assertConsumerGeometry(
 				accordionTriggerBorderStyle: basaltAccordionTriggerStyle.borderTopStyle,
 				accordionTriggerFontFamily: basaltAccordionTriggerStyle.fontFamily,
 				accordionContentVisible: basaltAccordionContent.getBoundingClientRect().height > 0,
-				menuBarTriggerHeight: basaltMenuBarTrigger.getBoundingClientRect().height,
 				shortcutMarginLeft: basaltShortcutStyle.marginLeft,
 				shortcutLetterSpacing: basaltShortcutStyle.letterSpacing,
 				shortcutFontSize: basaltShortcutStyle.fontSize,
@@ -1232,15 +1230,12 @@ export async function assertConsumerGeometry(
 		);
 	}
 
-	// 7. Accordion & MenuBar triggers
+	// 7. Accordion trigger
 	if (data.basalt.accordionTriggerBorderStyle === "outset") {
 		throw new Error("AccordionTrigger has UA outset border");
 	}
 	if (!data.basalt.accordionContentVisible) {
 		throw new Error("AccordionContent did not expand on trigger click");
-	}
-	if (Math.round(data.basalt.menuBarTriggerHeight) !== 34) {
-		throw new Error(`expected MenuBarTrigger height 34px, got ${data.basalt.menuBarTriggerHeight}`);
 	}
 
 	// 8. CommandShortcut in flex parent: margin-left: auto pushes it to the right boundary, tracking-widest applied

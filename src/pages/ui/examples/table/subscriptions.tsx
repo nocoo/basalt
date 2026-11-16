@@ -4,7 +4,6 @@ import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Input } from "@nocoo/basalt/components/input";
 import { Meter } from "@nocoo/basalt/components/meter";
-import { Pagination } from "@nocoo/basalt/components/pagination";
 import {
 	Select,
 	SelectContent,
@@ -24,6 +23,7 @@ import {
 	TableSortableHeader,
 	type TableTextAlign,
 } from "@nocoo/basalt/components/table";
+import { TablePager } from "@nocoo/basalt/components/table-pager";
 import { lazy, Suspense, useMemo, useState } from "react";
 
 const Sparkline = lazy(() =>
@@ -432,9 +432,10 @@ export default function SubscriptionTable() {
 				<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 					{notice || `${rows.length} care plans · ${selected.length} selected`}
 				</p>
-				<Pagination
+				<TablePager
 					page={page}
-					pageCount={Math.max(1, Math.ceil(rows.length / 4))}
+					pageSize={4}
+					totalCount={rows.length}
 					onPageChange={setPage}
 					disabled={mode !== "ready"}
 				/>

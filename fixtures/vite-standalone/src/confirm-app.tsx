@@ -1,10 +1,9 @@
 import { ConfirmDialog, useConfirm } from "@nocoo/basalt/components/confirm-dialog";
-import { DeleteResource } from "@nocoo/basalt/components/delete-resource";
 import { useState } from "react";
 
 declare global {
 	interface Window {
-		renderConfirm?: (kind: "confirm" | "delete") => void;
+		renderConfirm?: (kind?: "confirm") => void;
 		askOne?: () => void;
 		askTwo?: () => void;
 		unmountConfirm?: () => void;
@@ -38,38 +37,16 @@ function ConfirmHost() {
 }
 
 export function ConfirmApp() {
-	const [kind, setKind] = useState<"confirm" | "delete">("confirm");
 	const [shown, setShown] = useState(true);
 
-	window.renderConfirm = (k) => {
+	window.renderConfirm = () => {
 		window.confirmProof = { results: [], attempts: 0, deleted: false };
 		setShown(true);
-		setKind(k);
 	};
 
 	window.unmountConfirm = () => {
 		setShown(false);
 	};
-
-	if (kind === "delete") {
-		return (
-			<div>
-				<DeleteResource
-					name="record"
-					onDelete={async () => {
-						if (!window.confirmProof) {
-							window.confirmProof = { results: [], attempts: 0, deleted: false };
-						}
-						window.confirmProof.attempts++;
-						if (window.confirmProof.attempts === 1) {
-							throw new Error("Local retryable deletion failure");
-						}
-						window.confirmProof.deleted = true;
-					}}
-				/>
-			</div>
-		);
-	}
 
 	return (
 		<div>

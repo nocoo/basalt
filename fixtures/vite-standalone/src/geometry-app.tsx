@@ -11,7 +11,6 @@ import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { CodeBlock } from "@nocoo/basalt/components/code";
-import { Combobox } from "@nocoo/basalt/components/combobox";
 import { CommandShortcut } from "@nocoo/basalt/components/command-palette";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DescriptionList } from "@nocoo/basalt/components/description-list";
@@ -20,7 +19,6 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
 	Select,
@@ -371,7 +369,7 @@ export function GeometryApp() {
 					style={{ height: 60 }}
 				>
 					<div id="basalt-card-overflow-wrap">
-						<Combobox
+						<Autocomplete
 							id="card-combobox-input"
 							items={Array.from({ length: 40 }, (_, i) => ({
 								value: `item-${i + 1}`,
@@ -412,11 +410,9 @@ export function GeometryApp() {
 					</AccordionItem>
 				</Accordion>
 
-				<MenuBarRoot id="basalt-menubar-root">
-					<MenuBarMenu>
-						<MenuBarTrigger id="basalt-menubar-trigger">File</MenuBarTrigger>
-					</MenuBarMenu>
-				</MenuBarRoot>
+				<Button id="basalt-menubar-trigger" variant="ghost" size="sm">
+					File
+				</Button>
 
 				{/* Parent flex container for CommandShortcut layout test */}
 				<div id="shortcut-parent" style={{ display: "flex", width: 320, alignItems: "center" }}>
@@ -563,7 +559,7 @@ export function GeometryApp() {
 					}}
 				>
 					<span id="reset-rerender-count">{resetRerenderCount}</span>
-					<Combobox
+					<Autocomplete
 						id="test-reset-combobox"
 						name="test_combobox"
 						defaultValue="a"
@@ -665,7 +661,7 @@ export function GeometryApp() {
 						<DialogTitle id="basalt-dialog-title">Dialog Heading</DialogTitle>
 						<Input id="portal-input" defaultValue="Portal Input" />
 						<Button id="portal-btn">Portal Button</Button>
-						<Combobox
+						<Autocomplete
 							id="dialog-combobox-input"
 							items={[
 								{ value: "d-1", label: "Dialog Option 1" },

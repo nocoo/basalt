@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { BasaltMark, type BasaltMarkProps } from "./basalt-mark";
+import { BasaltMark, type BasaltMarkProps } from "@/components/BasaltMark";
 
 function acceptBasaltMarkProps(_props: BasaltMarkProps) {}
 

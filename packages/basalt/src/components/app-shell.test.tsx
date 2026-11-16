@@ -137,5 +137,6 @@ describe("LoadingScreen", () => {
 		expect(status).toBeInTheDocument();
 		expect(status.querySelector(".h-72")).toBeNull();
 		expect(status.querySelector(".animate-basalt-shimmer")).not.toBeNull();
+		expect(status.querySelector("svg")).toBeNull();
 	});
 });

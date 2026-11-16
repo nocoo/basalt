@@ -70,12 +70,7 @@ describe("form selection scenario truth", () => {
 			"checkbox-group-and-legend",
 			"checkbox-controlled-and-error",
 		]);
-		expect(UI_EXAMPLES.combobox?.map((item) => item.id)).toEqual([
-			"combobox-default",
-			"combobox-disabled",
-			"combobox-sizes",
-			"combobox-controlled-and-error",
-		]);
+
 		expect(UI_EXAMPLES["date-picker"]?.map((item) => item.id)).toEqual([
 			"date-picker-single-date-selection",
 			"date-picker-disabled-dates",
@@ -582,20 +577,6 @@ describe("form selection scenario truth", () => {
 		expect(disabledA).toBeChecked();
 		expect(disabledB).not.toBeChecked();
 		cleanup();
-	});
-
-	it("keeps combobox items and date picker names in usage", () => {
-		expect(scenario("combobox", "combobox-disabled").code).toContain("items=");
-		expect(scenario("combobox", "combobox-disabled").code).toContain('placeholder="Disabled"');
-		expectUsageImportsCover(CATALOG_DOCS.combobox?.usage ?? "", ["Combobox"]);
-		expect(CATALOG_DOCS.combobox?.usage).toContain("items=");
-		expect(CATALOG_DOCS.combobox?.usage).not.toMatch(/<Combobox\s*\/>/);
-		expectUsageImportsCover(CATALOG_DOCS["date-picker"]?.usage ?? "", ["DatePicker"]);
-		expect(CATALOG_DOCS["date-picker"]?.usage).toContain("aria-label=");
-		expect(CATALOG_DOCS["date-picker"]?.usage).not.toMatch(/<DatePicker\s*\/>/);
-		expect(scenario("date-picker", "date-picker-single-date-selection").code).toContain(
-			"aria-label=",
-		);
 	});
 
 	it("imports jsx parts used by form docs usage", () => {

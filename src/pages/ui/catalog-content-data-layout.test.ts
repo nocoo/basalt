@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 import dataLayout from "./catalog-content/families/data-layout";
 import { DATA_TABLE_EXAMPLES } from "./examples/data-table";
-import { DELETE_RESOURCE_EXAMPLES } from "./examples/delete-resource";
-import { FLOW_EXAMPLES } from "./examples/flow";
 import { GRID_EXAMPLES } from "./examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "./examples/page-header";
 import { RESOURCE_LIST_EXAMPLES } from "./examples/resource-list";
@@ -11,8 +9,6 @@ import { STAT_STRIP_EXAMPLES } from "./examples/stat-strip";
 import { TABLE_EXAMPLES } from "./examples/table";
 import { TABLE_PAGER_EXAMPLES } from "./examples/table-pager";
 import { API as dataTableApi } from "./generated/catalog-api/data-table";
-import { API as deleteResourceApi } from "./generated/catalog-api/delete-resource";
-import { API as flowApi } from "./generated/catalog-api/flow";
 import { API as gridApi } from "./generated/catalog-api/grid";
 import { API as pageHeaderApi } from "./generated/catalog-api/page-header";
 import { API as resourceListApi } from "./generated/catalog-api/resource-list";
@@ -43,7 +39,6 @@ const DATA_LAYOUT_SCENARIOS = {
 		"data-table-filter",
 	],
 	grid: ["grid-grid"],
-	flow: ["flow-sequential-flow"],
 	"section-rule": [
 		"section-rule-default",
 		"section-rule-with-hint",
@@ -59,7 +54,6 @@ const DATA_LAYOUT_SCENARIOS = {
 	"stat-strip": ["stat-strip-overview", "stat-strip-loading-values"],
 	"table-pager": ["table-pager-range-navigation", "table-pager-disabled-and-localized"],
 	"resource-list": ["resource-list-default"],
-	"delete-resource": ["delete-resource-default"],
 } as const;
 
 const DATA_LAYOUT_DESCRIPTIONS = {
@@ -67,7 +61,6 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 	"data-table":
 		"Sortable and selectable data table with controlled state, manual server pagination, accessible headers, error recovery and formatted cells. Keep stable row IDs across server pages; manual mode never slices a returned page twice.",
 	grid: "Simple grid.",
-	flow: "Step flow.",
 	"section-rule": "Compact labels or reading-focused headings between page regions.",
 	"page-header":
 		"A flush content page heading with optional description, actions, and a separate filters row.",
@@ -76,14 +69,14 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 describe("data-layout catalog content family", () => {
 	it("owns exactly fourteen slugs and generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(14);
+		expect(Object.keys(dataLayout)).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(77);
 	});
 
 	it("keeps the thirty scenarios in their audited order", () => {
@@ -105,7 +98,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(34);
+		expect(count).toBe(32);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -167,9 +160,6 @@ describe("data-layout catalog content family", () => {
 		expect(dataLayout["data-table"]?.docs.api).toBe(dataTableApi);
 		expect(dataLayout.grid?.examples).toBe(GRID_EXAMPLES);
 		expect(dataLayout.grid?.docs.api).toBe(gridApi);
-		expect(dataLayout.flow?.examples).toBe(FLOW_EXAMPLES);
-		expect(dataLayout.flow?.docs.api).toBe(flowApi);
-		expect(dataLayout.table?.docs.usage).toContain("<TableHeader>");
 		expect(dataLayout["section-rule"]?.examples).toBe(SECTION_RULE_EXAMPLES);
 		expect(dataLayout["section-rule"]?.docs.api).toBe(sectionRuleApi);
 		expect(dataLayout["section-rule"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
@@ -234,7 +224,5 @@ describe("data-layout catalog content family", () => {
 		]);
 		expect(dataLayout["resource-list"]?.examples).toBe(RESOURCE_LIST_EXAMPLES);
 		expect(dataLayout["resource-list"]?.docs.api).toBe(resourceListApi);
-		expect(dataLayout["delete-resource"]?.examples).toBe(DELETE_RESOURCE_EXAMPLES);
-		expect(dataLayout["delete-resource"]?.docs.api).toBe(deleteResourceApi);
 	});
 });

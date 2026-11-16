@@ -73,7 +73,6 @@ describe("S9 package consume", () => {
 
 	it("makes owned block slugs ready and leaves maps as the only planned chart", () => {
 		expect(catalogPageStatus("resource-list")).toBe("ready");
-		expect(catalogPageStatus("delete-resource")).toBe("ready");
 		expect(catalogPageStatus("page-header")).toBe("ready");
 		expect(CATALOG.map((entry) => entry.slug)).not.toContain("maps");
 		expect(
@@ -84,7 +83,6 @@ describe("S9 package consume", () => {
 		).toEqual([
 			["page-header", "ready"],
 			["resource-list", "ready"],
-			["delete-resource", "ready"],
 		]);
 	});
 });

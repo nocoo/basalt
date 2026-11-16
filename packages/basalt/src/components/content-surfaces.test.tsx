@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import type { ComponentType } from "react";
 import { describe, expect, it } from "vitest";
 import { Banner } from "./banner";
-import { FlowNode } from "./flow";
 import { GridItem } from "./grid";
 import { LayerCard } from "./layer-card";
 import { StatCard } from "./stat-card";
@@ -12,14 +11,6 @@ import { UploadItem } from "./upload-queue";
 describe("content surface ownership", () => {
 	it.each<[string, ComponentType]>([
 		["neutral banner", () => <Banner variant="secondary">Content</Banner>],
-		[
-			"flow node",
-			() => (
-				<ol>
-					<FlowNode>Content</FlowNode>
-				</ol>
-			),
-		],
 		["grid item", () => <GridItem>Content</GridItem>],
 		["stat item", () => <StatStrip items={[{ label: "Content", value: 1 }]} />],
 		["metric card", () => <StatCard label="Content" value="1" />],

@@ -27,7 +27,7 @@ describe("Meter", () => {
 
 	it("renders seventeen slots with red, yellow and green filled segments", () => {
 		const { container } = render(<Meter value={82} aria-label="Win probability" />);
-		expect(screen.getByRole("progressbar", { name: "Win probability" })).toHaveAttribute(
+		expect(screen.getByRole("meter", { name: "Win probability" })).toHaveAttribute(
 			"aria-valuenow",
 			"82",
 		);
@@ -50,7 +50,7 @@ describe("Meter", () => {
 	])("renders %s as %s filled slots", (value, count) => {
 		const { container } = render(<Meter value={value} label="Usage" />);
 		expect(container.querySelectorAll('[data-filled="true"]')).toHaveLength(count);
-		expect(screen.getByRole("progressbar")).toHaveAttribute(
+		expect(screen.getByRole("meter")).toHaveAttribute(
 			"aria-valuenow",
 			String(Math.min(100, Math.max(0, value))),
 		);
@@ -61,7 +61,7 @@ describe("Meter", () => {
 		(value) => {
 			const { container } = render(<Meter value={value} label="Usage" />);
 			expect(screen.getByText("Unavailable")).toBeInTheDocument();
-			expect(screen.getByRole("progressbar")).not.toHaveAttribute("aria-valuenow");
+			expect(screen.getByRole("meter")).not.toHaveAttribute("aria-valuenow");
 			expect(container.querySelectorAll('[data-filled="true"]')).toHaveLength(0);
 		},
 	);
@@ -70,7 +70,7 @@ describe("Meter", () => {
 		const { rerender } = render(<Meter />);
 		expect(screen.getByText("0%")).toBeInTheDocument();
 		rerender(<Meter value={12} label="Storage" customValue="12 GB" aria-label="Disk usage" />);
-		expect(screen.getByRole("progressbar", { name: "Disk usage" })).toHaveAttribute(
+		expect(screen.getByRole("meter", { name: "Disk usage" })).toHaveAttribute(
 			"aria-valuetext",
 			"12 GB",
 		);

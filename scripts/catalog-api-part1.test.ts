@@ -253,12 +253,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "DescriptionListItemProps",
 				surface: "DescriptionList.Item",
 			},
-			{
-				slug: "basalt-mark",
-				sourceFile: "packages/basalt/src/components/basalt-mark.tsx",
-				propsType: "BasaltMarkProps",
-				surface: "BasaltMark",
-			},
+
 			{
 				slug: "field",
 				sourceFile: "packages/basalt/src/components/field.tsx",
@@ -425,12 +420,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "SelectLabelProps",
 				surface: "SelectLabel",
 			},
-			{
-				slug: "combobox",
-				sourceFile: "packages/basalt/src/components/combobox.tsx",
-				propsType: "ComboboxProps",
-				surface: "Combobox",
-			},
+
 			{
 				slug: "autocomplete",
 				sourceFile: "packages/basalt/src/components/autocomplete.tsx",
@@ -897,12 +887,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "DataTableProps",
 				surface: "DataTable",
 			},
-			{
-				slug: "pagination",
-				sourceFile: "packages/basalt/src/components/pagination.tsx",
-				propsType: "PaginationProps",
-				surface: "Pagination",
-			},
+
 			{
 				slug: "table-of-contents",
 				sourceFile: "packages/basalt/src/components/table-of-contents.tsx",
@@ -933,18 +918,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "CodeHighlightedProps",
 				surface: "CodeHighlighted",
 			},
-			{
-				slug: "flow",
-				sourceFile: "packages/basalt/src/components/flow.tsx",
-				propsType: "FlowProps",
-				surface: "Flow",
-			},
-			{
-				slug: "flow",
-				sourceFile: "packages/basalt/src/components/flow.tsx",
-				propsType: "FlowNodeProps",
-				surface: "FlowNode",
-			},
+
 			{
 				slug: "grid",
 				sourceFile: "packages/basalt/src/components/grid.tsx",
@@ -994,12 +968,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "ResourceListProps",
 				surface: "ResourceList",
 			},
-			{
-				slug: "delete-resource",
-				sourceFile: "packages/basalt/src/components/delete-resource.tsx",
-				propsType: "DeleteResourceProps",
-				surface: "DeleteResource",
-			},
+
 			{
 				slug: "banner",
 				sourceFile: "packages/basalt/src/components/banner.tsx",
@@ -1043,12 +1012,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "SkeletonLineProps",
 				surface: "SkeletonLine",
 			},
-			{
-				slug: "battery-meter",
-				surface: "BatteryMeter",
-				sourceFile: "packages/basalt/src/components/battery-meter.tsx",
-				propsType: "BatteryMeterProps",
-			},
+
 			{
 				slug: "meter",
 				sourceFile: "packages/basalt/src/components/meter.tsx",
@@ -1337,66 +1301,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "ContextMenuPanelProps",
 				surface: "ContextMenuPanel",
 			},
-			{
-				slug: "menu-bar",
-				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-				propsType: "MenuBarProps",
-				surface: "MenuBar",
-			},
-			{
-				slug: "menu-bar",
-				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-				propsType: "MenuBarRootProps",
-				surface: "MenuBarRoot",
-			},
-			{
-				slug: "menu-bar",
-				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-				propsType: "MenuBarMenuProps",
-				surface: "MenuBarMenu",
-			},
-			{
-				slug: "menu-bar",
-				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-				propsType: "MenuBarTriggerProps",
-				surface: "MenuBarTrigger",
-			},
-			{
-				slug: "menu-bar",
-				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-				propsType: "MenuBarContentProps",
-				surface: "MenuBarContent",
-			},
-			{
-				slug: "menu-bar",
-				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-				propsType: "MenuBarItemProps",
-				surface: "MenuBarItem",
-			},
-			{
-				slug: "navigation-menu",
-				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-				propsType: "NavigationMenuProps",
-				surface: "NavigationMenu",
-			},
-			{
-				slug: "navigation-menu",
-				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-				propsType: "NavigationMenuListProps",
-				surface: "NavigationMenuList",
-			},
-			{
-				slug: "navigation-menu",
-				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-				propsType: "NavigationMenuItemProps",
-				surface: "NavigationMenuItem",
-			},
-			{
-				slug: "navigation-menu",
-				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-				propsType: "NavigationMenuLinkProps",
-				surface: "NavigationMenuLink",
-			},
+
 			{
 				slug: "breadcrumbs",
 				sourceFile: "packages/basalt/src/components/breadcrumbs.tsx",
@@ -1424,7 +1329,7 @@ describe("catalog API generator contract 1/4", () => {
 				surface: "AvatarInitials",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(227);
+		expect(CATALOG_API_TARGETS).toHaveLength(210);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1496,7 +1401,6 @@ describe("catalog API generator contract 1/4", () => {
 			"theme-toggle",
 			"layer-card",
 			"description-list",
-			"basalt-mark",
 			"field",
 			"input",
 			"input-area",
@@ -1504,7 +1408,6 @@ describe("catalog API generator contract 1/4", () => {
 			"checkbox",
 			"radio",
 			"switch",
-			"combobox",
 			"autocomplete",
 			"date-picker",
 			"slider",
@@ -1527,23 +1430,19 @@ describe("catalog API generator contract 1/4", () => {
 			"collapsible",
 			"table",
 			"data-table",
-			"pagination",
 			"table-of-contents",
 			"code",
 			"code-block",
-			"flow",
 			"grid",
 			"chart",
 			"stat-card",
 			"resource-list",
-			"delete-resource",
 			"banner",
 			"toast",
 			"badge",
 			"empty",
 			"loader",
 			"skeleton-line",
-			"battery-meter",
 			"meter",
 			"clipboard-text",
 			"avatar",
@@ -1553,8 +1452,6 @@ describe("catalog API generator contract 1/4", () => {
 			"sheet",
 			"alert-dialog",
 			"context-menu",
-			"menu-bar",
-			"navigation-menu",
 			"breadcrumbs",
 			"theme-provider",
 			"link-provider",
@@ -2022,28 +1919,8 @@ describe("catalog API generator contract 1/4", () => {
 		]);
 	}, 60_000);
 
-	it("extracts BasaltMark props from BasaltMarkProps as a single optional className", () => {
+	it("extracts shared button and foundation props", () => {
 		const generated = generateProductionProps();
-		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
-		expect(generated["basalt-mark"]).toEqual([
-			{
-				name: "className",
-				type: "string",
-				required: false,
-				description: "Additional classes for the mark.",
-			},
-		]);
-		expect(generated["basalt-mark"]?.[0]).not.toHaveProperty("default");
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "children")).toBe(false);
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "id")).toBe(false);
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "style")).toBe(false);
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "role")).toBe(false);
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "onClick")).toBe(false);
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "aria-label")).toBe(false);
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "strokeWidth")).toBe(false);
-		expect(generated["basalt-mark"]?.some((prop) => prop.name === "absoluteStrokeWidth")).toBe(
-			false,
-		);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
@@ -2189,7 +2066,6 @@ describe("catalog API generator contract 1/4", () => {
 			"outlined",
 			"padding",
 		]);
-		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 	}, 60_000);
 
 	it("extracts Input props from InputProps as type, size, and passwordManagerIgnore", () => {
@@ -2272,7 +2148,6 @@ describe("catalog API generator contract 1/4", () => {
 			"outlined",
 			"padding",
 		]);
-		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated.field?.map((prop) => prop.name)).toEqual([
 			"label",
 			"htmlFor",
@@ -2365,7 +2240,6 @@ describe("catalog API generator contract 1/4", () => {
 			"outlined",
 			"padding",
 		]);
-		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated.field?.map((prop) => prop.name)).toEqual([
 			"label",
 			"htmlFor",

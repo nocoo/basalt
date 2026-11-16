@@ -92,10 +92,10 @@ describe("public surface documentation ownership and freshness", () => {
 		const manifest = getActualRepoManifest();
 
 		expect(manifest.packageVersion).toBe(rootPkg.version);
-		expect(manifest.totalModules).toBe(114);
-		expect(manifest.totalSymbols).toBe(690);
-		expect(manifest.totalValues).toBe(379);
-		expect(manifest.totalTypes).toBe(311);
+		expect(manifest.totalModules).toBe(105);
+		expect(manifest.totalSymbols).toBe(652);
+		expect(manifest.totalValues).toBe(361);
+		expect(manifest.totalTypes).toBe(291);
 		expect(manifest.totalCssExports).toBe(3);
 
 		// Every module must have valid documentation ownership
@@ -338,7 +338,6 @@ describe("public surface documentation ownership and freshness", () => {
 		);
 		const keys = Object.keys(DOCUMENTED_NATIVE_ONLY_SURFACES);
 		expect(keys).toEqual([
-			"BasaltMark",
 			"Code",
 			"Table",
 			"TableCaption",

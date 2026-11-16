@@ -42,7 +42,7 @@ function expectUsageImportsCover(usage: string, names: string[]) {
 	}
 }
 
-function declaresPageState(source: string) {
+function _declaresPageState(source: string) {
 	return /const \[page,\s*setPage\]\s*=\s*useState/.test(source);
 }
 
@@ -82,13 +82,7 @@ describe("overlay data scenario truth", () => {
 		expect(UI_EXAMPLES["dropdown-menu"]?.map((item) => item.id)).toEqual([
 			"dropdown-menu-basic-dropdown",
 		]);
-		expect(UI_EXAMPLES.pagination?.map((item) => item.id)).toEqual([
-			"pagination-full-controls-default",
-			"pagination-simple-controls",
-			"pagination-mid-page-state",
-			"pagination-uncontrolled",
-			"pagination-disabled",
-		]);
+
 		expect(UI_EXAMPLES.popover?.map((item) => item.id)).toEqual([
 			"popover-basic-popover",
 			"popover-sides",
@@ -141,27 +135,6 @@ describe("overlay data scenario truth", () => {
 		);
 		expect(scenario("dropdown-menu", "dropdown-menu-basic-dropdown").code).toContain("Copy");
 		expect(scenario("dropdown-menu", "dropdown-menu-basic-dropdown").code).toContain("Delete");
-	});
-
-	it("declares pagination page state instead of a dangling setter", () => {
-		const usage = CATALOG_DOCS.pagination?.usage ?? "";
-		expectUsageImportsCover(usage, ["Pagination"]);
-		expect(importedNames(usage).has("useState")).toBe(true);
-		expect(declaresPageState(usage)).toBe(true);
-		expect(usage).toContain("onPageChange={setPage}");
-		for (const id of [
-			"pagination-full-controls-default",
-			"pagination-simple-controls",
-			"pagination-mid-page-state",
-		] as const) {
-			const code = scenario("pagination", id).code;
-			expect(code, id).toContain("useState");
-			expect(declaresPageState(code), id).toBe(true);
-		}
-		expect(scenario("pagination", "pagination-simple-controls").code).toContain("simple");
-		expect(scenario("pagination", "pagination-mid-page-state").code).toContain("pageCount={12}");
-		expect(scenario("pagination", "pagination-uncontrolled").code).toContain("defaultPage={2}");
-		expect(scenario("pagination", "pagination-disabled").code).toContain("disabled");
 	});
 
 	it("keeps table header body and cells complete", () => {

@@ -9,9 +9,9 @@ import {
 	useState,
 } from "react";
 import { cn } from "../utils/cn";
+import { Pagination } from "../utils/pagination-nav";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
-import { Pagination } from "./pagination";
 import { SkeletonLine } from "./skeleton-line";
 import {
 	Table,

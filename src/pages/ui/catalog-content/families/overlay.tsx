@@ -13,13 +13,13 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@nocoo/basalt/components/alert-dialog";
+import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@nocoo/basalt/components/collapsible";
-import { Combobox } from "@nocoo/basalt/components/combobox";
 import {
 	ContextMenu,
 	ContextMenuItem,
@@ -760,7 +760,7 @@ export default function Example() {
 			},
 			{
 				id: catalogScenarioId("dialog", "with-combobox"),
-				title: "With Combobox",
+				title: "With Autocomplete",
 				code: scenarioModule(
 					`<Dialog>
 	<DialogTrigger asChild>
@@ -771,7 +771,7 @@ export default function Example() {
 		<DialogDescription className="mb-basalt-space-lg">
 			Search and select a region for your new resource.
 		</DialogDescription>
-		<Combobox
+		<Autocomplete
 			items={[
 				{ value: "us-east", label: "US East" },
 				{ value: "us-west", label: "US West" },
@@ -789,7 +789,7 @@ export default function Example() {
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Combobox } from "@nocoo/basalt/components/combobox";',
+						'import { Autocomplete } from "@nocoo/basalt/components/autocomplete";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { X } from "lucide-react";',
 					],
@@ -805,7 +805,7 @@ export default function Example() {
 							<DialogDescription className="mb-basalt-space-lg">
 								Search and select a region for your new resource.
 							</DialogDescription>
-							<Combobox
+							<Autocomplete
 								items={[
 									{ value: "us-east", label: "US East" },
 									{ value: "us-west", label: "US West" },

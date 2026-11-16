@@ -59,7 +59,7 @@ describe("catalog entries", () => {
 	});
 
 	it("does not carry a maturity field on catalog entries", () => {
-		expect(CATALOG.filter((entry) => entry.category !== "block")).toHaveLength(82);
+		expect(CATALOG.filter((entry) => entry.category !== "block")).toHaveLength(75);
 		expect(CATALOG.every((entry) => !("maturity" in entry))).toBe(true);
 	});
 
@@ -123,17 +123,6 @@ describe("catalog entries", () => {
 			'import { ResourceList } from "@nocoo/basalt/components/resource-list";',
 		);
 		expect(catalogBarrelImport(resourceList)).toBeNull();
-
-		const deleteResource = CATALOG_BY_SLUG.get("delete-resource");
-		if (!deleteResource) throw new Error("delete-resource missing");
-		expect(deleteResource.name).toBe("Delete Resource");
-		expect(deleteResource.exportName).toBe("DeleteResource");
-		expect(deleteResource.importPath).toBe("@nocoo/basalt/components/delete-resource");
-		expect(deleteResource.hasRootBarrel).toBe(false);
-		expect(catalogGranularImport(deleteResource)).toBe(
-			'import { DeleteResource } from "@nocoo/basalt/components/delete-resource";',
-		);
-		expect(catalogBarrelImport(deleteResource)).toBeNull();
 	});
 
 	it("strictly respects hasRootBarrel for root barrel generation", () => {

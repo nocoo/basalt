@@ -404,8 +404,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(85);
-		expect(Object.keys(first)).toHaveLength(86);
+		expect(slugs).toHaveLength(77);
+		expect(Object.keys(first)).toHaveLength(78);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -439,7 +439,6 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "SelectGroup"');
 		expect(joined).toContain('name: "SelectItem"');
 		expect(joined).toContain('name: "SelectLabel"');
-		expect(joined).toContain('name: "Combobox"');
 		expect(joined).toContain('name: "Autocomplete"');
 		expect(joined).toContain('name: "DatePicker"');
 		expect(joined).toContain('name: "Toolbar"');
@@ -458,12 +457,10 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "TableCell"');
 		expect(joined).toContain('name: "TableSortableHeader"');
 		expect(joined).toContain('name: "DataTable"');
-		expect(joined).toContain('name: "Pagination"');
 		expect(joined).toContain('name: "TableOfContents"');
 		expect(joined).toContain('name: "CodeHighlighted"');
 		expect(joined).toContain('name: "CodeBlock"');
 		expect(joined).toContain('type: "(row: T, index: number) => string"');
-		expect(joined).toContain('name: "Flow"');
 		expect(joined).toContain('name: "Grid"');
 		expect(joined).toContain('name: "ChartFrame"');
 		expect(joined).toContain('name: "ChartLegend"');
@@ -472,7 +469,6 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "StatGrid"');
 		expect(joined).toContain('name: "StatGrid"');
 		expect(joined).toContain('name: "ResourceList"');
-		expect(joined).toContain('name: "DeleteResource"');
 		expect(joined).toContain('type: "ChartSeriesDescriptor[]"');
 		expect(joined).toContain('name: "dismissLabel"');
 		const digest = createHash("sha256");
@@ -482,7 +478,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"3e246b7b8b03a6a3b8fa935b965f163eedafdd135f7476b716611bb9002d71a8",
+			"b08b00268295208ff35e45c14e4f48026b5116477f045db179c740224c8a11cb",
 		);
 	}, 60_000);
 

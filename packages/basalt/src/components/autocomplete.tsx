@@ -1,59 +1,421 @@
-import type { ComponentPropsWithoutRef } from "react";
-import type { InputSize } from "./input";
-import { TypeaheadField, type TypeaheadItem } from "./typeahead-field";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { type ComponentPropsWithoutRef, useEffect, useId, useRef, useState } from "react";
+import { cn } from "../utils/cn";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
+import { Input, type InputSize } from "./input";
+import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
-export type AutocompleteItem = TypeaheadItem;
+export type AutocompleteItem = {
+	value: string;
+	label: string;
+	disabled?: boolean;
+};
 
 export type AutocompleteProps = Omit<
 	ComponentPropsWithoutRef<"div">,
 	"children" | "defaultValue" | "onChange"
 > & {
-	/**
-	 * Suggestions shown as the query matches. Values outside the list are allowed.
-	 *
-	 * Note: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),
-	 * any uncommitted text or matching suggestion is committed once without stealing focus
-	 * back to the input, allowing natural focus traversal.
-	 */
 	items: AutocompleteItem[];
-	/**
-	 * The controlled value.
-	 */
 	value?: string;
-	/**
-	 * The uncontrolled initial value.
-	 */
 	defaultValue?: string;
-	/**
-	 * Called when the value changes, including freeform text.
-	 */
 	onValueChange?: (value: string) => void;
-	/**
-	 * Native form field name.
-	 */
 	name?: string;
-	/**
-	 * Placeholder shown when the field is empty.
-	 * @default Search…
-	 */
 	placeholder?: string;
-	/**
-	 * Disable the field.
-	 * @default false
-	 */
 	disabled?: boolean;
-	/**
-	 * Disable the field and mark it busy.
-	 * @default false
-	 */
 	loading?: boolean;
-	/**
-	 * The visual size of the field.
-	 * @default default
-	 */
 	size?: InputSize;
 };
 
-export function Autocomplete({ placeholder = "Search…", ...rest }: AutocompleteProps) {
-	return <TypeaheadField placeholder={placeholder} allowFreeform {...rest} />;
+export function Autocomplete({
+	items,
+	value,
+	defaultValue = "",
+	onValueChange,
+	name,
+	placeholder = "Select…",
+	disabled = false,
+	loading = false,
+	size = "default",
+	className,
+	id,
+	"aria-label": ariaLabel,
+	"aria-describedby": ariaDescribedBy,
+	"aria-invalid": ariaInvalid,
+	onBlur,
+	...rest
+}: AutocompleteProps) {
+	const [uncontrolled, setUncontrolled] = useState(defaultValue);
+	const selected = value ?? uncontrolled;
+	const [query, setQuery] = useState(displayOf(items, selected));
+	const [prevValue, setPrevValue] = useState(value);
+	const [open, setOpen] = useState(false);
+	const [active, setActive] = useState<number | null>(null);
+	const listId = useId();
+	const inputRef = useRef<HTMLInputElement>(null);
+	const highlightRef = useHoverHighlight();
+	const skipFocusOpen = useRef(false);
+	const lastPointerPos = useRef<{ x: number; y: number } | null>(null);
+	if (value !== prevValue) {
+		setPrevValue(value);
+		if (value !== undefined) {
+			setQuery(displayOf(items, value));
+		} else if (prevValue !== undefined) {
+			setUncontrolled(prevValue);
+			setQuery(displayOf(items, prevValue));
+		}
+	}
+	const selectedDisplay = displayOf(items, selected);
+	const [prevDisplay, setPrevDisplay] = useState(selectedDisplay);
+	if (selectedDisplay !== prevDisplay) {
+		setPrevDisplay(selectedDisplay);
+		if (!open || query === prevDisplay) {
+			setQuery(selectedDisplay);
+		}
+	}
+	const latestConfigRef = useRef({
+		defaultValue,
+		items,
+		value,
+	});
+	useEffect(() => {
+		latestConfigRef.current = {
+			defaultValue,
+			items,
+			value,
+		};
+	});
+
+	useEffect(() => {
+		const node = inputRef.current;
+		const form = node?.form;
+		if (!form) {
+			return;
+		}
+		let disposed = false;
+		const timers = new Set<ReturnType<typeof setTimeout>>();
+		const onReset = (event: Event) => {
+			const timer = setTimeout(() => {
+				timers.delete(timer);
+				if (disposed || event.defaultPrevented) {
+					return;
+				}
+				const cfg = latestConfigRef.current;
+				if (cfg.value === undefined) {
+					setUncontrolled(cfg.defaultValue);
+					setQuery(displayOf(cfg.items, cfg.defaultValue));
+				} else {
+					setQuery(displayOf(cfg.items, cfg.value));
+				}
+				setOpen(false);
+				setActive(null);
+			}, 0);
+			timers.add(timer);
+		};
+		form.addEventListener("reset", onReset);
+		return () => {
+			disposed = true;
+			for (const timer of timers) {
+				clearTimeout(timer);
+			}
+			timers.clear();
+			form.removeEventListener("reset", onReset);
+		};
+	}, []);
+	const filtered = filterItems(items, query, false);
+	const activeIndex =
+		active === null || filtered.length === 0 ? null : Math.min(active, filtered.length - 1);
+	const activeItem = activeIndex === null ? undefined : filtered[activeIndex];
+	const listOpen = open && filtered.length > 0;
+	const busy = disabled || loading;
+
+	useEffect(() => {
+		if (!listOpen || activeIndex === null) {
+			return;
+		}
+		const optionElement = document.getElementById(`${listId}-opt-${activeIndex}`);
+		if (typeof optionElement?.scrollIntoView === "function") {
+			optionElement.scrollIntoView({ block: "nearest" });
+		}
+	}, [activeIndex, listId, listOpen]);
+
+	useEffect(() => {
+		if (!open) {
+			return;
+		}
+		const nextLen = filterItems(items, query, false).length;
+		setActive((current) => {
+			if (current === null || nextLen === 0) {
+				return null;
+			}
+			return Math.min(current, nextLen - 1);
+		});
+	}, [items, open, query]);
+
+	function commitValue(next: string, display: string, restoreFocus = true) {
+		if (value === undefined) {
+			setUncontrolled(next);
+			setQuery(display);
+		} else {
+			setQuery(displayOf(items, value));
+		}
+		setOpen(false);
+		setActive(null);
+		onValueChange?.(next);
+		if (restoreFocus && inputRef.current && document.activeElement !== inputRef.current) {
+			skipFocusOpen.current = true;
+			inputRef.current.focus();
+		}
+	}
+
+	function commitItem(item: AutocompleteItem, restoreFocus = true) {
+		if (item.disabled) {
+			return;
+		}
+		commitValue(item.value, item.label, restoreFocus);
+	}
+
+	function commitFreeform(text: string, restoreFocus = true) {
+		const trimmed = text.trim();
+		const match = items.find(
+			(item) =>
+				!item.disabled &&
+				(item.label.toLowerCase() === trimmed.toLowerCase() || item.value === trimmed),
+		);
+		if (match) {
+			commitItem(match, restoreFocus);
+			return;
+		}
+		commitValue(trimmed, trimmed, restoreFocus);
+	}
+
+	useEffect(() => {
+		if (!open) {
+			return;
+		}
+		const onKey = (event: KeyboardEvent) => {
+			if (event.key !== "Escape" || event.isComposing) {
+				return;
+			}
+			event.preventDefault();
+			event.stopPropagation();
+			event.stopImmediatePropagation();
+			setOpen(false);
+			setQuery(displayOf(items, selected));
+			setActive(null);
+		};
+		window.addEventListener("keydown", onKey, true);
+		document.addEventListener("keydown", onKey, true);
+		return () => {
+			window.removeEventListener("keydown", onKey, true);
+			document.removeEventListener("keydown", onKey, true);
+		};
+	}, [items, open, selected]);
+
+	return (
+		<PopoverPrimitive.Root
+			open={listOpen}
+			onOpenChange={(nextOpen) => {
+				if (!nextOpen) {
+					setOpen(false);
+					setActive(null);
+				}
+			}}
+		>
+			<div
+				{...rest}
+				className={cn("relative w-full", className)}
+				onBlur={(event) => {
+					onBlur?.(event);
+					const related = event.relatedTarget as Node | null;
+					const listbox = document.getElementById(listId);
+					if (!event.currentTarget.contains(related) && !listbox?.contains(related)) {
+						if (query.trim() !== displayOf(items, selected)) {
+							commitFreeform(query, false);
+							return;
+						}
+						setOpen(false);
+						setActive(null);
+					}
+				}}
+			>
+				{name ? <input type="hidden" name={name} value={selected} disabled={busy} /> : null}
+				<PopoverPrimitive.Anchor asChild>
+					<Input
+						ref={inputRef}
+						id={id}
+						value={query}
+						disabled={busy}
+						size={size}
+						aria-busy={loading || undefined}
+						aria-invalid={ariaInvalid}
+						aria-describedby={ariaDescribedBy}
+						onChange={(event) => {
+							setQuery(event.target.value);
+							setOpen(true);
+							setActive(null);
+						}}
+						onFocus={() => {
+							if (busy) {
+								return;
+							}
+							if (skipFocusOpen.current) {
+								skipFocusOpen.current = false;
+								return;
+							}
+							setActive(null);
+							setOpen(true);
+						}}
+						onClick={() => {
+							if (busy) {
+								return;
+							}
+							if (!open) {
+								setActive(null);
+							}
+							setOpen(true);
+						}}
+						onKeyDown={(event) => {
+							if (event.nativeEvent.isComposing || event.key === "Process") {
+								return;
+							}
+							if (event.key === "ArrowDown") {
+								event.preventDefault();
+								setOpen(true);
+								if (filtered.length === 0) {
+									setActive(null);
+									return;
+								}
+								setActive((current) => (current === null ? 0 : (current + 1) % filtered.length));
+								return;
+							}
+							if (event.key === "ArrowUp") {
+								event.preventDefault();
+								setOpen(true);
+								if (filtered.length === 0) {
+									setActive(null);
+									return;
+								}
+								setActive((current) =>
+									current === null
+										? filtered.length - 1
+										: (current - 1 + filtered.length) % filtered.length,
+								);
+								return;
+							}
+							if (event.key === "Enter") {
+								if (open && activeItem) {
+									event.preventDefault();
+									commitItem(activeItem);
+									return;
+								}
+								if (query.trim() !== displayOf(items, selected)) {
+									event.preventDefault();
+									commitFreeform(query);
+								}
+							}
+						}}
+						placeholder={placeholder}
+						role="combobox"
+						aria-label={ariaLabel ?? (id ? undefined : placeholder)}
+						aria-expanded={listOpen}
+						aria-autocomplete="list"
+						aria-controls={listOpen ? listId : undefined}
+						aria-activedescendant={
+							listOpen && activeItem && activeIndex !== null
+								? `${listId}-opt-${activeIndex}`
+								: undefined
+						}
+					/>
+				</PopoverPrimitive.Anchor>
+				<PopoverPrimitive.Portal>
+					<PopoverPrimitive.Content
+						ref={highlightRef}
+						side="bottom"
+						sideOffset={OVERLAY_GAP}
+						align="start"
+						avoidCollisions
+						collisionPadding={8}
+						onPointerMove={(event) => {
+							if (
+								lastPointerPos.current &&
+								lastPointerPos.current.x === event.clientX &&
+								lastPointerPos.current.y === event.clientY
+							) {
+								return;
+							}
+							lastPointerPos.current = { x: event.clientX, y: event.clientY };
+						}}
+						onEscapeKeyDown={(e) => {
+							const evt = e as unknown as {
+								isComposing?: boolean;
+								nativeEvent?: { isComposing?: boolean };
+							};
+							if (evt.isComposing || evt.nativeEvent?.isComposing) {
+								e.preventDefault();
+							}
+						}}
+						onOpenAutoFocus={(e) => e.preventDefault()}
+						onCloseAutoFocus={(e) => e.preventDefault()}
+						onInteractOutside={(e) => {
+							const target = e.target as Node | null;
+							if (inputRef.current?.contains(target)) {
+								e.preventDefault();
+							}
+						}}
+						id={listId}
+						role="listbox"
+						className={overlayPanelClass(
+							"basalt-hover-list w-[var(--radix-popover-trigger-width)] max-h-[var(--radix-popover-content-available-height)] overflow-y-auto",
+						)}
+					>
+						{filtered.map((item, index) => (
+							<button
+								type="button"
+								key={`${listId}-opt-${index}`}
+								id={`${listId}-opt-${index}`}
+								role="option"
+								data-basalt-hover-item=""
+								tabIndex={-1}
+								disabled={item.disabled}
+								aria-disabled={item.disabled || undefined}
+								aria-selected={index === activeIndex}
+								className={cn(overlayItemClass(), item.disabled && "opacity-50")}
+								onPointerMove={(event) => {
+									if (item.disabled) {
+										return;
+									}
+									const { clientX, clientY } = event;
+									if (
+										lastPointerPos.current &&
+										lastPointerPos.current.x === clientX &&
+										lastPointerPos.current.y === clientY
+									) {
+										return;
+									}
+									lastPointerPos.current = { x: clientX, y: clientY };
+									setActive(index);
+								}}
+								onMouseDown={(event) => event.preventDefault()}
+								onClick={() => commitItem(item)}
+							>
+								{item.label}
+							</button>
+						))}
+					</PopoverPrimitive.Content>
+				</PopoverPrimitive.Portal>
+			</div>
+		</PopoverPrimitive.Root>
+	);
+}
+
+function displayOf(items: AutocompleteItem[], value: string) {
+	return items.find((item) => item.value === value)?.label ?? value;
+}
+
+function filterItems(items: AutocompleteItem[], query: string, showAllWhenEmpty: boolean) {
+	const needle = query.trim().toLowerCase();
+	if (needle === "") {
+		return showAllWhenEmpty ? items : [];
+	}
+	return items.filter((item) => item.label.toLowerCase().includes(needle));
 }

@@ -1,4 +1,3 @@
-import { BasaltMark } from "@nocoo/basalt/components/basalt-mark";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	Sidebar,
@@ -11,6 +10,7 @@ import {
 } from "@nocoo/basalt/components/sidebar";
 import { Home, Inbox } from "lucide-react";
 import { useRef, useState } from "react";
+import { BasaltMark } from "@/components/BasaltMark";
 
 const items = [
 	{ label: "Home", icon: Home, href: "/ui/sidebar?drawer=home" },

@@ -1,4 +1,3 @@
-import { BasaltMark } from "@nocoo/basalt/components/basalt-mark";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	Sidebar,
@@ -15,6 +14,7 @@ import {
 } from "@nocoo/basalt/components/sidebar";
 import { ArrowUp, Home, Plus, Users } from "lucide-react";
 import { useState } from "react";
+import { BasaltMark } from "@/components/BasaltMark";
 
 const destinations = [
 	{ label: "New chat", icon: Plus, href: "/ui/sidebar?destination=new-chat" },

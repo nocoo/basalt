@@ -1,11 +1,11 @@
 import "@nocoo/basalt/styles/standalone";
-import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	DataTable,
 	type DataTableColumn,
 	type DataTableSort,
 } from "@nocoo/basalt/components/data-table";
+import { Meter } from "@nocoo/basalt/components/meter";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
@@ -23,7 +23,7 @@ const columns: DataTableColumn<(typeof rows)[number]>[] = [
 		id: "charge",
 		header: "Charge",
 		width: 280,
-		accessor: (row) => <BatteryMeter label={row.name} value={row.charge} />,
+		accessor: (row) => <Meter label={row.name} value={row.charge} />,
 	},
 	{ id: "status", header: "Status", sortable: false, accessor: () => "Managed" },
 ];
@@ -82,8 +82,8 @@ function ResourceApp() {
 				/>
 			</ResourceList>
 			<div className="mt-4 flex flex-wrap gap-4">
-				<BatteryMeter label="Offline sensor" value={50} status="offline" />
-				<BatteryMeter label="Charging sensor" value={51} status="charging" />
+				<Meter label="Offline sensor" value={50} />
+				<Meter label="Charging sensor" value={51} />
 			</div>
 		</main>
 	);

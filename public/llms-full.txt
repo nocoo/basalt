@@ -18,7 +18,6 @@ Each URL below is a public documentation surface.
 - [Autocomplete](https://basaltui.com/ui/autocomplete)
 - [Button](https://basaltui.com/ui/button)
 - [Clipboard Text](https://basaltui.com/ui/clipboard-text)
-- [Combobox](https://basaltui.com/ui/combobox)
 - [Date Picker](https://basaltui.com/ui/date-picker)
 - [Icon Picker](https://basaltui.com/ui/icon-picker)
 - [Inline Editable](https://basaltui.com/ui/inline-editable)
@@ -26,7 +25,6 @@ Each URL below is a public documentation surface.
 - [InputArea](https://basaltui.com/ui/input-area)
 - [InputGroup](https://basaltui.com/ui/input-group)
 - [LinkButton](https://basaltui.com/ui/link-button)
-- [Pagination](https://basaltui.com/ui/pagination)
 - [Searchable Multi Select](https://basaltui.com/ui/multi-select)
 - [Segment Control](https://basaltui.com/ui/segment-control)
 - [Select](https://basaltui.com/ui/select)
@@ -66,10 +64,8 @@ Each URL below is a public documentation surface.
 - [Editable Navigation](https://basaltui.com/ui/editable-nav-item)
 - [Field](https://basaltui.com/ui/field)
 - [Filter Bar](https://basaltui.com/ui/filter-bar)
-- [Flow](https://basaltui.com/ui/flow)
 - [Grid](https://basaltui.com/ui/grid)
 - [LinkProvider](https://basaltui.com/ui/link-provider)
-- [NavigationMenu](https://basaltui.com/ui/navigation-menu)
 - [Responsive Master Detail](https://basaltui.com/ui/responsive-master-detail)
 - [Scroll Area](https://basaltui.com/ui/scroll-area)
 - [Section Rule](https://basaltui.com/ui/section-rule)
@@ -93,7 +89,6 @@ Each URL below is a public documentation surface.
 - [Dock](https://basaltui.com/ui/dock)
 - [Dropdown](https://basaltui.com/ui/dropdown-menu)
 - [HoverCard](https://basaltui.com/ui/hover-card)
-- [MenuBar](https://basaltui.com/ui/menu-bar)
 - [Popover](https://basaltui.com/ui/popover)
 - [Sheet](https://basaltui.com/ui/sheet)
 - [Tooltip](https://basaltui.com/ui/tooltip)
@@ -102,8 +97,6 @@ Each URL below is a public documentation surface.
 [Overview](https://basaltui.com/ui/overview/primitive): Text, identity marks and graphic controls with their own natural geometry.
 
 - [Avatar](https://basaltui.com/ui/avatar)
-- [Basalt Mark](https://basaltui.com/ui/basalt-mark)
-- [BatteryMeter](https://basaltui.com/ui/battery-meter)
 - [Checkbox](https://basaltui.com/ui/checkbox)
 - [Fab](https://basaltui.com/ui/fab)
 - [Label](https://basaltui.com/ui/label)
@@ -119,7 +112,6 @@ Each URL below is a public documentation surface.
 
 [Overview](https://basaltui.com/ui/overview/block): Reusable page-level patterns composed from the same component rules.
 
-- [Delete Resource](https://basaltui.com/ui/delete-resource)
 - [Page Header](https://basaltui.com/ui/page-header)
 - [Resource List](https://basaltui.com/ui/resource-list)
 

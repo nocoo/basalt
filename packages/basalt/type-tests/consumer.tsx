@@ -1,5 +1,4 @@
 import { Button, Field, Text, ThemeProvider } from "@nocoo/basalt";
-import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button as GranularButton } from "@nocoo/basalt/components/button";
 import {
 	ChartFrame,
@@ -9,6 +8,7 @@ import {
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { Field as GranularField } from "@nocoo/basalt/components/field";
+import { Meter } from "@nocoo/basalt/components/meter";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
 import { StatCard } from "@nocoo/basalt/components/stat-card";
 import {
@@ -65,7 +65,7 @@ const resourceColumns: DataTableColumn<{ id: string; count: bigint }>[] = [
 ];
 export const readableHeader: string = resourceColumns[0].header.toUpperCase();
 export const serverResourceTable = (
-	<ResourceList title="Resources" data={[]} toolbar={<BatteryMeter value={42} label="Gateway" />}>
+	<ResourceList title="Resources" data={[]} toolbar={<Meter value={42} label="Gateway" />}>
 		<DataTable
 			data={[{ id: "a", count: 12n }]}
 			columns={resourceColumns}
@@ -126,8 +126,7 @@ const _invalidTableAlignment = <TableCell textAlign="right" />;
 const _invalidTableDirection = <TableSortableHeader sorted="descending">Count</TableSortableHeader>;
 // @ts-expect-error ResourceList preserves required data for existing callers reading the props type.
 export const badResourceList = <ResourceList title="Missing rows" />;
-// @ts-expect-error Battery meters always need an accessible name.
-export const unnamedBattery = <BatteryMeter value={42} />;
+export const unlabelledMeter = <Meter value={42} />;
 
 import { FileDropzone, type FileRejection } from "@nocoo/basalt/components/file-dropzone";
 import { FilterBar, FilterChip } from "@nocoo/basalt/components/filter-bar";

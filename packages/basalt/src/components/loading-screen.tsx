@@ -1,6 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
-import { BasaltMark } from "./basalt-mark";
 
 export function LoadingScreen({
 	label = "Loading",
@@ -22,7 +21,7 @@ export function LoadingScreen({
 			{...props}
 		>
 			<div className="flex flex-col items-center gap-basalt-space-lg">
-				{mark ?? <BasaltMark className="h-basalt-8 w-basalt-8 text-basalt-foreground" />}
+				{mark ?? null}
 				<div
 					className="relative h-px overflow-hidden rounded-basalt-full bg-basalt-border"
 					style={{ width: "6rem" }}

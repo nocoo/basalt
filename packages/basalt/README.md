@@ -6,7 +6,7 @@
 
 Matte design system component library. ESM, granular exports, Tailwind CSS v4 or standalone CSS.
 
-`BasaltMark` and the default `LoadingScreen` mark embed the transparent corner-tower identity, so consuming applications need no public asset path. The README uses the separate large presentation. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](https://github.com/nocoo/basalt/blob/main/assets/brand/README.md).
+Applications own brand artwork. `LoadingScreen` renders caller-supplied `mark` content when present. The README uses the separate large presentation. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](https://github.com/nocoo/basalt/blob/main/assets/brand/README.md).
 
 - **Package:** `@nocoo/basalt`
 - **Documentation & Showcase:** [https://basaltui.com](https://basaltui.com)

@@ -6,9 +6,7 @@ import {
 } from "../../catalog-source";
 import { CHART_EXAMPLES } from "../../examples/chart";
 import { DATA_TABLE_EXAMPLES } from "../../examples/data-table";
-import { DELETE_RESOURCE_EXAMPLES } from "../../examples/delete-resource";
 import { DESCRIPTION_LIST_EXAMPLES } from "../../examples/description-list";
-import { FLOW_EXAMPLES } from "../../examples/flow";
 import { GRID_EXAMPLES } from "../../examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
 import { RESOURCE_LIST_EXAMPLES } from "../../examples/resource-list";
@@ -20,9 +18,7 @@ import { TABLE_EXAMPLES } from "../../examples/table";
 import { TABLE_PAGER_EXAMPLES } from "../../examples/table-pager";
 import { API as chartApi } from "../../generated/catalog-api/chart";
 import { API as dataTableApi } from "../../generated/catalog-api/data-table";
-import { API as deleteResourceApi } from "../../generated/catalog-api/delete-resource";
 import { API as descriptionListApi } from "../../generated/catalog-api/description-list";
-import { API as flowApi } from "../../generated/catalog-api/flow";
 import { API as gridApi } from "../../generated/catalog-api/grid";
 import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
 import { API as resourceListApi } from "../../generated/catalog-api/resource-list";
@@ -110,17 +106,6 @@ export default function Example() {
 			<GridItem>3</GridItem>
 			<GridItem>4</GridItem>
 		</Grid>
-	);
-}`;
-
-const FLOW_USAGE = `import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
-
-export default function Example() {
-	return (
-		<Flow>
-			<FlowNode>Step 1</FlowNode>
-			<FlowNode>Step 2</FlowNode>
-		</Flow>
 	);
 }`;
 
@@ -223,20 +208,6 @@ export default function Example() {
 		},
 		examples: GRID_EXAMPLES,
 	},
-	flow: {
-		docs: {
-			...extraDocs(
-				"Flow",
-				"flow",
-				"Step flow.",
-				"<Flow><FlowNode>Step 1</FlowNode><FlowNode>Step 2</FlowNode></Flow>",
-				undefined,
-				FLOW_USAGE,
-			),
-			api: flowApi,
-		},
-		examples: FLOW_EXAMPLES,
-	},
 	"section-rule": {
 		docs: {
 			...extraDocs(
@@ -315,17 +286,5 @@ export default function Example() {
 			api: resourceListApi,
 		},
 		examples: RESOURCE_LIST_EXAMPLES,
-	},
-	"delete-resource": {
-		docs: {
-			...extraDocs(
-				"DeleteResource",
-				"delete-resource",
-				"A confirmation dialog that deletes a named resource with error alert and retry feedback. When onDelete throws or rejects, the dialog remains open displaying an accessible role=alert message, which defaults to the error message or can be customized via ReactNode or an (error: unknown) => ReactNode formatter.",
-				'<DeleteResource name="Atlas" onDelete={() => undefined} />',
-			),
-			api: deleteResourceApi,
-		},
-		examples: DELETE_RESOURCE_EXAMPLES,
 	},
 });

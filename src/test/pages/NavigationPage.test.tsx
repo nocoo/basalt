@@ -13,8 +13,8 @@ describe("NavigationPage", () => {
 		expect(source).toContain('t("common.of")');
 		expect(source).toContain('t("common.results")');
 		expect(source).not.toContain("41-50");
-		expect(source).toContain("<Pagination page={page1}");
-		expect(source).toContain("<Pagination page={page2} pageCount={20}");
+		expect(source).toContain("<TablePager page={page1}");
+		expect(source).toContain("<TablePager page={page2}");
 	});
 
 	it("renders the contextual range through TablePager", () => {

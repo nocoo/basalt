@@ -17,11 +17,11 @@ export async function assertConsumerResources(page: Page) {
 				"manual page two must not be sliced again",
 			);
 			assert.equal(
-				await table.getByRole("meter", { name: "Cedar, discharging" }).getAttribute("value"),
+				await table.getByRole("meter", { name: "Cedar" }).getAttribute("aria-valuenow"),
 				"0",
 			);
 			assert.equal(
-				await table.getByRole("meter", { name: "Delta, discharging" }).getAttribute("value"),
+				await table.getByRole("meter", { name: "Delta" }).getAttribute("aria-valuenow"),
 				"14",
 			);
 			const name = table.getByRole("button", { name: "Name", exact: true });

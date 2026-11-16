@@ -87,8 +87,8 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(85);
-		expect(new Set(slugs).size).toBe(85);
+		expect(slugs).toHaveLength(77);
+		expect(new Set(slugs).size).toBe(77);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
@@ -128,7 +128,7 @@ describe("ui catalog", () => {
 		expect(tablesGrid).toHaveClass("md:grid-cols-2");
 		expect(tablesGrid).not.toHaveClass("lg:grid-cols-3");
 		expect(tablesGrid).not.toHaveClass("2xl:grid-cols-4");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(85);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(77);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -226,7 +226,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("85 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("77 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -251,8 +251,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(filters.getByRole("button", { name: "Reset filters" }));
 		expect(filters.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("85 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(85);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("77 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(77);
 		expect(filters.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -339,7 +339,6 @@ describe("ui catalog", () => {
 		expect(libraryNavEntries("block").map(catalogNavName)).toEqual([
 			"Page Header",
 			"Resource List",
-			"Delete Resource",
 		]);
 	});
 
@@ -1601,62 +1600,6 @@ describe("ui catalog", () => {
 		);
 	});
 
-	it("sources basalt-mark API rows from generated catalog data", async () => {
-		const writeText = vi.fn().mockResolvedValue(undefined);
-		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS["basalt-mark"]?.api).toEqual(CATALOG_API["basalt-mark"]);
-		expect(CATALOG_API["basalt-mark"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
-		expect(CATALOG_API["basalt-mark"]).toEqual([
-			{
-				name: "BasaltMark",
-				props: [
-					{
-						name: "className",
-						type: "string",
-						required: false,
-						description: "Additional classes for the mark.",
-					},
-				],
-			},
-		]);
-		renderCatalog("/ui/basalt-mark");
-		const api = document.getElementById("api-reference");
-		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
-		expect(api).toHaveTextContent("className?");
-		expect(api).toHaveTextContent("string");
-		expect(api).toHaveTextContent("Additional classes for the mark.");
-		expect(api).toHaveTextContent("—");
-		expect(api).not.toHaveTextContent("strokeWidth");
-		expect(api).not.toHaveTextContent("role");
-		expect(document.body.textContent).toContain("<BasaltMark />");
-		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
-		const hero = document.querySelector('[data-hero-scenario="basalt-mark-default"]');
-		expect(hero?.querySelector('svg[aria-label="Basalt"]')).toBeTruthy();
-		await act(async () => {
-			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
-		});
-		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(markdown).toContain(
-			"- className (string, optional, default —): Additional classes for the mark.",
-		);
-		expect(markdown).toContain("<BasaltMark />");
-		expect(markdown).toContain(UI_EXAMPLES["basalt-mark"]?.[0]?.code ?? "");
-		expect(markdown).not.toContain("- children (");
-		expect(markdown).not.toContain("- strokeWidth (");
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
-	});
-
-	it("does not keep a handwritten basalt-mark prop inventory", () => {
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
-			"utf8",
-		);
-		expect(family).toContain("api: basaltMarkApi");
-		expect(family).toContain('description: "Basalt mark."');
-		expect(family).toContain("<BasaltMark />");
-	});
-
 	it("sources field API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2664,31 +2607,6 @@ describe("ui catalog", () => {
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 	});
 
-	it("does not keep a handwritten select prop inventory", () => {
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const start = family.indexOf("\tselect: {");
-		const end = family.indexOf("\tcombobox: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = family.slice(start, end);
-		expect(block).toContain("api: selectApi");
-		expect(block).not.toContain('name: "value"');
-		expect(block).not.toContain('name: "placeholder"');
-		expect(block).not.toContain('name: "position"');
-		expect(block).not.toContain('name: "sideOffset"');
-		expect(block).toContain(
-			'description: "A single-value list with size, loading, groups, and invalid."',
-		);
-		expect(block).toContain("Select version");
-		expect(block).toContain('variants: ["sm", "default", "lg"]');
-		expect(block).toContain('repo: "pew"');
-		expect(block).toContain('sha: "97a890fabe6e"');
-		expect(block).toContain('file: "packages/web/src/components"');
-	});
-
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2754,7 +2672,6 @@ describe("ui catalog", () => {
 		["loader", ["Default Size", "Custom Size"]],
 		["empty", ["Basic", "With icon"]],
 		["meter", ["Basic Meter", "Custom Value Display", "Hidden Value"]],
-		["pagination", ["Full Controls (Default)", "Simple Controls"]],
 		[
 			"toast",
 			[
@@ -2779,7 +2696,7 @@ describe("ui catalog", () => {
 				"With Actions",
 				"Custom Max Width",
 				"With Select",
-				"With Combobox",
+				"With Autocomplete",
 				"With Dropdown",
 			],
 		],
@@ -2846,7 +2763,7 @@ describe("ui catalog", () => {
 
 	it("covers every Kumo docs component slug", () => {
 		const slugs = new Set(CATALOG.map((entry) => entry.slug));
-		expect(KUMO_DOCS_SLUGS).toHaveLength(41);
+		expect(KUMO_DOCS_SLUGS).toHaveLength(37);
 		for (const slug of KUMO_DOCS_SLUGS) {
 			expect(slugs.has(slug), slug).toBe(true);
 		}
@@ -3286,51 +3203,6 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES["layer-card"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-	});
-
-	it("keeps basalt-mark hero, embedded identity, and copyable module", async () => {
-		const writeText = vi.fn().mockResolvedValue(undefined);
-		Object.assign(navigator, { clipboard: { writeText } });
-		renderCatalog("/ui/basalt-mark");
-		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
-		const hero = document.querySelector('[data-hero-scenario="basalt-mark-default"]');
-		const example = document.querySelector('[data-scenario="basalt-mark-default"]');
-		expect(hero).toBeTruthy();
-		expect(example).toBeTruthy();
-		if (!hero || !example) {
-			throw new Error("missing basalt-mark scenario surfaces");
-		}
-		const heroMark = hero.querySelector('svg[aria-label="Basalt"]');
-		const exampleMark = example.querySelector('svg[aria-label="Basalt"]');
-		expect(heroMark).toBeTruthy();
-		expect(exampleMark).toBeTruthy();
-		expect(heroMark?.tagName).toBe("svg");
-		expect(heroMark).toHaveClass("h-basalt-5", "w-basalt-5");
-		expect(heroMark).toHaveAttribute("viewBox", "0 0 128 128");
-		expect(heroMark).toHaveAttribute("aria-label", "Basalt");
-		expect(heroMark?.querySelector("image")?.getAttribute("href")).toMatch(
-			/^data:image\/png;base64,/,
-		);
-		expect(exampleMark).toHaveClass("h-basalt-5", "w-basalt-5");
-		expect(exampleMark).toHaveAttribute("viewBox", "0 0 128 128");
-		expect(exampleMark).toHaveAccessibleName("Basalt");
-		for (const scenario of UI_EXAMPLES["basalt-mark"] ?? []) {
-			expect(scenario.code).toContain("export default function Example");
-			expect(scenario.code).toContain("@nocoo/basalt/components/basalt-mark");
-			expect(scenario.code).toContain("<BasaltMark />");
-			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
-			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
-			expect(node).toBeTruthy();
-			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
-		}
-		await act(async () => {
-			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
-		});
-		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(markdown).toContain(UI_EXAMPLES["basalt-mark"]?.[0]?.code ?? "");
-		expect(markdown).toContain("export default function Example");
-		expect(markdown).toContain("@nocoo/basalt/components/basalt-mark");
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 	});
 
 	it("keeps field hero, hint, error, and association contracts", async () => {

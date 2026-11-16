@@ -1,7 +1,6 @@
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { Pagination } from "@nocoo/basalt/components/pagination";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { SegmentControl } from "@nocoo/basalt/components/segment-control";
 import { TablePager } from "@nocoo/basalt/components/table-pager";
@@ -155,13 +154,13 @@ export default function NavigationPage() {
 						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.short5Pages")}
 						</p>
-						<Pagination page={page1} pageCount={5} onPageChange={setPage1} />
+						<TablePager page={page1} pageSize={1} totalCount={5} onPageChange={setPage1} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
 						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.long20Pages")}
 						</p>
-						<Pagination page={page2} pageCount={20} onPageChange={setPage2} />
+						<TablePager page={page2} pageSize={1} totalCount={20} onPageChange={setPage2} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
 						<p className="text-basalt-sm text-muted-foreground font-mono">

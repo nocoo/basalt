@@ -34,7 +34,6 @@ const FEEDBACK_SCENARIOS = {
 		"skeleton-line-width",
 		"skeleton-line-height",
 	],
-	"battery-meter": ["battery-meter-charge-states"],
 	meter: [
 		"meter-basic-meter",
 		"meter-custom-value-display",
@@ -77,7 +76,7 @@ const FEEDBACK_DESCRIPTIONS = {
 	"skeleton-line":
 		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
 	meter:
-		"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. BatteryMeter retains device-specific battery semantics.",
+		"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. Meter retains device-specific battery semantics.",
 	toast:
 		"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
 	"clipboard-text":
@@ -92,7 +91,7 @@ const FEEDBACK_DESCRIPTIONS = {
 describe("feedback catalog content family", () => {
 	it("owns exactly eleven migrated slugs and eighty-six generated owners", () => {
 		expect(Object.keys(feedback)).toEqual(Object.keys(FEEDBACK_SCENARIOS));
-		expect(Object.keys(feedback)).toHaveLength(12);
+		expect(Object.keys(feedback)).toHaveLength(11);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "feedback")
@@ -101,14 +100,14 @@ describe("feedback catalog content family", () => {
 		).toEqual(Object.keys(FEEDBACK_SCENARIOS).sort());
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
-		).toHaveLength(13);
+		).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
-		).toHaveLength(23);
+		).toHaveLength(22);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "overlay"),
 		).toHaveLength(11);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(77);
 	});
 
 	it("keeps the forty-five final winner scenarios in their audited order", () => {
@@ -129,7 +128,7 @@ describe("feedback catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(51);
+		expect(count).toBe(50);
 	});
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {

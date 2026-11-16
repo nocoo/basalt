@@ -17,19 +17,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
-import {
-	MenuBarContent,
-	MenuBarItem,
-	MenuBarMenu,
-	MenuBarRoot,
-	MenuBarTrigger,
-} from "@nocoo/basalt/components/menu-bar";
-import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-} from "@nocoo/basalt/components/navigation-menu";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
@@ -43,15 +30,11 @@ import {
 	provenanceFromLegacy,
 } from "../../catalog-source";
 import { EDITABLE_NAV_ITEM_EXAMPLES } from "../../examples/editable-nav-item";
-import { PAGINATION_EXAMPLES } from "../../examples/pagination";
 import { SIDEBAR_EXAMPLES } from "../../examples/sidebar";
 import { TABLE_OF_CONTENTS_EXAMPLES } from "../../examples/table-of-contents";
 import { API as breadcrumbsApi } from "../../generated/catalog-api/breadcrumbs";
 import { API as commandPaletteApi } from "../../generated/catalog-api/command-palette";
 import { API as editableNavItemApi } from "../../generated/catalog-api/editable-nav-item";
-import { API as menuBarApi } from "../../generated/catalog-api/menu-bar";
-import { API as navigationMenuApi } from "../../generated/catalog-api/navigation-menu";
-import { API as paginationApi } from "../../generated/catalog-api/pagination";
 import { API as sidebarApi } from "../../generated/catalog-api/sidebar";
 import { API as tableOfContentsApi } from "../../generated/catalog-api/table-of-contents";
 import { API as tabsApi } from "../../generated/catalog-api/tabs";
@@ -244,37 +227,6 @@ export default function Example() {
 }`,
 );
 
-const paginationDocs = extraDocs(
-	"Pagination",
-	"pagination",
-	"Page controls.",
-	"<Pagination page={page} pageCount={10} onPageChange={setPage} />",
-	[
-		{ name: "page", type: "number" },
-		{ name: "pageCount", type: "number", default: "10" },
-		{ name: "onPageChange", type: "(page: number) => void" },
-		{
-			name: "simple",
-			type: "boolean",
-			default: "false",
-			description: "Previous and next only.",
-		},
-		{
-			name: "disabled",
-			type: "boolean",
-			default: "false",
-			description: "Disable every pagination control.",
-		},
-	],
-	`import { Pagination } from "@nocoo/basalt/components/pagination";
-import { useState } from "react";
-
-export default function Example() {
-	const [page, setPage] = useState(1);
-	return <Pagination page={page} pageCount={10} onPageChange={setPage} />;
-}`,
-);
-
 const breadcrumbsDocs: CatalogDocsDraft = {
 	description: "Hierarchical location.",
 	usage: `import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
@@ -284,72 +236,6 @@ export default function Example() {
 }`,
 	variants: [],
 	api: breadcrumbsApi,
-	provenance: EXTRA_PROVENANCE,
-};
-
-const navigationMenuDocs: CatalogDocsDraft = {
-	description: "Site navigation.",
-	usage: `import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-} from "@nocoo/basalt/components/navigation-menu";
-
-export default function Example() {
-	return (
-		<NavigationMenu>
-			<NavigationMenuList>
-				<NavigationMenuItem>
-					<NavigationMenuLink href="#docs" active>Docs</NavigationMenuLink>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuLink href="#guides">Guides</NavigationMenuLink>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuLink href="#api">API</NavigationMenuLink>
-				</NavigationMenuItem>
-			</NavigationMenuList>
-		</NavigationMenu>
-	);
-}`,
-	variants: [],
-	api: navigationMenuApi,
-	provenance: EXTRA_PROVENANCE,
-};
-
-const menuBarDocs: CatalogDocsDraft = {
-	description: "Desktop menu bar.",
-	usage: `import {
-	MenuBar,
-	MenuBarContent,
-	MenuBarItem,
-	MenuBarMenu,
-	MenuBarTrigger,
-} from "@nocoo/basalt/components/menu-bar";
-
-export default function Example() {
-	return (
-		<MenuBar>
-			<MenuBarMenu>
-				<MenuBarTrigger>File</MenuBarTrigger>
-				<MenuBarContent>
-					<MenuBarItem onSelect={() => console.log("new")}>New Tab</MenuBarItem>
-					<MenuBarItem onSelect={() => console.log("save")}>Save</MenuBarItem>
-				</MenuBarContent>
-			</MenuBarMenu>
-			<MenuBarMenu>
-				<MenuBarTrigger>Edit</MenuBarTrigger>
-				<MenuBarContent>
-					<MenuBarItem onSelect={() => console.log("undo")}>Undo</MenuBarItem>
-					<MenuBarItem onSelect={() => console.log("redo")}>Redo</MenuBarItem>
-				</MenuBarContent>
-			</MenuBarMenu>
-		</MenuBar>
-	);
-}`,
-	variants: [],
-	api: menuBarApi,
 	provenance: EXTRA_PROVENANCE,
 };
 
@@ -609,10 +495,6 @@ export default function Example() {
 			},
 		],
 	},
-	pagination: {
-		docs: { ...paginationDocs, api: paginationApi },
-		examples: PAGINATION_EXAMPLES,
-	},
 	breadcrumbs: {
 		docs: breadcrumbsDocs,
 		examples: [
@@ -636,54 +518,6 @@ export default function Example() {
 					],
 				),
 				render: () => <Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />,
-			},
-		],
-	},
-	"navigation-menu": {
-		docs: navigationMenuDocs,
-		examples: [
-			{
-				id: catalogScenarioId("navigation-menu", "default"),
-				title: "Default",
-				code: navigationMenuDocs.usage,
-				render: () => (
-					<NavigationMenu>
-						<NavigationMenuList>
-							<NavigationMenuItem>
-								<NavigationMenuLink href="#docs" active>
-									Docs
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<NavigationMenuLink href="#guides">Guides</NavigationMenuLink>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<NavigationMenuLink href="#api">API</NavigationMenuLink>
-							</NavigationMenuItem>
-						</NavigationMenuList>
-					</NavigationMenu>
-				),
-			},
-		],
-	},
-	"menu-bar": {
-		docs: menuBarDocs,
-		examples: [
-			{
-				id: catalogScenarioId("menu-bar", "default"),
-				title: "Default",
-				code: menuBarDocs.usage,
-				render: () => (
-					<MenuBarRoot>
-						<MenuBarMenu>
-							<MenuBarTrigger>File</MenuBarTrigger>
-							<MenuBarContent>
-								<MenuBarItem>New Tab</MenuBarItem>
-								<MenuBarItem>Save</MenuBarItem>
-							</MenuBarContent>
-						</MenuBarMenu>
-					</MenuBarRoot>
-				),
 			},
 		],
 	},

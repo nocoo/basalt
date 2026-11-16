@@ -33,10 +33,10 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 85 ready status truth", () => {
+	it("uses the generated 77 ready status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(85);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(85);
+		expect(statuses).toHaveLength(77);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(77);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(0);
 	});
 

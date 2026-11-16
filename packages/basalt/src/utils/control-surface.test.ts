@@ -6,17 +6,17 @@ import { CONTROL_SURFACE_CLASS, controlSurfaceClass } from "./control-surface";
 
 const pkgRoot = "packages/basalt";
 const CONSUMERS = [
-	"input.tsx",
-	"input-area.tsx",
-	"select.tsx",
-	"input-group.tsx",
-	"clipboard-text.tsx",
-	"code.tsx",
-	"pagination.tsx",
+	"src/components/input.tsx",
+	"src/components/input-area.tsx",
+	"src/components/select.tsx",
+	"src/components/input-group.tsx",
+	"src/components/clipboard-text.tsx",
+	"src/components/code.tsx",
+	"src/utils/pagination-nav.tsx",
 ] as const;
 
 function sourceOf(file: string) {
-	return readFileSync(path.join(pkgRoot, "src/components", file), "utf8");
+	return readFileSync(path.join(pkgRoot, file), "utf8");
 }
 
 describe("control surface", () => {
@@ -40,12 +40,16 @@ describe("control surface", () => {
 
 	it.each(CONSUMERS)("%s imports and calls the shared helper", (file) => {
 		const source = sourceOf(file);
-		expect(source).toContain('from "../utils/control-surface"');
+		expect(source).toContain(
+			file === "src/utils/pagination-nav.tsx"
+				? 'from "./control-surface"'
+				: 'from "../utils/control-surface"',
+		);
 		expect(source).toContain("controlSurfaceClass(");
 	});
 
 	it("does not restyle inline Code with the shared surface", () => {
-		const source = sourceOf("code.tsx");
+		const source = sourceOf("src/components/code.tsx");
 		const inline = source.slice(
 			source.indexOf("export function Code("),
 			source.indexOf("export function CodeBlock"),
@@ -64,7 +68,7 @@ describe("control surface", () => {
 	});
 
 	it("does not apply the shared surface to Collapsible", () => {
-		const source = sourceOf("collapsible.tsx");
+		const source = sourceOf("src/components/collapsible.tsx");
 		expect(source).not.toContain("control-surface");
 		expect(source).toContain("text-basalt-base");
 		expect(source).not.toContain("text-basalt-lg");

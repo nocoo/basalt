@@ -256,10 +256,17 @@ export default function LoginRecipe() {
 Search, an error with retry, formatted status cells, and a confirmation flow use page-owned state. The first local deletion fails so the retry path can be tested. For remote pagination use the existing DataTable manual-state adapter.
 
 ```tsx compile:recipe-resources
+import {
+	AlertDialog,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogTitle,
+} from "@nocoo/basalt/components/alert-dialog";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Button } from "@nocoo/basalt/components/button";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
-import { DeleteResource } from "@nocoo/basalt/components/delete-resource";
 import { Input } from "@nocoo/basalt/components/input";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
@@ -278,8 +285,30 @@ export default function ResourcesRecipe() {
 	const [query, setQuery] = useState("");
 	const [error, setError] = useState(true);
 	const [message, setMessage] = useState("");
+	const [target, setTarget] = useState<Project | null>(null);
+	const [deleteError, setDeleteError] = useState("");
+	const [pending, setPending] = useState(false);
 	const failDeletion = useRef(true);
 	const filtered = rows.filter((row) => row.name.toLowerCase().includes(query.toLowerCase()));
+	const remove = async () => {
+		if (!target) return;
+		setPending(true);
+		setDeleteError("");
+		try {
+			await Promise.resolve();
+			if (failDeletion.current) {
+				failDeletion.current = false;
+				throw new Error("Temporary conflict. Retry this deletion.");
+			}
+			setRows((current) => current.filter((item) => item.id !== target.id));
+			setMessage("Deleted " + target.name);
+			setTarget(null);
+		} catch (cause) {
+			setDeleteError(cause instanceof Error ? cause.message : "Delete failed.");
+		} finally {
+			setPending(false);
+		}
+	};
 	const columns: DataTableColumn<Project>[] = [
 		{ id: "name", header: "Project", accessor: (row) => row.name },
 		{
@@ -294,21 +323,17 @@ export default function ResourcesRecipe() {
 			header: "Actions",
 			sortable: false,
 			accessor: (row) => (
-				<DeleteResource
-					name={row.name}
-					onDelete={async () => {
-						if (failDeletion.current) {
-							failDeletion.current = false;
-							throw new Error("Temporary conflict. Retry this deletion.");
-						}
-						setRows((current) => current.filter((item) => item.id !== row.id));
-						setMessage("Deleted " + row.name);
-					}}
-				/>
+				<Button
+					variant="ghost"
+					size="sm"
+					aria-label={`Delete ${row.name}`}
+					onClick={() => setTarget(row)}
+				>
+					Delete
+				</Button>
 			),
 		},
 	];
-	// A document page: the shell grows with content and the island owns the desktop inset.
 	return (
 		<ThemeProvider>
 			<AppShell layout="document">
@@ -356,6 +381,33 @@ export default function ResourcesRecipe() {
 					</ContentIsland>
 				</AppMain>
 			</AppShell>
+			<AlertDialog
+				open={target !== null}
+				onOpenChange={(open) => {
+					if (!open && !pending) {
+						setTarget(null);
+						setDeleteError("");
+					}
+				}}
+			>
+				<AlertDialogContent>
+					<AlertDialogTitle>Delete {target?.name}</AlertDialogTitle>
+					<AlertDialogDescription>
+						This action removes the project from this local demo.
+					</AlertDialogDescription>
+					{deleteError ? (
+						<p role="alert" className="text-basalt-destructive">
+							{deleteError}
+						</p>
+					) : null}
+					<AlertDialogFooter>
+						<AlertDialogCancel disabled={pending}>Cancel</AlertDialogCancel>
+						<Button variant="destructive" loading={pending} onClick={remove}>
+							Delete
+						</Button>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</ThemeProvider>
 	);
 }

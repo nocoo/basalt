@@ -28,13 +28,6 @@ import {
 } from "@nocoo/basalt/components/dropdown-menu";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@nocoo/basalt/components/hover-card";
 import {
-	MenuBar,
-	MenuBarContent,
-	MenuBarItem,
-	MenuBarMenu,
-	MenuBarTrigger,
-} from "@nocoo/basalt/components/menu-bar";
-import {
 	Popover,
 	PopoverContent,
 	PopoverDescription,
@@ -250,16 +243,14 @@ const RENDERERS: Record<ModuleStem, (config: AuditConfig) => React.ReactNode> = 
 		</ContextMenu>
 	),
 	"menu-bar": ({ open, forceMount }) => (
-		<MenuBar value={open ? "audit" : ""}>
-			<MenuBarMenu value="audit">
-				<MenuBarTrigger data-audit-trigger={true} type="button">
-					Trigger
-				</MenuBarTrigger>
-				<MenuBarContent data-audit-content="menu-bar" forceMount={forceMount}>
-					<MenuBarItem>Inside action</MenuBarItem>
-				</MenuBarContent>
-			</MenuBarMenu>
-		</MenuBar>
+		<DropdownMenu open={open}>
+			<DropdownMenuTrigger data-audit-trigger={true} type="button">
+				Trigger
+			</DropdownMenuTrigger>
+			<DropdownMenuContent data-audit-content="menu-bar" forceMount={forceMount}>
+				<DropdownMenuItem>Inside action</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	),
 };
 

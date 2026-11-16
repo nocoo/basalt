@@ -6,8 +6,6 @@ import { API as autocompleteApi } from "./catalog-api/autocomplete";
 import { API as avatarApi } from "./catalog-api/avatar";
 import { API as badgeApi } from "./catalog-api/badge";
 import { API as bannerApi } from "./catalog-api/banner";
-import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
-import { API as batteryMeterApi } from "./catalog-api/battery-meter";
 import { API as breadcrumbsApi } from "./catalog-api/breadcrumbs";
 import { API as buttonApi } from "./catalog-api/button";
 import { API as chartApi } from "./catalog-api/chart";
@@ -16,13 +14,11 @@ import { API as clipboardTextApi } from "./catalog-api/clipboard-text";
 import { API as codeApi } from "./catalog-api/code";
 import { API as codeBlockApi } from "./catalog-api/code-block";
 import { API as collapsibleApi } from "./catalog-api/collapsible";
-import { API as comboboxApi } from "./catalog-api/combobox";
 import { API as commandPaletteApi } from "./catalog-api/command-palette";
 import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
 import { API as contextMenuApi } from "./catalog-api/context-menu";
 import { API as dataTableApi } from "./catalog-api/data-table";
 import { API as datePickerApi } from "./catalog-api/date-picker";
-import { API as deleteResourceApi } from "./catalog-api/delete-resource";
 import { API as descriptionListApi } from "./catalog-api/description-list";
 import { API as dialogApi } from "./catalog-api/dialog";
 import { API as dockApi } from "./catalog-api/dock";
@@ -33,7 +29,6 @@ import { API as fabApi } from "./catalog-api/fab";
 import { API as fieldApi } from "./catalog-api/field";
 import { API as fileDropzoneApi } from "./catalog-api/file-dropzone";
 import { API as filterBarApi } from "./catalog-api/filter-bar";
-import { API as flowApi } from "./catalog-api/flow";
 import { API as gridApi } from "./catalog-api/grid";
 import { API as hoverCardApi } from "./catalog-api/hover-card";
 import { API as iconPickerApi } from "./catalog-api/icon-picker";
@@ -47,12 +42,9 @@ import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
 import { API as linkProviderApi } from "./catalog-api/link-provider";
 import { API as loaderApi } from "./catalog-api/loader";
-import { API as menuBarApi } from "./catalog-api/menu-bar";
 import { API as meterApi } from "./catalog-api/meter";
 import { API as multiSelectApi } from "./catalog-api/multi-select";
-import { API as navigationMenuApi } from "./catalog-api/navigation-menu";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
-import { API as paginationApi } from "./catalog-api/pagination";
 import { API as popoverApi } from "./catalog-api/popover";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as resourceListApi } from "./catalog-api/resource-list";
@@ -93,8 +85,6 @@ export const CATALOG_API = {
 	avatar: avatarApi,
 	badge: badgeApi,
 	banner: bannerApi,
-	"basalt-mark": basaltMarkApi,
-	"battery-meter": batteryMeterApi,
 	breadcrumbs: breadcrumbsApi,
 	button: buttonApi,
 	chart: chartApi,
@@ -103,13 +93,11 @@ export const CATALOG_API = {
 	code: codeApi,
 	"code-block": codeBlockApi,
 	collapsible: collapsibleApi,
-	combobox: comboboxApi,
 	"command-palette": commandPaletteApi,
 	"confirm-dialog": confirmDialogApi,
 	"context-menu": contextMenuApi,
 	"data-table": dataTableApi,
 	"date-picker": datePickerApi,
-	"delete-resource": deleteResourceApi,
 	"description-list": descriptionListApi,
 	dialog: dialogApi,
 	dock: dockApi,
@@ -120,7 +108,6 @@ export const CATALOG_API = {
 	field: fieldApi,
 	"file-dropzone": fileDropzoneApi,
 	"filter-bar": filterBarApi,
-	flow: flowApi,
 	grid: gridApi,
 	"hover-card": hoverCardApi,
 	"icon-picker": iconPickerApi,
@@ -134,12 +121,9 @@ export const CATALOG_API = {
 	"link-button": linkButtonApi,
 	"link-provider": linkProviderApi,
 	loader: loaderApi,
-	"menu-bar": menuBarApi,
 	meter: meterApi,
 	"multi-select": multiSelectApi,
-	"navigation-menu": navigationMenuApi,
 	"page-header": pageHeaderApi,
-	pagination: paginationApi,
 	popover: popoverApi,
 	radio: radioApi,
 	"resource-list": resourceListApi,

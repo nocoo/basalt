@@ -32,11 +32,11 @@ describe("overlay catalog content family", () => {
 		).toEqual([...OVERLAY_SLUGS].sort());
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
-		).toHaveLength(13);
+		).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
-		).toHaveLength(23);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		).toHaveLength(22);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(77);
 	});
 
 	it("keeps tooltip examples and generated API shard by reference", () => {
@@ -81,7 +81,7 @@ describe("overlay catalog content family", () => {
 			"dialog-with-dropdown",
 		]);
 		expect(overlay.dialog?.examples[6]?.code).toContain("SelectItem");
-		expect(overlay.dialog?.examples[7]?.code).toContain("Combobox");
+		expect(overlay.dialog?.examples[7]?.code).toContain("Autocomplete");
 		expect(overlay.dialog?.examples[8]?.code).toContain("DropdownMenu");
 		expect(overlay.popover?.examples.map((example) => example.id)).toEqual([
 			"popover-basic-popover",

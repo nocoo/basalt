@@ -52,7 +52,7 @@ describe("catalog API generator contract 2/4", () => {
 		const surfaces = Object.fromEntries(
 			Object.entries(generated).map(([slug, values]) => [slug, values.map((value) => value.name)]),
 		);
-		expect(Object.keys(surfaces)).toHaveLength(85);
+		expect(Object.keys(surfaces)).toHaveLength(77);
 		expect(surfaces.chart).toEqual(["ChartFrame", "ChartTooltipContent", "ChartLegend"]);
 		expect(surfaces["stat-card"]).toEqual(["StatCard", "StatGrid"]);
 		expect(surfaces.button).toEqual(["Button"]);
@@ -73,7 +73,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts five InputGroup surfaces with wrapper defaults and an empty Suffix", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(85);
+		expect(Object.keys(generated)).toHaveLength(77);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -170,7 +170,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts SensitiveInput props from SensitiveInputProps as required reveal and hide labels", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(85);
+		expect(Object.keys(generated)).toHaveLength(77);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -288,7 +288,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Checkbox props from CheckboxProps as an optional checked union", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(85);
+		expect(Object.keys(generated)).toHaveLength(77);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -355,7 +355,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Radio props from RadioProps as a required string value", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(85);
+		expect(Object.keys(generated)).toHaveLength(77);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -394,7 +394,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Switch props from SwitchProps as optional checked and size", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(85);
+		expect(Object.keys(generated)).toHaveLength(77);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -442,7 +442,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Select props from seven named types as twelve local rows", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(85);
+		expect(Object.keys(generated)).toHaveLength(77);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",

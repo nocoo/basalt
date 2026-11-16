@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
-import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	DataTable,
@@ -9,6 +8,7 @@ import {
 	type DataTableSort,
 } from "@nocoo/basalt/components/data-table";
 import { Input } from "@nocoo/basalt/components/input";
+import { Meter } from "@nocoo/basalt/components/meter";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
 import {
 	Select,
@@ -217,13 +217,7 @@ export default function OperationsTable() {
 				id: "battery",
 				header: "Battery",
 				width: 115,
-				accessor: (row) => (
-					<BatteryMeter
-						value={row.battery}
-						label={`${row.name} battery`}
-						status={row.status === "Offline" ? "offline" : "discharging"}
-					/>
-				),
+				accessor: (row) => <Meter value={row.battery} label={`${row.name} battery`} />,
 				sortValue: (row) => row.battery,
 			},
 			{

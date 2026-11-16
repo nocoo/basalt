@@ -7,16 +7,7 @@ const NAVIGATION_SCENARIOS = {
 	"editable-nav-item": ["editable-nav-item-folders", "editable-nav-item-saved-views"],
 	"command-palette": ["command-palette-with-grouped-items", "command-palette-simple-flat-list"],
 	tabs: ["tabs-variants", "tabs-many-tabs"],
-	pagination: [
-		"pagination-full-controls-default",
-		"pagination-simple-controls",
-		"pagination-mid-page-state",
-		"pagination-uncontrolled",
-		"pagination-disabled",
-	],
 	breadcrumbs: ["breadcrumbs-basic", "breadcrumbs-loading"],
-	"navigation-menu": ["navigation-menu-default"],
-	"menu-bar": ["menu-bar-default"],
 	toolbar: ["toolbar-input-shorthand", "toolbar-button-actions"],
 	"table-of-contents": [
 		"table-of-contents-options",
@@ -29,10 +20,7 @@ const NAVIGATION_SCENARIOS = {
 const NAVIGATION_DESCRIPTIONS = {
 	"command-palette": "Search pages and commands.",
 	tabs: "Tabbed navigation.",
-	pagination: "Page controls.",
 	breadcrumbs: "Hierarchical location.",
-	"navigation-menu": "Site navigation.",
-	"menu-bar": "Desktop menu bar.",
 	toolbar:
 		"Compose explicit toolbar controls into one grouped card. ToolbarButton and ToolbarInput are aliases of Toolbar.Button and Toolbar.Input respectively, sharing the same implementation and props interfaces.",
 	"table-of-contents": "On-this-page list.",
@@ -43,14 +31,14 @@ const NAVIGATION_DESCRIPTIONS = {
 describe("navigation catalog content family", () => {
 	it("owns exactly ten slugs with generated owners", () => {
 		expect(Object.keys(navigation)).toEqual(Object.keys(NAVIGATION_SCENARIOS));
-		expect(Object.keys(navigation)).toHaveLength(10);
+		expect(Object.keys(navigation)).toHaveLength(7);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "navigation")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(NAVIGATION_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(77);
 	});
 
 	it("keeps the twenty-three scenarios in their audited order", () => {
@@ -72,7 +60,7 @@ describe("navigation catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(23);
+		expect(count).toBe(16);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -96,14 +84,5 @@ describe("navigation catalog content family", () => {
 				hash: CATALOG_SOURCE_FILES[slug]?.hash,
 			});
 		}
-		expect(navigation.pagination?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
-			"page",
-			"defaultPage",
-			"pageCount",
-			"onPageChange",
-			"simple",
-			"disabled",
-			"className",
-		]);
 	});
 });

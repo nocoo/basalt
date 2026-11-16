@@ -79,7 +79,6 @@ describe("content scenario truth", () => {
 			"select-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES.grid?.map((item) => item.id)).toEqual(["grid-grid"]);
-		expect(UI_EXAMPLES.flow?.map((item) => item.id)).toEqual(["flow-sequential-flow"]);
 		expect(UI_EXAMPLES["command-palette"]?.map((item) => item.id)).toEqual([
 			"command-palette-with-grouped-items",
 			"command-palette-simple-flat-list",
@@ -221,13 +220,6 @@ describe("content scenario truth", () => {
 		expect(scenario("grid", "grid-grid").code).toContain("<GridItem>4</GridItem>");
 	});
 
-	it("shows flow nodes instead of an empty shell", () => {
-		const usage = CATALOG_DOCS.flow?.usage ?? "";
-		expect(usage).toContain("FlowNode");
-		expect(usage).not.toMatch(/return <Flow\s*\/>/);
-		expect(scenario("flow", "flow-sequential-flow").code).toContain("FlowNode");
-	});
-
 	it("returns a single sidebar tree that matches the preview structure", () => {
 		const usage = CATALOG_DOCS.sidebar?.usage ?? "";
 		expect(usage).toContain("Sidebar");
@@ -279,7 +271,6 @@ describe("content scenario truth", () => {
 			"SelectItem",
 		]);
 		expectUsageImportsCover(CATALOG_DOCS.grid?.usage ?? "", ["Grid", "GridItem"]);
-		expectUsageImportsCover(CATALOG_DOCS.flow?.usage ?? "", ["Flow", "FlowNode"]);
 		expectUsageImportsCover(CATALOG_DOCS.sidebar?.usage ?? "", [
 			"Sidebar",
 			"SidebarItem",

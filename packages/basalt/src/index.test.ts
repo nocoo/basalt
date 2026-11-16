@@ -20,7 +20,6 @@ const unapprovedRootNames = [
 	"ChartPalette",
 	"DataTable",
 	"ResourceList",
-	"DeleteResource",
 ] as const;
 
 describe("root barrel", () => {

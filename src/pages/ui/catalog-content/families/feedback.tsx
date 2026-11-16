@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarInitials } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
-import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button } from "@nocoo/basalt/components/button";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
 import { Empty } from "@nocoo/basalt/components/empty";
@@ -29,7 +28,6 @@ import { SKELETON_COMPOSITION_EXAMPLES } from "../../examples/skeleton-line";
 import { API as avatarApi } from "../../generated/catalog-api/avatar";
 import { API as badgeApi } from "../../generated/catalog-api/badge";
 import { API as bannerApi } from "../../generated/catalog-api/banner";
-import { API as batteryMeterApi } from "../../generated/catalog-api/battery-meter";
 import { API as clipboardTextApi } from "../../generated/catalog-api/clipboard-text";
 import { API as codeApi } from "../../generated/catalog-api/code";
 import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
@@ -725,41 +723,12 @@ export default function Example() {
 			},
 		],
 	},
-	"battery-meter": {
-		docs: {
-			...extraDocs(
-				"BatteryMeter",
-				"battery-meter",
-				"A compact segmented battery reading with an accessible native meter, charge state and unavailable fallback.",
-				'<BatteryMeter value={72} label="Device battery" />',
-			),
-			api: batteryMeterApi,
-		},
-		examples: [
-			{
-				id: catalogScenarioId("battery-meter", "charge-states"),
-				title: "Charge Levels & Offline State",
-				code: scenarioModule(
-					'<div className="flex flex-wrap gap-basalt-space-lg"><BatteryMeter value={94} label="Gateway battery" /><BatteryMeter value={42} label="Sensor battery" status="charging" /><BatteryMeter value={14} label="Beacon battery" /><BatteryMeter value={0} label="Offline device battery" status="offline" /></div>',
-					['import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";'],
-				),
-				render: () => (
-					<div className="flex flex-wrap gap-basalt-space-lg">
-						<BatteryMeter value={94} label="Gateway battery" />
-						<BatteryMeter value={42} label="Sensor battery" status="charging" />
-						<BatteryMeter value={14} label="Beacon battery" />
-						<BatteryMeter value={0} label="Offline device battery" status="offline" />
-					</div>
-				),
-			},
-		],
-	},
 	meter: {
 		docs: {
 			...extraDocs(
 				"Meter",
 				"meter",
-				"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. BatteryMeter retains device-specific battery semantics.",
+				"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. Meter retains device-specific battery semantics.",
 				'<Meter value={60} label="Usage" />',
 				undefined,
 				`import { Meter } from "@nocoo/basalt/components/meter";

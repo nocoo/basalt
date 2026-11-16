@@ -15,12 +15,6 @@ export interface NativeOnlySurfaceDocumentation {
  * Prevents arbitrary surfaces from regressing to className-only tables without explicit justification.
  */
 export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDocumentation> = {
-	BasaltMark: {
-		justification: "Brand vector glyph icon with fixed geometry; exposes only custom styling hook.",
-		inheritedElement: "SVGElement",
-		forwardsRef: false,
-		forwardsRestProps: true,
-	},
 	Code: {
 		justification:
 			"Lightweight inline code element wrapper applying theme typography; inherits HTMLElement attributes.",

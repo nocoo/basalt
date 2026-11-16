@@ -4,7 +4,6 @@ import { Button } from "@nocoo/basalt/components/button";
 import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { Pagination } from "@nocoo/basalt/components/pagination";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
 	Select,
@@ -22,6 +21,7 @@ import {
 	TableRow,
 	TableSortableHeader,
 } from "@nocoo/basalt/components/table";
+import { TablePager } from "@nocoo/basalt/components/table-pager";
 import {
 	AlertTriangle,
 	BadgeCheck,
@@ -292,7 +292,12 @@ export default function DataPage() {
 						<p className="text-basalt-sm text-muted-foreground" role="status">
 							{t("demo.results", { count: vm.total })}
 						</p>
-						<Pagination page={vm.page} pageCount={vm.pageCount} onPageChange={vm.setPage} />
+						<TablePager
+							page={vm.page}
+							pageSize={2}
+							totalCount={vm.total}
+							onPageChange={vm.setPage}
+						/>
 					</LayerCard.Footer>
 				</LayerCard>
 			</SectionRule>

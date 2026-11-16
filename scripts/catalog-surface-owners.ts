@@ -176,13 +176,6 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
 			"useAccent",
 		],
 	},
-	// Explicit legacy / internal building blocks exposed via wildcard in v2.0.3
-	"@nocoo/basalt/components/typeahead-field": {
-		ownerDoc: "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-		kind: "legacy-internal",
-		summary: "Internal composite input base for autocomplete and combobox",
-		knownSymbols: ["TypeaheadField", "TypeaheadItem"],
-	},
 	"@nocoo/basalt/components/overlay": {
 		ownerDoc: "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
 		kind: "legacy-internal",

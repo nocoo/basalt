@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
-import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button } from "@nocoo/basalt/components/button";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
 import { FilterBar } from "@nocoo/basalt/components/filter-bar";
@@ -335,11 +334,7 @@ export default function TablesPage() {
 			id: "battery",
 			header: t("pages.tables.colBattery"),
 			accessor: (row) => (
-				<BatteryMeter
-					value={row.battery}
-					label={`${row.name} ${t("pages.tables.colBattery")}`}
-					status={row.status === "Offline" ? "offline" : "discharging"}
-				/>
+				<Meter value={row.battery} label={`${row.name} ${t("pages.tables.colBattery")}`} />
 			),
 			sortValue: (row) => row.battery,
 			cellClassName: DENSE,

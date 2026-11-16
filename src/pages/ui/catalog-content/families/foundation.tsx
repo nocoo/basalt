@@ -5,7 +5,6 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
-import { BASALT_MARK_EXAMPLES } from "../../examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "../../examples/button";
 import { LABEL_EXAMPLES } from "../../examples/label";
 import { LAYER_CARD_EXAMPLES } from "../../examples/layer-card";
@@ -18,7 +17,6 @@ import { TEXT_EXAMPLES } from "../../examples/text";
 import { HostPreferences, IndependentPreferences } from "../../examples/theme-provider/preferences";
 import preferencesRaw from "../../examples/theme-provider/preferences.tsx?raw";
 import { THEME_TOGGLE_EXAMPLES } from "../../examples/theme-toggle";
-import { API as basaltMarkApi } from "../../generated/catalog-api/basalt-mark";
 import { API as buttonApi } from "../../generated/catalog-api/button";
 import { API as labelApi } from "../../generated/catalog-api/label";
 import { API as layerCardApi } from "../../generated/catalog-api/layer-card";
@@ -230,20 +228,6 @@ export default catalogContentFamily({
 			}),
 		},
 		examples: LAYER_CARD_EXAMPLES,
-	},
-	"basalt-mark": {
-		docs: {
-			description: "Basalt mark.",
-			usage: usage("BasaltMark", "@nocoo/basalt/components/basalt-mark", "<BasaltMark />"),
-			variants: [],
-			api: basaltMarkApi,
-			provenance: provenanceFromLegacy({
-				repo: "pew",
-				sha: "97a890fabe6e",
-				file: "packages/web/src/components",
-			}),
-		},
-		examples: BASALT_MARK_EXAMPLES,
 	},
 	"theme-provider": {
 		docs: {

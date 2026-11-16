@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import foundation from "./catalog-content/families/foundation";
-import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
@@ -10,7 +9,6 @@ import { SCROLL_AREA_EXAMPLES } from "./examples/scroll-area";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
-import { API as basaltMarkApi } from "./generated/catalog-api/basalt-mark";
 import { API as buttonApi } from "./generated/catalog-api/button";
 import { API as labelApi } from "./generated/catalog-api/label";
 import { API as layerCardApi } from "./generated/catalog-api/layer-card";
@@ -35,7 +33,6 @@ const FOUNDATION_SLUGS = [
 	"link",
 	"theme-toggle",
 	"layer-card",
-	"basalt-mark",
 	"theme-provider",
 	"link-provider",
 ] as const;
@@ -43,7 +40,7 @@ const FOUNDATION_SLUGS = [
 describe("foundation catalog content family", () => {
 	it("owns exactly thirteen foundation slugs", () => {
 		expect(Object.keys(foundation)).toEqual([...FOUNDATION_SLUGS]);
-		expect(Object.keys(foundation)).toHaveLength(13);
+		expect(Object.keys(foundation)).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "foundation")
@@ -68,7 +65,6 @@ describe("foundation catalog content family", () => {
 		expect(foundation.link?.examples).toBe(LINK_EXAMPLES);
 		expect(foundation["theme-toggle"]?.examples).toBe(THEME_TOGGLE_EXAMPLES);
 		expect(foundation["layer-card"]?.examples).toBe(LAYER_CARD_EXAMPLES);
-		expect(foundation["basalt-mark"]?.examples).toBe(BASALT_MARK_EXAMPLES);
 		expect(foundation.button?.docs.api).toBe(buttonApi);
 		expect(foundation["link-button"]?.docs.api).toBe(linkButtonApi);
 		expect(foundation.text?.docs.api).toBe(textApi);
@@ -78,7 +74,6 @@ describe("foundation catalog content family", () => {
 		expect(foundation.link?.docs.api).toBe(linkApi);
 		expect(foundation["theme-toggle"]?.docs.api).toBe(themeToggleApi);
 		expect(foundation["layer-card"]?.docs.api).toBe(layerCardApi);
-		expect(foundation["basalt-mark"]?.docs.api).toBe(basaltMarkApi);
 	});
 
 	it("preserves docs truth and scenario identity for every foundation slug", () => {
@@ -211,7 +206,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.docs.usage).toContain('as="h1"');
 		expect(
 			FOUNDATION_SLUGS.reduce((count, slug) => count + (foundation[slug]?.examples.length ?? 0), 0),
-		).toBe(40);
+		).toBe(39);
 		for (const slug of FOUNDATION_SLUGS) {
 			const content = foundation[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

@@ -118,16 +118,7 @@ export const CATALOG: CatalogEntry[] = [
 		category: "layout",
 		navName: "Description List",
 	},
-	{
-		slug: "basalt-mark",
-		name: "BasaltMark",
-		exportName: "BasaltMark",
-		importPath: "@nocoo/basalt/components/basalt-mark",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "primitive",
-		navName: "Basalt Mark",
-	},
+
 	{
 		slug: "field",
 		name: "Field",
@@ -210,15 +201,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "catalog",
 		category: "action",
 	},
-	{
-		slug: "combobox",
-		name: "Combobox",
-		exportName: "Combobox",
-		importPath: "@nocoo/basalt/components/combobox",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "action",
-	},
+
 	{
 		slug: "autocomplete",
 		name: "Autocomplete",
@@ -321,15 +304,7 @@ export const CATALOG: CatalogEntry[] = [
 		category: "primitive",
 		navName: "Skeleton Line",
 	},
-	{
-		slug: "battery-meter",
-		name: "BatteryMeter",
-		exportName: "BatteryMeter",
-		importPath: "@nocoo/basalt/components/battery-meter",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "primitive",
-	},
+
 	{
 		slug: "meter",
 		name: "Meter",
@@ -506,15 +481,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "catalog",
 		category: "layout",
 	},
-	{
-		slug: "pagination",
-		name: "Pagination",
-		exportName: "Pagination",
-		importPath: "@nocoo/basalt/components/pagination",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "action",
-	},
+
 	{
 		slug: "collapsible",
 		name: "Collapsible",
@@ -533,24 +500,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "catalog",
 		category: "layout",
 	},
-	{
-		slug: "navigation-menu",
-		name: "NavigationMenu",
-		exportName: "NavigationMenu",
-		importPath: "@nocoo/basalt/components/navigation-menu",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "layout",
-	},
-	{
-		slug: "menu-bar",
-		name: "MenuBar",
-		exportName: "MenuBar",
-		importPath: "@nocoo/basalt/components/menu-bar",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "overlay",
-	},
+
 	{
 		slug: "toolbar",
 		name: "Toolbar",
@@ -598,15 +548,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "stable",
 		category: "layout",
 	},
-	{
-		slug: "flow",
-		name: "Flow",
-		exportName: "Flow",
-		importPath: "@nocoo/basalt/components/flow",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "layout",
-	},
+
 	{
 		slug: "stat-strip",
 		name: "StatStrip",
@@ -797,15 +739,6 @@ export const CATALOG: CatalogEntry[] = [
 		name: "Resource List",
 		exportName: "ResourceList",
 		importPath: "@nocoo/basalt/components/resource-list",
-		hasRootBarrel: false,
-		kind: "catalog",
-		category: "block",
-	},
-	{
-		slug: "delete-resource",
-		name: "Delete Resource",
-		exportName: "DeleteResource",
-		importPath: "@nocoo/basalt/components/delete-resource",
 		hasRootBarrel: false,
 		kind: "catalog",
 		category: "block",

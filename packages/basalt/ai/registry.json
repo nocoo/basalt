@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.4.2",
-	"totalModules": 114,
-	"totalSymbols": 690,
-	"totalValues": 379,
-	"totalTypes": 311,
+	"totalModules": 105,
+	"totalSymbols": 652,
+	"totalValues": 361,
+	"totalTypes": 291,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 85,
+	"totalCatalogEntries": 77,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -1962,7 +1962,7 @@
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"subpath": "./components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "1e35ac31ac0a1e3a",
+			"sourceHash": "a215956fff299673",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2012,60 +2012,47 @@
 								{
 									"name": "items",
 									"type": "AutocompleteItem[]",
-									"required": true,
-									"description": "Suggestions shown as the query matches. Values outside the list are allowed.\n\nNote: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),\nany uncommitted text or matching suggestion is committed once without stealing focus\nback to the input, allowing natural focus traversal."
+									"required": true
 								},
 								{
 									"name": "value",
 									"type": "string",
-									"required": false,
-									"description": "The controlled value."
+									"required": false
 								},
 								{
 									"name": "defaultValue",
 									"type": "string",
-									"required": false,
-									"description": "The uncontrolled initial value."
+									"required": false
 								},
 								{
 									"name": "onValueChange",
 									"type": "(value: string) => void",
-									"required": false,
-									"description": "Called when the value changes, including freeform text."
+									"required": false
 								},
 								{
 									"name": "name",
 									"type": "string",
-									"required": false,
-									"description": "Native form field name."
+									"required": false
 								},
 								{
 									"name": "placeholder",
 									"type": "string",
-									"required": false,
-									"default": "Search…",
-									"description": "Placeholder shown when the field is empty."
+									"required": false
 								},
 								{
 									"name": "disabled",
 									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable the field."
+									"required": false
 								},
 								{
 									"name": "loading",
 									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable the field and mark it busy."
+									"required": false
 								},
 								{
 									"name": "size",
 									"type": "InputSize",
-									"required": false,
-									"default": "default",
-									"description": "The visual size of the field."
+									"required": false
 								}
 							]
 						}
@@ -2079,60 +2066,47 @@
 						{
 							"name": "items",
 							"type": "AutocompleteItem[]",
-							"required": true,
-							"description": "Suggestions shown as the query matches. Values outside the list are allowed.\n\nNote: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),\nany uncommitted text or matching suggestion is committed once without stealing focus\nback to the input, allowing natural focus traversal."
+							"required": true
 						},
 						{
 							"name": "value",
 							"type": "string",
-							"required": false,
-							"description": "The controlled value."
+							"required": false
 						},
 						{
 							"name": "defaultValue",
 							"type": "string",
-							"required": false,
-							"description": "The uncontrolled initial value."
+							"required": false
 						},
 						{
 							"name": "onValueChange",
 							"type": "(value: string) => void",
-							"required": false,
-							"description": "Called when the value changes, including freeform text."
+							"required": false
 						},
 						{
 							"name": "name",
 							"type": "string",
-							"required": false,
-							"description": "Native form field name."
+							"required": false
 						},
 						{
 							"name": "placeholder",
 							"type": "string",
-							"required": false,
-							"default": "Search…",
-							"description": "Placeholder shown when the field is empty."
+							"required": false
 						},
 						{
 							"name": "disabled",
 							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field."
+							"required": false
 						},
 						{
 							"name": "loading",
 							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field and mark it busy."
+							"required": false
 						},
 						{
 							"name": "size",
 							"type": "InputSize",
-							"required": false,
-							"default": "default",
-							"description": "The visual size of the field."
+							"required": false
 						}
 					]
 				}
@@ -2769,172 +2743,6 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Action label content. When null, undefined, or empty string, enables iconOnly sizing mode."
-						}
-					]
-				}
-			]
-		},
-		{
-			"displayName": "BasaltMark",
-			"exportName": "BasaltMark",
-			"importPath": "@nocoo/basalt/components/basalt-mark",
-			"subpath": "./components/basalt-mark",
-			"sourceFile": "packages/basalt/src/components/basalt-mark.tsx",
-			"sourceHash": "a83d6783a0120b6c",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/basalt-mark",
-			"packageDoc": "ai/registry.json#basalt-mark",
-			"summary": "BasaltMark component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "BasaltMark",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/basalt-mark",
-					"packageDoc": "ai/registry.json#basalt-mark",
-					"originModule": "@nocoo/basalt/components/basalt-mark"
-				},
-				{
-					"name": "BasaltMarkProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/basalt-mark",
-					"packageDoc": "ai/registry.json#basalt-mark",
-					"originModule": "@nocoo/basalt/components/basalt-mark"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "basalt-mark",
-					"name": "BasaltMark",
-					"exportName": "BasaltMark",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#basalt-mark",
-					"api": [
-						{
-							"name": "BasaltMark",
-							"props": [
-								{
-									"name": "className",
-									"type": "string",
-									"required": false,
-									"description": "Additional classes for the mark."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "BasaltMark",
-					"props": [
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the mark."
-						}
-					]
-				}
-			]
-		},
-		{
-			"displayName": "BatteryMeter",
-			"exportName": "BatteryMeter",
-			"importPath": "@nocoo/basalt/components/battery-meter",
-			"subpath": "./components/battery-meter",
-			"sourceFile": "packages/basalt/src/components/battery-meter.tsx",
-			"sourceHash": "980cbe70b2e22b52",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/battery-meter",
-			"packageDoc": "ai/registry.json#battery-meter",
-			"summary": "BatteryMeter component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "BatteryMeter",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/battery-meter",
-					"packageDoc": "ai/registry.json#battery-meter",
-					"originModule": "@nocoo/basalt/components/battery-meter"
-				},
-				{
-					"name": "BatteryMeterProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/battery-meter",
-					"packageDoc": "ai/registry.json#battery-meter",
-					"originModule": "@nocoo/basalt/components/battery-meter"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "battery-meter",
-					"name": "BatteryMeter",
-					"exportName": "BatteryMeter",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#battery-meter",
-					"api": [
-						{
-							"name": "BatteryMeter",
-							"props": [
-								{
-									"name": "value",
-									"type": "number",
-									"required": true,
-									"description": "Battery charge in percent, clamped to 0–100. Non-finite readings are unavailable."
-								},
-								{
-									"name": "label",
-									"type": "string",
-									"required": true,
-									"description": "Accessible name of the battery."
-								},
-								{
-									"name": "status",
-									"type": "\"charging\" | \"discharging\" | \"offline\"",
-									"required": false,
-									"default": "\"discharging\"",
-									"description": "Device state, also announced with the value."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "BatteryMeter",
-					"props": [
-						{
-							"name": "value",
-							"type": "number",
-							"required": true,
-							"description": "Battery charge in percent, clamped to 0–100. Non-finite readings are unavailable."
-						},
-						{
-							"name": "label",
-							"type": "string",
-							"required": true,
-							"description": "Accessible name of the battery."
-						},
-						{
-							"name": "status",
-							"type": "\"charging\" | \"discharging\" | \"offline\"",
-							"required": false,
-							"default": "\"discharging\"",
-							"description": "Device state, also announced with the value."
 						}
 					]
 				}
@@ -4736,188 +4544,6 @@
 			]
 		},
 		{
-			"displayName": "Combobox",
-			"exportName": "Combobox",
-			"importPath": "@nocoo/basalt/components/combobox",
-			"subpath": "./components/combobox",
-			"sourceFile": "packages/basalt/src/components/combobox.tsx",
-			"sourceHash": "bf7f468af3da2c3f",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/combobox",
-			"packageDoc": "ai/registry.json#combobox",
-			"summary": "Combobox component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "Combobox",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/combobox",
-					"packageDoc": "ai/registry.json#combobox",
-					"originModule": "@nocoo/basalt/components/combobox"
-				},
-				{
-					"name": "ComboboxItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/combobox",
-					"packageDoc": "ai/registry.json#combobox",
-					"originModule": "@nocoo/basalt/components/combobox"
-				},
-				{
-					"name": "ComboboxProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/combobox",
-					"packageDoc": "ai/registry.json#combobox",
-					"originModule": "@nocoo/basalt/components/combobox"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "combobox",
-					"name": "Combobox",
-					"exportName": "Combobox",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#combobox",
-					"api": [
-						{
-							"name": "Combobox",
-							"props": [
-								{
-									"name": "items",
-									"type": "ComboboxItem[]",
-									"required": true,
-									"description": "Options shown in the list. Selection must match one of these values."
-								},
-								{
-									"name": "value",
-									"type": "string",
-									"required": false,
-									"description": "The controlled selected value."
-								},
-								{
-									"name": "defaultValue",
-									"type": "string",
-									"required": false,
-									"description": "The uncontrolled initial value."
-								},
-								{
-									"name": "onValueChange",
-									"type": "(value: string) => void",
-									"required": false,
-									"description": "Called when the selected value changes."
-								},
-								{
-									"name": "name",
-									"type": "string",
-									"required": false,
-									"description": "Native form field name."
-								},
-								{
-									"name": "placeholder",
-									"type": "string",
-									"required": false,
-									"default": "Select…",
-									"description": "Placeholder shown when the field is empty."
-								},
-								{
-									"name": "disabled",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable the field."
-								},
-								{
-									"name": "loading",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable the field and mark it busy."
-								},
-								{
-									"name": "size",
-									"type": "InputSize",
-									"required": false,
-									"default": "default",
-									"description": "The visual size of the field."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "Combobox",
-					"props": [
-						{
-							"name": "items",
-							"type": "ComboboxItem[]",
-							"required": true,
-							"description": "Options shown in the list. Selection must match one of these values."
-						},
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "The controlled selected value."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"description": "The uncontrolled initial value."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Called when the selected value changes."
-						},
-						{
-							"name": "name",
-							"type": "string",
-							"required": false,
-							"description": "Native form field name."
-						},
-						{
-							"name": "placeholder",
-							"type": "string",
-							"required": false,
-							"default": "Select…",
-							"description": "Placeholder shown when the field is empty."
-						},
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field."
-						},
-						{
-							"name": "loading",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field and mark it busy."
-						},
-						{
-							"name": "size",
-							"type": "InputSize",
-							"required": false,
-							"default": "default",
-							"description": "The visual size of the field."
-						}
-					]
-				}
-			]
-		},
-		{
 			"displayName": "CommandPalette",
 			"exportName": "CommandPalette",
 			"importPath": "@nocoo/basalt/components/command-palette",
@@ -6583,7 +6209,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "a91bd7c62e63fb59",
+			"sourceHash": "c630a3dc178d8b8e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -7394,108 +7020,6 @@
 							"type": "boolean",
 							"required": false,
 							"description": "Disable the trigger and calendar."
-						}
-					]
-				}
-			]
-		},
-		{
-			"displayName": "Delete Resource",
-			"exportName": "DeleteResource",
-			"importPath": "@nocoo/basalt/components/delete-resource",
-			"subpath": "./components/delete-resource",
-			"sourceFile": "packages/basalt/src/components/delete-resource.tsx",
-			"sourceHash": "1270ccdc91f59fac",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/delete-resource",
-			"packageDoc": "ai/registry.json#delete-resource",
-			"summary": "Delete Resource component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "DeleteResource",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/delete-resource",
-					"packageDoc": "ai/registry.json#delete-resource",
-					"originModule": "@nocoo/basalt/components/delete-resource"
-				},
-				{
-					"name": "DeleteResourceErrorFormatter",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/delete-resource",
-					"packageDoc": "ai/registry.json#delete-resource",
-					"originModule": "@nocoo/basalt/components/delete-resource"
-				},
-				{
-					"name": "DeleteResourceProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/delete-resource",
-					"packageDoc": "ai/registry.json#delete-resource",
-					"originModule": "@nocoo/basalt/components/delete-resource"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "delete-resource",
-					"name": "Delete Resource",
-					"exportName": "DeleteResource",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#delete-resource",
-					"api": [
-						{
-							"name": "DeleteResource",
-							"props": [
-								{
-									"name": "name",
-									"type": "string",
-									"required": true,
-									"description": "Name of the resource being deleted, interpolated into dialog title and trigger label."
-								},
-								{
-									"name": "onDelete",
-									"type": "() => void | Promise<void>",
-									"required": true,
-									"description": "Called when deletion is confirmed. When this throws or rejects, an error alert is shown and the dialog remains open for retry."
-								},
-								{
-									"name": "errorMessage",
-									"type": "DeleteResourceErrorFormatter | React.ReactNode",
-									"required": false,
-									"description": "Custom error message or renderer when onDelete fails. Accepts a ReactNode or an (error: unknown) => ReactNode formatter. Defaults to the caught Error message or 'Failed to delete resource. Please try again.'"
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "DeleteResource",
-					"props": [
-						{
-							"name": "name",
-							"type": "string",
-							"required": true,
-							"description": "Name of the resource being deleted, interpolated into dialog title and trigger label."
-						},
-						{
-							"name": "onDelete",
-							"type": "() => void | Promise<void>",
-							"required": true,
-							"description": "Called when deletion is confirmed. When this throws or rejects, an error alert is shown and the dialog remains open for retry."
-						},
-						{
-							"name": "errorMessage",
-							"type": "DeleteResourceErrorFormatter | React.ReactNode",
-							"required": false,
-							"description": "Custom error message or renderer when onDelete fails. Accepts a ReactNode or an (error: unknown) => ReactNode formatter. Defaults to the caught Error message or 'Failed to delete resource. Please try again.'"
 						}
 					]
 				}
@@ -10576,140 +10100,6 @@
 			]
 		},
 		{
-			"displayName": "Flow",
-			"exportName": "Flow",
-			"importPath": "@nocoo/basalt/components/flow",
-			"subpath": "./components/flow",
-			"sourceFile": "packages/basalt/src/components/flow.tsx",
-			"sourceHash": "889be199ba215ffb",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/flow",
-			"packageDoc": "ai/registry.json#flow",
-			"summary": "Flow component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "Flow",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/flow",
-					"packageDoc": "ai/registry.json#flow",
-					"originModule": "@nocoo/basalt/components/flow"
-				},
-				{
-					"name": "FlowNode",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/flow",
-					"packageDoc": "ai/registry.json#flow",
-					"originModule": "@nocoo/basalt/components/flow"
-				},
-				{
-					"name": "FlowProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/flow",
-					"packageDoc": "ai/registry.json#flow",
-					"originModule": "@nocoo/basalt/components/flow"
-				},
-				{
-					"name": "FlowNodeProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/flow",
-					"packageDoc": "ai/registry.json#flow",
-					"originModule": "@nocoo/basalt/components/flow"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "flow",
-					"name": "Flow",
-					"exportName": "Flow",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#flow",
-					"api": [
-						{
-							"name": "Flow",
-							"props": [
-								{
-									"name": "aria-label",
-									"type": "string",
-									"required": false,
-									"default": "\"Flow\"",
-									"description": "Accessible name for the step list."
-								},
-								{
-									"name": "className",
-									"type": "string",
-									"required": false,
-									"description": "Additional classes for the list."
-								},
-								{
-									"name": "children",
-									"type": "React.ReactNode",
-									"required": true,
-									"description": "Step nodes."
-								}
-							]
-						},
-						{
-							"name": "FlowNode",
-							"props": [
-								{
-									"name": "children",
-									"type": "React.ReactNode",
-									"required": true,
-									"description": "Label for the step."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "Flow",
-					"props": [
-						{
-							"name": "aria-label",
-							"type": "string",
-							"required": false,
-							"default": "\"Flow\"",
-							"description": "Accessible name for the step list."
-						},
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the list."
-						},
-						{
-							"name": "children",
-							"type": "React.ReactNode",
-							"required": true,
-							"description": "Step nodes."
-						}
-					]
-				},
-				{
-					"name": "FlowNode",
-					"props": [
-						{
-							"name": "children",
-							"type": "React.ReactNode",
-							"required": true,
-							"description": "Label for the step."
-						}
-					]
-				}
-			]
-		},
-		{
 			"displayName": "Grid",
 			"exportName": "Grid",
 			"importPath": "@nocoo/basalt/components/grid",
@@ -12921,7 +12311,7 @@
 			"importPath": "@nocoo/basalt/components/loading-screen",
 			"subpath": "./components/loading-screen",
 			"sourceFile": "packages/basalt/src/components/loading-screen.tsx",
-			"sourceHash": "ca21fa1c5d1ae108",
+			"sourceHash": "ead4985752c0bce0",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -12942,692 +12332,12 @@
 			]
 		},
 		{
-			"displayName": "MenuBar",
-			"exportName": "MenuBar",
-			"importPath": "@nocoo/basalt/components/menu-bar",
-			"subpath": "./components/menu-bar",
-			"sourceFile": "packages/basalt/src/components/menu-bar.tsx",
-			"sourceHash": "c4937ccb38cafaa3",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/menu-bar",
-			"packageDoc": "ai/registry.json#menu-bar",
-			"summary": "MenuBar component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "MenuBar",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarMenu",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarRoot",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarMenuProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarTriggerProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarTrigger",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarContentProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarContent",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarItemProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarItem",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarRootProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "menu-bar",
-					"name": "MenuBar",
-					"exportName": "MenuBar",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#menu-bar",
-					"api": [
-						{
-							"name": "MenuBar",
-							"props": [
-								{
-									"name": "value",
-									"type": "string",
-									"required": false,
-									"description": "Controlled value of the currently open menu."
-								},
-								{
-									"name": "defaultValue",
-									"type": "string",
-									"required": false,
-									"default": "\"\"",
-									"description": "Uncontrolled initial value of the open menu."
-								},
-								{
-									"name": "onValueChange",
-									"type": "(value: string) => void",
-									"required": false,
-									"description": "Callback invoked when the open menu value changes."
-								},
-								{
-									"name": "loop",
-									"type": "boolean",
-									"required": false,
-									"default": "true",
-									"description": "Whether keyboard navigation loops around when reaching ends."
-								},
-								{
-									"name": "dir",
-									"type": "\"ltr\" | \"rtl\"",
-									"required": false,
-									"default": "\"ltr\"",
-									"description": "Reading direction of the menubar."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nMenuBar forwards ref to HTMLDivElement and inherits native div attributes."
-								}
-							]
-						},
-						{
-							"name": "MenuBarRoot",
-							"props": [
-								{
-									"name": "value",
-									"type": "string",
-									"required": false,
-									"description": "Controlled value of the currently open menu."
-								},
-								{
-									"name": "defaultValue",
-									"type": "string",
-									"required": false,
-									"default": "\"\"",
-									"description": "Uncontrolled initial value of the open menu."
-								},
-								{
-									"name": "onValueChange",
-									"type": "(value: string) => void",
-									"required": false,
-									"description": "Callback invoked when the open menu value changes."
-								},
-								{
-									"name": "loop",
-									"type": "boolean",
-									"required": false,
-									"default": "true",
-									"description": "Whether keyboard navigation loops around when reaching ends."
-								},
-								{
-									"name": "dir",
-									"type": "\"ltr\" | \"rtl\"",
-									"required": false,
-									"default": "\"ltr\"",
-									"description": "Reading direction of the menubar."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nMenuBar forwards ref to HTMLDivElement and inherits native div attributes."
-								}
-							]
-						},
-						{
-							"name": "MenuBarMenu",
-							"props": [
-								{
-									"name": "value",
-									"type": "string",
-									"required": false,
-									"description": "Unique identifier value for this menu within the menubar."
-								}
-							]
-						},
-						{
-							"name": "MenuBarTrigger",
-							"props": [
-								{
-									"name": "disabled",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable the menubar trigger button."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
-								}
-							]
-						},
-						{
-							"name": "MenuBarContent",
-							"props": [
-								{
-									"name": "loop",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Whether keyboard navigation loops around when reaching the start or end item."
-								},
-								{
-									"name": "side",
-									"type": "\"bottom\" | \"left\" | \"right\" | \"top\"",
-									"required": false,
-									"default": "\"bottom\"",
-									"description": "Preferred placement side relative to the menu trigger."
-								},
-								{
-									"name": "sideOffset",
-									"type": "number",
-									"required": false,
-									"default": "4",
-									"description": "Distance in pixels between trigger and floating content panel."
-								},
-								{
-									"name": "align",
-									"type": "\"center\" | \"end\" | \"start\"",
-									"required": false,
-									"default": "\"start\"",
-									"description": "Preferred alignment along the side axis."
-								},
-								{
-									"name": "alignOffset",
-									"type": "number",
-									"required": false,
-									"default": "0",
-									"description": "Offset in pixels from the start or end alignment position."
-								},
-								{
-									"name": "avoidCollisions",
-									"type": "boolean",
-									"required": false,
-									"default": "true",
-									"description": "Whether to reposition content to avoid viewport boundary collisions."
-								},
-								{
-									"name": "collisionBoundary",
-									"type": "Boundary[] | Element | null",
-									"required": false,
-									"default": "[]",
-									"description": "Element or elements bounding boundary collision calculations."
-								},
-								{
-									"name": "collisionPadding",
-									"type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>>",
-									"required": false,
-									"default": "0",
-									"description": "Virtual padding from collision boundaries in pixels."
-								},
-								{
-									"name": "arrowPadding",
-									"type": "number",
-									"required": false,
-									"default": "0",
-									"description": "Padding in pixels between popper arrow and floating panel edge."
-								},
-								{
-									"name": "sticky",
-									"type": "\"always\" | \"partial\"",
-									"required": false,
-									"default": "\"partial\"",
-									"description": "Sticky positioning behavior along the align axis when overflowing."
-								},
-								{
-									"name": "hideWhenDetached",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Whether to hide content completely when trigger is fully occluded."
-								},
-								{
-									"name": "forceMount",
-									"type": "true",
-									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
-								},
-								{
-									"name": "onCloseAutoFocus",
-									"type": "(event: Event) => void",
-									"required": false,
-									"description": "Callback fired when auto-focusing on close. Can be prevented."
-								},
-								{
-									"name": "onEscapeKeyDown",
-									"type": "(event: KeyboardEvent) => void",
-									"required": false,
-									"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
-								},
-								{
-									"name": "onPointerDownOutside",
-									"type": "(event: PointerDownOutsideEvent) => void",
-									"required": false,
-									"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
-								},
-								{
-									"name": "onFocusOutside",
-									"type": "(event: FocusOutsideEvent) => void",
-									"required": false,
-									"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
-								},
-								{
-									"name": "onInteractOutside",
-									"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
-									"required": false,
-									"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
-								}
-							]
-						},
-						{
-							"name": "MenuBarItem",
-							"props": [
-								{
-									"name": "disabled",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable the menubar item."
-								},
-								{
-									"name": "onSelect",
-									"type": "(event: Event) => void",
-									"required": false,
-									"description": "Event handler called when the menubar item is selected (via click or keyboard)."
-								},
-								{
-									"name": "textValue",
-									"type": "string",
-									"required": false,
-									"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nItem forwards ref to HTMLDivElement and inherits native div attributes."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "MenuBar",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Controlled value of the currently open menu."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"default": "\"\"",
-							"description": "Uncontrolled initial value of the open menu."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Callback invoked when the open menu value changes."
-						},
-						{
-							"name": "loop",
-							"type": "boolean",
-							"required": false,
-							"default": "true",
-							"description": "Whether keyboard navigation loops around when reaching ends."
-						},
-						{
-							"name": "dir",
-							"type": "\"ltr\" | \"rtl\"",
-							"required": false,
-							"default": "\"ltr\"",
-							"description": "Reading direction of the menubar."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nMenuBar forwards ref to HTMLDivElement and inherits native div attributes."
-						}
-					]
-				},
-				{
-					"name": "MenuBarRoot",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Controlled value of the currently open menu."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"default": "\"\"",
-							"description": "Uncontrolled initial value of the open menu."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Callback invoked when the open menu value changes."
-						},
-						{
-							"name": "loop",
-							"type": "boolean",
-							"required": false,
-							"default": "true",
-							"description": "Whether keyboard navigation loops around when reaching ends."
-						},
-						{
-							"name": "dir",
-							"type": "\"ltr\" | \"rtl\"",
-							"required": false,
-							"default": "\"ltr\"",
-							"description": "Reading direction of the menubar."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nMenuBar forwards ref to HTMLDivElement and inherits native div attributes."
-						}
-					]
-				},
-				{
-					"name": "MenuBarMenu",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Unique identifier value for this menu within the menubar."
-						}
-					]
-				},
-				{
-					"name": "MenuBarTrigger",
-					"props": [
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the menubar trigger button."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
-						}
-					]
-				},
-				{
-					"name": "MenuBarContent",
-					"props": [
-						{
-							"name": "loop",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether keyboard navigation loops around when reaching the start or end item."
-						},
-						{
-							"name": "side",
-							"type": "\"bottom\" | \"left\" | \"right\" | \"top\"",
-							"required": false,
-							"default": "\"bottom\"",
-							"description": "Preferred placement side relative to the menu trigger."
-						},
-						{
-							"name": "sideOffset",
-							"type": "number",
-							"required": false,
-							"default": "4",
-							"description": "Distance in pixels between trigger and floating content panel."
-						},
-						{
-							"name": "align",
-							"type": "\"center\" | \"end\" | \"start\"",
-							"required": false,
-							"default": "\"start\"",
-							"description": "Preferred alignment along the side axis."
-						},
-						{
-							"name": "alignOffset",
-							"type": "number",
-							"required": false,
-							"default": "0",
-							"description": "Offset in pixels from the start or end alignment position."
-						},
-						{
-							"name": "avoidCollisions",
-							"type": "boolean",
-							"required": false,
-							"default": "true",
-							"description": "Whether to reposition content to avoid viewport boundary collisions."
-						},
-						{
-							"name": "collisionBoundary",
-							"type": "Boundary[] | Element | null",
-							"required": false,
-							"default": "[]",
-							"description": "Element or elements bounding boundary collision calculations."
-						},
-						{
-							"name": "collisionPadding",
-							"type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>>",
-							"required": false,
-							"default": "0",
-							"description": "Virtual padding from collision boundaries in pixels."
-						},
-						{
-							"name": "arrowPadding",
-							"type": "number",
-							"required": false,
-							"default": "0",
-							"description": "Padding in pixels between popper arrow and floating panel edge."
-						},
-						{
-							"name": "sticky",
-							"type": "\"always\" | \"partial\"",
-							"required": false,
-							"default": "\"partial\"",
-							"description": "Sticky positioning behavior along the align axis when overflowing."
-						},
-						{
-							"name": "hideWhenDetached",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether to hide content completely when trigger is fully occluded."
-						},
-						{
-							"name": "forceMount",
-							"type": "true",
-							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
-						},
-						{
-							"name": "onCloseAutoFocus",
-							"type": "(event: Event) => void",
-							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
-						},
-						{
-							"name": "onEscapeKeyDown",
-							"type": "(event: KeyboardEvent) => void",
-							"required": false,
-							"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
-						},
-						{
-							"name": "onPointerDownOutside",
-							"type": "(event: PointerDownOutsideEvent) => void",
-							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
-						},
-						{
-							"name": "onFocusOutside",
-							"type": "(event: FocusOutsideEvent) => void",
-							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
-						},
-						{
-							"name": "onInteractOutside",
-							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
-							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
-						}
-					]
-				},
-				{
-					"name": "MenuBarItem",
-					"props": [
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the menubar item."
-						},
-						{
-							"name": "onSelect",
-							"type": "(event: Event) => void",
-							"required": false,
-							"description": "Event handler called when the menubar item is selected (via click or keyboard)."
-						},
-						{
-							"name": "textValue",
-							"type": "string",
-							"required": false,
-							"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nItem forwards ref to HTMLDivElement and inherits native div attributes."
-						}
-					]
-				}
-			]
-		},
-		{
 			"displayName": "Meter",
 			"exportName": "Meter",
 			"importPath": "@nocoo/basalt/components/meter",
 			"subpath": "./components/meter",
 			"sourceFile": "packages/basalt/src/components/meter.tsx",
-			"sourceHash": "f626ef9b0ae354b0",
+			"sourceHash": "c14a541e0e770cb2",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -14134,328 +12844,6 @@
 			]
 		},
 		{
-			"displayName": "NavigationMenu",
-			"exportName": "NavigationMenu",
-			"importPath": "@nocoo/basalt/components/navigation-menu",
-			"subpath": "./components/navigation-menu",
-			"sourceFile": "packages/basalt/src/components/navigation-menu.tsx",
-			"sourceHash": "2584e3353b77dbee",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/navigation-menu",
-			"packageDoc": "ai/registry.json#navigation-menu",
-			"summary": "NavigationMenu component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "NavigationMenuList",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuLink",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenu",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuListProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuItemProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuItem",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuLinkProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "navigation-menu",
-					"name": "NavigationMenu",
-					"exportName": "NavigationMenu",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#navigation-menu",
-					"api": [
-						{
-							"name": "NavigationMenu",
-							"props": [
-								{
-									"name": "value",
-									"type": "string",
-									"required": false,
-									"description": "Controlled value of the currently active navigation item."
-								},
-								{
-									"name": "defaultValue",
-									"type": "string",
-									"required": false,
-									"description": "Uncontrolled initial active navigation item value."
-								},
-								{
-									"name": "onValueChange",
-									"type": "(value: string) => void",
-									"required": false,
-									"description": "Callback invoked when active navigation item value changes."
-								},
-								{
-									"name": "dir",
-									"type": "\"ltr\" | \"rtl\"",
-									"required": false,
-									"default": "\"ltr\"",
-									"description": "Reading direction of the navigation menu. Inherits from nearest DirectionProvider or ltr."
-								},
-								{
-									"name": "orientation",
-									"type": "\"horizontal\" | \"vertical\"",
-									"required": false,
-									"default": "\"horizontal\"",
-									"description": "Orientation of the navigation menu items and keyboard navigation axis."
-								},
-								{
-									"name": "delayDuration",
-									"type": "number",
-									"required": false,
-									"default": "200",
-									"description": "Duration in milliseconds from pointer entering trigger until menu opens."
-								},
-								{
-									"name": "skipDelayDuration",
-									"type": "number",
-									"required": false,
-									"default": "300",
-									"description": "Duration in milliseconds to move between triggers without re-triggering delay."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered nav element to the child element, merging props and behavior.\nNavigationMenu forwards ref to HTMLElement and inherits native nav attributes."
-								}
-							]
-						},
-						{
-							"name": "NavigationMenuList",
-							"props": [
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered ul element to the child element, merging props and behavior.\nNavigationMenuList forwards ref to HTMLUListElement and inherits native ul attributes."
-								}
-							]
-						},
-						{
-							"name": "NavigationMenuItem",
-							"props": [
-								{
-									"name": "value",
-									"type": "string",
-									"required": false,
-									"description": "Unique value that associates the item with sub-navigation state."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered li element to the child element, merging props and behavior.\nNavigationMenuItem forwards ref to HTMLLIElement and inherits native li attributes."
-								}
-							]
-						},
-						{
-							"name": "NavigationMenuLink",
-							"props": [
-								{
-									"name": "active",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Whether the link represents the currently active destination.\nAdds data-active attribute for styling."
-								},
-								{
-									"name": "onSelect",
-									"type": "(event: Event) => void",
-									"required": false,
-									"description": "Event handler called when the navigation link is selected via pointer or keyboard."
-								},
-								{
-									"name": "asChild",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Change the default rendered anchor element to the child element, merging props and behavior.\nNavigationMenuLink forwards ref to HTMLAnchorElement and inherits native anchor attributes."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "NavigationMenu",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Controlled value of the currently active navigation item."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"description": "Uncontrolled initial active navigation item value."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Callback invoked when active navigation item value changes."
-						},
-						{
-							"name": "dir",
-							"type": "\"ltr\" | \"rtl\"",
-							"required": false,
-							"default": "\"ltr\"",
-							"description": "Reading direction of the navigation menu. Inherits from nearest DirectionProvider or ltr."
-						},
-						{
-							"name": "orientation",
-							"type": "\"horizontal\" | \"vertical\"",
-							"required": false,
-							"default": "\"horizontal\"",
-							"description": "Orientation of the navigation menu items and keyboard navigation axis."
-						},
-						{
-							"name": "delayDuration",
-							"type": "number",
-							"required": false,
-							"default": "200",
-							"description": "Duration in milliseconds from pointer entering trigger until menu opens."
-						},
-						{
-							"name": "skipDelayDuration",
-							"type": "number",
-							"required": false,
-							"default": "300",
-							"description": "Duration in milliseconds to move between triggers without re-triggering delay."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered nav element to the child element, merging props and behavior.\nNavigationMenu forwards ref to HTMLElement and inherits native nav attributes."
-						}
-					]
-				},
-				{
-					"name": "NavigationMenuList",
-					"props": [
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered ul element to the child element, merging props and behavior.\nNavigationMenuList forwards ref to HTMLUListElement and inherits native ul attributes."
-						}
-					]
-				},
-				{
-					"name": "NavigationMenuItem",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Unique value that associates the item with sub-navigation state."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered li element to the child element, merging props and behavior.\nNavigationMenuItem forwards ref to HTMLLIElement and inherits native li attributes."
-						}
-					]
-				},
-				{
-					"name": "NavigationMenuLink",
-					"props": [
-						{
-							"name": "active",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether the link represents the currently active destination.\nAdds data-active attribute for styling."
-						},
-						{
-							"name": "onSelect",
-							"type": "(event: Event) => void",
-							"required": false,
-							"description": "Event handler called when the navigation link is selected via pointer or keyboard."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered anchor element to the child element, merging props and behavior.\nNavigationMenuLink forwards ref to HTMLAnchorElement and inherits native anchor attributes."
-						}
-					]
-				}
-			]
-		},
-		{
 			"displayName": "overlayPanelClass",
 			"exportName": "overlayPanelClass",
 			"importPath": "@nocoo/basalt/components/overlay",
@@ -14680,156 +13068,6 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Own-row filters. Keep short filters in actions."
-						}
-					]
-				}
-			]
-		},
-		{
-			"displayName": "Pagination",
-			"exportName": "Pagination",
-			"importPath": "@nocoo/basalt/components/pagination",
-			"subpath": "./components/pagination",
-			"sourceFile": "packages/basalt/src/components/pagination.tsx",
-			"sourceHash": "feabd65162fb809a",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/pagination",
-			"packageDoc": "ai/registry.json#pagination",
-			"summary": "Pagination component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "Pagination",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/pagination",
-					"packageDoc": "ai/registry.json#pagination",
-					"originModule": "@nocoo/basalt/components/pagination"
-				},
-				{
-					"name": "PaginationProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/pagination",
-					"packageDoc": "ai/registry.json#pagination",
-					"originModule": "@nocoo/basalt/components/pagination"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "pagination",
-					"name": "Pagination",
-					"exportName": "Pagination",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#pagination",
-					"api": [
-						{
-							"name": "Pagination",
-							"props": [
-								{
-									"name": "page",
-									"type": "number",
-									"required": false,
-									"description": "Controlled 1-based page."
-								},
-								{
-									"name": "defaultPage",
-									"type": "number",
-									"required": false,
-									"default": "1",
-									"description": "Uncontrolled initial page."
-								},
-								{
-									"name": "pageCount",
-									"type": "number",
-									"required": false,
-									"default": "10",
-									"description": "Last page number."
-								},
-								{
-									"name": "onPageChange",
-									"type": "(page: number) => void",
-									"required": false,
-									"description": "Called when the page changes."
-								},
-								{
-									"name": "simple",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Hide first, last, and page number controls."
-								},
-								{
-									"name": "disabled",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable every control."
-								},
-								{
-									"name": "className",
-									"type": "string",
-									"required": false,
-									"description": "Additional classes for the nav."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "Pagination",
-					"props": [
-						{
-							"name": "page",
-							"type": "number",
-							"required": false,
-							"description": "Controlled 1-based page."
-						},
-						{
-							"name": "defaultPage",
-							"type": "number",
-							"required": false,
-							"default": "1",
-							"description": "Uncontrolled initial page."
-						},
-						{
-							"name": "pageCount",
-							"type": "number",
-							"required": false,
-							"default": "10",
-							"description": "Last page number."
-						},
-						{
-							"name": "onPageChange",
-							"type": "(page: number) => void",
-							"required": false,
-							"description": "Called when the page changes."
-						},
-						{
-							"name": "simple",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Hide first, last, and page number controls."
-						},
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable every control."
-						},
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the nav."
 						}
 					]
 				}
@@ -20191,7 +18429,7 @@
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"subpath": "./components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "f5e650261abc85f6",
+			"sourceHash": "ced8df30d7a3f95c",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23414,40 +21652,6 @@
 			]
 		},
 		{
-			"displayName": "TypeaheadField",
-			"exportName": "TypeaheadField",
-			"importPath": "@nocoo/basalt/components/typeahead-field",
-			"subpath": "./components/typeahead-field",
-			"sourceFile": "packages/basalt/src/components/typeahead-field.tsx",
-			"sourceHash": "93ab4a877952c879",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "legacy-internal",
-			"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-			"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-			"summary": "Internal composite input base for autocomplete and combobox",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "TypeaheadField",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/typeahead-field"
-				},
-				{
-					"name": "TypeaheadItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/typeahead-field"
-				}
-			]
-		},
-		{
 			"displayName": "UploadQueue",
 			"exportName": "UploadQueue",
 			"importPath": "@nocoo/basalt/components/upload-queue",
@@ -25187,30 +23391,6 @@
 			]
 		},
 		{
-			"slug": "basalt-mark",
-			"name": "BasaltMark",
-			"exportName": "BasaltMark",
-			"importPath": "@nocoo/basalt/components/basalt-mark",
-			"sourceFile": "packages/basalt/src/components/basalt-mark.tsx",
-			"sourceHash": "a83d6783a0120b6c",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#basalt-mark",
-			"api": [
-				{
-					"name": "BasaltMark",
-					"props": [
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the mark."
-						}
-					]
-				}
-			]
-		},
-		{
 			"slug": "field",
 			"name": "Field",
 			"exportName": "Field",
@@ -25864,88 +24044,12 @@
 			]
 		},
 		{
-			"slug": "combobox",
-			"name": "Combobox",
-			"exportName": "Combobox",
-			"importPath": "@nocoo/basalt/components/combobox",
-			"sourceFile": "packages/basalt/src/components/combobox.tsx",
-			"sourceHash": "bf7f468af3da2c3f",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#combobox",
-			"api": [
-				{
-					"name": "Combobox",
-					"props": [
-						{
-							"name": "items",
-							"type": "ComboboxItem[]",
-							"required": true,
-							"description": "Options shown in the list. Selection must match one of these values."
-						},
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "The controlled selected value."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"description": "The uncontrolled initial value."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Called when the selected value changes."
-						},
-						{
-							"name": "name",
-							"type": "string",
-							"required": false,
-							"description": "Native form field name."
-						},
-						{
-							"name": "placeholder",
-							"type": "string",
-							"required": false,
-							"default": "Select…",
-							"description": "Placeholder shown when the field is empty."
-						},
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field."
-						},
-						{
-							"name": "loading",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field and mark it busy."
-						},
-						{
-							"name": "size",
-							"type": "InputSize",
-							"required": false,
-							"default": "default",
-							"description": "The visual size of the field."
-						}
-					]
-				}
-			]
-		},
-		{
 			"slug": "autocomplete",
 			"name": "Autocomplete",
 			"exportName": "Autocomplete",
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "1e35ac31ac0a1e3a",
+			"sourceHash": "a215956fff299673",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#autocomplete",
@@ -25956,60 +24060,47 @@
 						{
 							"name": "items",
 							"type": "AutocompleteItem[]",
-							"required": true,
-							"description": "Suggestions shown as the query matches. Values outside the list are allowed.\n\nNote: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),\nany uncommitted text or matching suggestion is committed once without stealing focus\nback to the input, allowing natural focus traversal."
+							"required": true
 						},
 						{
 							"name": "value",
 							"type": "string",
-							"required": false,
-							"description": "The controlled value."
+							"required": false
 						},
 						{
 							"name": "defaultValue",
 							"type": "string",
-							"required": false,
-							"description": "The uncontrolled initial value."
+							"required": false
 						},
 						{
 							"name": "onValueChange",
 							"type": "(value: string) => void",
-							"required": false,
-							"description": "Called when the value changes, including freeform text."
+							"required": false
 						},
 						{
 							"name": "name",
 							"type": "string",
-							"required": false,
-							"description": "Native form field name."
+							"required": false
 						},
 						{
 							"name": "placeholder",
 							"type": "string",
-							"required": false,
-							"default": "Search…",
-							"description": "Placeholder shown when the field is empty."
+							"required": false
 						},
 						{
 							"name": "disabled",
 							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field."
+							"required": false
 						},
 						{
 							"name": "loading",
 							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the field and mark it busy."
+							"required": false
 						},
 						{
 							"name": "size",
 							"type": "InputSize",
-							"required": false,
-							"default": "default",
-							"description": "The visual size of the field."
+							"required": false
 						}
 					]
 				}
@@ -26802,49 +24893,12 @@
 			]
 		},
 		{
-			"slug": "battery-meter",
-			"name": "BatteryMeter",
-			"exportName": "BatteryMeter",
-			"importPath": "@nocoo/basalt/components/battery-meter",
-			"sourceFile": "packages/basalt/src/components/battery-meter.tsx",
-			"sourceHash": "980cbe70b2e22b52",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#battery-meter",
-			"api": [
-				{
-					"name": "BatteryMeter",
-					"props": [
-						{
-							"name": "value",
-							"type": "number",
-							"required": true,
-							"description": "Battery charge in percent, clamped to 0–100. Non-finite readings are unavailable."
-						},
-						{
-							"name": "label",
-							"type": "string",
-							"required": true,
-							"description": "Accessible name of the battery."
-						},
-						{
-							"name": "status",
-							"type": "\"charging\" | \"discharging\" | \"offline\"",
-							"required": false,
-							"default": "\"discharging\"",
-							"description": "Device state, also announced with the value."
-						}
-					]
-				}
-			]
-		},
-		{
 			"slug": "meter",
 			"name": "Meter",
 			"exportName": "Meter",
 			"importPath": "@nocoo/basalt/components/meter",
 			"sourceFile": "packages/basalt/src/components/meter.tsx",
-			"sourceHash": "f626ef9b0ae354b0",
+			"sourceHash": "c14a541e0e770cb2",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#meter",
@@ -30024,7 +28078,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "a91bd7c62e63fb59",
+			"sourceHash": "c630a3dc178d8b8e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -30231,70 +28285,6 @@
 			]
 		},
 		{
-			"slug": "pagination",
-			"name": "Pagination",
-			"exportName": "Pagination",
-			"importPath": "@nocoo/basalt/components/pagination",
-			"sourceFile": "packages/basalt/src/components/pagination.tsx",
-			"sourceHash": "feabd65162fb809a",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#pagination",
-			"api": [
-				{
-					"name": "Pagination",
-					"props": [
-						{
-							"name": "page",
-							"type": "number",
-							"required": false,
-							"description": "Controlled 1-based page."
-						},
-						{
-							"name": "defaultPage",
-							"type": "number",
-							"required": false,
-							"default": "1",
-							"description": "Uncontrolled initial page."
-						},
-						{
-							"name": "pageCount",
-							"type": "number",
-							"required": false,
-							"default": "10",
-							"description": "Last page number."
-						},
-						{
-							"name": "onPageChange",
-							"type": "(page: number) => void",
-							"required": false,
-							"description": "Called when the page changes."
-						},
-						{
-							"name": "simple",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Hide first, last, and page number controls."
-						},
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable every control."
-						},
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the nav."
-						}
-					]
-				}
-			]
-		},
-		{
 			"slug": "collapsible",
 			"name": "Collapsible",
 			"exportName": "Collapsible",
@@ -30426,421 +28416,6 @@
 							"required": false,
 							"default": "\"Breadcrumb\"",
 							"description": "Accessible name of the breadcrumb `nav` landmark; localize it for non-English apps."
-						}
-					]
-				}
-			]
-		},
-		{
-			"slug": "navigation-menu",
-			"name": "NavigationMenu",
-			"exportName": "NavigationMenu",
-			"importPath": "@nocoo/basalt/components/navigation-menu",
-			"sourceFile": "packages/basalt/src/components/navigation-menu.tsx",
-			"sourceHash": "2584e3353b77dbee",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#navigation-menu",
-			"api": [
-				{
-					"name": "NavigationMenu",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Controlled value of the currently active navigation item."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"description": "Uncontrolled initial active navigation item value."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Callback invoked when active navigation item value changes."
-						},
-						{
-							"name": "dir",
-							"type": "\"ltr\" | \"rtl\"",
-							"required": false,
-							"default": "\"ltr\"",
-							"description": "Reading direction of the navigation menu. Inherits from nearest DirectionProvider or ltr."
-						},
-						{
-							"name": "orientation",
-							"type": "\"horizontal\" | \"vertical\"",
-							"required": false,
-							"default": "\"horizontal\"",
-							"description": "Orientation of the navigation menu items and keyboard navigation axis."
-						},
-						{
-							"name": "delayDuration",
-							"type": "number",
-							"required": false,
-							"default": "200",
-							"description": "Duration in milliseconds from pointer entering trigger until menu opens."
-						},
-						{
-							"name": "skipDelayDuration",
-							"type": "number",
-							"required": false,
-							"default": "300",
-							"description": "Duration in milliseconds to move between triggers without re-triggering delay."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered nav element to the child element, merging props and behavior.\nNavigationMenu forwards ref to HTMLElement and inherits native nav attributes."
-						}
-					]
-				},
-				{
-					"name": "NavigationMenuList",
-					"props": [
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered ul element to the child element, merging props and behavior.\nNavigationMenuList forwards ref to HTMLUListElement and inherits native ul attributes."
-						}
-					]
-				},
-				{
-					"name": "NavigationMenuItem",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Unique value that associates the item with sub-navigation state."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered li element to the child element, merging props and behavior.\nNavigationMenuItem forwards ref to HTMLLIElement and inherits native li attributes."
-						}
-					]
-				},
-				{
-					"name": "NavigationMenuLink",
-					"props": [
-						{
-							"name": "active",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether the link represents the currently active destination.\nAdds data-active attribute for styling."
-						},
-						{
-							"name": "onSelect",
-							"type": "(event: Event) => void",
-							"required": false,
-							"description": "Event handler called when the navigation link is selected via pointer or keyboard."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered anchor element to the child element, merging props and behavior.\nNavigationMenuLink forwards ref to HTMLAnchorElement and inherits native anchor attributes."
-						}
-					]
-				}
-			]
-		},
-		{
-			"slug": "menu-bar",
-			"name": "MenuBar",
-			"exportName": "MenuBar",
-			"importPath": "@nocoo/basalt/components/menu-bar",
-			"sourceFile": "packages/basalt/src/components/menu-bar.tsx",
-			"sourceHash": "c4937ccb38cafaa3",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#menu-bar",
-			"api": [
-				{
-					"name": "MenuBar",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Controlled value of the currently open menu."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"default": "\"\"",
-							"description": "Uncontrolled initial value of the open menu."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Callback invoked when the open menu value changes."
-						},
-						{
-							"name": "loop",
-							"type": "boolean",
-							"required": false,
-							"default": "true",
-							"description": "Whether keyboard navigation loops around when reaching ends."
-						},
-						{
-							"name": "dir",
-							"type": "\"ltr\" | \"rtl\"",
-							"required": false,
-							"default": "\"ltr\"",
-							"description": "Reading direction of the menubar."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nMenuBar forwards ref to HTMLDivElement and inherits native div attributes."
-						}
-					]
-				},
-				{
-					"name": "MenuBarRoot",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Controlled value of the currently open menu."
-						},
-						{
-							"name": "defaultValue",
-							"type": "string",
-							"required": false,
-							"default": "\"\"",
-							"description": "Uncontrolled initial value of the open menu."
-						},
-						{
-							"name": "onValueChange",
-							"type": "(value: string) => void",
-							"required": false,
-							"description": "Callback invoked when the open menu value changes."
-						},
-						{
-							"name": "loop",
-							"type": "boolean",
-							"required": false,
-							"default": "true",
-							"description": "Whether keyboard navigation loops around when reaching ends."
-						},
-						{
-							"name": "dir",
-							"type": "\"ltr\" | \"rtl\"",
-							"required": false,
-							"default": "\"ltr\"",
-							"description": "Reading direction of the menubar."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nMenuBar forwards ref to HTMLDivElement and inherits native div attributes."
-						}
-					]
-				},
-				{
-					"name": "MenuBarMenu",
-					"props": [
-						{
-							"name": "value",
-							"type": "string",
-							"required": false,
-							"description": "Unique identifier value for this menu within the menubar."
-						}
-					]
-				},
-				{
-					"name": "MenuBarTrigger",
-					"props": [
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the menubar trigger button."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
-						}
-					]
-				},
-				{
-					"name": "MenuBarContent",
-					"props": [
-						{
-							"name": "loop",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether keyboard navigation loops around when reaching the start or end item."
-						},
-						{
-							"name": "side",
-							"type": "\"bottom\" | \"left\" | \"right\" | \"top\"",
-							"required": false,
-							"default": "\"bottom\"",
-							"description": "Preferred placement side relative to the menu trigger."
-						},
-						{
-							"name": "sideOffset",
-							"type": "number",
-							"required": false,
-							"default": "4",
-							"description": "Distance in pixels between trigger and floating content panel."
-						},
-						{
-							"name": "align",
-							"type": "\"center\" | \"end\" | \"start\"",
-							"required": false,
-							"default": "\"start\"",
-							"description": "Preferred alignment along the side axis."
-						},
-						{
-							"name": "alignOffset",
-							"type": "number",
-							"required": false,
-							"default": "0",
-							"description": "Offset in pixels from the start or end alignment position."
-						},
-						{
-							"name": "avoidCollisions",
-							"type": "boolean",
-							"required": false,
-							"default": "true",
-							"description": "Whether to reposition content to avoid viewport boundary collisions."
-						},
-						{
-							"name": "collisionBoundary",
-							"type": "Boundary[] | Element | null",
-							"required": false,
-							"default": "[]",
-							"description": "Element or elements bounding boundary collision calculations."
-						},
-						{
-							"name": "collisionPadding",
-							"type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>>",
-							"required": false,
-							"default": "0",
-							"description": "Virtual padding from collision boundaries in pixels."
-						},
-						{
-							"name": "arrowPadding",
-							"type": "number",
-							"required": false,
-							"default": "0",
-							"description": "Padding in pixels between popper arrow and floating panel edge."
-						},
-						{
-							"name": "sticky",
-							"type": "\"always\" | \"partial\"",
-							"required": false,
-							"default": "\"partial\"",
-							"description": "Sticky positioning behavior along the align axis when overflowing."
-						},
-						{
-							"name": "hideWhenDetached",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether to hide content completely when trigger is fully occluded."
-						},
-						{
-							"name": "forceMount",
-							"type": "true",
-							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
-						},
-						{
-							"name": "onCloseAutoFocus",
-							"type": "(event: Event) => void",
-							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
-						},
-						{
-							"name": "onEscapeKeyDown",
-							"type": "(event: KeyboardEvent) => void",
-							"required": false,
-							"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
-						},
-						{
-							"name": "onPointerDownOutside",
-							"type": "(event: PointerDownOutsideEvent) => void",
-							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
-						},
-						{
-							"name": "onFocusOutside",
-							"type": "(event: FocusOutsideEvent) => void",
-							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
-						},
-						{
-							"name": "onInteractOutside",
-							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
-							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
-						}
-					]
-				},
-				{
-					"name": "MenuBarItem",
-					"props": [
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable the menubar item."
-						},
-						{
-							"name": "onSelect",
-							"type": "(event: Event) => void",
-							"required": false,
-							"description": "Event handler called when the menubar item is selected (via click or keyboard)."
-						},
-						{
-							"name": "textValue",
-							"type": "string",
-							"required": false,
-							"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
-						},
-						{
-							"name": "asChild",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nItem forwards ref to HTMLDivElement and inherits native div attributes."
 						}
 					]
 				}
@@ -31535,54 +29110,6 @@
 			]
 		},
 		{
-			"slug": "flow",
-			"name": "Flow",
-			"exportName": "Flow",
-			"importPath": "@nocoo/basalt/components/flow",
-			"sourceFile": "packages/basalt/src/components/flow.tsx",
-			"sourceHash": "889be199ba215ffb",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#flow",
-			"api": [
-				{
-					"name": "Flow",
-					"props": [
-						{
-							"name": "aria-label",
-							"type": "string",
-							"required": false,
-							"default": "\"Flow\"",
-							"description": "Accessible name for the step list."
-						},
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the list."
-						},
-						{
-							"name": "children",
-							"type": "React.ReactNode",
-							"required": true,
-							"description": "Step nodes."
-						}
-					]
-				},
-				{
-					"name": "FlowNode",
-					"props": [
-						{
-							"name": "children",
-							"type": "React.ReactNode",
-							"required": true,
-							"description": "Label for the step."
-						}
-					]
-				}
-			]
-		},
-		{
 			"slug": "stat-strip",
 			"name": "StatStrip",
 			"exportName": "StatStrip",
@@ -31625,7 +29152,7 @@
 			"exportName": "TablePager",
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "f5e650261abc85f6",
+			"sourceHash": "ced8df30d7a3f95c",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table-pager",
@@ -33453,42 +30980,6 @@
 							"type": "() => void",
 							"required": false,
 							"description": "Retry callback for the default table."
-						}
-					]
-				}
-			]
-		},
-		{
-			"slug": "delete-resource",
-			"name": "Delete Resource",
-			"exportName": "DeleteResource",
-			"importPath": "@nocoo/basalt/components/delete-resource",
-			"sourceFile": "packages/basalt/src/components/delete-resource.tsx",
-			"sourceHash": "1270ccdc91f59fac",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#delete-resource",
-			"api": [
-				{
-					"name": "DeleteResource",
-					"props": [
-						{
-							"name": "name",
-							"type": "string",
-							"required": true,
-							"description": "Name of the resource being deleted, interpolated into dialog title and trigger label."
-						},
-						{
-							"name": "onDelete",
-							"type": "() => void | Promise<void>",
-							"required": true,
-							"description": "Called when deletion is confirmed. When this throws or rejects, an error alert is shown and the dialog remains open for retry."
-						},
-						{
-							"name": "errorMessage",
-							"type": "DeleteResourceErrorFormatter | React.ReactNode",
-							"required": false,
-							"description": "Custom error message or renderer when onDelete fails. Accepts a ReactNode or an (error: unknown) => ReactNode formatter. Defaults to the caught Error message or 'Failed to delete resource. Please try again.'"
 						}
 					]
 				}

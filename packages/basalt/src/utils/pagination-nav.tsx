@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { cn } from "../utils/cn";
-import { controlSurfaceClass } from "../utils/control-surface";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "../utils/internal-icons";
-import { Button } from "./button";
+import { Button } from "../components/button";
+import { cn } from "./cn";
+import { controlSurfaceClass } from "./control-surface";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "./internal-icons";
 
 const itemClass = cn(
 	"relative basalt-action-inset w-basalt-control shrink-0 rounded-none border-0 bg-transparent shadow-none first:rounded-l-basalt-md last:rounded-r-basalt-md",

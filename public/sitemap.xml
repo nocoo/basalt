@@ -94,12 +94,6 @@
     <loc>https://basaltui.com/ui/banner</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/basalt-mark</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/battery-meter</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/breadcrumbs</loc>
   </url>
   <url>
@@ -124,9 +118,6 @@
     <loc>https://basaltui.com/ui/collapsible</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/combobox</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/command-palette</loc>
   </url>
   <url>
@@ -140,9 +131,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/date-picker</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/delete-resource</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/description-list</loc>
@@ -173,9 +161,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/filter-bar</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/flow</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/grid</loc>
@@ -217,16 +202,10 @@
     <loc>https://basaltui.com/ui/loader</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/menu-bar</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/meter</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/multi-select</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/navigation-menu</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/overview/action</loc>
@@ -254,9 +233,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/page-header</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/pagination</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/popover</loc>

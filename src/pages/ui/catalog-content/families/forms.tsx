@@ -7,7 +7,6 @@ import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
 import { AUTOCOMPLETE_EXAMPLES } from "../../examples/autocomplete";
 import { CHECKBOX_EXAMPLES } from "../../examples/checkbox";
-import { COMBOBOX_EXAMPLES } from "../../examples/combobox";
 import { DATE_PICKER_EXAMPLES } from "../../examples/date-picker";
 import { FIELD_EXAMPLES } from "../../examples/field";
 import { FILE_DROPZONE_EXAMPLES } from "../../examples/file-dropzone";
@@ -27,7 +26,6 @@ import { TAG_COLOR_PICKER_EXAMPLES } from "../../examples/tag-color-picker";
 import { UPLOAD_QUEUE_EXAMPLES } from "../../examples/upload-queue";
 import { API as autocompleteApi } from "../../generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "../../generated/catalog-api/checkbox";
-import { API as comboboxApi } from "../../generated/catalog-api/combobox";
 import { API as datePickerApi } from "../../generated/catalog-api/date-picker";
 import { API as fieldApi } from "../../generated/catalog-api/field";
 import { API as fileDropzoneApi } from "../../generated/catalog-api/file-dropzone";
@@ -343,28 +341,6 @@ export default function Example() {
 			}),
 		},
 		examples: SELECT_EXAMPLES,
-	},
-	combobox: {
-		docs: {
-			description: "A searchable list that commits only listed values.",
-			usage: `import { Combobox } from "@nocoo/basalt/components/combobox";
-
-export default function Example() {
-	return (
-		<Combobox
-			items={[
-				{ value: "apple", label: "Care plan" },
-				{ value: "banana", label: "Follow-up" },
-			]}
-			placeholder="Select…"
-		/>
-	);
-}`,
-			variants: ["sm", "default", "lg"],
-			api: comboboxApi,
-			provenance: EXTRA_PROVENANCE,
-		},
-		examples: COMBOBOX_EXAMPLES,
 	},
 	autocomplete: {
 		docs: {

@@ -53,7 +53,6 @@ The root barrel is reserved for lightweight, frequently-used leaves, standard in
 <a id="wildcard-subpaths"></a>
 In `v2.0.3`, wildcard exports (`./components/*` and `./providers/*`) exposed all non-test modules in the package, including internal building blocks:
 
-- **`@nocoo/basalt/components/typeahead-field`**: Internal composite input controller for autocomplete and combobox (`TypeaheadField`, `TypeaheadItem`). Provides popup list and keyboard navigation wiring.
 - **`@nocoo/basalt/components/overlay`**: Internal class generators and styling constants for overlay menus and select (`overlayPanelClass`, `overlayItemClass`, `FOCUS_RING`, `FOCUS_BORDER`, `MENU_GAP`, `OVERLAY_GAP`, `OVERLAY_LAYER`, `OVERLAY_MOTION`).
 
 **Policy:**
@@ -145,7 +144,7 @@ Other retained IDs keep their identity with the new palette values. Unknown IDs 
 
 | Area                   | Additions and compatibility                                                                                                                                    | Application responsibility                                                                                               |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Resource screens       | Additive DataTable sorting, manual processing/pagination, header and retry options; ResourceList state/toolbar/bulk/footer slots; granular BatteryMeter        | Queries, authorization, selection policy, total counts and backend requests                                              |
+| Resource screens       | Additive DataTable sorting, manual processing/pagination, header and retry options; ResourceList state/toolbar/bulk/footer slots; granular Meter               | Queries, authorization, selection policy, total counts and backend requests                                              |
 | Filtering              | MultiSelect, FilterBar and FilterChip, including controlled search and native form/reset support                                                               | Search results and business filter state                                                                                 |
 | Uploads                | FileDropzone plus UploadQueue/UploadItem, validation, progress and action callbacks                                                                            | Transport, retry/cancel, object URL lifetime and server validation                                                       |
 | Editing and navigation | InlineEditable, EditableNavItem/FolderNavItem, IconPicker, TagBadge/TagColorPicker, ResponsiveMasterDetail                                                     | Persistence, routing, allowed icons, stable item IDs and tree policy                                                     |

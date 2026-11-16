@@ -684,21 +684,6 @@
 			]
 		},
 		{
-			"path": "@nocoo/basalt/components/basalt-mark",
-			"symbols": [
-				{
-					"name": "BasaltMark",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "BasaltMarkProps",
-					"value": false,
-					"type": true
-				}
-			]
-		},
-		{
 			"path": "@nocoo/basalt/components/breadcrumbs",
 			"symbols": [
 				{
@@ -845,26 +830,6 @@
 					"name": "CollapsibleTrigger",
 					"value": true,
 					"type": false
-				}
-			]
-		},
-		{
-			"path": "@nocoo/basalt/components/combobox",
-			"symbols": [
-				{
-					"name": "Combobox",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "ComboboxItem",
-					"value": false,
-					"type": true
-				},
-				{
-					"name": "ComboboxProps",
-					"value": false,
-					"type": true
 				}
 			]
 		},
@@ -1028,21 +993,6 @@
 				},
 				{
 					"name": "DatePickerRange",
-					"value": false,
-					"type": true
-				}
-			]
-		},
-		{
-			"path": "@nocoo/basalt/components/delete-resource",
-			"symbols": [
-				{
-					"name": "DeleteResource",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "DeleteResourceProps",
 					"value": false,
 					"type": true
 				}
@@ -1289,31 +1239,6 @@
 			]
 		},
 		{
-			"path": "@nocoo/basalt/components/flow",
-			"symbols": [
-				{
-					"name": "Flow",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "FlowNode",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "FlowNodeProps",
-					"value": false,
-					"type": true
-				},
-				{
-					"name": "FlowProps",
-					"value": false,
-					"type": true
-				}
-			]
-		},
-		{
 			"path": "@nocoo/basalt/components/grid",
 			"symbols": [
 				{
@@ -1519,70 +1444,10 @@
 			]
 		},
 		{
-			"path": "@nocoo/basalt/components/menu-bar",
-			"symbols": [
-				{
-					"name": "MenuBar",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "MenuBarContent",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "MenuBarItem",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "MenuBarMenu",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "MenuBarRoot",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "MenuBarTrigger",
-					"value": true,
-					"type": false
-				}
-			]
-		},
-		{
 			"path": "@nocoo/basalt/components/meter",
 			"symbols": [
 				{
 					"name": "Meter",
-					"value": true,
-					"type": false
-				}
-			]
-		},
-		{
-			"path": "@nocoo/basalt/components/navigation-menu",
-			"symbols": [
-				{
-					"name": "NavigationMenu",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "NavigationMenuItem",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "NavigationMenuLink",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "NavigationMenuList",
 					"value": true,
 					"type": false
 				}
@@ -1653,21 +1518,6 @@
 				},
 				{
 					"name": "PageHeaderProps",
-					"value": false,
-					"type": true
-				}
-			]
-		},
-		{
-			"path": "@nocoo/basalt/components/pagination",
-			"symbols": [
-				{
-					"name": "Pagination",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "PaginationProps",
 					"value": false,
 					"type": true
 				}
@@ -2495,21 +2345,6 @@
 					"name": "TooltipTrigger",
 					"value": true,
 					"type": false
-				}
-			]
-		},
-		{
-			"path": "@nocoo/basalt/components/typeahead-field",
-			"symbols": [
-				{
-					"name": "TypeaheadField",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "TypeaheadItem",
-					"value": false,
-					"type": true
 				}
 			]
 		},

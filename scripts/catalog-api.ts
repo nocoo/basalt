@@ -276,12 +276,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "DescriptionListItemProps",
 		surface: "DescriptionList.Item",
 	},
-	{
-		slug: "basalt-mark",
-		sourceFile: "packages/basalt/src/components/basalt-mark.tsx",
-		propsType: "BasaltMarkProps",
-		surface: "BasaltMark",
-	},
+
 	{
 		slug: "field",
 		sourceFile: "packages/basalt/src/components/field.tsx",
@@ -448,12 +443,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "SelectLabelProps",
 		surface: "SelectLabel",
 	},
-	{
-		slug: "combobox",
-		sourceFile: "packages/basalt/src/components/combobox.tsx",
-		propsType: "ComboboxProps",
-		surface: "Combobox",
-	},
+
 	{
 		slug: "autocomplete",
 		sourceFile: "packages/basalt/src/components/autocomplete.tsx",
@@ -920,12 +910,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "DataTableProps",
 		surface: "DataTable",
 	},
-	{
-		slug: "pagination",
-		sourceFile: "packages/basalt/src/components/pagination.tsx",
-		propsType: "PaginationProps",
-		surface: "Pagination",
-	},
+
 	{
 		slug: "table-of-contents",
 		sourceFile: "packages/basalt/src/components/table-of-contents.tsx",
@@ -956,18 +941,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "CodeHighlightedProps",
 		surface: "CodeHighlighted",
 	},
-	{
-		slug: "flow",
-		sourceFile: "packages/basalt/src/components/flow.tsx",
-		propsType: "FlowProps",
-		surface: "Flow",
-	},
-	{
-		slug: "flow",
-		sourceFile: "packages/basalt/src/components/flow.tsx",
-		propsType: "FlowNodeProps",
-		surface: "FlowNode",
-	},
+
 	{
 		slug: "grid",
 		sourceFile: "packages/basalt/src/components/grid.tsx",
@@ -1017,12 +991,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "ResourceListProps",
 		surface: "ResourceList",
 	},
-	{
-		slug: "delete-resource",
-		sourceFile: "packages/basalt/src/components/delete-resource.tsx",
-		propsType: "DeleteResourceProps",
-		surface: "DeleteResource",
-	},
+
 	{
 		slug: "banner",
 		sourceFile: "packages/basalt/src/components/banner.tsx",
@@ -1066,12 +1035,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "SkeletonLineProps",
 		surface: "SkeletonLine",
 	},
-	{
-		slug: "battery-meter",
-		sourceFile: "packages/basalt/src/components/battery-meter.tsx",
-		propsType: "BatteryMeterProps",
-		surface: "BatteryMeter",
-	},
+
 	{
 		slug: "meter",
 		sourceFile: "packages/basalt/src/components/meter.tsx",
@@ -1360,66 +1324,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "ContextMenuPanelProps",
 		surface: "ContextMenuPanel",
 	},
-	{
-		slug: "menu-bar",
-		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-		propsType: "MenuBarProps",
-		surface: "MenuBar",
-	},
-	{
-		slug: "menu-bar",
-		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-		propsType: "MenuBarRootProps",
-		surface: "MenuBarRoot",
-	},
-	{
-		slug: "menu-bar",
-		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-		propsType: "MenuBarMenuProps",
-		surface: "MenuBarMenu",
-	},
-	{
-		slug: "menu-bar",
-		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-		propsType: "MenuBarTriggerProps",
-		surface: "MenuBarTrigger",
-	},
-	{
-		slug: "menu-bar",
-		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-		propsType: "MenuBarContentProps",
-		surface: "MenuBarContent",
-	},
-	{
-		slug: "menu-bar",
-		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
-		propsType: "MenuBarItemProps",
-		surface: "MenuBarItem",
-	},
-	{
-		slug: "navigation-menu",
-		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-		propsType: "NavigationMenuProps",
-		surface: "NavigationMenu",
-	},
-	{
-		slug: "navigation-menu",
-		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-		propsType: "NavigationMenuListProps",
-		surface: "NavigationMenuList",
-	},
-	{
-		slug: "navigation-menu",
-		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-		propsType: "NavigationMenuItemProps",
-		surface: "NavigationMenuItem",
-	},
-	{
-		slug: "navigation-menu",
-		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
-		propsType: "NavigationMenuLinkProps",
-		surface: "NavigationMenuLink",
-	},
+
 	{
 		slug: "breadcrumbs",
 		sourceFile: "packages/basalt/src/components/breadcrumbs.tsx",

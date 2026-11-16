@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.4.2",
-	"totalModules": 114,
-	"totalSymbols": 690,
-	"totalValues": 379,
-	"totalTypes": 311,
+	"totalModules": 105,
+	"totalSymbols": 652,
+	"totalValues": 361,
+	"totalTypes": 291,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -1411,58 +1411,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/basalt-mark",
-			"importPath": "@nocoo/basalt/components/basalt-mark",
-			"sourceFile": "packages/basalt/src/components/basalt-mark.tsx",
-			"ownerDoc": "src/pages/ui/basalt-mark",
-			"ownerKind": "catalog-component",
-			"summary": "BasaltMark component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "BasaltMark",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/basalt-mark",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/basalt-mark"
-				},
-				{
-					"name": "BasaltMarkProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/basalt-mark",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/basalt-mark"
-				}
-			]
-		},
-		{
-			"subpath": "./components/battery-meter",
-			"importPath": "@nocoo/basalt/components/battery-meter",
-			"sourceFile": "packages/basalt/src/components/battery-meter.tsx",
-			"ownerDoc": "src/pages/ui/battery-meter",
-			"ownerKind": "catalog-component",
-			"summary": "BatteryMeter component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "BatteryMeter",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/battery-meter",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/battery-meter"
-				},
-				{
-					"name": "BatteryMeterProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/battery-meter",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/battery-meter"
-				}
-			]
-		},
-		{
 			"subpath": "./components/breadcrumbs",
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
@@ -2213,40 +2161,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/combobox",
-			"importPath": "@nocoo/basalt/components/combobox",
-			"sourceFile": "packages/basalt/src/components/combobox.tsx",
-			"ownerDoc": "src/pages/ui/combobox",
-			"ownerKind": "catalog-component",
-			"summary": "Combobox component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Combobox",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/combobox",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/combobox"
-				},
-				{
-					"name": "ComboboxItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/combobox",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/combobox"
-				},
-				{
-					"name": "ComboboxProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/combobox",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/combobox"
-				}
-			]
-		},
-		{
 			"subpath": "./components/command-palette",
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
@@ -2677,40 +2591,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/date-picker",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/date-picker"
-				}
-			]
-		},
-		{
-			"subpath": "./components/delete-resource",
-			"importPath": "@nocoo/basalt/components/delete-resource",
-			"sourceFile": "packages/basalt/src/components/delete-resource.tsx",
-			"ownerDoc": "src/pages/ui/delete-resource",
-			"ownerKind": "catalog-component",
-			"summary": "Delete Resource component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "DeleteResource",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/delete-resource",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/delete-resource"
-				},
-				{
-					"name": "DeleteResourceErrorFormatter",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/delete-resource",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/delete-resource"
-				},
-				{
-					"name": "DeleteResourceProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/delete-resource",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/delete-resource"
 				}
 			]
 		},
@@ -3359,48 +3239,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/flow",
-			"importPath": "@nocoo/basalt/components/flow",
-			"sourceFile": "packages/basalt/src/components/flow.tsx",
-			"ownerDoc": "src/pages/ui/flow",
-			"ownerKind": "catalog-component",
-			"summary": "Flow component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Flow",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/flow",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/flow"
-				},
-				{
-					"name": "FlowNode",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/flow",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/flow"
-				},
-				{
-					"name": "FlowProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/flow",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/flow"
-				},
-				{
-					"name": "FlowNodeProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/flow",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/flow"
-				}
-			]
-		},
-		{
 			"subpath": "./components/grid",
 			"importPath": "@nocoo/basalt/components/grid",
 			"sourceFile": "packages/basalt/src/components/grid.tsx",
@@ -3865,112 +3703,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/menu-bar",
-			"importPath": "@nocoo/basalt/components/menu-bar",
-			"sourceFile": "packages/basalt/src/components/menu-bar.tsx",
-			"ownerDoc": "src/pages/ui/menu-bar",
-			"ownerKind": "catalog-component",
-			"summary": "MenuBar component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "MenuBar",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarMenu",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarRoot",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarMenuProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarTriggerProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarTrigger",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarContentProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarContent",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarItemProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarItem",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				},
-				{
-					"name": "MenuBarRootProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/menu-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/menu-bar"
-				}
-			]
-		},
-		{
 			"subpath": "./components/meter",
 			"importPath": "@nocoo/basalt/components/meter",
 			"sourceFile": "packages/basalt/src/components/meter.tsx",
@@ -4027,80 +3759,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/multi-select",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/multi-select"
-				}
-			]
-		},
-		{
-			"subpath": "./components/navigation-menu",
-			"importPath": "@nocoo/basalt/components/navigation-menu",
-			"sourceFile": "packages/basalt/src/components/navigation-menu.tsx",
-			"ownerDoc": "src/pages/ui/navigation-menu",
-			"ownerKind": "catalog-component",
-			"summary": "NavigationMenu component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "NavigationMenuList",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuLink",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenu",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuListProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuItemProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuItem",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuLinkProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
 				}
 			]
 		},
@@ -4217,32 +3875,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/page-header",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/page-header"
-				}
-			]
-		},
-		{
-			"subpath": "./components/pagination",
-			"importPath": "@nocoo/basalt/components/pagination",
-			"sourceFile": "packages/basalt/src/components/pagination.tsx",
-			"ownerDoc": "src/pages/ui/pagination",
-			"ownerKind": "catalog-component",
-			"summary": "Pagination component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Pagination",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/pagination",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/pagination"
-				},
-				{
-					"name": "PaginationProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/pagination",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/pagination"
 				}
 			]
 		},
@@ -6175,32 +5807,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/tooltip",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/tooltip"
-				}
-			]
-		},
-		{
-			"subpath": "./components/typeahead-field",
-			"importPath": "@nocoo/basalt/components/typeahead-field",
-			"sourceFile": "packages/basalt/src/components/typeahead-field.tsx",
-			"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-			"ownerKind": "legacy-internal",
-			"summary": "Internal composite input base for autocomplete and combobox",
-			"symbols": [
-				{
-					"name": "TypeaheadField",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/typeahead-field"
-				},
-				{
-					"name": "TypeaheadItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/typeahead-field"
 				}
 			]
 		},

@@ -52,6 +52,7 @@ export function Meter({
 			<div className="flex items-center gap-basalt-space-lg">
 				<Progress.Root
 					data-basalt-meter=""
+					role="meter"
 					value={reading}
 					aria-label={ariaLabel ?? label}
 					aria-valuetext={reading === null ? "Unavailable" : customValue}
