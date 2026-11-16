@@ -83,7 +83,46 @@ export const SURFACE_MANIFEST_COMMAND = "bun run catalog-api:generate";
  * Every public module that is not directly a catalog item MUST be registered here.
  * Any unowned module or unowned helper inside these modules will cause derivation to fail immediately.
  */
+const RADIX_PRIMITIVES = [
+	"accordion",
+	"alert-dialog",
+	"avatar",
+	"checkbox",
+	"collapsible",
+	"context-menu",
+	"dialog",
+	"dropdown-menu",
+	"hover-card",
+	"label",
+	"popover",
+	"progress",
+	"radio-group",
+	"scroll-area",
+	"select",
+	"separator",
+	"slider",
+	"slot",
+	"switch",
+	"tabs",
+	"toggle",
+	"toggle-group",
+	"tooltip",
+] as const;
+
+const RADIX_PRIMITIVE_OWNERS = Object.fromEntries(
+	RADIX_PRIMITIVES.map((name) => [
+		`@nocoo/basalt/primitives/${name}`,
+		{
+			ownerDoc: "INTEGRATION.md#3-imports",
+			kind: "provider",
+			summary: `Tree-shakeable Radix ${name} primitive passthrough`,
+			passthroughExternal: true,
+		},
+	]),
+) as Record<string, DocOwnerInfo>;
+
 export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
+	...RADIX_PRIMITIVE_OWNERS,
 	"@nocoo/basalt/icons": {
 		ownerDoc: "README.md#component-usage",
 		kind: "framework-chrome",

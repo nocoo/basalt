@@ -29,6 +29,7 @@ import {
 } from "@nocoo/basalt/components/table";
 import { Text as GranularText } from "@nocoo/basalt/components/text";
 import { Search } from "@nocoo/basalt/icons";
+import * as DialogPrimitive from "@nocoo/basalt/primitives/dialog";
 import { ThemeProvider as GranularThemeProvider } from "@nocoo/basalt/providers/theme";
 import { createRef } from "react";
 
@@ -55,6 +56,7 @@ export const consumer = {
 	Sparkline,
 	SlotBarChart,
 	Search,
+	DialogPrimitive,
 };
 
 // =========================================================================

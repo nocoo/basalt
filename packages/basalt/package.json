@@ -39,6 +39,10 @@
 			"types": "./dist/icons.d.ts",
 			"import": "./dist/icons.js"
 		},
+		"./primitives/*": {
+			"types": "./dist/primitives/*.d.ts",
+			"import": "./dist/primitives/*.js"
+		},
 		"./components/*": {
 			"types": "./dist/components/*.d.ts",
 			"import": "./dist/components/*.js"

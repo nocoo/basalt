@@ -2,7 +2,7 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.4.2",
-	"totalModules": 132,
+	"totalModules": 155,
 	"totalSymbols": 808,
 	"totalValues": 422,
 	"totalTypes": 386,
@@ -7623,6 +7623,213 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"ownerDoc": "README.md#component-usage",
 			"ownerKind": "framework-chrome",
 			"summary": "Tree-shakeable Lucide icon passthrough for consumer-defined iconography",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/accordion",
+			"importPath": "@nocoo/basalt/primitives/accordion",
+			"sourceFile": "packages/basalt/src/primitives/accordion.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix accordion primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/alert-dialog",
+			"importPath": "@nocoo/basalt/primitives/alert-dialog",
+			"sourceFile": "packages/basalt/src/primitives/alert-dialog.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix alert-dialog primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/avatar",
+			"importPath": "@nocoo/basalt/primitives/avatar",
+			"sourceFile": "packages/basalt/src/primitives/avatar.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix avatar primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/checkbox",
+			"importPath": "@nocoo/basalt/primitives/checkbox",
+			"sourceFile": "packages/basalt/src/primitives/checkbox.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix checkbox primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/collapsible",
+			"importPath": "@nocoo/basalt/primitives/collapsible",
+			"sourceFile": "packages/basalt/src/primitives/collapsible.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix collapsible primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/context-menu",
+			"importPath": "@nocoo/basalt/primitives/context-menu",
+			"sourceFile": "packages/basalt/src/primitives/context-menu.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix context-menu primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/dialog",
+			"importPath": "@nocoo/basalt/primitives/dialog",
+			"sourceFile": "packages/basalt/src/primitives/dialog.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix dialog primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/dropdown-menu",
+			"importPath": "@nocoo/basalt/primitives/dropdown-menu",
+			"sourceFile": "packages/basalt/src/primitives/dropdown-menu.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix dropdown-menu primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/hover-card",
+			"importPath": "@nocoo/basalt/primitives/hover-card",
+			"sourceFile": "packages/basalt/src/primitives/hover-card.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix hover-card primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/label",
+			"importPath": "@nocoo/basalt/primitives/label",
+			"sourceFile": "packages/basalt/src/primitives/label.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix label primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/popover",
+			"importPath": "@nocoo/basalt/primitives/popover",
+			"sourceFile": "packages/basalt/src/primitives/popover.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix popover primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/progress",
+			"importPath": "@nocoo/basalt/primitives/progress",
+			"sourceFile": "packages/basalt/src/primitives/progress.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix progress primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/radio-group",
+			"importPath": "@nocoo/basalt/primitives/radio-group",
+			"sourceFile": "packages/basalt/src/primitives/radio-group.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix radio-group primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/scroll-area",
+			"importPath": "@nocoo/basalt/primitives/scroll-area",
+			"sourceFile": "packages/basalt/src/primitives/scroll-area.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix scroll-area primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/select",
+			"importPath": "@nocoo/basalt/primitives/select",
+			"sourceFile": "packages/basalt/src/primitives/select.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix select primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/separator",
+			"importPath": "@nocoo/basalt/primitives/separator",
+			"sourceFile": "packages/basalt/src/primitives/separator.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix separator primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/slider",
+			"importPath": "@nocoo/basalt/primitives/slider",
+			"sourceFile": "packages/basalt/src/primitives/slider.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix slider primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/slot",
+			"importPath": "@nocoo/basalt/primitives/slot",
+			"sourceFile": "packages/basalt/src/primitives/slot.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix slot primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/switch",
+			"importPath": "@nocoo/basalt/primitives/switch",
+			"sourceFile": "packages/basalt/src/primitives/switch.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix switch primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/tabs",
+			"importPath": "@nocoo/basalt/primitives/tabs",
+			"sourceFile": "packages/basalt/src/primitives/tabs.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix tabs primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/toggle",
+			"importPath": "@nocoo/basalt/primitives/toggle",
+			"sourceFile": "packages/basalt/src/primitives/toggle.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix toggle primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/toggle-group",
+			"importPath": "@nocoo/basalt/primitives/toggle-group",
+			"sourceFile": "packages/basalt/src/primitives/toggle-group.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix toggle-group primitive passthrough",
+			"symbols": []
+		},
+		{
+			"subpath": "./primitives/tooltip",
+			"importPath": "@nocoo/basalt/primitives/tooltip",
+			"sourceFile": "packages/basalt/src/primitives/tooltip.ts",
+			"ownerDoc": "INTEGRATION.md#3-imports",
+			"ownerKind": "provider",
+			"summary": "Tree-shakeable Radix tooltip primitive passthrough",
 			"symbols": []
 		},
 		{

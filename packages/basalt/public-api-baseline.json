@@ -3398,6 +3398,98 @@
 			"symbols": []
 		},
 		{
+			"path": "@nocoo/basalt/primitives/accordion",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/alert-dialog",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/avatar",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/checkbox",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/collapsible",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/context-menu",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/dialog",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/dropdown-menu",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/hover-card",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/label",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/popover",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/progress",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/radio-group",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/scroll-area",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/select",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/separator",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/slider",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/slot",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/switch",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/tabs",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/toggle",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/toggle-group",
+			"symbols": []
+		},
+		{
+			"path": "@nocoo/basalt/primitives/tooltip",
+			"symbols": []
+		},
+		{
 			"path": "@nocoo/basalt/providers/theme",
 			"symbols": [
 				{

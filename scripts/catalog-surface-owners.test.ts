@@ -92,7 +92,7 @@ describe("public surface documentation ownership and freshness", () => {
 		const manifest = getActualRepoManifest();
 
 		expect(manifest.packageVersion).toBe(rootPkg.version);
-		expect(manifest.totalModules).toBe(132);
+		expect(manifest.totalModules).toBe(155);
 		expect(manifest.totalSymbols).toBe(808);
 		expect(manifest.totalValues).toBe(422);
 		expect(manifest.totalTypes).toBe(386);

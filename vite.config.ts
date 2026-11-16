@@ -58,6 +58,10 @@ export default defineConfig(() => ({
 				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/icons.ts"),
 			},
 			{
+				find: "@nocoo/basalt/primitives",
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/primitives"),
+			},
+			{
 				find: "@nocoo/basalt/components",
 				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/components"),
 			},

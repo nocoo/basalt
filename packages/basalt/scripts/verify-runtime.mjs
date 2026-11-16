@@ -30,6 +30,7 @@ function assertDist(url, suffix) {
 
 const rootUrl = import.meta.resolve("@nocoo/basalt");
 const iconsUrl = import.meta.resolve("@nocoo/basalt/icons");
+const dialogPrimitiveUrl = import.meta.resolve("@nocoo/basalt/primitives/dialog");
 const buttonUrl = import.meta.resolve("@nocoo/basalt/components/button");
 const themeUrl = import.meta.resolve("@nocoo/basalt/providers/theme");
 const donutUrl = import.meta.resolve("@nocoo/basalt/charts/donut");
@@ -38,6 +39,7 @@ const dataTableUrl = import.meta.resolve("@nocoo/basalt/components/data-table");
 
 assertDist(new URL(rootUrl), "/dist/index.js");
 assertDist(new URL(iconsUrl), "/dist/icons.js");
+assertDist(new URL(dialogPrimitiveUrl), "/dist/primitives/dialog.js");
 assertDist(new URL(buttonUrl), "/dist/components/button.js");
 assertDist(new URL(themeUrl), "/dist/providers/theme.js");
 assertDist(new URL(donutUrl), "/dist/charts/donut.js");
@@ -50,6 +52,7 @@ if (!rootUrl.startsWith(packageRoot.href) && !rootUrl.includes("/node_modules/@n
 
 const root = await import("@nocoo/basalt");
 const icons = await import("@nocoo/basalt/icons");
+const dialogPrimitive = await import("@nocoo/basalt/primitives/dialog");
 const button = await import("@nocoo/basalt/components/button");
 const theme = await import("@nocoo/basalt/providers/theme");
 const donut = await import("@nocoo/basalt/charts/donut");
@@ -69,6 +72,9 @@ for (const name of forbidden) {
 
 if (icons.Search == null) {
 	throw new Error("icons did not export Search");
+}
+if (dialogPrimitive.Root == null) {
+	throw new Error("primitives/dialog did not export Root");
 }
 if (button.Button == null) {
 	throw new Error("components/button did not export Button");
