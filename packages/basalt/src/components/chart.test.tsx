@@ -66,6 +66,24 @@ describe("ChartFrame", () => {
 		expect(screen.getAllByText("0")).toHaveLength(3);
 	});
 
+	it("does not forward accessibility props to fragments", () => {
+		const error = vi.spyOn(console, "error").mockImplementation(() => {});
+		try {
+			render(
+				<ChartFrame ariaLabel="Fragment plot" accessibilityLayer={false}>
+					{/* biome-ignore lint/complexity/noUselessFragments: regression coverage requires a Fragment child */}
+					<>
+						<svg aria-label="Plot" />
+					</>
+				</ChartFrame>,
+			);
+			expect(screen.getByLabelText("Plot")).toBeInTheDocument();
+			expect(error).not.toHaveBeenCalled();
+		} finally {
+			error.mockRestore();
+		}
+	});
+
 	it("passes an optional accessibility layer flag to a component child", () => {
 		function Plot({ accessibilityLayer }: { accessibilityLayer?: boolean }) {
 			return <div data-layer={String(accessibilityLayer)}>Plot</div>;

@@ -44,10 +44,12 @@ export function ChartFrame({
 	const hasSummary = hasSlotContent(summary);
 	const hasAlternative = hasSlotContent(dataAlternative);
 	const hasLegend = hasSlotContent(legend);
-	const plotChildren =
-		accessibilityLayer !== undefined &&
+	const isComponentChild =
 		isValidElement<{ accessibilityLayer?: boolean }>(children) &&
-		typeof children.type !== "string"
+		(typeof children.type === "function" ||
+			(typeof children.type === "object" && children.type !== null));
+	const plotChildren =
+		accessibilityLayer !== undefined && isComponentChild
 			? cloneElement(children as ReactElement<{ accessibilityLayer?: boolean }>, {
 					accessibilityLayer,
 				})

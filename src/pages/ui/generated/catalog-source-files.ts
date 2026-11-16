@@ -446,7 +446,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chart": {
 		"file": "packages/basalt/src/components/chart.tsx",
-		"hash": "3d173a3c28a54318",
+		"hash": "8fbaac152b75b35f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chart.js.map (sourcesContent[0])"
 	},
