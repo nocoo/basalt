@@ -1962,7 +1962,7 @@
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"subpath": "./components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "a215956fff299673",
+			"sourceHash": "c98621464e4aafa2",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3057,7 +3057,7 @@
 			"importPath": "@nocoo/basalt/components/chart",
 			"subpath": "./components/chart",
 			"sourceFile": "packages/basalt/src/components/chart.tsx",
-			"sourceHash": "8c74e608e4ef2a59",
+			"sourceHash": "3d173a3c28a54318",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3570,6 +3570,11 @@
 									"name": "legend",
 									"type": "React.ReactNode",
 									"required": false
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false
 								}
 							]
 						},
@@ -3653,6 +3658,11 @@
 						{
 							"name": "legend",
 							"type": "React.ReactNode",
+							"required": false
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
 							"required": false
 						}
 					]
@@ -24049,7 +24059,7 @@
 			"exportName": "Autocomplete",
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "a215956fff299673",
+			"sourceHash": "c98621464e4aafa2",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#autocomplete",
@@ -30620,7 +30630,7 @@
 			"exportName": "ChartFrame",
 			"importPath": "@nocoo/basalt/components/chart",
 			"sourceFile": "packages/basalt/src/components/chart.tsx",
-			"sourceHash": "8c74e608e4ef2a59",
+			"sourceHash": "3d173a3c28a54318",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#chart",
@@ -30661,6 +30671,11 @@
 						{
 							"name": "legend",
 							"type": "React.ReactNode",
+							"required": false
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
 							"required": false
 						}
 					]

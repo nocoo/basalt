@@ -1,7 +1,6 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
-import { Terminal } from "../utils/internal-icons";
 import { Code, CodeBlock, CodeHighlighted } from "./code";
 
 describe("Code", () => {
@@ -84,12 +83,7 @@ describe("Code", () => {
 	it("renders a titled panel with custom icon and safe, numbered code", () => {
 		const code = "<script>alert(1)</script>\n\n  next\n";
 		const { container } = render(
-			<CodeBlock
-				title="setup.sh"
-				icon={<Terminal data-testid="file-icon" />}
-				lineNumbers
-				id="block"
-			>
+			<CodeBlock title="setup.sh" icon={<svg data-testid="file-icon" />} lineNumbers id="block">
 				{code}
 			</CodeBlock>,
 		);

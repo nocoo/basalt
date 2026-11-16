@@ -32,7 +32,7 @@ export function Autocomplete({
 	defaultValue = "",
 	onValueChange,
 	name,
-	placeholder = "Select…",
+	placeholder = "Search…",
 	disabled = false,
 	loading = false,
 	size = "default",
@@ -121,7 +121,7 @@ export function Autocomplete({
 			form.removeEventListener("reset", onReset);
 		};
 	}, []);
-	const filtered = filterItems(items, query, false);
+	const filtered = filterItems(items, query);
 	const activeIndex =
 		active === null || filtered.length === 0 ? null : Math.min(active, filtered.length - 1);
 	const activeItem = activeIndex === null ? undefined : filtered[activeIndex];
@@ -142,7 +142,7 @@ export function Autocomplete({
 		if (!open) {
 			return;
 		}
-		const nextLen = filterItems(items, query, false).length;
+		const nextLen = filterItems(items, query).length;
 		setActive((current) => {
 			if (current === null || nextLen === 0) {
 				return null;
@@ -412,10 +412,8 @@ function displayOf(items: AutocompleteItem[], value: string) {
 	return items.find((item) => item.value === value)?.label ?? value;
 }
 
-function filterItems(items: AutocompleteItem[], query: string, showAllWhenEmpty: boolean) {
+function filterItems(items: AutocompleteItem[], query: string) {
 	const needle = query.trim().toLowerCase();
-	if (needle === "") {
-		return showAllWhenEmpty ? items : [];
-	}
+	if (needle === "") return [];
 	return items.filter((item) => item.label.toLowerCase().includes(needle));
 }

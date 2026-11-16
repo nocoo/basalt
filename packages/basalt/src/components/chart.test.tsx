@@ -66,6 +66,37 @@ describe("ChartFrame", () => {
 		expect(screen.getAllByText("0")).toHaveLength(3);
 	});
 
+	it("passes an optional accessibility layer flag to a component child", () => {
+		function Plot({ accessibilityLayer }: { accessibilityLayer?: boolean }) {
+			return <div data-layer={String(accessibilityLayer)}>Plot</div>;
+		}
+		render(
+			<ChartFrame ariaLabel="Accessible" accessibilityLayer={false}>
+				<Plot />
+			</ChartFrame>,
+		);
+		expect(screen.getByText("Plot")).toHaveAttribute("data-layer", "false");
+	});
+
+	it("gives legend shells sole ownership of caller geometry", () => {
+		const { container } = render(
+			<ChartFrame
+				ariaLabel="Geometry"
+				size="w-1/2 h-basalt-36"
+				className="p-basalt-card"
+				legend={0}
+			>
+				<div>Plot</div>
+			</ChartFrame>,
+		);
+		const shell = screen.getByTestId("chart-shell");
+		const plot = container.querySelector(".basalt-chart");
+		expect(shell).toHaveClass("w-1/2", "h-basalt-36", "p-basalt-card", "flex-col");
+		expect(shell).toHaveTextContent("0");
+		expect(plot).toHaveClass("w-full", "min-h-0", "min-w-0", "flex-1", "basalt-chart");
+		expect(plot).not.toHaveClass("w-1/2", "h-basalt-36", "p-basalt-card");
+	});
+
 	it("supports plain plot and data alternative without summary", () => {
 		const { rerender } = render(
 			<ChartFrame ariaLabel="Plain" className="custom" size="h-24 w-48">

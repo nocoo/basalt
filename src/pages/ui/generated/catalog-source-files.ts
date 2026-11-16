@@ -128,7 +128,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"autocomplete": {
 		"file": "packages/basalt/src/components/autocomplete.tsx",
-		"hash": "a215956fff299673",
+		"hash": "c98621464e4aafa2",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/autocomplete.js.map (sourcesContent[0])"
 	},
@@ -446,7 +446,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chart": {
 		"file": "packages/basalt/src/components/chart.tsx",
-		"hash": "8c74e608e4ef2a59",
+		"hash": "3d173a3c28a54318",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chart.js.map (sourcesContent[0])"
 	},

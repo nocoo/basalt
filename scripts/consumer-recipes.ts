@@ -168,13 +168,29 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 		const row = page
 			.getByRole("row")
 			.filter({ has: page.getByRole("cell", { name: "Atlas", exact: true }) });
-		await row.getByRole("button", { name: /Delete/ }).click();
-		const confirm = page.getByRole("alertdialog");
+		const deleteAtlas = row.getByRole("button", { name: "Delete Atlas", exact: true });
+		await deleteAtlas.click();
+		let confirm = page.getByRole("alertdialog");
+		await confirm.getByRole("button", { name: "Cancel", exact: true }).click();
+		await confirm.waitFor({ state: "hidden" });
+		await page.waitForFunction(
+			() => document.activeElement?.getAttribute("aria-label") === "Delete Atlas",
+		);
+		await deleteAtlas.click();
+		confirm = page.getByRole("alertdialog");
+		await page.keyboard.press("Escape");
+		await confirm.waitFor({ state: "hidden" });
+		await page.waitForFunction(
+			() => document.activeElement?.getAttribute("aria-label") === "Delete Atlas",
+		);
+		await deleteAtlas.click();
+		confirm = page.getByRole("alertdialog");
 		await confirm.getByRole("button", { name: "Delete", exact: true }).click();
 		await confirm.getByRole("alert").filter({ hasText: "Temporary conflict." }).waitFor();
 		await confirm.getByRole("button", { name: "Delete", exact: true }).click();
 		await confirm.waitFor({ state: "hidden" });
 		await page.getByRole("status").filter({ hasText: "Deleted Atlas" }).waitFor();
+		await page.waitForFunction(() => document.activeElement?.id === "recipe-resources");
 		assert.equal(await page.getByRole("cell", { name: "Atlas", exact: true }).count(), 0);
 		assert.equal(
 			await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),

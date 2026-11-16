@@ -7,6 +7,15 @@ const tailwind = readFileSync("packages/basalt/src/styles/tailwind.css", "utf8")
 const standalone = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 
 describe("dimension token contract", () => {
+	it("places package imports before the embedded Tailwind source scan", () => {
+		expect(
+			tailwind.startsWith(
+				'@layer theme, base, components, utilities;\n@import "./tokens.css";\n@import "./base.css";\n@source "../**/*.js";',
+			),
+		).toBe(true);
+		expect(tailwind).not.toContain("biome-ignore");
+	});
+
 	it("maps the core text scale to four tiers in both entrypoints", () => {
 		for (const css of [tokens, standalone]) {
 			for (const [name, value] of Object.entries({

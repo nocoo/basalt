@@ -1,4 +1,12 @@
-import { type ComponentProps, createElement, type ReactNode, useId } from "react";
+import {
+	type ComponentProps,
+	cloneElement,
+	createElement,
+	isValidElement,
+	type ReactElement,
+	type ReactNode,
+	useId,
+} from "react";
 import { cn } from "../utils/cn";
 
 export type ChartFrameProps = {
@@ -9,10 +17,14 @@ export type ChartFrameProps = {
 	summary?: ReactNode;
 	dataAlternative?: ReactNode;
 	legend?: ReactNode;
+	accessibilityLayer?: boolean;
 };
 
 export type ChartShellProps = ChartFrameProps;
-export type ChartAccessibilityProps = Pick<ChartFrameProps, "summary" | "dataAlternative">;
+export type ChartAccessibilityProps = Pick<
+	ChartFrameProps,
+	"summary" | "dataAlternative" | "accessibilityLayer"
+>;
 
 function hasSlotContent(slot: ReactNode | undefined): boolean {
 	return slot !== undefined && slot !== null && slot !== false;
@@ -26,17 +38,33 @@ export function ChartFrame({
 	summary,
 	dataAlternative,
 	legend,
+	accessibilityLayer,
 }: ChartFrameProps) {
 	const summaryId = useId();
 	const hasSummary = hasSlotContent(summary);
 	const hasAlternative = hasSlotContent(dataAlternative);
+	const hasLegend = hasSlotContent(legend);
+	const plotChildren =
+		accessibilityLayer !== undefined &&
+		isValidElement<{ accessibilityLayer?: boolean }>(children) &&
+		typeof children.type !== "string"
+			? cloneElement(children as ReactElement<{ accessibilityLayer?: boolean }>, {
+					accessibilityLayer,
+				})
+			: children;
 	const plot = (
-		<div className={cn(size, className, "min-h-0 min-w-0 basalt-chart", legend && "flex-1")}>
-			{children}
+		<div
+			className={cn(
+				hasLegend ? "w-full min-h-0 min-w-0 flex-1 basalt-chart" : size,
+				!hasLegend && className,
+				!hasLegend && "min-h-0 min-w-0 basalt-chart",
+			)}
+		>
+			{plotChildren}
 		</div>
 	);
-	const framed = hasSlotContent(legend) ? (
-		<div data-testid="chart-shell" className={cn(size, className, "flex min-h-0 min-w-0 flex-col")}>
+	const framed = hasLegend ? (
+		<div data-testid="chart-shell" className={cn("flex min-h-0 min-w-0 flex-col", size, className)}>
 			{plot}
 			{legend}
 		</div>

@@ -169,7 +169,7 @@ Basalt follows strict [Semantic Versioning (SemVer)](https://semver.org/):
 - **MINOR** (`2.x.0`): New components, additive props, opt-in features, and backward-compatible changes.
 - **MAJOR** (`3.0.0`): Breaking changes to public component signatures, DOM/ARIA structures, or removal of deprecated export paths.
 
-All 110 exported entrypoints from `v2.0.3` are locked as a permanent compatibility baseline. See [ai/COMPATIBILITY.md](ai/COMPATIBILITY.md) for full details.
+The pending 4.0 baseline verifies 95 entrypoints / 477 symbols. The older 110-entrypoint / 572-symbol `v2.0.3` inventory is retained only as migration history. See [ai/COMPATIBILITY.md](ai/COMPATIBILITY.md) for the current contract and 4.0 removals.
 
 For comprehensive architectural recipes, form adapters, and framework migration instructions, consult the complete package guide at [ai/INTEGRATION.md](ai/INTEGRATION.md).
 

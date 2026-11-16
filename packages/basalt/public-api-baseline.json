@@ -1,7 +1,7 @@
 {
-	"packageVersion": "2.0.3",
-	"sourceBaseline": "e61efc1",
-	"capturedAfter": "b8509ec (P1 did not change package runtime/type sources)",
+	"packageVersion": "4.0.0-pending",
+	"sourceBaseline": "4.0-overhaul (95 paths / 477 symbols)",
+	"capturedAfter": "P1.1-P1.6 plus round-1 review fixes; package manifests remain 3.4.2 until release",
 	"entries": [
 		{
 			"path": "@nocoo/basalt",
@@ -2840,7 +2840,7 @@
 			]
 		}
 	],
-	"capturedCommit": "b8509ec975e2ab369f91d5237e4ca343b0f40609",
+	"capturedCommit": "7cde418cf000028df6a7f0cd16cf5f9ac8bd316d",
 	"cssExports": [
 		"@nocoo/basalt/styles",
 		"@nocoo/basalt/styles/tailwind",

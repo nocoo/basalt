@@ -289,6 +289,7 @@ export default function ResourcesRecipe() {
 	const [deleteError, setDeleteError] = useState("");
 	const [pending, setPending] = useState(false);
 	const failDeletion = useRef(true);
+	const deleteOpener = useRef<HTMLButtonElement | null>(null);
 	const filtered = rows.filter((row) => row.name.toLowerCase().includes(query.toLowerCase()));
 	const remove = async () => {
 		if (!target) return;
@@ -327,7 +328,10 @@ export default function ResourcesRecipe() {
 					variant="ghost"
 					size="sm"
 					aria-label={`Delete ${row.name}`}
-					onClick={() => setTarget(row)}
+					onClick={(event) => {
+						deleteOpener.current = event.currentTarget;
+						setTarget(row);
+					}}
 				>
 					Delete
 				</Button>
@@ -390,7 +394,16 @@ export default function ResourcesRecipe() {
 					}
 				}}
 			>
-				<AlertDialogContent>
+				<AlertDialogContent
+					onCloseAutoFocus={(event) => {
+						event.preventDefault();
+						const destination = deleteOpener.current?.isConnected
+							? deleteOpener.current
+							: document.getElementById("recipe-resources");
+						destination?.focus();
+						deleteOpener.current = null;
+					}}
+				>
 					<AlertDialogTitle>Delete {target?.name}</AlertDialogTitle>
 					<AlertDialogDescription>
 						This action removes the project from this local demo.

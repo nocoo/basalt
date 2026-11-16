@@ -8,6 +8,14 @@ const BANANA = { value: "banana", label: "Banana" };
 function acceptAutocompleteProps(_props: AutocompleteProps) {}
 
 describe("Autocomplete", () => {
+	it("uses the search prompt and hides empty-query options", () => {
+		render(<Autocomplete items={[APPLE, BANANA]} />);
+		const input = screen.getByPlaceholderText("Search…");
+		expect(input).toHaveAccessibleName("Search…");
+		fireEvent.focus(input);
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+	});
+
 	it("renders an input", () => {
 		render(<Autocomplete items={[APPLE]} placeholder="Search fruits" />);
 		expect(screen.getByLabelText("Search fruits")).toBeInTheDocument();

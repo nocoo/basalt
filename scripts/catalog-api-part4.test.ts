@@ -478,7 +478,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"b08b00268295208ff35e45c14e4f48026b5116477f045db179c740224c8a11cb",
+			"337aafe66c98ac280aefd7ec4cebb15cda9ce560f9f3ffc4e38158b9e18c5f4f",
 		);
 	}, 60_000);
 

@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -7,6 +7,18 @@ import {
 	resolvePackageExportTarget,
 	runPublicApiVerification,
 } from "../scripts/verify-public-api";
+
+describe("pending 4.0 public API baseline", () => {
+	it("documents the live verified inventory instead of v2.0.3 counts", () => {
+		const baseline = JSON.parse(
+			readFileSync("packages/basalt/public-api-baseline.json", "utf8"),
+		) as BaselineDoc;
+		expect(baseline.packageVersion).toBe("4.0.0-pending");
+		expect(baseline.sourceBaseline).toContain("95 paths / 477 symbols");
+		expect(baseline.entries).toHaveLength(95);
+		expect(baseline.entries.reduce((total, entry) => total + entry.symbols.length, 0)).toBe(477);
+	});
+});
 
 describe("resolvePackageExportTarget", () => {
 	const exportsField = {

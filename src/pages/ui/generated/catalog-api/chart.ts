@@ -40,6 +40,11 @@ export const API = [
 				type: "React.ReactNode",
 				required: false,
 			},
+			{
+				name: "accessibilityLayer",
+				type: "boolean",
+				required: false,
+			},
 		],
 	},
 	{

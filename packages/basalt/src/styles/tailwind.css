@@ -1,8 +1,7 @@
-/* biome-ignore-all lint/correctness/noInvalidPositionAtImportRule: Tailwind v4 resolves the package-scoped source before dependency imports */
 @layer theme, base, components, utilities;
-@source "../**/*.js";
 @import "./tokens.css";
 @import "./base.css";
+@source "../**/*.js";
 
 /* Library variants follow ThemeProvider without changing the application's dark variant. */
 @custom-variant basalt-dark (&:where(.dark, .dark *, [data-mode="dark"], [data-mode="dark"] *));

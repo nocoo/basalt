@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Activity } from "../utils/internal-icons";
 import { StatCard, StatGrid } from "./stat-card";
+
+function Activity() {
+	return <svg aria-label="Activity" aria-hidden="true" />;
+}
 
 describe("StatCard", () => {
 	it("renders caller label and value", () => {
@@ -72,7 +75,7 @@ describe("StatCard", () => {
 		const { container, rerender } = render(
 			<StatCard
 				value="12.4k"
-				icon={<Activity strokeWidth={1.5} />}
+				icon={<Activity />}
 				iconColor="text-red-500"
 				className="outer-card"
 			/>,
@@ -170,7 +173,7 @@ describe("StatCard", () => {
 			<StatCard
 				title="Total balance"
 				value="$8,800"
-				icon={<Activity strokeWidth={1.5} />}
+				icon={<Activity />}
 				trend={{ value: 3.1, label: "vs last month" }}
 			>
 				<button type="button">Explore history</button>

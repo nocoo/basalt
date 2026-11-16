@@ -8,21 +8,23 @@ Component geometry and DOM styling are intentional major-version changes. Rechec
 
 IconPicker trigger names include the current value (`Folder icon: Folder`, then `Folder icon: Book`). Exact-name automation must follow that value; Field labels, validation and descriptions remain attached to the trigger. Standalone application recipes scope native-element resets with `basalt-ui` and explicitly focus mobile drawer openers before opening them. The catalog's visitor-badge login is an intentional layout exception, not a general application-shell template.
 
-The historical export baseline below stays frozen. This major release documents actual DOM, geometry and presentation changes; it does not imply removal of those entrypoints or require a React major upgrade.
+The initial **`2.0.3`** release established a historical 110-entrypoint / 572-symbol inventory. The 4.0 overhaul intentionally replaces that inventory with the live 95-path / 477-symbol baseline captured in `public-api-baseline.json`; the historical counts are context, not the artifact currently verified by the package checks.
 
 This document defines the stability contracts, export architecture, and semantic versioning guarantees for `@nocoo/basalt`.
+
+## 4.0 migration
+
+- Basalt no longer owns Recharts chart implementations or a `recharts` peer. Compose application-owned Recharts, ECharts, or SVG inside `@nocoo/basalt/components/chart`; `StatCard` moved to `@nocoo/basalt/components/stat-card` and accepts `icon?: ReactNode`.
+- Thirteen AI/chat widgets and eight zero-consumer/site-brand controls were removed. Migrate `BasaltMark`, `Combobox`, `Pagination`, `DeleteResource`, `BatteryMeter`, `Flow`, `MenuBar`, and `NavigationMenu` out of the package contract; `LoadingScreen` now renders only caller-supplied `mark` content.
+- Install only `@nocoo/basalt`. Lucide ships as a dependency; import public icons from `@nocoo/basalt/icons`, and retained Radix passthroughs from `@nocoo/basalt/primitives/*`.
+- Tailwind CSS v4 consumers use `@import "@nocoo/basalt/styles"; @import "tailwindcss";`; the package embeds its own `@source` scan. No app-relative package glob is required.
 
 ---
 
 ## 1. Compatibility Baseline
 
-The initial public baseline is locked to version **`2.0.3`** (commit `e61efc1`).
+The historical **`2.0.3`** release (commit `e61efc1`) exposed 110 entrypoints and 572 symbols. The 4.0 public contract is captured separately in `packages/basalt/public-api-baseline.json` and currently verifies **95 entrypoints / 477 symbols**. The package manifest remains `3.4.2` until the authorized 4.0 release step.
 
-- **Entrypoints:** 110 exported entrypoints:
-  - 1 root entrypoint: `@nocoo/basalt` (96 root symbols)
-  - 79 component subpaths including engine-agnostic chart chrome and metric cards
-  - 3 provider subpaths
-  - Total: 572 exported symbols across all entrypoints (375 runtime symbols, 197 type symbols).
 - **CSS Export Contracts:** 3 export paths:
   - `@nocoo/basalt/styles` (Tailwind contract alias)
   - `@nocoo/basalt/styles/tailwind` (Tailwind token definition)
@@ -30,7 +32,7 @@ The initial public baseline is locked to version **`2.0.3`** (commit `e61efc1`).
 
 ### Machine Verification
 
-All 110 entrypoints, their export targets, 3 CSS paths, and all 572 exported symbols (with value/type fidelity) are cataloged in `packages/basalt/public-api-baseline.json` and verified via `packages/basalt/scripts/verify-public-api.ts`. No entrypoint or public symbol present in this baseline may be removed or have its value/type identity degraded without a major version bump.
+All 95 current entrypoints, their export targets, 3 CSS paths, and all 477 current symbols (with value/type fidelity) are cataloged in `packages/basalt/public-api-baseline.json` and verified via `packages/basalt/scripts/verify-public-api.ts`. The file protects the pending 4.0 contract, not the historical 2.0.3 inventory.
 
 ---
 
@@ -104,7 +106,7 @@ Changes to default geometry (such as outer padding, default margins, or intrinsi
 
 ## 6. v2.1.0 migration notes (P1–P10)
 
-These notes cover the components, documentation, examples and palette changes included in **v2.1.0**. The original v2.0.3 110-entrypoint / 572-symbol baseline remains byte-for-byte frozen. New entries are recorded in the current registry rather than rewriting that historical baseline.
+These notes cover the components, documentation, examples and palette changes included in **v2.1.0**. The 2.0.3 110-entrypoint / 572-symbol figures remain historical context; the live verifier protects the rewritten 4.0 contract.
 
 ### Palettes and production URL
 
@@ -121,7 +123,7 @@ Chart gray retains its prior light/dark values. Marks use solid candy colors wit
 
 Named Teal and Purple `Badge` variants retain the Bondi and Grape identities with dedicated light/dark background tokens. Solid color badges (`success`, `red`, `orange`, `teal`, `blue`, `purple`) now use paired semantic foreground tokens, including dark text on brighter dark-theme fills. Do not force white text or substitute raw chart colors for those background/foreground pairs.
 
-v2.1.0 includes the palette count and value changes above as an explicit exception to the usual minor-release compatibility policy. Consumers that index colors or persist palette choices must follow these migration notes. The unchanged export baseline alone does not prove runtime-value compatibility.
+v2.1.0 includes the palette count and value changes above as an explicit exception to the usual minor-release compatibility policy. Consumers that index colors or persist palette choices must follow these migration notes. Export verification alone does not prove runtime-value compatibility.
 
 Persisted accent IDs are normalized on reads and selections:
 
