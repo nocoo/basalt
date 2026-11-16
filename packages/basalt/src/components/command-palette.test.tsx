@@ -57,7 +57,7 @@ describe("CommandPalette", () => {
 			);
 			const list = screen.getByRole("listbox");
 			expect(listRef.current).toBe(list);
-			expect(list).toHaveClass("p-basalt-space-sm", "relative", "isolate");
+			expect(list).toHaveClass("p-basalt-menu-inset", "relative", "isolate");
 			expect(list).toHaveStyle({ maxHeight: "280px" });
 			if (grouped)
 				expect(document.querySelector("[cmdk-group]")).not.toHaveClass("p-basalt-space-sm");
@@ -237,7 +237,12 @@ describe("CommandPalette", () => {
 			</CommandPalette>,
 		);
 		const dialog = screen.getByRole("dialog");
-		expect(dialog).toHaveClass("sm:w-[48rem]", "p-0", "sm:p-0", "custom-panel");
+		expect(dialog).toHaveClass(
+			"sm:w-[48rem]",
+			"p-basalt-space-sm",
+			"sm:p-basalt-space-sm",
+			"custom-panel",
+		);
 		const input = screen.getByRole("combobox");
 		expect(input).not.toHaveClass("basalt-action");
 		expect(input).toHaveClass("outline-none", "focus-visible:outline-none");

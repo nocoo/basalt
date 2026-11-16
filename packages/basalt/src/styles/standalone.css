@@ -2745,6 +2745,9 @@
   .p-basalt-layout-xl {
     padding: var(--basalt-space-layout-xl);
   }
+  .p-basalt-menu-inset {
+    padding: var(--basalt-space-menu-inset);
+  }
   .p-basalt-space-lg {
     padding: var(--basalt-space-lg);
   }
@@ -2759,6 +2762,9 @@
   }
   .px-\[calc\(var\(--basalt-space-panel-x\)-var\(--basalt-space-row-x\)\)\] {
     padding-inline: calc(var(--basalt-space-panel-x) - var(--basalt-space-row-x));
+  }
+  .px-basalt-3 {
+    padding-inline: var(--basalt-space-3);
   }
   .px-basalt-card {
     padding-inline: var(--basalt-space-card);
@@ -3246,6 +3252,12 @@
       --tw-ring-color: color-mix(in oklab, hsl(var(--basalt-border)) 50%, transparent);
     }
   }
+  .ring-basalt-border\/60 {
+    --tw-ring-color: hsl(var(--basalt-border));
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-ring-color: color-mix(in oklab, hsl(var(--basalt-border)) 60%, transparent);
+    }
+  }
   .ring-basalt-border\/70 {
     --tw-ring-color: hsl(var(--basalt-border));
     @supports (color: color-mix(in lab, red, red)) {
@@ -3720,6 +3732,9 @@
     .sm\:p-basalt-card-lg {
       padding: var(--basalt-space-card-lg);
     }
+    .sm\:p-basalt-space-sm {
+      padding: var(--basalt-space-sm);
+    }
   }
   @media (width >= 48rem) {
     .md\:block {
@@ -3795,6 +3810,9 @@
     .lg\:px-basalt-layout-xl {
       padding-inline: var(--basalt-space-layout-xl);
     }
+  }
+  .\[\&_\[cmdk-group-heading\]\]\:px-basalt-3 [cmdk-group-heading] {
+    padding-inline: var(--basalt-space-3);
   }
   .\[\&_\[cmdk-group-heading\]\]\:px-basalt-space-lg [cmdk-group-heading] {
     padding-inline: var(--basalt-space-lg);

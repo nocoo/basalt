@@ -100,7 +100,7 @@ export function CommandPalette({
 				size={size}
 				aria-describedby={undefined}
 				className={cn(
-					"flex flex-col overflow-hidden bg-basalt-popover p-0 sm:p-0 shadow-lg",
+					"flex flex-col overflow-hidden bg-basalt-muted p-basalt-space-sm sm:p-basalt-space-sm shadow-lg",
 					className,
 				)}
 			>
@@ -108,7 +108,7 @@ export function CommandPalette({
 				<Command
 					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
-					className="[&_[cmdk-group-heading]]:px-basalt-space-lg [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md"
+					className="rounded-basalt-md bg-basalt-popover ring-1 ring-basalt-border/60 [&_[cmdk-group-heading]]:px-basalt-3 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md"
 				>
 					{content}
 				</Command>
@@ -153,7 +153,7 @@ export const CommandInput = React.forwardRef<
 	CommandInputProps
 >(({ className, leading, trailing, ...props }, ref) => (
 	<div
-		className="flex shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border p-basalt-space-sm"
+		className="flex shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-3 py-basalt-space-md"
 		cmdk-input-wrapper=""
 	>
 		{leading === undefined ? (
@@ -226,7 +226,7 @@ export const CommandList = React.forwardRef<
 		<CommandPrimitive.List
 			ref={listRef}
 			className={cn(
-				"basalt-command-list relative isolate min-h-0 max-h-[18.75rem] overflow-y-auto overflow-x-hidden p-basalt-space-sm",
+				"basalt-command-list relative isolate min-h-0 max-h-[18.75rem] overflow-y-auto overflow-x-hidden p-basalt-menu-inset",
 				className,
 			)}
 			{...props}
