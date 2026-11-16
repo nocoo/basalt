@@ -87,7 +87,7 @@ export default function SettingsPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout @[52rem]/island:grid-cols-4">
 				{/* Left nav */}
 				<LayerCard className="flex flex-col @[52rem]/island:col-span-1" padding="none">
-					<LayerCard.Well>
+					<LayerCard.Body className="flex-1">
 						<SidebarNav
 							aria-label={t("pages.settings.title")}
 							className="flex-row flex-wrap @[52rem]/island:flex-col"
@@ -106,19 +106,19 @@ export default function SettingsPage() {
 								</SidebarItem>
 							))}
 						</SidebarNav>
-						<LayerCard.Footer className="flex-col items-start">
-							<p className="text-basalt-base text-basalt-muted-foreground">{t("demo.localOnly")}</p>
-							{vm.notice && (
-								<p
-									role="status"
-									aria-live="polite"
-									className="text-basalt-base text-basalt-muted-foreground"
-								>
-									{t(`demo.${vm.notice}`)}
-								</p>
-							)}
-						</LayerCard.Footer>
-					</LayerCard.Well>
+					</LayerCard.Body>
+					<LayerCard.Footer className="flex-col items-start">
+						<p className="text-basalt-base text-basalt-muted-foreground">{t("demo.localOnly")}</p>
+						{vm.notice && (
+							<p
+								role="status"
+								aria-live="polite"
+								className="text-basalt-base text-basalt-muted-foreground"
+							>
+								{t(`demo.${vm.notice}`)}
+							</p>
+						)}
+					</LayerCard.Footer>
 				</LayerCard>
 
 				{/* Right content */}

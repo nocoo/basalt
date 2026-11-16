@@ -202,7 +202,9 @@ describe("LayerCard", () => {
 		expect(screen.getByTestId("header")).not.toHaveClass("border-b", "p-basalt-card");
 		expect(screen.getByTestId("body")).toHaveClass("p-basalt-card");
 		expect(screen.getByTestId("body")).not.toHaveAttribute("data-basalt-surface");
+		expect(screen.getByTestId("footer")).toHaveAttribute("data-slot", "card-footer");
 		expect(screen.getByTestId("footer")).toHaveClass(
+			"mt-auto",
 			"border-t",
 			"justify-end",
 			"px-basalt-card",
@@ -210,16 +212,29 @@ describe("LayerCard", () => {
 		);
 	});
 
-	it("omits the header rule when a well follows", () => {
+	it("omits the header rule and aligns header-to-well slot hooks when a well follows", () => {
 		render(
 			<LayerCard>
 				<LayerCard.Header data-testid="header">Timeline</LayerCard.Header>
 				<LayerCard.Well data-testid="well">Event</LayerCard.Well>
 			</LayerCard>,
 		);
-		expect(screen.getByTestId("header").className).not.toContain("border-b");
-		expect(screen.getByTestId("well")).toHaveAttribute("data-basalt-surface");
-		expect(screen.getByTestId("well").parentElement?.className).not.toContain("p-basalt-card");
+		const header = screen.getByTestId("header");
+		const well = screen.getByTestId("well");
+		const root = well.parentElement;
+		expect(header.className).not.toContain("border-b");
+		expect(well).toHaveAttribute("data-basalt-surface");
+		expect(well).toHaveAttribute("data-slot", "card-well");
+		expect(well).toHaveClass("min-w-0", "flex-1", "p-basalt-card");
+		expect(well).not.toHaveAttribute("data-outlined");
+		expect(root?.className).not.toContain("p-basalt-card");
+		expect(root?.className).toContain(
+			"[&>[data-slot=card-header]:not([data-divided]):has(+[data-slot=card-well])]:pb-basalt-card-sm",
+		);
+		expect(root?.className).toContain(
+			"[&>[data-slot=card-header]:not([data-divided])+[data-slot=card-well]]:border-t",
+		);
+		expect(root?.className).toContain("[&>[data-slot=card-body]+[data-slot=card-well]]:border-t");
 	});
 
 	it("only divides an ordinary header when explicitly requested", () => {
@@ -253,14 +268,18 @@ describe("LayerCard", () => {
 		expect(screen.getByTestId("header")).toHaveClass("px-basalt-card", "pt-basalt-card", "pb-0");
 	});
 
-	it("strengthens an outlined ring while retaining the matte card shadow", () => {
+	it("strengthens an outlined ring while retaining the matte card shadow and data-outlined", () => {
 		render(
 			<LayerCard outlined data-testid="card">
-				Body
+				<LayerCard.Well outlined data-testid="well">
+					Body
+				</LayerCard.Well>
 			</LayerCard>,
 		);
+		expect(screen.getByTestId("card")).toHaveAttribute("data-outlined", "true");
 		expect(screen.getByTestId("card")).toHaveClass("ring-1", "ring-basalt-border");
 		expect(screen.getByTestId("card")).toHaveClass("shadow-basalt-card");
+		expect(screen.getByTestId("well")).toHaveAttribute("data-outlined", "true");
 	});
 
 	it("renders an accessible loading state with reduced-motion-safe skeletons", () => {

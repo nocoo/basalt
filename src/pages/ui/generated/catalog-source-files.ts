@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "70ece76af7638063",
+		"hash": "a6fa15004819d75c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},

@@ -415,5 +415,161 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 	await page.setViewportSize({ width: 390, height: 1000 });
 	await assertFormDialogSpacing(page, baseUrl, 32, { trap: true });
 	await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
+	await assertNestedSurfaces(page, baseUrl);
 	return { cases, compactActions: 34, standalone: true, collapsedRail: true };
+}
+
+function rgbLuminance(color: string): number {
+	const match = /rgba?\(([^)]+)\)/.exec(color);
+	if (!match?.[1]) throw new Error(`Expected rgb()/rgba() color, got ${color}`);
+	const [r, g, b] = match[1].split(",").slice(0, 3).map(Number);
+	const linear = [r, g, b].map((channel) => {
+		const c = channel / 255;
+		return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+	});
+	return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+}
+
+async function assertNestedSurfaces(page: Page, baseUrl: string) {
+	await page.setViewportSize({ width: 1440, height: 1000 });
+	for (const dark of [false, true]) {
+		await page.goto(`${baseUrl}/layout`);
+		await page.getByRole("heading", { name: "Nested surfaces" }).waitFor();
+		await setShowcaseTheme(page, dark);
+		const layout = await page.evaluate(() => {
+			const sectionByTitle = (title: string) => {
+				const section = Array.from(document.querySelectorAll<HTMLElement>("section")).find(
+					(node) => node.querySelector("h2")?.textContent?.trim() === title,
+				);
+				if (!section) throw new Error(`Missing section: ${title}`);
+				return section;
+			};
+			const shell = document.querySelector<HTMLElement>("[data-basalt-shell]");
+			const island = document.querySelector<HTMLElement>("[data-basalt-surface-root]");
+			if (!shell || !island) throw new Error("Missing shell or ContentIsland");
+			const stack = sectionByTitle("The stack");
+			const l2Card = stack.querySelector<HTMLElement>(":scope > [data-basalt-surface]");
+			const l2Header = l2Card?.querySelector<HTMLElement>(':scope > [data-slot="card-header"]');
+			const l3Well = l2Card?.querySelector<HTMLElement>(':scope > [data-slot="card-well"]');
+			const l3Plus = l3Well?.querySelector<HTMLElement>(":scope > [data-basalt-surface]");
+			if (!l2Card || !l2Header || !l3Well || !l3Plus) throw new Error("Missing stack slots");
+
+			const compare = sectionByTitle("Body vs Well");
+			const compareCards = Array.from(
+				compare.querySelectorAll<HTMLElement>(".grid > [data-basalt-surface]"),
+			);
+			const leftCard = compareCards[0];
+			const rightCard = compareCards[1];
+			const leftHeader = leftCard?.querySelector<HTMLElement>(':scope > [data-slot="card-header"]');
+			const leftBody = leftCard?.querySelector<HTMLElement>(':scope > [data-slot="card-body"]');
+			const rightHeader = rightCard?.querySelector<HTMLElement>(
+				':scope > [data-slot="card-header"]',
+			);
+			const rightWell = rightCard?.querySelector<HTMLElement>(':scope > [data-slot="card-well"]');
+			if (!leftCard || !rightCard || !leftHeader || !leftBody || !rightHeader || !rightWell) {
+				throw new Error("Missing Body vs Well slots");
+			}
+
+			const dashboard = sectionByTitle("Dashboard Composition");
+			const rows = Array.from(dashboard.querySelectorAll<HTMLElement>(".grid"));
+			const row1Box = rows[0]?.getBoundingClientRect();
+			const row2Box = rows[1]?.getBoundingClientRect();
+			const row2Cards = Array.from(
+				rows[1]?.querySelectorAll<HTMLElement>(":scope > [data-basalt-surface]") ?? [],
+			);
+			const mainCard = row2Cards[0];
+			const sidebarCard = row2Cards[1];
+			const mainHeader = mainCard?.querySelector<HTMLElement>(':scope > [data-slot="card-header"]');
+			const mainWell = mainCard?.querySelector<HTMLElement>(':scope > [data-slot="card-well"]');
+			const sidebarHeader = sidebarCard?.querySelector<HTMLElement>(
+				':scope > [data-slot="card-header"]',
+			);
+			if (
+				!row1Box ||
+				!row2Box ||
+				!mainCard ||
+				!sidebarCard ||
+				!mainHeader ||
+				!mainWell ||
+				!sidebarHeader
+			) {
+				throw new Error("Missing Dashboard Composition slots");
+			}
+			const leftCardBox = leftCard.getBoundingClientRect();
+			const rightCardBox = rightCard.getBoundingClientRect();
+			const leftBodyBox = leftBody.getBoundingClientRect();
+			const rightWellBox = rightWell.getBoundingClientRect();
+			const mainCardBox = mainCard.getBoundingClientRect();
+			const sidebarCardBox = sidebarCard.getBoundingClientRect();
+			return {
+				l0Bg: getComputedStyle(shell).backgroundColor,
+				l1Bg: getComputedStyle(island).backgroundColor,
+				l2Bg: getComputedStyle(l2Card).backgroundColor,
+				l3Bg: getComputedStyle(l3Well).backgroundColor,
+				l2HeaderPadBottom: getComputedStyle(l2Header).paddingBottom,
+				l3WellBorderTop: getComputedStyle(l3Well).borderTopWidth,
+				l3PlusBg: getComputedStyle(l3Plus).backgroundColor,
+				l3PlusShadow: getComputedStyle(l3Plus).boxShadow,
+				compareTopDiff: Math.abs(leftCardBox.top - rightCardBox.top),
+				compareBottomDiff: Math.abs(leftCardBox.bottom - rightCardBox.bottom),
+				compareHeaderTopDiff: Math.abs(
+					leftHeader.getBoundingClientRect().top - rightHeader.getBoundingClientRect().top,
+				),
+				compareBodyWellTopDiff: Math.abs(
+					leftBodyBox.top +
+						Number.parseFloat(getComputedStyle(leftBody).paddingTop) -
+						rightWellBox.top,
+				),
+				compareWellBottomDiff: Math.abs(rightWellBox.bottom - rightCardBox.bottom),
+				dashboardRowGap: row2Box.top - row1Box.bottom,
+				dashboardHeaderTopDiff: Math.abs(
+					mainHeader.getBoundingClientRect().top - sidebarHeader.getBoundingClientRect().top,
+				),
+				dashboardHeaderFontMatch:
+					getComputedStyle(mainHeader).fontSize === getComputedStyle(sidebarHeader).fontSize,
+				dashboardWellBottomDiff: Math.abs(
+					mainWell.getBoundingClientRect().bottom - mainCardBox.bottom,
+				),
+				dashboardCardsBottomDiff: Math.abs(mainCardBox.bottom - sidebarCardBox.bottom),
+			};
+		});
+		const l0Lum = rgbLuminance(layout.l0Bg);
+		const l1Lum = rgbLuminance(layout.l1Bg);
+		const l2Lum = rgbLuminance(layout.l2Bg);
+		const l3Lum = rgbLuminance(layout.l3Bg);
+		assert.ok(l0Lum < l1Lum && l1Lum < l2Lum && l2Lum < l3Lum, JSON.stringify({ dark, layout }));
+		if (!dark) assert.equal(layout.l3Bg, "rgb(255, 255, 255)");
+		assert.equal(layout.l2HeaderPadBottom, "12px");
+		assert.equal(layout.l3WellBorderTop, "1px");
+		assert.equal(layout.l3PlusBg, "rgba(0, 0, 0, 0)");
+		assert.equal(layout.l3PlusShadow, "none");
+		assert.ok(layout.compareTopDiff <= 1, JSON.stringify(layout));
+		assert.ok(layout.compareBottomDiff <= 1, JSON.stringify(layout));
+		assert.ok(layout.compareHeaderTopDiff <= 1, JSON.stringify(layout));
+		assert.ok(layout.compareBodyWellTopDiff <= 1, JSON.stringify(layout));
+		assert.ok(layout.compareWellBottomDiff <= 1, JSON.stringify(layout));
+		assert.ok(Math.abs(layout.dashboardRowGap - 16) <= 1, JSON.stringify(layout));
+		assert.ok(layout.dashboardHeaderTopDiff <= 1, JSON.stringify(layout));
+		assert.equal(layout.dashboardHeaderFontMatch, true, JSON.stringify(layout));
+		assert.ok(layout.dashboardWellBottomDiff <= 1, JSON.stringify(layout));
+		assert.ok(layout.dashboardCardsBottomDiff <= 1, JSON.stringify(layout));
+
+		await page.goto(`${baseUrl}/settings`);
+		await page.locator('nav[aria-label="Settings"]').waitFor();
+		await setShowcaseTheme(page, dark);
+		const settings = await page.evaluate(() => {
+			const nav = document.querySelector<HTMLElement>('nav[aria-label="Settings"]');
+			const leftCard = nav?.closest<HTMLElement>("[data-basalt-surface]");
+			const footer = leftCard?.querySelector<HTMLElement>(':scope > [data-slot="card-footer"]');
+			if (!leftCard || !footer) throw new Error("Missing settings left navigation footer");
+			const cardBox = leftCard.getBoundingClientRect();
+			const footerBox = footer.getBoundingClientRect();
+			return {
+				bottomDiff: Math.abs(footerBox.bottom - cardBox.bottom),
+				widthDiff: Math.abs(footerBox.width - cardBox.width),
+			};
+		});
+		assert.ok(settings.bottomDiff <= 1, JSON.stringify(settings));
+		assert.ok(settings.widthDiff <= 2, JSON.stringify(settings));
+	}
 }

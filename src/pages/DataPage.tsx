@@ -468,7 +468,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-basalt-mono">
 									{t("pages.data.withDotIndicators")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -496,16 +496,18 @@ export default function DataPage() {
 								<div key={i} className="flex gap-basalt-card-sm">
 									<div className="flex flex-col items-center">
 										<div
-											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-basalt-full border border-border ${item.color}`}
+											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-basalt-full border border-basalt-border ${item.color}`}
 										>
 											<item.icon className="h-4 w-4" strokeWidth={1.5} />
 										</div>
-										{i < TIMELINE.length - 1 && <div className="w-px flex-1 bg-border" />}
+										{i < TIMELINE.length - 1 && <div className="w-px flex-1 bg-basalt-border" />}
 									</div>
 									<div className={`pb-basalt-card ${i === TIMELINE.length - 1 ? "pb-0" : ""}`}>
-										<p className="text-basalt-base font-medium text-foreground">{item.title}</p>
-										<p className="text-basalt-sm text-muted-foreground">{item.desc}</p>
-										<p className="text-basalt-sm text-muted-foreground/70 mt-basalt-space-sm">
+										<p className="text-basalt-base font-medium text-basalt-foreground">
+											{item.title}
+										</p>
+										<p className="text-basalt-sm text-basalt-muted-foreground">{item.desc}</p>
+										<p className="text-basalt-sm text-basalt-muted-foreground mt-basalt-space-sm">
 											{item.time}
 										</p>
 									</div>

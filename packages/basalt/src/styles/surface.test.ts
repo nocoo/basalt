@@ -128,6 +128,20 @@ describe("nested surface CSS", () => {
 		).toBe("var(--basalt-secondary)");
 	});
 
+	it("preserves strictly ascending surface luminance in both themes", () => {
+		for (const selector of themeSelectors) {
+			const values = tokenValues(selector);
+			const l0 = luminance(values, "background");
+			const l1 = luminance(values, "card");
+			const l2 = luminance(values, "secondary");
+			const l3 = luminance(values, "bright");
+			expect(l0, `${selector} L0 < L1`).toBeLessThan(l1);
+			expect(l1, `${selector} L1 < L2`).toBeLessThan(l2);
+			expect(l2, `${selector} L2 < L3`).toBeLessThan(l3);
+		}
+		expect(tokens).not.toContain("--basalt-well");
+	});
+
 	it("paints nested surfaces with descendant selectors and no @scope", () => {
 		expect(tokens).toContain("[data-basalt-surface-root]");
 		expect(tokens).toContain("[data-basalt-surface-root] [data-basalt-surface]");
@@ -135,6 +149,25 @@ describe("nested surface CSS", () => {
 			"[data-basalt-surface]:not([data-basalt-surface-root] *):not([data-basalt-surface] *)",
 		);
 		expect(tokens).not.toContain("@scope");
+		const boxShadowRules: string[] = [];
+		postcss.parse(tokens).walkRules((rule) => {
+			const normalized = rule.selectors.map((selector) => selector.replace(/\s+/g, " "));
+			for (const selector of normalized) {
+				if (selector.includes(":not([data-outlined])")) {
+					let shadow = "";
+					rule.walkDecls("box-shadow", (declaration) => {
+						shadow = declaration.value;
+					});
+					if (shadow === "none") boxShadowRules.push(selector);
+				}
+			}
+		});
+		expect(boxShadowRules).toContain(
+			"[data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] [data-basalt-surface]:not([data-outlined])",
+		);
+		expect(boxShadowRules).toContain(
+			"[data-basalt-surface]:not([data-basalt-surface-root] *) [data-basalt-surface] [data-basalt-surface] [data-basalt-surface]:not([data-outlined])",
+		);
 	});
 
 	it("opts into striping without covering hover or selection and adds default cell hairlines", () => {

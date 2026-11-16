@@ -12,7 +12,7 @@ function Tile({ label, className = "" }: { label: string; className?: string }) 
 	return (
 		<LayerCard
 			className={cn(
-				"flex min-h-[5rem] items-center justify-center font-mono text-basalt-sm text-muted-foreground",
+				"flex min-h-[5rem] items-center justify-center font-basalt-mono text-basalt-sm text-basalt-muted-foreground",
 				className,
 			)}
 		>
@@ -47,20 +47,22 @@ export default function LayoutPage() {
 				<LayerCard padding="none">
 					<LayerCard.Header>{t("pages.layout.l2Card")}</LayerCard.Header>
 					<LayerCard.Well className="space-y-basalt-layout">
-						<p className="text-basalt-base text-foreground">{t("pages.layout.l3Well")}</p>
+						<p className="text-basalt-base text-basalt-foreground">{t("pages.layout.l3Well")}</p>
 						<LayerCard>
-							<p className="text-basalt-sm text-muted-foreground">{t("pages.layout.l3Plus")}</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">
+								{t("pages.layout.l3Plus")}
+							</p>
 						</LayerCard>
 					</LayerCard.Well>
 				</LayerCard>
 			</SectionRule>
 
 			<SectionRule title={t("pages.layout.bodyVsWell")}>
-				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2">
+				<div className="grid grid-cols-1 gap-basalt-layout @[38rem]/island:grid-cols-2">
 					<LayerCard padding="none">
 						<LayerCard.Header>{t("pages.layout.bodyTitle")}</LayerCard.Header>
 						<LayerCard.Body>
-							<p className="mb-basalt-card-sm text-basalt-sm text-muted-foreground">
+							<p className="mb-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.layout.bodyDesc")}
 							</p>
 							<DescriptionList columns={1}>
@@ -76,7 +78,7 @@ export default function LayoutPage() {
 					<LayerCard padding="none">
 						<LayerCard.Header>{t("pages.layout.wellTitle")}</LayerCard.Header>
 						<LayerCard.Well>
-							<p className="mb-basalt-card-sm text-basalt-sm text-muted-foreground">
+							<p className="mb-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.layout.wellDesc")}
 							</p>
 							<DescriptionList columns={1}>
@@ -169,7 +171,7 @@ export default function LayoutPage() {
 				title={t("pages.layout.responsiveBreakpoints")}
 				hint={t("pages.layout.responsiveDesc")}
 			>
-				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-basalt-layout @[36rem]/island:grid-cols-2 @[56rem]/island:grid-cols-4">
 					<Tile label="A" />
 					<Tile label="B" />
 					<Tile label="C" />
@@ -187,86 +189,94 @@ export default function LayoutPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.layout.dashboardComposition")}>
-				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-4">
-					<LayerCard className="lg:col-span-2 min-h-[7.5rem]">
-						<p className="text-basalt-sm font-medium text-foreground mb-basalt-space-sm">
-							{t("pages.layout.wideCard")}
-						</p>
-						<p className="text-basalt-sm text-muted-foreground">{t("pages.layout.wideCardDesc")}</p>
-					</LayerCard>
-					<LayerCard className="min-h-[7.5rem]">
-						<p className="text-basalt-sm font-medium text-foreground mb-basalt-space-sm">
-							{t("pages.layout.metric")}
-						</p>
-						<p className="text-basalt-3xl font-semibold text-foreground">1,284</p>
-					</LayerCard>
-					<LayerCard className="min-h-[7.5rem]">
-						<p className="text-basalt-sm font-medium text-foreground mb-basalt-space-sm">
-							{t("pages.layout.metric")}
-						</p>
-						<p className="text-basalt-3xl font-semibold text-foreground">$42.5k</p>
-					</LayerCard>
-				</div>
-				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-3">
-					<LayerCard padding="none" className="md:col-span-2">
-						<LayerCard.Header>{t("pages.layout.mainContentArea")}</LayerCard.Header>
-						<LayerCard.Well className="min-h-[10rem]">
-							<p className="text-basalt-sm text-muted-foreground">
-								{t("pages.layout.mainContentDesc")}
+				<div className="space-y-basalt-layout">
+					<div className="grid grid-cols-1 gap-basalt-layout @[36rem]/island:grid-cols-2 @[56rem]/island:grid-cols-4">
+						<LayerCard className="@[56rem]/island:col-span-2 min-h-[7.5rem]">
+							<p className="text-basalt-sm font-medium text-basalt-foreground mb-basalt-space-sm">
+								{t("pages.layout.wideCard")}
 							</p>
-						</LayerCard.Well>
-					</LayerCard>
-					<LayerCard className="min-h-[12.5rem]">
-						<p className="text-basalt-sm font-medium text-foreground mb-basalt-space-sm">
-							{t("pages.layout.sidebar")}
-						</p>
-						<p className="text-basalt-sm text-muted-foreground">{t("pages.layout.sidebarDesc")}</p>
-					</LayerCard>
+							<p className="text-basalt-sm text-basalt-muted-foreground">
+								{t("pages.layout.wideCardDesc")}
+							</p>
+						</LayerCard>
+						<LayerCard className="min-h-[7.5rem]">
+							<p className="text-basalt-sm font-medium text-basalt-foreground mb-basalt-space-sm">
+								{t("pages.layout.metric")}
+							</p>
+							<p className="text-basalt-3xl font-semibold text-basalt-foreground">1,284</p>
+						</LayerCard>
+						<LayerCard className="min-h-[7.5rem]">
+							<p className="text-basalt-sm font-medium text-basalt-foreground mb-basalt-space-sm">
+								{t("pages.layout.metric")}
+							</p>
+							<p className="text-basalt-3xl font-semibold text-basalt-foreground">$42.5k</p>
+						</LayerCard>
+					</div>
+					<div className="grid grid-cols-1 gap-basalt-layout @[44rem]/island:grid-cols-3">
+						<LayerCard padding="none" className="@[44rem]/island:col-span-2">
+							<LayerCard.Header>{t("pages.layout.mainContentArea")}</LayerCard.Header>
+							<LayerCard.Well className="min-h-[10rem]">
+								<p className="text-basalt-sm text-basalt-muted-foreground">
+									{t("pages.layout.mainContentDesc")}
+								</p>
+							</LayerCard.Well>
+						</LayerCard>
+						<LayerCard padding="none" className="min-h-[12.5rem]">
+							<LayerCard.Header>{t("pages.layout.sidebar")}</LayerCard.Header>
+							<LayerCard.Body className="flex-1">
+								<p className="text-basalt-sm text-basalt-muted-foreground">
+									{t("pages.layout.sidebarDesc")}
+								</p>
+							</LayerCard.Body>
+						</LayerCard>
+					</div>
 				</div>
 			</SectionRule>
 
 			<SectionRule title={t("pages.layout.flexboxPatterns")}>
-				<div className="space-y-basalt-layout">
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
-							justify-center
-						</p>
-						<div className="flex justify-center gap-basalt-layout">
-							<Tile label="A" className="w-20 min-h-0" />
-							<Tile label="B" className="w-20 min-h-0" />
-							<Tile label="C" className="w-20 min-h-0" />
+				<LayerCard>
+					<div className="space-y-basalt-layout">
+						<div>
+							<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-basalt-mono">
+								justify-center
+							</p>
+							<div className="flex justify-center gap-basalt-layout">
+								<Tile label="A" className="w-20 min-h-0" />
+								<Tile label="B" className="w-20 min-h-0" />
+								<Tile label="C" className="w-20 min-h-0" />
+							</div>
+						</div>
+						<div>
+							<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-basalt-mono">
+								justify-between
+							</p>
+							<div className="flex justify-between gap-basalt-layout">
+								<Tile label={t("common.left")} className="w-24 min-h-0" />
+								<Tile label={t("common.right")} className="w-24 min-h-0" />
+							</div>
+						</div>
+						<div>
+							<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-basalt-mono">
+								flex-wrap
+							</p>
+							<div className="flex flex-wrap gap-basalt-layout">
+								{Array.from({ length: 8 }, (_, i) => (
+									<Tile key={i} label={`${i + 1}`} className="w-20 min-h-0" />
+								))}
+							</div>
+						</div>
+						<div>
+							<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-basalt-mono">
+								flex-col gap-basalt-layout
+							</p>
+							<div className="flex max-w-xs flex-col gap-basalt-layout">
+								<Tile label={t("common.top")} className="min-h-0" />
+								<Tile label={t("common.middle")} className="min-h-0" />
+								<Tile label={t("common.bottom")} className="min-h-0" />
+							</div>
 						</div>
 					</div>
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
-							justify-between
-						</p>
-						<div className="flex justify-between gap-basalt-layout">
-							<Tile label={t("common.left")} className="w-24 min-h-0" />
-							<Tile label={t("common.right")} className="w-24 min-h-0" />
-						</div>
-					</div>
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
-							flex-wrap
-						</p>
-						<div className="flex flex-wrap gap-basalt-layout">
-							{Array.from({ length: 8 }, (_, i) => (
-								<Tile key={i} label={`${i + 1}`} className="w-20 min-h-0" />
-							))}
-						</div>
-					</div>
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
-							flex-col gap-basalt-layout
-						</p>
-						<div className="flex max-w-xs flex-col gap-basalt-layout">
-							<Tile label={t("common.top")} className="min-h-0" />
-							<Tile label={t("common.middle")} className="min-h-0" />
-							<Tile label={t("common.bottom")} className="min-h-0" />
-						</div>
-					</div>
-				</div>
+				</LayerCard>
 			</SectionRule>
 
 			<SectionRule title={t("pages.layout.autoFitGrid")} hint={t("pages.layout.autoFitDesc")}>
@@ -276,10 +286,10 @@ export default function LayoutPage() {
 				>
 					{Array.from({ length: 6 }, (_, i) => (
 						<LayerCard key={i} className="min-h-[6.25rem]">
-							<p className="text-basalt-sm font-medium text-foreground mb-basalt-space-sm">
+							<p className="text-basalt-sm font-medium text-basalt-foreground mb-basalt-space-sm">
 								{t("pages.layout.cardN", { n: i + 1 })}
 							</p>
-							<p className="text-basalt-sm text-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.layout.cardAutoDesc")}
 							</p>
 						</LayerCard>

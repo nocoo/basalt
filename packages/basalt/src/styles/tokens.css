@@ -143,15 +143,14 @@
 :root,
 .light,
 [data-mode="light"] {
-	--basalt-background: 220 16% 93.5%;
+	--basalt-background: 220 16% 92.8%;
 	--basalt-foreground: 222 24% 11%;
-	--basalt-card: 220 16% 96.5%;
+	--basalt-card: 220 16% 95.8%;
 	--basalt-card-foreground: 222 24% 11%;
-	--basalt-secondary: 0 0% 100%;
+	--basalt-secondary: 220 16% 98.4%;
 	--basalt-secondary-foreground: 222 24% 11%;
 	--basalt-popover: 0 0% 100%;
 	--basalt-popover-foreground: 222 24% 11%;
-	--basalt-well: 220 16% 97.2%;
 	--basalt-bright: 0 0% 100%;
 	--basalt-primary: 204 88% 32%;
 	--basalt-primary-foreground: 0 0% 100%;
@@ -293,7 +292,6 @@
 	--basalt-secondary-foreground: 0 0% 93%;
 	--basalt-popover: 0 0% 10.6%;
 	--basalt-popover-foreground: 0 0% 93%;
-	--basalt-well: var(--basalt-bright);
 	--basalt-bright: 0 0% 14%;
 	--basalt-primary: 204 90% 70%;
 	--basalt-primary-foreground: 0 0% 10%;
@@ -441,8 +439,8 @@
 }
 
 [data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] {
-	background: hsl(var(--basalt-well));
-	--basalt-surface-current: var(--basalt-well);
+	background: hsl(var(--basalt-bright));
+	--basalt-surface-current: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
 	--basalt-zebra-fill: transparent;
 }
@@ -451,6 +449,13 @@
 	background: transparent;
 	--basalt-control-fill: hsl(var(--basalt-bright));
 	--basalt-zebra-fill: transparent;
+}
+
+[data-basalt-surface-root]
+	[data-basalt-surface]
+	[data-basalt-surface]
+	[data-basalt-surface]:not([data-outlined]) {
+	box-shadow: none;
 }
 
 [data-basalt-surface]:not([data-basalt-surface-root] *):not([data-basalt-surface] *) {
@@ -492,8 +497,8 @@
 [data-basalt-surface]:not([data-basalt-surface-root] *)
 	[data-basalt-surface]
 	[data-basalt-surface] {
-	background: hsl(var(--basalt-well));
-	--basalt-surface-current: var(--basalt-well);
+	background: hsl(var(--basalt-bright));
+	--basalt-surface-current: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
 	--basalt-zebra-fill: transparent;
 }
@@ -505,6 +510,13 @@
 	background: transparent;
 	--basalt-control-fill: hsl(var(--basalt-bright));
 	--basalt-zebra-fill: transparent;
+}
+
+[data-basalt-surface]:not([data-basalt-surface-root] *)
+	[data-basalt-surface]
+	[data-basalt-surface]
+	[data-basalt-surface]:not([data-outlined]) {
+	box-shadow: none;
 }
 
 [data-basalt-table][data-density="compact"] > :where(thead, tbody, tfoot) > tr > :where(th, td),

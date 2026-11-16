@@ -113,10 +113,11 @@ const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 				ref={ref}
 				data-basalt-surface=""
 				data-card-structured={structured || undefined}
+				data-outlined={outlined || undefined}
 				className={cn(
 					ROOT_CLASSES,
 					structured
-						? "flex w-full flex-col [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-body]]:pt-basalt-card-sm"
+						? "flex w-full flex-col [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-body]]:pt-basalt-card-sm [&>[data-slot=card-header]:not([data-divided]):has(+[data-slot=card-well])]:pb-basalt-card-sm [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-well]]:border-t [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-well]]:border-basalt-border/60 [&>[data-slot=card-body]+[data-slot=card-well]]:border-t [&>[data-slot=card-body]+[data-slot=card-well]]:border-basalt-border/60"
 						: PADDING_CLASSES[padding],
 					outlined && "ring-basalt-border",
 					className,
@@ -168,8 +169,14 @@ LayerCardBody.displayName = "LayerCard.Body";
 function LayerCardWell({ className, outlined = false, ...props }: LayerCardWellProps) {
 	return (
 		<div
+			data-slot="card-well"
 			data-basalt-surface=""
-			className={cn("min-w-0 p-basalt-card", outlined && "ring-1 ring-basalt-border/40", className)}
+			data-outlined={outlined || undefined}
+			className={cn(
+				"min-w-0 flex-1 p-basalt-card",
+				outlined && "ring-1 ring-basalt-border/40",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -189,8 +196,9 @@ LayerCardSecondary.displayName = "LayerCard.Secondary";
 function LayerCardFooter({ className, ...props }: LayerCardSectionProps) {
 	return (
 		<div
+			data-slot="card-footer"
 			className={cn(
-				"flex flex-wrap items-center justify-end gap-basalt-space-lg border-t border-basalt-border px-basalt-card py-basalt-card-sm",
+				"mt-auto flex flex-wrap items-center justify-end gap-basalt-space-lg border-t border-basalt-border px-basalt-card py-basalt-card-sm",
 				className,
 			)}
 			{...props}
