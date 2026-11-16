@@ -99,13 +99,16 @@ export function CommandPalette({
 			<DialogContent
 				size={size}
 				aria-describedby={undefined}
-				className={cn("flex flex-col overflow-hidden bg-basalt-popover p-0 shadow-lg", className)}
+				className={cn(
+					"flex flex-col overflow-hidden bg-basalt-popover p-0 sm:p-0 shadow-lg",
+					className,
+				)}
 			>
 				<DialogTitle className="sr-only">Command Palette</DialogTitle>
 				<Command
 					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
-					className="[&_[cmdk-group-heading]]:px-basalt-3 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-3 [&_[cmdk-item]]:py-basalt-2"
+					className="[&_[cmdk-group-heading]]:px-basalt-space-lg [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md"
 				>
 					{content}
 				</Command>
@@ -150,7 +153,7 @@ export const CommandInput = React.forwardRef<
 	CommandInputProps
 >(({ className, leading, trailing, ...props }, ref) => (
 	<div
-		className="flex min-h-basalt-12 shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-3 py-basalt-space-md"
+		className="flex shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-space-lg py-basalt-space-md"
 		cmdk-input-wrapper=""
 	>
 		{leading === undefined ? (
@@ -381,7 +384,7 @@ export const CommandItem = React.forwardRef<
 	<CommandPrimitive.Item
 		ref={ref}
 		className={cn(
-			"relative z-10 flex cursor-default items-center gap-basalt-space-lg rounded-basalt-sm px-basalt-3 py-basalt-2 text-basalt-base leading-basalt-row outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
+			"relative z-10 flex cursor-default items-center gap-basalt-space-lg rounded-basalt-sm px-basalt-space-lg py-basalt-space-md text-basalt-base leading-basalt-row outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
 			className,
 		)}
 		{...props}

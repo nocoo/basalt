@@ -237,7 +237,7 @@ describe("CommandPalette", () => {
 			</CommandPalette>,
 		);
 		const dialog = screen.getByRole("dialog");
-		expect(dialog).toHaveClass("sm:w-[48rem]", "custom-panel");
+		expect(dialog).toHaveClass("sm:w-[48rem]", "p-0", "sm:p-0", "custom-panel");
 		const input = screen.getByRole("combobox");
 		expect(input).not.toHaveClass("basalt-action");
 		expect(input).toHaveClass("outline-none", "focus-visible:outline-none");

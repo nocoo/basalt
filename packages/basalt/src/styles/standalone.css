@@ -1804,9 +1804,6 @@
   .min-h-\[calc\(var\(--basalt-line-row\)\+2\*var\(--basalt-space-lg\)\)\] {
     min-height: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg));
   }
-  .min-h-basalt-12 {
-    min-height: var(--basalt-space-12);
-  }
   .min-h-basalt-action {
     min-height: var(--basalt-size-action);
   }
@@ -2766,9 +2763,6 @@
   .px-\[calc\(var\(--basalt-space-panel-x\)-var\(--basalt-space-row-x\)\)\] {
     padding-inline: calc(var(--basalt-space-panel-x) - var(--basalt-space-row-x));
   }
-  .px-basalt-3 {
-    padding-inline: var(--basalt-space-3);
-  }
   .px-basalt-card {
     padding-inline: var(--basalt-space-card);
   }
@@ -2816,9 +2810,6 @@
   }
   .px-basalt-space-sm {
     padding-inline: var(--basalt-space-sm);
-  }
-  .py-basalt-2 {
-    padding-block: var(--basalt-space-2);
   }
   .py-basalt-card {
     padding-block: var(--basalt-space-card);
@@ -3808,9 +3799,6 @@
       padding-inline: var(--basalt-space-layout-xl);
     }
   }
-  .\[\&_\[cmdk-group-heading\]\]\:px-basalt-3 [cmdk-group-heading] {
-    padding-inline: var(--basalt-space-3);
-  }
   .\[\&_\[cmdk-group-heading\]\]\:px-basalt-space-lg [cmdk-group-heading] {
     padding-inline: var(--basalt-space-lg);
   }
@@ -3831,11 +3819,11 @@
   .\[\&_\[cmdk-group\]\:not\(\[hidden\]\)_\~\[cmdk-group\]\]\:pt-0 [cmdk-group]:not([hidden]) ~ [cmdk-group] {
     padding-top: 0px;
   }
-  .\[\&_\[cmdk-item\]\]\:px-basalt-3 [cmdk-item] {
-    padding-inline: var(--basalt-space-3);
+  .\[\&_\[cmdk-item\]\]\:px-basalt-space-lg [cmdk-item] {
+    padding-inline: var(--basalt-space-lg);
   }
-  .\[\&_\[cmdk-item\]\]\:py-basalt-2 [cmdk-item] {
-    padding-block: var(--basalt-space-2);
+  .\[\&_\[cmdk-item\]\]\:py-basalt-space-md [cmdk-item] {
+    padding-block: var(--basalt-space-md);
   }
   .\[\&_\[data-content\]\]\:min-w-0 [data-content] {
     min-width: 0px;
