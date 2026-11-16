@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.4.1",
 	"totalModules": 131,
-	"totalSymbols": 802,
-	"totalValues": 418,
-	"totalTypes": 384,
+	"totalSymbols": 808,
+	"totalValues": 422,
+	"totalTypes": 386,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -186,6 +186,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "CommandItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemMeta",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemTrailing",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/command-palette",
@@ -3407,6 +3423,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/command-palette"
 				},
 				{
+					"name": "CommandItemMeta",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemTrailing",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
 					"name": "CommandShortcut",
 					"isValue": true,
 					"isType": false,
@@ -3530,6 +3562,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "CommandItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemMetaProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemTrailingProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/command-palette",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/command-palette"

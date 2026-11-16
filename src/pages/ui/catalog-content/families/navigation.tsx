@@ -5,10 +5,18 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
+	CommandItemMeta,
+	CommandItemTrailing,
 	CommandList,
 	CommandPalette,
 	CommandPaletteTrigger,
 } from "@nocoo/basalt/components/command-palette";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@nocoo/basalt/components/dropdown-menu";
 import {
 	MenuBarContent,
 	MenuBarItem,
@@ -25,7 +33,8 @@ import {
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { Plus, Search } from "lucide-react";
+import { ChevronDown, Folder, LayoutGrid, ListFilter, Plus, Search } from "lucide-react";
+import { useState } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import {
@@ -86,26 +95,96 @@ function scenarioModule(code: string, imports: string[]): string {
 	return `${importLines}\n\nexport default function Example() {\n\treturn (\n\t\t${code.split("\n").join("\n\t\t")}\n\t);\n}`;
 }
 
+const CONVERSATION_ITEMS = [
+	{ title: "Sys2: 工作流编制", workspace: "system", time: "now", status: "active" as const },
+	{
+		title: "Pull And Run Code Locally",
+		workspace: "signoff.now",
+		time: "now",
+		status: "grid" as const,
+	},
+	{ title: "Check Gmail Access", workspace: "research", time: "21m", status: null },
+	{ title: "Git Pull And Update Certs", workspace: "workflow", time: "24m", status: null },
+	{ title: "Antigravity SDK", workspace: "research", time: "2h", status: null },
+];
+
 function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
-	return (
-		<CommandPalette>
-			<CommandPaletteTrigger asChild>
-				<Button variant="outline">Search pages...</Button>
-			</CommandPaletteTrigger>
-			<CommandInput placeholder="Search pages..." />
-			<CommandList>
-				<CommandEmpty>No results</CommandEmpty>
-				{flat ? (
-					<>
-						<CommandItem>Button</CommandItem>
-						<CommandItem>Input</CommandItem>
-					</>
-				) : (
+	const [scope, setScope] = useState("Conversations");
+	if (!flat) {
+		return (
+			<CommandPalette>
+				<CommandPaletteTrigger asChild>
+					<Button variant="outline">Search pages...</Button>
+				</CommandPaletteTrigger>
+				<CommandInput placeholder="Search pages..." />
+				<CommandList>
+					<CommandEmpty>No results</CommandEmpty>
 					<CommandGroup heading="Pages">
 						<CommandItem>Button</CommandItem>
 						<CommandItem>Input</CommandItem>
 					</CommandGroup>
-				)}
+				</CommandList>
+			</CommandPalette>
+		);
+	}
+	return (
+		<CommandPalette className="sm:w-[38rem]">
+			<CommandPaletteTrigger asChild>
+				<Button variant="outline">Search conversations...</Button>
+			</CommandPaletteTrigger>
+			<CommandInput
+				placeholder={`Search for ${scope.toLowerCase()}...`}
+				leading={
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<button
+								type="button"
+								className="basalt-focus inline-flex h-basalt-control-sm items-center gap-basalt-space-sm rounded-full bg-basalt-muted px-basalt-2_5 text-basalt-sm font-medium text-basalt-foreground hover:bg-basalt-hover"
+							>
+								<span>{scope}</span>
+								<ChevronDown className="size-basalt-icon-sm text-basalt-muted-foreground" />
+							</button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="start">
+							{["Conversations", "Files", "Commands"].map((option) => (
+								<DropdownMenuItem key={option} onSelect={() => setScope(option)}>
+									{option}
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				}
+				trailing={
+					<Button variant="ghost" size="icon-sm" aria-label="Filter results">
+						<ListFilter className="size-basalt-icon text-basalt-muted-foreground" />
+					</Button>
+				}
+			/>
+			<CommandList>
+				<CommandEmpty>No results</CommandEmpty>
+				{CONVERSATION_ITEMS.map((item) => (
+					<CommandItem key={item.title} value={`${item.title} ${item.workspace}`}>
+						<span className="truncate font-medium">{item.title}</span>
+						<CommandItemMeta>
+							<Folder className="size-basalt-icon-sm shrink-0" aria-hidden="true" />
+							<span>{item.workspace}</span>
+						</CommandItemMeta>
+						<CommandItemTrailing>
+							{item.status === "active" ? (
+								<span
+									className="size-2 rounded-full bg-basalt-primary ring-4 ring-basalt-primary/15"
+									aria-hidden="true"
+								/>
+							) : item.status === "grid" ? (
+								<LayoutGrid
+									className="size-basalt-icon-sm text-basalt-muted-foreground"
+									aria-hidden="true"
+								/>
+							) : null}
+							<span>{item.time}</span>
+						</CommandItemTrailing>
+					</CommandItem>
+				))}
 			</CommandList>
 		</CommandPalette>
 	);
@@ -378,30 +457,88 @@ export default function Example() {
 			},
 			{
 				id: catalogScenarioId("command-palette", "simple-flat-list"),
-				title: "Simple Flat List",
+				title: "Scoped Search List",
 				code: `import { Button } from "@nocoo/basalt/components/button";
 import {
   CommandEmpty,
   CommandInput,
   CommandItem,
+  CommandItemMeta,
+  CommandItemTrailing,
   CommandList,
   CommandPalette,
   CommandPaletteTrigger,
 } from "@nocoo/basalt/components/command-palette";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@nocoo/basalt/components/dropdown-menu";
+import { ChevronDown, Folder, LayoutGrid, ListFilter } from "lucide-react";
 import { useState } from "react";
+
+const CONVERSATION_ITEMS = [
+  { title: "Sys2: 工作流编制", workspace: "system", time: "now", status: "active" as const },
+  { title: "Pull And Run Code Locally", workspace: "signoff.now", time: "now", status: "grid" as const },
+  { title: "Check Gmail Access", workspace: "research", time: "21m", status: null },
+];
 
 export default function Example() {
   const [open, setOpen] = useState(false);
+  const [scope, setScope] = useState("Conversations");
   return (
-    <CommandPalette open={open} onOpenChange={setOpen}>
+    <CommandPalette open={open} onOpenChange={setOpen} className="sm:w-[38rem]">
       <CommandPaletteTrigger asChild>
-        <Button variant="outline">Search pages...</Button>
+        <Button variant="outline">Search conversations...</Button>
       </CommandPaletteTrigger>
-      <CommandInput placeholder="Search pages..." />
+      <CommandInput
+        placeholder={\`Search for \${scope.toLowerCase()}...\`}
+        leading={
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="basalt-focus inline-flex h-basalt-control-sm items-center gap-basalt-space-sm rounded-full bg-basalt-muted px-basalt-2_5 text-basalt-sm font-medium text-basalt-foreground hover:bg-basalt-hover"
+              >
+                <span>{scope}</span>
+                <ChevronDown className="size-basalt-icon-sm text-basalt-muted-foreground" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {["Conversations", "Files", "Commands"].map((option) => (
+                <DropdownMenuItem key={option} onSelect={() => setScope(option)}>
+                  {option}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        }
+        trailing={
+          <Button variant="ghost" size="icon-sm" aria-label="Filter results">
+            <ListFilter className="size-basalt-icon text-basalt-muted-foreground" />
+          </Button>
+        }
+      />
       <CommandList>
         <CommandEmpty>No results</CommandEmpty>
-        <CommandItem>Button</CommandItem>
-        <CommandItem>Input</CommandItem>
+        {CONVERSATION_ITEMS.map((item) => (
+          <CommandItem key={item.title} value={\`\${item.title} \${item.workspace}\`}>
+            <span className="truncate font-medium">{item.title}</span>
+            <CommandItemMeta>
+              <Folder className="size-basalt-icon-sm shrink-0" aria-hidden="true" />
+              <span>{item.workspace}</span>
+            </CommandItemMeta>
+            <CommandItemTrailing>
+              {item.status === "active" ? (
+                <span className="size-2 rounded-full bg-basalt-primary ring-4 ring-basalt-primary/15" aria-hidden="true" />
+              ) : item.status === "grid" ? (
+                <LayoutGrid className="size-basalt-icon-sm text-basalt-muted-foreground" aria-hidden="true" />
+              ) : null}
+              <span>{item.time}</span>
+            </CommandItemTrailing>
+          </CommandItem>
+        ))}
       </CommandList>
     </CommandPalette>
   );

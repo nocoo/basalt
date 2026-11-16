@@ -6,6 +6,8 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
+	CommandItemMeta,
+	CommandItemTrailing,
 	CommandList,
 	CommandPalette,
 	CommandPaletteTrigger,
@@ -215,5 +217,48 @@ describe("CommandPalette", () => {
 		);
 		expect(screen.getByText("⌘S")).toHaveClass("kbd");
 		expect(screen.getByText("⌘S").parentElement?.nextElementSibling).toHaveClass("rule");
+	});
+
+	it("omits focus-ring wrappers on the search header and supports leading/trailing slots", () => {
+		render(
+			<CommandPalette open size="xl" className="custom-panel">
+				<CommandInput
+					placeholder="Search for conversations..."
+					leading={<button type="button">Conversations</button>}
+					trailing={<button type="button">Filter</button>}
+				/>
+				<CommandList>
+					<CommandItem>
+						<span>Sys2: 工作流编制</span>
+						<CommandItemMeta>system</CommandItemMeta>
+						<CommandItemTrailing>now</CommandItemTrailing>
+					</CommandItem>
+				</CommandList>
+			</CommandPalette>,
+		);
+		const dialog = screen.getByRole("dialog");
+		expect(dialog).toHaveClass("sm:w-[48rem]", "custom-panel");
+		const input = screen.getByRole("combobox");
+		expect(input).not.toHaveClass("basalt-action");
+		expect(input).toHaveClass("outline-none", "focus-visible:outline-none");
+		const wrapper = input.closest("[cmdk-input-wrapper]");
+		expect(wrapper).not.toHaveClass("basalt-focus-group", "basalt-focus-inset");
+		expect(screen.getByRole("button", { name: "Conversations" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Filter" })).toBeInTheDocument();
+		expect(screen.getByText("system")).toHaveClass("text-basalt-muted-foreground");
+		expect(screen.getByText("now")).toHaveClass("ml-auto", "tabular-nums");
+	});
+
+	it("omits default search icon when leading is null", () => {
+		render(
+			<CommandPalette open>
+				<CommandInput leading={null} placeholder="Bare input" />
+				<CommandList>
+					<CommandItem>Item</CommandItem>
+				</CommandList>
+			</CommandPalette>,
+		);
+		const wrapper = screen.getByRole("combobox").closest("[cmdk-input-wrapper]");
+		expect(wrapper?.querySelector("svg")).toBeNull();
 	});
 });

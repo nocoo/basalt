@@ -1756,6 +1756,9 @@
   .h-basalt-check-sm {
     height: var(--basalt-size-check-sm);
   }
+  .h-basalt-control {
+    height: var(--basalt-size-control);
+  }
   .h-basalt-table-row {
     height: var(--basalt-size-table-row);
   }
@@ -1800,6 +1803,9 @@
   }
   .min-h-\[calc\(var\(--basalt-line-row\)\+2\*var\(--basalt-space-lg\)\)\] {
     min-height: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg));
+  }
+  .min-h-basalt-12 {
+    min-height: var(--basalt-space-12);
   }
   .min-h-basalt-action {
     min-height: var(--basalt-size-action);
@@ -2760,6 +2766,9 @@
   .px-\[calc\(var\(--basalt-space-panel-x\)-var\(--basalt-space-row-x\)\)\] {
     padding-inline: calc(var(--basalt-space-panel-x) - var(--basalt-space-row-x));
   }
+  .px-basalt-3 {
+    padding-inline: var(--basalt-space-3);
+  }
   .px-basalt-card {
     padding-inline: var(--basalt-space-card);
   }
@@ -2807,6 +2816,9 @@
   }
   .px-basalt-space-sm {
     padding-inline: var(--basalt-space-sm);
+  }
+  .py-basalt-2 {
+    padding-block: var(--basalt-space-2);
   }
   .py-basalt-card {
     padding-block: var(--basalt-space-card);
@@ -3490,11 +3502,19 @@
   .focus\:text-basalt-primary-foreground:focus {
     color: hsl(var(--basalt-primary-foreground));
   }
+  .focus\:outline-none:focus {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
   .focus-visible\:z-2:focus-visible {
     z-index: 2;
   }
   .focus-visible\:bg-basalt-hover:focus-visible {
     background-color: var(--basalt-hover);
+  }
+  .focus-visible\:outline-none:focus-visible {
+    --tw-outline-style: none;
+    outline-style: none;
   }
   .active\:scale-\[0\.98\]:active {
     scale: 0.98;
@@ -3788,6 +3808,9 @@
       padding-inline: var(--basalt-space-layout-xl);
     }
   }
+  .\[\&_\[cmdk-group-heading\]\]\:px-basalt-3 [cmdk-group-heading] {
+    padding-inline: var(--basalt-space-3);
+  }
   .\[\&_\[cmdk-group-heading\]\]\:px-basalt-space-lg [cmdk-group-heading] {
     padding-inline: var(--basalt-space-lg);
   }
@@ -3808,26 +3831,11 @@
   .\[\&_\[cmdk-group\]\:not\(\[hidden\]\)_\~\[cmdk-group\]\]\:pt-0 [cmdk-group]:not([hidden]) ~ [cmdk-group] {
     padding-top: 0px;
   }
-  .\[\&_\[cmdk-input-wrapper\]_svg\]\:h-basalt-5 [cmdk-input-wrapper] svg {
-    height: var(--basalt-space-5);
+  .\[\&_\[cmdk-item\]\]\:px-basalt-3 [cmdk-item] {
+    padding-inline: var(--basalt-space-3);
   }
-  .\[\&_\[cmdk-input-wrapper\]_svg\]\:w-basalt-5 [cmdk-input-wrapper] svg {
-    width: var(--basalt-space-5);
-  }
-  .\[\&_\[cmdk-input\]\]\:min-h-basalt-control [cmdk-input] {
-    min-height: var(--basalt-size-control);
-  }
-  .\[\&_\[cmdk-item\]\]\:px-basalt-space-lg [cmdk-item] {
-    padding-inline: var(--basalt-space-lg);
-  }
-  .\[\&_\[cmdk-item\]\]\:py-basalt-space-md [cmdk-item] {
-    padding-block: var(--basalt-space-md);
-  }
-  .\[\&_\[cmdk-item\]_svg\]\:h-basalt-4 [cmdk-item] svg {
-    height: var(--basalt-space-4);
-  }
-  .\[\&_\[cmdk-item\]_svg\]\:w-basalt-4 [cmdk-item] svg {
-    width: var(--basalt-space-4);
+  .\[\&_\[cmdk-item\]\]\:py-basalt-2 [cmdk-item] {
+    padding-block: var(--basalt-space-2);
   }
   .\[\&_\[data-content\]\]\:min-w-0 [data-content] {
     min-width: 0px;

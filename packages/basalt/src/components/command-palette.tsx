@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { useSelectionIndicator } from "../utils/selection-indicator";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./dialog";
+import { Dialog, DialogContent, type DialogSize, DialogTitle, DialogTrigger } from "./dialog";
 
 const Command = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive>,
@@ -55,6 +55,15 @@ export interface CommandPaletteProps
 	 * @default true
 	 */
 	modal?: boolean;
+	/**
+	 * Width preset of the command palette dialog panel.
+	 * @default "lg"
+	 */
+	size?: DialogSize;
+	/**
+	 * Optional classes merged onto the dialog content panel.
+	 */
+	className?: string;
 }
 
 type RadixDialogTriggerProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger>;
@@ -70,7 +79,13 @@ export interface CommandPaletteTriggerProps extends Omit<RadixDialogTriggerProps
 
 export const CommandPaletteTrigger = DialogTrigger;
 
-export function CommandPalette({ children, shouldFilter, ...props }: CommandPaletteProps) {
+export function CommandPalette({
+	children,
+	shouldFilter,
+	size = "lg",
+	className,
+	...props
+}: CommandPaletteProps) {
 	const kids = React.Children.toArray(children);
 	const triggers = kids.filter(
 		(child) => React.isValidElement(child) && child.type === CommandPaletteTrigger,
@@ -82,15 +97,15 @@ export function CommandPalette({ children, shouldFilter, ...props }: CommandPale
 		<Dialog {...props}>
 			{triggers}
 			<DialogContent
-				size="lg"
+				size={size}
 				aria-describedby={undefined}
-				className="flex flex-col overflow-hidden bg-basalt-popover p-0 shadow-lg"
+				className={cn("flex flex-col overflow-hidden bg-basalt-popover p-0 shadow-lg", className)}
 			>
 				<DialogTitle className="sr-only">Command Palette</DialogTitle>
 				<Command
 					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
-					className="[&_[cmdk-group-heading]]:px-basalt-space-lg [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-basalt-5 [&_[cmdk-input-wrapper]_svg]:w-basalt-5 [&_[cmdk-input]]:min-h-basalt-control [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md [&_[cmdk-item]_svg]:h-basalt-4 [&_[cmdk-item]_svg]:w-basalt-4"
+					className="[&_[cmdk-group-heading]]:px-basalt-3 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-3 [&_[cmdk-item]]:py-basalt-2"
 				>
 					{content}
 				</Command>
@@ -119,24 +134,37 @@ export interface CommandInputProps
 	 * @default false
 	 */
 	asChild?: RadixCommandInputProps["asChild"];
+	/**
+	 * Optional leading slot rendered before the search input (e.g. a scope selector).
+	 * Replaces the default search icon when provided; pass `null` to omit.
+	 */
+	leading?: React.ReactNode;
+	/**
+	 * Optional trailing slot rendered after the search input (e.g. filter or action buttons).
+	 */
+	trailing?: React.ReactNode;
 }
 
 export const CommandInput = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive.Input>,
 	CommandInputProps
->(({ className, ...props }, ref) => (
+>(({ className, leading, trailing, ...props }, ref) => (
 	<div
-		className="basalt-focus-group basalt-focus-inset flex shrink-0 items-center border-b border-basalt-border px-basalt-space-lg"
+		className="flex min-h-basalt-12 shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-3 py-basalt-space-md"
 		cmdk-input-wrapper=""
 	>
-		<Search
-			className="mr-basalt-space-lg size-basalt-icon-lg shrink-0 opacity-50"
-			aria-hidden="true"
-		/>
+		{leading === undefined ? (
+			<Search
+				className="size-basalt-icon-lg shrink-0 text-basalt-muted-foreground"
+				aria-hidden="true"
+			/>
+		) : leading !== null ? (
+			<div className="flex shrink-0 items-center">{leading}</div>
+		) : null}
 		<CommandPrimitive.Input
 			ref={ref}
 			className={cn(
-				"basalt-action flex min-w-0 w-full rounded-basalt-md bg-transparent ring-0 shadow-none placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+				"flex h-basalt-control min-w-0 flex-1 bg-transparent text-basalt-base text-basalt-foreground outline-none ring-0 shadow-none placeholder:text-basalt-muted-foreground focus:outline-none focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
 				className,
 			)}
 			{...props}
@@ -145,6 +173,9 @@ export const CommandInput = React.forwardRef<
 				(typeof props.placeholder === "string" ? props.placeholder : "Command Palette")
 			}
 		/>
+		{trailing ? (
+			<div className="flex shrink-0 items-center gap-basalt-space-sm">{trailing}</div>
+		) : null}
 	</div>
 ));
 CommandInput.displayName = CommandPrimitive.Input.displayName;
@@ -350,13 +381,43 @@ export const CommandItem = React.forwardRef<
 	<CommandPrimitive.Item
 		ref={ref}
 		className={cn(
-			"relative z-10 flex cursor-default items-center rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-basalt-base leading-basalt-row outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
+			"relative z-10 flex cursor-default items-center gap-basalt-space-lg rounded-basalt-sm px-basalt-3 py-basalt-2 text-basalt-base leading-basalt-row outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
 			className,
 		)}
 		{...props}
 	/>
 ));
 CommandItem.displayName = CommandPrimitive.Item.displayName;
+
+export interface CommandItemMetaProps extends React.HTMLAttributes<HTMLSpanElement> {}
+
+export function CommandItemMeta({ className, ...props }: CommandItemMetaProps) {
+	return (
+		<span
+			className={cn(
+				"inline-flex min-w-0 items-center gap-basalt-space-sm truncate text-basalt-sm text-basalt-muted-foreground",
+				className,
+			)}
+			{...props}
+		/>
+	);
+}
+CommandItemMeta.displayName = "CommandItemMeta";
+
+export interface CommandItemTrailingProps extends React.HTMLAttributes<HTMLSpanElement> {}
+
+export function CommandItemTrailing({ className, ...props }: CommandItemTrailingProps) {
+	return (
+		<span
+			className={cn(
+				"ml-auto flex shrink-0 items-center gap-basalt-space-lg text-basalt-sm text-basalt-muted-foreground tabular-nums",
+				className,
+			)}
+			{...props}
+		/>
+	);
+}
+CommandItemTrailing.displayName = "CommandItemTrailing";
 
 export interface CommandShortcutProps extends React.HTMLAttributes<HTMLSpanElement> {}
 

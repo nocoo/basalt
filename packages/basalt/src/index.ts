@@ -19,6 +19,8 @@ export {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
+	CommandItemMeta,
+	CommandItemTrailing,
 	CommandList,
 	CommandPalette,
 	CommandPaletteTrigger,

@@ -44,6 +44,19 @@ export const API = [
 				default: "true",
 				description: "The modality of the dialog. When set to true, interaction with outside elements\nwill be disabled and only dialog content will be visible to screen readers.",
 			},
+			{
+				name: "size",
+				type: "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+				required: false,
+				default: "\"lg\"",
+				description: "Width preset of the command palette dialog panel.",
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Optional classes merged onto the dialog content panel.",
+			},
 		],
 	},
 	{
@@ -79,6 +92,18 @@ export const API = [
 				required: false,
 				default: "false",
 				description: "Change the default rendered input element to the child element, merging props and behavior.\nCommandInput forwards ref to HTMLInputElement and inherits native input attributes (excluding onChange/type).\nNote: When aria-label is omitted, defaults to placeholder if string, or \"Command Palette\".",
+			},
+			{
+				name: "leading",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional leading slot rendered before the search input (e.g. a scope selector).\nReplaces the default search icon when provided; pass `null` to omit.",
+			},
+			{
+				name: "trailing",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional trailing slot rendered after the search input (e.g. filter or action buttons).",
 			},
 		],
 	},

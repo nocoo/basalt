@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.4.1",
 	"totalModules": 131,
-	"totalSymbols": 802,
-	"totalValues": 418,
-	"totalTypes": 384,
+	"totalSymbols": 808,
+	"totalValues": 422,
+	"totalTypes": 386,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 120,
 	"modules": [
@@ -14,7 +14,7 @@
 			"importPath": "@nocoo/basalt",
 			"subpath": ".",
 			"sourceFile": "packages/basalt/src/index.ts",
-			"sourceHash": "88bd5388e9e9795c",
+			"sourceHash": "803bc8bf67f66550",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -194,6 +194,22 @@
 				},
 				{
 					"name": "CommandItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"packageDoc": "ai/registry.json#command-palette",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemMeta",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"packageDoc": "ai/registry.json#command-palette",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemTrailing",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/command-palette",
@@ -10609,7 +10625,7 @@
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"subpath": "./components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "652c17edbfd57212",
+			"sourceHash": "c4d041100c2f1935",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10621,6 +10637,22 @@
 			"symbols": [
 				{
 					"name": "CommandPalette",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"packageDoc": "ai/registry.json#command-palette",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemMeta",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"packageDoc": "ai/registry.json#command-palette",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemTrailing",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/command-palette",
@@ -10756,6 +10788,22 @@
 					"originModule": "@nocoo/basalt/components/command-palette"
 				},
 				{
+					"name": "CommandItemMetaProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"packageDoc": "ai/registry.json#command-palette",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandItemTrailingProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"packageDoc": "ai/registry.json#command-palette",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
 					"name": "CommandShortcutProps",
 					"isValue": false,
 					"isType": true,
@@ -10814,6 +10862,19 @@
 									"required": false,
 									"default": "true",
 									"description": "The modality of the dialog. When set to true, interaction with outside elements\nwill be disabled and only dialog content will be visible to screen readers."
+								},
+								{
+									"name": "size",
+									"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+									"required": false,
+									"default": "\"lg\"",
+									"description": "Width preset of the command palette dialog panel."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Optional classes merged onto the dialog content panel."
 								}
 							]
 						},
@@ -10850,6 +10911,18 @@
 									"required": false,
 									"default": "false",
 									"description": "Change the default rendered input element to the child element, merging props and behavior.\nCommandInput forwards ref to HTMLInputElement and inherits native input attributes (excluding onChange/type).\nNote: When aria-label is omitted, defaults to placeholder if string, or \"Command Palette\"."
+								},
+								{
+									"name": "leading",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional leading slot rendered before the search input (e.g. a scope selector).\nReplaces the default search icon when provided; pass `null` to omit."
+								},
+								{
+									"name": "trailing",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional trailing slot rendered after the search input (e.g. filter or action buttons)."
 								}
 							]
 						},
@@ -11024,6 +11097,19 @@
 							"required": false,
 							"default": "true",
 							"description": "The modality of the dialog. When set to true, interaction with outside elements\nwill be disabled and only dialog content will be visible to screen readers."
+						},
+						{
+							"name": "size",
+							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"required": false,
+							"default": "\"lg\"",
+							"description": "Width preset of the command palette dialog panel."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Optional classes merged onto the dialog content panel."
 						}
 					]
 				},
@@ -11060,6 +11146,18 @@
 							"required": false,
 							"default": "false",
 							"description": "Change the default rendered input element to the child element, merging props and behavior.\nCommandInput forwards ref to HTMLInputElement and inherits native input attributes (excluding onChange/type).\nNote: When aria-label is omitted, defaults to placeholder if string, or \"Command Palette\"."
+						},
+						{
+							"name": "leading",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional leading slot rendered before the search input (e.g. a scope selector).\nReplaces the default search icon when provided; pass `null` to omit."
+						},
+						{
+							"name": "trailing",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional trailing slot rendered after the search input (e.g. filter or action buttons)."
 						}
 					]
 				},
@@ -35335,7 +35433,7 @@
 			"exportName": "CommandPalette",
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "652c17edbfd57212",
+			"sourceHash": "c4d041100c2f1935",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#command-palette",
@@ -35381,6 +35479,19 @@
 							"required": false,
 							"default": "true",
 							"description": "The modality of the dialog. When set to true, interaction with outside elements\nwill be disabled and only dialog content will be visible to screen readers."
+						},
+						{
+							"name": "size",
+							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"required": false,
+							"default": "\"lg\"",
+							"description": "Width preset of the command palette dialog panel."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Optional classes merged onto the dialog content panel."
 						}
 					]
 				},
@@ -35417,6 +35528,18 @@
 							"required": false,
 							"default": "false",
 							"description": "Change the default rendered input element to the child element, merging props and behavior.\nCommandInput forwards ref to HTMLInputElement and inherits native input attributes (excluding onChange/type).\nNote: When aria-label is omitted, defaults to placeholder if string, or \"Command Palette\"."
+						},
+						{
+							"name": "leading",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional leading slot rendered before the search input (e.g. a scope selector).\nReplaces the default search icon when provided; pass `null` to omit."
+						},
+						{
+							"name": "trailing",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional trailing slot rendered after the search input (e.g. filter or action buttons)."
 						}
 					]
 				},
