@@ -11,6 +11,24 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.4.2] - 2026-11-16
+
+### Added
+
+- Make legend optional and hidden by default
+- Adopt two-layer matte shell with 4px outer frame
+- Clean input focus ring and add scoped search layout slots
+
+### Changed
+
+- Align design contract and surface assertions for CommandPalette and SegmentControl
+- Bypass React re-renders and use GPU translate3d on hover
+
+### Fixed
+
+- Tighten outer inset to 4px around header and list
+- Override sm dialog card padding and tighten row spacing
+
 ## [3.4.1] - 2026-11-15
 
 ### Fixed
