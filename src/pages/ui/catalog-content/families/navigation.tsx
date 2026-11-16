@@ -33,7 +33,7 @@ import {
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { ChevronDown, Folder, LayoutGrid, ListFilter, Plus, Search } from "lucide-react";
+import { ChevronDown, CircleDot, Folder, LayoutGrid, ListFilter, Plus, Search } from "lucide-react";
 import { useState } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
@@ -137,13 +137,10 @@ function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
 				leading={
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<button
-								type="button"
-								className="basalt-focus inline-flex h-basalt-control-sm items-center gap-basalt-space-sm rounded-full bg-basalt-muted px-basalt-2_5 text-basalt-sm font-medium text-basalt-foreground hover:bg-basalt-hover"
-							>
+							<Button variant="secondary" size="sm" className="gap-basalt-space-sm">
 								<span>{scope}</span>
 								<ChevronDown className="size-basalt-icon-sm text-basalt-muted-foreground" />
-							</button>
+							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="start">
 							{["Conversations", "Files", "Commands"].map((option) => (
@@ -171,10 +168,7 @@ function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
 						</CommandItemMeta>
 						<CommandItemTrailing>
 							{item.status === "active" ? (
-								<span
-									className="size-2 rounded-full bg-basalt-primary ring-4 ring-basalt-primary/15"
-									aria-hidden="true"
-								/>
+								<CircleDot className="size-basalt-icon-sm text-basalt-primary" aria-hidden="true" />
 							) : item.status === "grid" ? (
 								<LayoutGrid
 									className="size-basalt-icon-sm text-basalt-muted-foreground"
@@ -475,7 +469,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
-import { ChevronDown, Folder, LayoutGrid, ListFilter } from "lucide-react";
+import { ChevronDown, CircleDot, Folder, LayoutGrid, ListFilter } from "lucide-react";
 import { useState } from "react";
 
 const CONVERSATION_ITEMS = [
@@ -497,13 +491,10 @@ export default function Example() {
         leading={
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className="basalt-focus inline-flex h-basalt-control-sm items-center gap-basalt-space-sm rounded-full bg-basalt-muted px-basalt-2_5 text-basalt-sm font-medium text-basalt-foreground hover:bg-basalt-hover"
-              >
+              <Button variant="secondary" size="sm" className="gap-basalt-space-sm">
                 <span>{scope}</span>
                 <ChevronDown className="size-basalt-icon-sm text-basalt-muted-foreground" />
-              </button>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               {["Conversations", "Files", "Commands"].map((option) => (
@@ -531,7 +522,7 @@ export default function Example() {
             </CommandItemMeta>
             <CommandItemTrailing>
               {item.status === "active" ? (
-                <span className="size-2 rounded-full bg-basalt-primary ring-4 ring-basalt-primary/15" aria-hidden="true" />
+                <CircleDot className="size-basalt-icon-sm text-basalt-primary" aria-hidden="true" />
               ) : item.status === "grid" ? (
                 <LayoutGrid className="size-basalt-icon-sm text-basalt-muted-foreground" aria-hidden="true" />
               ) : null}

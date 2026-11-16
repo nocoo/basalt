@@ -938,8 +938,8 @@ describe("catalog API generator contract 2/4", () => {
 					{
 						name: "legend",
 						type: "React.ReactNode",
-						required: true,
-						description: "The visible legend that names the control.",
+						required: false,
+						description: "Optional visible legend that names the control. Hidden when omitted.",
 					},
 					{
 						name: "options",

@@ -108,7 +108,7 @@ export function CommandPalette({
 				<Command
 					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
-					className="rounded-basalt-md bg-basalt-popover ring-1 ring-basalt-border/60 [&_[cmdk-group-heading]]:px-basalt-3 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md"
+					className="rounded-basalt-md bg-basalt-popover ring-1 ring-basalt-border/60 [&_[cmdk-group-heading]]:px-basalt-space-lg [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md"
 				>
 					{content}
 				</Command>
@@ -153,7 +153,7 @@ export const CommandInput = React.forwardRef<
 	CommandInputProps
 >(({ className, leading, trailing, ...props }, ref) => (
 	<div
-		className="flex shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-3 py-basalt-space-md"
+		className="flex shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-space-lg py-basalt-space-md"
 		cmdk-input-wrapper=""
 	>
 		{leading === undefined ? (

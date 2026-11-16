@@ -2764,9 +2764,6 @@
   .px-\[calc\(var\(--basalt-space-panel-x\)-var\(--basalt-space-row-x\)\)\] {
     padding-inline: calc(var(--basalt-space-panel-x) - var(--basalt-space-row-x));
   }
-  .px-basalt-3 {
-    padding-inline: var(--basalt-space-3);
-  }
   .px-basalt-card {
     padding-inline: var(--basalt-space-card);
   }
@@ -3811,9 +3808,6 @@
     .lg\:px-basalt-layout-xl {
       padding-inline: var(--basalt-space-layout-xl);
     }
-  }
-  .\[\&_\[cmdk-group-heading\]\]\:px-basalt-3 [cmdk-group-heading] {
-    padding-inline: var(--basalt-space-3);
   }
   .\[\&_\[cmdk-group-heading\]\]\:px-basalt-space-lg [cmdk-group-heading] {
     padding-inline: var(--basalt-space-lg);

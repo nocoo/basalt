@@ -90,6 +90,7 @@ describe("catalog page content loader", () => {
 		expect(content?.docs.api[0]?.name).toBe("SegmentControl");
 		expect(content?.examples.map((example) => example.id)).toEqual([
 			"segment-control-controlled-status",
+			"segment-control-with-legend",
 			"segment-control-overflow-disabled",
 		]);
 		expect(loadFamily).toHaveBeenCalledWith("forms");

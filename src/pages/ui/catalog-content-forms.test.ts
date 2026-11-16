@@ -322,6 +322,7 @@ describe("forms catalog content family", () => {
 		);
 		expect(forms["segment-control"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "segment-control-controlled-status", title: "Controlled status filter" },
+			{ id: "segment-control-with-legend", title: "With optional legend" },
 			{ id: "segment-control-overflow-disabled", title: "Overflow and disabled" },
 		]);
 		for (const example of forms["segment-control"]?.examples ?? []) {
