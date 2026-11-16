@@ -1,7 +1,7 @@
-import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
+import { Check, Copy } from "../utils/internal-icons";
 import { Button } from "./button";
 
 export interface ClipboardTextProps {

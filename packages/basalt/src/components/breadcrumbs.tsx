@@ -1,7 +1,7 @@
-import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { ChevronRight } from "../utils/internal-icons";
 import { Link } from "./link";
 
 const crumbTypeClass = "text-basalt-base font-normal";

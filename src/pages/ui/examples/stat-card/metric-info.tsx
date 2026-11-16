@@ -18,7 +18,7 @@ export default function StatCardMetricInfo() {
 					title="Monthly care reimbursements"
 					value="$48,250"
 					subtitle="vs. $42,100 last month"
-					icon={TrendingUp}
+					icon={<TrendingUp strokeWidth={1.5} />}
 					iconColor="text-basalt-primary"
 					trend={{ value: 14.6, label: "MoM" }}
 					action={
@@ -46,7 +46,7 @@ export default function StatCardMetricInfo() {
 					title="Active care plans"
 					value="1,420"
 					subtitle="Total plans with active follow-up"
-					icon={Users}
+					icon={<Users strokeWidth={1.5} />}
 					iconColor="text-basalt-tag-teal-foreground"
 					trendContent={
 						<Badge variant="teal">

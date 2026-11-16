@@ -91,7 +91,7 @@ export default function StatCardStateTransition() {
 				subtitle={
 					state === "error" || state === "empty" ? undefined : "Measured over the last 60 minutes"
 				}
-				icon={Database}
+				icon={<Database strokeWidth={1.5} />}
 				trend={
 					state === "idle" || state === "success"
 						? { value: 12.4, label: "vs baseline" }

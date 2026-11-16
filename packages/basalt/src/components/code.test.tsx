@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { Terminal } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
 import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
+import { Terminal } from "../utils/internal-icons";
 import { Code, CodeBlock, CodeHighlighted } from "./code";
 
 describe("Code", () => {

@@ -317,7 +317,7 @@ if (existsSync(registryJsonPath)) {
 			};
 			const sources = mapData.sources ?? [];
 			const sourcesContent = mapData.sourcesContent ?? [];
-			if (sourcesContent.length === 0) {
+			if (sources.length > 0 && sourcesContent.length === 0) {
 				fail(`sourcemap ${relative(packageRoot, mf)} missing sourcesContent`);
 				continue;
 			}

@@ -1,7 +1,7 @@
-import { ArrowLeft } from "lucide-react";
 import { type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { ArrowLeft } from "../utils/internal-icons";
 import { Button } from "./button";
 
 export interface ResponsiveMasterDetailProps {

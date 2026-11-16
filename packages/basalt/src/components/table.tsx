@@ -1,7 +1,7 @@
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "../utils/internal-icons";
 
 /** Logical inline alignment. Maps to CSS `text-align: start | end`. */
 export type TableTextAlign = "start" | "end";

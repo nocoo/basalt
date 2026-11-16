@@ -1,6 +1,6 @@
-import { ArrowUp, Paperclip, Square, X } from "lucide-react";
 import { type FormEvent, type KeyboardEvent, type ReactNode, useId, useRef } from "react";
 import { cn } from "../utils/cn";
+import { ArrowUp, Paperclip, Square, X } from "../utils/internal-icons";
 import { useChatComposer } from "../viewmodels/use-chat-composer";
 import { Button } from "./button";
 import { InputArea } from "./input-area";

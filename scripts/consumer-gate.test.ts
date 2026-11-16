@@ -297,19 +297,13 @@ describe("tailwind consumer gate helpers", () => {
 		expect(() => assertTarballDistSource([TARBALL_SOURCE_GLOB], sourceCtx)).not.toThrow();
 		expect(
 			consumerSourceGlobs(readFileSync("fixtures/vite-tailwind/src/index.css", "utf8")),
-		).toEqual([TARBALL_SOURCE_GLOB]);
+		).toEqual([]);
 		expect(() =>
 			assertTailwindStylesheet(
-				'@import "@nocoo/basalt/styles/tailwind";\n@import "tailwindcss";\n',
+				'@source "../node_modules/@nocoo/basalt/dist/**/*.js";\n@import "@nocoo/basalt/styles";\n@import "tailwindcss";\n',
 				sourceCtx,
 			),
-		).toThrow(/missing @source/);
-		expect(() =>
-			assertTailwindStylesheet(
-				'@source "../../packages/basalt/src/**/*.{js,jsx,ts,tsx}";\n@import "@nocoo/basalt/styles/tailwind";\n@import "tailwindcss";\n',
-				sourceCtx,
-			),
-		).toThrow(/tarball dist/);
+		).toThrow(/package-embedded @source/);
 	});
 
 	it("rejects a package-style import in main and a duplicate CSS import", () => {
@@ -322,13 +316,12 @@ import "./index.css";
 				"tailwind",
 			),
 		).toThrow(/package styles from main/);
-		const once = `@source "${TARBALL_SOURCE_GLOB}";
-@import "@nocoo/basalt/styles/tailwind";
+		const once = `@import "@nocoo/basalt/styles";
 @import "tailwindcss";
 `;
 		expect(() => assertTailwindStylesheet(once, sourceCtx)).not.toThrow();
 		expect(() =>
-			assertTailwindStylesheet(`${once}@import "@nocoo/basalt/styles/tailwind";\n`, sourceCtx),
+			assertTailwindStylesheet(`${once}@import "@nocoo/basalt/styles";\n`, sourceCtx),
 		).toThrow(/once/);
 	});
 

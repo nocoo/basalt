@@ -1449,7 +1449,7 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
     - `value: string | number` (required): Core metric value. Formatted via `toLocaleString()` if numeric. Overridden when `status` is provided.
     - `title?: string` / `label?: string` (optional): Heading text (`title` takes precedence over `label`).
     - `subtitle?: string` (optional): Supporting text below value.
-    - `icon?: LucideIcon` (optional): Decorative icon displayed in header.
+    - `icon?: React.ReactNode` (optional): Decorative icon displayed in header.
     - `iconColor?: string` (optional, default: `"text-basalt-muted-foreground"`): Tailwind text color class for icon.
     - `trend?: { value: number; label?: string }` (optional): Default percentage trend with automatic positive/negative color coding.
     - `action?: ReactNode` (optional): Header interactive element (e.g., info tooltip button). When provided, switches card role to `group`.

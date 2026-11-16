@@ -1,4 +1,3 @@
-import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { LayerCard } from "../components/layer-card";
 import { cn } from "../utils/cn";
@@ -22,9 +21,9 @@ export type StatCardProps = {
 	 */
 	subtitle?: string;
 	/**
-	 * Optional decorative Lucide icon component.
+	 * Optional decorative icon node.
 	 */
-	icon?: LucideIcon;
+	icon?: ReactNode;
 	/**
 	 * Color class applied to the decorative icon.
 	 * @default "text-basalt-muted-foreground"
@@ -74,7 +73,7 @@ export function StatCard({
 	title,
 	value,
 	subtitle,
-	icon: Icon,
+	icon,
 	iconColor = "text-basalt-muted-foreground",
 	trend,
 	action,
@@ -121,18 +120,22 @@ export function StatCard({
 			role={isInteractive ? "group" : "img"}
 			aria-label={named}
 		>
-			{heading || Icon || hasAction ? (
+			{heading || hasSlotContent(icon) || hasAction ? (
 				<div
 					data-slot="stat-card-heading"
 					className="flex items-center justify-between gap-basalt-space-lg"
 				>
 					<div className="flex min-w-0 items-start gap-basalt-space-lg">
-						{Icon ? (
-							<Icon
+						{hasSlotContent(icon) ? (
+							<span
 								aria-hidden="true"
-								className={cn("mt-basalt-space-xs size-basalt-icon-lg shrink-0", iconColor)}
-								strokeWidth={1.5}
-							/>
+								className={cn(
+									"mt-basalt-space-xs inline-flex size-basalt-icon-lg shrink-0 [&>svg]:size-full",
+									iconColor,
+								)}
+							>
+								{icon}
+							</span>
 						) : null}
 						<p className="min-w-0 text-basalt-base font-medium text-basalt-muted-foreground">
 							{heading}

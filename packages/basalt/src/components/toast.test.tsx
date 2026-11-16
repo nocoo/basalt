@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
-import { Check, CircleAlert, Info, TriangleAlert } from "lucide-react";
 import { isValidElement, type ReactElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { Check, CircleAlert, Info, TriangleAlert } from "../utils/internal-icons";
 import { Toast, Toaster, toast } from "./toast";
 
 vi.mock("sonner", async (importOriginal) => {

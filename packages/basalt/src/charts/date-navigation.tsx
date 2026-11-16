@@ -1,8 +1,8 @@
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { type ComponentProps, useState } from "react";
 import { Button } from "../components/button";
 import { DatePicker } from "../components/date-picker";
 import { cn } from "../utils/cn";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "../utils/internal-icons";
 
 function shiftIso(value: string, delta: number) {
 	const match = /^(\d{4,})-(\d{2})-(\d{2})$/.exec(value);

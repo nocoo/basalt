@@ -1,5 +1,5 @@
-import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "../providers/theme";
+import { Monitor, Moon, Sun } from "../utils/internal-icons";
 import { HeaderAction } from "./app-header";
 
 const ICON_PROPS = {

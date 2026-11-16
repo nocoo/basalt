@@ -1,8 +1,8 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
+import { Check, ChevronDown } from "../utils/internal-icons";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { FOCUS_BORDER, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 

@@ -1,6 +1,6 @@
-import { Check, Circle, CircleAlert, Code, Search, Sparkles } from "lucide-react";
 import type { ThinkingStep, ThinkingVariant } from "../models/agent-feedback";
 import { cn } from "../utils/cn";
+import { Check, Circle, CircleAlert, Code, Search, Sparkles } from "../utils/internal-icons";
 import { useThinkingViewModel } from "../viewmodels/use-thinking";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Loader } from "./loader";

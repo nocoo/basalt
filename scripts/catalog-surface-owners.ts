@@ -32,6 +32,7 @@ export interface DocOwnerInfo {
 	kind: PublicSurfaceKind;
 	summary: string;
 	knownSymbols?: readonly string[];
+	passthroughExternal?: boolean;
 }
 
 export interface DiscoveredPublicSymbol {
@@ -83,6 +84,12 @@ export const SURFACE_MANIFEST_COMMAND = "bun run catalog-api:generate";
  * Any unowned module or unowned helper inside these modules will cause derivation to fail immediately.
  */
 export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
+	"@nocoo/basalt/icons": {
+		ownerDoc: "README.md#component-usage",
+		kind: "framework-chrome",
+		summary: "Tree-shakeable Lucide icon passthrough for consumer-defined iconography",
+		passthroughExternal: true,
+	},
 	"@nocoo/basalt/components/app-header": {
 		ownerDoc: "INTEGRATION.md#appheader-and-breadcrumbs",
 		kind: "framework-chrome",
@@ -615,7 +622,7 @@ export function derivePublicSurfaceManifest(repoRoot = process.cwd()): PublicSur
 			throw new Error(`failed to resolve module symbol: ${absPath}`);
 		}
 
-		const rawExports = checker.getExportsOfModule(modSym);
+		const rawExports = modOwner.passthroughExternal ? [] : checker.getExportsOfModule(modSym);
 		const symbols: DiscoveredPublicSymbol[] = [];
 
 		for (const exp of rawExports) {

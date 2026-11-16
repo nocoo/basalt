@@ -31,9 +31,9 @@ export const API = [
 			},
 			{
 				name: "icon",
-				type: "LucideIcon",
+				type: "React.ReactNode",
 				required: false,
-				description: "Optional decorative Lucide icon component.",
+				description: "Optional decorative icon node.",
 			},
 			{
 				name: "iconColor",

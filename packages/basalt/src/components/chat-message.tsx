@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+import { cn } from "../utils/cn";
 import {
 	Check,
 	Copy,
@@ -7,9 +9,7 @@ import {
 	RotateCcw,
 	ThumbsDown,
 	ThumbsUp,
-} from "lucide-react";
-import type { ReactNode } from "react";
-import { cn } from "../utils/cn";
+} from "../utils/internal-icons";
 import { useChatMessage } from "../viewmodels/use-chat-message";
 import { Button } from "./button";
 import { ChatMarkdown } from "./chat-markdown";

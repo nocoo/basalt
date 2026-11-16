@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { Activity } from "lucide-react";
 import { describe, expect, it } from "vitest";
+import { Activity } from "../utils/internal-icons";
 import { StatCard, StatGrid } from "./stat-card";
 
 describe("StatCard", () => {
@@ -70,7 +70,12 @@ describe("StatCard", () => {
 
 	it("renders an icon with iconColor and applies the outer className", () => {
 		const { container, rerender } = render(
-			<StatCard value="12.4k" icon={Activity} iconColor="text-red-500" className="outer-card" />,
+			<StatCard
+				value="12.4k"
+				icon={<Activity strokeWidth={1.5} />}
+				iconColor="text-red-500"
+				className="outer-card"
+			/>,
 		);
 		expect(container.firstElementChild).toHaveClass("outer-card");
 		expect(container.querySelector(".text-red-500")).toBeTruthy();
@@ -165,7 +170,7 @@ describe("StatCard", () => {
 			<StatCard
 				title="Total balance"
 				value="$8,800"
-				icon={Activity}
+				icon={<Activity strokeWidth={1.5} />}
 				trend={{ value: 3.1, label: "vs last month" }}
 			>
 				<button type="button">Explore history</button>

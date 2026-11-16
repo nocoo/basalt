@@ -1,6 +1,6 @@
-import { Check, CircleAlert, Info, TriangleAlert, X } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { Toaster as Sonner, toast as sonnerToast } from "sonner";
+import { Check, CircleAlert, Info, TriangleAlert, X } from "../utils/internal-icons";
 
 export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
 

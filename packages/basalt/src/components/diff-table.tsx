@@ -1,7 +1,7 @@
-import { Check, Minus, Plus } from "lucide-react";
 import { useId } from "react";
 import type { DiffTableColumn, DiffTableRow } from "../models/diff-table";
 import { cn } from "../utils/cn";
+import { Check, Minus, Plus } from "../utils/internal-icons";
 import { useDiffTableViewModel } from "../viewmodels/use-diff-table";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";

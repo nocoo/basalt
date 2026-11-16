@@ -1,7 +1,7 @@
-import { Info } from "lucide-react";
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Info } from "../utils/internal-icons";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 export type SectionRuleProps = Omit<HTMLAttributes<HTMLElement>, "title"> & {

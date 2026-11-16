@@ -1,7 +1,7 @@
-import { Folder, Pencil } from "lucide-react";
 import { type ReactNode, useId, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Folder, Pencil } from "../utils/internal-icons";
 import { NAV_ROW_CLASS } from "../utils/navigation";
 import { Button } from "./button";
 import { InlineEditable } from "./inline-editable";

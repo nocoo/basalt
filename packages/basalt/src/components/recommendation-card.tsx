@@ -1,4 +1,3 @@
-import { Check, ChevronDown } from "lucide-react";
 import { useId, useRef } from "react";
 import {
 	RECOMMENDATION_CONFIDENCE,
@@ -6,6 +5,7 @@ import {
 	type RecommendationOption,
 } from "../models/recommendation";
 import { cn } from "../utils/cn";
+import { Check, ChevronDown } from "../utils/internal-icons";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { useRecommendationCardViewModel } from "../viewmodels/use-recommendation-card";
 import { Button } from "./button";

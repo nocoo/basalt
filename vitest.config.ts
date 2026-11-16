@@ -52,6 +52,10 @@ export default defineConfig({
 	resolve: {
 		alias: [
 			{
+				find: "@nocoo/basalt/icons",
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/icons.ts"),
+			},
+			{
 				find: "@nocoo/basalt/components",
 				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/components"),
 			},

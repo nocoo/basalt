@@ -1,7 +1,7 @@
-import { Upload } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Upload } from "../utils/internal-icons";
 
 export interface FileRejection {
 	/** Original File; the component never creates preview URLs. */

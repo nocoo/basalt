@@ -1,7 +1,7 @@
-import { X } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { X } from "../utils/internal-icons";
 import { Button } from "./button";
 
 export interface FilterBarProps {

@@ -1,7 +1,7 @@
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
-import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { ChevronDown } from "../utils/internal-icons";
 import { FOCUS_INSET, OVERLAY_MOTION } from "./overlay";
 
 type RadixCollapsibleProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Root>;

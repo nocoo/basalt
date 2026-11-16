@@ -17,7 +17,7 @@ export function SecondaryMetricCard() {
 		<StatCard
 			title={t("dashboard.income")}
 			value={formatUsd(current)}
-			icon={TrendingUp}
+			icon={<TrendingUp strokeWidth={1.5} />}
 			trend={{ value: change, label: t("common.vsLastMonth") }}
 		>
 			<div className="space-y-basalt-card-sm">

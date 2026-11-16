@@ -28,6 +28,7 @@ import {
 	type TableTextAlign,
 } from "@nocoo/basalt/components/table";
 import { Text as GranularText } from "@nocoo/basalt/components/text";
+import { Search } from "@nocoo/basalt/icons";
 import { ThemeProvider as GranularThemeProvider } from "@nocoo/basalt/providers/theme";
 import { createRef } from "react";
 
@@ -53,6 +54,7 @@ export const consumer = {
 	CustomChart,
 	Sparkline,
 	SlotBarChart,
+	Search,
 };
 
 // =========================================================================

@@ -897,20 +897,22 @@ export function assertTarballDistSource(globs: string[], context: SourceContext)
 }
 
 export function packageStyleImportCount(css: string) {
-	return [...css.matchAll(/@import\s+["']@nocoo\/basalt\/styles\/tailwind["']/g)].length;
+	return [...css.matchAll(/@import\s+["']@nocoo\/basalt\/styles(?:\/tailwind)?["']/g)].length;
 }
 
-export function assertTailwindStylesheet(css: string, context: SourceContext) {
-	assertTarballDistSource(consumerSourceGlobs(css), context);
+export function assertTailwindStylesheet(css: string, _context: SourceContext) {
+	if (consumerSourceGlobs(css).length > 0) {
+		throw new Error("tailwind stylesheet must rely on the package-embedded @source");
+	}
 	if (css.includes("standalone")) {
 		throw new Error("tailwind stylesheet must not import standalone");
 	}
 	const styleImports = packageStyleImportCount(css);
-	if (styleImports === 0) {
-		throw new Error("tailwind stylesheet must import @nocoo/basalt/styles/tailwind");
+	if (!css.includes('@import "@nocoo/basalt/styles"')) {
+		throw new Error("tailwind stylesheet must import @nocoo/basalt/styles");
 	}
 	if (styleImports !== 1) {
-		throw new Error("tailwind stylesheet must import @nocoo/basalt/styles/tailwind once");
+		throw new Error("tailwind stylesheet must import @nocoo/basalt/styles once");
 	}
 	if (!css.includes('@import "tailwindcss"') && !css.includes("@import 'tailwindcss'")) {
 		throw new Error("tailwind stylesheet must import tailwindcss");

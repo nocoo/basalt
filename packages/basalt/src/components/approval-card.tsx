@@ -1,7 +1,7 @@
-import { ChevronLeft, X } from "lucide-react";
 import { useEffect, useId, useRef } from "react";
 import type { ApprovalAnswers, ApprovalQuestion } from "../models/agent-feedback";
 import { cn } from "../utils/cn";
+import { ChevronLeft, X } from "../utils/internal-icons";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { useApprovalCardViewModel } from "../viewmodels/use-approval-card";
 import { Button } from "./button";

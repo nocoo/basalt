@@ -1,9 +1,9 @@
 import type * as DialogPrimitive from "@radix-ui/react-dialog";
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { Search } from "../utils/internal-icons";
 import { type SelectionIndicatorState, useSelectionIndicator } from "../utils/selection-indicator";
 import { Dialog, DialogContent, type DialogSize, DialogTitle, DialogTrigger } from "./dialog";
 

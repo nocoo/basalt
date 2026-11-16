@@ -1,7 +1,7 @@
-import { ExternalLink, FileText, TextAlignStart } from "lucide-react";
 import { useId } from "react";
 import type { ContextChunk } from "../models/context-cards";
 import { cn } from "../utils/cn";
+import { ExternalLink, FileText, TextAlignStart } from "../utils/internal-icons";
 import { useContextCardsViewModel } from "../viewmodels/use-context-cards";
 import { Badge } from "./badge";
 import { Button } from "./button";

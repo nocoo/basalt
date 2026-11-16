@@ -1,7 +1,7 @@
-import { Eye, EyeOff } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
+import { Eye, EyeOff } from "../utils/internal-icons";
 import { Button } from "./button";
 import { Input, type InputSize } from "./input";
 

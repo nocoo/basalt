@@ -1,7 +1,7 @@
-import { Check, ChevronDown, X } from "lucide-react";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Check, ChevronDown, X } from "../utils/internal-icons";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Button } from "./button";
 import { Input } from "./input";

@@ -1,6 +1,6 @@
-import { Check, CircleAlert, FileText, Pencil, Sparkles, Terminal } from "lucide-react";
 import type { ToolDiff, ToolStep } from "../models/agent-feedback";
 import { cn } from "../utils/cn";
+import { Check, CircleAlert, FileText, Pencil, Sparkles, Terminal } from "../utils/internal-icons";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { useToolChipsViewModel } from "../viewmodels/use-tool-chips";
 import { Button } from "./button";

@@ -2,7 +2,7 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.4.2",
-	"totalModules": 131,
+	"totalModules": 132,
 	"totalSymbols": 808,
 	"totalValues": 422,
 	"totalTypes": 386,
@@ -7615,6 +7615,15 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/upload-queue"
 				}
 			]
+		},
+		{
+			"subpath": "./icons",
+			"importPath": "@nocoo/basalt/icons",
+			"sourceFile": "packages/basalt/src/icons.ts",
+			"ownerDoc": "README.md#component-usage",
+			"ownerKind": "framework-chrome",
+			"summary": "Tree-shakeable Lucide icon passthrough for consumer-defined iconography",
+			"symbols": []
 		},
 		{
 			"subpath": "./providers/accent",

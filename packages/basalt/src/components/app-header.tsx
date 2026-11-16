@@ -1,4 +1,3 @@
-import { ChevronRight, Menu } from "lucide-react";
 import {
 	type AnchorHTMLAttributes,
 	type ButtonHTMLAttributes,
@@ -9,6 +8,7 @@ import {
 } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { ChevronRight, Menu } from "../utils/internal-icons";
 import { Breadcrumbs } from "./breadcrumbs";
 import { Button, LinkButton } from "./button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";

@@ -3394,6 +3394,10 @@
 			]
 		},
 		{
+			"path": "@nocoo/basalt/icons",
+			"symbols": []
+		},
+		{
 			"path": "@nocoo/basalt/providers/theme",
 			"symbols": [
 				{

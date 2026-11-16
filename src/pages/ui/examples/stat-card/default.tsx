@@ -23,7 +23,7 @@ export default function StatCardDefault() {
 			<StatCard
 				title="Patient visits"
 				value="12.4k"
-				icon={Activity}
+				icon={<Activity strokeWidth={1.5} />}
 				trend={{ value: 12, label: "vs previous period" }}
 			>
 				<div className="space-y-basalt-space-lg">
@@ -39,7 +39,7 @@ export default function StatCardDefault() {
 			<StatCard
 				title="Monthly care reimbursements"
 				value="$4,500"
-				icon={Wallet}
+				icon={<Wallet strokeWidth={1.5} />}
 				trend={{ value: 2.4, label: "vs last month" }}
 			>
 				<div className="space-y-basalt-space-lg">

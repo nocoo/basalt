@@ -1,7 +1,7 @@
-import { Check, Copy, FileCode2 } from "lucide-react";
 import { type HTMLAttributes, type ReactNode, useId } from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
+import { Check, Copy, FileCode2 } from "../utils/internal-icons";
 import { useCodeBlock } from "../viewmodels/use-code-block";
 import { Button } from "./button";
 

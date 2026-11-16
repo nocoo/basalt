@@ -1,7 +1,7 @@
-import { Pencil } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Pencil } from "../utils/internal-icons";
 import { Button } from "./button";
 import { Input } from "./input";
 

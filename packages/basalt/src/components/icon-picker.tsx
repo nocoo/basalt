@@ -1,8 +1,8 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
-import { Check, ChevronDown, Search } from "lucide-react";
 import { type AriaAttributes, type ReactNode, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Check, ChevronDown, Search } from "../utils/internal-icons";
 import { Button } from "./button";
 import { Input } from "./input";
 import { FOCUS_RING } from "./overlay";

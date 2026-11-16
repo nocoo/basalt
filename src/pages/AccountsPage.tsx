@@ -58,7 +58,7 @@ export default function AccountsPage() {
 						key={acc.name}
 						title={acc.name}
 						value={`$${acc.balance.toLocaleString()}`}
-						icon={WalletIcon}
+						icon={<WalletIcon strokeWidth={1.5} />}
 						trendContent={<span className="font-medium text-basalt-success">{acc.change}</span>}
 					/>
 				))}

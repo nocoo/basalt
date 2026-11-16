@@ -1,7 +1,7 @@
-import { Check, FileText, RotateCcw, Trash2, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Check, FileText, RotateCcw, Trash2, X } from "../utils/internal-icons";
 import { Button } from "./button";
 
 export interface UploadFile {

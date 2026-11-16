@@ -1,6 +1,5 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Slot } from "@radix-ui/react-slot";
-import { ChevronUp, LogOut, PanelLeft, Search } from "lucide-react";
 import {
 	type AnchorHTMLAttributes,
 	type ButtonHTMLAttributes,
@@ -17,6 +16,7 @@ import {
 } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { ChevronUp, LogOut, PanelLeft, Search } from "../utils/internal-icons";
 import { NAV_ITEM_CLASS, NAV_LIST_CLASS, NAV_ROW_CLASS } from "../utils/navigation";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Badge } from "./badge";

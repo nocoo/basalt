@@ -1,8 +1,8 @@
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import { Check } from "lucide-react";
 import { type AriaAttributes, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { Check } from "../utils/internal-icons";
 import { FOCUS_RING } from "./overlay";
 import { TAG_COLORS, type TagColor } from "./tag-badge";
 
