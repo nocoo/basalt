@@ -139,7 +139,7 @@ export default function WearableDashboardPage() {
 			<SectionRule
 				title={t("pages.health.sampleDay")}
 				actions={
-					<span className="text-basalt-base text-basalt-muted-foreground">
+					<span className="text-basalt-md text-basalt-muted-foreground">
 						{new Intl.DateTimeFormat(i18n.language, { dateStyle: "full" }).format(
 							new Date(2026, 1, 13),
 						)}
@@ -157,7 +157,7 @@ export default function WearableDashboardPage() {
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
 						<Moon className="h-4 w-4 text-basalt-primary" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.wearable.sleepStages")}
 						</h2>
 						<span className="ml-auto text-basalt-base font-semibold text-basalt-primary">
@@ -179,8 +179,8 @@ export default function WearableDashboardPage() {
 				</LayerCard>
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Heart className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Heart className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.wearable.heartRateZones")}
 						</h2>
 						<span className="ml-auto text-basalt-base font-semibold text-basalt-foreground">
@@ -205,8 +205,8 @@ export default function WearableDashboardPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Footprints className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Footprints className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.wearable.weeklySteps")}
 						</h2>
 					</LayerCard.Header>
@@ -224,8 +224,8 @@ export default function WearableDashboardPage() {
 				</LayerCard>
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Sparkles className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Sparkles className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.wearable.recoveryTrend")}
 						</h2>
 					</LayerCard.Header>
@@ -247,8 +247,8 @@ export default function WearableDashboardPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.wearable.activityMix")}
 						</h2>
 					</LayerCard.Header>
@@ -267,8 +267,8 @@ export default function WearableDashboardPage() {
 				</LayerCard>
 				<LayerCard className="lg:col-span-2">
 					<LayerCard.Header className="items-center justify-start">
-						<Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Clock className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.wearable.dailyTimeline")}
 						</h2>
 					</LayerCard.Header>
@@ -287,8 +287,8 @@ export default function WearableDashboardPage() {
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base text-muted-foreground">
+					<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.wearable.workoutConsistency2026")}
 					</h2>
 				</LayerCard.Header>

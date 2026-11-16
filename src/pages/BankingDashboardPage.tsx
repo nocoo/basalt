@@ -87,8 +87,8 @@ export default function BankingDashboardPage() {
 				<RecentListCard />
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<CreditCard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<CreditCard className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.banking.recentTransfers")}
 						</h2>
 					</LayerCard.Header>

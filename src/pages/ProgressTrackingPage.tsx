@@ -33,8 +33,8 @@ export default function ProgressTrackingPage() {
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<LayoutGrid className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base text-muted-foreground">
+					<LayoutGrid className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.progressTracking.categoryBudgets")}
 					</h2>
 				</LayerCard.Header>
@@ -71,8 +71,8 @@ export default function ProgressTrackingPage() {
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base text-muted-foreground">
+					<BarChart3 className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.progressTracking.budgetVsActual")}
 					</h2>
 				</LayerCard.Header>

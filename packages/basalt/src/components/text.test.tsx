@@ -5,7 +5,7 @@ import { Text } from "./text";
 
 const SIZE_CLASS = {
 	xs: "text-basalt-sm",
-	sm: "text-basalt-base",
+	sm: "text-basalt-md",
 	md: "text-basalt-base leading-[var(--basalt-line-relaxed)]",
 	lg: "text-basalt-xl",
 	xl: "text-basalt-3xl",
@@ -45,7 +45,7 @@ describe("Text", () => {
 		const { rerender } = render(<Text variant="mono">npm</Text>);
 		const mono = screen.getByText("npm");
 		expect(mono.tagName).toBe("SPAN");
-		expect(mono.className).toContain("text-basalt-base");
+		expect(mono.className).toContain("text-basalt-md");
 		expect(mono.className).toContain("font-basalt-mono");
 		rerender(
 			<Text variant="mono" as="code">

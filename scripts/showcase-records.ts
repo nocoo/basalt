@@ -155,7 +155,7 @@ async function assertLedgerPanelInsets(page: Page, table: Locator) {
 			cap.textAlign === "-webkit-center" || cap.textAlign === "center",
 			`${dir} caption align ${cap.textAlign}`,
 		);
-		assert.equal(cap.fontSize, `${await remPx(page, 0.875)}px`, `${dir} caption font`);
+		assert.equal(cap.fontSize, `${await remPx(page, 0.8125)}px`, `${dir} caption font`);
 		assert.equal((await inlinePad(selectHead)).start, edge, `${dir} select head`);
 		assert.equal((await inlinePad(actionsHead)).end, edge, `${dir} actions head`);
 		assert.equal((await inlinePad(firstCell)).start, edge, `${dir} first cell`);
@@ -381,6 +381,55 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 	const nestedPad = await inlinePad(nested);
 	assert.equal(nestedPad.start, gutter, JSON.stringify(nestedPad));
 	assert.equal(nestedPad.end, gutter, JSON.stringify(nestedPad));
+
+	await page.goto(`${baseUrl}/tables`);
+	const pipeline = page.locator('[data-table-showcase="pipeline"]');
+	await pipeline.waitFor();
+	const tablesTypography = await pipeline.evaluate((node) => {
+		const measure = (el: Element | null, label: string) => {
+			if (!(el instanceof HTMLElement)) throw new Error(`Missing ${label}`);
+			const style = getComputedStyle(el);
+			return {
+				fontSize: style.fontSize,
+				letterSpacing: style.letterSpacing,
+				height: Math.round(el.getBoundingClientRect().height),
+			};
+		};
+		const tab = node.querySelector('[role="tab"]');
+		const buttons = Array.from(node.querySelectorAll("button")).filter(
+			(btn) =>
+				!btn.closest("table") &&
+				(btn.textContent?.trim() === "Export" || btn.textContent?.trim() === "New company"),
+		);
+		const selects = Array.from(node.querySelectorAll('[role="combobox"]'));
+		const head = node.querySelector("th:nth-child(2)");
+		const cell = node.querySelector("tbody tr td:nth-child(2)");
+		const ownerAvatarText = node.querySelector('[role="img"][aria-label="Sarah Nguyen"] > span');
+		return {
+			tab: measure(tab, "Companies tab"),
+			buttons: buttons.map((btn, i) => measure(btn, `Toolbar button ${i}`)),
+			selects: selects.map((sel, i) => measure(sel, `Toolbar select ${i}`)),
+			head: measure(head, "Pipeline th"),
+			cell: measure(cell, "Pipeline td"),
+			ownerAvatarText: measure(ownerAvatarText, "OwnerCell avatar fallback"),
+		};
+	});
+	assert.equal(tablesTypography.tab.fontSize, "14px");
+	assert.equal(tablesTypography.tab.height, 34);
+	assert.equal(tablesTypography.buttons.length, 2);
+	for (const button of tablesTypography.buttons) {
+		assert.equal(button.fontSize, "14px");
+		assert.equal(button.height, 34);
+	}
+	assert.equal(tablesTypography.selects.length, 2);
+	for (const select of tablesTypography.selects) {
+		assert.equal(select.fontSize, "14px");
+		assert.equal(select.height, 34);
+	}
+	assert.equal(tablesTypography.head.fontSize, "12px");
+	assert.equal(tablesTypography.head.letterSpacing, "normal");
+	assert.equal(tablesTypography.cell.fontSize, "13px");
+	assert.equal(tablesTypography.ownerAvatarText.fontSize, "11px");
 
 	return {
 		rowHeight: 44,

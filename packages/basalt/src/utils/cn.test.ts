@@ -6,6 +6,12 @@ describe("cn", () => {
 		expect(cn("text-basalt-base text-basalt-foreground", "text-basalt-sm")).toBe(
 			"text-basalt-foreground text-basalt-sm",
 		);
+		expect(cn("text-basalt-base text-basalt-muted-foreground", "text-basalt-md")).toBe(
+			"text-basalt-muted-foreground text-basalt-md",
+		);
+		expect(cn("text-basalt-md text-basalt-foreground")).toBe(
+			"text-basalt-md text-basalt-foreground",
+		);
 		expect(cn("rounded-basalt-md", "rounded-basalt-sm")).toBe("rounded-basalt-sm");
 	});
 	it("merges Basalt spacing with native Tailwind overrides", () => {

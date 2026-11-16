@@ -153,7 +153,7 @@ The shared classes calculate natural size as follows:
 - `basalt-inline`: 12px font, 16px line box + 2px padding each side + 1px border
   each side = 22px. Text wraps/grows rather than being clipped.
 - `basalt-action`: 14px font, 24px line box + 4px vertical padding each side +
-  1px border each side = 34px. Explicit `sm` (28px) and `lg` (40px) are shared
+  1px border each side = 34px. Explicit `sm` (28px, 13px font on an 18px line box) and `lg` (40px) are shared
   size variants, not ad-hoc height utilities. Icon-only actions use a minimum
   derived from `1lh`; `icon-sm` is an actual 28px by 28px control, while `icon`
   retains the default 34px contract. Icons are normally 14px.
@@ -163,7 +163,7 @@ The shared classes calculate natural size as follows:
   Descriptions, wrapping and actions can make a banner taller.
 - Action rows: 22px text line (`--basalt-line-row`) + 6px vertical padding each
   side = 34px. Body prose/code retain the 20px line box. Compound inputs own one
-  outer border; inset children do not add another. Segmented tracks keep 14px text
+  outer border; inset children do not add another. Segmented tracks keep 13px text
   on a 20px line box: 30px items + 2px track inset per side = 34px. A horizontally
   scrolling SegmentControl viewport adds 4px clearance on all four edges and uses
   matching scroll-padding; this does not enlarge the ToggleGroup track.
@@ -190,23 +190,24 @@ interaction contracts; do not change their containment as a global workaround.
 - Radius choices: `--basalt-radius-sm` (.25rem), `-md` (.5rem), `-lg` (.75rem)
   and `-full` (pill/circle); `none` and `inherit` are structural choices. Widget,
   card and island aliases reference those choices; no per-component radii.
-- Typography is positional, not component-specific. Use only the six font-size
+- Typography is positional, not component-specific. Use only the seven font-size
   tokens below, with `--basalt-leading-*` for line boxes. Do not shrink text to
   fit a fixed box or introduce responsive intermediate sizes.
 
-  | Tier          | Reference         | Token / utility                           | Roles                                                                                                                                                                        |
-  | ------------- | ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Micro         | 11px / `.6875rem` | `--basalt-text-xs` / `text-basalt-xs`     | Dense chart labels and tertiary metadata where 12px would reduce legibility                                                                                                  |
-  | Auxiliary     | 12px / `.75rem`   | `--basalt-text-sm` / `text-basalt-sm`     | Badges, table column headers, field hints/errors, sidebar uppercase group/partition labels, secondary metadata, chart axes/legends/tooltips, inline code and compact source  |
-  | Body          | 14px / `.875rem`  | `--basalt-text-base` / `text-basalt-base` | Body prose, interactive controls and option rows, `LayerCard.Header asChild`, `CodeBlock`, `StatCard`, `Popover` and `Empty` titles, PageHeader and modal/sheet descriptions |
-  | Card title    | 15px / `.9375rem` | `--basalt-text-lg` / `text-basalt-lg`     | Structured non-`asChild` `LayerCard.Header` headings and dashboard panel headings                                                                                            |
-  | Section       | 18px / `1.125rem` | `--basalt-text-xl` / `text-basalt-xl`     | Section/category h2/h3 headings, SectionRule variant="heading" h2, modal/drawer titles                                                                                       |
-  | Page / metric | 24px / `1.5rem`   | `--basalt-text-3xl` / `text-basalt-3xl`   | Page main title (PageHeader h1) and primary KPI numerals (StatCard value, StatStrip value and dashboard metrics)                                                             |
+  | Tier          | Reference         | Token / utility                           | Roles                                                                                                                                                                                                                                                                                                                              |
+  | ------------- | ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | Micro         | 11px / `.6875rem` | `--basalt-text-xs` / `text-basalt-xs`     | Compact 24px avatar initials (`AvatarInitials size="sm"`), compact `Meter size="sm"` readouts, dense chart micro-labels and tertiary metadata                                                                                                                                                                                      |
+  | Auxiliary     | 12px / `.75rem`   | `--basalt-text-sm` / `text-basalt-sm`     | Badges, TagBadges, table column headers (`TableHead`), field hints/errors, `SectionRule` uppercase labels, sidebar uppercase group/partition labels, secondary/footer metadata, chart axes/legends/tooltips, and inline `Code`                                                                                                     |
+  | Compact       | 13px / `.8125rem` | `--basalt-text-md` / `text-basalt-md`     | `Table` / `DataTable` body cells and `TableCaption`, `size="sm"` compact controls (`Button`, `Input`, `SelectTrigger`, `Toggle`, `InputArea`), `SegmentControl` / `ToggleGroup` items, `CodeBlock` / `CodeHighlighted` source and header filenames, `ClipboardText`, `PopoverDescription`, and `Text size="sm"` / `variant="mono"` |
+  | Body          | 14px / `.875rem`  | `--basalt-text-base` / `text-basalt-base` | Body prose, default interactive controls and option rows, ordinary `Sidebar` destinations, `Label`, `LayerCard.Header asChild`, `StatCard` / `StatStrip` / `Popover` / `Empty` titles, PageHeader and modal/sheet descriptions                                                                                                     |
+  | Card title    | 15px / `.9375rem` | `--basalt-text-lg` / `text-basalt-lg`     | Structured non-`asChild` `LayerCard.Header` headings and dashboard panel headings                                                                                                                                                                                                                                                  |
+  | Section       | 18px / `1.125rem` | `--basalt-text-xl` / `text-basalt-xl`     | Section/category h2/h3 headings, SectionRule variant="heading" h2, modal/drawer titles                                                                                                                                                                                                                                             |
+  | Page / metric | 24px / `1.5rem`   | `--basalt-text-3xl` / `text-basalt-3xl`   | Page main title (PageHeader h1) and primary KPI numerals (StatCard value, StatStrip value and dashboard metrics)                                                                                                                                                                                                                   |
 
   The only independent display-scale exemptions are LandingPage
   (`src/styles/landing.css`), LoginPage (`src/pages/LoginPage.tsx`) and the 404
   display in NotFound (`src/pages/NotFound.tsx`, `text-basalt-10xl` only). Every
-  other `src/` font-size class must use one of the six canonical utilities.
+  other `src/` font-size class must use one of the seven canonical utilities.
 - Surfaces preserve the matte L0/L1/L2/L3 hierarchy. LayerCard adds a subtle
   `ring-1 ring-basalt-border/80` perimeter and light-mode card shadow; `outlined`
   strengthens the perimeter. Structured non-`asChild` headers use 15px semibold
@@ -394,7 +395,7 @@ header control rather than compensating with negative page margins.
 
 Table cells keep 12px horizontal / 8px vertical insets and 44px reference rows.
 `density="compact"` selects 36px rows with 4px vertical insets for denser workspaces.
-Headers use medium weight and 0.04em tracking. Body rows have a subtle bottom
+Headers use 12px medium weight without wide tracking; body cells and captions use the 13px compact tier. Body rows have a subtle bottom
 hairline except the last row; the native separate-border layout paints that
 hairline on cells as well. Striping is off by default; `Table striped` opts into
 alternating current-surface row fills, independently of hover and selection.

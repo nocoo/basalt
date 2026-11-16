@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
+import { AvatarInitials } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
@@ -51,7 +51,7 @@ function TagStack({ tags }: { tags: readonly string[] }) {
 				<TagBadge key={tag} name={tag} color={TAG_COLOR[tag]} size="sm" />
 			))}
 			{extra > 0 ? (
-				<Badge variant="outline" className="px-basalt-space-md py-0 text-basalt-sm">
+				<Badge variant="outline" className="px-basalt-space-md">
 					+{extra}
 				</Badge>
 			) : null}
@@ -62,9 +62,7 @@ function TagStack({ tags }: { tags: readonly string[] }) {
 function OwnerCell({ name, initials }: { name: string; initials: string }) {
 	return (
 		<div className="flex items-center gap-basalt-space-lg">
-			<Avatar className="h-6 w-6">
-				<AvatarFallback className="text-basalt-sm">{initials}</AvatarFallback>
-			</Avatar>
+			<AvatarInitials name={name} initials={initials} size="sm" />
 			<span>{name}</span>
 		</div>
 	);
@@ -256,6 +254,7 @@ export default function TablesPage() {
 			accessor: (row) => (
 				<Meter
 					value={row.win}
+					size="sm"
 					aria-label={`${row.stage} ${t("pages.tables.colWin")}`}
 					className="w-32"
 				/>
@@ -335,7 +334,13 @@ export default function TablesPage() {
 			id: "battery",
 			header: t("pages.tables.colBattery"),
 			accessor: (row) => (
-				<Meter value={row.battery} label={`${row.name} ${t("pages.tables.colBattery")}`} />
+				<Meter
+					value={row.battery}
+					size="sm"
+					tone="auto"
+					aria-label={`${row.name} ${t("pages.tables.colBattery")}`}
+					className="w-32"
+				/>
 			),
 			sortValue: (row) => row.battery,
 			cellClassName: DENSE,
@@ -364,10 +369,8 @@ export default function TablesPage() {
 								<TabsTrigger value="forecast">{t("pages.tables.tabForecast")}</TabsTrigger>
 							</TabsList>
 							<div className="flex flex-wrap gap-basalt-space-lg">
-								<Button size="sm" variant="outline">
-									{t("pages.tables.export")}
-								</Button>
-								<Button size="sm">{t("pages.tables.newCompany")}</Button>
+								<Button variant="outline">{t("pages.tables.export")}</Button>
+								<Button>{t("pages.tables.newCompany")}</Button>
 							</div>
 						</div>
 						<div className="border-b border-basalt-border/60 px-basalt-card py-basalt-card-sm">

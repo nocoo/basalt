@@ -104,7 +104,7 @@ function CodePanel({
 						<span
 							id={id}
 							title={heading}
-							className="min-w-0 break-words font-basalt-mono text-basalt-base font-medium leading-[var(--basalt-line-body)] [overflow-wrap:anywhere]"
+							className="min-w-0 break-words font-basalt-mono text-basalt-md font-medium leading-[var(--basalt-line-body)] [overflow-wrap:anywhere]"
 						>
 							{heading}
 						</span>
@@ -141,13 +141,13 @@ function CodePanel({
 					event.currentTarget.scrollLeft +=
 						((event.key === "ArrowRight" ? 1 : -1) * event.currentTarget.clientWidth) / 4;
 				}}
-				className="basalt-focus basalt-focus-inset min-h-0 min-w-0 overflow-auto overscroll-x-contain overscroll-y-auto py-basalt-panel-y font-basalt-mono text-basalt-sm leading-[var(--basalt-line-body)]"
+				className="basalt-focus basalt-focus-inset min-h-0 min-w-0 overflow-auto overscroll-x-contain overscroll-y-auto py-basalt-panel-y font-basalt-mono text-basalt-md leading-[var(--basalt-line-body)]"
 			>
 				<span className="flex min-w-max">
 					{lineNumbers && (
 						<span
 							aria-hidden="true"
-							className="shrink-0 select-none border-r border-basalt-border text-right text-basalt-sm tabular-nums text-basalt-muted-foreground"
+							className="shrink-0 select-none border-r border-basalt-border text-right text-basalt-md tabular-nums text-basalt-muted-foreground"
 							style={{
 								width: `calc(${String(vm.lines.length).length}ch + 2 * var(--basalt-space-row-x))`,
 							}}

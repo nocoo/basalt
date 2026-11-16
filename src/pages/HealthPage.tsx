@@ -259,7 +259,7 @@ export default function HealthPage() {
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
 						<Moon className="h-4 w-4 text-basalt-primary" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.health.sleepStages")}
 						</h2>
 						<span className="ml-auto text-basalt-base font-semibold text-basalt-primary">
@@ -281,8 +281,8 @@ export default function HealthPage() {
 				</LayerCard>
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Heart className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Heart className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.health.heartRateZones")}
 						</h2>
 						<span className="ml-auto text-basalt-base font-semibold text-basalt-foreground">
@@ -307,8 +307,8 @@ export default function HealthPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Footprints className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Footprints className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.health.weeklySteps")}
 						</h2>
 					</LayerCard.Header>
@@ -326,8 +326,8 @@ export default function HealthPage() {
 				</LayerCard>
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Sparkles className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Sparkles className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.health.monthlySleepTrend")}
 						</h2>
 					</LayerCard.Header>
@@ -349,8 +349,8 @@ export default function HealthPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.health.activityBreakdown")}
 						</h2>
 					</LayerCard.Header>
@@ -369,8 +369,8 @@ export default function HealthPage() {
 				</LayerCard>
 				<LayerCard className="lg:col-span-2">
 					<LayerCard.Header className="items-center justify-start">
-						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.health.dailyTimeline")}
 						</h2>
 					</LayerCard.Header>
@@ -389,8 +389,8 @@ export default function HealthPage() {
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base text-muted-foreground">
+					<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.health.activityHeatmap2026")}
 					</h2>
 				</LayerCard.Header>
@@ -428,8 +428,8 @@ export default function HealthPage() {
 				<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
-							<ShieldCheck className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<h2 className="text-basalt-base text-muted-foreground">
+							<ShieldCheck className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 								{t("pages.health.aiReadinessTrend")}
 							</h2>
 						</LayerCard.Header>
@@ -448,8 +448,8 @@ export default function HealthPage() {
 					</LayerCard>
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
-							<Zap className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<h2 className="text-basalt-base text-muted-foreground">
+							<Zap className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 								{t("pages.health.recommendationImpact")}
 							</h2>
 						</LayerCard.Header>
@@ -470,8 +470,8 @@ export default function HealthPage() {
 				<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
-							<MessageSquare className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<h2 className="text-basalt-base text-muted-foreground">
+							<MessageSquare className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 								{t("pages.health.promptStudio")}
 							</h2>
 						</LayerCard.Header>
@@ -495,7 +495,7 @@ export default function HealthPage() {
 										variant="ghost"
 										type="button"
 										key={chip}
-										className="text-muted-foreground"
+										className="text-basalt-muted-foreground"
 										disabled
 									>
 										{chip}
@@ -510,8 +510,8 @@ export default function HealthPage() {
 
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
-							<CheckCircle2 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<h2 className="text-basalt-base text-muted-foreground">
+							<CheckCircle2 className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 								{t("pages.health.recommendedActions")}
 							</h2>
 						</LayerCard.Header>
@@ -527,8 +527,8 @@ export default function HealthPage() {
 
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
-							<Brain className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<h2 className="text-basalt-base text-muted-foreground">
+							<Brain className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 								{t("pages.health.insightTimeline")}
 							</h2>
 						</LayerCard.Header>

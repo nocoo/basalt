@@ -29,7 +29,7 @@ export const Table = React.forwardRef<
 		data-density={density === "compact" ? "compact" : undefined}
 		className={cn(
 			BASALT_UI_CLASS,
-			"w-full border-separate border-spacing-0 caption-bottom text-start text-basalt-base leading-[var(--basalt-line-body)] text-basalt-foreground",
+			"w-full border-separate border-spacing-0 caption-bottom text-start text-basalt-md leading-[var(--basalt-line-body)] text-basalt-foreground",
 			className,
 		)}
 		{...props}
@@ -99,7 +99,7 @@ export const TableHead = ({
 }: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
 	<th
 		className={cn(
-			"relative h-basalt-table-row whitespace-nowrap border-b border-basalt-border ps-basalt-table-x pe-basalt-table-x py-basalt-table-y align-middle text-basalt-sm font-medium tracking-[0.04em] text-basalt-muted-foreground",
+			"relative h-basalt-table-row whitespace-nowrap border-b border-basalt-border ps-basalt-table-x pe-basalt-table-x py-basalt-table-y align-middle text-basalt-sm font-medium text-basalt-muted-foreground",
 			textAlignClass(textAlign) ?? (align == null ? "text-start" : undefined),
 			className,
 		)}
@@ -148,7 +148,7 @@ export function TableCaption({
 	return (
 		<caption
 			className={cn(
-				"px-basalt-panel-x py-basalt-panel-y text-basalt-base text-basalt-muted-foreground",
+				"px-basalt-panel-x py-basalt-panel-y text-basalt-md text-basalt-muted-foreground",
 				className,
 			)}
 			{...props}

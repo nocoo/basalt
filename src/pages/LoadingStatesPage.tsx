@@ -55,7 +55,7 @@ export default function LoadingStatesPage() {
 			title={t("pages.loadingStates.title")}
 			description={t("pages.loadingStates.description")}
 			actions={
-				<Button size="sm" variant="outline" onClick={toggleBusy}>
+				<Button variant="outline" onClick={toggleBusy}>
 					{busy ? t("pages.loadingStates.showLoaded") : t("pages.loadingStates.replay")}
 				</Button>
 			}

@@ -6,7 +6,7 @@ import { FOCUS_BORDER } from "./overlay";
 export type InputAreaSize = "sm" | "default" | "lg";
 
 const INPUT_AREA_SIZE_CLASS: Record<InputAreaSize, string> = {
-	sm: "min-h-basalt-textarea-sm px-basalt-space-lg py-basalt-space-md text-basalt-sm",
+	sm: "min-h-basalt-textarea-sm px-basalt-space-lg py-basalt-space-md text-basalt-md",
 	default: "min-h-basalt-textarea px-basalt-control-x py-basalt-space-lg text-basalt-base",
 	lg: "min-h-basalt-textarea-lg px-basalt-control-x-lg py-basalt-space-lg text-basalt-base",
 };

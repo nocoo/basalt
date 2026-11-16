@@ -58,7 +58,12 @@ describe("ToggleGroup", () => {
 		const group = screen.getByRole("radiogroup");
 		expect(group.className).toContain("rounded-basalt-full");
 		expect(group.className).toContain("bg-basalt-muted");
-		expect(screen.getByText("Live")).toHaveClass("leading-[var(--basalt-line-body)]");
+		expect(screen.getByText("Live")).toHaveClass(
+			"basalt-action-sm",
+			"font-medium",
+			"leading-[var(--basalt-line-body)]",
+		);
+		expect(screen.getByText("Live")).not.toHaveClass("tracking-wide");
 		expect(screen.getByText("Live").className).toContain(
 			"aria-checked:text-basalt-primary-foreground",
 		);

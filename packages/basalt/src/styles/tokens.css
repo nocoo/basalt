@@ -9,7 +9,7 @@
 	--basalt-focus-clearance: var(--basalt-space-sm);
 	--basalt-text-xs: 0.6875rem;
 	--basalt-text-sm: 0.75rem;
-	--basalt-text-code: 0.8125rem;
+	--basalt-text-md: 0.8125rem;
 	--basalt-text-base: 0.875rem;
 	--basalt-text-lg: 0.9375rem;
 	--basalt-text-xl: 1.125rem;
@@ -27,7 +27,7 @@
 	--basalt-leading-relaxed: 1.5;
 	--basalt-leading-inline: calc(16 / 12);
 	--basalt-leading-action: calc(24 / 14);
-	--basalt-leading-action-sm: 1.5;
+	--basalt-leading-action-sm: calc(18 / 13);
 	--basalt-leading-action-lg: calc(22 / 14);
 	--basalt-leading-banner: calc(22 / 14);
 	--basalt-radius-sm: 0.25rem;
@@ -642,7 +642,7 @@
 	}
 	.basalt-action-sm {
 		padding-inline: var(--basalt-space-control-x-sm);
-		font-size: var(--basalt-text-sm);
+		font-size: var(--basalt-text-md);
 		line-height: var(--basalt-leading-action-sm);
 	}
 	.basalt-action-lg {

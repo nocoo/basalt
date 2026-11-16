@@ -40,7 +40,7 @@ export function FilterBar({
 			<div className="flex flex-wrap items-end gap-basalt-space-lg [&>*]:min-w-0">
 				{children}
 				{active && onClear && (
-					<Button size="sm" variant="ghost" onClick={onClear}>
+					<Button variant="ghost" onClick={onClear}>
 						{clearLabel}
 					</Button>
 				)}

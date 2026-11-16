@@ -7,7 +7,7 @@ import { InputArea, type InputAreaProps } from "./input-area";
 function acceptInputAreaProps(_props: InputAreaProps) {}
 
 const SIZE_CLASS = {
-	sm: ["min-h-basalt-textarea-sm", "px-basalt-space-lg", "py-basalt-space-md", "text-basalt-sm"],
+	sm: ["min-h-basalt-textarea-sm", "px-basalt-space-lg", "py-basalt-space-md", "text-basalt-md"],
 	default: [
 		"min-h-basalt-textarea",
 		"px-basalt-control-x",

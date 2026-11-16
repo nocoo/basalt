@@ -52,7 +52,7 @@ export default function AnimationPage() {
 			title={t("pages.animation.title")}
 			description={t("pages.animation.description")}
 			actions={
-				<Button size="sm" variant="outline" onClick={togglePaused}>
+				<Button variant="outline" onClick={togglePaused}>
 					{paused ? t("pages.animation.play") : t("pages.animation.pause")}
 				</Button>
 			}
@@ -96,43 +96,35 @@ export default function AnimationPage() {
 						<div className="flex flex-wrap gap-basalt-space-lg">
 							<Dialog>
 								<DialogTrigger asChild>
-									<Button variant="outline" size="sm">
-										{t("pages.animation.openDialog")}
-									</Button>
+									<Button variant="outline">{t("pages.animation.openDialog")}</Button>
 								</DialogTrigger>
 								<DialogContent>
 									<DialogTitle>{t("pages.animation.dialogTitle")}</DialogTitle>
 									<DialogDescription>{t("pages.animation.dialogBody")}</DialogDescription>
 									<div className="mt-basalt-card flex justify-end">
 										<DialogClose asChild>
-											<Button size="sm">{t("common.close")}</Button>
+											<Button>{t("common.close")}</Button>
 										</DialogClose>
 									</div>
 								</DialogContent>
 							</Dialog>
 							<Sheet>
 								<SheetTrigger asChild>
-									<Button variant="outline" size="sm">
-										{t("pages.animation.openSheet")}
-									</Button>
+									<Button variant="outline">{t("pages.animation.openSheet")}</Button>
 								</SheetTrigger>
 								<SheetContent>
 									<SheetTitle>{t("pages.animation.sheetTitle")}</SheetTitle>
 									<SheetDescription>{t("pages.animation.sheetBody")}</SheetDescription>
 									<div className="mt-basalt-card flex justify-end">
 										<SheetClose asChild>
-											<Button size="sm" variant="outline">
-												{t("common.close")}
-											</Button>
+											<Button variant="outline">{t("common.close")}</Button>
 										</SheetClose>
 									</div>
 								</SheetContent>
 							</Sheet>
 							<Popover>
 								<PopoverTrigger asChild>
-									<Button variant="outline" size="sm">
-										{t("pages.animation.openPopover")}
-									</Button>
+									<Button variant="outline">{t("pages.animation.openPopover")}</Button>
 								</PopoverTrigger>
 								<PopoverContent>
 									<PopoverTitle>{t("pages.animation.popoverTitle")}</PopoverTitle>
@@ -140,7 +132,6 @@ export default function AnimationPage() {
 								</PopoverContent>
 							</Popover>
 							<Button
-								size="sm"
 								variant="secondary"
 								onClick={() => toast.success(t("pages.animation.toastMessage"))}
 							>

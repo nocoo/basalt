@@ -16,12 +16,12 @@ describe("dimension token contract", () => {
 		expect(tailwind).not.toContain("biome-ignore");
 	});
 
-	it("maps the core text scale to six canonical tiers in both entrypoints", () => {
+	it("maps the core text scale to seven canonical tiers in both entrypoints", () => {
 		for (const css of [tokens, standalone]) {
 			for (const [name, value] of Object.entries({
 				xs: "0.6875rem",
 				sm: "0.75rem",
-				code: "0.8125rem",
+				md: "0.8125rem",
 				base: "0.875rem",
 				lg: "0.9375rem",
 				xl: "1.125rem",
@@ -31,6 +31,8 @@ describe("dimension token contract", () => {
 			})) {
 				expect(css).toContain(`--basalt-text-${name}: ${value};`);
 			}
+			const smallAction = css.match(/\.basalt-action-sm \{([^}]+)\}/)?.[1];
+			expect(smallAction).toContain("font-size: var(--basalt-text-md)");
 			const largeAction = css.match(/\.basalt-action-lg \{([^}]+)\}/)?.[1];
 			expect(largeAction).toContain("font-size: var(--basalt-text-base)");
 		}
@@ -58,7 +60,7 @@ describe("dimension token contract", () => {
 				"leading-basalt-row",
 			);
 		}
-		expect(tokens).toContain("--basalt-leading-action-sm: 1.5");
+		expect(tokens).toContain("--basalt-leading-action-sm: calc(18 / 13)");
 		expect(tokens).toContain("--basalt-leading-action-lg: calc(22 / 14)");
 	});
 	it("ships axis-specific code scroll containment in standalone CSS", () => {

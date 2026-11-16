@@ -18,7 +18,10 @@ describe("FilterBar and FilterChip", () => {
 		);
 		expect(screen.getByRole("group", { name: "Filters" })).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Remove Status" }));
-		fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
+		const clearButton = screen.getByRole("button", { name: "Clear filters" });
+		expect(clearButton).toHaveClass("basalt-action");
+		expect(clearButton).not.toHaveClass("basalt-action-sm");
+		fireEvent.click(clearButton);
 		expect(remove).toHaveBeenCalledOnce();
 		expect(clear).toHaveBeenCalledOnce();
 		rerender(

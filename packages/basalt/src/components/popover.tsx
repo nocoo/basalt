@@ -249,7 +249,7 @@ export const PopoverDescription = React.forwardRef<HTMLParagraphElement, Popover
 		<p
 			ref={ref}
 			className={cn(
-				"m-0 text-basalt-base leading-[var(--basalt-line-body)] text-basalt-muted-foreground",
+				"m-0 text-basalt-md leading-[var(--basalt-line-body)] text-basalt-muted-foreground",
 				className,
 			)}
 			{...props}

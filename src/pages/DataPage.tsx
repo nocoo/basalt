@@ -94,7 +94,7 @@ const SOFT_PILLS = [
 ];
 
 const OUTLINE_PILLS = [
-	{ label: "Outline", className: "border border-border text-foreground" },
+	{ label: "Outline", className: "border border-border text-basalt-foreground" },
 	{ label: "Primary", className: "border border-primary text-primary" },
 	{ label: "Success", className: "border border-success text-success" },
 ];
@@ -147,7 +147,7 @@ export default function DataPage() {
 				<StatGrid>
 					{KPI_DATA.map((kpi) => (
 						<LayerCard key={kpi.label}>
-							<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-space-sm">
+							<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
 								{kpi.label}
 							</p>
 							<p className="text-basalt-3xl font-semibold tabular-nums text-basalt-foreground font-basalt-display">
@@ -322,12 +322,12 @@ export default function DataPage() {
 					<LayerCard.Body>
 						<div className="space-y-basalt-card">
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.sizes")}
 								</p>
 								<div className="flex items-end gap-basalt-card-sm">
 									{[
-										{ size: "h-6 w-6", text: "text-basalt-sm" },
+										{ size: "h-6 w-6", text: "text-basalt-xs" },
 										{ size: "h-8 w-8", text: "text-basalt-sm" },
 										{ size: "h-10 w-10", text: "text-basalt-sm" },
 										{ size: "h-12 w-12", text: "text-basalt-base" },
@@ -343,7 +343,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.stackedGroup")}
 								</p>
 								<div className="flex -space-x-basalt-space-lg">
@@ -353,7 +353,7 @@ export default function DataPage() {
 											<AvatarFallback className="text-basalt-sm">{p.initials}</AvatarFallback>
 										</Avatar>
 									))}
-									<div className="flex h-9 w-9 items-center justify-center rounded-basalt-full border-2 border-background bg-muted text-basalt-sm font-medium text-muted-foreground">
+									<div className="flex h-9 w-9 items-center justify-center rounded-basalt-full border-2 border-background bg-muted text-basalt-sm font-medium text-basalt-muted-foreground">
 										+3
 									</div>
 								</div>
@@ -368,7 +368,7 @@ export default function DataPage() {
 					<LayerCard.Body>
 						<div className="space-y-basalt-card">
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.variants")}
 								</p>
 								<div className="flex flex-wrap items-center gap-basalt-space-lg">
@@ -379,7 +379,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.semantic")}
 								</p>
 								<div className="flex flex-wrap items-center gap-basalt-space-lg">
@@ -407,7 +407,7 @@ export default function DataPage() {
 					<LayerCard.Body>
 						<div className="space-y-basalt-card">
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.solid")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -422,7 +422,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.soft")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -437,7 +437,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.outline")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -452,7 +452,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
+								<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.withIcons")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -531,10 +531,12 @@ export default function DataPage() {
 									<AvatarFallback className="text-basalt-sm">{person.initials}</AvatarFallback>
 								</Avatar>
 								<div className="flex-1 min-w-0">
-									<p className="text-basalt-base font-medium text-foreground truncate">
+									<p className="text-basalt-base font-medium text-basalt-foreground truncate">
 										{person.name}
 									</p>
-									<p className="text-basalt-sm text-muted-foreground truncate">{person.email}</p>
+									<p className="text-basalt-sm text-basalt-muted-foreground truncate">
+										{person.email}
+									</p>
 								</div>
 								<Badge variant="outline" className="gap-basalt-space-md shrink-0">
 									<span className="h-1.5 w-1.5 rounded-basalt-full bg-basalt-success" /> Active

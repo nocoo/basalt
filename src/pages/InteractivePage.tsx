@@ -344,7 +344,7 @@ export default function InteractivePage() {
 					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Sheet>
 							<SheetTrigger asChild>
-								<Button variant="outline" size="sm">
+								<Button variant="outline">
 									<PanelRight className="h-3.5 w-3.5" /> {t("pages.interactive.sheetRight")}
 								</Button>
 							</SheetTrigger>
@@ -365,14 +365,14 @@ export default function InteractivePage() {
 								</div>
 								<SheetFooter className="mt-basalt-card">
 									<SheetClose asChild>
-										<Button size="sm">{t("common.save")}</Button>
+										<Button>{t("common.save")}</Button>
 									</SheetClose>
 								</SheetFooter>
 							</SheetContent>
 						</Sheet>
 						<Sheet>
 							<SheetTrigger asChild>
-								<Button variant="outline" size="sm">
+								<Button variant="outline">
 									<PanelLeft className="h-3.5 w-3.5" /> {t("pages.interactive.sheetLeft")}
 								</Button>
 							</SheetTrigger>
@@ -383,16 +383,14 @@ export default function InteractivePage() {
 								</SheetHeader>
 								<SheetFooter className="mt-basalt-card">
 									<SheetClose asChild>
-										<Button variant="outline" size="sm">
-											{t("common.cancel")}
-										</Button>
+										<Button variant="outline">{t("common.cancel")}</Button>
 									</SheetClose>
 								</SheetFooter>
 							</SheetContent>
 						</Sheet>
 						<Sheet>
 							<SheetTrigger asChild>
-								<Button variant="outline" size="sm">
+								<Button variant="outline">
 									<PanelBottom className="h-3.5 w-3.5" /> {t("pages.interactive.sheetBottom")}
 								</Button>
 							</SheetTrigger>
@@ -402,9 +400,7 @@ export default function InteractivePage() {
 								</SheetHeader>
 								<SheetFooter className="mt-basalt-card">
 									<SheetClose asChild>
-										<Button variant="outline" size="sm">
-											{t("common.cancel")}
-										</Button>
+										<Button variant="outline">{t("common.cancel")}</Button>
 									</SheetClose>
 								</SheetFooter>
 							</SheetContent>
@@ -418,9 +414,7 @@ export default function InteractivePage() {
 					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="outline" size="sm">
-									{t("pages.interactive.basicDialog")}
-								</Button>
+								<Button variant="outline">{t("pages.interactive.basicDialog")}</Button>
 							</DialogTrigger>
 							<DialogContent>
 								<DialogHeader>
@@ -435,16 +429,14 @@ export default function InteractivePage() {
 								</div>
 								<DialogFooter>
 									<DialogClose asChild>
-										<Button size="sm">{t("common.save")}</Button>
+										<Button>{t("common.save")}</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
 						</Dialog>
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
-								<Button variant="destructive" size="sm">
-									{t("pages.interactive.deleteItem")}
-								</Button>
+								<Button variant="destructive">{t("pages.interactive.deleteItem")}</Button>
 							</AlertDialogTrigger>
 							<AlertDialogContent>
 								<AlertDialogHeader>
@@ -470,7 +462,7 @@ export default function InteractivePage() {
 					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Popover>
 							<PopoverTrigger asChild>
-								<Button variant="outline" size="sm">
+								<Button variant="outline">
 									<Filter className="h-3.5 w-3.5" /> {t("common.filter")}
 								</Button>
 							</PopoverTrigger>
@@ -479,10 +471,7 @@ export default function InteractivePage() {
 									<p className="text-basalt-base font-medium">{t("pages.interactive.filterBy")}</p>
 									<div className="space-y-basalt-space-lg">
 										<Label className="text-basalt-sm">{t("pages.interactive.statusLabel")}</Label>
-										<Input
-											placeholder={t("pages.interactive.statusPlaceholder")}
-											className="text-basalt-sm"
-										/>
+										<Input size="sm" placeholder={t("pages.interactive.statusPlaceholder")} />
 									</div>
 									<Separator />
 									<div className="flex justify-end gap-basalt-space-lg">
@@ -493,7 +482,7 @@ export default function InteractivePage() {
 						</Popover>
 						<Popover>
 							<PopoverTrigger asChild>
-								<Button variant="outline" size="sm">
+								<Button variant="outline">
 									<User className="h-3.5 w-3.5" /> {t("pages.interactive.profileLabel")}
 								</Button>
 							</PopoverTrigger>
@@ -586,9 +575,7 @@ export default function InteractivePage() {
 												{t("pages.interactive.permanentlyRemoveData")}
 											</p>
 										</div>
-										<Button variant="destructive" size="sm">
-											{t("common.delete")}
-										</Button>
+										<Button variant="destructive">{t("common.delete")}</Button>
 									</div>
 								</LayerCard.Body>
 							</CollapsibleContent>

@@ -59,12 +59,12 @@ describe("Code", () => {
 				),
 			);
 			expect(screen.getByRole("region", { name: "example.ts" })).toHaveClass(
-				"text-basalt-sm",
+				"text-basalt-md",
 				"font-basalt-mono",
 				"leading-[var(--basalt-line-body)]",
 			);
 			expect(screen.getByText("example.ts")).toHaveClass(
-				"text-basalt-base",
+				"text-basalt-md",
 				"font-medium",
 				"font-basalt-mono",
 				"leading-[var(--basalt-line-body)]",

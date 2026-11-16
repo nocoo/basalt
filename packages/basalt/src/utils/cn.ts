@@ -9,7 +9,7 @@ const twMerge = extendTailwindMerge({
 			text: [
 				"basalt-xs",
 				"basalt-sm",
-				"basalt-code",
+				"basalt-md",
 				"basalt-base",
 				"basalt-lg",
 				"basalt-xl",

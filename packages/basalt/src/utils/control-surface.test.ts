@@ -64,7 +64,7 @@ describe("control surface", () => {
 		expect(block).toContain("<CodePanel");
 		expect(highlighted).toContain("<CodePanel");
 		expect(highlighted).toContain("controlSurfaceClass(");
-		expect(highlighted).toContain("text-basalt-base");
+		expect(highlighted).toContain("text-basalt-md");
 	});
 
 	it("does not apply the shared surface to Collapsible", () => {

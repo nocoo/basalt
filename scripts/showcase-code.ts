@@ -119,7 +119,7 @@ async function assertCodePanel(page: Page, panel: Locator) {
 	});
 	assert.equal(geometry.header, 45);
 	assert.equal(geometry.inset, "12px 16px");
-	assert.equal(geometry.font, "12px");
+	assert.equal(geometry.font, "13px");
 	assert.equal(geometry.line, "20px");
 	// A narrow panel must contain its code instead of stretching the page.
 	await panel.evaluate((node) => {
@@ -196,7 +196,7 @@ export async function assertCodePanels(page: Page, baseUrl: string) {
 		const standalone = page.locator("[data-basalt-code]");
 		assert.equal(
 			await standalone.locator("code").evaluate((node) => getComputedStyle(node).fontSize),
-			"12px",
+			"13px",
 		);
 		assert.equal(
 			await standalone.locator("code").evaluate((node) => getComputedStyle(node).lineHeight),

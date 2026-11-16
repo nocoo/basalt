@@ -9,12 +9,13 @@ describe("Avatar", () => {
 			"rounded-basalt-full",
 			"size-basalt-6",
 		);
-		expect(screen.getByText("AC")).toBeInTheDocument();
+		expect(screen.getByText("AC")).toHaveClass("text-basalt-xs");
+		expect(screen.getByText("AC")).not.toHaveClass("text-basalt-sm");
 		const color = screen.getByText("AC").className;
 		rerender(<AvatarInitials name="Amber Scoop" size="sm" colorKey="stable" />);
 		expect(screen.getByText("AS").className).toBe(color);
 		rerender(<AvatarInitials name="Fallback" initials=" xy more " />);
-		expect(screen.getByText("XY")).toBeInTheDocument();
+		expect(screen.getByText("XY")).toHaveClass("text-basalt-sm");
 		rerender(<AvatarInitials name="Fallback" initials="  " />);
 		expect(screen.getByText("FA")).toBeInTheDocument();
 	});

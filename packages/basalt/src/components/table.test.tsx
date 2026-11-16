@@ -29,14 +29,16 @@ describe("Table", () => {
 				</TableBody>
 			</Table>,
 		);
-		expect(screen.getByRole("table", { name: "Roster" }).tagName).toBe("TABLE");
+		const table = screen.getByRole("table", { name: "Roster" });
+		expect(table.tagName).toBe("TABLE");
+		expect(table).toHaveClass("text-basalt-md");
 		expect(screen.getByRole("columnheader", { name: "Name" }).tagName).toBe("TH");
 		expect(screen.getByRole("cell", { name: "Atlas" }).tagName).toBe("TD");
 		expect(screen.getByRole("columnheader", { name: "Name" })).toHaveClass("relative");
 		expect(screen.getByRole("cell", { name: "Atlas" })).toHaveClass("relative");
 		const caption = screen.getByText("Roster");
 		expect(caption.tagName).toBe("CAPTION");
-		expect(caption).toHaveClass("px-basalt-panel-x", "py-basalt-panel-y", "text-basalt-base");
+		expect(caption).toHaveClass("px-basalt-panel-x", "py-basalt-panel-y", "text-basalt-md");
 		expect(caption.className).not.toMatch(/mt-basalt-space-lg/);
 		expect(caption.className).not.toMatch(/\btext-start\b|\btext-end\b|\btext-center\b/);
 	});
@@ -95,7 +97,8 @@ describe("Table", () => {
 			</Table>,
 		);
 		expect(screen.getByRole("table")).toHaveAttribute("data-basalt-table");
-		expect(screen.getByText("Name")).toHaveClass("font-medium", "tracking-[0.04em]");
+		expect(screen.getByText("Name")).toHaveClass("font-medium", "text-basalt-sm");
+		expect(screen.getByText("Name")).not.toHaveClass("tracking-[0.04em]");
 		expect(screen.getByRole("table")).not.toHaveAttribute("data-striped");
 		expect(screen.getByText("Name").className).toContain("text-basalt-muted-foreground");
 		expect(screen.getByText("Name").className).not.toContain("bg-basalt-card");

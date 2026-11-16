@@ -90,8 +90,8 @@ export default function NetworkOpsDashboardPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Wifi className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Wifi className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.networkOps.latencyTrend")}
 						</h2>
 					</LayerCard.Header>
@@ -118,8 +118,8 @@ export default function NetworkOpsDashboardPage() {
 				<HeatmapCard />
 				<LayerCard className="lg:col-span-2">
 					<LayerCard.Header className="items-center justify-start">
-						<Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<Clock className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.networkOps.incidentTimeline")}
 						</h2>
 					</LayerCard.Header>

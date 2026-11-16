@@ -35,7 +35,7 @@ describe("Popover", () => {
 		expect(panel?.querySelector("svg")).toHaveAttribute("viewBox", "0 0 12 6");
 		expect(panel?.querySelector("svg svg")).toBeNull();
 		expect(screen.getByText("Popover Title")).toHaveClass("text-basalt-base");
-		expect(screen.getByText("This is a popover.")).toHaveClass("text-basalt-base");
+		expect(screen.getByText("This is a popover.")).toHaveClass("text-basalt-md");
 		expect(panel?.className).toContain("motion-reduce:animate-none");
 		expect(panel?.className).toContain("z-50");
 	});

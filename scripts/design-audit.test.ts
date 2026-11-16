@@ -59,6 +59,8 @@ describe("design audit rules (without scanning the repository)", () => {
 		"text-basalt-9xl",
 		"text-basalt-10xl",
 		"md:text-basalt-2xl",
+		"sm:text-basalt-base",
+		"md:text-basalt-md",
 		"!text-basalt-2xl",
 		"text-basalt-code!",
 	])("rejects noncanonical typography: %s", (token) => {
@@ -66,11 +68,11 @@ describe("design audit rules (without scanning the repository)", () => {
 			{ file: "example.tsx", rule: "type-token", value: token },
 		]);
 	});
-	it("allows the six canonical sizes and the scoped 404 display exemption", () => {
+	it("allows the seven canonical sizes and the scoped 404 display exemption", () => {
 		expect(
 			auditDesignSource(
 				"example.tsx",
-				'<div className="text-basalt-xs text-basalt-sm text-basalt-base text-basalt-lg text-basalt-xl text-basalt-3xl text-basalt-foreground"/>',
+				'<div className="text-basalt-xs text-basalt-sm text-basalt-md text-basalt-base text-basalt-lg text-basalt-xl text-basalt-3xl text-basalt-foreground file:text-basalt-base focus:text-basalt-base"/>',
 			),
 		).toEqual([]);
 		expect(

@@ -23,6 +23,14 @@ describe("TablesPage", () => {
 		expect(table.querySelectorAll(".basalt-chart")).toHaveLength(12);
 		expect(within(pipeline as HTMLElement).getByText("12 companies in view")).toBeInTheDocument();
 		expect(screen.getByRole("checkbox", { name: "Select summit" })).toBeChecked();
+		for (const action of ["Export", "New company"]) {
+			const button = within(pipeline as HTMLElement).getByRole("button", { name: action });
+			expect(button).toHaveClass("basalt-action");
+			expect(button).not.toHaveClass("basalt-action-sm");
+		}
+		const ownerAvatar = within(table).getByRole("img", { name: "Sarah Nguyen" });
+		expect(ownerAvatar).toHaveClass("size-basalt-6");
+		expect(within(ownerAvatar).getByText("SN")).toHaveClass("text-basalt-xs");
 	});
 
 	it("recombines the same chrome with deals and forecast bodies", () => {
@@ -45,6 +53,8 @@ describe("TablesPage", () => {
 		expect(within(ledger as HTMLElement).getByText("INV-2044")).toBeInTheDocument();
 		expect(within(ledger as HTMLElement).queryByText("INV-2041")).not.toBeInTheDocument();
 		expect(screen.getByText("Atlas Health vitals hub")).toBeInTheDocument();
+		const fleet = document.querySelector('[data-table-showcase="fleet"]');
+		expect(fleet?.querySelectorAll("[data-basalt-meter][data-size='sm']")).toHaveLength(5);
 	});
 
 	it("does not paint inner wells with bg-card", () => {

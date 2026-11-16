@@ -53,6 +53,11 @@ export function auditDesignSource(
 			!(file === "src/pages/NotFound.tsx" && utility === "text-basalt-10xl")
 		)
 			add("type-token", token);
+		if (
+			/^text-basalt-(?:xs|sm|md|base|lg|xl|3xl)$/.test(utility) &&
+			/(?:^|:)(?:sm|md|lg|xl|2xl|@[^:]+):/.test(clean)
+		)
+			add("type-token", token);
 		if (/^(?:bg|text|border|ring)-\[#/.test(utility)) add("color-token", token);
 		if (
 			/^(?:bg-(?:basalt-)?(?:accent|muted))$/.test(utility) &&

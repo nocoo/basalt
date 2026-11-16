@@ -90,7 +90,7 @@ export default function AccountsPage() {
 						<LayerCard key={card.name} outlined className="relative overflow-hidden">
 							<LayerCard.Header className="items-start">
 								<div className="min-w-0 space-y-basalt-space-sm">
-									<h2 className="text-basalt-base font-semibold text-basalt-foreground">
+									<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 										{card.name}
 									</h2>
 									<p className="text-basalt-sm text-basalt-muted-foreground">{card.bank}</p>
@@ -170,10 +170,10 @@ export default function AccountsPage() {
 			{/* Card security */}
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<Lock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<span className="text-basalt-base text-muted-foreground">
+					<Lock className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.accounts.cardSecurity")}
-					</span>
+					</h2>
 				</LayerCard.Header>
 				<LayerCard.Body className="grid grid-cols-1 gap-basalt-layout md:grid-cols-3">
 					{[
@@ -197,8 +197,8 @@ export default function AccountsPage() {
 			{/* Recent activity */}
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base text-muted-foreground">
+					<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.accounts.recentActivity")}
 					</h2>
 				</LayerCard.Header>
@@ -254,11 +254,11 @@ export default function AccountsPage() {
 				<LayerCard padding="none" className="overflow-hidden hidden md:block">
 					<LayerCard.Header className="items-center justify-start">
 						<ArrowLeftRight
-							className="h-4 w-4 text-muted-foreground"
+							className="h-4 w-4 text-basalt-muted-foreground"
 							strokeWidth={1.5}
 							aria-hidden="true"
 						/>
-						<h2 className="text-basalt-base text-muted-foreground">
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.accounts.transactionsTitle")}
 						</h2>
 					</LayerCard.Header>

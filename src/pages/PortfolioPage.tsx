@@ -28,28 +28,28 @@ export default function PortfolioPage() {
 		>
 			<div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-basalt-layout sm:grid-cols-3">
 				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
+					<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
 						{t("pages.portfolio.portfolioValue")}
 					</p>
-					<p className="text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-basalt-foreground font-basalt-display tracking-tight">
 						${totalValue.toLocaleString()}
 					</p>
 					<Badge variant="success">{t("pages.portfolio.allTime")}</Badge>
 				</LayerCard>
 				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
+					<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
 						{t("pages.portfolio.todaysChange")}
 					</p>
-					<p className="text-basalt-3xl font-semibold text-basalt-success font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-basalt-success font-basalt-display tracking-tight">
 						+$342.50
 					</p>
 					<span className="text-basalt-sm font-medium text-basalt-success">+0.34%</span>
 				</LayerCard>
 				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
+					<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
 						{t("pages.portfolio.totalReturn")}
 					</p>
-					<p className="text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-basalt-foreground font-basalt-display tracking-tight">
 						$8,600
 					</p>
 					<span className="text-basalt-sm font-medium text-basalt-success">+8.6%</span>
@@ -59,8 +59,8 @@ export default function PortfolioPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<TrendingUp className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<TrendingUp className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.portfolio.portfolioPerformance")}
 						</h2>
 					</LayerCard.Header>
@@ -84,8 +84,8 @@ export default function PortfolioPage() {
 
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<PieChartIcon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base text-muted-foreground">
+						<PieChartIcon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.portfolio.assetAllocation")}
 						</h2>
 					</LayerCard.Header>
@@ -99,7 +99,7 @@ export default function PortfolioPage() {
 						<div className="mt-basalt-card-sm grid w-full grid-cols-3 gap-basalt-card-sm">
 							{holdings.map((item, i) => (
 								<div key={item.name} className="flex flex-col items-center gap-basalt-space-xs">
-									<span className="text-basalt-base font-medium text-foreground font-display">
+									<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display">
 										{item.allocation}%
 									</span>
 									<div className="flex items-center gap-basalt-space-md">
@@ -107,7 +107,7 @@ export default function PortfolioPage() {
 											className="h-2 w-2 rounded-basalt-full"
 											style={{ background: CHART_COLORS[i] }}
 										/>
-										<span className="text-basalt-sm text-muted-foreground">{item.name}</span>
+										<span className="text-basalt-sm text-basalt-muted-foreground">{item.name}</span>
 									</div>
 								</div>
 							))}
@@ -119,11 +119,11 @@ export default function PortfolioPage() {
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
 					<Briefcase
-						className="h-4 w-4 text-muted-foreground"
+						className="h-4 w-4 text-basalt-muted-foreground"
 						strokeWidth={1.5}
 						aria-hidden="true"
 					/>
-					<h2 className="text-basalt-base text-muted-foreground">
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.portfolio.holdings")}
 					</h2>
 				</LayerCard.Header>

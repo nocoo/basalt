@@ -102,18 +102,18 @@ export default function SettingsPage() {
 									active={activeSection === id}
 								>
 									<Icon strokeWidth={1.5} />
-									<span className="text-basalt-sm sm:text-basalt-base">{t(labelKey)}</span>
+									<span>{t(labelKey)}</span>
 								</SidebarItem>
 							))}
 						</SidebarNav>
 					</LayerCard.Body>
 					<LayerCard.Footer className="flex-col items-start">
-						<p className="text-basalt-base text-basalt-muted-foreground">{t("demo.localOnly")}</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground">{t("demo.localOnly")}</p>
 						{vm.notice && (
 							<p
 								role="status"
 								aria-live="polite"
-								className="text-basalt-base text-basalt-muted-foreground"
+								className="text-basalt-sm text-basalt-muted-foreground"
 							>
 								{t(`demo.${vm.notice}`)}
 							</p>

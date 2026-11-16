@@ -49,8 +49,9 @@
 	--text-basalt-xs--letter-spacing: 0.02em;
 	--text-basalt-sm: var(--basalt-text-sm);
 	--text-basalt-sm--line-height: var(--basalt-leading-body);
-	--text-basalt-code: var(--basalt-text-code);
-	--text-basalt-code--line-height: var(--basalt-leading-body);
+	--text-basalt-md: var(--basalt-text-md);
+	--text-basalt-md--line-height: var(--basalt-leading-body);
+	--text-basalt-md--letter-spacing: -0.003em;
 	--text-basalt-base: var(--basalt-text-base);
 	--text-basalt-base--line-height: var(--basalt-leading-body);
 	--text-basalt-base--letter-spacing: -0.006em;
