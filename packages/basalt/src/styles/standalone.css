@@ -2745,9 +2745,6 @@
   .p-basalt-layout-xl {
     padding: var(--basalt-space-layout-xl);
   }
-  .p-basalt-menu-inset {
-    padding: var(--basalt-space-menu-inset);
-  }
   .p-basalt-space-lg {
     padding: var(--basalt-space-lg);
   }

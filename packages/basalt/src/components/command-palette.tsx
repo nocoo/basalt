@@ -153,7 +153,7 @@ export const CommandInput = React.forwardRef<
 	CommandInputProps
 >(({ className, leading, trailing, ...props }, ref) => (
 	<div
-		className="flex shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-space-lg py-basalt-space-md"
+		className="flex shrink-0 items-center gap-basalt-space-lg border-b border-basalt-border p-basalt-space-sm"
 		cmdk-input-wrapper=""
 	>
 		{leading === undefined ? (
@@ -226,7 +226,7 @@ export const CommandList = React.forwardRef<
 		<CommandPrimitive.List
 			ref={listRef}
 			className={cn(
-				"basalt-command-list relative isolate min-h-0 max-h-[18.75rem] overflow-y-auto overflow-x-hidden p-basalt-menu-inset",
+				"basalt-command-list relative isolate min-h-0 max-h-[18.75rem] overflow-y-auto overflow-x-hidden p-basalt-space-sm",
 				className,
 			)}
 			{...props}

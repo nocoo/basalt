@@ -57,7 +57,7 @@ describe("CommandPalette", () => {
 			);
 			const list = screen.getByRole("listbox");
 			expect(listRef.current).toBe(list);
-			expect(list).toHaveClass("p-basalt-menu-inset", "relative", "isolate");
+			expect(list).toHaveClass("p-basalt-space-sm", "relative", "isolate");
 			expect(list).toHaveStyle({ maxHeight: "280px" });
 			if (grouped)
 				expect(document.querySelector("[cmdk-group]")).not.toHaveClass("p-basalt-space-sm");
