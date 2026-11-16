@@ -11,7 +11,7 @@ export default function ControlledStatusExample() {
 
 	return (
 		<SegmentControl
-			legend="Status"
+			aria-label="Status"
 			value={status}
 			onValueChange={setStatus}
 			allOption={{ value: "all" }}

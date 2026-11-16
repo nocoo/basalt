@@ -959,6 +959,7 @@ describe("ui catalog", () => {
 		]);
 		expect(UI_EXAMPLES["segment-control"]?.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "segment-control-controlled-status", title: "Controlled status filter" },
+			{ id: "segment-control-with-legend", title: "With optional legend" },
 			{ id: "segment-control-overflow-disabled", title: "Overflow and disabled" },
 		]);
 

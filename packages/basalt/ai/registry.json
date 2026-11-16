@@ -22503,7 +22503,7 @@
 			"importPath": "@nocoo/basalt/components/segment-control",
 			"subpath": "./components/segment-control",
 			"sourceFile": "packages/basalt/src/components/segment-control.tsx",
-			"sourceHash": "302d260043dc04ef",
+			"sourceHash": "cd513b1a67e48873",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -22573,8 +22573,8 @@
 								{
 									"name": "legend",
 									"type": "React.ReactNode",
-									"required": true,
-									"description": "The visible legend that names the control."
+									"required": false,
+									"description": "Optional visible legend that names the control. Hidden when omitted."
 								},
 								{
 									"name": "options",
@@ -22619,8 +22619,8 @@
 						{
 							"name": "legend",
 							"type": "React.ReactNode",
-							"required": true,
-							"description": "The visible legend that names the control."
+							"required": false,
+							"description": "Optional visible legend that names the control. Hidden when omitted."
 						},
 						{
 							"name": "options",
@@ -32317,7 +32317,7 @@
 			"exportName": "SegmentControl",
 			"importPath": "@nocoo/basalt/components/segment-control",
 			"sourceFile": "packages/basalt/src/components/segment-control.tsx",
-			"sourceHash": "302d260043dc04ef",
+			"sourceHash": "cd513b1a67e48873",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#segment-control",
@@ -32340,8 +32340,8 @@
 						{
 							"name": "legend",
 							"type": "React.ReactNode",
-							"required": true,
-							"description": "The visible legend that names the control."
+							"required": false,
+							"description": "Optional visible legend that names the control. Hidden when omitted."
 						},
 						{
 							"name": "options",

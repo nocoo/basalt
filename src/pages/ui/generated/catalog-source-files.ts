@@ -170,7 +170,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"segment-control": {
 		"file": "packages/basalt/src/components/segment-control.tsx",
-		"hash": "302d260043dc04ef",
+		"hash": "cd513b1a67e48873",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/segment-control.js.map (sourcesContent[0])"
 	},

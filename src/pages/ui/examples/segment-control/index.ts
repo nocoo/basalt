@@ -2,6 +2,7 @@ import { loadModuleScenarios } from "../../catalog-scenario";
 
 const SEGMENT_CONTROL_SCENARIO_META = [
 	{ key: "controlled-status", title: "Controlled status filter" },
+	{ key: "with-legend", title: "With optional legend" },
 	{ key: "overflow-disabled", title: "Overflow and disabled" },
 ] as const;
 

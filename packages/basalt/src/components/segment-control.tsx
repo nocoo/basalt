@@ -26,8 +26,8 @@ export interface SegmentControlProps
 	value: string;
 	/** Called when the user selects a different segment. */
 	onValueChange: (value: string) => void;
-	/** The visible legend that names the control. */
-	legend: React.ReactNode;
+	/** Optional visible legend that names the control. Hidden when omitted. */
+	legend?: React.ReactNode;
 	/** The selectable segments shown after the optional All segment. */
 	options: readonly SegmentControlOption[];
 	/** Add a leading unfiltered segment, labelled All by default. */
@@ -41,10 +41,22 @@ export interface SegmentControlProps
 
 export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentControlProps>(
 	(
-		{ allOption, className, disabled = false, legend, onValueChange, options, value, ...props },
+		{
+			allOption,
+			"aria-label": ariaLabel,
+			"aria-labelledby": ariaLabelledBy,
+			className,
+			disabled = false,
+			legend,
+			onValueChange,
+			options,
+			value,
+			...props
+		},
 		ref,
 	) => {
 		const legendId = React.useId();
+		const hasLegend = legend !== undefined && legend !== null && legend !== false && legend !== "";
 		const items: readonly SegmentControlOption[] = allOption
 			? [{ ...allOption, label: allOption.label ?? "All" }, ...options]
 			: options;
@@ -53,15 +65,19 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 			<fieldset
 				ref={ref}
 				disabled={disabled}
+				aria-label={hasLegend ? undefined : ariaLabel}
+				aria-labelledby={hasLegend ? legendId : ariaLabelledBy}
 				className={cn("basalt-ui min-w-0 border-0 p-0", className)}
 				{...props}
 			>
-				<legend
-					id={legendId}
-					className="mb-basalt-space-lg block text-basalt-sm font-medium text-basalt-muted-foreground"
-				>
-					{legend}
-				</legend>
+				{hasLegend ? (
+					<legend
+						id={legendId}
+						className="mb-basalt-space-lg block text-basalt-sm font-medium text-basalt-muted-foreground"
+					>
+						{legend}
+					</legend>
+				) : null}
 				<div
 					data-slot="segment-control-viewport"
 					className="max-w-full scroll-p-basalt-space-sm overflow-x-auto p-basalt-space-sm"
@@ -75,7 +91,8 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 								onValueChange(nextValue);
 							}
 						}}
-						aria-labelledby={legendId}
+						aria-label={hasLegend ? undefined : ariaLabel}
+						aria-labelledby={hasLegend ? legendId : ariaLabelledBy}
 						className="w-max"
 					>
 						{items.map((item) => (

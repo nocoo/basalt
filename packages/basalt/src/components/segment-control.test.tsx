@@ -9,6 +9,22 @@ const OPTIONS = [
 ] as const;
 
 describe("SegmentControl", () => {
+	it("omits the legend element by default when legend is not provided", () => {
+		const { container } = render(
+			<SegmentControl
+				aria-label="Filter status"
+				value="ready"
+				onValueChange={() => {}}
+				options={OPTIONS}
+			/>,
+		);
+
+		expect(container.querySelector("legend")).toBeNull();
+		const group = screen.getByRole("radiogroup", { name: "Filter status" });
+		expect(group).not.toHaveAttribute("aria-labelledby");
+		expect(screen.getByRole("group", { name: "Filter status" })).toBeInTheDocument();
+	});
+
 	it("renders a labelled fieldset and radiogroup with a leading All segment", () => {
 		render(
 			<SegmentControl
