@@ -1,10 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import type { Locator, Page } from "playwright";
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { ChatComposer } from "../packages/basalt/src/components/chat-composer";
-import { InputGroup } from "../packages/basalt/src/components/input-group";
 import { setShowcaseTheme } from "./showcase-theme";
 
 export async function assertFocusPaint(
@@ -78,63 +74,6 @@ const CASES = [
 	["ui/editable-nav-item", "[data-hero-scenario] button[aria-label='Care library']", true],
 	["interactions", "[data-interaction-card] > button", true],
 ] as const;
-
-async function assertNestedFocus(page: Page) {
-	const markup = renderToStaticMarkup(
-		createElement(ChatComposer, {
-			defaultValue: "Ready to send",
-			onSend: () => undefined,
-			toolbar: createElement(
-				InputGroup,
-				null,
-				createElement(InputGroup.Input, { "aria-label": "Nested model", "aria-invalid": true }),
-				createElement(InputGroup.Button, { variant: "default" }, "Apply model"),
-			),
-		}),
-	);
-	await page.evaluate((html) => {
-		const fixture = document.createElement("div");
-		fixture.dataset.focusNested = "";
-		fixture.className = "basalt-ui p-basalt-card";
-		fixture.innerHTML = html;
-		(document.querySelector("[data-doc-scroll]") ?? document.body).append(fixture);
-	}, markup);
-	const fixture = page.locator("[data-focus-nested]");
-	try {
-		const field = fixture.getByRole("textbox", { name: "Nested model" });
-		await field.scrollIntoViewIfNeeded();
-		const tab = page.context().browser()?.browserType().name() === "webkit" ? "Alt+Tab" : "Tab";
-		await page.keyboard.press(tab);
-		await field.focus();
-		const groups = await fixture.locator(".basalt-focus-group").evaluateAll((nodes) =>
-			nodes.map((node) => ({
-				style: getComputedStyle(node).outlineStyle,
-				width: getComputedStyle(node).outlineWidth,
-				offset: getComputedStyle(node).outlineOffset,
-				border: getComputedStyle(node).borderColor,
-				color: getComputedStyle(node).outlineColor,
-			})),
-		);
-		assert.equal(groups.length, 2);
-		assert.equal(groups[0].style, "none", JSON.stringify(groups));
-		assert.equal(groups[1].style, "solid", JSON.stringify(groups));
-		assert.equal(groups[1].width, "1px", JSON.stringify(groups));
-		assert.equal(groups[1].offset, "2px", JSON.stringify(groups));
-		assert.notEqual(groups[1].border, groups[1].color, "Invalid border remains independent");
-		assert.equal(await field.evaluate((node) => getComputedStyle(node).outlineStyle), "none");
-		for (const name of ["Apply model", "Send message"]) {
-			await assertFocusPaint(fixture.getByRole("button", { name, exact: true }), 16, false);
-			assert.deepEqual(
-				await fixture
-					.locator(".basalt-focus-group")
-					.evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).outlineStyle)),
-				["none", "none"],
-			);
-		}
-	} finally {
-		await fixture.evaluate((node) => node.remove());
-	}
-}
 
 async function assertTableFocusPixels(region: Locator) {
 	const color = await region.evaluate(
@@ -228,8 +167,6 @@ export async function assertFocusBoundaries(page: Page, baseUrl: string) {
 					await assertFocusPaint(standalone.locator("[data-focus-sample]"), 16, inset);
 					cases.push(`${route}/${width}/${dark ? "dark" : "light"}`);
 				}
-				await assertNestedFocus(page);
-				await assertNestedFocus(standalone);
 			}
 		}
 	} finally {

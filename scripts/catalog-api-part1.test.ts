@@ -1403,30 +1403,7 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "BreadcrumbsProps",
 				surface: "Breadcrumbs",
 			},
-			{
-				slug: "chat-bubble",
-				sourceFile: "packages/basalt/src/components/chat-bubble.tsx",
-				propsType: "ChatBubbleProps",
-				surface: "ChatBubble",
-			},
-			{
-				slug: "chat-composer",
-				sourceFile: "packages/basalt/src/components/chat-composer.tsx",
-				propsType: "ChatComposerProps",
-				surface: "ChatComposer",
-			},
-			{
-				slug: "chat-header",
-				sourceFile: "packages/basalt/src/components/chat-header.tsx",
-				propsType: "ChatHeaderProps",
-				surface: "ChatHeader",
-			},
-			{
-				slug: "chat-inbox",
-				sourceFile: "packages/basalt/src/components/chat-inbox.tsx",
-				propsType: "ChatInboxProps",
-				surface: "ChatInbox",
-			},
+
 			{
 				slug: "theme-provider",
 				sourceFile: "packages/basalt/src/providers/theme.tsx",
@@ -1439,68 +1416,15 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "LinkProviderProps",
 				surface: "LinkProvider",
 			},
-			{
-				slug: "thinking",
-				sourceFile: "packages/basalt/src/components/thinking.tsx",
-				propsType: "ThinkingProps",
-				surface: "Thinking",
-			},
-			{
-				slug: "approval-card",
-				sourceFile: "packages/basalt/src/components/approval-card.tsx",
-				propsType: "ApprovalCardProps",
-				surface: "ApprovalCard",
-			},
-			{
-				slug: "tool-chips",
-				sourceFile: "packages/basalt/src/components/tool-chips.tsx",
-				propsType: "ToolChipsProps",
-				surface: "ToolChips",
-			},
-			{
-				slug: "recommendation-card",
-				sourceFile: "packages/basalt/src/components/recommendation-card.tsx",
-				propsType: "RecommendationCardProps",
-				surface: "RecommendationCard",
-			},
-			{
-				slug: "context-cards",
-				sourceFile: "packages/basalt/src/components/context-cards.tsx",
-				propsType: "ContextCardsProps",
-				surface: "ContextCards",
-			},
-			{
-				slug: "diff-table",
-				sourceFile: "packages/basalt/src/components/diff-table.tsx",
-				propsType: "DiffTableProps",
-				surface: "DiffTable",
-			},
+
 			{
 				slug: "avatar",
 				sourceFile: "packages/basalt/src/components/avatar.tsx",
 				propsType: "AvatarInitialsProps",
 				surface: "AvatarInitials",
 			},
-			{
-				slug: "chat-markdown",
-				sourceFile: "packages/basalt/src/components/chat-markdown.tsx",
-				propsType: "ChatMarkdownProps",
-				surface: "ChatMarkdown",
-			},
-			{
-				slug: "chat-message",
-				sourceFile: "packages/basalt/src/components/chat-message.tsx",
-				propsType: "ChatMessageProps",
-				surface: "ChatMessage",
-			},
-			{
-				slug: "prompt-bar",
-				sourceFile: "packages/basalt/src/components/prompt-bar.tsx",
-				propsType: "PromptBarProps",
-				surface: "PromptBar",
-			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(240);
+		expect(CATALOG_API_TARGETS).toHaveLength(227);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1632,21 +1556,8 @@ describe("catalog API generator contract 1/4", () => {
 			"menu-bar",
 			"navigation-menu",
 			"breadcrumbs",
-			"chat-bubble",
-			"chat-composer",
-			"chat-header",
-			"chat-inbox",
 			"theme-provider",
 			"link-provider",
-			"thinking",
-			"approval-card",
-			"tool-chips",
-			"recommendation-card",
-			"context-cards",
-			"diff-table",
-			"chat-markdown",
-			"chat-message",
-			"prompt-bar",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",

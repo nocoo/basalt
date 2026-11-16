@@ -46,15 +46,11 @@ Each URL below is a public documentation surface.
 
 [Overview](https://basaltui.com/ui/overview/card): Content surfaces that group related information through matte depth.
 
-- [ApprovalCard](https://basaltui.com/ui/approval-card)
-- [Chat Bubble](https://basaltui.com/ui/chat-bubble)
 - [CodeBlock](https://basaltui.com/ui/code-block)
 - [CodeHighlighted](https://basaltui.com/ui/code)
-- [ContextCards](https://basaltui.com/ui/context-cards)
 - [Empty](https://basaltui.com/ui/empty)
 - [File Dropzone](https://basaltui.com/ui/file-dropzone)
 - [Layer Card](https://basaltui.com/ui/layer-card)
-- [RecommendationCard](https://basaltui.com/ui/recommendation-card)
 - [StatCard](https://basaltui.com/ui/stat-card)
 - [Upload Queue](https://basaltui.com/ui/upload-queue)
 ## Layouts
@@ -64,15 +60,9 @@ Each URL below is a public documentation surface.
 - [Accordion](https://basaltui.com/ui/accordion)
 - [Breadcrumbs](https://basaltui.com/ui/breadcrumbs)
 - [Chart](https://basaltui.com/ui/chart)
-- [Chat Composer](https://basaltui.com/ui/chat-composer)
-- [Chat Header](https://basaltui.com/ui/chat-header)
-- [Chat Inbox](https://basaltui.com/ui/chat-inbox)
-- [ChatMarkdown](https://basaltui.com/ui/chat-markdown)
-- [ChatMessage](https://basaltui.com/ui/chat-message)
 - [Collapsible](https://basaltui.com/ui/collapsible)
 - [DataTable](https://basaltui.com/ui/data-table)
 - [Description List](https://basaltui.com/ui/description-list)
-- [DiffTable](https://basaltui.com/ui/diff-table)
 - [Editable Navigation](https://basaltui.com/ui/editable-nav-item)
 - [Field](https://basaltui.com/ui/field)
 - [Filter Bar](https://basaltui.com/ui/filter-bar)
@@ -80,7 +70,6 @@ Each URL below is a public documentation surface.
 - [Grid](https://basaltui.com/ui/grid)
 - [LinkProvider](https://basaltui.com/ui/link-provider)
 - [NavigationMenu](https://basaltui.com/ui/navigation-menu)
-- [PromptBar](https://basaltui.com/ui/prompt-bar)
 - [Responsive Master Detail](https://basaltui.com/ui/responsive-master-detail)
 - [Scroll Area](https://basaltui.com/ui/scroll-area)
 - [Section Rule](https://basaltui.com/ui/section-rule)
@@ -91,9 +80,7 @@ Each URL below is a public documentation surface.
 - [Table of Contents](https://basaltui.com/ui/table-of-contents)
 - [Tabs](https://basaltui.com/ui/tabs)
 - [ThemeProvider](https://basaltui.com/ui/theme-provider)
-- [Thinking](https://basaltui.com/ui/thinking)
 - [Toolbar](https://basaltui.com/ui/toolbar)
-- [ToolChips](https://basaltui.com/ui/tool-chips)
 ## Overlays
 
 [Overview](https://basaltui.com/ui/overview/overlay): Temporary surfaces that reveal detail without losing the current context.

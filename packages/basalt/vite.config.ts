@@ -45,8 +45,6 @@ export default defineConfig({
 				"tailwind-merge",
 				"lucide-react",
 				"cmdk",
-				"marked",
-				"entities",
 				"sonner",
 			],
 			output: {

@@ -760,7 +760,6 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			const rmCase = page.locator('[data-testid="case-reduced-motion"]');
 			const rmButton = rmCase.locator("#rm-button-loading");
 			const rmButtonSvg = rmButton.locator("svg");
-			const rmChatCaret = rmCase.locator("#rm-chat-bubble [aria-hidden]");
 
 			// Accessible state & visibility assertions
 			assert.equal(
@@ -769,25 +768,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Loading button must have aria-busy=true",
 			);
 			assert.equal(await rmButton.isDisabled(), true, "Loading button must be disabled");
-			assert.equal(
-				await rmChatCaret.getAttribute("aria-hidden"),
-				"true",
-				"Streaming caret must have aria-hidden=true",
-			);
 			assert.equal(await rmButtonSvg.isVisible(), true, "Spinner SVG must be visible");
-			assert.equal(await rmChatCaret.isVisible(), true, "Streaming caret must be visible");
-
-			// Verify text is clearly visible in normal mode
-			assert.ok(
-				(await rmButton.textContent())?.includes("Saving Telemetry"),
-				"Button loading text must be visible in normal mode",
-			);
-			assert.ok(
-				(await rmCase.locator("#rm-chat-bubble").textContent())?.includes(
-					"Processing query results",
-				),
-				"ChatBubble streaming text must be visible in normal mode",
-			);
 
 			// Under normal motion (no-preference): animationName should be active for both spinner and caret
 			await page.emulateMedia({ reducedMotion: "no-preference" });
@@ -798,15 +779,6 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				normalButtonAnim,
 				"none",
 				"Spinner animation must be active under normal motion",
-			);
-
-			const normalCaretAnim = await rmChatCaret.evaluate((el) => {
-				return window.getComputedStyle(el).animationName;
-			});
-			assert.notEqual(
-				normalCaretAnim,
-				"none",
-				"Chat streaming caret animation must be active under normal motion",
 			);
 
 			// Switch to reduced motion preference: animationName must become none and no running animations
@@ -828,43 +800,15 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Spinner must have zero running animations under reduced motion",
 			);
 
-			const reducedCaretState = await rmChatCaret.evaluate((el) => {
-				return {
-					animName: window.getComputedStyle(el).animationName,
-					runningCount: el.getAnimations().filter((a) => a.playState === "running").length,
-				};
-			});
-			assert.equal(
-				reducedCaretState.animName,
-				"none",
-				"Chat streaming caret animation must be disabled under reduced motion",
-			);
-			assert.equal(
-				reducedCaretState.runningCount,
-				0,
-				"Streaming caret must have zero running animations under reduced motion",
-			);
-
 			// Under reduced motion: verify all text and layout remain intact and elements visible
 			assert.equal(
 				await rmButtonSvg.isVisible(),
 				true,
 				"Spinner SVG must remain visible in reduced motion",
 			);
-			assert.equal(
-				await rmChatCaret.isVisible(),
-				true,
-				"Streaming caret must remain visible in reduced motion",
-			);
 			assert.ok(
 				(await rmButton.textContent())?.includes("Saving Telemetry"),
 				"Button loading text must remain visible in reduced motion",
-			);
-			assert.ok(
-				(await rmCase.locator("#rm-chat-bubble").textContent())?.includes(
-					"Processing query results",
-				),
-				"ChatBubble streaming text must remain visible in reduced motion",
 			);
 
 			// Restore media back to no-preference and assert animations resume (not permanently disabled)
@@ -876,15 +820,6 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				restoredButtonAnim,
 				"none",
 				"Spinner animation must resume when returning to normal motion",
-			);
-
-			const restoredCaretAnim = await rmChatCaret.evaluate((el) => {
-				return window.getComputedStyle(el).animationName;
-			});
-			assert.notEqual(
-				restoredCaretAnim,
-				"none",
-				"Chat streaming caret animation must resume when returning to normal motion",
 			);
 
 			reducedMotionChecked++;

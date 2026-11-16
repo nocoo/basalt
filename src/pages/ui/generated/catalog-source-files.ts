@@ -414,30 +414,6 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dock.js.map (sourcesContent[0])"
 	},
-	"chat-bubble": {
-		"file": "packages/basalt/src/components/chat-bubble.tsx",
-		"hash": "d29ffdf6d7ef103a",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-bubble.js.map (sourcesContent[0])"
-	},
-	"chat-composer": {
-		"file": "packages/basalt/src/components/chat-composer.tsx",
-		"hash": "a64f98a7860ffb64",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-composer.js.map (sourcesContent[0])"
-	},
-	"chat-header": {
-		"file": "packages/basalt/src/components/chat-header.tsx",
-		"hash": "a1d2d8a28457809e",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-header.js.map (sourcesContent[0])"
-	},
-	"chat-inbox": {
-		"file": "packages/basalt/src/components/chat-inbox.tsx",
-		"hash": "5567396da3cf9468",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-inbox.js.map (sourcesContent[0])"
-	},
 	"theme-provider": {
 		"file": "packages/basalt/src/providers/theme.tsx",
 		"hash": "4b572caf1398dd4c",
@@ -509,60 +485,6 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"hash": "1985fe21f1cfb4da",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/responsive-master-detail.js.map (sourcesContent[0])"
-	},
-	"thinking": {
-		"file": "packages/basalt/src/components/thinking.tsx",
-		"hash": "adbe3a99f9ad4cb9",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/thinking.js.map (sourcesContent[0])"
-	},
-	"approval-card": {
-		"file": "packages/basalt/src/components/approval-card.tsx",
-		"hash": "3d800975403310f0",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/approval-card.js.map (sourcesContent[0])"
-	},
-	"tool-chips": {
-		"file": "packages/basalt/src/components/tool-chips.tsx",
-		"hash": "02b8b5e93b8160b1",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tool-chips.js.map (sourcesContent[0])"
-	},
-	"recommendation-card": {
-		"file": "packages/basalt/src/components/recommendation-card.tsx",
-		"hash": "7ac17bd460e83d13",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/recommendation-card.js.map (sourcesContent[0])"
-	},
-	"context-cards": {
-		"file": "packages/basalt/src/components/context-cards.tsx",
-		"hash": "c899f71079730678",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/context-cards.js.map (sourcesContent[0])"
-	},
-	"diff-table": {
-		"file": "packages/basalt/src/components/diff-table.tsx",
-		"hash": "626e155dd3fd944d",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/diff-table.js.map (sourcesContent[0])"
-	},
-	"chat-markdown": {
-		"file": "packages/basalt/src/components/chat-markdown.tsx",
-		"hash": "4fea81432201ecc3",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-markdown.js.map (sourcesContent[0])"
-	},
-	"chat-message": {
-		"file": "packages/basalt/src/components/chat-message.tsx",
-		"hash": "4bb2ee73ed94065f",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-message.js.map (sourcesContent[0])"
-	},
-	"prompt-bar": {
-		"file": "packages/basalt/src/components/prompt-bar.tsx",
-		"hash": "d0e952a4cbd91573",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/prompt-bar.js.map (sourcesContent[0])"
 	},
 	"chart": {
 		"file": "packages/basalt/src/components/chart.tsx",

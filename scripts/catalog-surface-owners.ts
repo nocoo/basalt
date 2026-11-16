@@ -265,18 +265,6 @@ export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
 		"XYSeriesKey",
 	],
 	"@nocoo/basalt/components/stat-card": ["StatGrid", "StatGridProps"],
-	"@nocoo/basalt/components/prompt-bar": ["PromptModel"],
-	"@nocoo/basalt/components/context-cards": ["ContextChunk"],
-	"@nocoo/basalt/components/recommendation-card": [
-		"RecommendationOption",
-		"RecommendationConfidence",
-	],
-	"@nocoo/basalt/components/approval-card": [
-		"ApprovalAnswer",
-		"ApprovalAnswers",
-		"ApprovalQuestion",
-	],
-	"@nocoo/basalt/components/tool-chips": ["ToolStep", "ToolDiff"],
 	"@nocoo/basalt/components/editable-nav-item": ["FolderNavItem", "FolderNavItemProps"],
 	"@nocoo/basalt/components/tag-badge": ["TagColor", "tagColorFor", "TAG_COLORS"],
 	"@nocoo/basalt/components/file-dropzone": ["FileRejection"],

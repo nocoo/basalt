@@ -404,8 +404,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(98);
-		expect(Object.keys(first)).toHaveLength(99);
+		expect(slugs).toHaveLength(85);
+		expect(Object.keys(first)).toHaveLength(86);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -482,7 +482,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"a96aaa925f04d0eebca03beb9faae1196b96083d4981789de65b45ea4837fd95",
+			"3e246b7b8b03a6a3b8fa935b965f163eedafdd135f7476b716611bb9002d71a8",
 		);
 	}, 60_000);
 

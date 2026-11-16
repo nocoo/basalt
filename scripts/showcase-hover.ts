@@ -54,7 +54,7 @@ export async function assertHoverAndDensity(page: Page, baseUrl: string) {
 	for (const width of [390, 1280])
 		for (const dark of [false, true]) {
 			await page.setViewportSize({ width, height: 1000 });
-			for (const slug of ["select", "dropdown-menu", "approval-card", "tool-chips"]) {
+			for (const slug of ["select", "dropdown-menu"]) {
 				await page.emulateMedia({ reducedMotion: "no-preference" });
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				await page.locator('[data-status="ready"]').waitFor();

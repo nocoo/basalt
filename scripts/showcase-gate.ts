@@ -10,13 +10,8 @@ import {
 } from "./consumer-browser";
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
 import { prerenderHtml } from "./prerender";
-import { assertAgentFeedback } from "./showcase-agent";
-import { assertCompositeAlignment } from "./showcase-alignment";
-import { assertChatComposerSizing } from "./showcase-chat-composer";
 import { assertCodePanels } from "./showcase-code";
 import { assertCommandSelection } from "./showcase-command";
-import { assertContextCards } from "./showcase-context";
-import { assertDiffReview } from "./showcase-diff";
 import { assertDimensionTokens } from "./showcase-dimensions";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
@@ -31,7 +26,6 @@ import { assertOverlayMotion } from "./showcase-motion";
 import { assertNavigationLists } from "./showcase-navigation";
 import { assertPageLayout } from "./showcase-page-layout";
 import { assertPaletteShowcases } from "./showcase-palette";
-import { assertRecommendation } from "./showcase-recommendation";
 import { assertRecordGeometry } from "./showcase-records";
 import { assertReusableShowcases } from "./showcase-reuse";
 import { assertSelectionHierarchy } from "./showcase-selection";
@@ -65,8 +59,6 @@ export async function runShowcaseGate() {
 			const motion = await assertOverlayMotion(page, url);
 			const command = await assertCommandSelection(page, url);
 			const loader = await assertLoaderShowcase(page, url);
-			const agent = await assertAgentFeedback(page, url);
-			const alignment = await assertCompositeAlignment(page, url);
 			const formGroups = await assertFormGroupSpacing(page, url);
 			const codePanels = await assertCodePanels(page, url);
 			const hover = await assertHoverAndDensity(page, url);
@@ -77,10 +69,6 @@ export async function runShowcaseGate() {
 			const focus = await assertFocusBoundaries(page, url);
 			const metrics = await assertMetricCards(page, url);
 			const records = await assertRecordGeometry(page, url);
-			const recommendation = await assertRecommendation(page, url);
-			const context = await assertContextCards(page, url);
-			const diffReview = await assertDiffReview(page, url);
-			const chatComposer = await assertChatComposerSizing(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
@@ -92,8 +80,6 @@ export async function runShowcaseGate() {
 				motion,
 				command,
 				loader,
-				agent,
-				alignment,
 				formGroups,
 				codePanels,
 				hover,
@@ -104,10 +90,6 @@ export async function runShowcaseGate() {
 				focus,
 				metrics,
 				records,
-				recommendation,
-				context,
-				diffReview,
-				chatComposer,
 				examples,
 				reusable,
 				editing,

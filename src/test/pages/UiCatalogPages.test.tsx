@@ -81,24 +81,14 @@ function renderCatalog(path: string) {
 }
 
 describe("ui catalog", () => {
-	it("demonstrates live inbox selection rather than a no-op callback", () => {
-		const Example = UI_EXAMPLES["chat-inbox"][0].render;
-		render(<Example />);
-		const first = screen.getByRole("button", { name: /Wellness report/ });
-		const second = screen.getByRole("button", { name: /Care team/ });
-		expect(first).toHaveAttribute("aria-current", "true");
-		fireEvent.click(second);
-		expect(second).toHaveAttribute("aria-current", "true");
-		expect(first).not.toHaveAttribute("aria-current");
-	});
 	it("covers every in-scope catalog slug", () => {
 		expect(inScopeCatalogSlugs().length).toBeGreaterThan(40);
 	});
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(98);
-		expect(new Set(slugs).size).toBe(98);
+		expect(slugs).toHaveLength(85);
+		expect(new Set(slugs).size).toBe(85);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
@@ -117,7 +107,7 @@ describe("ui catalog", () => {
 		expect(document.getElementById("catalog-filters")).toHaveAttribute("data-basalt-surface");
 		expect(document.getElementById("catalog-filters")).toHaveClass("p-basalt-card");
 
-		const tableSlugs = new Set(["table", "data-table", "diff-table", "table-pager"]);
+		const tableSlugs = new Set(["table", "data-table", "table-pager"]);
 		for (const group of CATALOG_INDEX_GROUPS) {
 			const section = screen.getByRole("region", { name: group.label, hidden: true });
 			expect(section).toBeVisible();
@@ -126,19 +116,19 @@ describe("ui catalog", () => {
 			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength(remaining.length);
 		}
 		const tablesSection = screen.getByRole("region", { name: "Tables", hidden: true });
-		expect(tablesSection.querySelectorAll("[data-catalog-card]")).toHaveLength(4);
+		expect(tablesSection.querySelectorAll("[data-catalog-card]")).toHaveLength(3);
 		expect(
 			Array.from(tablesSection.querySelectorAll<HTMLElement>("[data-catalog-card]")).map(
 				(card) => card.dataset.catalogCard,
 			),
-		).toEqual(["table", "data-table", "diff-table", "table-pager"]);
-		expect(within(tablesSection).getByText("4 items")).toBeInTheDocument();
+		).toEqual(["table", "data-table", "table-pager"]);
+		expect(within(tablesSection).getByText("3 items")).toBeInTheDocument();
 		expect(within(tablesSection).queryByRole("link", { name: "Tables overview" })).toBeNull();
 		const tablesGrid = tablesSection.querySelector("ul");
 		expect(tablesGrid).toHaveClass("md:grid-cols-2");
 		expect(tablesGrid).not.toHaveClass("lg:grid-cols-3");
 		expect(tablesGrid).not.toHaveClass("2xl:grid-cols-4");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(98);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(85);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -236,7 +226,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("98 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("85 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -261,8 +251,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(filters.getByRole("button", { name: "Reset filters" }));
 		expect(filters.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("98 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(98);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("85 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(85);
 		expect(filters.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",

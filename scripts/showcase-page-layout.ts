@@ -291,7 +291,7 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 	}
 	await page.setViewportSize({ width: 390, height: 1000 });
 	await page.goto(`${baseUrl}/ui`);
-	await page.locator("[data-catalog-card='diff-table']").waitFor();
+	await page.locator("[data-catalog-card='table']").waitFor();
 	await page.evaluate(() => document.fonts.ready);
 	assert.ok(
 		await page.locator("[data-doc-scroll]").evaluate((n) => n.scrollWidth <= n.clientWidth + 1),
@@ -369,9 +369,6 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 			dataTableSpan: document
 				.querySelector("[data-catalog-card='data-table']")
 				?.getAttribute("data-gallery-span"),
-			diffSpan: document
-				.querySelector("[data-catalog-card='diff-table']")
-				?.getAttribute("data-gallery-span"),
 			pagerSpan: document
 				.querySelector("[data-catalog-card='table-pager']")
 				?.getAttribute("data-gallery-span"),
@@ -379,7 +376,6 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 	});
 	assert.equal(gallery.span, "full");
 	assert.equal(gallery.dataTableSpan, "full");
-	assert.equal(gallery.diffSpan, "full");
 	assert.equal(gallery.pagerSpan, "compact");
 	assert.equal(gallery.previewPad, "8px");
 	assert.equal(gallery.headers, 1);

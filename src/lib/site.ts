@@ -67,7 +67,6 @@ export const SHOWCASE_PAGES: readonly ShowcasePage[] = [
 	{ path: "/animation", titleKey: "nav.animation", inSitemap: true },
 	{ path: "/tables", titleKey: "nav.tables", inSitemap: true },
 	{ path: "/dialogs", titleKey: "nav.dialogs", inSitemap: true },
-	{ path: "/chat", titleKey: "nav.chat", inSitemap: true },
 	{ path: "/settings", titleKey: "nav.settings", inSitemap: true },
 	{ path: "/interactions", titleKey: "nav.interactions", inSitemap: true },
 	{ path: "/health", titleKey: "nav.health", inSitemap: true },

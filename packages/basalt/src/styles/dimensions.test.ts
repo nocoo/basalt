@@ -43,8 +43,6 @@ describe("dimension token contract", () => {
 		for (const file of [
 			"utils/navigation.ts",
 			"components/overlay.ts",
-			"components/approval-card.tsx",
-			"components/tool-chips.tsx",
 			"components/command-palette.tsx",
 		]) {
 			expect(readFileSync(`packages/basalt/src/${file}`, "utf8"), file).toContain(
@@ -210,16 +208,6 @@ describe("dimension token contract", () => {
 			expect(tokens).toContain(`--basalt-space-${role}:`);
 			expect(tailwind).toContain(`--spacing-basalt-${role}: var(--basalt-space-${role})`);
 			expect(standalone).toContain(`--basalt-space-${role}:`);
-		}
-		for (const file of ["approval-card", "context-cards", "recommendation-card", "diff-table"]) {
-			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
-			expect(source, file).toContain("px-basalt-panel-x");
-			expect(source, file).toContain("py-basalt-panel-y");
-		}
-		for (const file of ["thinking", "tool-chips", "approval-card", "chat-message"]) {
-			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
-			expect(source, file).toContain("gap-basalt-row-gap");
-			expect(source, file).toContain("var(--basalt-line-body)");
 		}
 	});
 	it("resets native group insets at every public form-group boundary", () => {

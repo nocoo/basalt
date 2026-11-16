@@ -18,7 +18,6 @@ const ROUTES = [
 	"/animation",
 	"/tables",
 	"/dialogs",
-	"/chat",
 	"/settings",
 	"/palette",
 	"/interactions",
@@ -259,82 +258,6 @@ async function assertData(page: Page, baseUrl: string) {
 	);
 }
 
-export async function assertChat(page: Page, baseUrl: string, mobile: boolean) {
-	await page.goto(`${baseUrl}/chat`);
-	const workspace = page.locator("[data-chat-workspace]");
-	const input = workspace.getByRole("textbox", { name: "Message", exact: true });
-	await input.waitFor();
-	const box = await input.boundingBox();
-	assert.ok(box && box.width > 180);
-	await input.fill("Explain the last seven days");
-	await input.press("Enter");
-	await workspace
-		.getByRole("log")
-		.getByText("Explain the last seven days", { exact: true })
-		.waitFor();
-	await workspace.getByRole("button", { name: "Stop generating", exact: true }).click();
-	await workspace.getByRole("button", { name: "Retry", exact: true }).click();
-	await workspace.getByRole("button", { name: "Regenerate response", exact: true }).waitFor();
-	await workspace.getByRole("checkbox", { name: "Simulate a failed reply" }).check();
-	await input.fill("A failed reply keeps my question");
-	await input.press("Enter");
-	await workspace.getByRole("alert").waitFor();
-	await workspace.getByRole("button", { name: "Retry", exact: true }).click();
-	await page.waitForFunction(
-		() => !document.querySelector('[data-chat-workspace] button[aria-label="Stop generating"]'),
-	);
-	assert.equal(
-		await workspace
-			.getByRole("article", { name: "You message" })
-			.getByText("A failed reply keeps my question", { exact: true })
-			.count(),
-		1,
-	);
-	await input.fill("Update the composer CSS");
-	await input.press("Enter");
-	await workspace.getByRole("radio", { name: "Approve preview only" }).check();
-	await workspace.getByRole("button", { name: "Submit", exact: true }).click();
-	await workspace
-		.getByRole("table", { name: "Local change preview - no files written", exact: true })
-		.waitFor();
-	await page.waitForFunction(() => {
-		const log = document.querySelector('[data-chat-workspace] [role="log"]');
-		return log && log.scrollHeight - log.clientHeight - log.scrollTop < 2;
-	});
-	const transcript = workspace.getByRole("log");
-	await transcript.hover();
-	await page.mouse.wheel(0, -10000);
-	await workspace.getByRole("button", { name: "Jump to latest", exact: true }).waitFor();
-	await page.waitForFunction(() => {
-		const log = document.querySelector('[data-chat-workspace] [role="log"]');
-		return log && log.scrollTop < 2;
-	});
-	await workspace.getByRole("button", { name: "Jump to latest", exact: true }).click();
-	await input.fill("Thread draft");
-	if (mobile) await workspace.getByRole("button", { name: "Conversations", exact: true }).click();
-	await page.getByRole("button", { name: "New conversation", exact: true }).click();
-	assert.equal(await input.inputValue(), "");
-	if (mobile) await workspace.getByRole("button", { name: "Conversations", exact: true }).click();
-	await page
-		.getByRole("navigation", { name: "Conversations" })
-		.getByRole("button", { name: /Explain the last seven days/ })
-		.click();
-	assert.equal(await input.inputValue(), "Thread draft");
-	await workspace.getByRole("button", { name: "Clear conversation", exact: true }).click();
-	await page.getByRole("button", { name: "Confirm", exact: true }).click();
-	await page.getByRole("alertdialog").waitFor({ state: "hidden" });
-	await workspace.getByRole("heading", { name: "What would you like to explore?" }).waitFor();
-	const geometry = await workspace.evaluate((node) => ({
-		width: node.clientWidth,
-		scroll: node.scrollWidth,
-		height: node.getBoundingClientRect().bottom,
-		viewport: window.innerHeight,
-	}));
-	assert.ok(geometry.scroll <= geometry.width + 1, JSON.stringify(geometry));
-	assert.ok(geometry.height <= geometry.viewport, JSON.stringify(geometry));
-}
-
-/** All example routes smoke-test real output; key workflows also run with keyboard and reduced motion. */
 export async function assertExamplePages(page: Page, baseUrl: string) {
 	const cases: string[] = [];
 	await page.addInitScript(() => {
@@ -377,15 +300,13 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		await assertForms(page, baseUrl);
 		await assertSettings(page, baseUrl);
 		await assertData(page, baseUrl);
-		await assertChat(page, baseUrl, width < 768);
-		cases.push(`${width}:light:network/forms/settings/data/chat`);
+		cases.push(`${width}:light:network/forms/settings/data`);
 		await setShowcaseTheme(page, true);
 		await assertNetwork(page, baseUrl, width);
 		await assertForms(page, baseUrl);
 		await assertSettings(page, baseUrl);
 		await assertData(page, baseUrl);
-		await assertChat(page, baseUrl, width < 768);
-		cases.push(`${width}:dark:network/forms/settings/data/chat`);
+		cases.push(`${width}:dark:network/forms/settings/data`);
 		await setShowcaseTheme(page, false);
 	}
 	for (const rootFont of [16, 32]) {

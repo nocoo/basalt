@@ -13,9 +13,6 @@
     <loc>https://basaltui.com/banking</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/chat</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/components</loc>
   </url>
   <url>
@@ -85,9 +82,6 @@
     <loc>https://basaltui.com/ui/alert-dialog</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/approval-card</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/autocomplete</loc>
   </url>
   <url>
@@ -115,24 +109,6 @@
     <loc>https://basaltui.com/ui/chart</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/chat-bubble</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/chat-composer</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/chat-header</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/chat-inbox</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/chat-markdown</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/chat-message</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/checkbox</loc>
   </url>
   <url>
@@ -157,9 +133,6 @@
     <loc>https://basaltui.com/ui/confirm-dialog</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/context-cards</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/context-menu</loc>
   </url>
   <url>
@@ -176,9 +149,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/dialog</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/diff-table</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/dock</loc>
@@ -292,13 +262,7 @@
     <loc>https://basaltui.com/ui/popover</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/prompt-bar</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/radio</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/recommendation-card</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/resource-list</loc>
@@ -373,9 +337,6 @@
     <loc>https://basaltui.com/ui/theme-toggle</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/thinking</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/toast</loc>
   </url>
   <url>
@@ -383,9 +344,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/toggle-group</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/tool-chips</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/toolbar</loc>

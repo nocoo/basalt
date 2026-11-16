@@ -17,7 +17,6 @@ interface BuiltChunk {
 const PAGE_MODULES = [
 	"AccountsPage.tsx",
 	"BankingDashboardPage.tsx",
-	"ChatPage.tsx",
 	"ComponentsPage.tsx",
 	"DashboardPage.tsx",
 	"DataPage.tsx",
@@ -206,7 +205,6 @@ describe("application route build boundary", () => {
 				.flatMap((id) => id.match(/catalog-content\/families\/([^/]+)\.tsx$/)?.[1] ?? []),
 		);
 		expect([...indexFamilies].sort()).toEqual([
-			"agent",
 			"chat",
 			"data-layout",
 			"feedback",

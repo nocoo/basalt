@@ -746,7 +746,7 @@ The showcase's routes under `DashboardLayout` use the app-local `ShowcasePage`: 
 
 The catalog's app-local `RouteScrollReset` wraps each leaf page inside its Suspense boundary. Once the route content is committed, a changed pathname resets ContentIsland and document scrolling immediately, including Back/Forward navigation. Valid URL fragments instead use the chapter anchor with the measured sticky-directory inset. Same-page query changes and local controls preserve scroll. The shared sidebar is not remounted or scrolled. Routing policy belongs to the app, never to the Basalt package.
 
-The `/forms`, `/settings`, `/data`, and `/chat` examples demonstrate local state and simulated requests, including failure/retry and cancellation. Their viewmodels own data and timers; Views own native FormData, focus, and responsive layout. Replace the local service adapter when integrating a backend. Theme selection uses the shared provider; local profile, uploads, and chat changes do not update a real account.
+The `/forms`, `/settings`, and `/data` examples demonstrate local state and simulated requests, including failure/retry and cancellation. Their viewmodels own data and timers; Views own native FormData, focus, and responsive layout. Replace the local service adapter when integrating a backend. Theme selection uses the shared provider; local profile and upload changes do not update a real account.
 
 `PageHeader` is flush on `ContentIsland`. The island owns 16px mobile insets, 24px tablet insets, and 32px horizontal / 24px vertical desktop insets. `AppHeader` remains aligned to the outer island boundary (8px mobile, 12px from 768px), not this inner content edge. Do not wrap the header in another card or add page padding. `PageHeader.size` is `"md" | "lg" | "xl"` (default `"md"`); larger headings use 16/24px descriptions, all title/description pairs use an 8px gap. `SectionRule variant="heading"` gives reading sections a 20px sentence-case title without the compact dashed rule. Controls and card slots keep their compact geometry.
 
@@ -1718,33 +1718,9 @@ inside the native table; do not pad the entire scroll region or compensate with
 an extra footer wrapper. This preserves full-width row paint and readable space
 above and below the description inside an enclosing frame.
 
-### Recommendations
-
-`RecommendationCard` (`components/recommendation-card`) accepts stable-ID options with a label, plain-text description, confidence (`high`, `review`, `none`) and optional action label/disabled state. Alternatives expand with the existing disclosure and shared hover layer; choosing one changes the recommendation, never executes it. `onAccept` runs only after the explicit action. Promise rejection preserves the selection and shows retry feedback; pending acceptance locks controls and successful acceptance cannot be repeated for the current option. Remount with a new key for a new recommendation request. The application must perform authorization and persist any real action. Private model/ViewModel modules own confidence metadata and state, without View or DOM imports.
-
-### Retrieved context
-
-`ContextCards` (`components/context-cards`) displays caller-owned chunks with stable IDs, title, text, character count and source metadata. The optional total count cannot be smaller than the displayed count; omitted character counts are computed from Unicode code points. Sources without a destination remain non-interactive labels. Only clean root-relative or HTTP(S) URLs without credentials become external links; other schemes and ambiguous URLs are shown as labels, never executed. Loading, empty and retryable error states are explicit. Entrance staggering is CSS-only, capped at 240ms and disabled for reduced motion; no timer delays access to the source links. Source retrieval and authorization belong to the app.
-
-### Proposed tabular changes
-
-`DiffTable` (`components/diff-table`) renders caller-owned text/number rows marked `add`, `remove` or `unchanged`. Changed rows start included and can be toggled by clicking the row or its keyboard-operable Checkbox. Add/remove labels and glyphs carry the meaning independently of tint. `onApply` receives a detached snapshot of only selected changed rows; no data is mutated internally. Pending actions lock selection and duplicate submission; rejection preserves selection with retry feedback. Remount with a new key for a new proposal. Real writes, access checks and validation stay in the application.
-
 ### Record numbering and identity
 
 Set `DataTable.rowNumbers` to show an additional `#` column. Numbers follow current sorted/filtered display order and continue from the resolved page offset, including server pagination. They never replace stable row IDs or selection keys. `AvatarInitials` on `components/avatar` reuses the circular Avatar surface with deterministic semantic colors and the first two word initials; `colorKey` keeps color stable across renames and `initials` supports application abbreviations. `size="sm"` is 24px for compact records. Keep the full name as its accessible label.
-
-## AI conversation primitives
-
-`ChatComposer` now uses the his.fm native `field-sizing: content` pattern: one line initially, a maximum of five line-heights plus token padding, then internal vertical scrolling. No per-keystroke JS height measurement is used. Enter sends, Shift+Enter inserts a newline, and IME composition (including keyCode 229) never submits. Controlled `value`/`onValueChange` keep thread-specific drafts application-owned; async `onSend` errors preserve the draft. Attachment metadata and file selection callbacks never upload files themselves. `PromptBar` composes the same composer with application-owned model, reasoning and web-search controls. Stop remains an explicit callback; no microphone permission is requested.
-
-`ChatMessage` provides user/assistant layout, trace/result slots, copy, feedback, edit and regenerate actions. `ChatMarkdown` uses the maintained `marked` lexer but renders React nodes, never raw HTML. It supports prose, lists, code, GFM tables and validated links. HTML is plain text; Markdown images become links rather than making unprompted remote requests. Business conversations, persistence, generation and approvals stay outside these views. The `marked` dependency is imported only by granular chat-content entrypoints, not the root barrel. Entity references are decoded with `entities` before link validation; code and raw HTML remain literal. `ChatMarkdown.streaming` reveals newly appended prose words with a short CSS blur/opacity animation. Existing words keep stable keys, no per-word timers are allocated, and reduced motion removes the effect. Copy confirmations belong to the exact copied content, so updated messages and code do not retain a stale success state.
-
-### Conversation workspace example
-
-The catalog `/chat` route composes these public controls in a session-only workspace. `src/models/chat.ts` owns the pure conversation reducer and deterministic response fixtures; `useChatViewModel` owns the cancellable simulation clock. Views own only DOM scrolling, focus and overlay presentation. Threads keep independent drafts, models, reasoning/search settings and attachment names. Switching threads stops the current reply. Edit/resend and regeneration replace the downstream transcript rather than duplicating user messages. Approval pauses the clock until an explicit decision; decline produces a read-only explanation. Message history, feedback and draft data disappear on reload.
-
-All model names, progress summaries, searches and tool outputs on this route are local examples, not real AI or hidden chain-of-thought. File selection validates a maximum of three image/text/PDF files of 10 MB each and retains metadata only: it never reads or uploads file contents. Diff acceptance and recommendation actions only prepare a follow-up draft. The library does not supply authentication, conversation persistence, model transport, voice recording or server authorization. Connect those through application ViewModels and validate every real tool action on the server.
 
 ### Composite alignment
 
@@ -1757,8 +1733,6 @@ slot. Distinct boundaries may add spacing, but the same boundary has one owner.
 See [alignment hierarchy](DESIGN.md#alignment-hierarchy). Keep nested preview focus
 clearance and give wide table examples enough columns rather than shrinking all
 their padding to fit a thumbnail.
-
-Thinking and ToolChips share row padding; disclosures rotate only their own chevron, never content icons. Approval, recommendation, retrieved context and diff sections share panel insets rather than adding another padding layer. ChatComposer owns its field inset, not an outer painted/padded card; the application owns placement in the page. ChatMessage `sources` renders a compact disclosure beside actions and a flat source list, with the same validated URL policy as ContextCards. Use ContextCards only for actual retrieved text chunks, not as a citation footer. No additional remote images are loaded.
 
 The standalone build generates every Tailwind utility once in canonical order. Do not append handwritten copies of `.p-0`, `.bg-transparent` or other native utilities after generated axis/state rules: a later shorthand can silently erase semantic padding. Browser acceptance measures actual computed insets in both CSS entrypoints, under foreign host spacing and semantic overrides.
 

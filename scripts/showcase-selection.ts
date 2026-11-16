@@ -48,7 +48,7 @@ export async function assertSelectionHierarchy(page: Page, baseUrl: string) {
 	for (const width of [390, 1280]) {
 		await page.setViewportSize({ width, height: 1000 });
 		for (const dark of [false, true]) {
-			for (const slug of ["sidebar", "chat-inbox"]) {
+			for (const slug of ["sidebar"]) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				await page.locator('[data-status="ready"]').waitFor();
 				await setShowcaseTheme(page, dark);

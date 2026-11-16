@@ -1426,30 +1426,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "BreadcrumbsProps",
 		surface: "Breadcrumbs",
 	},
-	{
-		slug: "chat-bubble",
-		sourceFile: "packages/basalt/src/components/chat-bubble.tsx",
-		propsType: "ChatBubbleProps",
-		surface: "ChatBubble",
-	},
-	{
-		slug: "chat-composer",
-		sourceFile: "packages/basalt/src/components/chat-composer.tsx",
-		propsType: "ChatComposerProps",
-		surface: "ChatComposer",
-	},
-	{
-		slug: "chat-header",
-		sourceFile: "packages/basalt/src/components/chat-header.tsx",
-		propsType: "ChatHeaderProps",
-		surface: "ChatHeader",
-	},
-	{
-		slug: "chat-inbox",
-		sourceFile: "packages/basalt/src/components/chat-inbox.tsx",
-		propsType: "ChatInboxProps",
-		surface: "ChatInbox",
-	},
+
 	{
 		slug: "theme-provider",
 		sourceFile: "packages/basalt/src/providers/theme.tsx",
@@ -1462,65 +1439,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "LinkProviderProps",
 		surface: "LinkProvider",
 	},
-	{
-		slug: "thinking",
-		sourceFile: "packages/basalt/src/components/thinking.tsx",
-		propsType: "ThinkingProps",
-		surface: "Thinking",
-	},
-	{
-		slug: "approval-card",
-		sourceFile: "packages/basalt/src/components/approval-card.tsx",
-		propsType: "ApprovalCardProps",
-		surface: "ApprovalCard",
-	},
-	{
-		slug: "tool-chips",
-		sourceFile: "packages/basalt/src/components/tool-chips.tsx",
-		propsType: "ToolChipsProps",
-		surface: "ToolChips",
-	},
-	{
-		slug: "recommendation-card",
-		sourceFile: "packages/basalt/src/components/recommendation-card.tsx",
-		propsType: "RecommendationCardProps",
-		surface: "RecommendationCard",
-	},
-	{
-		slug: "context-cards",
-		sourceFile: "packages/basalt/src/components/context-cards.tsx",
-		propsType: "ContextCardsProps",
-		surface: "ContextCards",
-	},
-	{
-		slug: "diff-table",
-		sourceFile: "packages/basalt/src/components/diff-table.tsx",
-		propsType: "DiffTableProps",
-		surface: "DiffTable",
-	},
+
 	{
 		slug: "avatar",
 		sourceFile: "packages/basalt/src/components/avatar.tsx",
 		propsType: "AvatarInitialsProps",
 		surface: "AvatarInitials",
-	},
-	{
-		slug: "chat-markdown",
-		sourceFile: "packages/basalt/src/components/chat-markdown.tsx",
-		propsType: "ChatMarkdownProps",
-		surface: "ChatMarkdown",
-	},
-	{
-		slug: "chat-message",
-		sourceFile: "packages/basalt/src/components/chat-message.tsx",
-		propsType: "ChatMessageProps",
-		surface: "ChatMessage",
-	},
-	{
-		slug: "prompt-bar",
-		sourceFile: "packages/basalt/src/components/prompt-bar.tsx",
-		propsType: "PromptBarProps",
-		surface: "PromptBar",
 	},
 ];
 

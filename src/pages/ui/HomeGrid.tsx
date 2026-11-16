@@ -230,8 +230,8 @@ const GROUP_CARD_CLASS =
 const TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border md:border-r md:nth-[2n]:border-r-0";
 const WIDE_TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border md:col-span-2";
 
-const TABLE_CARD_SLUGS = ["table", "data-table", "diff-table", "table-pager"] as const;
-const WIDE_GALLERY_SLUGS = new Set(["table", "data-table", "diff-table"]);
+const TABLE_CARD_SLUGS = ["table", "data-table", "table-pager"] as const;
+const WIDE_GALLERY_SLUGS = new Set(["table", "data-table"]);
 
 interface CatalogCardProps {
 	item: CatalogIndexItem;

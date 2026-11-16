@@ -45,7 +45,6 @@ const GROUPS: CatalogIndexGroup[] = [
 		items: [
 			item("table", "layout"),
 			item("data-table", "layout"),
-			item("diff-table", "layout"),
 			item("table-pager", "layout"),
 			item("grid", "layout"),
 		],
@@ -64,7 +63,7 @@ describe("HomeGrid", () => {
 				<HomeGrid groups={GROUPS} />
 			</MemoryRouter>,
 		);
-		for (const slug of ["table", "data-table", "diff-table"]) {
+		for (const slug of ["table", "data-table"]) {
 			const card = document.querySelector(`[data-catalog-card="${slug}"]`);
 			expect(card, slug).toHaveAttribute("data-gallery-span", "full");
 			expect(card, slug).toHaveClass("md:col-span-2");

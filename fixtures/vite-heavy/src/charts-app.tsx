@@ -6,7 +6,6 @@ import {
 	ChartTooltipRow,
 	ChartTooltipSummary,
 } from "@nocoo/basalt/components/chart";
-import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";
 import { StatCard } from "@nocoo/basalt/components/stat-card";
 import {
 	Tooltip,
@@ -386,18 +385,13 @@ function ChartsPanel() {
 					</button>
 				</div>
 
-				{/* 10. Reduced Motion verification fixtures: Button loading & ChatBubble streaming */}
+				{/* 10. Reduced Motion verification fixture: Button loading */}
 				<div data-testid="case-reduced-motion">
 					<h2>Reduced Motion Feedback</h2>
 					<div className="flex flex-col gap-3">
 						<Button id="rm-button-loading" loading>
 							Saving Telemetry
 						</Button>
-						<div id="rm-chat-bubble">
-							<ChatBubble variant="assistant" streaming>
-								Processing query results
-							</ChatBubble>
-						</div>
 					</div>
 				</div>
 

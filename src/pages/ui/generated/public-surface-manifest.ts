@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.4.2",
-	"totalModules": 127,
-	"totalSymbols": 732,
-	"totalValues": 392,
-	"totalTypes": 340,
+	"totalModules": 114,
+	"totalSymbols": 690,
+	"totalValues": 379,
+	"totalTypes": 311,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -1235,56 +1235,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/approval-card",
-			"importPath": "@nocoo/basalt/components/approval-card",
-			"sourceFile": "packages/basalt/src/components/approval-card.tsx",
-			"ownerDoc": "src/pages/ui/approval-card",
-			"ownerKind": "catalog-component",
-			"summary": "ApprovalCard component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ApprovalCard",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/approval-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/approval-card"
-				},
-				{
-					"name": "ApprovalAnswer",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/approval-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/approval-card"
-				},
-				{
-					"name": "ApprovalAnswers",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/approval-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/approval-card"
-				},
-				{
-					"name": "ApprovalQuestion",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/approval-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/approval-card"
-				},
-				{
-					"name": "ApprovalCardProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/approval-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/approval-card"
-				}
-			]
-		},
-		{
 			"subpath": "./components/autocomplete",
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
@@ -2063,186 +2013,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/chat-bubble",
-			"importPath": "@nocoo/basalt/components/chat-bubble",
-			"sourceFile": "packages/basalt/src/components/chat-bubble.tsx",
-			"ownerDoc": "src/pages/ui/chat-bubble",
-			"ownerKind": "catalog-component",
-			"summary": "ChatBubble component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ChatBubble",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chat-bubble",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-bubble"
-				},
-				{
-					"name": "ChatBubbleVariant",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-bubble",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-bubble"
-				},
-				{
-					"name": "ChatBubbleProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-bubble",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-bubble"
-				}
-			]
-		},
-		{
-			"subpath": "./components/chat-composer",
-			"importPath": "@nocoo/basalt/components/chat-composer",
-			"sourceFile": "packages/basalt/src/components/chat-composer.tsx",
-			"ownerDoc": "src/pages/ui/chat-composer",
-			"ownerKind": "catalog-component",
-			"summary": "ChatComposer component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ChatComposer",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chat-composer",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-composer"
-				},
-				{
-					"name": "ChatComposerProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-composer",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-composer"
-				},
-				{
-					"name": "ChatComposerAttachment",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-composer",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-composer"
-				}
-			]
-		},
-		{
-			"subpath": "./components/chat-header",
-			"importPath": "@nocoo/basalt/components/chat-header",
-			"sourceFile": "packages/basalt/src/components/chat-header.tsx",
-			"ownerDoc": "src/pages/ui/chat-header",
-			"ownerKind": "catalog-component",
-			"summary": "ChatHeader component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ChatHeader",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chat-header",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-header"
-				},
-				{
-					"name": "ChatHeaderProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-header",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-header"
-				}
-			]
-		},
-		{
-			"subpath": "./components/chat-inbox",
-			"importPath": "@nocoo/basalt/components/chat-inbox",
-			"sourceFile": "packages/basalt/src/components/chat-inbox.tsx",
-			"ownerDoc": "src/pages/ui/chat-inbox",
-			"ownerKind": "catalog-component",
-			"summary": "ChatInbox component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ChatInbox",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chat-inbox",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-inbox"
-				},
-				{
-					"name": "ChatInboxItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-inbox",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-inbox"
-				},
-				{
-					"name": "ChatInboxProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-inbox",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-inbox"
-				}
-			]
-		},
-		{
-			"subpath": "./components/chat-markdown",
-			"importPath": "@nocoo/basalt/components/chat-markdown",
-			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
-			"ownerDoc": "src/pages/ui/chat-markdown",
-			"ownerKind": "catalog-component",
-			"summary": "ChatMarkdown component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ChatMarkdown",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chat-markdown",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-markdown"
-				},
-				{
-					"name": "ChatMarkdownProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-markdown",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-markdown"
-				}
-			]
-		},
-		{
-			"subpath": "./components/chat-message",
-			"importPath": "@nocoo/basalt/components/chat-message",
-			"sourceFile": "packages/basalt/src/components/chat-message.tsx",
-			"ownerDoc": "src/pages/ui/chat-message",
-			"ownerKind": "catalog-component",
-			"summary": "ChatMessage component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ChatMessage",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chat-message",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-message"
-				},
-				{
-					"name": "ChatMessageProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chat-message",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chat-message"
-				}
-			]
-		},
-		{
 			"subpath": "./components/checkbox",
 			"importPath": "@nocoo/basalt/components/checkbox",
 			"sourceFile": "packages/basalt/src/components/checkbox.tsx",
@@ -2721,40 +2491,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/context-cards",
-			"importPath": "@nocoo/basalt/components/context-cards",
-			"sourceFile": "packages/basalt/src/components/context-cards.tsx",
-			"ownerDoc": "src/pages/ui/context-cards",
-			"ownerKind": "catalog-component",
-			"summary": "ContextCards component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ContextCards",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/context-cards",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/context-cards"
-				},
-				{
-					"name": "ContextChunk",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/context-cards",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/context-cards"
-				},
-				{
-					"name": "ContextCardsProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/context-cards",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/context-cards"
-				}
-			]
-		},
-		{
 			"subpath": "./components/context-menu",
 			"importPath": "@nocoo/basalt/components/context-menu",
 			"sourceFile": "packages/basalt/src/components/context-menu.tsx",
@@ -3219,48 +2955,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dialog"
-				}
-			]
-		},
-		{
-			"subpath": "./components/diff-table",
-			"importPath": "@nocoo/basalt/components/diff-table",
-			"sourceFile": "packages/basalt/src/components/diff-table.tsx",
-			"ownerDoc": "src/pages/ui/diff-table",
-			"ownerKind": "catalog-component",
-			"summary": "DiffTable component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "DiffTable",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/diff-table",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/diff-table"
-				},
-				{
-					"name": "DiffTableColumn",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/diff-table",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/diff-table"
-				},
-				{
-					"name": "DiffTableRow",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/diff-table",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/diff-table"
-				},
-				{
-					"name": "DiffTableProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/diff-table",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/diff-table"
 				}
 			]
 		},
@@ -4675,40 +4369,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/prompt-bar",
-			"importPath": "@nocoo/basalt/components/prompt-bar",
-			"sourceFile": "packages/basalt/src/components/prompt-bar.tsx",
-			"ownerDoc": "src/pages/ui/prompt-bar",
-			"ownerKind": "catalog-component",
-			"summary": "PromptBar component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "PromptBar",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/prompt-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/prompt-bar"
-				},
-				{
-					"name": "PromptModel",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/prompt-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/prompt-bar"
-				},
-				{
-					"name": "PromptBarProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/prompt-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/prompt-bar"
-				}
-			]
-		},
-		{
 			"subpath": "./components/radio",
 			"importPath": "@nocoo/basalt/components/radio",
 			"sourceFile": "packages/basalt/src/components/radio.tsx",
@@ -4763,48 +4423,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/radio",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/radio"
-				}
-			]
-		},
-		{
-			"subpath": "./components/recommendation-card",
-			"importPath": "@nocoo/basalt/components/recommendation-card",
-			"sourceFile": "packages/basalt/src/components/recommendation-card.tsx",
-			"ownerDoc": "src/pages/ui/recommendation-card",
-			"ownerKind": "catalog-component",
-			"summary": "RecommendationCard component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "RecommendationCard",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/recommendation-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/recommendation-card"
-				},
-				{
-					"name": "RecommendationConfidence",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/recommendation-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/recommendation-card"
-				},
-				{
-					"name": "RecommendationOption",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/recommendation-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/recommendation-card"
-				},
-				{
-					"name": "RecommendationCardProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/recommendation-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/recommendation-card"
 				}
 			]
 		},
@@ -6255,48 +5873,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/thinking",
-			"importPath": "@nocoo/basalt/components/thinking",
-			"sourceFile": "packages/basalt/src/components/thinking.tsx",
-			"ownerDoc": "src/pages/ui/thinking",
-			"ownerKind": "catalog-component",
-			"summary": "Thinking component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Thinking",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/thinking",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/thinking"
-				},
-				{
-					"name": "ThinkingStep",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/thinking",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/thinking"
-				},
-				{
-					"name": "ThinkingVariant",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/thinking",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/thinking"
-				},
-				{
-					"name": "ThinkingProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/thinking",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/thinking"
-				}
-			]
-		},
-		{
 			"subpath": "./components/toast",
 			"importPath": "@nocoo/basalt/components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
@@ -6467,48 +6043,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/toggle-group",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/toggle-group"
-				}
-			]
-		},
-		{
-			"subpath": "./components/tool-chips",
-			"importPath": "@nocoo/basalt/components/tool-chips",
-			"sourceFile": "packages/basalt/src/components/tool-chips.tsx",
-			"ownerDoc": "src/pages/ui/tool-chips",
-			"ownerKind": "catalog-component",
-			"summary": "ToolChips component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ToolChips",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/tool-chips",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/tool-chips"
-				},
-				{
-					"name": "ToolDiff",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/tool-chips",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/tool-chips"
-				},
-				{
-					"name": "ToolStep",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/tool-chips",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/tool-chips"
-				},
-				{
-					"name": "ToolChipsProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/tool-chips",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/tool-chips"
 				}
 			]
 		},
