@@ -64,7 +64,7 @@ export function TablePager({
 				className,
 			)}
 		>
-			<p className="text-basalt-base text-basalt-muted-foreground">
+			<p className="text-basalt-sm tabular-nums text-basalt-muted-foreground">
 				{formatRange ? formatRange(range) : defaultRangeText(range)}
 			</p>
 			<Pagination

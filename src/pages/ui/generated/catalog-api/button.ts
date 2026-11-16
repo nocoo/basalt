@@ -14,7 +14,7 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+				type: "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 				required: false,
 				default: "\"default\"",
 				description: "Sizing preset.",

@@ -19,7 +19,7 @@ describe("ShowcasePage", () => {
 		);
 		const root = container.querySelector("[data-showcase-page]");
 		expect(root).toHaveAttribute("data-category", "action");
-		expect(root).toHaveClass("h-full", "gap-basalt-layout-lg", "min-w-0");
+		expect(root).toHaveClass("h-full", "gap-basalt-layout-lg", "min-w-0", "max-w-[96rem]");
 		expect(root?.className).not.toMatch(/\b(?:p-|bg-|min-h-screen)/);
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
 		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-3xl");
@@ -33,7 +33,7 @@ describe("ShowcasePage", () => {
 		const { container } = render(<ShowcasePage title="Showcase" variant="document" />);
 		const root = container.querySelector("[data-showcase-page]");
 		expect(root).toHaveAttribute("data-page-variant", "document");
-		expect(root).toHaveClass("gap-basalt-layout-lg");
+		expect(root).toHaveClass("gap-basalt-layout-lg", "max-w-[84rem]");
 		expect(root?.firstElementChild?.tagName).toBe("HEADER");
 		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-3xl");
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);

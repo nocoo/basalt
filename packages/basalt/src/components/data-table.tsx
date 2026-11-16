@@ -261,6 +261,8 @@ export type DataTableProps<T = unknown> = {
 	"aria-describedby"?: string;
 	/** Direct-card rails on the first and last display columns. @default "inset" */
 	edge?: DataTableEdge;
+	/** Row density. @default "default" */
+	density?: "default" | "compact";
 };
 
 export function DataTable<T>({
@@ -294,6 +296,7 @@ export function DataTable<T>({
 	"aria-label": ariaLabel = "Data table",
 	"aria-describedby": ariaDescribedBy,
 	edge,
+	density = "default",
 }: DataTableProps<T>) {
 	const [uncontrolledSort, setUncontrolledSort] = useState<DataTableSort | null>(defaultSort);
 	const sort = controlledSort === undefined ? uncontrolledSort : controlledSort;
@@ -535,6 +538,7 @@ export function DataTable<T>({
 				>
 					<Table
 						className={cn("w-full", className)}
+						density={density}
 						aria-label={ariaLabel}
 						aria-describedby={ariaDescribedBy}
 						aria-busy={loading || undefined}

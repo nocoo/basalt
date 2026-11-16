@@ -228,9 +228,9 @@ function clampSidebarWidth(next: number) {
 }
 
 /**
- * Default expanded sidebar width in pixels. Matches `--basalt-size-sidebar-width` (16.25rem at a 16px root).
+ * Default expanded sidebar width in pixels. Matches `--basalt-size-sidebar-width` (15rem at a 16px root).
  */
-export const SIDEBAR_DEFAULT_WIDTH_PX = 260;
+export const SIDEBAR_DEFAULT_WIDTH_PX = 240;
 
 function SidebarResize({
 	side,

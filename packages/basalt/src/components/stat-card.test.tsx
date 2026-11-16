@@ -216,35 +216,26 @@ describe("StatGrid", () => {
 			</StatGrid>,
 		);
 		const grid = container.firstElementChild;
-		expect(grid).toHaveClass(
-			"grid",
-			"gap-basalt-layout",
-			"grid-cols-1",
-			"sm:grid-cols-2",
-			"lg:grid-cols-4",
-		);
-		expect(grid).toHaveClass("grid-shell");
+		expect(grid).toHaveClass("basalt-stat-grid", "grid", "gap-basalt-layout", "grid-shell");
+		expect(grid).toHaveAttribute("data-columns", "4");
 		expect(grid).toHaveTextContent("child-a");
 		rerender(
 			<StatGrid columns={2}>
 				<span>child-a</span>
 			</StatGrid>,
 		);
-		expect(container.firstElementChild).toHaveClass("sm:grid-cols-2");
-		expect(container.firstElementChild).not.toHaveClass("lg:grid-cols-3");
-		expect(container.firstElementChild).not.toHaveClass("lg:grid-cols-4");
+		expect(container.firstElementChild).toHaveAttribute("data-columns", "2");
 		rerender(
 			<StatGrid columns={3}>
 				<span>child-a</span>
 			</StatGrid>,
 		);
-		expect(container.firstElementChild).toHaveClass("lg:grid-cols-3");
-		expect(container.firstElementChild).not.toHaveClass("lg:grid-cols-4");
+		expect(container.firstElementChild).toHaveAttribute("data-columns", "3");
 		rerender(
 			<StatGrid columns={4}>
 				<span>child-a</span>
 			</StatGrid>,
 		);
-		expect(container.firstElementChild).toHaveClass("lg:grid-cols-4");
+		expect(container.firstElementChild).toHaveAttribute("data-columns", "4");
 	});
 });

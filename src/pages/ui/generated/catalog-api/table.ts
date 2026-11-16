@@ -13,6 +13,13 @@ export const API = [
 				description: "Paint alternating rows.",
 			},
 			{
+				name: "density",
+				type: "\"compact\" | \"default\"",
+				required: false,
+				default: "\"default\"",
+				description: "Row density.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

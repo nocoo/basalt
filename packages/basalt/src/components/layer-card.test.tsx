@@ -80,8 +80,8 @@ describe("LayerCard", () => {
 		const header = screen.getByText("Next Steps");
 		const body = screen.getByText("Hello");
 		expect(header).toHaveClass(
-			"text-basalt-base",
-			"font-medium",
+			"text-basalt-lg",
+			"font-semibold",
 			"tracking-tight",
 			"text-basalt-foreground",
 		);
@@ -189,6 +189,9 @@ describe("LayerCard", () => {
 			</LayerCard>,
 		);
 		expect(screen.getByLabelText("Deployment")).not.toHaveClass("p-basalt-card-lg");
+		expect(screen.getByLabelText("Deployment").className).toContain(
+			"[data-slot=card-body]]:pt-basalt-card-sm",
+		);
 		expect(screen.getByLabelText("Deployment")).toHaveAttribute("data-basalt-surface");
 		expect(screen.getByTestId("header")).toHaveClass(
 			"px-basalt-card",
@@ -237,6 +240,7 @@ describe("LayerCard", () => {
 			"gap-basalt-space-lg",
 		);
 		expect(screen.getByTestId("header")).not.toHaveAttribute("divided");
+		expect(screen.getByTestId("header")).toHaveAttribute("data-divided", "true");
 		rerender(
 			<LayerCard>
 				<LayerCard.Header divided={false} data-testid="header">

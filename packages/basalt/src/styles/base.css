@@ -166,6 +166,8 @@
 	}
 
 	[data-basalt-island] {
+		container-name: island;
+		container-type: inline-size;
 		overflow-y: var(--basalt-island-overflow, auto);
 		overscroll-behavior-y: var(--basalt-island-overscroll, contain);
 	}

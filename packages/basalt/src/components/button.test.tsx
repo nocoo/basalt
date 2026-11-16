@@ -26,14 +26,18 @@ describe("Button", () => {
 			expect(screen.getByRole("button")).not.toHaveClass("basalt-choice");
 		},
 	);
-	it.each(["default", "sm", "icon", "icon-sm", "lg"] as const)(
+	it.each(["default", "sm", "icon", "icon-sm", "lg", "tile"] as const)(
 		"sizes icons proportionally for %s buttons",
 		(size) => {
 			render(<Button size={size}>Action</Button>);
 			expect(screen.getByRole("button")).toHaveClass(
-				size === "lg" ? "[&_svg]:size-basalt-icon-lg" : "[&_svg]:size-basalt-icon",
+				size === "lg" || size === "tile"
+					? "[&_svg]:size-basalt-icon-lg"
+					: "[&_svg]:size-basalt-icon",
 			);
-			expect(screen.getByRole("button")).toHaveClass("gap-basalt-control-gap");
+			expect(screen.getByRole("button")).toHaveClass(
+				size === "tile" ? "gap-basalt-space-lg" : "gap-basalt-control-gap",
+			);
 		},
 	);
 

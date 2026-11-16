@@ -115,7 +115,9 @@ const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 				data-card-structured={structured || undefined}
 				className={cn(
 					ROOT_CLASSES,
-					structured ? "flex w-full flex-col" : PADDING_CLASSES[padding],
+					structured
+						? "flex w-full flex-col [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-body]]:pt-basalt-card-sm"
+						: PADDING_CLASSES[padding],
 					outlined && "ring-basalt-border",
 					className,
 				)}
@@ -138,8 +140,10 @@ function LayerCardHeader({
 	return (
 		<Component
 			data-slot="card-header"
+			data-divided={divided || undefined}
 			className={cn(
-				"flex min-w-0 justify-between gap-basalt-space-lg text-basalt-base font-medium tracking-tight text-basalt-foreground",
+				"flex min-w-0 justify-between gap-basalt-space-lg tracking-tight text-basalt-foreground",
+				asChild ? "text-basalt-base font-medium" : "text-basalt-lg font-semibold",
 				asChild
 					? "w-full items-center rounded-none rounded-t-basalt-lg last:rounded-b-basalt-lg data-[state=closed]:rounded-b-basalt-lg px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
 					: divided

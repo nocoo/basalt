@@ -16,16 +16,16 @@ describe("dimension token contract", () => {
 		expect(tailwind).not.toContain("biome-ignore");
 	});
 
-	it("maps the core text scale to four tiers in both entrypoints", () => {
+	it("maps the core text scale to six canonical tiers in both entrypoints", () => {
 		for (const css of [tokens, standalone]) {
 			for (const [name, value] of Object.entries({
-				xs: "0.75rem",
+				xs: "0.6875rem",
 				sm: "0.75rem",
-				code: "0.875rem",
+				code: "0.8125rem",
 				base: "0.875rem",
-				lg: "1.125rem",
+				lg: "0.9375rem",
 				xl: "1.125rem",
-				"2xl": "1.125rem",
+				"2xl": "1.25rem",
 				"3xl": "1.5rem",
 				"4xl": "1.5rem",
 			})) {
@@ -140,10 +140,10 @@ describe("dimension token contract", () => {
 		expect(tokens).toContain("--basalt-space-sidebar-inset: var(--basalt-space-layout)");
 		expect(tokens).toContain("--basalt-size-sidebar-brand-slot:");
 		for (const css of [tokens, standalone]) {
-			expect(css).toContain("--basalt-size-sidebar-width: 16.25rem");
+			expect(css).toContain("--basalt-size-sidebar-width: 15rem");
 			expect(css).toContain("--basalt-size-sidebar-logo: 1.5rem");
 		}
-		expect(SIDEBAR_DEFAULT_WIDTH_PX).toBe(16.25 * 16);
+		expect(SIDEBAR_DEFAULT_WIDTH_PX).toBe(15 * 16);
 		for (const css of [tokens, standalone]) {
 			expect(css).toContain(
 				"--basalt-size-sidebar-row: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg))",
@@ -182,7 +182,7 @@ describe("dimension token contract", () => {
 			icon: "0.875rem",
 			"icon-lg": "1rem",
 			touch: "2.75rem",
-			"table-row": "2.5rem",
+			"table-row": "2.75rem",
 			rail: "4.25rem",
 		})) {
 			expect(tokens).toContain(`--basalt-size-${role}: ${value}`);

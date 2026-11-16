@@ -8,13 +8,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 }> = {
 	"button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "a8a69ad662c64d46",
+		"hash": "5ff32a8815dfa1a0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
 	"link-button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "a8a69ad662c64d46",
+		"hash": "5ff32a8815dfa1a0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "e4907d03d76b3bf3",
+		"hash": "70ece76af7638063",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -284,7 +284,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"command-palette": {
 		"file": "packages/basalt/src/components/command-palette.tsx",
-		"hash": "d55d2f82a3e899af",
+		"hash": "3dfb4859ca3ea73a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/command-palette.js.map (sourcesContent[0])"
 	},
@@ -296,13 +296,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table": {
 		"file": "packages/basalt/src/components/table.tsx",
-		"hash": "01c00a1a5951ed02",
+		"hash": "3d62195efe99f9c8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table.js.map (sourcesContent[0])"
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "c630a3dc178d8b8e",
+		"hash": "08f3783651fbd755",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},
@@ -344,7 +344,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "1613d067c221075c",
+		"hash": "d0660addc6c86294",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -356,7 +356,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table-pager": {
 		"file": "packages/basalt/src/components/table-pager.tsx",
-		"hash": "ced8df30d7a3f95c",
+		"hash": "debfe1fa990b05ae",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table-pager.js.map (sourcesContent[0])"
 	},
@@ -452,7 +452,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"stat-card": {
 		"file": "packages/basalt/src/components/stat-card.tsx",
-		"hash": "5d5b1d86b6b7478f",
+		"hash": "43a01f70e45fc835",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/stat-card.js.map (sourcesContent[0])"
 	},

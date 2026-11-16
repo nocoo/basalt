@@ -2603,7 +2603,7 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 									"required": false,
 									"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
 								},
@@ -2707,7 +2707,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
 						},
@@ -2858,7 +2858,7 @@
 			"importPath": "@nocoo/basalt/components/button",
 			"subpath": "./components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "a8a69ad662c64d46",
+			"sourceHash": "5ff32a8815dfa1a0",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2930,7 +2930,7 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 									"required": false,
 									"default": "\"default\"",
 									"description": "Sizing preset."
@@ -2986,7 +2986,7 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 									"required": false,
 									"default": "\"default\"",
 									"description": "Sizing preset."
@@ -3015,7 +3015,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"default": "\"default\"",
 							"description": "Sizing preset."
@@ -4559,7 +4559,7 @@
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"subpath": "./components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "d55d2f82a3e899af",
+			"sourceHash": "3dfb4859ca3ea73a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -6219,7 +6219,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "c630a3dc178d8b8e",
+			"sourceHash": "08f3783651fbd755",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -6475,6 +6475,13 @@
 									"required": false,
 									"default": "\"inset\"",
 									"description": "Direct-card rails on the first and last display columns."
+								},
+								{
+									"name": "density",
+									"type": "\"compact\" | \"default\"",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Row density."
 								}
 							]
 						}
@@ -6678,6 +6685,13 @@
 							"required": false,
 							"default": "\"inset\"",
 							"description": "Direct-card rails on the first and last display columns."
+						},
+						{
+							"name": "density",
+							"type": "\"compact\" | \"default\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Row density."
 						}
 					]
 				}
@@ -11538,7 +11552,7 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 									"required": false,
 									"default": "icon",
 									"description": "Size for the nested action."
@@ -11620,7 +11634,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"default": "icon",
 							"description": "Size for the nested action."
@@ -11743,7 +11757,7 @@
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"subpath": "./components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "e4907d03d76b3bf3",
+			"sourceHash": "70ece76af7638063",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15681,7 +15695,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "1613d067c221075c",
+			"sourceHash": "d0660addc6c86294",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17237,7 +17251,7 @@
 			"importPath": "@nocoo/basalt/components/stat-card",
 			"subpath": "./components/stat-card",
 			"sourceFile": "packages/basalt/src/components/stat-card.tsx",
-			"sourceHash": "5d5b1d86b6b7478f",
+			"sourceHash": "43a01f70e45fc835",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17837,7 +17851,7 @@
 			"importPath": "@nocoo/basalt/components/table",
 			"subpath": "./components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "01c00a1a5951ed02",
+			"sourceHash": "3d62195efe99f9c8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18036,6 +18050,13 @@
 									"description": "Paint alternating rows."
 								},
 								{
+									"name": "density",
+									"type": "\"compact\" | \"default\"",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Row density."
+								},
+								{
 									"name": "className",
 									"type": "string",
 									"required": false,
@@ -18159,6 +18180,13 @@
 							"required": false,
 							"default": "false",
 							"description": "Paint alternating rows."
+						},
+						{
+							"name": "density",
+							"type": "\"compact\" | \"default\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Row density."
 						},
 						{
 							"name": "className",
@@ -18439,7 +18467,7 @@
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"subpath": "./components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "ced8df30d7a3f95c",
+			"sourceHash": "debfe1fa990b05ae",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -22701,7 +22729,7 @@
 			"exportName": "Button",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "a8a69ad662c64d46",
+			"sourceHash": "5ff32a8815dfa1a0",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#button",
@@ -22718,7 +22746,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"default": "\"default\"",
 							"description": "Sizing preset."
@@ -22760,7 +22788,7 @@
 			"exportName": "LinkButton",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "a8a69ad662c64d46",
+			"sourceHash": "5ff32a8815dfa1a0",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-button",
@@ -22777,7 +22805,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"default": "\"default\"",
 							"description": "Sizing preset."
@@ -23229,7 +23257,7 @@
 			"exportName": "LayerCard",
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "e4907d03d76b3bf3",
+			"sourceHash": "70ece76af7638063",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#layer-card",
@@ -23600,7 +23628,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"default": "icon",
 							"description": "Size for the nested action."
@@ -24707,7 +24735,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | null",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
 						},
@@ -27633,7 +27661,7 @@
 			"exportName": "CommandPalette",
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "d55d2f82a3e899af",
+			"sourceHash": "3dfb4859ca3ea73a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#command-palette",
@@ -27954,7 +27982,7 @@
 			"exportName": "Table",
 			"importPath": "@nocoo/basalt/components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "01c00a1a5951ed02",
+			"sourceHash": "3d62195efe99f9c8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table",
@@ -27968,6 +27996,13 @@
 							"required": false,
 							"default": "false",
 							"description": "Paint alternating rows."
+						},
+						{
+							"name": "density",
+							"type": "\"compact\" | \"default\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Row density."
 						},
 						{
 							"name": "className",
@@ -28088,7 +28123,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "c630a3dc178d8b8e",
+			"sourceHash": "08f3783651fbd755",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -28289,6 +28324,13 @@
 							"required": false,
 							"default": "\"inset\"",
 							"description": "Direct-card rails on the first and last display columns."
+						},
+						{
+							"name": "density",
+							"type": "\"compact\" | \"default\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Row density."
 						}
 					]
 				}
@@ -28636,7 +28678,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "1613d067c221075c",
+			"sourceHash": "d0660addc6c86294",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -29162,7 +29204,7 @@
 			"exportName": "TablePager",
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "ced8df30d7a3f95c",
+			"sourceHash": "debfe1fa990b05ae",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table-pager",
@@ -30728,7 +30770,7 @@
 			"exportName": "StatCard",
 			"importPath": "@nocoo/basalt/components/stat-card",
 			"sourceFile": "packages/basalt/src/components/stat-card.tsx",
-			"sourceHash": "5d5b1d86b6b7478f",
+			"sourceHash": "43a01f70e45fc835",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stat-card",

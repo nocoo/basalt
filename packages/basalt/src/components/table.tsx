@@ -10,6 +10,8 @@ export type TableSortDirection = "asc" | "desc";
 export type TableProps = {
 	/** Paint alternating rows. @default false */
 	striped?: boolean;
+	/** Row density. @default "default" */
+	density?: "default" | "compact";
 	/**
 	 * Additional classes for the table.
 	 */
@@ -19,11 +21,12 @@ export type TableProps = {
 export const Table = React.forwardRef<
 	HTMLTableElement,
 	TableProps & React.HTMLAttributes<HTMLTableElement>
->(({ className, striped = false, ...props }, ref) => (
+>(({ className, striped = false, density = "default", ...props }, ref) => (
 	<table
 		ref={ref}
 		data-basalt-table=""
 		data-striped={striped ? "true" : undefined}
+		data-density={density === "compact" ? "compact" : undefined}
 		className={cn(
 			BASALT_UI_CLASS,
 			"w-full border-separate border-spacing-0 caption-bottom text-start text-basalt-base leading-[var(--basalt-line-body)] text-basalt-foreground",

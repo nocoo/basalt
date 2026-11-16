@@ -101,6 +101,14 @@ describe("Table", () => {
 		expect(screen.getByText("Name").className).not.toContain("bg-basalt-card");
 	});
 
+	it("supports compact density without forwarding the prop", () => {
+		const { rerender } = render(<Table density="compact" aria-label="Compact" />);
+		expect(screen.getByRole("table")).toHaveAttribute("data-density", "compact");
+		expect(screen.getByRole("table")).not.toHaveAttribute("density");
+		rerender(<Table density="default" aria-label="Default" />);
+		expect(screen.getByRole("table")).not.toHaveAttribute("data-density");
+	});
+
 	it("opts into striping without forwarding a non-native prop", () => {
 		const { rerender } = render(<Table striped aria-label="Striped" />);
 		expect(screen.getByRole("table")).toHaveAttribute("data-striped", "true");

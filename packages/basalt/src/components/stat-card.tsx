@@ -202,12 +202,12 @@ export type StatGridProps = {
 };
 
 export function StatGrid({ children, columns = 4, className }: StatGridProps) {
-	const gridCols = {
-		2: "grid-cols-1 sm:grid-cols-2",
-		3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-		4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-	};
 	return (
-		<div className={cn("grid gap-basalt-layout", gridCols[columns], className)}>{children}</div>
+		<div
+			data-columns={columns}
+			className={cn("basalt-stat-grid grid gap-basalt-layout", className)}
+		>
+			{children}
+		</div>
 	);
 }

@@ -410,13 +410,13 @@ Copyable complete recipes: [mobile layouts](packages/basalt/ai/RECIPES.md#mobile
 `Sidebar` **is** the column. It already has:
 
 - shell-derived bounded height (standalone `100dvh`), `flex-col`, `shrink-0`, sticky positioning at the shell-owned safe top
-- expanded width **260px** (inline `width`)
+- expanded width **240px** (inline `width`)
 - collapsed width **68px**
 - collapse animation `transition-[width] duration-basalt-normal ease-basalt` (disabled for reduced motion)
 
 Children of `Sidebar` are **regions only**: header, search, nav, footer. They fill that column. `SidebarNav` is `flex-1 min-h-0 overflow-y-auto`, so the footer stays at the bottom.
 
-Do not wrap those regions in another full-viewport column. Do not set `h-screen`, `w-[260px]`, or `w-[68px]` on an inner element. Width and height stay on `Sidebar`.
+Do not wrap those regions in another full-viewport column. Do not set `h-screen`, `w-[240px]`, or `w-[68px]` on an inner element. Width and height stay on `Sidebar`.
 
 ### Shared navigation geometry
 
@@ -586,7 +586,7 @@ export function AppFrame() {
 					<SheetContent
 						side="left"
 						tabIndex={-1}
-						className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
+						className="w-[var(--basalt-size-sidebar-width)] max-w-[var(--basalt-size-sidebar-width)] border-0 bg-basalt-background p-0"
 						onOpenAutoFocus={(event) => {
 							if (event.target instanceof HTMLElement) {
 								event.preventDefault();

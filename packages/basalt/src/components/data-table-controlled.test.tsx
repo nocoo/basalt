@@ -350,6 +350,12 @@ describe("column alignment", () => {
 		);
 	});
 
+	it("supports compact density through the table root", () => {
+		render(<DataTable data={rows} columns={columns} density="compact" />);
+		expect(screen.getByRole("table")).toHaveAttribute("data-density", "compact");
+		expect(screen.getByRole("table")).not.toHaveAttribute("density");
+	});
+
 	it("applies both rails to attached full-row state cells", () => {
 		render(<DataTable data={[]} columns={columns} edge="attached" empty="None" />);
 		expect(screen.getByRole("cell", { name: "None" })).toHaveClass(

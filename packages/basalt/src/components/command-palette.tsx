@@ -100,7 +100,7 @@ export function CommandPalette({
 				size={size}
 				aria-describedby={undefined}
 				className={cn(
-					"flex flex-col overflow-hidden bg-basalt-muted p-basalt-space-sm sm:p-basalt-space-sm shadow-lg",
+					"top-[min(14vh,7rem)] flex max-h-[calc(100dvh-min(14vh,7rem)-var(--basalt-space-layout))] translate-y-0 flex-col overflow-hidden bg-basalt-muted p-basalt-space-sm sm:p-basalt-space-sm shadow-lg",
 					className,
 				)}
 			>

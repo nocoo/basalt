@@ -238,6 +238,9 @@ describe("CommandPalette", () => {
 		);
 		const dialog = screen.getByRole("dialog");
 		expect(dialog).toHaveClass(
+			"top-[min(14vh,7rem)]",
+			"translate-y-0",
+			"max-h-[calc(100dvh-min(14vh,7rem)-var(--basalt-space-layout))]",
 			"sm:w-[48rem]",
 			"p-basalt-space-sm",
 			"sm:p-basalt-space-sm",

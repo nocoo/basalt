@@ -199,6 +199,13 @@ export const API = [
 				default: "\"inset\"",
 				description: "Direct-card rails on the first and last display columns.",
 			},
+			{
+				name: "density",
+				type: "\"compact\" | \"default\"",
+				required: false,
+				default: "\"default\"",
+				description: "Row density.",
+			},
 		],
 	},
 ];

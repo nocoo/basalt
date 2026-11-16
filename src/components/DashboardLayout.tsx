@@ -117,7 +117,7 @@ export function DashboardLayout() {
 						ref={mobileSheetRef}
 						side="left"
 						tabIndex={-1}
-						className="w-[16.25rem] max-w-[16.25rem] border-0 bg-basalt-background p-0"
+						className="w-[var(--basalt-size-sidebar-width)] max-w-[var(--basalt-size-sidebar-width)] border-0 bg-basalt-background p-0"
 						onOpenAutoFocus={(event) => {
 							event.preventDefault();
 							mobileSheetRef.current?.focus();

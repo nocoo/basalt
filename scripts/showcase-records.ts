@@ -237,7 +237,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 			const foreignRows = await table
 				.locator("tbody tr")
 				.evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height));
-			assert.deepEqual(foreignRows, [41, 41, 41, 41, 41, 40]);
+			assert.deepEqual(foreignRows, [45, 45, 45, 45, 45, 44]);
 			await page.evaluate(() => document.documentElement.style.removeProperty("--spacing"));
 			assert.deepEqual(geometry.rows, foreignRows);
 			assert.ok(geometry.heads.every((head) => head.whiteSpace === "nowrap"));
@@ -345,7 +345,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 	assert.equal(nestedPad.end, gutter, JSON.stringify(nestedPad));
 
 	return {
-		rowHeight: 40,
+		rowHeight: 44,
 		headerIcons: 12,
 		widthsPreserved: true,
 		scroll: true,

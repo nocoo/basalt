@@ -50,7 +50,10 @@ export default function WorkspacePage() {
 									<Menu />
 								</Button>
 							</SheetTrigger>
-							<SheetContent side="left" className="w-[16.25rem] max-w-[16.25rem] border-0 p-0">
+							<SheetContent
+								side="left"
+								className="w-[var(--basalt-size-sidebar-width)] max-w-[var(--basalt-size-sidebar-width)] border-0 p-0"
+							>
 								<SheetTitle className="sr-only">Workspace navigation</SheetTitle>
 								<SheetDescription className="sr-only">Local layout examples.</SheetDescription>
 								<Sidebar>

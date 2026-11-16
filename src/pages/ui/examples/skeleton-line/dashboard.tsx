@@ -129,7 +129,7 @@ export default function DashboardSkeleton() {
 						</LayerCard>
 					))}
 				</div>
-				<div className="grid gap-basalt-space-lg lg:grid-cols-[minmax(0,1fr)_16.25rem]">
+				<div className="grid gap-basalt-space-lg lg:grid-cols-[minmax(0,1fr)_15rem]">
 					<LayerCard outlined className="min-w-0">
 						<div className="mb-basalt-space-lg flex h-6 items-center justify-between gap-basalt-space-lg">
 							{loading ? (

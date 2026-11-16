@@ -48,6 +48,8 @@ or content surface. Card and layout boundaries use their own four-step roles:
 
 Card padding defaults to medium. LayerCard headers flow into Body by default:
 16px horizontal/top insets, no bottom inset and an 8px internal gap, without a divider.
+An undivided structured header is followed by 12px top body inset so the heading and
+body read as one surface; the Body still owns its 16px outer horizontal and bottom insets.
 `Header divided` uses 16px on all sides and a bottom rule. Disclosure headers
 (`Header asChild`) keep 16px horizontal / 12px vertical insets and show their
 bottom rule only when open. Footer keeps 16px horizontal / 12px vertical insets;
@@ -388,7 +390,8 @@ for Keep, Add and Remove instead of indenting only changed rows. Ordinary button
 padding is not a table-header inset. Preserve the focus target through a shared
 header control rather than compensating with negative page margins.
 
-Table cells keep 12px horizontal / 8px vertical insets and 40px reference rows.
+Table cells keep 12px horizontal / 8px vertical insets and 44px reference rows.
+`density="compact"` selects 36px rows with 4px vertical insets for denser workspaces.
 Headers use medium weight and 0.04em tracking. Body rows have a subtle bottom
 hairline except the last row; the native separate-border layout paints that
 hairline on cells as well. Striping is off by default; `Table striped` opts into

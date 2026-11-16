@@ -25,6 +25,7 @@ const buttonVariants = cva(
 				default: "basalt-action [&_svg]:size-basalt-icon",
 				sm: "basalt-action basalt-action-sm [&_svg]:size-basalt-icon",
 				lg: "basalt-action basalt-action-lg [&_svg]:size-basalt-icon-lg",
+				tile: "basalt-action-tile flex-col gap-basalt-space-lg [&_svg]:size-basalt-icon-lg",
 				icon: "basalt-action basalt-action-icon shrink-0 [&_svg]:size-basalt-icon",
 				"icon-sm": "basalt-action basalt-action-icon-sm shrink-0 [&_svg]:size-basalt-icon",
 			},
