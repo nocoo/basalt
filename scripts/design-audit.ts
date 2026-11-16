@@ -47,7 +47,7 @@ export function auditDesignSource(
 		)
 			add("radius-token", token);
 		if (
-			/^text-(?:\[[^\]]*(?:px|rem|em|vw)[^\]]*\]|xs|sm|base|lg|\d?xl|basalt-(?:xs|code|lg|2xl|[4-9]xl|10xl))$/.test(
+			/^text-(?:\[[^\]]*(?:px|rem|em|vw)[^\]]*\]|xs|sm|base|lg|\d?xl|basalt-(?:code|2xl|[4-9]xl|10xl))$/.test(
 				utility,
 			) &&
 			!(file === "src/pages/NotFound.tsx" && utility === "text-basalt-10xl")

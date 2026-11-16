@@ -41,7 +41,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 			type={type}
 			className={controlSurfaceClass(
 				cn(
-					"flex w-full text-basalt-foreground shadow-xs file:border-0 file:bg-transparent file:text-basalt-base file:font-medium placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
+					"flex w-full text-basalt-foreground file:border-0 file:bg-transparent file:text-basalt-base file:font-medium placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
 					INPUT_SIZE_CLASS[size],
 					FOCUS_BORDER,
 					"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",

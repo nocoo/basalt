@@ -30,13 +30,13 @@
   --basalt-focus-width: 0.0625rem;
   --basalt-focus-offset: 0.125rem;
   --basalt-focus-clearance: var(--basalt-space-sm);
-  --basalt-text-xs: 0.75rem;
+  --basalt-text-xs: 0.6875rem;
   --basalt-text-sm: 0.75rem;
-  --basalt-text-code: 0.875rem;
+  --basalt-text-code: 0.8125rem;
   --basalt-text-base: 0.875rem;
-  --basalt-text-lg: 1.125rem;
+  --basalt-text-lg: 0.9375rem;
   --basalt-text-xl: 1.125rem;
-  --basalt-text-2xl: 1.125rem;
+  --basalt-text-2xl: 1.25rem;
   --basalt-text-3xl: 1.5rem;
   --basalt-text-4xl: 1.5rem;
   --basalt-text-5xl: 2.25rem;
@@ -161,21 +161,22 @@
   --basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 :root, .light, [data-mode="light"] {
-  --basalt-background: 220 14% 94%;
-  --basalt-foreground: 0 0% 12%;
-  --basalt-card: 220 14% 97%;
-  --basalt-card-foreground: 0 0% 12%;
-  --basalt-secondary: 220 14% 99%;
-  --basalt-secondary-foreground: 0 0% 12%;
+  --basalt-background: 220 16% 93.5%;
+  --basalt-foreground: 222 24% 11%;
+  --basalt-card: 220 16% 96.5%;
+  --basalt-card-foreground: 222 24% 11%;
+  --basalt-secondary: 0 0% 100%;
+  --basalt-secondary-foreground: 222 24% 11%;
   --basalt-popover: 0 0% 100%;
-  --basalt-popover-foreground: 0 0% 12%;
+  --basalt-popover-foreground: 222 24% 11%;
+  --basalt-well: 220 16% 97.2%;
   --basalt-bright: 0 0% 100%;
   --basalt-primary: 204 88% 32%;
   --basalt-primary-foreground: 0 0% 100%;
-  --basalt-muted: 220 14% 92%;
-  --basalt-muted-foreground: 0 0% 40%;
-  --basalt-accent: 220 14% 92%;
-  --basalt-accent-foreground: 0 0% 12%;
+  --basalt-muted: 220 15% 92%;
+  --basalt-muted-foreground: 220 10% 38%;
+  --basalt-accent: 220 15% 92%;
+  --basalt-accent-foreground: 222 24% 11%;
   --basalt-destructive: 0 72% 49%;
   --basalt-destructive-foreground: 0 0% 100%;
   --basalt-info: 221 72% 38%;
@@ -187,8 +188,8 @@
   --basalt-danger: 0 70% 40%;
   --basalt-danger-foreground: 0 0% 100%;
   --basalt-danger-tint: 0 78% 96%;
-  --basalt-border: 220 13% 88%;
-  --basalt-input: 220 13% 88%;
+  --basalt-border: 220 14% 86%;
+  --basalt-input: 220 14% 84%;
   --basalt-ring: var(--basalt-primary);
   --basalt-control-fill: hsl(var(--basalt-secondary));
   --basalt-surface-current: var(--basalt-card);
@@ -232,8 +233,12 @@
   --basalt-sheet-backdrop-blur: 6px;
   --basalt-floating-duration-enter: 200ms;
   --basalt-floating-duration-exit: 150ms;
-  --basalt-font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --basalt-font-display: "DM Sans", system-ui, sans-serif;
+  --basalt-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --basalt-font-display: "DM Sans", "Inter", system-ui, sans-serif;
+  --basalt-font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+  --basalt-font-features: "cv02", "cv03", "cv04", "cv11";
+  --basalt-shadow-card: 0 1px 2px 0 rgb(15 23 42 / 0.03), 0 1px 1px -0.5px rgb(15 23 42 / 0.02);
+  --basalt-shadow-control: 0 1px 2px 0 rgb(15 23 42 / 0.04);
   --basalt-chart-blue: 204 88% 62%;
   --basalt-chart-pink: 345 88% 72%;
   --basalt-chart-green: 113 58% 62%;
@@ -310,6 +315,7 @@
   --basalt-secondary-foreground: 0 0% 93%;
   --basalt-popover: 0 0% 10.6%;
   --basalt-popover-foreground: 0 0% 93%;
+  --basalt-well: var(--basalt-bright);
   --basalt-bright: 0 0% 14%;
   --basalt-primary: 204 90% 70%;
   --basalt-primary-foreground: 0 0% 10%;
@@ -338,6 +344,8 @@
   --basalt-border: 0 0% 16%;
   --basalt-input: 0 0% 18%;
   --basalt-ring: var(--basalt-primary);
+  --basalt-shadow-card: none;
+  --basalt-shadow-control: none;
   --basalt-control-fill: hsl(var(--basalt-secondary));
   --basalt-surface-current: var(--basalt-card);
   --basalt-surface-elevated: var(--basalt-secondary);
@@ -468,8 +476,8 @@
   --basalt-zebra-fill: hsl(var(--basalt-bright));
 }
 [data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] {
-  background: hsl(var(--basalt-bright));
-  --basalt-surface-current: var(--basalt-bright);
+  background: hsl(var(--basalt-well));
+  --basalt-surface-current: var(--basalt-well);
   --basalt-control-fill: hsl(var(--basalt-bright));
   --basalt-zebra-fill: transparent;
 }
@@ -524,8 +532,8 @@
   --basalt-zebra-fill: hsl(var(--basalt-bright));
 }
 [data-basalt-surface]:not([data-basalt-surface-root] *)	[data-basalt-surface]	[data-basalt-surface] {
-  background: hsl(var(--basalt-bright));
-  --basalt-surface-current: var(--basalt-bright);
+  background: hsl(var(--basalt-well));
+  --basalt-surface-current: var(--basalt-well);
   --basalt-control-fill: hsl(var(--basalt-bright));
   --basalt-zebra-fill: transparent;
 }
@@ -1143,6 +1151,16 @@
     border-width: 0;
     border-style: solid;
     border-color: currentColor;
+  }
+  :where(.basalt-ui) {
+    font-family: var(--basalt-font-sans);
+    font-feature-settings: var(--basalt-font-features);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  :where(.basalt-ui:is(code, kbd, samp, pre), .basalt-ui :is(code, kbd, samp, pre)) {
+    font-family: var(--basalt-font-mono);
+    font-feature-settings: normal;
   }
   :where(	.basalt-ui:is(button, input, optgroup, select, textarea),	.basalt-ui :is(button, input, optgroup, select, textarea)	) {
     font-family: inherit;
@@ -2765,22 +2783,26 @@
   }
   .text-basalt-3xl {
     font-size: var(--basalt-text-3xl);
-    line-height: var(--tw-leading, var(--basalt-leading-body));
+    line-height: var(--tw-leading, var(--basalt-leading-tight));
+    letter-spacing: var(--tw-tracking, -0.025em);
   }
   .text-basalt-base {
     font-size: var(--basalt-text-base);
     line-height: var(--tw-leading, var(--basalt-leading-body));
-  }
-  .text-basalt-sm {
-    font-size: var(--basalt-text-sm);
-    line-height: var(--tw-leading, var(--basalt-leading-body));
+    letter-spacing: var(--tw-tracking, -0.006em);
   }
   .text-basalt-xl {
     font-size: var(--basalt-text-xl);
-    line-height: var(--tw-leading, var(--basalt-leading-body));
+    line-height: var(--tw-leading, calc(24 / 18));
+    letter-spacing: var(--tw-tracking, -0.018em);
   }
   .text-basalt-xs {
     font-size: var(--basalt-text-xs);
+    line-height: var(--tw-leading, calc(16 / 11));
+    letter-spacing: var(--tw-tracking, 0.02em);
+  }
+  .text-basalt-sm {
+    font-size: var(--basalt-text-sm);
     line-height: var(--tw-leading, var(--basalt-leading-body));
   }
   .leading-\[var\(--basalt-leading-banner\)\] {
@@ -2993,6 +3015,14 @@
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-basalt-card {
+    --tw-shadow: var(--basalt-shadow-card);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-basalt-control {
+    --tw-shadow: var(--basalt-shadow-control);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .shadow-lg {
     --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -3030,12 +3060,6 @@
       --tw-ring-color: color-mix(in oklab, hsl(var(--basalt-border)) 40%, transparent);
     }
   }
-  .ring-basalt-border\/50 {
-    --tw-ring-color: hsl(var(--basalt-border));
-    @supports (color: color-mix(in lab, red, red)) {
-      --tw-ring-color: color-mix(in oklab, hsl(var(--basalt-border)) 50%, transparent);
-    }
-  }
   .ring-basalt-border\/60 {
     --tw-ring-color: hsl(var(--basalt-border));
     @supports (color: color-mix(in lab, red, red)) {
@@ -3046,6 +3070,12 @@
     --tw-ring-color: hsl(var(--basalt-border));
     @supports (color: color-mix(in lab, red, red)) {
       --tw-ring-color: color-mix(in oklab, hsl(var(--basalt-border)) 70%, transparent);
+    }
+  }
+  .ring-basalt-border\/80 {
+    --tw-ring-color: hsl(var(--basalt-border));
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-ring-color: color-mix(in oklab, hsl(var(--basalt-border)) 80%, transparent);
     }
   }
   .outline-hidden {
@@ -3161,6 +3191,7 @@
   .file\:text-basalt-base::file-selector-button {
     font-size: var(--basalt-text-base);
     line-height: var(--tw-leading, var(--basalt-leading-body));
+    letter-spacing: var(--tw-tracking, -0.006em);
   }
   .file\:font-medium::file-selector-button {
     --tw-font-weight: var(--font-weight-medium);
@@ -3271,6 +3302,7 @@
   .focus\:text-basalt-base:focus {
     font-size: var(--basalt-text-base);
     line-height: var(--tw-leading, var(--basalt-leading-body));
+    letter-spacing: var(--tw-tracking, -0.006em);
   }
   .focus\:font-medium:focus {
     --tw-font-weight: var(--font-weight-medium);

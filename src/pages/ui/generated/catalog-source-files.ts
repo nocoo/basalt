@@ -8,13 +8,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 }> = {
 	"button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "ebcc68dcdceb3c24",
+		"hash": "a8a69ad662c64d46",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
 	"link-button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "ebcc68dcdceb3c24",
+		"hash": "a8a69ad662c64d46",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "cbfda1b62564e31d",
+		"hash": "e4907d03d76b3bf3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -80,7 +80,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"input": {
 		"file": "packages/basalt/src/components/input.tsx",
-		"hash": "1ff54a4b5f0e812b",
+		"hash": "fe0834084ccd936c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input.js.map (sourcesContent[0])"
 	},
@@ -212,13 +212,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "c32db075dd03ea28",
+		"hash": "203c03e4b3e0d33f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "c32db075dd03ea28",
+		"hash": "203c03e4b3e0d33f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},

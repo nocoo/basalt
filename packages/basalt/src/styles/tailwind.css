@@ -45,21 +45,26 @@
 	--spacing-basalt-space-lg: var(--basalt-space-lg);
 	--spacing-basalt-space-default: var(--basalt-space-default);
 	--text-basalt-xs: var(--basalt-text-xs);
-	--text-basalt-xs--line-height: var(--basalt-leading-body);
+	--text-basalt-xs--line-height: calc(16 / 11);
+	--text-basalt-xs--letter-spacing: 0.02em;
 	--text-basalt-sm: var(--basalt-text-sm);
 	--text-basalt-sm--line-height: var(--basalt-leading-body);
 	--text-basalt-code: var(--basalt-text-code);
 	--text-basalt-code--line-height: var(--basalt-leading-body);
 	--text-basalt-base: var(--basalt-text-base);
 	--text-basalt-base--line-height: var(--basalt-leading-body);
+	--text-basalt-base--letter-spacing: -0.006em;
 	--text-basalt-lg: var(--basalt-text-lg);
-	--text-basalt-lg--line-height: var(--basalt-leading-body);
+	--text-basalt-lg--line-height: calc(20 / 15);
+	--text-basalt-lg--letter-spacing: -0.014em;
 	--text-basalt-xl: var(--basalt-text-xl);
-	--text-basalt-xl--line-height: var(--basalt-leading-body);
+	--text-basalt-xl--line-height: calc(24 / 18);
+	--text-basalt-xl--letter-spacing: -0.018em;
 	--text-basalt-2xl: var(--basalt-text-2xl);
 	--text-basalt-2xl--line-height: var(--basalt-leading-body);
 	--text-basalt-3xl: var(--basalt-text-3xl);
-	--text-basalt-3xl--line-height: var(--basalt-leading-body);
+	--text-basalt-3xl--line-height: var(--basalt-leading-tight);
+	--text-basalt-3xl--letter-spacing: -0.025em;
 	--text-basalt-4xl: var(--basalt-text-4xl);
 	--text-basalt-4xl--line-height: var(--basalt-leading-body);
 	--text-basalt-5xl: var(--basalt-text-5xl);
@@ -250,8 +255,11 @@
 	--radius-basalt-island: var(--basalt-radius-island);
 	--radius-basalt-card: var(--basalt-radius-card);
 	--radius-basalt-widget: var(--basalt-radius-widget);
+	--shadow-basalt-card: var(--basalt-shadow-card);
+	--shadow-basalt-control: var(--basalt-shadow-control);
 	--font-basalt-sans: var(--basalt-font-sans);
 	--font-basalt-display: var(--basalt-font-display);
+	--font-basalt-mono: var(--basalt-font-mono);
 	--animate-basalt-accordion-down: basalt-accordion-down var(--basalt-motion-normal)
 		var(--basalt-motion-ease);
 	--animate-basalt-accordion-up: basalt-accordion-up var(--basalt-motion-normal)

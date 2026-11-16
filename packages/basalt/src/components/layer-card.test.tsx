@@ -67,8 +67,7 @@ describe("LayerCard", () => {
 		expect(root).toHaveAttribute("data-basalt-surface");
 		expect(root.className).toContain("p-basalt-card");
 		expect(root.className).not.toContain("bg-basalt-bright");
-		expect(root.className).not.toContain("shadow-xs");
-		expect(root).toHaveClass("ring-1", "ring-basalt-border/50");
+		expect(root).toHaveClass("ring-1", "ring-basalt-border/80", "shadow-basalt-card");
 	});
 
 	it("raises a well without a muted tray", () => {
@@ -250,14 +249,14 @@ describe("LayerCard", () => {
 		expect(screen.getByTestId("header")).toHaveClass("px-basalt-card", "pt-basalt-card", "pb-0");
 	});
 
-	it("strengthens an outlined ring without a default shadow", () => {
+	it("strengthens an outlined ring while retaining the matte card shadow", () => {
 		render(
 			<LayerCard outlined data-testid="card">
 				Body
 			</LayerCard>,
 		);
 		expect(screen.getByTestId("card")).toHaveClass("ring-1", "ring-basalt-border");
-		expect(screen.getByTestId("card").className).not.toContain("shadow-xs");
+		expect(screen.getByTestId("card")).toHaveClass("shadow-basalt-card");
 	});
 
 	it("renders an accessible loading state with reduced-motion-safe skeletons", () => {

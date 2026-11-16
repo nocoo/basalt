@@ -9,9 +9,9 @@ export function renderLandingBody(): string {
 	return renderToStaticMarkup(<LandingContent />);
 }
 
-/** Self-hosted DM Sans (see src/styles/fonts.css); every document preloads the latin subset. */
+/** Self-hosted display and UI fonts; every document preloads the latin subsets. */
 export const FONT_PRELOAD =
-	'<link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />';
+	'<link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />\n    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />';
 
 export function landingBodyMarkers(inner: string): string {
 	return `<!--seo:body-->${inner}<!--/seo:body-->`;

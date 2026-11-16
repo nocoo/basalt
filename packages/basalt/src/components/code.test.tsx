@@ -24,7 +24,7 @@ describe("Code", () => {
 	it("attaches a code panel without removing its own content insets", () => {
 		const { container } = render(<CodeBlock attached>{"const n = 1;"}</CodeBlock>);
 		const panel = container.querySelector("[data-basalt-code]");
-		expect(panel).toHaveClass("rounded-none", "border-0", "border-t");
+		expect(panel).toHaveClass("rounded-none", "border-0", "border-t", "shadow-none");
 		expect(panel).not.toHaveClass("border", "rounded-basalt-md");
 		expect(panel).toHaveAttribute("data-code-attached", "true");
 		expect(panel).not.toHaveAttribute("attached");

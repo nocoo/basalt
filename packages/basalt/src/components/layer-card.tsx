@@ -14,7 +14,7 @@ import { Empty } from "./empty";
 import { FOCUS_INSET } from "./overlay";
 import { SkeletonLine } from "./skeleton-line";
 
-const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border/50 text-basalt-foreground`;
+const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border/80 text-basalt-foreground shadow-basalt-card`;
 const PADDING_CLASSES = {
 	none: "",
 	sm: "p-basalt-card-sm",

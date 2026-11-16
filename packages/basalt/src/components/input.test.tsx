@@ -22,6 +22,8 @@ describe("Input", () => {
 		);
 		expect(input.className.split(/\s+/)).toEqual(expect.arrayContaining(["basalt-action"]));
 		expect(input.className).toContain("bg-basalt-control");
+		expect(input.className).toContain("shadow-basalt-control");
+		expect(input.className).not.toContain("shadow-xs");
 		expect(input.className).not.toContain("bg-basalt-background");
 	});
 

@@ -66,9 +66,14 @@ describe("Button", () => {
 		expect(button).not.toHaveClass("basalt-focus-inset");
 	});
 
-	it("renders a secondary variant", () => {
-		render(<Button variant="secondary">Cancel</Button>);
-		expect(screen.getByRole("button", { name: "Cancel" }).className).toContain("bg-basalt-control");
+	it("renders tactile control variants", () => {
+		const { rerender } = render(<Button variant="secondary">Cancel</Button>);
+		expect(screen.getByRole("button", { name: "Cancel" })).toHaveClass("bg-basalt-control");
+		rerender(<Button variant="outline">Cancel</Button>);
+		expect(screen.getByRole("button", { name: "Cancel" })).toHaveClass(
+			"bg-basalt-control",
+			"shadow-basalt-control",
+		);
 	});
 
 	it("can be disabled", () => {

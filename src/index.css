@@ -90,6 +90,10 @@
 
 	--radius-island: var(--basalt-radius-island);
 	--radius-card: var(--basalt-radius-card);
+	--font-sans: var(--basalt-font-sans);
+	--font-display: var(--basalt-font-display);
+	--font-mono: var(--basalt-font-mono);
+
 	--radius-widget: var(--basalt-radius-widget);
 	--radius-lg: var(--radius);
 	--radius-md: var(--basalt-radius-md);
@@ -325,7 +329,8 @@
 	}
 	body {
 		@apply bg-background text-foreground;
-		font-family: "Inter", system-ui, -apple-system, sans-serif;
+		font-family: var(--basalt-font-sans);
+		font-feature-settings: var(--basalt-font-features);
 	}
 }
 
