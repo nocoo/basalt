@@ -1,6 +1,6 @@
-import { BulletChart } from "@nocoo/basalt/charts/bullet";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { BulletChart } from "@/components/charts/bullet";
 
 const data = [
 	{ name: "dashboard.bulletAdherence", value: 68, target: 80 },

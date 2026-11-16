@@ -1,6 +1,6 @@
-import { RadarChart } from "@nocoo/basalt/charts/radar";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { RadarChart } from "@/components/charts/radar";
 
 const radarData = [
 	{ subject: "dashboard.radarSpeed", value: 80 },

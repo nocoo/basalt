@@ -2,14 +2,13 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { CATALOG } from "./catalog";
-import { catalogPageStatus } from "./catalog-page-status";
 
 const ROOT = process.cwd();
 
 describe("S10 release evidence", () => {
-	it("leaves maps planned", () => {
+	it("removes obsolete planned chart entries", () => {
 		expect(CATALOG.map((entry) => entry.slug)).not.toContain("installation");
-		expect(catalogPageStatus("maps")).toBe("planned");
+		expect(CATALOG.map((entry) => entry.slug)).not.toContain("maps");
 	});
 
 	it("locks System0 coverage thresholds and the prepublish plus dependency gates", () => {

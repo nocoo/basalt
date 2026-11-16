@@ -1,7 +1,7 @@
-import { Gauge } from "@nocoo/basalt/charts/gauge";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Gauge } from "@/components/charts/gauge";
 
 const score = 742;
 const max = 850;

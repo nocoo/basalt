@@ -68,10 +68,6 @@ export default defineConfig({
 				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/providers"),
 			},
 			{
-				find: "@nocoo/basalt/charts",
-				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/charts"),
-			},
-			{
 				find: "@nocoo/basalt",
 				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/index.ts"),
 			},

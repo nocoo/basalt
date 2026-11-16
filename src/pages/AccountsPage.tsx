@@ -1,8 +1,8 @@
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { Switch } from "@nocoo/basalt/components/switch";
 import {
 	Table,

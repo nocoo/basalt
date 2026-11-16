@@ -1,5 +1,5 @@
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import {
 	ArrowDownLeft,
 	ArrowUpRight,

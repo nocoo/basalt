@@ -1,4 +1,3 @@
-import { Sparkline } from "@nocoo/basalt/charts/sparkline";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
@@ -19,6 +18,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { TagBadge, type TagColor } from "@nocoo/basalt/components/tag-badge";
 import { useTranslation } from "react-i18next";
+import { Sparkline } from "@/components/charts/sparkline";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent, formatUsd } from "@/lib/format";
 import {

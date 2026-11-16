@@ -1,7 +1,7 @@
-import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { DonutChart } from "@/components/charts/donut";
 import { formatPercent } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 

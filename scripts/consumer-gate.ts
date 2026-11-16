@@ -48,18 +48,9 @@ import { assertConsumerResources } from "./consumer-resources";
 import { assertConsumerSlider } from "./consumer-slider";
 import { assertConsumerToast } from "./consumer-toast";
 
-export const HEAVY_PEERS = [
-	"tailwindcss",
-	"recharts",
-	"react-day-picker",
-	"@tanstack/react-table",
-] as const;
+export const HEAVY_PEERS = ["tailwindcss", "react-day-picker", "@tanstack/react-table"] as const;
 
-export const OPTIONAL_HEAVY_PEERS = [
-	"recharts",
-	"react-day-picker",
-	"@tanstack/react-table",
-] as const;
+export const OPTIONAL_HEAVY_PEERS = ["react-day-picker", "@tanstack/react-table"] as const;
 
 export const ROOT_EXPORTS = [
 	"Button",
@@ -132,19 +123,18 @@ export const NEXT_GATE: ConsumerGateConfig = {
 };
 
 export const HEAVY_OPTIONAL_PEERS = {
-	recharts: "^3",
 	"react-day-picker": "^10",
 	"@tanstack/react-table": "^9",
 } as const;
 
 export const HEAVY_CONSUMER_VERSIONS = {
-	recharts: "3.10.1",
 	"react-day-picker": "10.0.1",
 	"@tanstack/react-table": "9.2.4",
 } as const;
 
 export const HEAVY_SOURCE_SPECIFIERS = [
-	"@nocoo/basalt/charts/donut",
+	"@nocoo/basalt/components/chart",
+	"@nocoo/basalt/components/stat-card",
 	"@nocoo/basalt/components/date-picker",
 	"@nocoo/basalt/components/data-table",
 	"@nocoo/basalt/styles/standalone",
@@ -152,9 +142,14 @@ export const HEAVY_SOURCE_SPECIFIERS = [
 
 export const HEAVY_GRANULAR_PROBES = [
 	{
-		spec: "@nocoo/basalt/charts/donut",
-		exportName: "DonutChart",
-		fileSuffix: `${sep}dist${sep}charts${sep}donut.js`,
+		spec: "@nocoo/basalt/components/chart",
+		exportName: "ChartFrame",
+		fileSuffix: `${sep}dist${sep}components${sep}chart.js`,
+	},
+	{
+		spec: "@nocoo/basalt/components/stat-card",
+		exportName: "StatCard",
+		fileSuffix: `${sep}dist${sep}components${sep}stat-card.js`,
 	},
 	{
 		spec: "@nocoo/basalt/components/date-picker",

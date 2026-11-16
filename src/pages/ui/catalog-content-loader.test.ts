@@ -33,11 +33,11 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 93 ready / 1 planned status truth", () => {
+	it("uses the generated 98 ready status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(121);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(120);
-		expect(statuses.filter((status) => status === "planned")).toHaveLength(1);
+		expect(statuses).toHaveLength(98);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(98);
+		expect(statuses.filter((status) => status === "planned")).toHaveLength(0);
 	});
 
 	it("does not load a family for planned or missing slugs", async () => {
@@ -176,13 +176,13 @@ describe("catalog page content loader", () => {
 		expect(loadFamily).toHaveBeenCalledWith("data-layout");
 	});
 
-	it("loads charts family content without the legacy adapter", async () => {
+	it("loads chart content from data-layout", async () => {
 		const { loadCatalogPageContent } = await importLoader();
-		const first = loadCatalogPageContent("line");
-		expect(loadCatalogPageContent("line")).toBe(first);
+		const first = loadCatalogPageContent("chart");
+		expect(loadCatalogPageContent("chart")).toBe(first);
 		const content = await first;
-		expect(content?.docs.description).toBe("Line series.");
-		expect(content?.examples[0]?.id).toBe("line-default");
-		expect(loadFamily).toHaveBeenCalledWith("charts");
+		expect(content?.docs.description).toContain("Engine-agnostic chart chrome");
+		expect(content?.examples[0]?.id).toBe("chart-default");
+		expect(loadFamily).toHaveBeenCalledWith("data-layout");
 	});
 });

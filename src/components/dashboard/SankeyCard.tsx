@@ -1,6 +1,6 @@
-import { SankeyChart } from "@nocoo/basalt/charts/sankey";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { SankeyChart } from "@/components/charts/sankey";
 
 const data = {
 	nodes: [

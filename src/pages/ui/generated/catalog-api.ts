@@ -3,19 +3,15 @@
 import { API as accordionApi } from "./catalog-api/accordion";
 import { API as alertDialogApi } from "./catalog-api/alert-dialog";
 import { API as approvalCardApi } from "./catalog-api/approval-card";
-import { API as areaApi } from "./catalog-api/area";
 import { API as autocompleteApi } from "./catalog-api/autocomplete";
 import { API as avatarApi } from "./catalog-api/avatar";
 import { API as badgeApi } from "./catalog-api/badge";
 import { API as bannerApi } from "./catalog-api/banner";
-import { API as barApi } from "./catalog-api/bar";
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
 import { API as batteryMeterApi } from "./catalog-api/battery-meter";
 import { API as breadcrumbsApi } from "./catalog-api/breadcrumbs";
-import { API as bulletApi } from "./catalog-api/bullet";
 import { API as buttonApi } from "./catalog-api/button";
-import { API as chartColorsApi } from "./catalog-api/chart-colors";
-import { API as chartsApi } from "./catalog-api/charts";
+import { API as chartApi } from "./catalog-api/chart";
 import { API as chatBubbleApi } from "./catalog-api/chat-bubble";
 import { API as chatComposerApi } from "./catalog-api/chat-composer";
 import { API as chatHeaderApi } from "./catalog-api/chat-header";
@@ -32,16 +28,13 @@ import { API as commandPaletteApi } from "./catalog-api/command-palette";
 import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
 import { API as contextCardsApi } from "./catalog-api/context-cards";
 import { API as contextMenuApi } from "./catalog-api/context-menu";
-import { API as customChartApi } from "./catalog-api/custom-chart";
 import { API as dataTableApi } from "./catalog-api/data-table";
-import { API as dateNavigationApi } from "./catalog-api/date-navigation";
 import { API as datePickerApi } from "./catalog-api/date-picker";
 import { API as deleteResourceApi } from "./catalog-api/delete-resource";
 import { API as descriptionListApi } from "./catalog-api/description-list";
 import { API as dialogApi } from "./catalog-api/dialog";
 import { API as diffTableApi } from "./catalog-api/diff-table";
 import { API as dockApi } from "./catalog-api/dock";
-import { API as donutApi } from "./catalog-api/donut";
 import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
 import { API as editableNavItemApi } from "./catalog-api/editable-nav-item";
 import { API as emptyApi } from "./catalog-api/empty";
@@ -50,22 +43,15 @@ import { API as fieldApi } from "./catalog-api/field";
 import { API as fileDropzoneApi } from "./catalog-api/file-dropzone";
 import { API as filterBarApi } from "./catalog-api/filter-bar";
 import { API as flowApi } from "./catalog-api/flow";
-import { API as funnelApi } from "./catalog-api/funnel";
-import { API as gaugeApi } from "./catalog-api/gauge";
 import { API as gridApi } from "./catalog-api/grid";
-import { API as groupedBarApi } from "./catalog-api/grouped-bar";
-import { API as heatmapCalendarApi } from "./catalog-api/heatmap-calendar";
-import { API as heatmapMatrixApi } from "./catalog-api/heatmap-matrix";
 import { API as hoverCardApi } from "./catalog-api/hover-card";
 import { API as iconPickerApi } from "./catalog-api/icon-picker";
 import { API as inlineEditableApi } from "./catalog-api/inline-editable";
 import { API as inputApi } from "./catalog-api/input";
 import { API as inputAreaApi } from "./catalog-api/input-area";
 import { API as inputGroupApi } from "./catalog-api/input-group";
-import { API as itemListApi } from "./catalog-api/item-list";
 import { API as labelApi } from "./catalog-api/label";
 import { API as layerCardApi } from "./catalog-api/layer-card";
-import { API as lineApi } from "./catalog-api/line";
 import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
 import { API as linkProviderApi } from "./catalog-api/link-provider";
@@ -76,15 +62,12 @@ import { API as multiSelectApi } from "./catalog-api/multi-select";
 import { API as navigationMenuApi } from "./catalog-api/navigation-menu";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as paginationApi } from "./catalog-api/pagination";
-import { API as paletteApi } from "./catalog-api/palette";
 import { API as popoverApi } from "./catalog-api/popover";
 import { API as promptBarApi } from "./catalog-api/prompt-bar";
-import { API as radarApi } from "./catalog-api/radar";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as recommendationCardApi } from "./catalog-api/recommendation-card";
 import { API as resourceListApi } from "./catalog-api/resource-list";
 import { API as responsiveMasterDetailApi } from "./catalog-api/responsive-master-detail";
-import { API as sankeyApi } from "./catalog-api/sankey";
 import { API as scrollAreaApi } from "./catalog-api/scroll-area";
 import { API as sectionRuleApi } from "./catalog-api/section-rule";
 import { API as segmentControlApi } from "./catalog-api/segment-control";
@@ -95,9 +78,6 @@ import { API as sheetApi } from "./catalog-api/sheet";
 import { API as sidebarApi } from "./catalog-api/sidebar";
 import { API as skeletonLineApi } from "./catalog-api/skeleton-line";
 import { API as sliderApi } from "./catalog-api/slider";
-import { API as slotBarApi } from "./catalog-api/slot-bar";
-import { API as sparklineApi } from "./catalog-api/sparkline";
-import { API as stackedBarApi } from "./catalog-api/stacked-bar";
 import { API as statCardApi } from "./catalog-api/stat-card";
 import { API as statStripApi } from "./catalog-api/stat-strip";
 import { API as switchApi } from "./catalog-api/switch";
@@ -111,8 +91,6 @@ import { API as textApi } from "./catalog-api/text";
 import { API as themeProviderApi } from "./catalog-api/theme-provider";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
 import { API as thinkingApi } from "./catalog-api/thinking";
-import { API as timelineApi } from "./catalog-api/timeline";
-import { API as timeseriesApi } from "./catalog-api/timeseries";
 import { API as toastApi } from "./catalog-api/toast";
 import { API as toggleApi } from "./catalog-api/toggle";
 import { API as toggleGroupApi } from "./catalog-api/toggle-group";
@@ -125,19 +103,15 @@ export const CATALOG_API = {
 	accordion: accordionApi,
 	"alert-dialog": alertDialogApi,
 	"approval-card": approvalCardApi,
-	area: areaApi,
 	autocomplete: autocompleteApi,
 	avatar: avatarApi,
 	badge: badgeApi,
 	banner: bannerApi,
-	bar: barApi,
 	"basalt-mark": basaltMarkApi,
 	"battery-meter": batteryMeterApi,
 	breadcrumbs: breadcrumbsApi,
-	bullet: bulletApi,
 	button: buttonApi,
-	"chart-colors": chartColorsApi,
-	charts: chartsApi,
+	chart: chartApi,
 	"chat-bubble": chatBubbleApi,
 	"chat-composer": chatComposerApi,
 	"chat-header": chatHeaderApi,
@@ -154,16 +128,13 @@ export const CATALOG_API = {
 	"confirm-dialog": confirmDialogApi,
 	"context-cards": contextCardsApi,
 	"context-menu": contextMenuApi,
-	"custom-chart": customChartApi,
 	"data-table": dataTableApi,
-	"date-navigation": dateNavigationApi,
 	"date-picker": datePickerApi,
 	"delete-resource": deleteResourceApi,
 	"description-list": descriptionListApi,
 	dialog: dialogApi,
 	"diff-table": diffTableApi,
 	dock: dockApi,
-	donut: donutApi,
 	"dropdown-menu": dropdownMenuApi,
 	"editable-nav-item": editableNavItemApi,
 	empty: emptyApi,
@@ -172,22 +143,15 @@ export const CATALOG_API = {
 	"file-dropzone": fileDropzoneApi,
 	"filter-bar": filterBarApi,
 	flow: flowApi,
-	funnel: funnelApi,
-	gauge: gaugeApi,
 	grid: gridApi,
-	"grouped-bar": groupedBarApi,
-	"heatmap-calendar": heatmapCalendarApi,
-	"heatmap-matrix": heatmapMatrixApi,
 	"hover-card": hoverCardApi,
 	"icon-picker": iconPickerApi,
 	"inline-editable": inlineEditableApi,
 	input: inputApi,
 	"input-area": inputAreaApi,
 	"input-group": inputGroupApi,
-	"item-list": itemListApi,
 	label: labelApi,
 	"layer-card": layerCardApi,
-	line: lineApi,
 	link: linkApi,
 	"link-button": linkButtonApi,
 	"link-provider": linkProviderApi,
@@ -198,15 +162,12 @@ export const CATALOG_API = {
 	"navigation-menu": navigationMenuApi,
 	"page-header": pageHeaderApi,
 	pagination: paginationApi,
-	palette: paletteApi,
 	popover: popoverApi,
 	"prompt-bar": promptBarApi,
-	radar: radarApi,
 	radio: radioApi,
 	"recommendation-card": recommendationCardApi,
 	"resource-list": resourceListApi,
 	"responsive-master-detail": responsiveMasterDetailApi,
-	sankey: sankeyApi,
 	"scroll-area": scrollAreaApi,
 	"section-rule": sectionRuleApi,
 	"segment-control": segmentControlApi,
@@ -217,9 +178,6 @@ export const CATALOG_API = {
 	sidebar: sidebarApi,
 	"skeleton-line": skeletonLineApi,
 	slider: sliderApi,
-	"slot-bar": slotBarApi,
-	sparkline: sparklineApi,
-	"stacked-bar": stackedBarApi,
 	"stat-card": statCardApi,
 	"stat-strip": statStripApi,
 	switch: switchApi,
@@ -233,8 +191,6 @@ export const CATALOG_API = {
 	"theme-provider": themeProviderApi,
 	"theme-toggle": themeToggleApi,
 	thinking: thinkingApi,
-	timeline: timelineApi,
-	timeseries: timeseriesApi,
 	toast: toastApi,
 	toggle: toggleApi,
 	"toggle-group": toggleGroupApi,

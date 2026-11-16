@@ -33,7 +33,8 @@ const iconsUrl = import.meta.resolve("@nocoo/basalt/icons");
 const dialogPrimitiveUrl = import.meta.resolve("@nocoo/basalt/primitives/dialog");
 const buttonUrl = import.meta.resolve("@nocoo/basalt/components/button");
 const themeUrl = import.meta.resolve("@nocoo/basalt/providers/theme");
-const donutUrl = import.meta.resolve("@nocoo/basalt/charts/donut");
+const chartUrl = import.meta.resolve("@nocoo/basalt/components/chart");
+const statCardUrl = import.meta.resolve("@nocoo/basalt/components/stat-card");
 const datePickerUrl = import.meta.resolve("@nocoo/basalt/components/date-picker");
 const dataTableUrl = import.meta.resolve("@nocoo/basalt/components/data-table");
 
@@ -42,7 +43,8 @@ assertDist(new URL(iconsUrl), "/dist/icons.js");
 assertDist(new URL(dialogPrimitiveUrl), "/dist/primitives/dialog.js");
 assertDist(new URL(buttonUrl), "/dist/components/button.js");
 assertDist(new URL(themeUrl), "/dist/providers/theme.js");
-assertDist(new URL(donutUrl), "/dist/charts/donut.js");
+assertDist(new URL(chartUrl), "/dist/components/chart.js");
+assertDist(new URL(statCardUrl), "/dist/components/stat-card.js");
 assertDist(new URL(datePickerUrl), "/dist/components/date-picker.js");
 assertDist(new URL(dataTableUrl), "/dist/components/data-table.js");
 
@@ -55,7 +57,8 @@ const icons = await import("@nocoo/basalt/icons");
 const dialogPrimitive = await import("@nocoo/basalt/primitives/dialog");
 const button = await import("@nocoo/basalt/components/button");
 const theme = await import("@nocoo/basalt/providers/theme");
-const donut = await import("@nocoo/basalt/charts/donut");
+const chart = await import("@nocoo/basalt/components/chart");
+const statCard = await import("@nocoo/basalt/components/stat-card");
 const datePicker = await import("@nocoo/basalt/components/date-picker");
 const dataTable = await import("@nocoo/basalt/components/data-table");
 
@@ -82,8 +85,11 @@ if (button.Button == null) {
 if (theme.ThemeProvider == null) {
 	throw new Error("providers/theme did not export ThemeProvider");
 }
-if (donut.DonutChart == null) {
-	throw new Error("charts/donut did not export DonutChart");
+if (chart.ChartFrame == null || chart.ChartTooltipContent == null) {
+	throw new Error("components/chart did not export chart chrome");
+}
+if (statCard.StatCard == null || statCard.StatGrid == null) {
+	throw new Error("components/stat-card did not export StatCard and StatGrid");
 }
 if (datePicker.DatePicker == null) {
 	throw new Error("components/date-picker did not export DatePicker");

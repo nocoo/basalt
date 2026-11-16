@@ -25,9 +25,7 @@ describe("catalog entries", () => {
 			"Overlay composite",
 			"Graphic / text primitive",
 		];
-		const componentCategories = CATALOG_CATEGORIES.filter(
-			(category) => category.id !== "chart" && category.id !== "block",
-		);
+		const componentCategories = CATALOG_CATEGORIES.filter((category) => category.id !== "block");
 		for (const [index, category] of componentCategories.entries()) {
 			const namePattern = new RegExp(
 				`^\\|\\s*${designNames[index].replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\|`,
@@ -48,7 +46,7 @@ describe("catalog entries", () => {
 
 	it("provides one overview and complete navigation per category without duplicating exports", () => {
 		const paths = CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id));
-		expect(new Set(paths).size).toBe(9);
+		expect(new Set(paths).size).toBe(8);
 		const entries = CATALOG_CATEGORIES.flatMap((category) => {
 			expect(catalogCategory(category.id)).toBe(category);
 			expect(CATEGORY_GUIDES[category.id].practices).toHaveLength(4);
@@ -61,9 +59,7 @@ describe("catalog entries", () => {
 	});
 
 	it("does not carry a maturity field on catalog entries", () => {
-		expect(
-			CATALOG.filter((entry) => entry.category !== "chart" && entry.category !== "block"),
-		).toHaveLength(93);
+		expect(CATALOG.filter((entry) => entry.category !== "block")).toHaveLength(95);
 		expect(CATALOG.every((entry) => !("maturity" in entry))).toBe(true);
 	});
 
@@ -95,16 +91,16 @@ describe("catalog entries", () => {
 	});
 
 	it("accurately maps multi-word blocks and charts to valid PascalCase export names", () => {
-		const customChart = CATALOG_BY_SLUG.get("custom-chart");
-		if (!customChart) throw new Error("custom-chart missing");
-		expect(customChart.name).toBe("Custom Chart");
-		expect(customChart.exportName).toBe("CustomChart");
-		expect(customChart.importPath).toBe("@nocoo/basalt/charts/custom-chart");
-		expect(customChart.hasRootBarrel).toBe(false);
-		expect(catalogGranularImport(customChart)).toBe(
-			'import { CustomChart } from "@nocoo/basalt/charts/custom-chart";',
+		const chart = CATALOG_BY_SLUG.get("chart");
+		if (!chart) throw new Error("chart missing");
+		expect(chart.name).toBe("Chart");
+		expect(chart.exportName).toBe("ChartFrame");
+		expect(chart.importPath).toBe("@nocoo/basalt/components/chart");
+		expect(chart.hasRootBarrel).toBe(false);
+		expect(catalogGranularImport(chart)).toBe(
+			'import { ChartFrame } from "@nocoo/basalt/components/chart";',
 		);
-		expect(catalogBarrelImport(customChart)).toBeNull();
+		expect(catalogBarrelImport(chart)).toBeNull();
 
 		const pageHeader = CATALOG_BY_SLUG.get("page-header");
 		if (!pageHeader) throw new Error("page-header missing");

@@ -1,7 +1,7 @@
-import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { GroupedBarChart } from "@/components/charts/grouped-bar";
 import { formatUsd } from "@/lib/format";
 
 const data = [

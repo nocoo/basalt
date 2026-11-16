@@ -1,5 +1,3 @@
-import { DonutChart } from "@nocoo/basalt/charts/donut";
-import { LineChart } from "@nocoo/basalt/charts/line";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import {
@@ -12,6 +10,8 @@ import {
 } from "@nocoo/basalt/components/table";
 import { Briefcase, PieChart as PieChartIcon, TrendingDown, TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { DonutChart } from "@/components/charts/donut";
+import { LineChart } from "@/components/charts/line";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent, formatUsd } from "@/lib/format";
 import { CHART_COLORS, CHART_TOKENS, withAlpha } from "@/lib/palette";

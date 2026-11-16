@@ -1,7 +1,7 @@
-import { LineChart } from "@nocoo/basalt/charts/line";
-import { StatCard } from "@nocoo/basalt/charts/stat-card";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { LineChart } from "@/components/charts/line";
 import { formatUsd } from "@/lib/format";
 
 const HOURS = [

@@ -1,8 +1,3 @@
-import { AreaChart } from "@nocoo/basalt/charts/area";
-import { DonutChart } from "@nocoo/basalt/charts/donut";
-import { Gauge } from "@nocoo/basalt/charts/gauge";
-import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
-import { LineChart } from "@nocoo/basalt/charts/line";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import {
@@ -17,6 +12,11 @@ import { useAccent } from "@nocoo/basalt/providers/accent";
 import { Check } from "lucide-react";
 import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AreaChart } from "@/components/charts/area";
+import { DonutChart } from "@/components/charts/donut";
+import { Gauge } from "@/components/charts/gauge";
+import { GroupedBarChart } from "@/components/charts/grouped-bar";
+import { LineChart } from "@/components/charts/line";
 import { PaletteEditor } from "@/components/PaletteEditor";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent, formatUsd } from "@/lib/format";

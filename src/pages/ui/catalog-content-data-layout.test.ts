@@ -24,6 +24,8 @@ import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const DATA_LAYOUT_SCENARIOS = {
+	chart: ["chart-default"],
+	"stat-card": ["stat-card-default", "stat-card-metric-info", "stat-card-state-transition"],
 	"responsive-master-detail": [
 		"responsive-master-detail-resources",
 		"responsive-master-detail-drafts",
@@ -72,16 +74,16 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly twelve slugs and generated owners", () => {
+	it("owns exactly fourteen slugs and generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(12);
+		expect(Object.keys(dataLayout)).toHaveLength(14);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(120);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(98);
 	});
 
 	it("keeps the thirty scenarios in their audited order", () => {
@@ -103,7 +105,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(30);
+		expect(count).toBe(34);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

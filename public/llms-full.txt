@@ -55,6 +55,7 @@ Each URL below is a public documentation surface.
 - [File Dropzone](https://basaltui.com/ui/file-dropzone)
 - [Layer Card](https://basaltui.com/ui/layer-card)
 - [RecommendationCard](https://basaltui.com/ui/recommendation-card)
+- [StatCard](https://basaltui.com/ui/stat-card)
 - [Upload Queue](https://basaltui.com/ui/upload-queue)
 ## Layouts
 
@@ -62,6 +63,7 @@ Each URL below is a public documentation surface.
 
 - [Accordion](https://basaltui.com/ui/accordion)
 - [Breadcrumbs](https://basaltui.com/ui/breadcrumbs)
+- [Chart](https://basaltui.com/ui/chart)
 - [Chat Composer](https://basaltui.com/ui/chat-composer)
 - [Chat Header](https://basaltui.com/ui/chat-header)
 - [Chat Inbox](https://basaltui.com/ui/chat-inbox)
@@ -126,35 +128,6 @@ Each URL below is a public documentation surface.
 - [Slider](https://basaltui.com/ui/slider)
 - [Switch](https://basaltui.com/ui/switch)
 - [Text](https://basaltui.com/ui/text)
-## Charts
-
-[Overview](https://basaltui.com/ui/overview/chart): Data displays that prioritize comparison, meaning and accessible alternatives.
-
-- [AreaChart](https://basaltui.com/ui/area)
-- [BarChart](https://basaltui.com/ui/bar)
-- [BulletChart](https://basaltui.com/ui/bullet)
-- [ChartPalette](https://basaltui.com/ui/palette)
-- [Charts](https://basaltui.com/ui/charts)
-- [Colors](https://basaltui.com/ui/chart-colors)
-- [Custom Chart](https://basaltui.com/ui/custom-chart)
-- [DateNavigation](https://basaltui.com/ui/date-navigation)
-- [DonutChart](https://basaltui.com/ui/donut)
-- [FunnelChart](https://basaltui.com/ui/funnel)
-- [Gauge](https://basaltui.com/ui/gauge)
-- [GroupedBarChart](https://basaltui.com/ui/grouped-bar)
-- [HeatmapCalendar](https://basaltui.com/ui/heatmap-calendar)
-- [HeatmapMatrix](https://basaltui.com/ui/heatmap-matrix)
-- [ItemList](https://basaltui.com/ui/item-list)
-- [LineChart](https://basaltui.com/ui/line)
-- [Maps](https://basaltui.com/ui/maps)
-- [RadarChart](https://basaltui.com/ui/radar)
-- [Sankey](https://basaltui.com/ui/sankey)
-- [SlotBarChart](https://basaltui.com/ui/slot-bar)
-- [Sparkline](https://basaltui.com/ui/sparkline)
-- [StackedBarChart](https://basaltui.com/ui/stacked-bar)
-- [StatCard](https://basaltui.com/ui/stat-card)
-- [Timeline](https://basaltui.com/ui/timeline)
-- [Timeseries](https://basaltui.com/ui/timeseries)
 ## Blocks
 
 [Overview](https://basaltui.com/ui/overview/block): Reusable page-level patterns composed from the same component rules.

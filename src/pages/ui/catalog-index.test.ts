@@ -40,22 +40,22 @@ describe("catalog index model", () => {
 			CATALOG_CATEGORIES.map((category) => category.label),
 		);
 		expect(CATALOG_INDEX_GROUPS.map((group) => group.items.length)).toEqual([
-			2, 21, 2, 10, 32, 12, 14, 25, 3,
+			2, 21, 2, 11, 33, 12, 14, 3,
 		]);
-		expect(CATALOG_INDEX_ITEMS).toHaveLength(121);
+		expect(CATALOG_INDEX_ITEMS).toHaveLength(98);
 
 		const slugs = CATALOG_INDEX_ITEMS.map((item) => item.entry.slug);
-		expect(new Set(slugs).size).toBe(121);
+		expect(new Set(slugs).size).toBe(98);
 		expect(new Set(slugs)).toEqual(new Set(CATALOG.map((entry) => entry.slug)));
 	});
 
 	it("models the current page and release states independently", () => {
-		expect(CATALOG_INDEX_READY_COUNT).toBe(120);
+		expect(CATALOG_INDEX_READY_COUNT).toBe(98);
 		expect(
 			CATALOG_INDEX_ITEMS.filter((item) => item.pageStatus === "planned").map(
 				(item) => item.entry.slug,
 			),
-		).toEqual(["maps"]);
+		).toEqual([]);
 		expect(new Set(CATALOG_INDEX_ITEMS.map((item) => item.releaseStatus))).toEqual(
 			new Set(["stable", "catalog"]),
 		);
@@ -99,10 +99,8 @@ describe("catalog index model", () => {
 			slug: entry.slug,
 			pageStatus: resolveCatalogPageState(entry.slug, catalogDocs, catalogHero).pageStatus,
 		}));
-		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(120);
-		expect(states.filter((item) => item.pageStatus === "planned").map((item) => item.slug)).toEqual(
-			["maps"],
-		);
+		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(98);
+		expect(states.filter((item) => item.pageStatus === "planned")).toEqual([]);
 	});
 
 	it("requires both docs and hero for a ready page", () => {
@@ -162,10 +160,10 @@ describe("catalog index model", () => {
 						slug: "same",
 						name: "Second",
 						exportName: "Second",
-						importPath: "@nocoo/basalt/charts/second",
+						importPath: "@nocoo/basalt/components/second",
 						hasRootBarrel: false,
 						kind: "catalog",
-						category: "chart",
+						category: "layout",
 					},
 				],
 				docsBySlug: {},
@@ -197,13 +195,6 @@ describe("catalog index model", () => {
 		});
 		expect(catalogInputResults.flatMap((group) => group.items)).toHaveLength(3);
 
-		const plannedCharts = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, {
-			category: "chart",
-			status: "planned",
-		});
-		expect(plannedCharts).toHaveLength(1);
-		expect(plannedCharts[0]?.label).toBe("Charts");
-		expect(plannedCharts[0]?.items.map((item) => item.entry.slug)).toEqual(["maps"]);
 		expect(
 			filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { q: "input area" })[0]?.items,
 		).toHaveLength(1);
@@ -233,7 +224,7 @@ describe("catalog index model", () => {
 			32,
 		);
 		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "catalog")).toHaveLength(
-			89,
+			66,
 		);
 	});
 
@@ -241,9 +232,11 @@ describe("catalog index model", () => {
 		expect(parseCatalogIndexQuery(new URLSearchParams())).toEqual(DEFAULT_CATALOG_INDEX_QUERY);
 		expect(
 			parseCatalogIndexQuery(
-				new URLSearchParams("q=%20input%20%20group%20&category=chart&release=catalog&status=ready"),
+				new URLSearchParams(
+					"q=%20input%20%20group%20&category=layout&release=catalog&status=ready",
+				),
 			),
-		).toEqual({ q: "input group", category: "chart", release: "catalog", status: "ready" });
+		).toEqual({ q: "input group", category: "layout", release: "catalog", status: "ready" });
 		expect(
 			normalizeCatalogIndexQuery({
 				category: "other" as never,
@@ -253,7 +246,7 @@ describe("catalog index model", () => {
 		).toEqual(DEFAULT_CATALOG_INDEX_QUERY);
 		expect(
 			parseCatalogIndexQuery(
-				new URLSearchParams("q=input&q=button&category=chart&category=chart&status=ready"),
+				new URLSearchParams("q=input&q=button&category=layout&category=layout&status=ready"),
 			),
 		).toEqual({ ...DEFAULT_CATALOG_INDEX_QUERY, status: "ready" });
 	});

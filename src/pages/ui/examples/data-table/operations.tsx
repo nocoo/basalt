@@ -20,7 +20,7 @@ import {
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 
 const Sparkline = lazy(() =>
-	import("@nocoo/basalt/charts/sparkline").then((module) => ({
+	import("@/components/charts/sparkline").then((module) => ({
 		default: module.Sparkline<{ x: number; y: number }>,
 	})),
 );

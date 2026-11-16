@@ -1,8 +1,8 @@
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
-import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { AlertTriangle, Clock, Router, Server, Wifi } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Timeline } from "@/components/charts/timeline";
 import { HeatmapCard } from "@/components/dashboard/HeatmapCard";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { RadarChartCard } from "@/components/dashboard/RadarChartCard";

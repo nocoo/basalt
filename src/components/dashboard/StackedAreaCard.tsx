@@ -1,6 +1,6 @@
-import { AreaChart } from "@nocoo/basalt/charts/area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { AreaChart } from "@/components/charts/area";
 
 const data = [
 	{ name: "Mon", core: 120, growth: 80, churn: 30 },

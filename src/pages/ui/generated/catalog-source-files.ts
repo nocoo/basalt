@@ -564,149 +564,17 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/prompt-bar.js.map (sourcesContent[0])"
 	},
-	"charts": {
-		"file": "packages/basalt/src/charts/charts.tsx",
-		"hash": "70b173545c1ef361",
+	"chart": {
+		"file": "packages/basalt/src/components/chart.tsx",
+		"hash": "8c74e608e4ef2a59",
 		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/charts.js.map (sourcesContent[0])"
-	},
-	"chart-colors": {
-		"file": "packages/basalt/src/charts/chart-colors.tsx",
-		"hash": "a227003ef4032c2c",
-		"kind": "source-bundle",
-		"packageReadLocation": "node_modules/@nocoo/basalt/ai/sources.json (\"packages/basalt/src/charts/chart-colors.tsx\")"
-	},
-	"timeseries": {
-		"file": "packages/basalt/src/charts/timeseries.tsx",
-		"hash": "a97f7bc67bac8900",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/timeseries.js.map (sourcesContent[0])"
-	},
-	"custom-chart": {
-		"file": "packages/basalt/src/charts/custom-chart.tsx",
-		"hash": "ee5c619b30f862ee",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/custom-chart.js.map (sourcesContent[0])"
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chart.js.map (sourcesContent[0])"
 	},
 	"stat-card": {
-		"file": "packages/basalt/src/charts/stat-card.tsx",
-		"hash": "a48b091bee820b49",
+		"file": "packages/basalt/src/components/stat-card.tsx",
+		"hash": "5d5b1d86b6b7478f",
 		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/stat-card.js.map (sourcesContent[0])"
-	},
-	"slot-bar": {
-		"file": "packages/basalt/src/charts/slot-bar.tsx",
-		"hash": "9808696ecd4bbb99",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/slot-bar.js.map (sourcesContent[0])"
-	},
-	"bar": {
-		"file": "packages/basalt/src/charts/bar.tsx",
-		"hash": "9c9c059c6448e65d",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/bar.js.map (sourcesContent[0])"
-	},
-	"line": {
-		"file": "packages/basalt/src/charts/line.tsx",
-		"hash": "787ac542cff81ec5",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/line.js.map (sourcesContent[0])"
-	},
-	"area": {
-		"file": "packages/basalt/src/charts/area.tsx",
-		"hash": "4cce396f51cfac6e",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/area.js.map (sourcesContent[0])"
-	},
-	"donut": {
-		"file": "packages/basalt/src/charts/donut.tsx",
-		"hash": "8b6fed386010ebca",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/donut.js.map (sourcesContent[0])"
-	},
-	"grouped-bar": {
-		"file": "packages/basalt/src/charts/grouped-bar.tsx",
-		"hash": "d8988df06ff0bd6b",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/grouped-bar.js.map (sourcesContent[0])"
-	},
-	"stacked-bar": {
-		"file": "packages/basalt/src/charts/stacked-bar.tsx",
-		"hash": "dada2f206be089bb",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/stacked-bar.js.map (sourcesContent[0])"
-	},
-	"sparkline": {
-		"file": "packages/basalt/src/charts/sparkline.tsx",
-		"hash": "32517f30bdf55058",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/sparkline.js.map (sourcesContent[0])"
-	},
-	"heatmap-calendar": {
-		"file": "packages/basalt/src/charts/heatmap-calendar.tsx",
-		"hash": "ad0187e00e4bbc51",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-calendar.js.map (sourcesContent[0])"
-	},
-	"heatmap-matrix": {
-		"file": "packages/basalt/src/charts/heatmap-matrix.tsx",
-		"hash": "2c26493bb58f6155",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-matrix.js.map (sourcesContent[0])"
-	},
-	"gauge": {
-		"file": "packages/basalt/src/charts/gauge.tsx",
-		"hash": "1837a0ee314ebdfb",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/gauge.js.map (sourcesContent[0])"
-	},
-	"radar": {
-		"file": "packages/basalt/src/charts/radar.tsx",
-		"hash": "a05fef35570c6c66",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/radar.js.map (sourcesContent[0])"
-	},
-	"funnel": {
-		"file": "packages/basalt/src/charts/funnel.tsx",
-		"hash": "2831e8d32c7755fe",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/funnel.js.map (sourcesContent[0])"
-	},
-	"bullet": {
-		"file": "packages/basalt/src/charts/bullet.tsx",
-		"hash": "b89317488bb05fd8",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/bullet.js.map (sourcesContent[0])"
-	},
-	"timeline": {
-		"file": "packages/basalt/src/charts/timeline.tsx",
-		"hash": "792cfb070b64c52e",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/timeline.js.map (sourcesContent[0])"
-	},
-	"sankey": {
-		"file": "packages/basalt/src/charts/sankey.tsx",
-		"hash": "b5e93ee11aeebc44",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/sankey.js.map (sourcesContent[0])"
-	},
-	"item-list": {
-		"file": "packages/basalt/src/charts/item-list.tsx",
-		"hash": "b1ff9017e84657af",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/item-list.js.map (sourcesContent[0])"
-	},
-	"date-navigation": {
-		"file": "packages/basalt/src/charts/date-navigation.tsx",
-		"hash": "6ce29604fd6e30ae",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/date-navigation.js.map (sourcesContent[0])"
-	},
-	"palette": {
-		"file": "packages/basalt/src/charts/palette.tsx",
-		"hash": "5626ae508c576c4d",
-		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/palette.js.map (sourcesContent[0])"
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/stat-card.js.map (sourcesContent[0])"
 	},
 	"page-header": {
 		"file": "packages/basalt/src/components/page-header.tsx",

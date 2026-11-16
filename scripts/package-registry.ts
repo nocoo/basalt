@@ -520,10 +520,10 @@ Basalt supports both lightweight root imports and tree-shakeable granular subpat
 // Root import for standard components
 import { Button, Input, LayerCard, Dialog, Toaster, toast } from "@nocoo/basalt";
 
-// Granular subpaths for visualization, calendar pickers, and tables
+// Granular subpaths for chart chrome, calendar pickers, and tables
+import { ChartFrame } from "@nocoo/basalt/components/chart";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
-import { Sparkline } from "@nocoo/basalt/charts/sparkline";
 
 export function ImportConventionsDemo() {
   return (
@@ -536,7 +536,7 @@ export function ImportConventionsDemo() {
 \`\`\`
 
 ### Optional Peer Dependency Rules
-- **Recharts**: Required ONLY when using chart subpaths (\`@nocoo/basalt/charts/*\`). Root imports and basic UI do not import Recharts.
+- **Chart engines**: Recharts remains application-owned; \`@nocoo/basalt/components/chart\` contains engine-agnostic frame, legend, tooltip, palette, and type utilities only.
 - **DatePicker & DataTable**: Built-in implementations operate standalone without requiring \`react-day-picker\` or \`@tanstack/react-table\`.
 
 ---
@@ -545,7 +545,7 @@ export function ImportConventionsDemo() {
 
 ### Tailwind CSS v4 Contract
 \`\`\`css
-@import "@nocoo/basalt/styles/tailwind";
+@import "@nocoo/basalt/styles";
 @import "tailwindcss";
 \`\`\`
 

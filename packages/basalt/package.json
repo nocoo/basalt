@@ -51,10 +51,6 @@
 			"types": "./dist/providers/*.d.ts",
 			"import": "./dist/providers/*.js"
 		},
-		"./charts/*": {
-			"types": "./dist/charts/*.d.ts",
-			"import": "./dist/charts/*.js"
-		},
 		"./styles": "./dist/styles/tailwind.css",
 		"./styles/tailwind": "./dist/styles/tailwind.css",
 		"./styles/standalone": "./dist/styles/standalone.css"
@@ -97,16 +93,12 @@
 	"peerDependencies": {
 		"react": "^19",
 		"react-dom": "^19",
-		"recharts": "^3",
 		"react-day-picker": "^10",
 		"@tanstack/react-table": "^9",
 		"tailwindcss": "^4"
 	},
 	"peerDependenciesMeta": {
 		"tailwindcss": {
-			"optional": true
-		},
-		"recharts": {
 			"optional": true
 		},
 		"react-day-picker": {

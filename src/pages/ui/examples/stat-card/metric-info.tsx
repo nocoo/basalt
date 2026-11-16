@@ -1,6 +1,6 @@
-import { StatCard } from "@nocoo/basalt/charts/stat-card";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import {
 	Tooltip,
 	TooltipContent,

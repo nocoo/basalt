@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import type { ComponentType } from "react";
 import { describe, expect, it } from "vitest";
-import { StatCard } from "../charts/stat-card";
 import { Banner } from "./banner";
 import { ChatBubble } from "./chat-bubble";
 import { ChatMessage } from "./chat-message";
 import { FlowNode } from "./flow";
 import { GridItem } from "./grid";
 import { LayerCard } from "./layer-card";
+import { StatCard } from "./stat-card";
 import { StatStrip } from "./stat-strip";
 import { UploadItem } from "./upload-queue";
 

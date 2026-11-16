@@ -1,18 +1,13 @@
-import { AreaChart } from "@nocoo/basalt/charts/area";
-import { BarChart } from "@nocoo/basalt/charts/bar";
-import { ChartFrame, ChartShell } from "@nocoo/basalt/charts/frame";
-import { Gauge } from "@nocoo/basalt/charts/gauge";
-import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
-import { HeatmapMatrix } from "@nocoo/basalt/charts/heatmap-matrix";
-import { LineChart } from "@nocoo/basalt/charts/line";
-import { StatCard } from "@nocoo/basalt/charts/stat-card";
+import { Button } from "@nocoo/basalt/components/button";
 import {
+	ChartFrame,
+	ChartShell,
 	ChartTooltipDivider,
 	ChartTooltipRow,
 	ChartTooltipSummary,
-} from "@nocoo/basalt/charts/tooltip";
-import { Button } from "@nocoo/basalt/components/button";
+} from "@nocoo/basalt/components/chart";
 import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import {
 	Tooltip,
 	TooltipContent,
@@ -22,7 +17,13 @@ import {
 import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
 import { HelpCircle, RefreshCw } from "lucide-react";
 import { useState } from "react";
-import { Bar, BarChart as RechartsBar } from "recharts";
+import { Bar, BarChart as RechartsBar, ResponsiveContainer } from "recharts";
+import { AreaChart } from "./charts/area";
+import { BarChart } from "./charts/bar";
+import { Gauge } from "./charts/gauge";
+import { HeatmapCalendar, heatmapColorScales } from "./charts/heatmap-calendar";
+import { HeatmapMatrix } from "./charts/heatmap-matrix";
+import { LineChart } from "./charts/line";
 
 const BAR_DATA = [
 	{ x: "Q1", y: 120 },
@@ -214,9 +215,11 @@ function ChartsPanel() {
 						className="consumer-chart-plot-static"
 						summary="Frame summary text."
 					>
-						<RechartsBar data={BAR_DATA} accessibilityLayer={false}>
-							<Bar dataKey="y" />
-						</RechartsBar>
+						<ResponsiveContainer width="100%" height="100%">
+							<RechartsBar data={BAR_DATA} accessibilityLayer={false}>
+								<Bar dataKey="y" />
+							</RechartsBar>
+						</ResponsiveContainer>
 					</ChartFrame>
 				</div>
 
@@ -242,9 +245,11 @@ function ChartsPanel() {
 							</details>
 						}
 					>
-						<RechartsBar data={BAR_DATA}>
-							<Bar dataKey="y" />
-						</RechartsBar>
+						<ResponsiveContainer width="100%" height="100%">
+							<RechartsBar data={BAR_DATA}>
+								<Bar dataKey="y" />
+							</RechartsBar>
+						</ResponsiveContainer>
 					</ChartShell>
 				</div>
 

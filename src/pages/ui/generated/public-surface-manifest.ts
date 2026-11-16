@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.4.2",
-	"totalModules": 155,
-	"totalSymbols": 808,
-	"totalValues": 422,
-	"totalTypes": 386,
+	"totalModules": 127,
+	"totalSymbols": 732,
+	"totalValues": 392,
+	"totalTypes": 340,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -827,1402 +827,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./charts/area",
-			"importPath": "@nocoo/basalt/charts/area",
-			"sourceFile": "packages/basalt/src/charts/area.tsx",
-			"ownerDoc": "src/pages/ui/area",
-			"ownerKind": "catalog-component",
-			"summary": "AreaChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "AreaChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/area",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/area"
-				},
-				{
-					"name": "AreaChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/area",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/area"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/bar",
-			"importPath": "@nocoo/basalt/charts/bar",
-			"sourceFile": "packages/basalt/src/charts/bar.tsx",
-			"ownerDoc": "src/pages/ui/bar",
-			"ownerKind": "catalog-component",
-			"summary": "BarChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "BarChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/bar"
-				},
-				{
-					"name": "BarChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/bar"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/bullet",
-			"importPath": "@nocoo/basalt/charts/bullet",
-			"sourceFile": "packages/basalt/src/charts/bullet.tsx",
-			"ownerDoc": "src/pages/ui/bullet",
-			"ownerKind": "catalog-component",
-			"summary": "BulletChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "BulletChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/bullet",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/bullet"
-				},
-				{
-					"name": "BulletChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/bullet",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/bullet"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/chart-colors",
-			"importPath": "@nocoo/basalt/charts/chart-colors",
-			"sourceFile": "packages/basalt/src/charts/chart-colors.tsx",
-			"ownerDoc": "src/pages/ui/chart-colors",
-			"ownerKind": "catalog-component",
-			"summary": "Colors component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ColorsProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/chart-colors",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/chart-colors"
-				},
-				{
-					"name": "CHART_COLORS",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chart-colors",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/chart-colors"
-				},
-				{
-					"name": "Colors",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/chart-colors",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/chart-colors"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/charts",
-			"importPath": "@nocoo/basalt/charts/charts",
-			"sourceFile": "packages/basalt/src/charts/charts.tsx",
-			"ownerDoc": "src/pages/ui/charts",
-			"ownerKind": "catalog-component",
-			"summary": "Charts component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Charts",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/charts",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/charts"
-				},
-				{
-					"name": "ChartsProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/charts",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/charts"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/config",
-			"importPath": "@nocoo/basalt/charts/config",
-			"sourceFile": "packages/basalt/src/charts/config.ts",
-			"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-			"ownerKind": "chart-subsystem",
-			"summary": "Recharts default axis, margins, grid, and typography styling tokens",
-			"symbols": [
-				{
-					"name": "chartFontSize",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "chartTextStyle",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "chartTickStyle",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "getChartColor",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "cartesianAxisProps",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "chartTooltipContentStyle",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "chartTooltipProps",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "seriesColor",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "ChartSeriesDescriptor",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "ChartTypeFace",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "CHART_TYPE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "AXIS_CONFIG",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "GRID_PROPS",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "BAR_RADIUS",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "ANIMATION_PROPS",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "CHART_TOOLTIP_CURSOR_LINE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "CHART_TOOLTIP_CURSOR_BAR",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "RESPONSIVE_CONTAINER_PROPS",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "CHART_PLOT_MARGIN",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				},
-				{
-					"name": "CHART_PLOT_MARGIN_BARE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-config",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/config"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/custom-chart",
-			"importPath": "@nocoo/basalt/charts/custom-chart",
-			"sourceFile": "packages/basalt/src/charts/custom-chart.tsx",
-			"ownerDoc": "src/pages/ui/custom-chart",
-			"ownerKind": "catalog-component",
-			"summary": "Custom Chart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "CustomChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/custom-chart",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/custom-chart"
-				},
-				{
-					"name": "CustomChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/custom-chart",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/custom-chart"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/date-navigation",
-			"importPath": "@nocoo/basalt/charts/date-navigation",
-			"sourceFile": "packages/basalt/src/charts/date-navigation.tsx",
-			"ownerDoc": "src/pages/ui/date-navigation",
-			"ownerKind": "catalog-component",
-			"summary": "DateNavigation component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "DateNavigation",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/date-navigation",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/date-navigation"
-				},
-				{
-					"name": "DateNavigationPickerProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/date-navigation",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/date-navigation"
-				},
-				{
-					"name": "DateNavigationDisplayProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/date-navigation",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/date-navigation"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/donut",
-			"importPath": "@nocoo/basalt/charts/donut",
-			"sourceFile": "packages/basalt/src/charts/donut.tsx",
-			"ownerDoc": "src/pages/ui/donut",
-			"ownerKind": "catalog-component",
-			"summary": "DonutChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "DonutChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/donut",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/donut"
-				},
-				{
-					"name": "DonutChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/donut",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/donut"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/frame",
-			"importPath": "@nocoo/basalt/charts/frame",
-			"sourceFile": "packages/basalt/src/charts/frame.tsx",
-			"ownerDoc": "INTEGRATION.md#chart-frame",
-			"ownerKind": "chart-subsystem",
-			"summary": "Chart container framing and responsive sizing primitives (ChartFrame, ChartShell)",
-			"symbols": [
-				{
-					"name": "ChartFrame",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-frame",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/frame"
-				},
-				{
-					"name": "ChartShell",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-frame",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/frame"
-				},
-				{
-					"name": "ChartFrameProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-frame",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/frame"
-				},
-				{
-					"name": "ChartShellProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-frame",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/frame"
-				},
-				{
-					"name": "ChartAccessibilityProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-frame",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/frame"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/funnel",
-			"importPath": "@nocoo/basalt/charts/funnel",
-			"sourceFile": "packages/basalt/src/charts/funnel.tsx",
-			"ownerDoc": "src/pages/ui/funnel",
-			"ownerKind": "catalog-component",
-			"summary": "FunnelChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "FunnelChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/funnel",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/funnel"
-				},
-				{
-					"name": "FunnelChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/funnel",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/funnel"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/gauge",
-			"importPath": "@nocoo/basalt/charts/gauge",
-			"sourceFile": "packages/basalt/src/charts/gauge.tsx",
-			"ownerDoc": "src/pages/ui/gauge",
-			"ownerKind": "catalog-component",
-			"summary": "Gauge component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Gauge",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/gauge",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/gauge"
-				},
-				{
-					"name": "GaugeProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/gauge",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/gauge"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/grouped-bar",
-			"importPath": "@nocoo/basalt/charts/grouped-bar",
-			"sourceFile": "packages/basalt/src/charts/grouped-bar.tsx",
-			"ownerDoc": "src/pages/ui/grouped-bar",
-			"ownerKind": "catalog-component",
-			"summary": "GroupedBarChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "GroupedBarChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/grouped-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/grouped-bar"
-				},
-				{
-					"name": "GroupedBarChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/grouped-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/grouped-bar"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/heatmap-calendar",
-			"importPath": "@nocoo/basalt/charts/heatmap-calendar",
-			"sourceFile": "packages/basalt/src/charts/heatmap-calendar.tsx",
-			"ownerDoc": "src/pages/ui/heatmap-calendar",
-			"ownerKind": "catalog-component",
-			"summary": "HeatmapCalendar component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "HeatmapCalendar",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/heatmap-calendar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-calendar"
-				},
-				{
-					"name": "HeatmapDataPoint",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/heatmap-calendar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-calendar"
-				},
-				{
-					"name": "heatmapColorScales",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/heatmap-calendar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-calendar"
-				},
-				{
-					"name": "HeatmapCalendarValuesProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/heatmap-calendar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-calendar"
-				},
-				{
-					"name": "HeatmapCalendarYearProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/heatmap-calendar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-calendar"
-				},
-				{
-					"name": "HeatmapCalendarProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/heatmap-calendar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-calendar"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/heatmap-matrix",
-			"importPath": "@nocoo/basalt/charts/heatmap-matrix",
-			"sourceFile": "packages/basalt/src/charts/heatmap-matrix.tsx",
-			"ownerDoc": "src/pages/ui/heatmap-matrix",
-			"ownerKind": "catalog-component",
-			"summary": "HeatmapMatrix component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "HeatmapMatrixValue",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/heatmap-matrix",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
-				},
-				{
-					"name": "HeatmapMatrixCellContext",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/heatmap-matrix",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
-				},
-				{
-					"name": "HeatmapMatrixProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/heatmap-matrix",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
-				},
-				{
-					"name": "HeatmapMatrix",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/heatmap-matrix",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/item-list",
-			"importPath": "@nocoo/basalt/charts/item-list",
-			"sourceFile": "packages/basalt/src/charts/item-list.tsx",
-			"ownerDoc": "src/pages/ui/item-list",
-			"ownerKind": "catalog-component",
-			"summary": "ItemList component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ItemList",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/item-list",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/item-list"
-				},
-				{
-					"name": "ItemListItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/item-list",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/item-list"
-				},
-				{
-					"name": "ItemListProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/item-list",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/item-list"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/legend",
-			"importPath": "@nocoo/basalt/charts/legend",
-			"sourceFile": "packages/basalt/src/charts/legend.tsx",
-			"ownerDoc": "INTEGRATION.md#chart-legend",
-			"ownerKind": "chart-subsystem",
-			"summary": "Chart legend layout and indicator shapes (ChartLegend)",
-			"symbols": [
-				{
-					"name": "ChartLegend",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-legend",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/legend"
-				},
-				{
-					"name": "ChartLegendShape",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-legend",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/legend"
-				},
-				{
-					"name": "ChartLegendProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-legend",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/legend"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/line",
-			"importPath": "@nocoo/basalt/charts/line",
-			"sourceFile": "packages/basalt/src/charts/line.tsx",
-			"ownerDoc": "src/pages/ui/line",
-			"ownerKind": "catalog-component",
-			"summary": "LineChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "LineChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/line",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/line"
-				},
-				{
-					"name": "LineChartAxisDomain",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/line",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/line"
-				},
-				{
-					"name": "LineChartNumericKeys",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/line",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/line"
-				},
-				{
-					"name": "LineChartLegendRenderer",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/line",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/line"
-				},
-				{
-					"name": "LineChartTooltipRenderer",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/line",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/line"
-				},
-				{
-					"name": "LineChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/line",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/line"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/palette",
-			"importPath": "@nocoo/basalt/charts/palette",
-			"sourceFile": "packages/basalt/src/charts/palette.tsx",
-			"ownerDoc": "src/pages/ui/palette",
-			"ownerKind": "catalog-component",
-			"summary": "ChartPalette component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "ChartPalette",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/palette",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/palette"
-				},
-				{
-					"name": "withAlpha",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/palette",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/palette"
-				},
-				{
-					"name": "chartAxis",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/palette",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/palette"
-				},
-				{
-					"name": "chartMuted",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/palette",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/palette"
-				},
-				{
-					"name": "chart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/palette",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/palette"
-				},
-				{
-					"name": "CHART_COLORS",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/palette",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/palette"
-				},
-				{
-					"name": "ChartPaletteProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/palette",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/palette"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/radar",
-			"importPath": "@nocoo/basalt/charts/radar",
-			"sourceFile": "packages/basalt/src/charts/radar.tsx",
-			"ownerDoc": "src/pages/ui/radar",
-			"ownerKind": "catalog-component",
-			"summary": "RadarChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "RadarChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/radar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/radar"
-				},
-				{
-					"name": "RadarChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/radar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/radar"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/sample",
-			"importPath": "@nocoo/basalt/charts/sample",
-			"sourceFile": "packages/basalt/src/charts/sample.ts",
-			"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-			"ownerKind": "legacy-internal",
-			"summary": "Static mock datasets used for fallback preview rendering",
-			"symbols": [
-				{
-					"name": "BulletPoint",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "NamedValue",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "RadarPoint",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "SankeyData",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "XYPoint",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "SAMPLE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "DONUT_SAMPLE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "RADAR_SAMPLE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "FUNNEL_SAMPLE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "BULLET_SAMPLE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				},
-				{
-					"name": "SANKEY_SAMPLE",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/charts/sample"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/sankey",
-			"importPath": "@nocoo/basalt/charts/sankey",
-			"sourceFile": "packages/basalt/src/charts/sankey.tsx",
-			"ownerDoc": "src/pages/ui/sankey",
-			"ownerKind": "catalog-component",
-			"summary": "SankeyChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "SankeyChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/sankey",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/sankey"
-				},
-				{
-					"name": "SankeyChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/sankey",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/sankey"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/series",
-			"importPath": "@nocoo/basalt/charts/series",
-			"sourceFile": "packages/basalt/src/charts/series.ts",
-			"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-			"ownerKind": "chart-subsystem",
-			"summary": "Chart series descriptor resolution and color assignment utilities",
-			"symbols": [
-				{
-					"name": "resolveChartSeries",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "applyLeadColor",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "xyFallbackKeys",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "ChartSeriesDescriptor",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "XYSeriesKey",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "XYSeriesDescriptor",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "BulletSeriesKey",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "BulletSeriesDescriptor",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "XYPoint",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "NamedValue",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "RadarPoint",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "BulletPoint",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				},
-				{
-					"name": "SankeyData",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#chart-series",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/series"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/slot-bar",
-			"importPath": "@nocoo/basalt/charts/slot-bar",
-			"sourceFile": "packages/basalt/src/charts/slot-bar.tsx",
-			"ownerDoc": "src/pages/ui/slot-bar",
-			"ownerKind": "catalog-component",
-			"summary": "SlotBarChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "SlotBarChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/slot-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/slot-bar"
-				},
-				{
-					"name": "SlotBarItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/slot-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/slot-bar"
-				},
-				{
-					"name": "SlotBarItemsProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/slot-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/slot-bar"
-				},
-				{
-					"name": "SlotBarDataProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/slot-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/slot-bar"
-				},
-				{
-					"name": "SlotBarChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/slot-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/slot-bar"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/sparkline",
-			"importPath": "@nocoo/basalt/charts/sparkline",
-			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"ownerDoc": "src/pages/ui/sparkline",
-			"ownerKind": "catalog-component",
-			"summary": "Sparkline component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Sparkline",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/sparkline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/sparkline"
-				},
-				{
-					"name": "SparklineProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/sparkline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/sparkline"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/stacked-bar",
-			"importPath": "@nocoo/basalt/charts/stacked-bar",
-			"sourceFile": "packages/basalt/src/charts/stacked-bar.tsx",
-			"ownerDoc": "src/pages/ui/stacked-bar",
-			"ownerKind": "catalog-component",
-			"summary": "StackedBarChart component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "StackedBarChart",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stacked-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/stacked-bar"
-				},
-				{
-					"name": "StackedBarChartProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/stacked-bar",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/stacked-bar"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/stat-card",
-			"importPath": "@nocoo/basalt/charts/stat-card",
-			"sourceFile": "packages/basalt/src/charts/stat-card.tsx",
-			"ownerDoc": "src/pages/ui/stat-card",
-			"ownerKind": "catalog-component",
-			"summary": "StatCard component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "StatCard",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/stat-card"
-				},
-				{
-					"name": "StatGrid",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/stat-card"
-				},
-				{
-					"name": "StatCardProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/stat-card"
-				},
-				{
-					"name": "StatGridProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/stat-card"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/timeline",
-			"importPath": "@nocoo/basalt/charts/timeline",
-			"sourceFile": "packages/basalt/src/charts/timeline.tsx",
-			"ownerDoc": "src/pages/ui/timeline",
-			"ownerKind": "catalog-component",
-			"summary": "Timeline component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Timeline",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/timeline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeline"
-				},
-				{
-					"name": "TimelineEvent",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/timeline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeline"
-				},
-				{
-					"name": "TimelineItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/timeline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeline"
-				},
-				{
-					"name": "TimelineItemsProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/timeline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeline"
-				},
-				{
-					"name": "TimelineEventsProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/timeline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeline"
-				},
-				{
-					"name": "TimelineProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/timeline",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeline"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/timeseries",
-			"importPath": "@nocoo/basalt/charts/timeseries",
-			"sourceFile": "packages/basalt/src/charts/timeseries.tsx",
-			"ownerDoc": "src/pages/ui/timeseries",
-			"ownerKind": "catalog-component",
-			"summary": "Timeseries component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "Timeseries",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/timeseries",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeseries"
-				},
-				{
-					"name": "TimeseriesProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/timeseries",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/charts/timeseries"
-				}
-			]
-		},
-		{
-			"subpath": "./charts/tooltip",
-			"importPath": "@nocoo/basalt/charts/tooltip",
-			"sourceFile": "packages/basalt/src/charts/tooltip.tsx",
-			"ownerDoc": "INTEGRATION.md#chart-tooltip",
-			"ownerKind": "chart-subsystem",
-			"summary": "Chart hover tooltip item and content formatters (ChartTooltipContent)",
-			"symbols": [
-				{
-					"name": "formatChartNumber",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipRow",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipDivider",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipSummary",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipContent",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipContentProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipRowProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipSummaryProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				},
-				{
-					"name": "ChartTooltipDividerProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "INTEGRATION.md#chart-tooltip",
-					"ownerKind": "chart-subsystem",
-					"originModule": "@nocoo/basalt/charts/tooltip"
-				}
-			]
-		},
-		{
 			"subpath": "./components/accordion",
 			"importPath": "@nocoo/basalt/components/accordion",
 			"sourceFile": "packages/basalt/src/components/accordion.tsx",
@@ -2989,6 +1593,472 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/button",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/button"
+				}
+			]
+		},
+		{
+			"subpath": "./components/chart",
+			"importPath": "@nocoo/basalt/components/chart",
+			"sourceFile": "packages/basalt/src/components/chart.tsx",
+			"ownerDoc": "src/pages/ui/chart",
+			"ownerKind": "catalog-component",
+			"summary": "Chart component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ChartFrame",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "formatChartNumber",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipRow",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipDivider",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipSummary",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipContent",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartPalette",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "resolveChartSeries",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "applyLeadColor",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "xyFallbackKeys",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartLegend",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chartFontSize",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chartTextStyle",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chartTickStyle",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "getChartColor",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "cartesianAxisProps",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chartTooltipContentStyle",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chartTooltipProps",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "seriesColor",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartFrameProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartShellProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartAccessibilityProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartShell",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipItem",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipRowProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipSummaryProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipDividerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "withAlpha",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chartAxis",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chartMuted",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "chart",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "CHART_COLORS",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartPaletteProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartSeriesDescriptor",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "XYSeriesKey",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "XYSeriesDescriptor",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "BulletSeriesKey",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "BulletSeriesDescriptor",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "XYPoint",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "NamedValue",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "RadarPoint",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "BulletPoint",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "SankeyData",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartLegendShape",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartLegendProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTypeFace",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "CHART_TYPE",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "AXIS_CONFIG",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "GRID_PROPS",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "BAR_RADIUS",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ANIMATION_PROPS",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "CHART_TOOLTIP_CURSOR_LINE",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "CHART_TOOLTIP_CURSOR_BAR",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "RESPONSIVE_CONTAINER_PROPS",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "CHART_PLOT_MARGIN",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "CHART_PLOT_MARGIN_BARE",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
 				}
 			]
 		},
@@ -6559,6 +5629,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/slider",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/slider"
+				}
+			]
+		},
+		{
+			"subpath": "./components/stat-card",
+			"importPath": "@nocoo/basalt/components/stat-card",
+			"sourceFile": "packages/basalt/src/components/stat-card.tsx",
+			"ownerDoc": "src/pages/ui/stat-card",
+			"ownerKind": "catalog-component",
+			"summary": "StatCard component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "StatCard",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatGrid",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatCardProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatGridProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/stat-card"
 				}
 			]
 		},

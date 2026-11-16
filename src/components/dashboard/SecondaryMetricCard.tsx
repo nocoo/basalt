@@ -1,7 +1,7 @@
-import { BarChart } from "@nocoo/basalt/charts/bar";
-import { StatCard } from "@nocoo/basalt/charts/stat-card";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { BarChart } from "@/components/charts/bar";
 import { formatUsd } from "@/lib/format";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

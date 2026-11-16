@@ -330,7 +330,7 @@ import "./index.css";
 		try {
 			mkdirSync(join(root, "tailwindcss"), { recursive: true });
 			mkdirSync(join(root, "recharts"), { recursive: true });
-			expect(findInstalledPackages(root, OPTIONAL_HEAVY_PEERS)).toEqual(["recharts"]);
+			expect(findInstalledPackages(root, OPTIONAL_HEAVY_PEERS)).toEqual([]);
 			expect(findInstalledPackages(root, ["tailwindcss"])).toEqual(["tailwindcss"]);
 		} finally {
 			rmSync(root, { recursive: true, force: true });
@@ -554,7 +554,7 @@ describe("heavy consumer gate helpers", () => {
 	it("locks optional peer metadata and exact consumer versions", () => {
 		const pkg = JSON.parse(readFileSync("packages/basalt/package.json", "utf8")) as Manifest;
 		assertOptionalPeerMetadata(pkg);
-		expect(pkg.peerDependencies?.recharts).toBe("^3");
+		expect(pkg.peerDependencies?.recharts).toBeUndefined();
 		expect(pkg.peerDependencies?.["react-day-picker"]).toBe("^10");
 		expect(pkg.peerDependencies?.["@tanstack/react-table"]).toBe("^9");
 		expect(() => assertExactVersion("recharts", "3.0.0", "3.10.1")).toThrow(/3\.0\.0/);
@@ -588,13 +588,13 @@ describe("heavy consumer gate helpers", () => {
 
 	it("rejects root imports and missing granular heavy source", () => {
 		expect(() =>
-			assertHeavyConsumerSource(`import { DonutChart } from "@nocoo/basalt";
+			assertHeavyConsumerSource(`import { ChartFrame } from "@nocoo/basalt";
 import "@nocoo/basalt/styles/standalone";
 `),
 		).toThrow(/package root/);
 		expect(() =>
 			assertRootConsumerSource(
-				`import { DonutChart } from "@nocoo/basalt/charts/donut";
+				`import { ChartFrame } from "@nocoo/basalt/components/chart";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
 import "@nocoo/basalt/styles/standalone";
@@ -608,7 +608,7 @@ import { Button } from "@nocoo/basalt";
 `),
 		).toThrow(/package root/);
 		expect(() =>
-			assertHeavyConsumerSource(`import { DonutChart } from "@nocoo/basalt/charts/donut";
+			assertHeavyConsumerSource(`import { ChartFrame } from "@nocoo/basalt/components/chart";
 `),
 		).toThrow(/missing specifier/);
 	});
@@ -623,9 +623,9 @@ import { Button } from "@nocoo/basalt";
 `),
 		).toThrow(/extra specifier @nocoo\/basalt\/providers\/theme/);
 		expect(() =>
-			assertHeavyConsumerSource(`${heavySource()}import { BarChart } from "@nocoo/basalt/charts/bar";
+			assertHeavyConsumerSource(`${heavySource()}import { BarChart } from "@nocoo/basalt/components/unknown-chart";
 `),
-		).toThrow(/extra specifier @nocoo\/basalt\/charts\/bar/);
+		).toThrow(/extra specifier @nocoo\/basalt\/components\/unknown-chart/);
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}import "@nocoo/basalt/styles";
 `),
@@ -637,13 +637,13 @@ import { Button } from "@nocoo/basalt";
 	});
 
 	it("rejects comment-only, string, and template pseudo-imports", () => {
-		const source = `// import { DonutChart } from "@nocoo/basalt/charts/donut";
+		const source = `// import { ChartFrame } from "@nocoo/basalt/components/chart";
 // import { DatePicker } from "@nocoo/basalt/components/date-picker";
 // import { DataTable } from "@nocoo/basalt/components/data-table";
 // import "@nocoo/basalt/styles/standalone";
-const quoted = 'import { DonutChart } from "@nocoo/basalt/charts/donut"';
+const quoted = 'import { ChartFrame } from "@nocoo/basalt/components/chart"';
 const templated = \`import { DatePicker } from "@nocoo/basalt/components/date-picker"\`;
-function DonutChart() {}
+function ChartFrame() {}
 function DatePicker() {}
 function DataTable() {}
 `;
@@ -653,31 +653,33 @@ function DataTable() {}
 
 	it("rejects side-effect heavy imports plus local shadows", () => {
 		expect(() =>
-			assertHeavyConsumerSource(`import "@nocoo/basalt/charts/donut";
+			assertHeavyConsumerSource(`import "@nocoo/basalt/components/chart";
+import "@nocoo/basalt/components/stat-card";
 import "@nocoo/basalt/components/date-picker";
 import "@nocoo/basalt/components/data-table";
 import "@nocoo/basalt/styles/standalone";
-function DonutChart() {}
+function ChartFrame() {}
 function DatePicker() {}
 function DataTable() {}
 `),
-		).toThrow(/DonutChart/);
+		).toThrow(/ChartFrame/);
 	});
 
 	it("rejects aliased named imports and local shadows of heavy bindings", () => {
 		expect(() =>
-			assertHeavyConsumerSource(`import { DonutChart as Chart } from "@nocoo/basalt/charts/donut";
+			assertHeavyConsumerSource(`import { ChartFrame as Chart } from "@nocoo/basalt/components/chart";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { DatePicker as Picker } from "@nocoo/basalt/components/date-picker";
 import { DataTable as Table } from "@nocoo/basalt/components/data-table";
 import "@nocoo/basalt/styles/standalone";
-export const n = <><Chart /><Picker /><Table /></>;
+export const n = <><Chart /><StatCard value={1} /><Picker /><Table /></>;
 `),
-		).toThrow(/aliased named import DonutChart/);
+		).toThrow(/aliased named import ChartFrame/);
 		expect(() =>
-			assertHeavyConsumerSource(`${heavySource()}function DonutChart() { return null; }
-export const n = <><DonutChart /><DatePicker /><DataTable /></>;
+			assertHeavyConsumerSource(`${heavySource()}function ChartFrame() { return null; }
+export const n = <><ChartFrame /><DatePicker /><DataTable /></>;
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 	});
 
 	it("loads @swc/core as a locked root dependency", () => {
@@ -697,95 +699,95 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}function Inner() {
 	if (false) {
-		var DonutChart = () => null;
+		var ChartFrame = () => null;
 		var DatePicker = () => null;
 		var DataTable = () => null;
 	}
-	return <><DonutChart /><DatePicker /><DataTable /></>;
+	return <><ChartFrame /><DatePicker /><DataTable /></>;
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}function Inner() {
 	if (false) {
-		var DonutChart = () => null;
+		var ChartFrame = () => null;
 		var DatePicker = () => null;
 		var DataTable = () => null;
 	}
 }
-export const n = <><DonutChart /><DatePicker /><DataTable /></>;
+export const n = <><ChartFrame /><DatePicker /><DataTable /></>;
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
-			assertHeavyConsumerSource(`${heavySource()}function Inner({ DonutChart, DatePicker, DataTable }) {
-	return <><DonutChart /><DatePicker /><DataTable /></>;
+			assertHeavyConsumerSource(`${heavySource()}function Inner({ ChartFrame, DatePicker, DataTable }) {
+	return <><ChartFrame /><DatePicker /><DataTable /></>;
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
-			assertHeavyConsumerSource(`${heavySource()}function Inner(DonutChart, DatePicker = 1, ...DataTable) {
-	return <><DonutChart /><DatePicker /><DataTable /></>;
+			assertHeavyConsumerSource(`${heavySource()}function Inner(ChartFrame, DatePicker = 1, ...DataTable) {
+	return <><ChartFrame /><DatePicker /><DataTable /></>;
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
-			assertHeavyConsumerSource(`${heavySource()}const Inner = ([DonutChart, DatePicker, ...DataTable]) => <><DonutChart /><DatePicker /><DataTable /></>;
+			assertHeavyConsumerSource(`${heavySource()}const Inner = ([ChartFrame, DatePicker, ...DataTable]) => <><ChartFrame /><DatePicker /><DataTable /></>;
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}class View {
-	render({ DonutChart, DatePicker, DataTable }) {
-		return <><DonutChart /><DatePicker /><DataTable /></>;
+	render({ ChartFrame, DatePicker, DataTable }) {
+		return <><ChartFrame /><DatePicker /><DataTable /></>;
 	}
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
-			assertHeavyConsumerSource(`${heavySource()}try {} catch ({ DonutChart, DatePicker, DataTable }) {
-	void <><DonutChart /><DatePicker /><DataTable /></>;
+			assertHeavyConsumerSource(`${heavySource()}try {} catch ({ ChartFrame, DatePicker, DataTable }) {
+	void <><ChartFrame /><DatePicker /><DataTable /></>;
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}function Inner() {
-	const { DonutChart, DatePicker, DataTable } = {};
-	return <><DonutChart /><DatePicker /><DataTable /></>;
+	const { ChartFrame, DatePicker, DataTable } = {};
+	return <><ChartFrame /><DatePicker /><DataTable /></>;
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 	});
 
 	it("rejects constructor parameter-property shadows used in the same body", () => {
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}class Fake {
-	constructor(public DonutChart: any, private DatePicker: any, protected DataTable: any) {
-		void <><DonutChart /><DatePicker /><DataTable /></>;
+	constructor(public ChartFrame: any, private DatePicker: any, protected DataTable: any) {
+		void <><ChartFrame /><DatePicker /><DataTable /></>;
 	}
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}class Fake {
-	constructor(public DonutChart = 1, private DatePicker: any = null, protected DataTable = () => null) {
-		void <><DonutChart /><DatePicker /><DataTable /></>;
+	constructor(public ChartFrame = 1, private DatePicker: any = null, protected DataTable = () => null) {
+		void <><ChartFrame /><DatePicker /><DataTable /></>;
 	}
 }
 `),
-		).toThrow(/shadows DonutChart/);
+		).toThrow(/shadows ChartFrame/);
 	});
 
 	it("rejects unrendered heavy bindings and syntax errors", () => {
-		expect(() => assertHeavyConsumerSource(heavySource())).toThrow(/does not render DonutChart/);
+		expect(() => assertHeavyConsumerSource(heavySource())).toThrow(/does not render ChartFrame/);
 		expect(() =>
-			assertHeavyConsumerSource(`import { DonutChart from "@nocoo/basalt/charts/donut"`),
+			assertHeavyConsumerSource(`import { ChartFrame from "@nocoo/basalt/components/chart"`),
 		).toThrow(/syntax errors/);
 	});
 
 	it("rejects dynamic import and require of basalt modules", () => {
 		expect(() =>
-			assertHeavyConsumerSource(`${heavySource()}void import("@nocoo/basalt/charts/donut");
+			assertHeavyConsumerSource(`${heavySource()}void import("@nocoo/basalt/components/chart");
 `),
-		).toThrow(/dynamic import of @nocoo\/basalt\/charts\/donut/);
+		).toThrow(/dynamic import of @nocoo\/basalt\/components\/chart/);
 		expect(() =>
 			assertHeavyConsumerSource(`${heavySource()}require("@nocoo/basalt");
 `),
@@ -811,10 +813,10 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 	it("rejects granular resolution into the repository or a missing export", () => {
 		expect(() =>
 			assertGranularResolution({
-				spec: "@nocoo/basalt/charts/donut",
-				resolved: "file:///repo/node_modules/@nocoo/basalt/dist/charts/donut.js",
-				real: "/repo/node_modules/@nocoo/basalt/dist/charts/donut.js",
-				exportName: "DonutChart",
+				spec: "@nocoo/basalt/components/chart",
+				resolved: "file:///repo/node_modules/@nocoo/basalt/dist/components/chart.js",
+				real: "/repo/node_modules/@nocoo/basalt/dist/components/chart.js",
+				exportName: "ChartFrame",
 				hasExport: true,
 				expectedRoot: "/repo/node_modules/@nocoo/basalt",
 				repoRoot: "/repo",
@@ -823,10 +825,10 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		).toThrow(/repository/);
 		expect(() =>
 			assertGranularResolution({
-				spec: "@nocoo/basalt/charts/donut",
-				resolved: "file:///tmp/consumer/node_modules/@nocoo/basalt/dist/charts/donut.js",
-				real: "/tmp/consumer/node_modules/@nocoo/basalt/dist/charts/donut.js",
-				exportName: "DonutChart",
+				spec: "@nocoo/basalt/components/chart",
+				resolved: "file:///tmp/consumer/node_modules/@nocoo/basalt/dist/components/chart.js",
+				real: "/tmp/consumer/node_modules/@nocoo/basalt/dist/components/chart.js",
+				exportName: "ChartFrame",
 				hasExport: false,
 				expectedRoot: "/tmp/consumer/node_modules/@nocoo/basalt",
 				repoRoot: "/repo",
@@ -841,14 +843,15 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		expect(existsSync(tempRoot)).toBe(false);
 	});
 
-	it("still requires the three named heavy exports", () => {
+	it("still requires the named heavy exports", () => {
 		expect(() =>
-			assertHeavyConsumerSource(`import "@nocoo/basalt/charts/donut";
+			assertHeavyConsumerSource(`import "@nocoo/basalt/components/chart";
+import "@nocoo/basalt/components/stat-card";
 import "@nocoo/basalt/components/date-picker";
 import "@nocoo/basalt/components/data-table";
 import "@nocoo/basalt/styles/standalone";
 `),
-		).toThrow(/DonutChart/);
+		).toThrow(/ChartFrame/);
 	});
 
 	it("does not embed a developer home path in the heavy slice", () => {
@@ -873,7 +876,8 @@ import "@nocoo/basalt/styles/standalone";
 });
 
 function heavySource() {
-	return `import { DonutChart } from "@nocoo/basalt/charts/donut";
+	return `import { ChartFrame } from "@nocoo/basalt/components/chart";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
 import "@nocoo/basalt/styles/standalone";

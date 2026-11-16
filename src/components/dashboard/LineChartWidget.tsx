@@ -1,4 +1,4 @@
-import { LineChart } from "@nocoo/basalt/charts/line";
+import { LineChart } from "@/components/charts/line";
 import { cn } from "@/lib/utils";
 
 export interface LineChartDataPoint {

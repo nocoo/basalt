@@ -28,8 +28,7 @@
 			"@nocoo/basalt/primitives/*": ["./packages/basalt/src/primitives/*"],
 			"@nocoo/basalt": ["./packages/basalt/src/index.ts"],
 			"@nocoo/basalt/components/*": ["./packages/basalt/src/components/*"],
-			"@nocoo/basalt/providers/*": ["./packages/basalt/src/providers/*"],
-			"@nocoo/basalt/charts/*": ["./packages/basalt/src/charts/*"]
+			"@nocoo/basalt/providers/*": ["./packages/basalt/src/providers/*"]
 		}
 	},
 	"include": ["src", "packages/basalt/src"]

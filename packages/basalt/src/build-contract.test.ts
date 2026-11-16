@@ -152,7 +152,8 @@ describe("package build contract", () => {
 		expect(runtime).toContain('import("@nocoo/basalt")');
 		expect(runtime).toContain('import("@nocoo/basalt/components/button")');
 		expect(runtime).toContain('import("@nocoo/basalt/providers/theme")');
-		expect(runtime).toContain('import("@nocoo/basalt/charts/donut")');
+		expect(runtime).toContain('import("@nocoo/basalt/components/chart")');
+		expect(runtime).toContain('import("@nocoo/basalt/components/stat-card")');
 		expect(runtime).toContain('import("@nocoo/basalt/components/date-picker")');
 		expect(runtime).toContain('import("@nocoo/basalt/components/data-table")');
 		expect(runtime).toContain("process.versions.bun");
@@ -193,9 +194,10 @@ describe("package build contract", () => {
 		expect(JSON.stringify(pkg.exports)).not.toContain("./src/");
 		expect(Object.keys(pkg.exports)).toEqual([
 			".",
+			"./icons",
+			"./primitives/*",
 			"./components/*",
 			"./providers/*",
-			"./charts/*",
 			"./styles",
 			"./styles/tailwind",
 			"./styles/standalone",
@@ -212,14 +214,20 @@ describe("package build contract", () => {
 			types: "./dist/providers/*.d.ts",
 			import: "./dist/providers/*.js",
 		});
-		expect(pkg.exports["./charts/*"]).toEqual({
-			types: "./dist/charts/*.d.ts",
-			import: "./dist/charts/*.js",
+		expect(pkg.exports["./primitives/*"]).toEqual({
+			types: "./dist/primitives/*.d.ts",
+			import: "./dist/primitives/*.js",
 		});
 		expect(pkg.exports["./styles"]).toBe("./dist/styles/tailwind.css");
 		expect(pkg.exports["./styles/tailwind"]).toBe("./dist/styles/tailwind.css");
 		expect(pkg.exports["./styles/standalone"]).toBe("./dist/styles/standalone.css");
-		for (const key of [".", "./components/*", "./providers/*", "./charts/*"] as const) {
+		for (const key of [
+			".",
+			"./icons",
+			"./primitives/*",
+			"./components/*",
+			"./providers/*",
+		] as const) {
 			const value = pkg.exports[key];
 			expect(typeof value).toBe("object");
 			if (typeof value === "string") {
@@ -302,7 +310,7 @@ describe("package build contract", () => {
 			for (const rel of [
 				"components/button.js.map",
 				"providers/theme.js.map",
-				"charts/donut.js.map",
+				"components/chart.js.map",
 				"utils/cn.js.map",
 			]) {
 				const map = JSON.parse(readFileSync(path.join(dist, rel), "utf8")) as {

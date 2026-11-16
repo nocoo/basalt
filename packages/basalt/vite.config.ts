@@ -48,7 +48,6 @@ export default defineConfig({
 				"marked",
 				"entities",
 				"sonner",
-				/^recharts($|\/)/,
 			],
 			output: {
 				banner: '"use client";',

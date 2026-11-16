@@ -59,8 +59,8 @@ function pageSource(name: string) {
 	return readFileSync(path.join(process.cwd(), "src/pages", name), "utf8");
 }
 
-function usesPackageCharts(source: string) {
-	return source.includes("@nocoo/basalt/charts/");
+function usesSiteCharts(source: string) {
+	return source.includes("@/components/charts/");
 }
 
 function dashboardImportSpecs(source: string) {
@@ -74,8 +74,8 @@ function dashboardFile(spec: string) {
 	return path.join(DASHBOARD_DIR, name);
 }
 
-function moduleUsesPackageCharts(source: string, seen = new Set<string>()): boolean {
-	if (usesPackageCharts(source)) {
+function moduleUsesSiteCharts(source: string, seen = new Set<string>()): boolean {
+	if (usesSiteCharts(source)) {
 		return true;
 	}
 	for (const spec of dashboardImportSpecs(source)) {
@@ -84,7 +84,7 @@ function moduleUsesPackageCharts(source: string, seen = new Set<string>()): bool
 			continue;
 		}
 		seen.add(file);
-		if (moduleUsesPackageCharts(readFileSync(file, "utf8"), seen)) {
+		if (moduleUsesSiteCharts(readFileSync(file, "utf8"), seen)) {
 			return true;
 		}
 	}
@@ -106,20 +106,20 @@ describe("Examples package contract", () => {
 		}
 	});
 
-	it("resolves chart pages through package chart exports", () => {
+	it("resolves chart pages through site-owned chart helpers", () => {
 		for (const name of CHART_PAGES) {
-			expect(moduleUsesPackageCharts(pageSource(name)), name).toBe(true);
+			expect(moduleUsesSiteCharts(pageSource(name)), name).toBe(true);
 		}
 	});
 
-	it("dashboard chart wrappers import package charts", () => {
+	it("dashboard chart wrappers import site-owned chart helpers", () => {
 		const nonChart = new Set(["ActionGridCard.tsx", "ItemListCard.tsx", "RecentListCard.tsx"]);
 		for (const file of readdirSync(DASHBOARD_DIR).filter((name) => name.endsWith(".tsx"))) {
 			if (nonChart.has(file)) {
 				continue;
 			}
 			const source = readFileSync(path.join(DASHBOARD_DIR, file), "utf8");
-			expect(moduleUsesPackageCharts(source), file).toBe(true);
+			expect(moduleUsesSiteCharts(source), file).toBe(true);
 		}
 	});
 

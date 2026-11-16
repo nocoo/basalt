@@ -1,11 +1,8 @@
-import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
-import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
-import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { Button } from "@nocoo/basalt/components/button";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import {
 	Activity,
 	AlertTriangle,
@@ -22,6 +19,9 @@ import {
 	Zap,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { HeatmapCalendar, heatmapColorScales } from "@/components/charts/heatmap-calendar";
+import { SlotBarChart } from "@/components/charts/slot-bar";
+import { Timeline } from "@/components/charts/timeline";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";

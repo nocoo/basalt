@@ -13,34 +13,8 @@ const TEXT_SELECTOR = [
 	'[data-testid="chart-legend"] span',
 	'[data-hero-scenario] ol[aria-label="Timeline"] span',
 ].join(",");
-const SVG_CHARTS = new Set([
-	"charts",
-	"timeseries",
-	"custom-chart",
-	"bar",
-	"line",
-	"area",
-	"donut",
-	"grouped-bar",
-	"stacked-bar",
-	"sparkline",
-	"gauge",
-	"radar",
-	"funnel",
-	"bullet",
-	"sankey",
-]);
-const KEYBOARD_TOOLTIPS = new Set([
-	"charts",
-	"timeseries",
-	"custom-chart",
-	"bar",
-	"line",
-	"area",
-	"grouped-bar",
-	"stacked-bar",
-	"bullet",
-]);
+const SVG_CHARTS = new Set(["chart"]);
+const KEYBOARD_TOOLTIPS = new Set(["chart"]);
 const HOVER_TOOLTIPS: Record<string, string> = {
 	donut: ".recharts-pie-sector .recharts-sector",
 	funnel: ".recharts-funnel-trapezoid",
@@ -143,7 +117,7 @@ async function assertTextContrast(page: Page, selector: string, label: string) {
 export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 	const cases: string[] = [];
 	const chartPages = CATALOG.filter(
-		(entry) => entry.category === "chart" && CATALOG_PAGE_STATUS[entry.slug] === "ready",
+		(entry) => entry.slug === "chart" && CATALOG_PAGE_STATUS[entry.slug] === "ready",
 	);
 	let textPairs = 0;
 	let minimumTextContrast = Number.POSITIVE_INFINITY;

@@ -24,7 +24,7 @@ describe("package registry generator and AI package assets", () => {
 		referenceRegistry = generatePackageRegistry(process.cwd(), referenceManifest);
 	}, 30_000);
 
-	it("derives complete package registry with all 155 modules and 120 catalog entries", () => {
+	it("derives complete package registry with all 127 modules and 98 catalog entries", () => {
 		const registry = structuredClone(referenceRegistry);
 
 		const rootPkg = JSON.parse(readFileSync("package.json", "utf8")) as {
@@ -32,15 +32,15 @@ describe("package registry generator and AI package assets", () => {
 		};
 		expect(registry.packageName).toBe("@nocoo/basalt");
 		expect(registry.packageVersion).toBe(rootPkg.version);
-		expect(registry.totalModules).toBe(155);
-		expect(registry.totalSymbols).toBe(808);
-		expect(registry.totalValues).toBe(422);
-		expect(registry.totalTypes).toBe(386);
+		expect(registry.totalModules).toBe(127);
+		expect(registry.totalSymbols).toBe(732);
+		expect(registry.totalValues).toBe(392);
+		expect(registry.totalTypes).toBe(340);
 		expect(registry.totalCssExports).toBe(3);
-		expect(registry.totalCatalogEntries).toBe(120);
+		expect(registry.totalCatalogEntries).toBe(98);
 
 		// Catalog entries completeness
-		expect(registry.catalogEntries).toHaveLength(120);
+		expect(registry.catalogEntries).toHaveLength(98);
 		for (const cat of registry.catalogEntries) {
 			expect(cat.slug.length).toBeGreaterThan(0);
 			expect(cat.name.length).toBeGreaterThan(0);
@@ -163,11 +163,7 @@ describe("package registry generator and AI package assets", () => {
 		);
 		expect(dataTableMod?.optionalPeers).toEqual([]);
 
-		const rechartsModules = registry.modules.filter((m) => m.optionalPeers.includes("recharts"));
-		expect(rechartsModules).toHaveLength(17);
-		for (const rm of rechartsModules) {
-			expect(rm.importPath.startsWith("@nocoo/basalt/charts/")).toBe(true);
-		}
+		expect(registry.modules.some((m) => m.optionalPeers.includes("recharts"))).toBe(false);
 	});
 
 	it("maps repository docs to published in-package paths", () => {
@@ -445,18 +441,21 @@ describe("package registry generator and AI package assets", () => {
 					(m) => m.importPath === "@nocoo/basalt/components/button",
 				);
 				const paletteBefore = baseline.modules.find(
-					(m) => m.importPath === "@nocoo/basalt/charts/palette",
+					(m) => m.importPath === "@nocoo/basalt/providers/link",
 				);
-				expect(buttonBefore?.optionalPeers).not.toContain("recharts");
+				expect(buttonBefore?.optionalPeers).not.toContain("react-day-picker");
 
 				const cnPath = path.join(fixture, "packages/basalt/src/utils/cn.ts");
 				const controlPath = path.join(fixture, "packages/basalt/src/utils/control-surface.ts");
 				const originalCn = readFileSync(cnPath, "utf8");
 				const originalControl = readFileSync(controlPath, "utf8");
 
-				// Create mutual circular import between cn and control-surface, and introduce recharts into control-surface
+				// Create mutual circular import between cn and control-surface, and introduce react-day-picker into control-surface
 				writeFileSync(cnPath, `${originalCn}\nimport "./control-surface";\n`);
-				writeFileSync(controlPath, `${originalControl}\nimport "./cn";\nimport "recharts";\n`);
+				writeFileSync(
+					controlPath,
+					`${originalControl}\nimport "./cn";\nimport "react-day-picker";\n`,
+				);
 
 				// Subsequent generatePackageRegistry on the exact same repoRoot fixture reusing surfaceManifest
 				const updated = generatePackageRegistry(fixture, surfaceManifest);
@@ -465,12 +464,12 @@ describe("package registry generator and AI package assets", () => {
 				);
 				const rootAfter = updated.modules.find((m) => m.importPath === "@nocoo/basalt");
 				const paletteAfter = updated.modules.find(
-					(m) => m.importPath === "@nocoo/basalt/charts/palette",
+					(m) => m.importPath === "@nocoo/basalt/providers/link",
 				);
 
-				// Button and root transitively depend on cn/control-surface, so they receive recharts
-				expect(buttonAfter?.optionalPeers).toContain("recharts");
-				expect(rootAfter?.optionalPeers).toContain("recharts");
+				// Button and root transitively depend on cn/control-surface, so they receive react-day-picker
+				expect(buttonAfter?.optionalPeers).toContain("react-day-picker");
+				expect(rootAfter?.optionalPeers).toContain("react-day-picker");
 
 				// Unrelated palette does not depend on cn/control-surface and must NOT be polluted
 				expect(paletteAfter?.optionalPeers).toEqual(paletteBefore?.optionalPeers);

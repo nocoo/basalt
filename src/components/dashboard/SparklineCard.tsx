@@ -1,6 +1,6 @@
-import { Sparkline } from "@nocoo/basalt/charts/sparkline";
-import { StatCard } from "@nocoo/basalt/charts/stat-card";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { useTranslation } from "react-i18next";
+import { Sparkline } from "@/components/charts/sparkline";
 
 const sparkData = [
 	{ day: "Mon", value: 18 },

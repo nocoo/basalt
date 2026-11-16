@@ -117,15 +117,15 @@ describe("site metadata", () => {
 
 	it("groups the full catalog by family and links each surface", () => {
 		const full = renderLlmsFull([
-			{ slug: "line", name: "Line", category: "chart" },
+			{ slug: "chart", name: "Chart", category: "layout" },
 			{ slug: "button", name: "Button", category: "action" },
 			{ slug: "page-header", name: "Page Header", category: "block" },
 			{ slug: "text", name: "Text", category: "action" },
 		]);
 		expect(full).toContain("## Actions");
 		expect(full.indexOf("- [Button]")).toBeLessThan(full.indexOf("- [Text]"));
-		expect(full).toContain(`${SITE_ORIGIN}/ui/line`);
-		expect(full).toContain("## Charts");
+		expect(full).toContain(`${SITE_ORIGIN}/ui/chart`);
+		expect(full).toContain("## Layouts");
 		expect(full).toContain("## Blocks");
 		expect(full).toContain("/llms.txt");
 	});
@@ -133,7 +133,7 @@ describe("site metadata", () => {
 	it("keeps unknown catalog families out of the grouped sections", () => {
 		const full = renderLlmsFull([
 			{ slug: "ghost", name: "Ghost", category: "action" },
-			{ slug: "stray", name: "Stray", category: "chart" },
+			{ slug: "stray", name: "Stray", category: "layout" },
 		]);
 		expect(full).toContain("/ui/ghost");
 		expect(full).not.toContain("/ui/missing");

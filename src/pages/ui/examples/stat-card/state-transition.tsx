@@ -1,9 +1,9 @@
-import { BarChart } from "@nocoo/basalt/charts/bar";
-import { StatCard } from "@nocoo/basalt/charts/stat-card";
 import { Button } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { AlertCircle, Database, Inbox, Plus, RefreshCw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { BarChart } from "@/components/charts/bar";
 
 type LoadState = "idle" | "loading" | "error" | "empty" | "success";
 

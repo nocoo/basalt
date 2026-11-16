@@ -75,7 +75,7 @@ describe("S9 package consume", () => {
 		expect(catalogPageStatus("resource-list")).toBe("ready");
 		expect(catalogPageStatus("delete-resource")).toBe("ready");
 		expect(catalogPageStatus("page-header")).toBe("ready");
-		expect(catalogPageStatus("maps")).toBe("planned");
+		expect(CATALOG.map((entry) => entry.slug)).not.toContain("maps");
 		expect(
 			CATALOG.filter((entry) => entry.category === "block").map((entry) => [
 				entry.slug,

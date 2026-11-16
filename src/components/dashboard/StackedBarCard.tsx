@@ -1,6 +1,6 @@
-import { StackedBarChart } from "@nocoo/basalt/charts/stacked-bar";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { StackedBarChart } from "@/components/charts/stacked-bar";
 
 const stackedData = [
 	{ name: "Mon", a: 120, b: 80, c: 60 },

@@ -69,7 +69,7 @@ export function isForbiddenExternal(specifier: string) {
 }
 
 export function isForbiddenRootFile(rel: string) {
-	return rel.startsWith("charts/") || FORBIDDEN_FILES.has(rel);
+	return FORBIDDEN_FILES.has(rel);
 }
 
 export function rootBoundaryViolations(closure: EsmClosure, distRoot: string) {

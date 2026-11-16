@@ -12,9 +12,9 @@ The complete, machine-readable component registry and API surface is published w
 Document anchors formatted as `ai/registry.json#<slug>` reference specific catalog entries within the `catalogEntries` array by matching the `slug` property (e.g. `ai/registry.json#button` matches the entry where `slug === "button"`).
 
 It contains:
-- **155 Exported Modules** (1 root barrel, components, charts, providers)
-- **120 Ready Catalog Entries** with full API definitions
-- **808 Public Symbols** (422 runtime values, 386 TypeScript types)
+- **127 Exported Modules** (1 root barrel, components, charts, providers)
+- **98 Ready Catalog Entries** with full API definitions
+- **732 Public Symbols** (392 runtime values, 340 TypeScript types)
 - **Detailed Component API**: Props, types, defaults, descriptions, and function callable signatures (including all `toast()` variants)
 - **Exact Peer Dependency Closures**: Identifies optional peers required per subpath (e.g., Recharts)
 
@@ -39,10 +39,10 @@ Basalt supports both lightweight root imports and tree-shakeable granular subpat
 // Root import for standard components
 import { Button, Input, LayerCard, Dialog, Toaster, toast } from "@nocoo/basalt";
 
-// Granular subpaths for visualization, calendar pickers, and tables
+// Granular subpaths for chart chrome, calendar pickers, and tables
+import { ChartFrame } from "@nocoo/basalt/components/chart";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
-import { Sparkline } from "@nocoo/basalt/charts/sparkline";
 
 export function ImportConventionsDemo() {
   return (
@@ -55,7 +55,7 @@ export function ImportConventionsDemo() {
 ```
 
 ### Optional Peer Dependency Rules
-- **Recharts**: Required ONLY when using chart subpaths (`@nocoo/basalt/charts/*`). Root imports and basic UI do not import Recharts.
+- **Chart engines**: Recharts remains application-owned; `@nocoo/basalt/components/chart` contains engine-agnostic frame, legend, tooltip, palette, and type utilities only.
 - **DatePicker & DataTable**: Built-in implementations operate standalone without requiring `react-day-picker` or `@tanstack/react-table`.
 
 ---
@@ -64,7 +64,7 @@ export function ImportConventionsDemo() {
 
 ### Tailwind CSS v4 Contract
 ```css
-@import "@nocoo/basalt/styles/tailwind";
+@import "@nocoo/basalt/styles";
 @import "tailwindcss";
 ```
 

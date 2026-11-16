@@ -117,35 +117,23 @@ p.union = true;
 	compile(root);
 });
 
-it("compiles real generated LineChart and Heatmap API types against their public declarations", () => {
+it("compiles real generated ChartFrame API types against its public declaration", () => {
 	const root = fixture();
-	const line = loadCatalogApiSurface("line")[0];
-	const heatmap = loadCatalogApiSurface("heatmap-calendar").find(
-		(surface) => surface.name === "HeatmapCalendar.Year",
-	);
-	expect(heatmap).toBeDefined();
-	const typeOf = (name: string) => line.props.find((prop) => prop.name === name)?.type;
-	const scale = heatmap?.props.find((prop) => prop.name === "colorScale")?.type;
-	expect(scale).toBe("readonly string[]");
-	const chartSource = JSON.stringify(resolve("packages/basalt/src/charts/line.tsx"));
-	const heatmapSource = JSON.stringify(resolve("packages/basalt/src/charts/heatmap-calendar.tsx"));
+	const frame = loadCatalogApiSurface("chart").find((surface) => surface.name === "ChartFrame");
+	expect(frame).toBeDefined();
+	const typeOf = (name: string) => frame?.props.find((prop) => prop.name === name)?.type;
+	const chartSource = JSON.stringify(resolve("packages/basalt/src/components/chart.tsx"));
 	writeFileSync(
 		join(root, "proof.ts"),
-		`import type * as React from "react";
-import type { LineChartProps, LineChartNumericKeys, LineChartLegendRenderer } from ${chartSource};
-import type { XYPoint } from ${JSON.stringify(resolve("packages/basalt/src/charts/series.ts"))};
-import type { HeatmapCalendarYearProps } from ${heatmapSource};
-type PrintedData${line.typeParameters} = ${typeOf("data")};
-type PrintedLegend${line.typeParameters} = ${typeOf("legend")};
-function both${line.typeParameters}(a: LineChartProps<TData, K>["data"], b: PrintedData<TData, K>, c: LineChartProps<TData, K>["legend"], d: PrintedLegend<TData, K>) {
- a = b; b = a; c = d; d = c; return [a,b,c,d];
+		`import type { ReactNode } from "react";
+import type { ChartFrameProps } from ${chartSource};
+type PrintedLabel = ${typeOf("ariaLabel")};
+type PrintedChildren = ${typeOf("children")};
+function frame(a: ChartFrameProps["ariaLabel"], b: PrintedLabel, c: ChartFrameProps["children"], d: PrintedChildren) {
+ a = b; b = a; c = d; d = c;
+ return [a,b,c,d];
 }
-const textLegend: PrintedLegend = "Revenue";
-type PrintedScale = ${scale};
-function scales(a: NonNullable<HeatmapCalendarYearProps["colorScale"]>, b: PrintedScale) { a=b; b=a; }
-const palette: PrintedScale = ["#ffffff", "#008800"] as const;
-// @ts-expect-error copied readonly colorScale cannot be mutated
-palette.push("#ff0000");
+const child: PrintedChildren = 0 satisfies ReactNode;
 `,
 	);
 	compile(root);

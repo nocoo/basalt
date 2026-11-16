@@ -73,11 +73,11 @@ describe("documentation tarball compilation gate", () => {
 
 	it("generates installation snippets for all ready catalog entries using strict metadata", () => {
 		const result = generateCatalogInstallationSnippets();
-		expect(result.readyCount).toBe(120);
-		expect(result.granularCount).toBe(120);
+		expect(result.readyCount).toBe(98);
+		expect(result.granularCount).toBe(98);
 		expect(result.barrelCount).toBe(34);
 
-		expect(result.code).toContain("import { CustomChart as Granular_");
+		expect(result.code).toContain("import { ChartFrame as Granular_");
 		expect(result.code).toContain("import { PageHeader as Granular_");
 		expect(result.code).toContain("import { ResourceList as Granular_");
 		expect(result.code).toContain("import { DeleteResource as Granular_");
@@ -219,7 +219,7 @@ describe("documentation tarball compilation gate", () => {
 
 	it("loads verbatim usage modules for all ready catalog items", async () => {
 		const usageModules = await loadCatalogUsageModules();
-		expect(usageModules).toHaveLength(120);
+		expect(usageModules).toHaveLength(98);
 
 		for (const [index, mod] of usageModules.entries()) {
 			expect(mod.slug.length).toBeGreaterThan(0);
@@ -241,9 +241,9 @@ describe("documentation tarball compilation gate", () => {
 		expect(segmentControlUsage).toBeDefined();
 		expect(segmentControlUsage?.code).toContain("statusOptions");
 
-		const slotBarUsage = usageModules.find((m) => m.slug === "slot-bar");
-		expect(slotBarUsage).toBeDefined();
-		expect(slotBarUsage?.code).toContain("items");
+		const chartUsage = usageModules.find((m) => m.slug === "chart");
+		expect(chartUsage).toBeDefined();
+		expect(chartUsage?.code).toContain("ChartFrame");
 
 		const tablePagerUsage = usageModules.find((m) => m.slug === "table-pager");
 		expect(tablePagerUsage).toBeDefined();
@@ -368,8 +368,8 @@ describe("documentation tarball compilation gate", () => {
 
 	it("loads verbatim scenario modules for all ready catalog items and validates complete consumer modules", async () => {
 		const { usageModules, scenarioModules } = await loadCatalogModules();
-		expect(usageModules).toHaveLength(120);
-		expect(scenarioModules).toHaveLength(305);
+		expect(usageModules).toHaveLength(98);
+		expect(scenarioModules).toHaveLength(276);
 
 		const seenScenarioIds = new Set<string>();
 		const seenFilenames = new Set<string>();

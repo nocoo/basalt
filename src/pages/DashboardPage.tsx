@@ -1,4 +1,4 @@
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { useTranslation } from "react-i18next";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";

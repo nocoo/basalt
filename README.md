@@ -41,8 +41,7 @@ bun add @nocoo/basalt lucide-react
 使用 Tailwind CSS v4 时，在主样式文件中引入 tokens 和 Tailwind。下面的 `@source` 路径以样式文件位于 `src/` 为例，需按实际位置调整：
 
 ```css
-@source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
-@import "@nocoo/basalt/styles/tailwind";
+@import "@nocoo/basalt/styles";
 @import "tailwindcss";
 
 @layer base {
@@ -91,7 +90,7 @@ export function App() {
 }
 ```
 
-图表路径 `@nocoo/basalt/charts/*` 需要 Recharts 3。当前内置 DatePicker 和 DataTable 自行实现交互，不要求安装声明为可选 peer 的 react-day-picker 或 TanStack Table；直接集成这些库时再安装它们。Next.js 中应将交互组件放在 `"use client"` 模块内。
+图表渲染引擎由应用自有：`@nocoo/basalt/components/chart` 只提供 frame、legend、tooltip、palette 与 series 辅助；需要 Recharts 时由应用安装并自行组合。当前内置 DatePicker 和 DataTable 自行实现交互，不要求安装声明为可选 peer 的 react-day-picker 或 TanStack Table。Next.js 中应将交互组件放在 `"use client"` 模块内。
 
 主题、路由适配、表单与 SSR 的完整示例见 [INTEGRATION.md](INTEGRATION.md)；应用布局示例见 [RECIPES.md](packages/basalt/ai/RECIPES.md)。
 

@@ -1,7 +1,7 @@
-import { BarChart } from "@nocoo/basalt/charts/bar";
-import { LineChart } from "@nocoo/basalt/charts/line";
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { Activity, Wallet } from "lucide-react";
+import { BarChart } from "@/components/charts/bar";
+import { LineChart } from "@/components/charts/line";
 
 const requests = [6.2, 7.4, 6.8, 8.6, 9.1, 8.3, 10.6, 12.4].map((y, index) => ({
 	x: `Period ${index + 1}`,

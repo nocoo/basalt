@@ -20,22 +20,20 @@ Matte design system component library. ESM, granular exports, Tailwind CSS v4 or
 ## Installation
 
 ```bash
-npm install @nocoo/basalt lucide-react
+npm install @nocoo/basalt
 # or
-bun add @nocoo/basalt lucide-react
+bun add @nocoo/basalt
 ```
 
 ### Peer Dependencies
 
 - `react`: `^19` (Required)
 - `react-dom`: `^19` (Required)
-- `lucide-react`: `*` (Required for icons across controls)
 - `tailwindcss`: `^4` (Optional; required only if using the Tailwind stylesheet contract)
-- `recharts`: `^3` (Optional; required for chart subpaths such as `@nocoo/basalt/charts/*`)
 - `react-day-picker`: `^10` (Optional; declared peer for custom calendar integrations; the current DatePicker implementation does not call it)
 - `@tanstack/react-table`: `^9` (Optional; declared peer for custom table integrations; the current DataTable implementation does not call it)
 
-> **Note on optional peers:** Basalt's built-in `DatePicker` and `DataTable` operate independently without requiring `react-day-picker` or `@tanstack/react-table`. Only install optional peers when your application directly utilizes them or imports Recharts visualizations.
+> **Note on optional peers:** Basalt's built-in `DatePicker` and `DataTable` operate independently without requiring `react-day-picker` or `@tanstack/react-table`. Install Recharts only when the application owns chart visualization code.
 
 ---
 
@@ -45,11 +43,10 @@ bun add @nocoo/basalt lucide-react
 
 ### Contract 1: Tailwind CSS v4
 
-Import order is strict. Register Basalt tokens before the Tailwind framework imports:
+Import Basalt styles before Tailwind:
 
 ```css
-@source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
-@import "@nocoo/basalt/styles/tailwind";
+@import "@nocoo/basalt/styles";
 @import "tailwindcss";
 
 @layer base {
@@ -99,14 +96,15 @@ import {
 } from "@nocoo/basalt";
 ```
 
-### 2. Granular Subpaths (`@nocoo/basalt/components/*`, `@nocoo/basalt/charts/*`, `@nocoo/basalt/providers/*`)
+### 2. Granular Subpaths (`@nocoo/basalt/components/*`, `@nocoo/basalt/providers/*`)
 
 Keeps initial bundle size small by isolating complex or specialized dependencies:
 
 ```tsx compile:pkg-readme-granular-import
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
-import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { ChartFrame, ChartLegend, ChartTooltipContent } from "@nocoo/basalt/components/chart";
+import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 ```
 

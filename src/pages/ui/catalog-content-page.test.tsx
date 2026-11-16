@@ -88,12 +88,7 @@ describe("async catalog detail page", () => {
 		expect(document.querySelector('[data-status="ready"][data-slug="button"]')).toBeNull();
 	});
 
-	it("renders planned and missing pages without loading content", () => {
-		const planned = renderPage("/ui/maps");
-		expect(document.querySelector('[data-status="placeholder"][data-slug="maps"]')).toBeTruthy();
-		expect(loadContent).not.toHaveBeenCalled();
-		planned.unmount();
-
+	it("renders missing pages without loading content", () => {
 		renderPage("/ui/not-a-control");
 		expect(document.querySelector("[data-status='missing']")).toBeTruthy();
 		expect(loadContent).not.toHaveBeenCalled();

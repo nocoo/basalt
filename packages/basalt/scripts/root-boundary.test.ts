@@ -24,26 +24,19 @@ describe("root esm closure", () => {
 	it("catches a forbidden dependency nested one hop below the root", () => {
 		const files = {
 			"/virtual/index.js": `export { Widget } from "./mid.js";\n`,
-			"/virtual/mid.js": `import { Donut } from "./charts/donut.js";\nexport const Widget = Donut;\n`,
-			"/virtual/charts/donut.js": `import { Pie } from "recharts";\nexport const Donut = Pie;\n`,
+			"/virtual/mid.js": `import { Plot } from "./plot.js";\nexport const Widget = Plot;\n`,
+			"/virtual/plot.js": `import { ResponsiveContainer } from "recharts";\nexport const Plot = ResponsiveContainer;\n`,
 		};
 		const firstLayer = collectModuleSpecifiers(files["/virtual/index.js"])
 			.filter((spec) => isRelativeSpecifier(spec.value))
 			.map((spec) => resolveRelativeSpecifier("/virtual/index.js", spec.value));
 		expect(firstLayer).toEqual(["/virtual/mid.js"]);
-		expect(firstLayer).not.toContain("/virtual/charts/donut.js");
+		expect(firstLayer).not.toContain("/virtual/plot.js");
 
 		const closure = collectEsmClosure("/virtual/index.js", virtualIo(files));
-		expect(closure.files).toEqual([
-			"/virtual/index.js",
-			"/virtual/mid.js",
-			"/virtual/charts/donut.js",
-		]);
+		expect(closure.files).toEqual(["/virtual/index.js", "/virtual/mid.js", "/virtual/plot.js"]);
 		expect(closure.externals).toEqual(["recharts"]);
-		expect(rootBoundaryViolations(closure, "/virtual")).toEqual([
-			"root closure includes charts/donut.js",
-			"root closure imports recharts",
-		]);
+		expect(rootBoundaryViolations(closure, "/virtual")).toEqual(["root closure imports recharts"]);
 	});
 
 	it("follows nested dynamic import into a forbidden heavy module", () => {

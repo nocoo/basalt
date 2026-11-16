@@ -6,7 +6,7 @@ export const LANDING_HEADING = LANDING_HEADING_LINES.join(" ");
 export const LANDING_KICKER = "The matte React design system";
 export const LANDING_LEDE =
 	"Build dashboards and information-rich applications with matte components, charts, and ready-to-use example layouts.";
-export const LANDING_INSTALL = "npm i @nocoo/basalt lucide-react";
+export const LANDING_INSTALL = "npm i @nocoo/basalt";
 
 export interface LandingLink {
 	href: string;
@@ -36,14 +36,10 @@ export const LANDING_RELATED_LINKS: readonly LandingLink[] = [
 export const LANDING_STATS = [
 	{
 		label: "Components",
-		value: String(
-			CATALOG.filter((entry) => entry.category !== "chart" && entry.category !== "block").length,
-		),
+		value: String(CATALOG.filter((entry) => entry.category !== "block").length),
 		href: "/ui",
 	},
-	...CATALOG_CATEGORIES.filter(
-		(category) => category.id === "chart" || category.id === "block",
-	).map((category) => ({
+	...CATALOG_CATEGORIES.filter((category) => category.id === "block").map((category) => ({
 		label: category.label,
 		value: String(CATALOG.filter((entry) => entry.category === category.id).length),
 		href: `/ui?category=${category.id}`,

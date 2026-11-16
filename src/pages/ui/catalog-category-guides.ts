@@ -106,20 +106,6 @@ export const CATEGORY_GUIDES: Record<CatalogCategory, CategoryGuide> = {
 			"Provide textual meaning for progress and meters. Decorative icons should be hidden from assistive technology rather than announced twice.",
 		],
 	},
-	chart: {
-		rationale:
-			"Charts earn their space by making a comparison easier than a table would. The visualization's geometry follows the data, while its labels, controls and surrounding surfaces remain part of the same design system.",
-		geometry:
-			"Give the chart a real responsive container and a deliberate aspect or height constraint. Use shared chart frames, legends and tooltips. Chart colors are independent of the control accent; toolbars follow the action and spacing standards.",
-		interaction:
-			"Keep static charts stable rather than animating every mount. If interaction reveals values, expose the same information to keyboard users and through a summary or data alternative. Respect reduced motion for supported transitions.",
-		practices: [
-			"Choose a chart for the question: trend, distribution, composition or comparison. State units and the time range explicitly.",
-			"Use the shared chart palette and stable series identities. Do not encode meaning using color alone.",
-			"Keep aggregation, formatting and domain rules in the application. Test empty, single-point and extreme-value data.",
-			"Verify labels and tooltips at narrow widths. Provide an accessible summary or data table instead of relying on pointer hover.",
-		],
-	},
 	block: {
 		rationale:
 			"Blocks are reusable application patterns rather than another primitive sizing category. PageHeader is a layout, ResourceList is a content surface and DeleteResource is an overlay composition; each inherits its underlying design rules.",

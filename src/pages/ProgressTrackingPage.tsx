@@ -1,8 +1,8 @@
-import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { BarChart3, LayoutGrid } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { GroupedBarChart } from "@/components/charts/grouped-bar";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatUsd } from "@/lib/format";
 import { useProgressTrackingViewModel } from "@/viewmodels/useProgressTrackingViewModel";

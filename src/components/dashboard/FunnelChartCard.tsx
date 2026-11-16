@@ -1,6 +1,6 @@
-import { FunnelChart } from "@nocoo/basalt/charts/funnel";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { FunnelChart } from "@/components/charts/funnel";
 
 const data = [
 	{ name: "Visits", value: 2400 },

@@ -99,11 +99,10 @@ export default defineConfig({
 });
 ```
 
-In the app stylesheet (e.g. `src/index.css`), the exact 3-line import order is required. The `@source` path is relative to **this CSS file** and must scan `node_modules/@nocoo/basalt/dist`:
+In the app stylesheet (e.g. `src/index.css`), import Basalt before Tailwind. Basalt embeds its own package source scan:
 
 ```css
-@source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
-@import "@nocoo/basalt/styles/tailwind";
+@import "@nocoo/basalt/styles";
 @import "tailwindcss";
 
 @layer base {
@@ -164,7 +163,8 @@ Root barrel is small leaves and providers. Shell chrome is granular.
 | `@nocoo/basalt/components/loading-screen` | `LoadingScreen`                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `@nocoo/basalt/components/basalt-mark`    | `BasaltMark`                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `@nocoo/basalt/providers/theme`           | `useTheme` (if not taking `ThemeProvider` from the root)                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `@nocoo/basalt/charts/*`                  | charts                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `@nocoo/basalt/components/chart`          | `ChartFrame`, legend, tooltip, palette and series utilities                                                                                                                                                                                                                                                                                                                                                                                              |
+| `@nocoo/basalt/components/stat-card`      | `StatCard`, `StatGrid`                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `@nocoo/basalt/components/date-picker`    | DatePicker                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `@nocoo/basalt/components/data-table`     | DataTable                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
@@ -1277,11 +1277,10 @@ export function ProjectSettingsForm() {
    bun add @nocoo/basalt lucide-react
    ```
 2. **Step 2: Configure Stylesheet & Scan Sources**
-   - In Tailwind v4 setups, configure CSS imports with `@source` scanning `dist`:
+   - In Tailwind v4 setups, use the two-line stylesheet contract:
 
      ```css
-     @source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
-     @import "@nocoo/basalt/styles/tailwind";
+     @import "@nocoo/basalt/styles";
      @import "tailwindcss";
      ```
    - In non-Tailwind applications, import `@nocoo/basalt/styles/standalone` in your application root instead.
@@ -1293,7 +1292,7 @@ export function ProjectSettingsForm() {
 4. **Step 4: Update Component Imports & Subpaths**
    - Import base components from `@nocoo/basalt` root.
    - Import layout chrome (`PageHeader`, `SectionRule`, `AppHeader`, `AppShell`) from granular subpaths (`@nocoo/basalt/components/*`).
-   - Import chart components from `@nocoo/basalt/charts/*` (ensure `recharts` peer dependency is installed).
+   - Compose `ChartFrame`, `ChartLegend`, and `ChartTooltipContent` from `@nocoo/basalt/components/chart` with the application-owned chart engine (for example Recharts).
 5. **Step 5: Verify Contrast, Surface Tokens & Form Handling**
    - Verify all content cards use `LayerCard` or surface classes rather than manual border/background combinations.
    - For composite forms (`DatePicker`, `Autocomplete`), implement controlled state or wrap in form library Controllers (e.g. `react-hook-form`).
@@ -1302,191 +1301,32 @@ export function ProjectSettingsForm() {
 
 ## 18. Chart Subsystem Primitives
 
-Basalt charts are composed of responsive frame, legend, and tooltip subsystem primitives. Consuming applications import these granularly from `@nocoo/basalt/charts/*`.
+Basalt owns engine-agnostic chart chrome through `@nocoo/basalt/components/chart`; the application owns Recharts, ECharts, SVG, loading, aggregation, and domain formatting. `ChartFrame` accepts `ReactNode`, preserves a grouped accessible label, optional summary, structured data alternative, and legend slot without importing a chart engine.
 
-<a id="chart-frame"></a>
+```tsx excerpt:integration-chart-frame
+import {
+	ChartFrame,
+	ChartLegend,
+	ChartTooltipContent,
+} from "@nocoo/basalt/components/chart";
+import { ResponsiveContainer } from "recharts";
 
-### ChartFrame & ChartShell (`@nocoo/basalt/charts/frame`)
+<ChartFrame
+	ariaLabel="Monthly requests"
+	summary="Requests increased from 12 to 18."
+	legend={<ChartLegend items={[{ key: "requests", label: "Requests" }]} />}
+>
+	<ResponsiveContainer width="100%" height="100%">{chartGraphic}</ResponsiveContainer>
+</ChartFrame>;
+```
 
-- **`ChartFrame`**: Responsive container wrapper around Recharts `ResponsiveContainer`.
-  - **Props (`ChartFrameProps`)**:
-    - `ariaLabel: string` (required): Accessible name for chart graphic. Container element receives `role="group"` and `aria-label={ariaLabel}`.
-    - `children: ReactElement<{ accessibilityLayer?: boolean; "aria-label"?: string; "aria-describedby"?: string }>` (required): Single child Recharts graphic element. Precedence: explicit child `accessibilityLayer` prop takes priority, followed by the wrapper prop, falling back to `true`.
-    - `size?: string` (optional, default: `"h-36 w-56"`): Tailwind sizing utility classes for the plot surface container.
-    - `className?: string` (optional): Additional styles applied to the chart container.
-    - `summary?: ReactNode` (optional): Descriptive text summarizing key data points and keyboard navigation instructions. Automatically associated with the chart and outer group via `useId` and `aria-describedby`.
-    - `dataAlternative?: ReactNode` (optional): Accessible tabular or structured data alternative rendered outside the fixed-size plot area.
-    - `accessibilityLayer?: boolean` (optional, default: `true`): Explicit toggle for keyboard accessibility on the underlying Recharts graphic where supported by the specific chart type. Callers that explicitly disable `accessibilityLayer`, or render non-interactive compact/decorative charts without tooltip exploration (such as Sparkline or SlotBar), must provide a `summary` or `dataAlternative` textual replacement.
-  - **Native & Ref Boundary**: Pure React functional wrapper. Does not forward ref or forward arbitrary div rest props.
-- **`ChartShell`**: Composite container pairing a `ChartFrame` graphic area above a flexible `legend` slot.
-  - **Props (`ChartShellProps`)**: Extends `ChartFrameProps` with optional `legend?: ReactNode`.
-- **`ChartAccessibilityProps`**: Utility type `Pick<ChartFrameProps, "summary" | "dataAlternative" | "accessibilityLayer">` exported for chart wrappers providing accessible summaries and data alternatives.
-
-<a id="chart-legend"></a>
-
-### ChartLegend (`@nocoo/basalt/charts/legend`)
-
-- **`ChartLegend`**: Custom chart legend layout supporting multiple series shapes.
-  - **Props**:
-    - `items: ChartSeriesDescriptor[]` (required): Mutable series descriptors array `{ key: string, label?: string, color?: string }[]`. Note: type requires mutable array (not `readonly`). If empty, returns `null`.
-    - `shape?: "bar" | "line" | "area"` (optional, default: `"line"`): Indicator swatch shape.
-  - **Behavior**: Uses `seriesColor(item, index)` to compute indicator fills, falling back to `hsl(var(--basalt-chart-1))` if undefined. Does not forward ref.
-
-<a id="chart-tooltip"></a>
-
-### ChartTooltipContent & formatChartNumber (`@nocoo/basalt/charts/tooltip`)
-
-- **`ChartTooltipContent`**: Popover tooltip body rendered inside Recharts `<Tooltip content={...} />`. Returns `null` (no output) when `active` is not true or when `payload` is empty/undefined.
-  - **Props**:
-    - `active?: boolean`: Active hover state supplied by Recharts.
-    - `payload?: readonly ChartTooltipItem[]`: Hovered item collection.
-    - `label?: string | number`: Tooltip title or category label.
-    - `formatter?: (value: number) => string`: Custom numeric formatter for data values. Defaults to `formatChartNumber`.
-  - **`ChartTooltipItem` Shape**:
-    - `name?: string`: Series name or identifier.
-    - `value?: number | string`: Numerical or string value of the hovered point.
-    - `color?: string`: Item color indicator.
-    - `fill?: string`: SVG fill color indicator.
-    - `stroke?: string`: SVG stroke color indicator.
-    - `dataKey?: string | number`: Recharts series key binding.
-  - **Behavior**: Hides row label text for internal/synthetic keys (`"y"`, `"y2"`, `"y3"`, `"value"`, `"target"`), but still displays their numeric values. Uses `--basalt-popover` background tokens with tabular numeric formatting.
-- **Composable Tooltip Elements**: Lightweight, zero-Recharts presentation primitives for building custom tooltip layouts. All three components forward native host element props (such as `id`, `aria-*`, `data-*`, style, and event listeners) and preserve custom caller style overrides while omitting `children` to avoid silent element drops:
-  - **`ChartTooltipRow`**: Renders an individual metric row with color dot indicator, series label, and formatted tabular numeric value with optional unit.
-    - `label?: ReactNode`: Metric or series title (preserves numeric `0` and custom nodes; nullish values omit the label element).
-    - `value?: ReactNode`: Metric value. Finite numbers are automatically formatted via `formatter` or `formatChartNumber`. `null` or `undefined` renders placeholder `"—"`.
-    - `unit?: ReactNode`: Optional unit string or node (e.g., `"ms"`, `"req/s"`, `"%"`) appended to the value. Omitted when `value` evaluates to placeholder `"—"`.
-    - `color?: string`: Swatch dot fill color (defaults to `hsl(var(--basalt-chart-1))`).
-    - `formatter?: (value: number) => string`: Optional custom numeric formatter overriding `formatChartNumber`.
-    - `hideIndicator?: boolean`: When true, suppresses rendering of the decorative color dot (default: `false`).
-    - Forwarded native props: Accepts `Omit<ComponentProps<"div">, "children">`.
-  - **`ChartTooltipDivider`**: Renders a horizontal divider rule as a native `<hr>` element (`role="separator"`, `aria-orientation="horizontal"`) with zero borders and explicit 1px height for grouping metric categories.
-    - Forwarded native props: Accepts `Omit<ComponentProps<"hr">, "children">`.
-  - **`ChartTooltipSummary`**: Renders an aggregated metric row (e.g. Total or SLA Ceiling) with bold font weights and optional unit suffix.
-    - `label?: ReactNode`: Summary title (defaults to `"Total"`, preserves numeric `0`).
-    - `value?: ReactNode`: Aggregated value node. Finite numbers are formatted; nullish renders placeholder `"—"`.
-    - `unit?: ReactNode`: Optional unit suffix appended to valid summary values (omitted for `"—"`).
-    - `formatter?: (value: number) => string`: Optional custom numeric formatter.
-    - Forwarded native props: Accepts `Omit<ComponentProps<"div">, "children">`.
-- **`formatChartNumber(value: number): string`**: Formats numbers via `Intl.NumberFormat` with max 0 decimals for integers and 1 decimal for fractions. Non-finite values return `"—"`.
-
-<a id="heatmap-calendar"></a>
-
-### HeatmapCalendar (`@nocoo/basalt/charts/heatmap-calendar`)
-
-- **`HeatmapCalendar`**: Accessible calendar heatmap component supporting both year-long date/value grids and compact 7-column numeric sequences.
-  - **Props (`HeatmapCalendarYearProps`)**:
-    - `data: HeatmapDataPoint[]` (required): Daily entries `{ date: string, value: number }[]` with ISO date strings (`"YYYY-MM-DD"`).
-    - `year: number` (required): Target calendar year to render.
-    - `colorScale?: readonly string[]` (optional): Array of colors forming intensity gradient. Defaults to `heatmapColorScales.green`.
-    - `valueFormatter?: (value: number, date: string) => string` (optional): Formatting function for tooltip and accessible name.
-    - `metricLabel?: string` (optional, default: `"Value"`): Label for the measured metric.
-    - `cellSize?: number` (optional, default: `12`): Width and height of day cells in pixels.
-    - `cellGap?: number` (optional, default: `2`): Gap between cells in pixels.
-    - `locale?: string` (optional, default: `"en-US"`): BCP 47 locale for month/weekday labels.
-    - `weekdayLabels?: string[]` / `monthLabels?: string[]` (optional): Explicit label overrides.
-    - `lessLabel?: string` / `moreLabel?: string` (optional, default: `"Less"` / `"More"`): Legend bounds text.
-    - `ariaLabel?: string` (optional, default: `"Heatmap calendar"`): Accessible name for the calendar view.
-    - `className?: string` (optional): Additional styles applied to the scrollable wrapper.
-  - **Props (`HeatmapCalendarValuesProps`)**:
-    - `values: number[]` (required): Sequence of values rendered in a compact 7-column matrix with zero-value contrast preservation.
-    - `ariaLabel?: string` (optional, default: `"Heatmap calendar"`): Accessible name for the matrix.
-    - `className?: string` (optional): Additional styles.
-  - **Keyboard Navigation & Single Tab Stop**:
-    - Focus enters the heatmap via a single <kbd>Tab</kbd> stop onto the active day/value cell button.
-    - **Year Grid Navigation**:
-      - <kbd>↑</kbd> / <kbd>↓</kbd>: Navigate vertically between days (previous/next day, ±1 day).
-      - <kbd>←</kbd> / <kbd>→</kbd>: Navigate horizontally between weeks (previous/next week, ±7 days).
-      - <kbd>Home</kbd> / <kbd>End</kbd>: Jump directly to the first/last valid day of the year.
-      - <kbd>Escape</kbd>: Dismisses the day tooltip while preserving focus on the cell button.
-      - <kbd>Tab</kbd>: Leaves the calendar directly to the next external focusable control (no 365-stop tab trap).
-    - **Values Matrix Navigation**:
-      - <kbd>←</kbd> / <kbd>→</kbd>: Step ±1 item in sequence.
-      - <kbd>↑</kbd> / <kbd>↓</kbd>: Step ±7 items (previous/next row in the same column in 7-column layout).
-      - <kbd>Home</kbd> / <kbd>End</kbd>: Jump to first/last value.
-      - <kbd>Escape</kbd>: Dismisses value tooltip while preserving focus on the cell button.
-      - <kbd>Tab</kbd>: Leaves the matrix directly to the next external focusable control.
-      - Zero values render with clear `:focus-visible` outlines without being faded by parent opacity.
-    - **Dynamic Data Updates**: Shrinking or emptying arrays, or switching years, clamps active index safely, restores focus if the element was active, and never steals focus from external controls.
-
-<a id="heatmap-matrix"></a>
-
-### HeatmapMatrix (`@nocoo/basalt/charts/heatmap-matrix`)
-
-- **`HeatmapMatrix`**: Generic two-dimensional intensity matrix for tabular categorical, operational, and schedule telemetry (e.g. days vs hours, regions vs services).
-  - **Props (`HeatmapMatrixProps`)**:
-    - `rowLabels: readonly string[]` (required): Ordered row headers.
-    - `columnLabels: readonly string[]` (required): Ordered column headers.
-    - `values: readonly (readonly (number | null | undefined)[])[]` (required): 2D matrix of values. Supports ragged rows, null, undefined, and non-finite values (treated as missing). Numeric `0` is a valid reading and distinct from missing data.
-    - `domain?: readonly [min: number, max: number]` (optional): Explicit [min, max] domain for color intensity scaling. If reversed [max, min], bounds are automatically normalized to [min, max]; if equal [v, v], values <= v receive level 0 while values > v receive highest level. If non-finite or omitted, dynamically derived solely from visible finite numeric cells in the dataset (or [0, 0] if no finite values exist). Values at or below min receive level 0; values >= max clamp to the highest level.
-    - `colorScale?: readonly string[]` (optional, default: `heatmapColorScales.green`): Color intensity levels array. If empty or single-color, gracefully resolves to base level.
-    - `valueFormatter?: (value: number) => string` (optional, default: `(v) => v.toLocaleString()`): Formatter for numeric values.
-    - `missingLabel?: string` (optional, default: `"—"`): Text representation for missing, null, undefined, or non-finite readings.
-    - `metricLabel?: string` (optional, default: `"Heatmap matrix"`): Metric label for accessible descriptions.
-    - `ariaLabel?: string` (optional, default: `"Heatmap matrix"`): Accessible name for the grid region.
-    - `cellSize?: number` (optional, default: `16`): Cell height (and default width) in pixels.
-    - `columnWidth?: number` (optional): Cell and column width in pixels. When omitted, falls back to `cellSize` for square cells. Allows wider rectangular cells to fit readable column headers (e.g. timestamps or service names).
-    - `cellGap?: number` (optional, default: `2`): Gap between adjacent cells in pixels.
-    - `lessLabel?: string` / `moreLabel?: string` (optional, default: `"Less"` / `"More"`): Legend bounds text.
-    - `showLegend?: boolean` (optional, default: `true`): Whether to display the bottom color intensity scale legend.
-    - `renderTooltip?: (cell: HeatmapMatrixCellContext) => ReactNode` (optional): Custom cell popover tooltip renderer. Replaces default tooltip contents while integrating composable parts (`ChartTooltipRow`, `ChartTooltipDivider`, `ChartTooltipSummary`).
-    - Native props: Forwards `Omit<ComponentProps<"div">, "children">` and React 19 callback ref with cleanup to the root container.
-  - **Keyboard Navigation & ARIA Semantics**:
-    - Complete `role="grid"` structure with table headers (`columnheader`, `rowheader`) and cells (`gridcell`).
-    - Single roving <kbd>Tab</kbd> stop onto the active cell.
-    - Directional keys <kbd>←</kbd> / <kbd>→</kbd> navigate columns; <kbd>↑</kbd> / <kbd>↓</kbd> navigate rows.
-    - <kbd>Home</kbd> / <kbd>End</kbd> jump to the first/last column of the current row; <kbd>PageUp</kbd> / <kbd>PageDown</kbd> jump to the first/last row of the current column.
-    - <kbd>Escape</kbd> dismisses open cell tooltips while preserving cell focus.
-    - Mobile horizontal scrolling: wide grids scroll horizontally without document overflow, keeping active cells visible during keyboard navigation.
-    - Focus stability: shrinking or emptying matrix dimensions clamps active indices without stealing focus from external elements.
+`ChartTooltipContent`, `ChartTooltipRow`, `ChartTooltipDivider`, and `ChartTooltipSummary` provide the shared popover presentation. `CHART_COLORS`, `chart`, `chartAxis`, `chartMuted`, `withAlpha`, `CHART_TYPE`, `chartFontSize`, `seriesColor`, and `ChartSeriesDescriptor` provide engine-neutral tokens and series metadata.
 
 <a id="stat-card"></a>
 
-### StatCard & StatGrid (`@nocoo/basalt/charts/stat-card`)
+### StatCard & StatGrid (`@nocoo/basalt/components/stat-card`)
 
-- **`StatCard`**: High-level KPI and telemetry presentation card supporting incremental interactive slots and status state transitions.
-  - **Composition**: One `LayerCard` surface with shared card insets, an unboxed title icon, tabular display value, comparison text and supporting content in that order. It has no header divider or fixed content height. Long labels and values wrap; actions remain accessible. Use a compact `LineChart`/`BarChart` child with `className="h-basalt-16 w-full"` and a visible time-window caption for trend cards. Keep bar baselines at zero and disclose nonzero line scales. Do not stretch plots with `flex-1`, repeat card padding or recreate the header in application CSS.
-  - **Props (`StatCardProps`)**:
-    - `value: string | number` (required): Core metric value. Formatted via `toLocaleString()` if numeric. Overridden when `status` is provided.
-    - `title?: string` / `label?: string` (optional): Heading text (`title` takes precedence over `label`).
-    - `subtitle?: string` (optional): Supporting text below value.
-    - `icon?: React.ReactNode` (optional): Decorative icon displayed in header.
-    - `iconColor?: string` (optional, default: `"text-basalt-muted-foreground"`): Tailwind text color class for icon.
-    - `trend?: { value: number; label?: string }` (optional): Default percentage trend with automatic positive/negative color coding.
-    - `action?: ReactNode` (optional): Header interactive element (e.g., info tooltip button). When provided, switches card role to `group`.
-    - `status?: ReactNode` (optional): State replacement slot (e.g., loading skeleton, error message, or empty indicator) replacing the numeric `value`. Does not mask caller-managed `subtitle` or `trend`. When callers display an error or empty state, they should omit `trend` so stale metrics are not reported.
-    - `trendContent?: ReactNode` (optional): Custom trend replacement slot (e.g., custom badge, sparkline, or localized text) replacing default `trend`.
-    - `children?: ReactNode` (optional): Custom arbitrary content rendered inside the card below header.
-    - `ariaLabel?: string` (optional): Overrides automatic accessible name calculation.
-    - `className?: string` (optional): Additional container classes.
-  - **Accessibility & Role Semantics**:
-    - Pure display cards render as `role="img"` with an automated compound accessible label.
-    - When `action`, `status`, `trendContent`, or `children` slots are present, the card switches to `role="group"` so interactive descendants remain discoverable and navigable in assistive technology trees.
-    - Falsy values `null`, `undefined`, and `false` are cleanly disregarded without creating empty gap wrappers; `0` is treated as valid content.
-- **`StatGrid`**: Responsive grid container organizing multiple `StatCard` items into 2, 3, or 4 column layouts.
-  - **Props (`StatGridProps`)**: `columns?: 2 | 3 | 4` (default: `4`), `className?: string`, `children: ReactNode`.
-
-<a id="dynamic-chart-series"></a>
-
-### Dynamic Chart Series & Multi-Key Datasets (`@nocoo/basalt/charts/*`)
-
-Basalt cartesian charts (`LineChart`, `AreaChart`, `BarChart`, `StackedBarChart`, `GroupedBarChart`, `Charts`, `Timeseries`, `CustomChart`, `Sparkline`, and `SlotBarChart`) support arbitrary, type-safe data keys beyond the legacy `y`, `y2`, and `y3` series convention:
-
-`Sparkline` renders compact, rounded bars with alternating full/muted intensity (decorative, not another data dimension). A single series defaults to chart green; explicit series colors and multi-series palette order are preserved. Its default plot is 112 by 20px, without axes, legends, tooltips or entrance animation. Null values remain gaps and negative values retain their baseline. Pair it with `Meter` for table cells: Meter uses 17 slots, redistributes red/yellow/green across the filled portion, and shows the numeric value inline. Colors do not imply domain-specific risk thresholds. Values clamp to 0..100 and non-finite readings announce unavailable. `BatteryMeter` remains the separate device-charge control.
-
-- **Generic Data Binding**:
-  - `data: TData[]`: Generic record where `TData extends { x: string | number }`. Caller datasets can contain any number of arbitrary metric keys (e.g., `edgeCache`, `p95US`, `workersCPU`), nullable numbers (`number | null`), and optional numeric properties (`number | undefined`).
-  - `series?: Array<ChartSeriesDescriptor<K>>`: Strongly-typed array of series descriptors. Series keys `K` are automatically constrained to `LineChartNumericKeys<TData>` (excluding coordinate `x` and rejecting non-numeric fields such as strings, booleans, or typos). Arbitrary keys require explicit series; omitted or empty series retain each chart's legacy `y`, `y2`, and `y3` series fallback. Note that TypeScript type inference does not automatically enumerate object keys at runtime.
-  - Backward compatibility: Defaults to `XYPoint` (`{ x, y, y2?, y3? }`) with `XYSeriesDescriptor` when generic parameters are omitted.
-- **Enhanced Axis & Formatting Props** (available on full plot charts: `LineChart`, `AreaChart`, `BarChart`, `StackedBarChart`, `GroupedBarChart`, `Charts`, `Timeseries`, `CustomChart`):
-  - `xValueFormatter?: (value: string | number) => string`: Formats category or time tick labels along the X-axis.
-  - `valueFormatter?: (value: number) => string`: Formats numeric Y-axis tick values and fallback tooltip values.
-  - `yDomain?: LineChartAxisDomain`: Custom numerical bounds or keywords (`"auto"`, `"dataMin"`, `"dataMax"`) for the Y-axis.
-- **Stacking & Composition** (compact charts `Sparkline` and `SlotBarChart` intentionally retain compact geometry without axis, legend, or tooltip layers):
-  - `stackOffset?: "none" | "expand" | "wiggle" | "silhouette"`: Stacking algorithm for `AreaChart` and `StackedBarChart`. Setting `"expand"` normalizes values to 100% proportional areas/bars.
-  - `legend?: ReactNode | ((props: { items: Array<ChartSeriesDescriptor<K>> }) => ReactNode)`: Replaces default legend with custom JSX or an interactive render function receiving resolved series descriptors. Falsy values `null`, `undefined`, and `false` are omitted while `0` is preserved as valid content.
-  - `customTooltip?: (props: { active?: boolean; payload?: readonly ChartTooltipItem[]; label?: string | number }) => ReactNode`: Custom popover tooltip renderer receiving Recharts payload, hover state, and coordinate label for custom unit and percentage calculations.
-
----
+`StatCard` presents a metric in one `LayerCard` surface with optional `icon: React.ReactNode`, trend, action, status, and supporting content. `StatGrid` arranges 2, 3, or 4 cards. Metric cards preserve tabular values, wrapping labels, and accessible display/group roles while callers own domain formatting and chart data.
 
 ## 19. Complete Framework Recipes & Compilable Guides
 

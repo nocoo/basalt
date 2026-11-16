@@ -1,9 +1,9 @@
-import { AreaChart } from "@nocoo/basalt/charts/area";
-import { BarChart } from "@nocoo/basalt/charts/bar";
-import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { Activity, BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { AreaChart } from "@/components/charts/area";
+import { BarChart } from "@/components/charts/bar";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatUsd } from "@/lib/format";
 import { useFlowComparisonViewModel } from "@/viewmodels/useFlowComparisonViewModel";

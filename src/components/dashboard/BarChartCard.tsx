@@ -1,7 +1,7 @@
-import { BarChart } from "@nocoo/basalt/charts/bar";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PiggyBank } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { BarChart } from "@/components/charts/bar";
 import { formatUsd } from "@/lib/format";
 
 const data = [

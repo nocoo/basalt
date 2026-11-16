@@ -7,7 +7,14 @@ type InternalIconProps = Omit<ComponentProps<"svg">, "children"> & {
 function createIcon(name: string, content: ReactNode) {
 	// biome-ignore lint/correctness/noComponentHookFactories: static icon components are created once at module initialization
 	const Icon = forwardRef<SVGSVGElement, InternalIconProps>(function InternalIcon(
-		{ size = 24, strokeWidth = 2, "aria-label": ariaLabel, "aria-hidden": ariaHidden, ...props },
+		{
+			size = 24,
+			strokeWidth = 2,
+			className,
+			"aria-label": ariaLabel,
+			"aria-hidden": ariaHidden,
+			...props
+		},
 		ref,
 	) {
 		return (
@@ -22,6 +29,7 @@ function createIcon(name: string, content: ReactNode) {
 				strokeWidth={strokeWidth}
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				className={`lucide lucide-${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`).slice(1)} ${className ?? ""}`.trim()}
 				aria-label={ariaLabel}
 				aria-hidden={ariaLabel === undefined ? true : ariaHidden}
 			>

@@ -1,7 +1,7 @@
-import { Gauge } from "@nocoo/basalt/charts/gauge";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Goal } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Gauge } from "@/components/charts/gauge";
 
 const goal = 10000;
 const saved = 6800;

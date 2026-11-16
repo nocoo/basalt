@@ -145,7 +145,7 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("theme-provider"))).toBe(
 			"packages/basalt/src/providers/theme.tsx",
 		);
-		expect(implementationFileFor(entry("bar"))).toBe("packages/basalt/src/charts/bar.tsx");
+		expect(implementationFileFor(entry("chart"))).toBe("packages/basalt/src/components/chart.tsx");
 	});
 
 	it("maps shared and renamed implementation files", () => {
@@ -516,15 +516,15 @@ describe("catalog source contract", () => {
 			);
 		});
 
-		it("formats pure re-export components with sources.json package read location", () => {
-			const colorsDocs = CATALOG_DOCS["chart-colors"];
-			expect(colorsDocs).toBeDefined();
-			if (!colorsDocs) return;
+		it("formats chart chrome with a sourcemap package read location", () => {
+			const chartDocs = CATALOG_DOCS.chart;
+			expect(chartDocs).toBeDefined();
+			if (!chartDocs) return;
 
-			const copyText = catalogSourceCopyText(colorsDocs, "chart-colors");
+			const copyText = catalogSourceCopyText(chartDocs, "chart");
 			expect(copyText).toContain("## Implementation");
 			expect(copyText).toContain(
-				'Published package source location: node_modules/@nocoo/basalt/ai/sources.json ("packages/basalt/src/charts/chart-colors.tsx")',
+				"Published package source location: node_modules/@nocoo/basalt/dist/components/chart.js.map (sourcesContent[0])",
 			);
 		});
 

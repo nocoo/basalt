@@ -164,7 +164,7 @@ for (const mapFile of mapFiles) {
 for (const rel of [
 	"components/button.js.map",
 	"providers/theme.js.map",
-	"charts/donut.js.map",
+	"components/chart.js.map",
 	"utils/cn.js.map",
 ]) {
 	if (!existsSync(join(distRoot, rel))) {

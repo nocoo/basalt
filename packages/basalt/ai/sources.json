@@ -1,8 +1,4 @@
 {
-	"packages/basalt/src/charts/chart-colors.tsx": {
-		"content": "export type ColorsProps = {\n\tariaLabel?: string;\n};\n\nexport { CHART_COLORS, ChartPalette as Colors } from \"./palette\";\n",
-		"hash": "a227003ef4032c2c"
-	},
 	"packages/basalt/src/icons.ts": {
 		"content": "export * from \"lucide-react\";\n",
 		"hash": "c60994d05f3c2cc6"

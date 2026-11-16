@@ -97,8 +97,8 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(121);
-		expect(new Set(slugs).size).toBe(121);
+		expect(slugs).toHaveLength(98);
+		expect(new Set(slugs).size).toBe(98);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
@@ -138,7 +138,7 @@ describe("ui catalog", () => {
 		expect(tablesGrid).toHaveClass("md:grid-cols-2");
 		expect(tablesGrid).not.toHaveClass("lg:grid-cols-3");
 		expect(tablesGrid).not.toHaveClass("2xl:grid-cols-4");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(121);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(98);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -157,14 +157,14 @@ describe("ui catalog", () => {
 		}
 
 		const buttonCard = document.querySelector('[data-catalog-card="button"]');
-		const mapsCard = document.querySelector('[data-catalog-card="maps"]');
+		const chartCard = document.querySelector('[data-catalog-card="chart"]');
 		expect(buttonCard).toBeTruthy();
-		expect(mapsCard).toBeTruthy();
-		if (buttonCard && mapsCard) {
+		expect(chartCard).toBeTruthy();
+		if (buttonCard && chartCard) {
 			expect(buttonCard.querySelector("[data-release-status]")).toBeNull();
 			expect(buttonCard.querySelector("[data-page-status]")).toBeNull();
-			expect(mapsCard.querySelector("[data-release-status]")).toBeNull();
-			expect(mapsCard.querySelector("[data-page-status]")).toBeNull();
+			expect(chartCard.querySelector("[data-release-status]")).toBeNull();
+			expect(chartCard.querySelector("[data-page-status]")).toBeNull();
 		}
 		expect(document.querySelector("ul.border-t.border-basalt-border")).toBeTruthy();
 		expect(buttonCard?.querySelector(".rounded-lg")).toBeNull();
@@ -209,23 +209,10 @@ describe("ui catalog", () => {
 		);
 	});
 
-	it("shows a planned chart without a link and switches explicitly to All", () => {
-		renderCatalog("/ui?category=chart&status=planned");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^1 result$/);
-		const mapsCard = document.querySelector('[data-catalog-card="maps"]');
-		expect(mapsCard).toBeInTheDocument();
-		expect(mapsCard?.querySelector('a[href="/ui/maps"]')).toBeNull();
-		expect(screen.queryByRole("region", { name: "Components" })).not.toBeInTheDocument();
-
-		const categoryGroup = screen.getByRole("combobox", { name: "Category" });
-		fireEvent.keyDown(categoryGroup, { key: "ArrowDown" });
-		fireEvent.click(screen.getByRole("option", { name: "All" }));
-		expect(categoryGroup).toHaveTextContent("All");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^1 result$/);
-		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
-			"data-router-location",
-			"/ui?status=planned",
-		);
+	it("shows an empty planned state", () => {
+		renderCatalog("/ui?category=layout&status=planned");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^0 results$/);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(0);
 	});
 
 	it("selects a design category and links its overview without changing component URLs", () => {
@@ -249,7 +236,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("120 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("98 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -274,23 +261,13 @@ describe("ui catalog", () => {
 
 		fireEvent.click(filters.getByRole("button", { name: "Reset filters" }));
 		expect(filters.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("121 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(121);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("98 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(98);
 		expect(filters.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
 			"/ui?foreign=kept",
 		);
-	});
-
-	it("renders a placeholder catalog page for a known slug", () => {
-		renderCatalog("/ui/maps");
-		expect(screen.getByRole("heading", { name: "Maps" })).toBeInTheDocument();
-		expect(document.querySelector("[data-status='placeholder']")).toBeTruthy();
-		expect(screen.getByText(/未实现/)).toBeInTheDocument();
-		expect(
-			screen.getByRole("link", { name: "Library index" }).closest("[data-basalt-surface]"),
-		).toHaveClass("p-basalt-card");
 	});
 
 	it("marks unknown slugs as missing", () => {
@@ -301,9 +278,8 @@ describe("ui catalog", () => {
 	it("keeps generated usage examples self-contained", () => {
 		expect(CATALOG_DOCS["data-table"]?.usage).toContain('name: "Atlas"');
 		expect(CATALOG_DOCS["data-table"]?.usage).not.toContain("data={rows}");
-		expect(CATALOG_DOCS.radar?.usage).toContain("subject:");
-		expect(CATALOG_DOCS.timeline?.usage).toContain("events=");
-		expect(CATALOG_DOCS.sankey?.usage).toContain("nodes:");
+		expect(CATALOG_DOCS.chart?.usage).toContain("ChartFrame");
+		expect(CATALOG_DOCS["stat-card"]?.usage).toContain("StatCard");
 	});
 
 	it("maps CodeBlock to the code module path", () => {
@@ -363,20 +339,13 @@ describe("ui catalog", () => {
 		}
 	});
 
-	it("sorts components within their design category and preserves chart and block leads", () => {
+	it("sorts components within their design category and preserves block order", () => {
 		const components = libraryNavEntries("layout");
 		expect(catalogNavName(components[0])).toBe("Accordion");
 		expect(components.map(catalogNavName)).toEqual(
 			[...components.map(catalogNavName)].sort((a, b) => a.localeCompare(b, "en")),
 		);
-		expect(libraryNavEntries("chart").slice(0, 6).map(catalogNavName)).toEqual([
-			"Charts",
-			"Colors",
-			"Timeseries",
-			"Maps",
-			"Sankey",
-			"Custom Chart",
-		]);
+
 		expect(libraryNavEntries("block").map(catalogNavName)).toEqual([
 			"Page Header",
 			"Resource List",

@@ -38,11 +38,10 @@ bun add @nocoo/basalt lucide-react
 
 ### Configure styles
 
-For Tailwind CSS v4, import Basalt tokens and Tailwind in your main stylesheet. This `@source` path assumes the stylesheet lives in `src/`; adjust it for the actual location:
+For Tailwind CSS v4, import Basalt styles and Tailwind in your main stylesheet:
 
 ```css
-@source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
-@import "@nocoo/basalt/styles/tailwind";
+@import "@nocoo/basalt/styles";
 @import "tailwindcss";
 
 @layer base {
@@ -91,7 +90,7 @@ export function App() {
 }
 ```
 
-The `@nocoo/basalt/charts/*` paths require Recharts 3. The current built-in DatePicker and DataTable implement their interactions internally and do not require the declared optional react-day-picker or TanStack Table peers; install those when integrating them directly. In Next.js, put interactive components inside a `"use client"` module.
+Charts are engine-agnostic: `@nocoo/basalt/components/chart` provides frame, legend, tooltip, palette, and series utilities; install Recharts only when the application composes it directly. DatePicker and DataTable implement their interactions without requiring the optional react-day-picker or TanStack Table peers. In Next.js, put interactive components inside a `"use client"` module.
 
 See [INTEGRATION.md](../INTEGRATION.md) for themes, routing adapters, forms, and SSR, and [RECIPES.md](../packages/basalt/ai/RECIPES.md) for application layouts.
 

@@ -88,9 +88,6 @@
     <loc>https://basaltui.com/ui/approval-card</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/area</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/autocomplete</loc>
   </url>
   <url>
@@ -103,9 +100,6 @@
     <loc>https://basaltui.com/ui/banner</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/bar</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/basalt-mark</loc>
   </url>
   <url>
@@ -115,16 +109,10 @@
     <loc>https://basaltui.com/ui/breadcrumbs</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/bullet</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/button</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/chart-colors</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/charts</loc>
+    <loc>https://basaltui.com/ui/chart</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/chat-bubble</loc>
@@ -175,13 +163,7 @@
     <loc>https://basaltui.com/ui/context-menu</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/custom-chart</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/data-table</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/date-navigation</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/date-picker</loc>
@@ -200,9 +182,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/dock</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/donut</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/dropdown-menu</loc>
@@ -229,22 +208,7 @@
     <loc>https://basaltui.com/ui/flow</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/funnel</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/gauge</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/grid</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/grouped-bar</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/heatmap-calendar</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/heatmap-matrix</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/hover-card</loc>
@@ -265,16 +229,10 @@
     <loc>https://basaltui.com/ui/input-group</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/item-list</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/label</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/layer-card</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/line</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/link</loc>
@@ -287,9 +245,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/loader</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/maps</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/menu-bar</loc>
@@ -316,9 +271,6 @@
     <loc>https://basaltui.com/ui/overview/card</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/overview/chart</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/overview/inline</loc>
   </url>
   <url>
@@ -337,16 +289,10 @@
     <loc>https://basaltui.com/ui/pagination</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/palette</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/popover</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/prompt-bar</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/radar</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/radio</loc>
@@ -359,9 +305,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/responsive-master-detail</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/sankey</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/scroll-area</loc>
@@ -392,15 +335,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/slider</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/slot-bar</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/sparkline</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/stacked-bar</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/stat-card</loc>
@@ -440,12 +374,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/thinking</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/timeline</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/ui/timeseries</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/toast</loc>

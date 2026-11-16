@@ -5,12 +5,12 @@ import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { lazy, Suspense, useState } from "react";
 
 const AreaChart = lazy(() =>
-	import("@nocoo/basalt/charts/area").then((module) => ({
+	import("@/components/charts/area").then((module) => ({
 		default: module.AreaChart<{ x: string; y: number }>,
 	})),
 );
 const DonutChart = lazy(() =>
-	import("@nocoo/basalt/charts/donut").then((module) => ({ default: module.DonutChart })),
+	import("@/components/charts/donut").then((module) => ({ default: module.DonutChart })),
 );
 
 const METRICS = [

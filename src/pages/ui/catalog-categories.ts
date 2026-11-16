@@ -42,12 +42,6 @@ export const CATALOG_CATEGORIES = [
 		size: "Typography or graphic geometry, not a universal control height",
 	},
 	{
-		id: "chart",
-		label: "Charts",
-		description: "Data displays that prioritize comparison, meaning and accessible alternatives.",
-		size: "Data-driven geometry; action-sized toolbars",
-	},
-	{
 		id: "block",
 		label: "Blocks",
 		description: "Reusable page-level patterns composed from the same component rules.",

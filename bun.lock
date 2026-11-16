@@ -110,13 +110,11 @@
         "react": "^19",
         "react-day-picker": "^10",
         "react-dom": "^19",
-        "recharts": "^3",
         "tailwindcss": "^4",
       },
       "optionalPeers": [
         "@tanstack/react-table",
         "react-day-picker",
-        "recharts",
         "tailwindcss",
       ],
     },

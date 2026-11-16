@@ -20,9 +20,8 @@ The initial public baseline is locked to version **`2.0.3`** (commit `e61efc1`).
 
 - **Entrypoints:** 110 exported entrypoints:
   - 1 root entrypoint: `@nocoo/basalt` (96 root symbols)
-  - 77 component subpaths: `@nocoo/basalt/components/*`
-  - 29 chart subpaths: `@nocoo/basalt/charts/*`
-  - 3 provider subpaths: `@nocoo/basalt/providers/*` (`theme`, `accent`, `link`)
+  - 79 component subpaths including engine-agnostic chart chrome and metric cards
+  - 3 provider subpaths
   - Total: 572 exported symbols across all entrypoints (375 runtime symbols, 197 type symbols).
 - **CSS Export Contracts:** 3 export paths:
   - `@nocoo/basalt/styles` (Tailwind contract alias)
@@ -44,7 +43,7 @@ The root barrel is reserved for lightweight, frequently-used leaves, standard in
 - **Included on root:** `Button`, `Input`, `Checkbox`, `Switch`, `Badge`, `Text`, `Label`, `Separator`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarBrand`, `SidebarToggle`, `Dialog`, `Sheet`, `Popover`, `Tooltip`, `Toast`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`.
 - **Excluded from root:**
   - Radio inputs (`@nocoo/basalt/components/radio`)
-  - Heavy visualization libraries (`@nocoo/basalt/charts/*`)
+  - Engine-agnostic chart chrome (`@nocoo/basalt/components/chart`)
   - Complex table implementations (`@nocoo/basalt/components/data-table`)
   - Calendar pickers with complex date logic (`@nocoo/basalt/components/date-picker`)
   - Application frame layout chrome (`@nocoo/basalt/components/app-shell`, `app-header`, `page-header`, `section-rule`)
@@ -52,11 +51,10 @@ The root barrel is reserved for lightweight, frequently-used leaves, standard in
 ### Wildcard Subpaths & Legacy Internal Helpers
 
 <a id="wildcard-subpaths"></a>
-In `v2.0.3`, wildcard exports (`./components/*`, `./charts/*`, `./providers/*`) exposed all non-test modules in the package, including internal building blocks:
+In `v2.0.3`, wildcard exports (`./components/*` and `./providers/*`) exposed all non-test modules in the package, including internal building blocks:
 
 - **`@nocoo/basalt/components/typeahead-field`**: Internal composite input controller for autocomplete and combobox (`TypeaheadField`, `TypeaheadItem`). Provides popup list and keyboard navigation wiring.
 - **`@nocoo/basalt/components/overlay`**: Internal class generators and styling constants for overlay menus and select (`overlayPanelClass`, `overlayItemClass`, `FOCUS_RING`, `FOCUS_BORDER`, `MENU_GAP`, `OVERLAY_GAP`, `OVERLAY_LAYER`, `OVERLAY_MOTION`).
-- **`@nocoo/basalt/charts/sample`**: Static mock datasets used for fallback preview rendering (`SAMPLE`, `BULLET_SAMPLE`, `DONUT_SAMPLE`, `FUNNEL_SAMPLE`, `RADAR_SAMPLE`, `SANKEY_SAMPLE`).
 
 **Policy:**
 
@@ -97,55 +95,9 @@ Changes to default geometry (such as outer padding, default margins, or intrinsi
 
 ## 5. Chart Configuration and Series Subsystems
 
-Basalt chart components build upon modular configuration tokens and series utilities designed for Recharts integration.
+`@nocoo/basalt/components/chart` is engine-agnostic. It exports `ChartFrame`, `ChartShell`, tooltip presentation primitives, `ChartLegend`, palette tokens, `ChartSeriesDescriptor`, and numeric/color helpers. `ChartFrame` accepts `ReactNode`; responsive containers and visualization components remain application-owned. Recharts is not a Basalt peer dependency.
 
-<a id="chart-config"></a>
-
-### Chart Configuration (`@nocoo/basalt/charts/config`)
-
-Defines shared tokens, styles, and props for cartesian charts:
-
-- **Constants**:
-  - `CHART_TYPE`: Font sizes (`axisFontSize: 11`, `legendFontSize: 12`, `tooltipTitleSize: 12`, `tooltipBodySize: 12`), `tooltipDot: 8`, stroke width (`strokeWidth: 2`), `gridDash: "3 3"`, `gridOpacity: 0.15`, and `areaFillAlpha: 0.2`.
-  - `AXIS_CONFIG` & `cartesianAxisProps(hidden: boolean = false)`: Standard tick styling (`chartTickStyle("axis")`), `axisLine: false`, `tickLine: false`. Returns `{ hide: boolean, tick: { fontSize: number, fill: string }, axisLine: false, tickLine: false }`.
-  - `GRID_PROPS`: Horizontal-only grid with theme stroke opacity and dashed strokes (`vertical: false, stroke: chartAxis, strokeOpacity: 0.15, strokeDasharray: "3 3"`).
-  - `BAR_RADIUS`: Rounded corner coordinates for vertical (`[4, 4, 0, 0]`) and horizontal (`[0, 4, 4, 0]`) bars.
-  - `ANIMATION_PROPS`: Standard zero-animation config for stable rendering (`isAnimationActive: false`).
-  - `CHART_TOOLTIP_CURSOR_LINE` / `CHART_TOOLTIP_CURSOR_BAR`: Standard cursor overlays.
-  - `RESPONSIVE_CONTAINER_PROPS`: Sizing props (`width: "100%"`, `height: "100%"`, `minWidth: 0`, `minHeight: 0`, `debounce: 150`).
-  - `CHART_PLOT_MARGIN`: Standard cartesian plot margins `{ top: 4, right: 4, bottom: 0, left: 0 }`.
-  - `CHART_PLOT_MARGIN_BARE`: Minimal plot margins `{ top: 2, right: 2, bottom: 2, left: 2 }`.
-- **Types**:
-  - `ChartTypeFace`: `"axis" | "legend" | "tooltipTitle" | "tooltipBody"`.
-- **Functions**:
-  - `chartFontSize(face: ChartTypeFace): number`: Returns numeric font size token for given face.
-  - `chartTextStyle(face: ChartTypeFace): { fontSize: number }`: Typography style helper.
-  - `chartTickStyle(face: ChartTypeFace = "axis"): { fontSize: number, fill: string }`: Axis tick style helper.
-  - `getChartColor(index: number): string`: Modular color retrieval from `CHART_COLORS` palette (`CHART_COLORS[index % length]`).
-  - `seriesColor(series: ChartSeriesDescriptor | undefined, index: number): string | undefined`: Resolves color by returning explicit `series.color` or palette fallback `CHART_COLORS[index % length]`. Note: returns `string | undefined` (does not guarantee chart-1 fallback; callers such as `ChartLegend` apply `--basalt-chart-1` fallback).
-  - `chartTooltipContentStyle()`: Returns `{ background: "transparent", border: "none", borderRadius: "0", boxShadow: "none", fontSize: 12, color: string, padding: "0" }`.
-  - `chartTooltipProps(options?: { formatter?: (value: number) => string; cursor?: "bar" | "line" | false; customTooltip?: (props: { active?: boolean; payload?: readonly ChartTooltipItem[]; label?: string | number }) => ReactNode })`: Assembles complete Recharts tooltip props with custom `ChartTooltipContent` element renderer or caller-provided `customTooltip` callback.
-
-<a id="chart-series"></a>
-
-### Chart Series Utilities (`@nocoo/basalt/charts/series`)
-
-Manages series descriptor shapes, point definitions, and data key fallbacks:
-
-- **Types**:
-  - `ChartSeriesDescriptor`: `{ key: string, label?: string, color?: string }`.
-  - `XYSeriesDescriptor`: Restricts `key` to `XYSeriesKey` (`"y" | "y2" | "y3"`).
-  - `BulletSeriesDescriptor`: Restricts `key` to `BulletSeriesKey` (`"value" | "target"`).
-  - Point types with concrete field shapes:
-    - `XYPoint`: `{ x: string | number; y: number; y2?: number; y3?: number }`.
-    - `NamedValue`: `{ name: string; value: number }`.
-    - `RadarPoint`: `{ subject: string; value: number }`.
-    - `BulletPoint`: `{ name: string; value: number; target: number }`.
-    - `SankeyData`: `{ nodes: { name: string }[]; links: { source: number; target: number; value: number }[] }`.
-- **Functions**:
-  - `resolveChartSeries(series: ChartSeriesDescriptor[] | undefined, fallbackKeys: string[]): ChartSeriesDescriptor[]`: Normalizes user-supplied series or maps `fallbackKeys` to descriptors `{ key }`. Supports generic type-safe series descriptors with dynamic numeric data keys. Arbitrary keys require explicit series; omitted or empty series retain each chart's legacy `y`, `y2`, and `y3` series fallback. Note that TypeScript type inference does not automatically enumerate object keys at runtime.
-  - `applyLeadColor(items: ChartSeriesDescriptor[], color?: string): ChartSeriesDescriptor[]`: If `color` is provided and the first item does not specify a `color` (`item.color ?? color`), sets the first item's color. Preserves an explicit first-item color.
-  - `xyFallbackKeys(data: Array<{ y2?: number; y3?: number }>): string[]`: Scans data array and dynamically includes `"y2"` and `"y3"` if present, returning `["y", ...]` keys. Compatible with legacy XY series fallback.
+`@nocoo/basalt/components/stat-card` exports `StatCard` and `StatGrid`. Supporting charts compose inside `StatCard.children` without coupling the metric component to a chart engine.
 
 ---
 

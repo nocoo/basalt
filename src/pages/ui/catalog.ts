@@ -885,230 +885,22 @@ export const CATALOG: CatalogEntry[] = [
 		category: "layout",
 	},
 	{
-		slug: "charts",
-		name: "Charts",
-		exportName: "Charts",
-		importPath: "@nocoo/basalt/charts/charts",
+		slug: "chart",
+		name: "Chart",
+		exportName: "ChartFrame",
+		importPath: "@nocoo/basalt/components/chart",
 		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "chart-colors",
-		name: "Colors",
-		exportName: "Colors",
-		importPath: "@nocoo/basalt/charts/chart-colors",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "timeseries",
-		name: "Timeseries",
-		exportName: "Timeseries",
-		importPath: "@nocoo/basalt/charts/timeseries",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "maps",
-		name: "Maps",
-		exportName: "Maps",
-		importPath: "@nocoo/basalt/charts/maps",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "custom-chart",
-		name: "Custom Chart",
-		exportName: "CustomChart",
-		importPath: "@nocoo/basalt/charts/custom-chart",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
+		kind: "catalog",
+		category: "layout",
 	},
 	{
 		slug: "stat-card",
 		name: "StatCard",
 		exportName: "StatCard",
-		importPath: "@nocoo/basalt/charts/stat-card",
+		importPath: "@nocoo/basalt/components/stat-card",
 		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "slot-bar",
-		name: "SlotBarChart",
-		exportName: "SlotBarChart",
-		importPath: "@nocoo/basalt/charts/slot-bar",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "bar",
-		name: "BarChart",
-		exportName: "BarChart",
-		importPath: "@nocoo/basalt/charts/bar",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "line",
-		name: "LineChart",
-		exportName: "LineChart",
-		importPath: "@nocoo/basalt/charts/line",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "area",
-		name: "AreaChart",
-		exportName: "AreaChart",
-		importPath: "@nocoo/basalt/charts/area",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "donut",
-		name: "DonutChart",
-		exportName: "DonutChart",
-		importPath: "@nocoo/basalt/charts/donut",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "grouped-bar",
-		name: "GroupedBarChart",
-		exportName: "GroupedBarChart",
-		importPath: "@nocoo/basalt/charts/grouped-bar",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "stacked-bar",
-		name: "StackedBarChart",
-		exportName: "StackedBarChart",
-		importPath: "@nocoo/basalt/charts/stacked-bar",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "sparkline",
-		name: "Sparkline",
-		exportName: "Sparkline",
-		importPath: "@nocoo/basalt/charts/sparkline",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "heatmap-calendar",
-		name: "HeatmapCalendar",
-		exportName: "HeatmapCalendar",
-		importPath: "@nocoo/basalt/charts/heatmap-calendar",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "heatmap-matrix",
-		name: "HeatmapMatrix",
-		exportName: "HeatmapMatrix",
-		importPath: "@nocoo/basalt/charts/heatmap-matrix",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "gauge",
-		name: "Gauge",
-		exportName: "Gauge",
-		importPath: "@nocoo/basalt/charts/gauge",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "radar",
-		name: "RadarChart",
-		exportName: "RadarChart",
-		importPath: "@nocoo/basalt/charts/radar",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "funnel",
-		name: "FunnelChart",
-		exportName: "FunnelChart",
-		importPath: "@nocoo/basalt/charts/funnel",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "bullet",
-		name: "BulletChart",
-		exportName: "BulletChart",
-		importPath: "@nocoo/basalt/charts/bullet",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "timeline",
-		name: "Timeline",
-		exportName: "Timeline",
-		importPath: "@nocoo/basalt/charts/timeline",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "sankey",
-		name: "SankeyChart",
-		exportName: "SankeyChart",
-		importPath: "@nocoo/basalt/charts/sankey",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-		navName: "Sankey",
-	},
-	{
-		slug: "item-list",
-		name: "ItemList",
-		exportName: "ItemList",
-		importPath: "@nocoo/basalt/charts/item-list",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "date-navigation",
-		name: "DateNavigation",
-		exportName: "DateNavigation",
-		importPath: "@nocoo/basalt/charts/date-navigation",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
-	},
-	{
-		slug: "palette",
-		name: "ChartPalette",
-		exportName: "ChartPalette",
-		importPath: "@nocoo/basalt/charts/palette",
-		hasRootBarrel: false,
-		kind: "chart",
-		category: "chart",
+		kind: "catalog",
+		category: "card",
 	},
 	{
 		slug: "page-header",
@@ -1141,7 +933,6 @@ export const CATALOG: CatalogEntry[] = [
 
 export const CATALOG_BY_SLUG = new Map(CATALOG.map((entry) => [entry.slug, entry]));
 
-const CHART_LEAD = ["charts", "chart-colors", "timeseries", "maps", "sankey", "custom-chart"];
 const BLOCK_LEAD = ["page-header", "resource-list", "delete-resource"];
 
 export function catalogNavName(entry: CatalogEntry): string {
@@ -1149,9 +940,7 @@ export function catalogNavName(entry: CatalogEntry): string {
 }
 
 export function inScopeCatalogSlugs(): string[] {
-	return CATALOG.filter((entry) => entry.category !== "block" && entry.slug !== "maps").map(
-		(entry) => entry.slug,
-	);
+	return CATALOG.filter((entry) => entry.category !== "block").map((entry) => entry.slug);
 }
 
 function byNavName(a: CatalogEntry, b: CatalogEntry) {
@@ -1159,17 +948,8 @@ function byNavName(a: CatalogEntry, b: CatalogEntry) {
 }
 
 export function libraryNavEntries(category: CatalogCategory): CatalogEntry[] {
-	if (category !== "chart" && category !== "block") {
+	if (category !== "block") {
 		return CATALOG.filter((entry) => entry.category === category).sort(byNavName);
-	}
-	if (category === "chart") {
-		const lead = CHART_LEAD.map((slug) => CATALOG_BY_SLUG.get(slug)).filter(
-			(entry): entry is CatalogEntry => entry !== undefined,
-		);
-		const rest = CATALOG.filter(
-			(entry) => entry.category === "chart" && !CHART_LEAD.includes(entry.slug),
-		).sort(byNavName);
-		return [...lead, ...rest];
 	}
 	return BLOCK_LEAD.map((slug) => CATALOG_BY_SLUG.get(slug)).filter(
 		(entry): entry is CatalogEntry => entry !== undefined,

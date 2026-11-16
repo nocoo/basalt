@@ -1,4 +1,4 @@
-import { BarChart } from "@nocoo/basalt/charts/bar";
+import { BarChart } from "@/components/charts/bar";
 import { cn } from "@/lib/utils";
 
 export interface BarChartDataPoint {

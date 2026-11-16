@@ -1,4 +1,4 @@
-import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { DonutChart } from "@/components/charts/donut";
 import { cn } from "@/lib/utils";
 
 export interface PieChartDataPoint {

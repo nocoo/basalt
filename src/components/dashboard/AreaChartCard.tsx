@@ -1,7 +1,7 @@
-import { AreaChart } from "@nocoo/basalt/charts/area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { AreaChart } from "@/components/charts/area";
 import { formatUsd } from "@/lib/format";
 
 const data = [

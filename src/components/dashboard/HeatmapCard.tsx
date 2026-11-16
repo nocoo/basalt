@@ -1,6 +1,6 @@
-import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { HeatmapCalendar, heatmapColorScales } from "@/components/charts/heatmap-calendar";
 
 const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 	const date = new Date(Date.UTC(2026, 0, 1 + i));

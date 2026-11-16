@@ -305,7 +305,6 @@ export function runDesignAudit(root = process.cwd()) {
 	const targets = [
 		"packages/basalt/src/components",
 		"packages/basalt/src/utils",
-		"packages/basalt/src/charts",
 		"src/pages",
 		"src/components",
 		"src/styles",

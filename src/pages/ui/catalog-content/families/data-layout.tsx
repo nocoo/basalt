@@ -4,6 +4,7 @@ import {
 	type CatalogDocsDraft,
 	provenanceFromLegacy,
 } from "../../catalog-source";
+import { CHART_EXAMPLES } from "../../examples/chart";
 import { DATA_TABLE_EXAMPLES } from "../../examples/data-table";
 import { DELETE_RESOURCE_EXAMPLES } from "../../examples/delete-resource";
 import { DESCRIPTION_LIST_EXAMPLES } from "../../examples/description-list";
@@ -13,9 +14,11 @@ import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
 import { RESOURCE_LIST_EXAMPLES } from "../../examples/resource-list";
 import { RESPONSIVE_MASTER_DETAIL_EXAMPLES } from "../../examples/responsive-master-detail";
 import { SECTION_RULE_EXAMPLES } from "../../examples/section-rule";
+import { STAT_CARD_EXAMPLES } from "../../examples/stat-card";
 import { STAT_STRIP_EXAMPLES } from "../../examples/stat-strip";
 import { TABLE_EXAMPLES } from "../../examples/table";
 import { TABLE_PAGER_EXAMPLES } from "../../examples/table-pager";
+import { API as chartApi } from "../../generated/catalog-api/chart";
 import { API as dataTableApi } from "../../generated/catalog-api/data-table";
 import { API as deleteResourceApi } from "../../generated/catalog-api/delete-resource";
 import { API as descriptionListApi } from "../../generated/catalog-api/description-list";
@@ -25,6 +28,7 @@ import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
 import { API as resourceListApi } from "../../generated/catalog-api/resource-list";
 import { API as responsiveMasterDetailApi } from "../../generated/catalog-api/responsive-master-detail";
 import { API as sectionRuleApi } from "../../generated/catalog-api/section-rule";
+import { API as statCardApi } from "../../generated/catalog-api/stat-card";
 import { API as statStripApi } from "../../generated/catalog-api/stat-strip";
 import { API as tableApi } from "../../generated/catalog-api/table";
 import { API as tablePagerApi } from "../../generated/catalog-api/table-pager";
@@ -121,6 +125,28 @@ export default function Example() {
 }`;
 
 export default catalogContentFamily({
+	chart: {
+		docs: {
+			description:
+				"Engine-agnostic chart chrome for framing Recharts, ECharts, or custom SVG with shared legends, tooltips, summaries and accessible data alternatives.",
+			usage: CHART_EXAMPLES[0].code,
+			variants: [],
+			api: chartApi,
+			provenance: EXTRA_PROVENANCE,
+		},
+		examples: CHART_EXAMPLES,
+	},
+	"stat-card": {
+		docs: {
+			description:
+				"A compact metric card with an optional icon, trend, action, status and supporting chart content.",
+			usage: STAT_CARD_EXAMPLES[0].code,
+			variants: [],
+			api: statCardApi,
+			provenance: EXTRA_PROVENANCE,
+		},
+		examples: STAT_CARD_EXAMPLES,
+	},
 	"responsive-master-detail": {
 		docs: {
 			description:

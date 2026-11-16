@@ -404,8 +404,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(120);
-		expect(Object.keys(first)).toHaveLength(121);
+		expect(slugs).toHaveLength(98);
+		expect(Object.keys(first)).toHaveLength(99);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -465,17 +465,12 @@ export interface WidgetProps {
 		expect(joined).toContain('type: "(row: T, index: number) => string"');
 		expect(joined).toContain('name: "Flow"');
 		expect(joined).toContain('name: "Grid"');
-		expect(joined).toContain('name: "LineChart"');
-		expect(joined).toContain('name: "DonutChart"');
+		expect(joined).toContain('name: "ChartFrame"');
+		expect(joined).toContain('name: "ChartLegend"');
 		expect(joined).toContain('name: "StatCard"');
-		expect(joined).toContain('name: "HeatmapCalendar"');
-		expect(joined).toContain('name: "HeatmapCalendar.Year"');
-		expect(joined).toContain('name: "SlotBarChart.Items"');
-		expect(joined).toContain('name: "Timeline.Events"');
-		expect(joined).toContain('name: "DateNavigation"');
-		expect(joined).toContain('name: "DateNavigation.Display"');
+		expect(joined).toContain('name: "ChartTooltipContent"');
 		expect(joined).toContain('name: "StatGrid"');
-		expect(joined).toContain('name: "ChartPalette"');
+		expect(joined).toContain('name: "StatGrid"');
 		expect(joined).toContain('name: "ResourceList"');
 		expect(joined).toContain('name: "DeleteResource"');
 		expect(joined).toContain('type: "ChartSeriesDescriptor[]"');
@@ -487,7 +482,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"7624ce40b245d7289c793f702914ba1509bd99b5df7cadbfc42de6eb7d51e3d7",
+			"a96aaa925f04d0eebca03beb9faae1196b96083d4981789de65b45ea4837fd95",
 		);
 	}, 60_000);
 

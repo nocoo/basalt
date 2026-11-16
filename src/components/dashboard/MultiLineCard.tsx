@@ -1,6 +1,6 @@
-import { LineChart } from "@nocoo/basalt/charts/line";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { LineChart } from "@/components/charts/line";
 import { formatPercent } from "@/lib/format";
 
 const data = [
