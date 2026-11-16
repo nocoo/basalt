@@ -33,8 +33,8 @@ export function ActionGridCard({ demo = false }: { demo?: boolean }) {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Zap className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<Zap className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.quickActions")}
 					</h2>
 				</div>
@@ -49,9 +49,9 @@ export function ActionGridCard({ demo = false }: { demo?: boolean }) {
 					{actions.map((action) => (
 						<Button
 							variant="secondary"
+							size="tile"
 							type="button"
 							key={action.label}
-							className="flex-col"
 							disabled={demo}
 						>
 							<div
@@ -59,7 +59,7 @@ export function ActionGridCard({ demo = false }: { demo?: boolean }) {
 							>
 								<action.icon className="h-4 w-4" strokeWidth={1.5} />
 							</div>
-							<span className="text-basalt-sm text-foreground">{action.label}</span>
+							<span className="text-basalt-sm text-basalt-foreground">{action.label}</span>
 						</Button>
 					))}
 				</div>

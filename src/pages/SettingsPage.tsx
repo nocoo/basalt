@@ -84,17 +84,17 @@ export default function SettingsPage() {
 
 	return (
 		<ShowcasePage title={t("pages.settings.title")} description={t("pages.settings.description")}>
-			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-4">
+			<div className="grid grid-cols-1 gap-basalt-layout @[52rem]/island:grid-cols-4">
 				{/* Left nav */}
-				<LayerCard className="flex flex-col lg:col-span-1" padding="none">
-					<LayerCard.Body>
+				<LayerCard className="flex flex-col @[52rem]/island:col-span-1" padding="none">
+					<LayerCard.Well>
 						<SidebarNav
 							aria-label={t("pages.settings.title")}
-							className="flex-row flex-wrap lg:flex-col"
+							className="flex-row flex-wrap @[52rem]/island:flex-col"
 						>
 							{SECTIONS.map(({ id, labelKey, icon: Icon }) => (
 								<SidebarItem
-									className="w-auto lg:w-full"
+									className="w-auto @[52rem]/island:w-full"
 									type="button"
 									key={id}
 									onClick={() => setActiveSection(id)}
@@ -106,23 +106,23 @@ export default function SettingsPage() {
 								</SidebarItem>
 							))}
 						</SidebarNav>
-					</LayerCard.Body>
-					<LayerCard.Footer className="flex-col items-start">
-						<p className="text-basalt-base text-muted-foreground">{t("demo.localOnly")}</p>
-						{vm.notice && (
-							<p
-								role="status"
-								aria-live="polite"
-								className="text-basalt-base text-muted-foreground"
-							>
-								{t(`demo.${vm.notice}`)}
-							</p>
-						)}
-					</LayerCard.Footer>
+						<LayerCard.Footer className="flex-col items-start">
+							<p className="text-basalt-base text-basalt-muted-foreground">{t("demo.localOnly")}</p>
+							{vm.notice && (
+								<p
+									role="status"
+									aria-live="polite"
+									className="text-basalt-base text-basalt-muted-foreground"
+								>
+									{t(`demo.${vm.notice}`)}
+								</p>
+							)}
+						</LayerCard.Footer>
+					</LayerCard.Well>
 				</LayerCard>
 
 				{/* Right content */}
-				<div className="lg:col-span-3">
+				<div className="@[52rem]/island:col-span-3">
 					{activeSection === "profile" && <ProfileSection vm={vm} />}
 					{activeSection === "notifications" && <NotificationsSection vm={vm} />}
 					{activeSection === "security" && <SecuritySection vm={vm} />}
@@ -143,8 +143,8 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 		<LayerCard className="flex flex-col" padding="none">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<User className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<User className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.settings.profileInfo")}
 					</h2>
 				</div>
@@ -170,7 +170,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 					/>
 					<div className="flex items-center gap-basalt-card">
 						<div className="relative">
-							<div className="flex h-16 w-16 items-center justify-center rounded-basalt-full bg-primary/10 text-primary">
+							<div className="flex h-16 w-16 items-center justify-center rounded-basalt-full bg-basalt-primary/10 text-basalt-primary">
 								<User className="h-7 w-7" strokeWidth={1.5} />
 							</div>
 							<Button
@@ -185,24 +185,24 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 							</Button>
 						</div>
 						<div>
-							<p className="text-basalt-base font-medium text-foreground">
+							<p className="text-basalt-base font-medium text-basalt-foreground">
 								{vm.profile.firstName} {vm.profile.lastName}
 							</p>
-							<p className="text-basalt-sm text-muted-foreground">{vm.profile.email}</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">{vm.profile.email}</p>
 							{vm.photo && (
-								<p role="status" className="text-basalt-sm text-muted-foreground break-all">
+								<p role="status" className="text-basalt-sm text-basalt-muted-foreground break-all">
 									{vm.photo}
 								</p>
 							)}
 						</div>
 					</div>
 
-					<Separator className="bg-border" />
+					<Separator className="bg-basalt-border" />
 
 					{/* Form fields */}
 					<div className="grid grid-cols-1 gap-basalt-card sm:grid-cols-2">
 						<div className="space-y-basalt-space-lg">
-							<Label htmlFor="settings-first-name" className="text-foreground">
+							<Label htmlFor="settings-first-name" className="text-basalt-foreground">
 								{t("pages.settings.firstName")}
 							</Label>
 							<Input
@@ -215,7 +215,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 							/>
 						</div>
 						<div className="space-y-basalt-space-lg">
-							<Label htmlFor="settings-last-name" className="text-foreground">
+							<Label htmlFor="settings-last-name" className="text-basalt-foreground">
 								{t("pages.settings.lastName")}
 							</Label>
 							<Input
@@ -228,7 +228,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 							/>
 						</div>
 						<div className="space-y-basalt-space-lg">
-							<Label htmlFor="settings-email" className="text-foreground">
+							<Label htmlFor="settings-email" className="text-basalt-foreground">
 								{t("pages.login.email")}
 							</Label>
 							<Input
@@ -242,7 +242,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 							/>
 						</div>
 						<div className="space-y-basalt-space-lg">
-							<Label htmlFor="settings-phone" className="text-foreground">
+							<Label htmlFor="settings-phone" className="text-basalt-foreground">
 								{t("pages.settings.phone")}
 							</Label>
 							<Input
@@ -257,7 +257,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 					</div>
 
 					<div className="space-y-basalt-space-lg">
-						<Label htmlFor="settings-bio" className="text-foreground">
+						<Label htmlFor="settings-bio" className="text-basalt-foreground">
 							{t("pages.settings.bio")}
 						</Label>
 						<InputArea
@@ -294,8 +294,8 @@ function NotificationsSection({ vm }: { vm: SettingsVM }) {
 		<LayerCard className="flex flex-col" padding="none">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Bell className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<Bell className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.settings.notificationPrefs")}
 					</h2>
 				</div>
@@ -309,11 +309,13 @@ function NotificationsSection({ vm }: { vm: SettingsVM }) {
 						<div className="space-y-basalt-space-xs">
 							<label
 								htmlFor={`notif-${item.id}`}
-								className="text-basalt-base text-foreground cursor-pointer"
+								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
 								{t(item.labelKey)}
 							</label>
-							<p className="text-basalt-sm text-muted-foreground">{t(item.descriptionKey)}</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">
+								{t(item.descriptionKey)}
+							</p>
 						</div>
 						<Switch
 							id={`notif-${item.id}`}
@@ -338,8 +340,8 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Shield className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base font-normal text-muted-foreground">
+						<Shield className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.passwordTitle")}
 						</h2>
 					</div>
@@ -359,7 +361,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 						}}
 					>
 						<div className="space-y-basalt-space-lg">
-							<Label htmlFor="settings-current-password" className="text-foreground">
+							<Label htmlFor="settings-current-password" className="text-basalt-foreground">
 								{t("pages.settings.currentPassword")}
 							</Label>
 							<Input
@@ -374,7 +376,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 						</div>
 						<div className="grid grid-cols-1 gap-basalt-card sm:grid-cols-2">
 							<div className="space-y-basalt-space-lg">
-								<Label htmlFor="settings-new-password" className="text-foreground">
+								<Label htmlFor="settings-new-password" className="text-basalt-foreground">
 									{t("pages.settings.newPassword")}
 								</Label>
 								<Input
@@ -389,7 +391,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 								/>
 							</div>
 							<div className="space-y-basalt-space-lg">
-								<Label htmlFor="settings-confirm-password" className="text-foreground">
+								<Label htmlFor="settings-confirm-password" className="text-basalt-foreground">
 									{t("pages.settings.confirmPassword")}
 								</Label>
 								<Input
@@ -414,7 +416,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 							</Button>
 						</div>
 						{vm.passwordError && (
-							<p role="alert" className="text-basalt-base text-destructive">
+							<p role="alert" className="text-basalt-base text-basalt-destructive">
 								{t("demo.passwordMismatch")}
 							</p>
 						)}
@@ -427,8 +429,11 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Smartphone className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base font-normal text-muted-foreground">
+						<Smartphone
+							className="size-basalt-icon text-basalt-muted-foreground"
+							strokeWidth={1.5}
+						/>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.twoFactor")}
 						</h2>
 					</div>
@@ -438,11 +443,11 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 						<div className="space-y-basalt-space-xs">
 							<label
 								htmlFor="2fa-authenticator"
-								className="text-basalt-base text-foreground cursor-pointer"
+								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
 								{t("pages.settings.authenticatorApp")}
 							</label>
-							<p className="text-basalt-sm text-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.settings.authenticatorDesc")}
 							</p>
 						</div>
@@ -452,13 +457,18 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 							onCheckedChange={(value) => vm.setSecurityPreference("authenticator", value)}
 						/>
 					</div>
-					<Separator className="my-basalt-card-sm bg-border" />
+					<Separator className="my-basalt-card-sm bg-basalt-border" />
 					<div className="flex items-center justify-between">
 						<div className="space-y-basalt-space-xs">
-							<label htmlFor="2fa-sms" className="text-basalt-base text-foreground cursor-pointer">
+							<label
+								htmlFor="2fa-sms"
+								className="text-basalt-base text-basalt-foreground cursor-pointer"
+							>
 								{t("pages.settings.smsVerification")}
 							</label>
-							<p className="text-basalt-sm text-muted-foreground">{t("pages.settings.smsDesc")}</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">
+								{t("pages.settings.smsDesc")}
+							</p>
 						</div>
 						<Switch
 							id="2fa-sms"
@@ -473,8 +483,8 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Globe className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base font-normal text-muted-foreground">
+						<Globe className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.activeSessions")}
 						</h2>
 					</div>
@@ -486,7 +496,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 							className="flex items-center justify-between gap-basalt-card py-basalt-card-sm first:pt-0 last:pb-0"
 						>
 							<div className="space-y-basalt-space-xs">
-								<p className="text-basalt-base text-foreground">
+								<p className="text-basalt-base text-basalt-foreground">
 									{session.device}
 									{session.current && (
 										<Badge variant="success" className="ml-basalt-space-lg">
@@ -494,7 +504,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 										</Badge>
 									)}
 								</p>
-								<p className="text-basalt-sm text-muted-foreground">{session.location}</p>
+								<p className="text-basalt-sm text-basalt-muted-foreground">{session.location}</p>
 							</div>
 							{!session.current && (
 								<Button
@@ -526,8 +536,8 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Palette className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base font-normal text-muted-foreground">
+						<Palette className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.themeTitle")}
 						</h2>
 					</div>
@@ -571,7 +581,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 												: "bg-gradient-to-r from-white to-basalt-muted"
 									}`}
 								/>
-								<span className="text-basalt-sm text-foreground">{theme.label}</span>
+								<span className="text-basalt-sm text-basalt-foreground">{theme.label}</span>
 							</label>
 						))}
 					</div>
@@ -582,8 +592,11 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<CreditCard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<h2 className="text-basalt-base font-normal text-muted-foreground">
+						<CreditCard
+							className="size-basalt-icon text-basalt-muted-foreground"
+							strokeWidth={1.5}
+						/>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.preferences")}
 						</h2>
 					</div>
@@ -595,11 +608,11 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 						<div className="space-y-basalt-space-xs">
 							<label
 								htmlFor="settings-currency"
-								className="text-basalt-base text-foreground cursor-pointer"
+								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
 								{t("pages.settings.currency")}
 							</label>
-							<p className="text-basalt-sm text-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.settings.currencyDesc")} ·{" "}
 								{new Intl.NumberFormat(i18n.language, {
 									style: "currency",
@@ -619,16 +632,16 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 							</SelectContent>
 						</Select>
 					</div>
-					<Separator className="bg-border" />
+					<Separator className="bg-basalt-border" />
 					<div className="flex items-center justify-between">
 						<div className="space-y-basalt-space-xs">
 							<label
 								htmlFor="settings-language"
-								className="text-basalt-base text-foreground cursor-pointer"
+								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
 								{t("pages.settings.interfaceLanguage")}
 							</label>
-							<p className="text-basalt-sm text-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.settings.interfaceLanguageDesc")}
 							</p>
 						</div>
@@ -647,16 +660,16 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 							</SelectContent>
 						</Select>
 					</div>
-					<Separator className="bg-border" />
+					<Separator className="bg-basalt-border" />
 					<div className="flex items-center justify-between">
 						<div className="space-y-basalt-space-xs">
 							<label
 								htmlFor="settings-compact-mode"
-								className="text-basalt-base text-foreground cursor-pointer"
+								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
 								{t("pages.settings.compactMode")}
 							</label>
-							<p className="text-basalt-sm text-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.settings.compactModeDesc")}
 							</p>
 						</div>

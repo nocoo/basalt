@@ -13,7 +13,9 @@ export function BulletChartCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.bulletKpis")}</h2>
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
+					{t("dashboard.bulletKpis")}
+				</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 h-56">
 				<BulletChart

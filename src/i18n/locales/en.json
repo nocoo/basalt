@@ -583,6 +583,7 @@
 			"variants": "variants",
 			"semantic": "semantic",
 			"solid": "solid",
+			"outline": "Outline",
 			"soft": "soft",
 			"withIcons": "with icons",
 			"withDotIndicators": "with dot indicators",

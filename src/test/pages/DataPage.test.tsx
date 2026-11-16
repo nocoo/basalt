@@ -47,6 +47,10 @@ describe("DataPage", () => {
 		expect(screen.getByRole("textbox", { name: "Search" }).closest("[data-basalt-surface]")).toBe(
 			island,
 		);
+		expect(screen.getByRole("navigation", { name: "Pagination" }).parentElement).toHaveClass(
+			"w-full",
+		);
+		expect(screen.queryByText(/Showing .* of .*$/)).toHaveTextContent("Showing 1–2 of 4");
 	});
 
 	it("does not paint inner wells with bg-card", () => {

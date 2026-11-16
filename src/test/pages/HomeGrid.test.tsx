@@ -66,7 +66,7 @@ describe("HomeGrid", () => {
 		for (const slug of ["table", "data-table"]) {
 			const card = document.querySelector(`[data-catalog-card="${slug}"]`);
 			expect(card, slug).toHaveAttribute("data-gallery-span", "full");
-			expect(card, slug).toHaveClass("md:col-span-2");
+			expect(card, slug).toHaveClass("@[44rem]/island:col-span-2");
 			expect(card?.querySelector("[data-gallery-preview]"), slug).toHaveClass(
 				"overflow-x-auto",
 				"p-basalt-space-lg",
@@ -74,10 +74,10 @@ describe("HomeGrid", () => {
 		}
 		const pager = document.querySelector('[data-catalog-card="table-pager"]');
 		expect(pager).toHaveAttribute("data-gallery-span", "compact");
-		expect(pager).not.toHaveClass("md:col-span-2");
+		expect(pager).not.toHaveClass("@[44rem]/island:col-span-2");
 		const tablesGrid = screen.getByRole("region", { name: "Tables" }).querySelector("ul");
-		expect(tablesGrid).toHaveClass("md:grid-cols-2");
-		expect(tablesGrid).not.toHaveClass("lg:grid-cols-3");
+		expect(tablesGrid).toHaveClass("@[44rem]/island:grid-cols-2");
+		expect(tablesGrid).not.toHaveClass("@[60rem]/island:grid-cols-3");
 		expect(document.querySelector('[data-catalog-card="button"]')).toHaveAttribute(
 			"data-gallery-span",
 			"compact",
@@ -86,7 +86,7 @@ describe("HomeGrid", () => {
 			screen.getByRole("region", { name: "Tables" }).querySelectorAll("[data-slot='card-header']"),
 		).toHaveLength(1);
 		expect(screen.getByRole("region", { name: "Actions" }).querySelector("ul")).toHaveClass(
-			"lg:grid-cols-3",
+			"@[60rem]/island:grid-cols-3",
 		);
 	});
 });

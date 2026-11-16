@@ -23,9 +23,9 @@ export default function FormsPage() {
 
 	return (
 		<ShowcasePage title={t("pages.forms.title")} description={t("pages.forms.description")}>
-			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
+			<div className="grid grid-cols-1 gap-basalt-layout @[48rem]/island:grid-cols-2">
 				<SectionRule title={t("pages.forms.profileForm")}>
-					<LayerCard>
+					<LayerCard padding="lg" className="h-full">
 						<form
 							aria-label={t("pages.forms.profileForm")}
 							data-form-stack=""
@@ -40,7 +40,7 @@ export default function FormsPage() {
 						>
 							<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
 								<div data-field="" className={FIELD_STACK_CLASS}>
-									<Label htmlFor="profile-first" className="text-foreground">
+									<Label htmlFor="profile-first" className="text-basalt-foreground">
 										{t("pages.forms.firstName")}
 									</Label>
 									<Input
@@ -51,7 +51,7 @@ export default function FormsPage() {
 									/>
 								</div>
 								<div data-field="" className={FIELD_STACK_CLASS}>
-									<Label htmlFor="profile-last" className="text-foreground">
+									<Label htmlFor="profile-last" className="text-basalt-foreground">
 										{t("pages.forms.lastName")}
 									</Label>
 									<Input
@@ -63,7 +63,7 @@ export default function FormsPage() {
 								</div>
 							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
-								<Label htmlFor="profile-email" className="text-foreground">
+								<Label htmlFor="profile-email" className="text-basalt-foreground">
 									{t("pages.forms.email")}
 								</Label>
 								<Input
@@ -75,7 +75,7 @@ export default function FormsPage() {
 								/>
 							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
-								<Label htmlFor="profile-location" className="text-foreground">
+								<Label htmlFor="profile-location" className="text-basalt-foreground">
 									{t("pages.forms.location")}
 								</Label>
 								<InputGroup>
@@ -98,7 +98,7 @@ export default function FormsPage() {
 				</SectionRule>
 
 				<SectionRule title={t("pages.forms.security")}>
-					<LayerCard>
+					<LayerCard padding="lg" className="h-full">
 						<form
 							aria-label={t("pages.forms.security")}
 							data-form-stack=""
@@ -114,7 +114,7 @@ export default function FormsPage() {
 							}}
 						>
 							<div data-field="" className={FIELD_STACK_CLASS}>
-								<Label htmlFor="security-password" className="text-foreground">
+								<Label htmlFor="security-password" className="text-basalt-foreground">
 									{t("pages.forms.password")}
 								</Label>
 								<Input
@@ -128,7 +128,7 @@ export default function FormsPage() {
 								/>
 							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
-								<Label htmlFor="security-confirm" className="text-foreground">
+								<Label htmlFor="security-confirm" className="text-basalt-foreground">
 									{t("pages.forms.confirmPassword")}
 								</Label>
 								<Input
@@ -143,10 +143,10 @@ export default function FormsPage() {
 							</div>
 							<div className="flex items-center justify-between gap-basalt-card rounded-basalt-md border border-basalt-border/60 p-basalt-card-sm">
 								<div>
-									<p className="text-basalt-base text-foreground">
+									<p className="text-basalt-base text-basalt-foreground">
 										{t("pages.forms.twoFactorAuth")}
 									</p>
-									<p className="text-basalt-sm text-muted-foreground">
+									<p className="text-basalt-sm text-basalt-muted-foreground">
 										{t("pages.forms.twoFactorDesc")}
 									</p>
 								</div>
@@ -160,7 +160,7 @@ export default function FormsPage() {
 								{t("pages.forms.updateSecurity")}
 							</Button>
 							{vm.passwordError && (
-								<p role="alert" className="text-basalt-base text-destructive">
+								<p role="alert" className="text-basalt-base text-basalt-destructive">
 									{t("demo.passwordMismatch")}
 								</p>
 							)}
@@ -170,9 +170,9 @@ export default function FormsPage() {
 				</SectionRule>
 			</div>
 
-			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout @[60rem]/island:grid-cols-3">
 				<SectionRule title={t("pages.forms.newsletter")}>
-					<LayerCard>
+					<LayerCard padding="lg" className="h-full">
 						<form
 							aria-label={t("pages.forms.newsletter")}
 							data-form-stack=""
@@ -185,7 +185,7 @@ export default function FormsPage() {
 							}}
 						>
 							<div data-field="" className={FIELD_STACK_CLASS}>
-								<Label htmlFor="news-email" className="text-foreground">
+								<Label htmlFor="news-email" className="text-basalt-foreground">
 									{t("pages.forms.newsletterEmail")}
 								</Label>
 								<Input
@@ -200,7 +200,7 @@ export default function FormsPage() {
 								<Checkbox id="news-consent" name="consent" required />
 								<label
 									htmlFor="news-consent"
-									className="text-basalt-sm text-muted-foreground cursor-pointer"
+									className="text-basalt-sm text-basalt-muted-foreground cursor-pointer"
 								>
 									{t("pages.forms.agreeUpdates")}
 								</label>
@@ -214,7 +214,7 @@ export default function FormsPage() {
 				</SectionRule>
 
 				<SectionRule title={t("pages.forms.fileUpload")}>
-					<LayerCard>
+					<LayerCard padding="lg" className="h-full">
 						<div className="space-y-basalt-card">
 							<FileDropzone
 								label={t("pages.forms.fileUpload")}
@@ -238,16 +238,16 @@ export default function FormsPage() {
 				</SectionRule>
 
 				<SectionRule title={t("pages.forms.successState")}>
-					<LayerCard>
-						<p className="text-basalt-base font-medium text-foreground">
+					<LayerCard padding="lg" className="h-full">
+						<p className="text-basalt-base font-medium text-basalt-foreground">
 							{t(
 								vm.profile.result || vm.newsletter.result || vm.security.result
 									? "pages.forms.formSubmitted"
 									: "demo.noSubmissions",
 							)}
 						</p>
-						<p className="text-basalt-sm text-muted-foreground">{t("demo.localOnly")}</p>
-						<Separator className="my-basalt-card-sm bg-border" />
+						<p className="text-basalt-sm text-basalt-muted-foreground">{t("demo.localOnly")}</p>
+						<Separator className="my-basalt-card-sm bg-basalt-border" />
 						<Button
 							variant="secondary"
 							size="sm"

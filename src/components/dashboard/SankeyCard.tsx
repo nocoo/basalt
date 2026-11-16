@@ -23,7 +23,9 @@ export function SankeyCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.userFlowSankey")}</h2>
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
+					{t("dashboard.userFlowSankey")}
+				</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">
 				<SankeyChart

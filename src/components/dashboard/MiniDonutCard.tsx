@@ -13,7 +13,9 @@ export function MiniDonutCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.miniDonut")}</h2>
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
+					{t("dashboard.miniDonut")}
+				</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex items-center gap-basalt-card">
 				<div className="h-24 w-24">
@@ -23,18 +25,18 @@ export function MiniDonutCard() {
 						height={96}
 					/>
 				</div>
-				<div className="space-y-basalt-card-sm text-basalt-sm text-muted-foreground">
+				<div className="space-y-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
 					<div className="flex items-center justify-between gap-basalt-space-lg">
 						<span>{t("dashboard.activeLabel")}</span>
-						<span className="text-foreground">62%</span>
+						<span className="text-basalt-foreground">62%</span>
 					</div>
 					<div className="flex items-center justify-between gap-basalt-space-lg">
 						<span>{t("dashboard.idleLabel")}</span>
-						<span className="text-foreground">28%</span>
+						<span className="text-basalt-foreground">28%</span>
 					</div>
 					<div className="flex items-center justify-between gap-basalt-space-lg">
 						<span>{t("dashboard.churnLabel")}</span>
-						<span className="text-foreground">10%</span>
+						<span className="text-basalt-foreground">10%</span>
 					</div>
 				</div>
 			</LayerCard.Body>

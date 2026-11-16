@@ -24,8 +24,8 @@ export function DonutChartCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Target className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<Target className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.expenseBreakdown")}
 					</h2>
 				</div>
@@ -40,10 +40,10 @@ export function DonutChartCard() {
 							valueFormatter={formatPercent}
 						/>
 					</div>
-					<div className="mt-basalt-card-sm grid w-full grid-cols-3 gap-basalt-card-sm">
+					<div className="mt-basalt-card-sm grid w-full grid-cols-2 gap-basalt-card-sm">
 						{data.map((item, i) => (
 							<div key={item.name} className="flex flex-col items-center gap-basalt-space-xs">
-								<span className="text-basalt-base font-medium text-foreground font-display">
+								<span className="text-basalt-base font-medium tabular-nums text-basalt-foreground font-basalt-display">
 									{item.value}%
 								</span>
 								<div className="flex items-center gap-basalt-space-md">
@@ -51,7 +51,7 @@ export function DonutChartCard() {
 										className="h-2 w-2 rounded-basalt-full"
 										style={{ background: CHART_COLORS[i] }}
 									/>
-									<span className="text-basalt-sm text-muted-foreground">{item.name}</span>
+									<span className="text-basalt-sm text-basalt-muted-foreground">{item.name}</span>
 								</div>
 							</div>
 						))}

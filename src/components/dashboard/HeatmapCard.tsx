@@ -18,7 +18,7 @@ export function HeatmapCard() {
 	return (
 		<LayerCard className="flex h-full flex-col">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-base text-muted-foreground">
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 					{t("dashboard.engagementHeatmap")}
 				</h2>
 			</LayerCard.Header>

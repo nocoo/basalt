@@ -226,9 +226,10 @@ function itemDemo(item: CatalogIndexItem): ComponentType | undefined {
 }
 
 const GROUP_CARD_CLASS =
-	"min-w-0 border-b border-basalt-border md:border-r md:max-lg:nth-[2n]:border-r-0 lg:max-2xl:nth-[3n]:border-r-0 2xl:nth-[4n]:border-r-0";
-const TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border md:border-r md:nth-[2n]:border-r-0";
-const WIDE_TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border md:col-span-2";
+	"min-w-0 border-b border-basalt-border @[44rem]/island:border-r @[44rem]/island:nth-[2n]:border-r-0 @[60rem]/island:nth-[2n]:border-r @[60rem]/island:nth-[3n]:border-r-0 @[84rem]/island:nth-[3n]:border-r @[84rem]/island:nth-[4n]:border-r-0";
+const TABLE_CARD_CLASS =
+	"min-w-0 border-b border-basalt-border @[44rem]/island:border-r @[44rem]/island:nth-[2n]:border-r-0";
+const WIDE_TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border @[44rem]/island:col-span-2";
 
 const TABLE_CARD_SLUGS = ["table", "data-table", "table-pager"] as const;
 const WIDE_GALLERY_SLUGS = new Set(["table", "data-table"]);
@@ -243,7 +244,7 @@ function CatalogCard({ item, className }: CatalogCardProps) {
 	const title = catalogNavName(item.entry);
 	const span = WIDE_GALLERY_SLUGS.has(item.entry.slug) ? "full" : "compact";
 	const titleClass =
-		"basalt-focus min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline";
+		"basalt-focus min-w-0 max-w-full text-basalt-base font-medium text-basalt-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline";
 	return (
 		<li data-catalog-card={item.entry.slug} data-gallery-span={span} className={className}>
 			<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">
@@ -252,7 +253,7 @@ function CatalogCard({ item, className }: CatalogCardProps) {
 						{title}
 					</Link>
 				) : (
-					<span className="text-basalt-base font-medium text-muted-foreground">{title}</span>
+					<span className="text-basalt-base font-medium text-basalt-muted-foreground">{title}</span>
 				)}
 				<div
 					data-gallery-preview=""
@@ -301,9 +302,11 @@ export function HomeGrid({ groups }: HomeGridProps) {
 					<LayerCard padding="none">
 						<LayerCard.Header className="flex-wrap items-center">
 							<h2 className="text-basalt-xl font-medium text-basalt-foreground">Tables</h2>
-							<span className="text-basalt-base text-muted-foreground">{tables.length} items</span>
+							<span className="text-basalt-base text-basalt-muted-foreground">
+								{tables.length} items
+							</span>
 						</LayerCard.Header>
-						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2">
+						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border @[44rem]/island:grid-cols-2">
 							{tables.map((item) => (
 								<CatalogCard
 									key={item.entry.slug}
@@ -332,10 +335,10 @@ export function HomeGrid({ groups }: HomeGridProps) {
 								>
 									Overview
 								</Link>
-								<span className="text-muted-foreground">{group.items.length} items</span>
+								<span className="text-basalt-muted-foreground">{group.items.length} items</span>
 							</div>
 						</LayerCard.Header>
-						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border @[44rem]/island:grid-cols-2 @[60rem]/island:grid-cols-3 @[84rem]/island:grid-cols-4">
 							{group.items.map((item) => (
 								<CatalogCard key={item.entry.slug} item={item} className={GROUP_CARD_CLASS} />
 							))}

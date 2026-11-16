@@ -15,7 +15,7 @@ export function MultiLineCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-base text-muted-foreground">
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 					{t("dashboard.multiSeriesTrend")}
 				</h2>
 			</LayerCard.Header>

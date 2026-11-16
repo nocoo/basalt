@@ -37,8 +37,11 @@ export function RecentListCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header>
 				<div className="flex items-center gap-basalt-space-lg">
-					<ArrowLeftRight className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<ArrowLeftRight
+						className="size-basalt-icon text-basalt-muted-foreground"
+						strokeWidth={1.5}
+					/>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.recentTransactions")}
 					</h2>
 				</div>
@@ -60,11 +63,11 @@ export function RecentListCard() {
 								)}
 							</div>
 							<div className="flex-1 min-w-0">
-								<p className="text-basalt-base text-foreground truncate">{t(tx.nameKey)}</p>
-								<p className="text-basalt-sm text-muted-foreground">{t(tx.dateKey)}</p>
+								<p className="text-basalt-base text-basalt-foreground truncate">{t(tx.nameKey)}</p>
+								<p className="text-basalt-sm text-basalt-muted-foreground">{t(tx.dateKey)}</p>
 							</div>
 							<span
-								className={`text-basalt-base font-medium ${tx.amount > 0 ? "text-basalt-success" : "text-basalt-foreground"}`}
+								className={`text-basalt-base font-medium tabular-nums ${tx.amount > 0 ? "text-basalt-success" : "text-basalt-foreground"}`}
 							>
 								{tx.amount > 0 ? "+" : ""}
 								{tx.amount.toLocaleString("en-US", { style: "currency", currency: "USD" })}

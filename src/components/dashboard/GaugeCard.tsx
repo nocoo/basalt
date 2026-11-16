@@ -11,7 +11,7 @@ export function GaugeCard() {
 
 	function getScoreLabel(s: number) {
 		if (s >= 740) return { label: t("dashboard.excellent"), color: "text-basalt-success" };
-		if (s >= 670) return { label: t("dashboard.good"), color: "text-foreground" };
+		if (s >= 670) return { label: t("dashboard.good"), color: "text-basalt-foreground" };
 		if (s >= 580) return { label: t("dashboard.fair"), color: "text-basalt-warning" };
 		return { label: t("dashboard.poor"), color: "text-basalt-destructive" };
 	}
@@ -22,8 +22,8 @@ export function GaugeCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Shield className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<Shield className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.creditScore")}
 					</h2>
 				</div>
@@ -38,20 +38,30 @@ export function GaugeCard() {
 					/>
 					<div className="mt-basalt-card-sm grid w-full grid-cols-3 gap-basalt-card-sm">
 						<div className="flex flex-col items-center gap-basalt-space-xs">
-							<span className="text-basalt-base font-medium text-foreground font-display">
+							<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display tabular-nums">
 								{score}
 							</span>
-							<span className="text-basalt-sm text-muted-foreground">{t("dashboard.score")}</span>
+							<span className="text-basalt-sm text-basalt-muted-foreground">
+								{t("dashboard.score")}
+							</span>
 						</div>
 						<div className="flex flex-col items-center gap-basalt-space-xs">
-							<span className="text-basalt-base font-medium text-foreground font-display">
+							<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display tabular-nums">
 								{max}
 							</span>
-							<span className="text-basalt-sm text-muted-foreground">{t("dashboard.max")}</span>
+							<span className="text-basalt-sm text-basalt-muted-foreground">
+								{t("dashboard.max")}
+							</span>
 						</div>
 						<div className="flex flex-col items-center gap-basalt-space-xs">
-							<span className={`text-basalt-base font-medium font-display ${color}`}>{label}</span>
-							<span className="text-basalt-sm text-muted-foreground">{t("dashboard.rating")}</span>
+							<span
+								className={`text-basalt-base font-medium font-basalt-display tabular-nums ${color}`}
+							>
+								{label}
+							</span>
+							<span className="text-basalt-sm text-basalt-muted-foreground">
+								{t("dashboard.rating")}
+							</span>
 						</div>
 					</div>
 				</div>

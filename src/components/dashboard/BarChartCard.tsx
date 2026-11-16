@@ -27,16 +27,16 @@ export function BarChartCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<PiggyBank className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<PiggyBank className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.usageCategory")}
 					</h2>
 				</div>
 				<div className="flex items-baseline gap-basalt-space-lg">
-					<p className="text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-basalt-foreground font-basalt-display tabular-nums tracking-tight">
 						{total}
 					</p>
-					<span className="text-basalt-base text-muted-foreground">
+					<span className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.totalTransactions")}
 					</span>
 				</div>

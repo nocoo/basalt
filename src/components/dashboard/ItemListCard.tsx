@@ -14,8 +14,8 @@ export function ItemListCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Wallet className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<Wallet className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.accountsTitle")}
 					</h2>
 				</div>
@@ -27,12 +27,12 @@ export function ItemListCard() {
 							key={acc.nameKey}
 							className="flex items-center justify-between gap-basalt-space-lg"
 						>
-							<span className="text-basalt-base text-foreground">{t(acc.nameKey)}</span>
+							<span className="text-basalt-base text-basalt-foreground">{t(acc.nameKey)}</span>
 							<div className="text-right">
-								<span className="text-basalt-base font-medium text-foreground font-display">
+								<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display tabular-nums">
 									{acc.balance.toLocaleString("en-US", { style: "currency", currency: "USD" })}
 								</span>
-								<span className="text-basalt-sm text-basalt-success ml-basalt-space-lg">
+								<span className="text-basalt-sm tabular-nums text-basalt-success ml-basalt-space-lg">
 									{acc.change}
 								</span>
 							</div>

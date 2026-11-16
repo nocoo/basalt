@@ -19,8 +19,11 @@ export function GroupedBarCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<ArrowUpDown className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<ArrowUpDown
+						className="size-basalt-icon text-basalt-muted-foreground"
+						strokeWidth={1.5}
+					/>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.incomeVsExpense")}
 					</h2>
 				</div>

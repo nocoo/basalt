@@ -25,7 +25,7 @@ export default function DashboardPage() {
 			description={`${t("pages.dashboard.description")} ${t("demo.analyticsData")}`}
 		>
 			{/* Row 0: analytics stat cards */}
-			<StatGrid className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
+			<StatGrid>
 				{stats.map((s) => (
 					<StatCard
 						key={s.label}
@@ -33,7 +33,7 @@ export default function DashboardPage() {
 						value={s.value}
 						trendContent={
 							<>
-								<span className={`font-medium ${s.changeColorClass}`}>{s.change}</span>
+								<span className={`font-medium tabular-nums ${s.changeColorClass}`}>{s.change}</span>
 								{(s.change.startsWith("+") || s.change.startsWith("-")) && (
 									<span className="text-basalt-muted-foreground">
 										{t("dashboard.comparisonPeriodUnknown")}
@@ -46,23 +46,23 @@ export default function DashboardPage() {
 			</StatGrid>
 
 			{/* Row 1: 3 summary cards */}
-			<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout @[38rem]/island:grid-cols-2 @[60rem]/island:grid-cols-3">
 				<SummaryMetricCard />
 				<SecondaryMetricCard />
 				<TrendLineCard />
 			</div>
 
 			{/* Row 2: wide bar chart + donut */}
-			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
-				<div className="lg:col-span-2">
+			<div className="grid grid-cols-1 gap-basalt-layout @[56rem]/island:grid-cols-3">
+				<div className="@[56rem]/island:col-span-2">
 					<BarChartCard />
 				</div>
 				<DonutChartCard />
 			</div>
 
 			{/* Row 3: wide area chart + 2 radial cards */}
-			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
-				<div className="lg:col-span-2">
+			<div className="grid grid-cols-1 gap-basalt-layout @[56rem]/island:grid-cols-3">
+				<div className="@[56rem]/island:col-span-2">
 					<AreaChartCard />
 				</div>
 				<div className="flex flex-col gap-basalt-layout">
@@ -72,15 +72,15 @@ export default function DashboardPage() {
 			</div>
 
 			{/* Row 4: wide grouped bar chart + transactions */}
-			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
-				<div className="lg:col-span-2">
+			<div className="grid grid-cols-1 gap-basalt-layout @[56rem]/island:grid-cols-3">
+				<div className="@[56rem]/island:col-span-2">
 					<GroupedBarCard />
 				</div>
 				<RecentListCard />
 			</div>
 
 			{/* Row 5: quick actions + accounts */}
-			<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout @[44rem]/island:grid-cols-2">
 				<ActionGridCard demo />
 				<ItemListCard />
 			</div>

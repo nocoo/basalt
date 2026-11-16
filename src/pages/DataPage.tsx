@@ -12,6 +12,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@nocoo/basalt/components/select";
+import { StatGrid } from "@nocoo/basalt/components/stat-card";
 import {
 	Table,
 	TableBody,
@@ -143,29 +144,35 @@ export default function DataPage() {
 	return (
 		<ShowcasePage title={t("pages.data.title")} description={t("pages.data.description")}>
 			<SectionRule title={t("pages.data.statTiles")}>
-				<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 lg:grid-cols-4">
+				<StatGrid>
 					{KPI_DATA.map((kpi) => (
 						<LayerCard key={kpi.label}>
-							<p className="text-basalt-sm text-muted-foreground mb-basalt-space-sm">{kpi.label}</p>
-							<p className="text-basalt-3xl font-semibold text-foreground">{kpi.value}</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground mb-basalt-space-sm">
+								{kpi.label}
+							</p>
+							<p className="text-basalt-3xl font-semibold tabular-nums text-basalt-foreground font-basalt-display">
+								{kpi.value}
+							</p>
 							<div className="flex items-center gap-basalt-space-sm mt-basalt-card-sm">
 								{kpi.trend === "up" && <TrendingUp className="h-3.5 w-3.5 text-basalt-success" />}
 								{kpi.trend === "down" && (
 									<TrendingDown className="h-3.5 w-3.5 text-basalt-destructive" />
 								)}
-								{kpi.trend === "flat" && <Minus className="h-3.5 w-3.5 text-muted-foreground" />}
+								{kpi.trend === "flat" && (
+									<Minus className="size-basalt-icon-sm text-basalt-muted-foreground" />
+								)}
 								<span
-									className={`text-basalt-sm font-medium ${kpi.trend === "up" ? "text-basalt-success" : kpi.trend === "down" ? "text-basalt-destructive" : "text-muted-foreground"}`}
+									className={`text-basalt-sm font-medium tabular-nums ${kpi.trend === "up" ? "text-basalt-success" : kpi.trend === "down" ? "text-basalt-destructive" : "text-basalt-muted-foreground"}`}
 								>
 									{kpi.change}
 								</span>
-								<span className="text-basalt-sm text-muted-foreground">
+								<span className="text-basalt-sm text-basalt-muted-foreground">
 									{t("common.vsLastMonth")}
 								</span>
 							</div>
 						</LayerCard>
 					))}
-				</div>
+				</StatGrid>
 			</SectionRule>
 
 			<SectionRule title={t("pages.data.dataTable")}>
@@ -288,11 +295,9 @@ export default function DataPage() {
 							)}
 						</TableBody>
 					</Table>
-					<LayerCard.Footer className="justify-between">
-						<p className="text-basalt-sm text-muted-foreground" role="status">
-							{t("demo.results", { count: vm.total })}
-						</p>
+					<LayerCard.Footer>
 						<TablePager
+							className="w-full"
 							page={vm.page}
 							pageSize={2}
 							totalCount={vm.total}

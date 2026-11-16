@@ -125,9 +125,9 @@ describe("ui catalog", () => {
 		expect(within(tablesSection).getByText("3 items")).toBeInTheDocument();
 		expect(within(tablesSection).queryByRole("link", { name: "Tables overview" })).toBeNull();
 		const tablesGrid = tablesSection.querySelector("ul");
-		expect(tablesGrid).toHaveClass("md:grid-cols-2");
-		expect(tablesGrid).not.toHaveClass("lg:grid-cols-3");
-		expect(tablesGrid).not.toHaveClass("2xl:grid-cols-4");
+		expect(tablesGrid).toHaveClass("@[44rem]/island:grid-cols-2");
+		expect(tablesGrid).not.toHaveClass("@[60rem]/island:grid-cols-3");
+		expect(tablesGrid).not.toHaveClass("@[84rem]/island:grid-cols-4");
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(77);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();

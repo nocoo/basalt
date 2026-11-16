@@ -13,8 +13,8 @@ export function RadialProgressCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Goal className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h2 className="text-basalt-base font-normal text-muted-foreground">
+					<Goal className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.savingsGoal")}
 					</h2>
 				</div>
@@ -33,22 +33,26 @@ export function RadialProgressCard() {
 					/>
 					<div className="mt-basalt-card-sm grid w-full grid-cols-3 gap-basalt-card-sm">
 						<div className="flex flex-col items-center gap-basalt-space-xs">
-							<span className="text-basalt-base font-medium text-foreground font-display">
+							<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display tabular-nums">
 								${saved.toLocaleString()}
 							</span>
-							<span className="text-basalt-sm text-muted-foreground">{t("dashboard.saved")}</span>
+							<span className="text-basalt-sm text-basalt-muted-foreground">
+								{t("dashboard.saved")}
+							</span>
 						</div>
 						<div className="flex flex-col items-center gap-basalt-space-xs">
-							<span className="text-basalt-base font-medium text-foreground font-display">
+							<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display tabular-nums">
 								${goal.toLocaleString()}
 							</span>
-							<span className="text-basalt-sm text-muted-foreground">{t("dashboard.target")}</span>
+							<span className="text-basalt-sm text-basalt-muted-foreground">
+								{t("dashboard.target")}
+							</span>
 						</div>
 						<div className="flex flex-col items-center gap-basalt-space-xs">
-							<span className="text-basalt-base font-medium text-foreground font-display">
+							<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display tabular-nums">
 								${(goal - saved).toLocaleString()}
 							</span>
-							<span className="text-basalt-sm text-muted-foreground">
+							<span className="text-basalt-sm text-basalt-muted-foreground">
 								{t("dashboard.remaining")}
 							</span>
 						</div>
