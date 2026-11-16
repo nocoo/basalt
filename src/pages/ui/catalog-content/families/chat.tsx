@@ -16,7 +16,9 @@ export default catalogContentFamily({
 			usage: usage(
 				"Fab",
 				"@nocoo/basalt/components/fab",
-				'<Fab aria-label="Open assistant"><Sparkles /></Fab>',
+				`<Fab aria-label="Open assistant">
+	<Sparkles />
+</Fab>`,
 				'import { Sparkles } from "@nocoo/basalt/icons";',
 			),
 			variants: [],
@@ -31,7 +33,9 @@ export default catalogContentFamily({
 			usage: usage(
 				"Dock, DockBody",
 				"@nocoo/basalt/components/dock",
-				'<Dock open aria-label="Assistant"><DockBody>Panel</DockBody></Dock>',
+				`<Dock open aria-label="Assistant">
+	<DockBody>Panel</DockBody>
+</Dock>`,
 			),
 			variants: [],
 			api: dockApi,

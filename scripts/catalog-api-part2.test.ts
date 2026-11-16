@@ -122,7 +122,7 @@ describe("catalog API generator contract 2/4", () => {
 					},
 					{
 						name: "size",
-						type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | null',
+						type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | "tile" | null',
 						required: false,
 						default: "icon",
 						description: "Size for the nested action.",

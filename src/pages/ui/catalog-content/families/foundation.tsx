@@ -178,7 +178,9 @@ export default catalogContentFamily({
 			usage: usage(
 				"Link",
 				"@nocoo/basalt/components/link",
-				'<LinkProvider><Link href="/ui">Library</Link></LinkProvider>',
+				`<LinkProvider>
+	<Link href="/ui">Library</Link>
+</LinkProvider>`,
 				'import { LinkProvider } from "@nocoo/basalt/providers/link";',
 			),
 			variants: [],
@@ -197,7 +199,9 @@ export default catalogContentFamily({
 			usage: usage(
 				"ThemeToggle",
 				"@nocoo/basalt/components/theme-toggle",
-				'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+				`<ThemeProvider persist={false} applyToDocument={false}>
+	<ThemeToggle aria-label="Toggle theme" />
+</ThemeProvider>`,
 				'import { ThemeProvider } from "@nocoo/basalt/providers/theme";',
 			),
 			variants: ["system", "light", "dark"],
@@ -217,7 +221,11 @@ export default catalogContentFamily({
 			usage: usage(
 				"LayerCard",
 				"@nocoo/basalt/components/layer-card",
-				"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
+				`<LayerCard>
+	<LayerCard.Header>Title</LayerCard.Header>
+	<LayerCard.Body>Content</LayerCard.Body>
+	<LayerCard.Footer>Actions</LayerCard.Footer>
+</LayerCard>`,
 			),
 			variants: ["none", "sm", "md", "lg", "xl"],
 			api: layerCardApi,
@@ -235,7 +243,9 @@ export default catalogContentFamily({
 			usage: usage(
 				"ThemeProvider",
 				"@nocoo/basalt/providers/theme",
-				"<ThemeProvider persist={false} applyToDocument={false}><span>Content</span></ThemeProvider>",
+				`<ThemeProvider persist={false} applyToDocument={false}>
+	<span>Content</span>
+</ThemeProvider>`,
 			),
 			variants: ["system", "light", "dark"],
 			api: themeProviderApi,

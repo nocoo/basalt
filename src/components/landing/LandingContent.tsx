@@ -237,16 +237,16 @@ function FlowSample() {
 				<path d="M26 50 H32.5 V24 H39 M32.5 50 V76 H39 M61 24 H67.5 V76 M61 76 H67.5 M67.5 50 H74" />
 			</svg>
 			<span className="landing-flow-node" data-active="" style={{ left: "4%", top: "38.5%" }}>
-				Plan <em>planning…</em>
+				Shell <em>frame</em>
 			</span>
 			<span className="landing-flow-node" style={{ left: "39%", top: "12.5%" }}>
-				Research <em>queued</em>
+				Navigation <em>sidebar</em>
 			</span>
 			<span className="landing-flow-node" style={{ left: "39%", top: "64.5%" }}>
-				Draft <em>queued</em>
+				Content <em>island</em>
 			</span>
 			<span className="landing-flow-node" style={{ left: "74%", top: "38.5%" }}>
-				Ship <em>queued</em>
+				Command <em>⌘K</em>
 			</span>
 		</div>
 	);

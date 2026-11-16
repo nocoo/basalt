@@ -1334,7 +1334,9 @@ describe("ui catalog", () => {
 		expect(api).not.toHaveTextContent("rel");
 		expect(api).not.toHaveTextContent("download");
 		expect(document.body.textContent).toContain(
-			'<LinkProvider><Link href="/ui">Library</Link></LinkProvider>',
+			`<LinkProvider>
+	<Link href="/ui">Library</Link>
+</LinkProvider>`,
 		);
 		expect(screen.getByRole("heading", { name: "Basic Link" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Inline in Paragraph" })).toBeInTheDocument();
@@ -1344,7 +1346,9 @@ describe("ui catalog", () => {
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain("- href (string, required, default —): The link destination.");
-		expect(markdown).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
+		expect(markdown).toContain(`<LinkProvider>
+	<Link href="/ui">Library</Link>
+</LinkProvider>`);
 		expect(markdown).not.toContain("- className (");
 		expect(markdown).not.toContain("- children (");
 		expect(markdown).not.toContain("- target (");
@@ -1358,7 +1362,9 @@ describe("ui catalog", () => {
 			"utf8",
 		);
 		expect(family).toContain("api: linkApi");
-		expect(family).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
+		expect(family).toContain(`<LinkProvider>
+	<Link href="/ui">Library</Link>
+</LinkProvider>`);
 	});
 
 	it("sources tooltip API rows from generated catalog data", async () => {
@@ -1387,7 +1393,14 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("TooltipTrigger");
 		expect(api).toHaveTextContent("TooltipContent");
 		expect(document.body.textContent).toContain(
-			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
+			`<TooltipProvider>
+	<Tooltip>
+		<TooltipTrigger asChild>
+			<Button>Hover</Button>
+		</TooltipTrigger>
+		<TooltipContent>Hint</TooltipContent>
+	</Tooltip>
+</TooltipProvider>`,
 		);
 		expect(screen.getByRole("heading", { name: "Basic Tooltip" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Multiple Tooltips" })).toBeInTheDocument();
@@ -1403,7 +1416,14 @@ describe("ui catalog", () => {
 			"- delayDuration (number, optional, default 700): Default delay before tooltips open when pointer enters a trigger, in milliseconds.\nCan be overridden per tooltip instance via Tooltip.",
 		);
 		expect(markdown).toContain(
-			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
+			`<TooltipProvider>
+	<Tooltip>
+		<TooltipTrigger asChild>
+			<Button>Hover</Button>
+		</TooltipTrigger>
+		<TooltipContent>Hint</TooltipContent>
+	</Tooltip>
+</TooltipProvider>`,
 		);
 	});
 
@@ -1420,7 +1440,14 @@ describe("ui catalog", () => {
 		expect(block).toContain("api: tooltipApi");
 		expect(block).not.toContain('name: "delayDuration"');
 		expect(block).toContain(
-			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
+			`<TooltipProvider>
+	<Tooltip>
+		<TooltipTrigger asChild>
+			<Button>Hover</Button>
+		</TooltipTrigger>
+		<TooltipContent>Hint</TooltipContent>
+	</Tooltip>
+</TooltipProvider>`,
 		);
 	});
 
@@ -1476,7 +1503,9 @@ describe("ui catalog", () => {
 		expect(api).not.toHaveTextContent("asChild");
 		expect(api).not.toHaveTextContent("className");
 		expect(document.body.textContent).toContain(
-			'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+			`<ThemeProvider persist={false} applyToDocument={false}>
+	<ThemeToggle aria-label="Toggle theme" />
+</ThemeProvider>`,
 		);
 		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
 		await act(async () => {
@@ -1487,7 +1516,9 @@ describe("ui catalog", () => {
 			"- aria-label (string, optional, default —): Fixed accessible name.",
 		);
 		expect(markdown).toContain(
-			'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+			`<ThemeProvider persist={false} applyToDocument={false}>
+	<ThemeToggle aria-label="Toggle theme" />
+</ThemeProvider>`,
 		);
 		expect(markdown).toContain(
 			"- tooltip (boolean, optional, default true): Show a bottom tooltip",
@@ -1506,7 +1537,9 @@ describe("ui catalog", () => {
 		);
 		expect(family).toContain("api: themeToggleApi");
 		expect(family).toContain(
-			'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+			`<ThemeProvider persist={false} applyToDocument={false}>
+	<ThemeToggle aria-label="Toggle theme" />
+</ThemeProvider>`,
 		);
 	});
 
@@ -1558,7 +1591,11 @@ describe("ui catalog", () => {
 		expect(within(api as HTMLElement).queryByRole("cell", { name: /^role\??$/ })).toBeNull();
 		expect(api).not.toHaveTextContent("LayerCardSectionProps");
 		expect(document.body.textContent).toContain(
-			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
+			`<LayerCard>
+	<LayerCard.Header>Title</LayerCard.Header>
+	<LayerCard.Body>Content</LayerCard.Body>
+	<LayerCard.Footer>Actions</LayerCard.Footer>
+</LayerCard>`,
 		);
 		expect(screen.getByRole("heading", { name: "Basic Card" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Surface-style Card" })).toBeInTheDocument();
@@ -1578,7 +1615,11 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("### LayerCard.Loading");
 		expect(markdown).toContain("### LayerCard.Empty");
 		expect(markdown).toContain(
-			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
+			`<LayerCard>
+	<LayerCard.Header>Title</LayerCard.Header>
+	<LayerCard.Body>Content</LayerCard.Body>
+	<LayerCard.Footer>Actions</LayerCard.Footer>
+</LayerCard>`,
 		);
 		expect(markdown).toContain(
 			"- children (React.ReactNode, optional, default —): Custom supporting content or custom layout rendered between description and action.",
@@ -1596,7 +1637,11 @@ describe("ui catalog", () => {
 		);
 		expect(family).toContain("api: layerCardApi");
 		expect(family).toContain(
-			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
+			`<LayerCard>
+	<LayerCard.Header>Title</LayerCard.Header>
+	<LayerCard.Body>Content</LayerCard.Body>
+	<LayerCard.Footer>Actions</LayerCard.Footer>
+</LayerCard>`,
 		);
 	});
 
@@ -1688,7 +1733,9 @@ describe("ui catalog", () => {
 		expect(family).toContain(
 			'description: "Accessible association and metadata for a labeled control."',
 		);
-		expect(family).toContain('<Field label="Email"><Input /></Field>');
+		expect(family).toContain(`<Field label="Email">
+	<Input />
+</Field>`);
 		expect(family).toContain('repo: "kumo"');
 		expect(family).toContain("packages/kumo/src/components/field/field.tsx");
 	});
@@ -1890,7 +1937,10 @@ describe("ui catalog", () => {
 			'description: "Compose an input with addons, an inline suffix, and status icons."',
 		);
 		expect(family).toContain(
-			"<InputGroup><InputGroup.Input defaultValue='atlas' aria-label='Subdomain' /><InputGroup.Suffix>.example.com</InputGroup.Suffix></InputGroup>",
+			`<InputGroup>
+	<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+	<InputGroup.Suffix>.example.com</InputGroup.Suffix>
+</InputGroup>`,
 		);
 		expect(family).toContain('repo: "basalt"');
 		expect(family).toContain('sha: "2727ae6a8d3f"');
@@ -2279,7 +2329,10 @@ describe("ui catalog", () => {
 			'description:\n\t\t\t\t"A radio control with group, legend, size, and error. RadioGroup is an alias of Radio.Group and shares the same component implementation and props interface."',
 		);
 		expect(block).toContain(
-			'<Radio.Group defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></Radio.Group>',
+			`<Radio.Group defaultValue="a">
+	<Radio value="a" aria-label="Alpha" />
+	<Radio value="b" aria-label="Beta" />
+</Radio.Group>`,
 		);
 		expect(block).toContain('variants: ["sm", "default"]');
 		expect(block).toContain('repo: "kumo"');

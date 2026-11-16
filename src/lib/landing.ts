@@ -5,7 +5,7 @@ export const LANDING_HEADING_LINES = ["React components", "for complex interface
 export const LANDING_HEADING = LANDING_HEADING_LINES.join(" ");
 export const LANDING_KICKER = "The matte React design system";
 export const LANDING_LEDE =
-	"Build dashboards and information-rich applications with matte components, charts, and ready-to-use example layouts.";
+	"Build dashboards and information-rich applications with focused React 19 components, engine-agnostic chart chrome, and ready-to-use application layouts.";
 export const LANDING_INSTALL = "npm i @nocoo/basalt";
 
 export interface LandingLink {
@@ -96,16 +96,16 @@ export const LANDING_FACTS = [
 		link: "Explore components",
 	},
 	{
-		title: "Charts for clear data",
-		body: "From a quiet sparkline to a full analytics view, designed to make dense information easier to read.",
-		href: "/ui?category=chart",
+		title: "Chart chrome for any engine",
+		body: "Compose ChartFrame, StatCard, legends, and tooltips around Recharts, ECharts, SVG, or the engine your application already uses.",
+		href: "/ui/chart",
 		link: "Explore charts",
 	},
 	{
-		title: "Flows and agent surfaces",
-		body: "Flow diagrams, approval cards, tool chips, and chat threads ship as components, so multi-step screens start composed.",
-		href: "/ui/flow",
-		link: "Explore flow",
+		title: "Application chrome, already composed",
+		body: "Start with AppShell, Sidebar, ContentIsland, and CommandPalette; granular icon and primitive subpaths keep each import intentional.",
+		href: "/ui/overview/layout",
+		link: "Explore the shell",
 	},
 	{
 		title: "Matte surfaces, measured contrast",
@@ -118,7 +118,7 @@ export const LANDING_FACTS = [
 export const LANDING_STEPS = [
 	{
 		title: "Install the package",
-		body: "One package with React 19 components and optional chart peers.",
+		body: "One package with React 19 components and engine-agnostic chart chrome.",
 		code: LANDING_INSTALL,
 	},
 	{
@@ -137,7 +137,7 @@ export const LANDING_FAQS = [
 	{
 		question: "What is Basalt?",
 		answer:
-			"Basalt is an open-source React 19 UI library for dashboards and information-rich software. It includes components, charts, reusable blocks, and working example layouts, with TypeScript APIs and a live catalog.",
+			"Basalt is an open-source React 19 UI library for dashboards and information-rich software. It includes a focused component catalog, engine-agnostic chart chrome, application shell primitives, and working example layouts, with TypeScript APIs and live documentation.",
 	},
 	{
 		question: "Can I use it in a commercial project?",

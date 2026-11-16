@@ -169,7 +169,9 @@ export default catalogContentFamily({
 			usage: usage(
 				"Field",
 				"@nocoo/basalt/components/field",
-				'<Field label="Email"><Input /></Field>',
+				`<Field label="Email">
+	<Input />
+</Field>`,
 				'import { Input } from "@nocoo/basalt/components/input";',
 			),
 			variants: [],
@@ -224,7 +226,10 @@ export default catalogContentFamily({
 			usage: usage(
 				"InputGroup",
 				"@nocoo/basalt/components/input-group",
-				"<InputGroup><InputGroup.Input defaultValue='atlas' aria-label='Subdomain' /><InputGroup.Suffix>.example.com</InputGroup.Suffix></InputGroup>",
+				`<InputGroup>
+	<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+	<InputGroup.Suffix>.example.com</InputGroup.Suffix>
+</InputGroup>`,
 			),
 			variants: [],
 			api: inputGroupApi,
@@ -279,7 +284,10 @@ export default catalogContentFamily({
 			usage: usage(
 				"Radio",
 				"@nocoo/basalt/components/radio",
-				'<Radio.Group defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></Radio.Group>',
+				`<Radio.Group defaultValue="a">
+	<Radio value="a" aria-label="Alpha" />
+	<Radio value="b" aria-label="Beta" />
+</Radio.Group>`,
 			),
 			variants: ["sm", "default"],
 			api: radioApi,

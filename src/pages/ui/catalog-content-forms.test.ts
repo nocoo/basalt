@@ -133,7 +133,9 @@ describe("forms catalog content family", () => {
 		expect(forms.field?.docs.usage).toContain(
 			'import { Field } from "@nocoo/basalt/components/field";',
 		);
-		expect(forms.field?.docs.usage).toContain('<Field label="Email"><Input /></Field>');
+		expect(forms.field?.docs.usage).toContain(`<Field label="Email">
+	<Input />
+</Field>`);
 		expect(forms.field?.docs.usage).not.toContain("htmlFor");
 		expect(forms.field?.docs.variants).toEqual([]);
 		expect(forms.field?.docs.provenance).toEqual({

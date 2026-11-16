@@ -153,6 +153,7 @@ describe("data-layout catalog content family", () => {
 			"aria-label",
 			"aria-describedby",
 			"edge",
+			"density",
 		]);
 		expect(dataLayout.table?.examples).toBe(TABLE_EXAMPLES);
 		expect(dataLayout.table?.docs.api).toBe(tableApi);

@@ -255,7 +255,14 @@ export default catalogContentFamily({
 			usage: usage(
 				"Tooltip, TooltipTrigger, TooltipContent, TooltipProvider",
 				"@nocoo/basalt/components/tooltip",
-				"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
+				`<TooltipProvider>
+	<Tooltip>
+		<TooltipTrigger asChild>
+			<Button>Hover</Button>
+		</TooltipTrigger>
+		<TooltipContent>Hint</TooltipContent>
+	</Tooltip>
+</TooltipProvider>`,
 				'import { Button } from "@nocoo/basalt/components/button";',
 			),
 			variants: [],
