@@ -15,7 +15,7 @@
 
 Basalt contains the [@nocoo/basalt](https://www.npmjs.com/package/@nocoo/basalt) npm component library and a website showing its components, APIs, and application scenarios. Use it to give forms, navigation, data views, and page layouts a shared structure in React applications.
 
-Matte surfaces and differences in luminance separate the page background, content areas, and cards. Health, finance, chat, and network pages in the showcase use demonstration data; the library does not provide a business backend or authentication service.
+Matte surfaces and differences in luminance separate the page background, content areas, and cards. Health, finance, and network pages in the showcase use demonstration data; the library does not provide a business backend or authentication service.
 
 ## Features
 
@@ -28,11 +28,13 @@ Matte surfaces and differences in luminance separate the page background, conten
 
 ## Usage
 
-In an existing React 19 / React DOM 19 application, install the component library and its icon dependency:
+In an existing React 19 / React DOM 19 application, install the component library:
 
 ```bash
-bun add @nocoo/basalt lucide-react
+bun add @nocoo/basalt
 ```
+
+Import icons from `@nocoo/basalt/icons`, and Basalt's Radix primitives from `@nocoo/basalt/primitives/*`.
 
 <a id="css-setup"></a>
 

@@ -1269,7 +1269,7 @@ describe("source-backed input-group scenarios", () => {
 			expect(scenario.code).toContain("import { InputGroup }");
 			expect(scenario.code).toContain('className="max-w-sm"');
 		}
-		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('from "lucide-react"');
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('from "@nocoo/basalt/icons"');
 		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain("import { CircleCheck }");
 		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('defaultValue="atlas"');
 		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('aria-label="Subdomain"');
@@ -1278,7 +1278,7 @@ describe("source-backed input-group scenarios", () => {
 		);
 		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('align="end"');
 		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('className="text-basalt-heatmap-green-3"');
-		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain('from "lucide-react"');
+		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain('from "@nocoo/basalt/icons"');
 		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain("import { Search }");
 		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain("<Search />");
 		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain('aria-label="Search"');
@@ -1288,7 +1288,7 @@ describe("source-backed input-group scenarios", () => {
 		);
 		expect(INPUT_GROUP_EXAMPLES[2]?.code).toContain('aria-label="Host"');
 		expect(INPUT_GROUP_EXAMPLES[2]?.code).toContain('placeholder="example.com"');
-		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain('from "lucide-react"');
+		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain('from "@nocoo/basalt/icons"');
 		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain("import { Search }");
 		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain('aria-label="Query"');
 		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain('placeholder="Search"');

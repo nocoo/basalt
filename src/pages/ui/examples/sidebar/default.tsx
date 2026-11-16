@@ -12,9 +12,8 @@ import {
 	SidebarSearch,
 	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
-import { ArrowUp, Home, Plus, Users } from "lucide-react";
+import { ArrowUp, Home, Plus, Users } from "@nocoo/basalt/icons";
 import { useState } from "react";
-import { BasaltMark } from "@/components/BasaltMark";
 
 const destinations = [
 	{ label: "New chat", icon: Plus, href: "/ui/sidebar?destination=new-chat" },
@@ -40,7 +39,11 @@ export default function SidebarDefault() {
 			<Sidebar className="h-[30rem] max-w-full">
 				<SidebarHeader>
 					<SidebarBrand
-						logo={<BasaltMark aria-hidden="true" />}
+						logo={
+							<span aria-hidden="true" className="grid size-5 place-items-center font-semibold">
+								CO
+							</span>
+						}
 						name="Creamery Ops"
 						version="v1.0.0"
 						action={

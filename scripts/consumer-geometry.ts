@@ -145,7 +145,7 @@ export async function assertConsumerGeometry(
 
 	// 5. Test Combobox inside overflow-hidden LayerCard renders in portal outside card bounds
 	const cardComboboxInput = page.locator("#card-combobox-input");
-	await cardComboboxInput.focus();
+	await cardComboboxInput.fill("Clipped");
 	const comboboxList = page.getByRole("listbox");
 	await comboboxList.waitFor({ state: "visible", timeout: 5000 });
 	await comboboxList.evaluate(async (node) => {
@@ -293,7 +293,7 @@ export async function assertConsumerGeometry(
 			0,
 	);
 	const dialogComboboxInput = page.locator("#dialog-combobox-input");
-	await dialogComboboxInput.focus();
+	await dialogComboboxInput.fill("Dialog");
 	const dialogList = page.getByRole("listbox");
 	await dialogList.waitFor({ state: "visible", timeout: 5000 });
 	// First Escape closes nested listbox, Dialog remains open and receives 0 close attempts

@@ -1,5 +1,5 @@
 import { CodeBlock } from "@nocoo/basalt/components/code";
-import { Terminal } from "lucide-react";
+import { Terminal } from "@nocoo/basalt/icons";
 
 export default function CodeBlockBasic() {
 	return (

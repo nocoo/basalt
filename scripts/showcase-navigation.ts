@@ -643,16 +643,14 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 		}
 	}
 	await page.emulateMedia({ reducedMotion: "no-preference" });
-	for (const slug of ["navigation-menu", "editable-nav-item"]) {
-		await page.goto(`${baseUrl}/ui/${slug}`);
-		const list = page.locator("[data-hero-scenario] .basalt-hover-list");
-		await list.waitFor();
-		await assertMovingHighlight(list);
-		assert.equal(
-			await list.evaluate((node) => getComputedStyle(node).padding),
-			slug === "navigation-menu" ? "8px" : "8px 16px",
-		);
-	}
+	await page.goto(`${baseUrl}/ui/editable-nav-item`);
+	const editableNavList = page.locator("[data-hero-scenario] .basalt-hover-list");
+	await editableNavList.waitFor();
+	await assertMovingHighlight(editableNavList);
+	assert.equal(
+		await editableNavList.evaluate((node) => getComputedStyle(node).padding),
+		"8px 16px",
+	);
 	return {
 		viewports: 2,
 		themes: 2,

@@ -1,5 +1,5 @@
 import { IconPicker } from "@nocoo/basalt/components/icon-picker";
-import { BookOpen, Code2, Folder, Palette } from "lucide-react";
+import { BookOpen, Code2, Folder, Palette } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 export default function FolderIconSelection() {

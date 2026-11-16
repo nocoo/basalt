@@ -1,9 +1,8 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { StatCard } from "@nocoo/basalt/components/stat-card";
-import { AlertCircle, Database, Inbox, Plus, RefreshCw } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { BarChart } from "@/components/charts/bar";
+import { AlertCircle, Database, Inbox, Plus, RefreshCw } from "@nocoo/basalt/icons";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 type LoadState = "idle" | "loading" | "error" | "empty" | "success";
 
@@ -15,6 +14,38 @@ const CHART_DATA = [
 	{ x: "16:00", y: 840 },
 	{ x: "20:00", y: 530 },
 ];
+
+function BarChart({
+	data,
+	ariaLabel,
+	className,
+	summary,
+	dataAlternative,
+}: {
+	data: typeof CHART_DATA;
+	ariaLabel: string;
+	className?: string;
+	showAxes?: boolean;
+	summary: string;
+	dataAlternative: ReactNode;
+}) {
+	const max = Math.max(...data.map((point) => point.y));
+	return (
+		<div className={className} role="img" aria-label={ariaLabel}>
+			<div className="flex h-full items-end gap-basalt-space-lg">
+				{data.map((point) => (
+					<span
+						key={point.x}
+						className="min-w-0 flex-1 bg-basalt-chart-2"
+						style={{ height: `${(point.y / max) * 100}%` }}
+					/>
+				))}
+			</div>
+			<span className="sr-only">{summary}</span>
+			{dataAlternative}
+		</div>
+	);
+}
 
 export default function StatCardStateTransition() {
 	const [state, setState] = useState<LoadState>("idle");

@@ -2,7 +2,7 @@ import { AvatarInitials } from "@nocoo/basalt/components/avatar";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { TagBadge, type TagColor } from "@nocoo/basalt/components/tag-badge";
-import { CalendarDays, ExternalLink, Link2, ListFilter, Signal } from "lucide-react";
+import { CalendarDays, ExternalLink, Link2, ListFilter, Signal } from "@nocoo/basalt/icons";
 
 const records = [
 	{

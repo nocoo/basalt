@@ -76,7 +76,7 @@ Live: `/login`, shell, first page `/data`, surfaces `/layout`. Catalog: `/ui/pag
 ## 2. Install and CSS
 
 ```bash
-npm i @nocoo/basalt lucide-react
+npm i @nocoo/basalt
 ```
 
 ### Option A: Vite + Tailwind CSS v4 Setup
@@ -166,6 +166,8 @@ Root barrel is small leaves and providers. Shell chrome is granular.
 | `@nocoo/basalt/components/stat-card`      | `StatCard`, `StatGrid`                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `@nocoo/basalt/components/date-picker`    | DatePicker                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `@nocoo/basalt/components/data-table`     | DataTable                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `@nocoo/basalt/icons`                    | Icon exports from Lucide                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `@nocoo/basalt/primitives/*`             | Headless Radix primitive exports used by Basalt                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 Off the root barrel: `AppShell`, `AppMain`, `AppSkipLink`, `AppHeader`, `PageHeader`, `SectionRule`, `LoadingScreen`, chart chrome, DatePicker, DataTable. Import those from the granular paths above. `LayerCard` is on the root barrel **and** `@nocoo/basalt/components/layer-card`.
 
@@ -348,7 +350,7 @@ Every chrome class uses the `basalt-` prefix:
 - text: `text-basalt-foreground`, `text-basalt-muted-foreground`, `text-basalt-primary-foreground`
 - line: `ring-basalt-border`, `border-basalt-border`
 
-Icons: `lucide-react`, `strokeWidth={1.5}`, nav size `h-4 w-4 shrink-0`.
+Icons: import from `@nocoo/basalt/icons`, use `strokeWidth={1.5}`, nav size `h-4 w-4 shrink-0`.
 
 ---
 
@@ -916,7 +918,7 @@ Input, Select, secondary / outline Button use `bg-basalt-control` (`--basalt-con
 
 `Table` sets `data-basalt-table`. Zebra, hover, and selected paint on `td`, from `--basalt-zebra-fill`, `--basalt-hover` and `--basalt-selected`. Selection adds no decorative side bar or frame; semantic add/remove diff tints are preserved.
 
-Neutral selected states use the brighter `--basalt-selected` surface, readable `--basalt-selected-foreground` and navigation font weight, without decorative side bars or selected borders. Never use `accent` or `muted` to signal selection. Existing semantic checkmarks and tab underlines remain; do not add a decorative frame at the white ceiling. A moving hover layer must not erase the selected row. Sidebar, navigation menus, editable navigation and ChatInbox share this behavior and inset keyboard focus; neutral Button variants also honor `aria-pressed` and `aria-current`. Focus is separate from selection: ordinary targets use the 1px theme `--basalt-ring` stroke with a 2px outer offset; flush targets use the same stroke inset with a 2px negative offset. External focus targets need at least 4px clearance inside their nearest clipping container; existing 4px padding counts and is not stacked. Focus does not shift layout, error indicators stay independent, and forced-colors mode may use a 2px system outline. Segments and tabs retain their existing measured indicator motion. Primary/destructive actions, check/radio/switch glyphs and semantic diffs keep their semantic colors. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
+Neutral selected states use the brighter `--basalt-selected` surface, readable `--basalt-selected-foreground` and navigation font weight, without decorative side bars or selected borders. Never use `accent` or `muted` to signal selection. Existing semantic checkmarks and tab underlines remain; do not add a decorative frame at the white ceiling. A moving hover layer must not erase the selected row. Sidebar and editable navigation share this behavior and inset keyboard focus; neutral Button variants also honor `aria-pressed` and `aria-current`. Focus is separate from selection: ordinary targets use the 1px theme `--basalt-ring` stroke with a 2px outer offset; flush targets use the same stroke inset with a 2px negative offset. External focus targets need at least 4px clearance inside their nearest clipping container; existing 4px padding counts and is not stacked. Focus does not shift layout, error indicators stay independent, and forced-colors mode may use a 2px system outline. Segments and tabs retain their existing measured indicator motion. Primary/destructive actions, check/radio/switch glyphs and semantic diffs keep their semantic colors. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
 
 `DescriptionList` is layout and type only. It is not a surface.
 
@@ -1273,7 +1275,7 @@ export function ProjectSettingsForm() {
 1. **Step 1: Install Package & Peer Dependencies**
 
    ```bash
-   bun add @nocoo/basalt lucide-react
+   bun add @nocoo/basalt
    ```
 2. **Step 2: Configure Stylesheet & Scan Sources**
    - In Tailwind v4 setups, use the two-line stylesheet contract:
@@ -1613,20 +1615,11 @@ export function UserPreferencesForm() {
 />;
 ```
 
-## Agent feedback
-
-`Thinking`, `ApprovalCard`, and `ToolChips` are granular component imports under `@nocoo/basalt/components/`. They use Basalt tokens, existing disclosures and controls, and reduced-motion-safe entrance/expand animations. The package's `models/agent-feedback.ts` defines data semantics; private `viewmodels/` own UI state, timers, answer validation and submission locking. Views import the ViewModels; ViewModels never import Views or DOM modules. Private model/ViewModel paths are not public package exports.
-
-- `Thinking` takes stable step IDs, caller-owned statuses (`pending`, `running`, `complete`, `error`), labels and optional plain-text details. `variant` is `steps`, `reasoning`, `search` or `coding`. Disclosure can be controlled or use `defaultOpen`. It never fabricates progress or exposes hidden model reasoning; display only trace data that the application intentionally supplies.
-- `ApprovalCard` takes questions with stable question/option IDs, `single`/`multiple` choice, optional custom text and `required` (true by default). Single choice may move forward after 240ms; the last question always requires explicit Submit. Optional questions may be skipped. `onSubmit` receives a sanitized answer snapshot and may return a promise; pending submission locks controls, failure keeps answers for retry, and no work is executed by the library. Remount with a new React key when replacing an approval request. Backend authorization and validation remain mandatory.
-- `ToolChips` takes caller-owned tool steps and optional file diffs. It summarizes completion, expands individual plain-text outputs, and opens file previews in accessible popovers. It does not execute commands or parse arbitrary HTML.
-- Catalog examples simulate progress in application ViewModels. Their copyable snippets include those demo ViewModels, rather than importing private catalog paths.
-
 ### Dense controls and moving list highlights
 
-Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 34px high. Explicit `sm`/`lg` sizes remain available; InputArea remains multiline. Compact application headers retain their 44px minimum touch targets. ApprovalCard uses 16px horizontal / 12px vertical panel padding and compact option spacing; ToolChips uses 14px row text and 16px glyphs with 34px reference rows.
+Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 34px high. Explicit `sm`/`lg` sizes remain available; InputArea remains multiline. Compact application headers retain their 44px minimum touch targets.
 
-Select, DropdownMenu, ContextMenuPanel, Autocomplete, MultiSelect, ApprovalCard and ToolChips use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
+Select, DropdownMenu, ContextMenuPanel, Autocomplete and MultiSelect use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
 
 Loader uses eight perimeter cells with an empty center, moving clockwise continuously. Label, shimmer and delayed elapsed-time controls are unchanged.
 

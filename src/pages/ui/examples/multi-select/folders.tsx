@@ -1,5 +1,5 @@
 import { MultiSelect } from "@nocoo/basalt/components/multi-select";
-import { Folder, Lock } from "lucide-react";
+import { Folder, Lock } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 export default function FolderSelection() {

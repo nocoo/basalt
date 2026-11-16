@@ -106,7 +106,7 @@ Container spacing uses 4px multiples (4/8/12/16/24/32px); 2px and 6px
 control-internal spacing remains unchanged. Use `p-basalt-card`, `gap-basalt-layout`,
 `gap-basalt-space-sm`, etc. Default nav insets and field gaps remain 8px. Selectable rows use 8px horizontal / 6px vertical
 insets and an 8px icon gap. Sidebar destinations alone use 8px vertical padding;
-menus, editable navigation and chat rows retain their compact role. One component
+menus and editable navigation retain their compact role. One component
 owns each boundary: nested sections must not accidentally double the same inset.
 Distinct surface, column and semantic-slot boundaries may compose their spacing.
 Indented detail content may derive its alignment from the row inset, icon width
@@ -168,7 +168,7 @@ The shared classes calculate natural size as follows:
 - Sidebar destination and disclosure rows use the same 22px line box with 8px
   vertical padding, yielding 38px reference rows without changing shared controls.
 - Cards, dialogs and layout containers have no mandatory height. Textareas and
-  chat inputs grow with content (chat: up to five lines, then scroll).
+  other multiline fields grow with content, then scroll when their configured limit is reached.
 
 Do not use `height`, `max-height`, truncation or overflow clipping to force text
 controls to a target. Use a line box, shared padding and optional minimums.
@@ -310,8 +310,8 @@ title/actions/filters, `SectionRule` owns region headings, and `LayerCard` owns
 content surfaces. The catalog's app-local `ShowcasePage` composes the header and
 section gap. All routes under `DashboardLayout` use it, including missing/planned
 catalog states and source viewers. Do not add a second `main`, viewport height,
-page background, wrapper card or page padding inside the island. A bounded chat
-workspace can use `h-full min-h-0`; it must not create a nested viewport.
+page background, wrapper card or page padding inside the island. A bounded
+application workspace can use `h-full min-h-0`; it must not create a nested viewport.
 
 Every catalog route uses the same ShowcasePage header: 24px main titles
 (`text-basalt-3xl`), 14px descriptions (`text-basalt-base`) on a 20px line box,

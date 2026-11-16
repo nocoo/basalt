@@ -1,5 +1,5 @@
 import { InputGroup } from "@nocoo/basalt/components/input-group";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck } from "@nocoo/basalt/icons";
 
 export default function InputGroupInlineSuffix() {
 	return (

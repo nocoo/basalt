@@ -1,7 +1,7 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { Empty } from "@nocoo/basalt/components/empty";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { AlertCircle, FolderPlus, Search } from "lucide-react";
+import { AlertCircle, FolderPlus, Search } from "@nocoo/basalt/icons";
 import { useEffect, useRef, useState } from "react";
 
 export default function EmptyActionStates() {

@@ -5,8 +5,9 @@ import { CATALOG_CATEGORIES, catalogCategoryPath } from "../src/pages/ui/catalog
 import { setShowcaseTheme } from "./showcase-theme";
 
 async function assertPlots(container: Locator) {
-	await container.locator("svg.recharts-surface").first().waitFor({ state: "attached" });
-	const sizes = await container.locator("svg.recharts-surface").evaluateAll((nodes) =>
+	const plots = container.locator('svg.recharts-surface, svg[role="img"]');
+	await plots.first().waitFor({ state: "attached" });
+	const sizes = await plots.evaluateAll((nodes) =>
 		nodes.map((node) => {
 			const box = node.getBoundingClientRect();
 			return { width: box.width, height: box.height };

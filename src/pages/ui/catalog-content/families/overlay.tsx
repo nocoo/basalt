@@ -66,7 +66,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nocoo/basalt/components/table";
-import { AlertTriangle, X } from "lucide-react";
+import { AlertTriangle, X } from "@nocoo/basalt/icons";
 import type { ReactNode } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
@@ -389,7 +389,7 @@ export default function Example() {
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "lucide-react";',
+						'import { X } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -426,7 +426,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nocoo/basalt/components/table";
-import { X } from "lucide-react";
+import { X } from "@nocoo/basalt/icons";
 
 function DialogCloseButton() {
 	return (
@@ -528,7 +528,7 @@ export default function Example() {
 					[
 						'import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from "@nocoo/basalt/components/alert-dialog";',
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { AlertTriangle } from "lucide-react";',
+						'import { AlertTriangle } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -581,7 +581,7 @@ export default function Example() {
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { AlertTriangle } from "lucide-react";',
+						'import { AlertTriangle } from "@nocoo/basalt/icons";',
 					],
 					DIALOG_ACTIONS_HELPER,
 				),
@@ -627,7 +627,7 @@ export default function Example() {
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "lucide-react";',
+						'import { X } from "@nocoo/basalt/icons";',
 					],
 					DIALOG_ALL_HELPERS,
 				),
@@ -668,7 +668,7 @@ export default function Example() {
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { LayerCard } from "@nocoo/basalt/components/layer-card";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "lucide-react";',
+						'import { X } from "@nocoo/basalt/icons";',
 					],
 					DIALOG_HEADER_HELPERS,
 				),
@@ -724,7 +724,7 @@ export default function Example() {
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@nocoo/basalt/components/select";',
-						'import { X } from "lucide-react";',
+						'import { X } from "@nocoo/basalt/icons";',
 					],
 					DIALOG_HEADER_HELPERS,
 				),
@@ -791,7 +791,7 @@ export default function Example() {
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Autocomplete } from "@nocoo/basalt/components/autocomplete";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "lucide-react";',
+						'import { X } from "@nocoo/basalt/icons";',
 					],
 					DIALOG_HEADER_HELPERS,
 				),
@@ -857,7 +857,7 @@ export default function Example() {
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@nocoo/basalt/components/dropdown-menu";',
-						'import { X } from "lucide-react";',
+						'import { X } from "@nocoo/basalt/icons";',
 					],
 					DIALOG_HEADER_HELPERS,
 				),

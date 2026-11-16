@@ -10,7 +10,7 @@ Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
 - The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root. `main.tsx` only imports local `./index.css`; `@nocoo/basalt/styles/tailwind` appears once, in that stylesheet.
-- `@source` is the relative glob from `src/index.css` to the copied consumer's `node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}`. Extra sources, path traversal, and lookalike prefixes fail the gate.
+- The consumer uses the package-embedded source scan through `@import "@nocoo/basalt/styles"; @import "tailwindcss";`, with zero manual `@source` directives and zero app `lucide-react` dependency.
 - After install, root and `styles/tailwind` resolve inside that consumer's tarball copy.
 - `tailwindcss` and `@tailwindcss/vite` 4.3.3 are installed; `recharts`, `react-day-picker`, and `@tanstack/react-table` are not.
 - Production CSS contains `--basalt-background` and Button utilities generated from the installed dist scan, not the standalone CSS dump.

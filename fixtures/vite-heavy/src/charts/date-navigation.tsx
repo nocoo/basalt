@@ -1,6 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "@nocoo/basalt/icons";
 import { type ComponentProps, useState } from "react";
 import { cn } from "./utils";
 

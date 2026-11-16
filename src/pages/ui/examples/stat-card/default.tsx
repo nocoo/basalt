@@ -1,7 +1,60 @@
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
-import { Activity, Wallet } from "lucide-react";
-import { BarChart } from "@/components/charts/bar";
-import { LineChart } from "@/components/charts/line";
+import { Activity, Wallet } from "@nocoo/basalt/icons";
+
+function LineChart({
+	data,
+	className,
+	ariaLabel,
+	valueFormatter,
+}: {
+	data: { x: string; y: number }[];
+	className?: string;
+	ariaLabel: string;
+	valueFormatter: (value: number) => string;
+}) {
+	const max = Math.max(...data.map((point) => point.y));
+	const points = data
+		.map(
+			(point, index) =>
+				`${(index / Math.max(data.length - 1, 1)) * 100},${32 - (point.y / max) * 28}`,
+		)
+		.join(" ");
+	return (
+		<svg viewBox="0 0 100 36" className={className} role="img" aria-label={ariaLabel}>
+			<title>{data.map((point) => valueFormatter(point.y)).join(", ")}</title>
+			<polyline points={points} fill="none" stroke="hsl(var(--basalt-chart-1))" strokeWidth="3" />
+		</svg>
+	);
+}
+
+function BarChart({
+	data,
+	className,
+	ariaLabel,
+	valueFormatter,
+}: {
+	data: { x: string; y: number }[];
+	className?: string;
+	ariaLabel: string;
+	valueFormatter: (value: number) => string;
+}) {
+	const max = Math.max(...data.map((point) => point.y));
+	return (
+		<div
+			className={`flex items-end gap-basalt-space-sm ${className ?? ""}`}
+			role="img"
+			aria-label={`${ariaLabel}. Values: ${data.map((point) => valueFormatter(point.y)).join(", ")}`}
+		>
+			{data.map((point) => (
+				<span
+					key={point.x}
+					className="min-w-0 flex-1 bg-basalt-chart-2"
+					style={{ height: `${(point.y / max) * 100}%` }}
+				/>
+			))}
+		</div>
+	);
+}
 
 const requests = [6.2, 7.4, 6.8, 8.6, 9.1, 8.3, 10.6, 12.4].map((y, index) => ({
 	x: `Period ${index + 1}`,

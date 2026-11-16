@@ -7,7 +7,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
-import { ArrowUpRight, HelpCircle, TrendingUp, Users } from "lucide-react";
+import { ArrowUpRight, HelpCircle, TrendingUp, Users } from "@nocoo/basalt/icons";
 
 export default function StatCardMetricInfo() {
 	return (

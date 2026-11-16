@@ -1,7 +1,7 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { EditableNavItem } from "@nocoo/basalt/components/editable-nav-item";
 import { SidebarNav } from "@nocoo/basalt/components/sidebar";
-import { Pin } from "lucide-react";
+import { Pin } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 export default function FolderNavigation() {

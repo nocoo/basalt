@@ -6,7 +6,7 @@
 
 Matte design system component library. ESM, granular exports, Tailwind CSS v4 or standalone CSS.
 
-Applications own brand artwork. `LoadingScreen` renders caller-supplied `mark` content when present. The README uses the separate large presentation. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](https://github.com/nocoo/basalt/blob/main/assets/brand/README.md).
+`BasaltMark` is owned by the showcase site rather than the public package. `LoadingScreen` accepts caller-owned brand artwork through `mark?: ReactNode`; it renders no mark by default. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](https://github.com/nocoo/basalt/blob/main/assets/brand/README.md).
 
 - **Package:** `@nocoo/basalt`
 - **Documentation & Showcase:** [https://basaltui.com](https://basaltui.com)
@@ -106,6 +106,15 @@ import { DataTable } from "@nocoo/basalt/components/data-table";
 import { ChartFrame, ChartLegend, ChartTooltipContent } from "@nocoo/basalt/components/chart";
 import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { useTheme } from "@nocoo/basalt/providers/theme";
+```
+
+### 3. Icons and Headless Primitives
+
+Import Lucide exports from `@nocoo/basalt/icons`. Access the retained Radix headless primitives from `@nocoo/basalt/primitives/*` so applications do not need duplicate direct Radix dependencies.
+
+```tsx excerpt:pkg-readme-icons-primitives
+import { Plus } from "@nocoo/basalt/icons";
+import * as DialogPrimitive from "@nocoo/basalt/primitives/dialog";
 ```
 
 ---

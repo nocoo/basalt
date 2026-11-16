@@ -17,13 +17,38 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@nocoo/basalt/components/select";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 
-const Sparkline = lazy(() =>
-	import("@/components/charts/sparkline").then((module) => ({
-		default: module.Sparkline<{ x: number; y: number }>,
-	})),
-);
+function Sparkline({
+	data,
+	className,
+	ariaLabel,
+	summary,
+}: {
+	data: { x: number; y: number }[];
+	className?: string;
+	ariaLabel: string;
+	summary: ReactNode;
+	accessibilityLayer?: boolean;
+}) {
+	const values = data.map((point) => point.y);
+	const min = Math.min(...values);
+	const range = Math.max(...values) - min || 1;
+	const points = data
+		.map(
+			(point, index) =>
+				`${(index / Math.max(data.length - 1, 1)) * 100},${32 - ((point.y - min) / range) * 28}`,
+		)
+		.join(" ");
+	return (
+		<span className={className}>
+			<svg viewBox="0 0 100 36" className="h-full w-full" role="img" aria-label={ariaLabel}>
+				<polyline points={points} fill="none" stroke="hsl(var(--basalt-chart-1))" strokeWidth="3" />
+			</svg>
+			{summary}
+		</span>
+	);
+}
 
 const DEVICES = [
 	{
@@ -227,19 +252,17 @@ export default function OperationsTable() {
 				accessor: (row) => (
 					<div className="flex items-center gap-basalt-space-lg">
 						<div className="w-20">
-							<Suspense fallback={<div className="h-10 w-20" />}>
-								<Sparkline
-									className="h-8 w-20"
-									data={row.trend.map((y, x) => ({ x, y }))}
-									ariaLabel={`${row.name} seven-hour trend`}
-									summary={
-										<span className="sr-only">
-											{row.trend[0]} to {row.trend[6]} activity events per minute
-										</span>
-									}
-									accessibilityLayer={false}
-								/>
-							</Suspense>
+							<Sparkline
+								className="block h-8 w-20"
+								data={row.trend.map((y, x) => ({ x, y }))}
+								ariaLabel={`${row.name} seven-hour trend`}
+								summary={
+									<span className="sr-only">
+										{row.trend[0]} to {row.trend[6]} activity events per minute
+									</span>
+								}
+								accessibilityLayer={false}
+							/>
 						</div>
 						<span className="font-medium tabular-nums">{count.format(row.requests)}</span>
 					</div>

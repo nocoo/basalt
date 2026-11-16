@@ -6,7 +6,7 @@ import { Input } from "@nocoo/basalt/components/input";
 import { ResponsiveMasterDetail } from "@nocoo/basalt/components/responsive-master-detail";
 import { TAG_COLORS, TagBadge, type TagColor } from "@nocoo/basalt/components/tag-badge";
 import { TagColorPicker } from "@nocoo/basalt/components/tag-color-picker";
-import { Book, Folder, Lock } from "lucide-react";
+import { Book, Folder, Lock } from "@nocoo/basalt/icons";
 import { useEffect, useRef, useState } from "react";
 
 const icons = [

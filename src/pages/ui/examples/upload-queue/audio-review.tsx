@@ -1,5 +1,5 @@
 import { type UploadFile, UploadItem } from "@nocoo/basalt/components/upload-queue";
-import { Music2 } from "lucide-react";
+import { Music2 } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 export default function AudioReview() {

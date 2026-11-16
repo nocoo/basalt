@@ -10,7 +10,7 @@ import { Meter } from "@nocoo/basalt/components/meter";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Text } from "@nocoo/basalt/components/text";
 import { toast } from "@nocoo/basalt/components/toast";
-import { AlertTriangle, Check, CircleAlert, Inbox, Info, X } from "lucide-react";
+import { AlertTriangle, Check, CircleAlert, Inbox, Info, X } from "@nocoo/basalt/icons";
 import type { ReactNode } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
@@ -223,7 +223,7 @@ export default catalogContentFamily({
 </div>`,
 					[
 						'import { Badge } from "@nocoo/basalt/components/badge";',
-						'import { AlertTriangle, Check, CircleAlert, Info } from "lucide-react";',
+						'import { AlertTriangle, Check, CircleAlert, Info } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -275,7 +275,7 @@ export default catalogContentFamily({
 				'<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />',
 				undefined,
 				`import { Banner } from "@nocoo/basalt/components/banner";
-import { Info } from "lucide-react";
+import { Info } from "@nocoo/basalt/icons";
 
 export default function Example() {
 	return (
@@ -321,7 +321,7 @@ export default function Example() {
 </div>`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
-						'import { AlertTriangle, CircleAlert, Info } from "lucide-react";',
+						'import { AlertTriangle, CircleAlert, Info } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -364,7 +364,7 @@ export default function Example() {
 />`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
-						'import { AlertTriangle } from "lucide-react";',
+						'import { AlertTriangle } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -407,7 +407,7 @@ export default function Example() {
 </div>`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
-						'import { CircleAlert, Info, X } from "lucide-react";',
+						'import { CircleAlert, Info, X } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -456,7 +456,7 @@ export default function Example() {
 />`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
-						'import { AlertTriangle } from "lucide-react";',
+						'import { AlertTriangle } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -499,7 +499,7 @@ export default function Example() {
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
 						'import { Link } from "@nocoo/basalt/components/link";',
-						'import { X } from "lucide-react";',
+						'import { X } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -539,7 +539,7 @@ export default function Example() {
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
 						'import { Text } from "@nocoo/basalt/components/text";',
-						'import { Info } from "lucide-react";',
+						'import { Info } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -588,7 +588,7 @@ export default function Example() {
 					'<Empty icon={<Inbox />} title="Inbox zero" description="You are all caught up." />',
 					[
 						'import { Empty } from "@nocoo/basalt/components/empty";',
-						'import { Inbox } from "lucide-react";',
+						'import { Inbox } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
@@ -889,7 +889,7 @@ export function App() {
 >
 	Custom icon
 </Button>`,
-					['import { Check } from "lucide-react";'],
+					['import { Check } from "@nocoo/basalt/icons";'],
 				),
 				render: () => (
 					<Button

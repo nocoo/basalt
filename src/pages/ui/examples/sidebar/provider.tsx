@@ -8,7 +8,7 @@ import {
 	SidebarProvider,
 	useSidebar,
 } from "@nocoo/basalt/components/sidebar";
-import { Home, Settings } from "lucide-react";
+import { Home, Settings } from "@nocoo/basalt/icons";
 
 function Navigation() {
 	const { collapsed, peeking } = useSidebar();

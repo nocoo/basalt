@@ -1,5 +1,5 @@
 import { IconPicker } from "@nocoo/basalt/components/icon-picker";
-import { FileAudio, FileImage, FileText, Lock } from "lucide-react";
+import { FileAudio, FileImage, FileText, Lock } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 export default function ResourceIconSelection() {

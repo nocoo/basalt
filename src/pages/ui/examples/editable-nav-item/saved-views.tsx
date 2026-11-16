@@ -1,7 +1,7 @@
 import { EditableNavItem } from "@nocoo/basalt/components/editable-nav-item";
 import { SidebarNav } from "@nocoo/basalt/components/sidebar";
 import { TagBadge } from "@nocoo/basalt/components/tag-badge";
-import { ChartNoAxesCombined, Search } from "lucide-react";
+import { ChartNoAxesCombined, Search } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 export default function SavedViewNavigation() {

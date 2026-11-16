@@ -1,5 +1,5 @@
 import { InputGroup } from "@nocoo/basalt/components/input-group";
-import { Search } from "lucide-react";
+import { Search } from "@nocoo/basalt/icons";
 
 export default function InputGroupButton() {
 	return (

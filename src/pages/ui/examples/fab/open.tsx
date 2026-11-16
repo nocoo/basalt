@@ -1,5 +1,5 @@
 import { Fab } from "@nocoo/basalt/components/fab";
-import { Sparkles } from "lucide-react";
+import { Sparkles } from "@nocoo/basalt/icons";
 
 export default function OpenExample() {
 	return (

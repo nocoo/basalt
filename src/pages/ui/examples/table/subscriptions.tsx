@@ -24,13 +24,38 @@ import {
 	type TableTextAlign,
 } from "@nocoo/basalt/components/table";
 import { TablePager } from "@nocoo/basalt/components/table-pager";
-import { lazy, Suspense, useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 
-const Sparkline = lazy(() =>
-	import("@/components/charts/sparkline").then((module) => ({
-		default: module.Sparkline<{ x: number; y: number }>,
-	})),
-);
+function Sparkline({
+	data,
+	className,
+	ariaLabel,
+	summary,
+}: {
+	data: { x: number; y: number }[];
+	className?: string;
+	ariaLabel: string;
+	summary: ReactNode;
+	accessibilityLayer?: boolean;
+}) {
+	const values = data.map((point) => point.y);
+	const min = Math.min(...values);
+	const range = Math.max(...values) - min || 1;
+	const points = data
+		.map(
+			(point, index) =>
+				`${(index / Math.max(data.length - 1, 1)) * 100},${32 - ((point.y - min) / range) * 28}`,
+		)
+		.join(" ");
+	return (
+		<span className={className}>
+			<svg viewBox="0 0 100 36" className="h-full w-full" role="img" aria-label={ariaLabel}>
+				<polyline points={points} fill="none" stroke="hsl(var(--basalt-chart-1))" strokeWidth="3" />
+			</svg>
+			{summary}
+		</span>
+	);
+}
 
 const SUBSCRIPTIONS = [
 	{
@@ -372,19 +397,17 @@ export default function SubscriptionTable() {
 											<div className="w-32">
 												<Meter value={row.used} aria-label={`${row.name} quota used`} />
 											</div>
-											<Suspense fallback={<div className="h-10 w-20" />}>
-												<Sparkline
-													className="h-4 w-20"
-													data={row.history.map((y, x) => ({ x, y }))}
-													ariaLabel={`${row.name} usage trend`}
-													summary={
-														<span className="sr-only">
-															Usage moved from {row.history[0]}% to {row.used}%.
-														</span>
-													}
-													accessibilityLayer={false}
-												/>
-											</Suspense>
+											<Sparkline
+												className="block h-4 w-20"
+												data={row.history.map((y, x) => ({ x, y }))}
+												ariaLabel={`${row.name} usage trend`}
+												summary={
+													<span className="sr-only">
+														Usage moved from {row.history[0]}% to {row.used}%.
+													</span>
+												}
+												accessibilityLayer={false}
+											/>
 										</div>
 									</TableCell>
 									<TableCell className="whitespace-nowrap">

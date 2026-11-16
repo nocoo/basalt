@@ -1,5 +1,5 @@
 import { Button } from "@nocoo/basalt/components/button";
-import { Plus } from "lucide-react";
+import { Plus } from "@nocoo/basalt/icons";
 
 export default function ButtonIconOnly() {
 	return (

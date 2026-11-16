@@ -8,9 +8,8 @@ import {
 	SidebarNav,
 	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
-import { Home, Inbox } from "lucide-react";
+import { Home, Inbox } from "@nocoo/basalt/icons";
 import { useRef, useState } from "react";
-import { BasaltMark } from "@/components/BasaltMark";
 
 const items = [
 	{ label: "Home", icon: Home, href: "/ui/sidebar?drawer=home" },
@@ -42,7 +41,11 @@ export default function SidebarDrawerExample() {
 				<Sidebar resizable={false} className="h-[24rem]">
 					<SidebarHeader>
 						<SidebarBrand
-							logo={<BasaltMark aria-hidden="true" />}
+							logo={
+								<span aria-hidden="true" className="grid size-5 place-items-center font-semibold">
+									CO
+								</span>
+							}
 							name="Creamery Ops"
 							version="v1.0.0"
 							action={<SidebarToggle mode="dismiss" onDismiss={() => setOpen(false)} />}

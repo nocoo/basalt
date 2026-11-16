@@ -15,7 +15,7 @@
 
 Basalt 包含发布到 npm 的 [@nocoo/basalt](https://www.npmjs.com/package/@nocoo/basalt) 组件库，以及展示组件、API 和使用场景的网站。适合在 React 应用中统一表单、导航、数据展示与页面布局。
 
-视觉上使用哑光表面和分层明度，将页面底色、内容区域和卡片区分开。示例站中的健康、财务、聊天和网络页面使用演示数据；组件库不提供业务后端或身份认证服务。
+视觉上使用哑光表面和分层明度，将页面底色、内容区域和卡片区分开。示例站中的健康、财务和网络页面使用演示数据；组件库不提供业务后端或身份认证服务。
 
 ## 功能
 
@@ -28,17 +28,19 @@ Basalt 包含发布到 npm 的 [@nocoo/basalt](https://www.npmjs.com/package/@no
 
 ## 使用
 
-在已有的 React 19 / React DOM 19 应用中安装组件库与图标依赖：
+在已有的 React 19 / React DOM 19 应用中安装组件库：
 
 ```bash
-bun add @nocoo/basalt lucide-react
+bun add @nocoo/basalt
 ```
+
+图标从 `@nocoo/basalt/icons` 导入，Basalt 使用的 Radix primitives 从 `@nocoo/basalt/primitives/*` 访问。
 
 <a id="css-setup"></a>
 
 ### 配置样式
 
-使用 Tailwind CSS v4 时，在主样式文件中引入 tokens 和 Tailwind。下面的 `@source` 路径以样式文件位于 `src/` 为例，需按实际位置调整：
+使用 Tailwind CSS v4 时，在主样式文件中引入 tokens 和 Tailwind。Basalt 样式已嵌入 package source scan，不需要手写 `@source`：
 
 ```css
 @import "@nocoo/basalt/styles";

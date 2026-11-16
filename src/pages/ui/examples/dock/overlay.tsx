@@ -1,6 +1,6 @@
 import { Dock, DockBody } from "@nocoo/basalt/components/dock";
 import { Fab } from "@nocoo/basalt/components/fab";
-import { Sparkles } from "lucide-react";
+import { Sparkles } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 export default function OverlayExample() {

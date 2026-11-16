@@ -20,7 +20,15 @@ import {
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { ChevronDown, CircleDot, Folder, LayoutGrid, ListFilter, Plus, Search } from "lucide-react";
+import {
+	ChevronDown,
+	CircleDot,
+	Folder,
+	LayoutGrid,
+	ListFilter,
+	Plus,
+	Search,
+} from "@nocoo/basalt/icons";
 import { useState } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
@@ -246,7 +254,7 @@ const toolbarDocs = extraDocs(
 	'<Toolbar><Toolbar.Input aria-label="Search records" placeholder="Search..." /><Toolbar.Button icon={<Search />} aria-label="Search" /><Toolbar.Button icon={<Plus />} aria-label="Add" /></Toolbar>',
 	undefined,
 	`import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search } from "@nocoo/basalt/icons";
 
 export default function Example() {
 	return (
@@ -355,7 +363,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
-import { ChevronDown, CircleDot, Folder, LayoutGrid, ListFilter } from "lucide-react";
+import { ChevronDown, CircleDot, Folder, LayoutGrid, ListFilter } from "@nocoo/basalt/icons";
 import { useState } from "react";
 
 const CONVERSATION_ITEMS = [
@@ -535,7 +543,7 @@ export default function Example() {
 </Toolbar>`,
 					[
 						'import { Toolbar } from "@nocoo/basalt/components/toolbar";',
-						'import { Plus, Search } from "lucide-react";',
+						'import { Plus, Search } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (

@@ -13,8 +13,8 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
+import { HelpCircle, RefreshCw } from "@nocoo/basalt/icons";
 import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
-import { HelpCircle, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { Bar, BarChart as RechartsBar, ResponsiveContainer } from "recharts";
 import { AreaChart } from "./charts/area";

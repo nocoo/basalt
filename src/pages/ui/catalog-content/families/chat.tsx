@@ -17,7 +17,7 @@ export default catalogContentFamily({
 				"Fab",
 				"@nocoo/basalt/components/fab",
 				'<Fab aria-label="Open assistant"><Sparkles /></Fab>',
-				'import { Sparkles } from "lucide-react";',
+				'import { Sparkles } from "@nocoo/basalt/icons";',
 			),
 			variants: [],
 			api: fabApi,
