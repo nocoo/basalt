@@ -128,6 +128,9 @@ describe("foundation feedback scenario truth", () => {
 		]);
 		expect(UI_EXAMPLES.meter?.map((item) => item.id)).toEqual([
 			"meter-basic-meter",
+			"meter-semantic-tones",
+			"meter-segmented",
+			"meter-sizes",
 			"meter-custom-value-display",
 			"meter-hidden-value",
 			"meter-full-meter",

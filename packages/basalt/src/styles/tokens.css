@@ -172,6 +172,10 @@
 	--basalt-border: 220 14% 86%;
 	--basalt-input: 220 14% 84%;
 	--basalt-ring: var(--basalt-primary);
+	--basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.065);
+	--basalt-meter-track-shadow:
+		inset 0 1px 1.5px 0 hsl(var(--basalt-backdrop) / 0.05),
+		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.08);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-card);
 	--basalt-surface-elevated: var(--basalt-secondary);
@@ -322,6 +326,10 @@
 	--basalt-ring: var(--basalt-primary);
 	--basalt-shadow-card: 0 0 #0000;
 	--basalt-shadow-control: 0 0 #0000;
+	--basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.1);
+	--basalt-meter-track-shadow:
+		inset 0 1px 2px 0 hsl(var(--basalt-backdrop) / 0.35),
+		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.12);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-card);
 	--basalt-surface-elevated: var(--basalt-secondary);
@@ -973,6 +981,35 @@
 	@media (prefers-reduced-motion: reduce) {
 		:is(.basalt-floating, [data-basalt-sheet], .basalt-sheet-overlay)[data-state] {
 			animation: none;
+		}
+	}
+
+	.basalt-meter-track {
+		background-color: var(--basalt-meter-track-fill);
+		box-shadow: var(--basalt-meter-track-shadow);
+	}
+	.basalt-meter-fill {
+		box-shadow: inset 0 1px 0 0 hsl(var(--basalt-on-solid) / 0.24);
+		transition-property: transform, opacity;
+		transition-duration: var(--basalt-motion-slow);
+		transition-timing-function: var(--basalt-motion-ease);
+	}
+	.basalt-meter-cell {
+		transition-property: background-color, box-shadow, opacity;
+		transition-duration: var(--basalt-motion-normal);
+		transition-timing-function: var(--basalt-motion-ease);
+	}
+	.basalt-meter-cell[data-filled="false"] {
+		background-color: var(--basalt-meter-track-fill);
+		box-shadow: var(--basalt-meter-track-shadow);
+	}
+	.basalt-meter-cell[data-filled="true"] {
+		box-shadow: inset 0 1px 0 0 hsl(var(--basalt-on-solid) / 0.24);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.basalt-meter-fill,
+		.basalt-meter-cell {
+			transition: none;
 		}
 	}
 }

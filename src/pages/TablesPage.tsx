@@ -135,6 +135,7 @@ export default function TablesPage() {
 			accessor: (row) => (
 				<Meter
 					value={row.win}
+					size="sm"
 					aria-label={`${row.name} ${t("pages.tables.colWin")}`}
 					className="w-32"
 				/>

@@ -15,8 +15,11 @@ describe("TablesPage", () => {
 		expect(within(table).getByText("70%")).toBeInTheDocument();
 		expect(table.querySelectorAll("[data-basalt-meter]")).toHaveLength(12);
 		expect(
-			table.querySelector("[data-basalt-meter]")?.querySelectorAll("[data-filled]"),
-		).toHaveLength(17);
+			table.querySelector("[data-basalt-meter][data-variant='bar'][data-size='sm']"),
+		).toBeTruthy();
+		expect(
+			table.querySelector("[data-basalt-meter]")?.querySelector('[data-slot="meter-indicator"]'),
+		).toBeTruthy();
 		expect(table.querySelectorAll(".basalt-chart")).toHaveLength(12);
 		expect(within(pipeline as HTMLElement).getByText("12 companies in view")).toBeInTheDocument();
 		expect(screen.getByRole("checkbox", { name: "Select summit" })).toBeChecked();

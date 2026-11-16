@@ -36,6 +36,9 @@ const FEEDBACK_SCENARIOS = {
 	],
 	meter: [
 		"meter-basic-meter",
+		"meter-semantic-tones",
+		"meter-segmented",
+		"meter-sizes",
 		"meter-custom-value-display",
 		"meter-hidden-value",
 		"meter-full-meter",
@@ -76,7 +79,7 @@ const FEEDBACK_DESCRIPTIONS = {
 	"skeleton-line":
 		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
 	meter:
-		"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. Meter retains device-specific battery semantics.",
+		"Matte capacity and utilization meter with continuous capsule and twenty-cell precision segmented variants, semantic tones, and tabular readings. Clamps to 0..100%; non-finite readings display as Unavailable.",
 	toast:
 		"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
 	"clipboard-text":
@@ -128,7 +131,7 @@ describe("feedback catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(50);
+		expect(count).toBe(53);
 	});
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {

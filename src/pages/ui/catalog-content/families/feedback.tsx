@@ -728,7 +728,7 @@ export default function Example() {
 			...extraDocs(
 				"Meter",
 				"meter",
-				"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. Meter retains device-specific battery semantics.",
+				"Matte capacity and utilization meter with continuous capsule and twenty-cell precision segmented variants, semantic tones, and tabular readings. Clamps to 0..100%; non-finite readings display as Unavailable.",
 				'<Meter value={60} label="Usage" />',
 				undefined,
 				`import { Meter } from "@nocoo/basalt/components/meter";
@@ -743,42 +743,124 @@ export default function Example() {
 			{
 				id: catalogScenarioId("meter", "basic-meter"),
 				title: "Basic Meter",
-				code: scenarioModule('<Meter value={40} label="Usage" />', [
-					'import { Meter } from "@nocoo/basalt/components/meter";',
-				]),
-				render: () => <Meter value={40} label="Usage" />,
+				code: scenarioModule(
+					'<div className="w-full max-w-sm">\n\t<Meter value={64} label="Usage" />\n</div>',
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm">
+						<Meter value={64} label="Usage" />
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("meter", "semantic-tones"),
+				title: "Semantic Tones",
+				code: scenarioModule(
+					`<div className="w-full max-w-sm space-y-basalt-card-sm">
+	<Meter value={48} label="API requests" customValue="48k / 100k" tone="default" />
+	<Meter value={100} label="Health checks" tone="success" />
+	<Meter value={78} label="Memory pressure" tone="warning" />
+	<Meter value={94} label="Storage limit" customValue="94.2 / 100 GB" tone="danger" />
+</div>`,
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm space-y-basalt-card-sm">
+						<Meter value={48} label="API requests" customValue="48k / 100k" tone="default" />
+						<Meter value={100} label="Health checks" tone="success" />
+						<Meter value={78} label="Memory pressure" tone="warning" />
+						<Meter value={94} label="Storage limit" customValue="94.2 / 100 GB" tone="danger" />
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("meter", "segmented"),
+				title: "Segmented Variant",
+				code: scenarioModule(
+					`<div className="w-full max-w-sm space-y-basalt-card-sm">
+	<Meter value={65} label="Cluster capacity" variant="segmented" />
+	<Meter value={85} label="Auto threshold" variant="segmented" tone="auto" />
+</div>`,
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm space-y-basalt-card-sm">
+						<Meter value={65} label="Cluster capacity" variant="segmented" />
+						<Meter value={85} label="Auto threshold" variant="segmented" tone="auto" />
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("meter", "sizes"),
+				title: "Sizes",
+				code: scenarioModule(
+					`<div className="w-full max-w-sm space-y-basalt-card-sm">
+	<Meter value={56} label="Small" size="sm" />
+	<Meter value={56} label="Medium" size="md" />
+	<Meter value={56} label="Large" size="lg" />
+</div>`,
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm space-y-basalt-card-sm">
+						<Meter value={56} label="Small" size="sm" />
+						<Meter value={56} label="Medium" size="md" />
+						<Meter value={56} label="Large" size="lg" />
+					</div>
+				),
 			},
 			{
 				id: catalogScenarioId("meter", "custom-value-display"),
 				title: "Custom Value Display",
-				code: scenarioModule('<Meter value={12} label="Storage" customValue="12 GB" />', [
-					'import { Meter } from "@nocoo/basalt/components/meter";',
-				]),
-				render: () => <Meter value={12} label="Storage" customValue="12 GB" />,
+				code: scenarioModule(
+					'<div className="w-full max-w-sm">\n\t<Meter value={62} label="Storage" customValue="62.4 / 100 GB" />\n</div>',
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm">
+						<Meter value={62} label="Storage" customValue="62.4 / 100 GB" />
+					</div>
+				),
 			},
 			{
 				id: catalogScenarioId("meter", "hidden-value"),
 				title: "Hidden Value",
-				code: scenarioModule('<Meter value={72} label="Progress" hideValue />', [
-					'import { Meter } from "@nocoo/basalt/components/meter";',
-				]),
-				render: () => <Meter value={72} label="Progress" hideValue />,
+				code: scenarioModule(
+					'<div className="w-full max-w-sm">\n\t<Meter value={72} label="Progress" hideValue />\n</div>',
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm">
+						<Meter value={72} label="Progress" hideValue />
+					</div>
+				),
 			},
 			{
 				id: catalogScenarioId("meter", "full-meter"),
 				title: "Full Meter",
-				code: scenarioModule('<Meter value={100} label="Complete" />', [
-					'import { Meter } from "@nocoo/basalt/components/meter";',
-				]),
-				render: () => <Meter value={100} label="Complete" />,
+				code: scenarioModule(
+					'<div className="w-full max-w-sm">\n\t<Meter value={100} label="Complete" tone="success" />\n</div>',
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm">
+						<Meter value={100} label="Complete" tone="success" />
+					</div>
+				),
 			},
 			{
 				id: catalogScenarioId("meter", "low-value"),
 				title: "Low Value",
-				code: scenarioModule('<Meter value={8} label="Quota" />', [
-					'import { Meter } from "@nocoo/basalt/components/meter";',
-				]),
-				render: () => <Meter value={8} label="Quota" />,
+				code: scenarioModule(
+					'<div className="w-full max-w-sm">\n\t<Meter value={8} label="Quota" />\n</div>',
+					['import { Meter } from "@nocoo/basalt/components/meter";'],
+				),
+				render: () => (
+					<div className="w-full max-w-sm">
+						<Meter value={8} label="Quota" />
+					</div>
+				),
 			},
 		],
 	},

@@ -368,7 +368,7 @@ describe("documentation tarball compilation gate", () => {
 	it("loads verbatim scenario modules for all ready catalog items and validates complete consumer modules", async () => {
 		const { usageModules, scenarioModules } = await loadCatalogModules();
 		expect(usageModules).toHaveLength(77);
-		expect(scenarioModules).toHaveLength(247);
+		expect(scenarioModules).toHaveLength(250);
 
 		const seenScenarioIds = new Set<string>();
 		const seenFilenames = new Set<string>();

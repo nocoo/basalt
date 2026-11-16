@@ -58,6 +58,81 @@ async function assertDarkCardRings(page: Page, baseUrl: string) {
 	}
 }
 
+async function assertMeterShowcase(page: Page, baseUrl: string, dark: boolean) {
+	await page.goto(`${baseUrl}/ui/meter`);
+	await page.locator('[data-status="ready"]').waitFor();
+	await setShowcaseTheme(page, dark);
+	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+	const metrics = await page.evaluate(() => {
+		const basic = document.querySelector('[data-scenario="meter-basic-meter"]');
+		const label = basic?.querySelector<HTMLElement>('[data-slot="meter-label"]');
+		const value = basic?.querySelector<HTMLElement>('[data-slot="meter-value"]');
+		const track = basic?.querySelector<HTMLElement>("[data-basalt-meter]");
+		const indicator = basic?.querySelector<HTMLElement>('[data-slot="meter-indicator"]');
+		const sizes = Array.from(
+			document.querySelectorAll<HTMLElement>('[data-scenario="meter-sizes"] [data-basalt-meter]'),
+		).map((node) => Math.round(node.getBoundingClientRect().height));
+		const segmented = document.querySelector(
+			'[data-scenario="meter-segmented"] [data-basalt-meter]',
+		);
+		const cells = Array.from(
+			segmented?.querySelectorAll<HTMLElement>('[data-slot="meter-cell"]') ?? [],
+		);
+		const filledColors = Array.from(
+			new Set(
+				cells
+					.filter((cell) => cell.dataset.filled === "true")
+					.map((cell) => getComputedStyle(cell).backgroundColor),
+			),
+		);
+		if (!basic || !label || !value || !track || !indicator) {
+			throw new Error("Missing meter showcase nodes");
+		}
+		const labelBox = label.getBoundingClientRect();
+		const valueBox = value.getBoundingClientRect();
+		const trackBox = track.getBoundingClientRect();
+		return {
+			labelLeftDiff: Math.abs(labelBox.left - trackBox.left),
+			valueRightDiff: Math.abs(valueBox.right - trackBox.right),
+			trackShadow: getComputedStyle(track).boxShadow,
+			transitionDuration: getComputedStyle(indicator).transitionDuration,
+			sizes,
+			cellCount: cells.length,
+			filledColors,
+			indicatorHtml: basic.querySelector("[data-example-preview]")?.innerHTML ?? "",
+		};
+	});
+	assert.ok(metrics.labelLeftDiff <= 1, JSON.stringify(metrics));
+	assert.ok(metrics.valueRightDiff <= 1, JSON.stringify(metrics));
+	assert.notEqual(metrics.trackShadow, "none");
+	assert.equal(metrics.transitionDuration, "0s", "reduced motion must stop meter bar transition");
+	assert.deepEqual(metrics.sizes, [6, 8, 12]);
+	assert.equal(metrics.cellCount, 20);
+	assert.equal(metrics.filledColors.length, 1, JSON.stringify(metrics.filledColors));
+	assert.notEqual(metrics.filledColors[0], "rgba(0, 0, 0, 0)");
+
+	const standalone = await page.context().newPage();
+	try {
+		await standalone.emulateMedia({ reducedMotion: "reduce" });
+		await standalone.setContent(
+			`<!doctype html><html class="${dark ? "dark" : ""}"><head><style>${css}</style></head><body>${metrics.indicatorHtml}</body></html>`,
+		);
+		const standaloneMetrics = await standalone.evaluate(() => {
+			const track = document.querySelector<HTMLElement>("[data-basalt-meter]");
+			const indicator = document.querySelector<HTMLElement>('[data-slot="meter-indicator"]');
+			if (!track || !indicator) throw new Error("Missing standalone meter nodes");
+			return {
+				trackShadow: getComputedStyle(track).boxShadow,
+				transitionDuration: getComputedStyle(indicator).transitionDuration,
+			};
+		});
+		assert.notEqual(standaloneMetrics.trackShadow, "none");
+		assert.equal(standaloneMetrics.transitionDuration, "0s");
+	} finally {
+		await standalone.close();
+	}
+}
+
 async function assertDocumentInsets(page: Page, baseUrl: string, dark: boolean) {
 	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 	for (const slug of ["tag-badge", "button"]) {
@@ -219,6 +294,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 			if (width === 390) await page.getByRole("dialog").waitFor({ state: "hidden" });
 			else assert.equal(await actionOverview.getAttribute("aria-current"), "page");
 			await assertDocumentInsets(page, baseUrl, dark);
+			if (width === 1280) await assertMeterShowcase(page, baseUrl, dark);
 			if (dark && width === 1280) await assertDarkCardRings(page, baseUrl);
 			await page.goto(`${baseUrl}/ui/skeleton-line`);
 			await page.locator('[data-status="ready"]').waitFor();

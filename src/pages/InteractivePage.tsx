@@ -272,13 +272,7 @@ export default function InteractivePage() {
 			<SectionRule title={t("pages.interactive.progressIndicators")}>
 				<LayerCard>
 					<div className="space-y-basalt-card max-w-md">
-						<div className="space-y-basalt-space-sm">
-							<div className="flex justify-between text-basalt-sm text-muted-foreground">
-								<span>{t("pages.interactive.uploading")}</span>
-								<span>60%</span>
-							</div>
-							<Meter value={60} hideValue aria-label={t("pages.interactive.uploading")} />
-						</div>
+						<Meter value={60} label={t("pages.interactive.uploading")} />
 						<div className="flex items-center gap-basalt-space-lg">
 							<div className="flex items-center gap-basalt-space-lg">
 								<Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none text-muted-foreground" />

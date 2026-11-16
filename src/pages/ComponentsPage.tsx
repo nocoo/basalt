@@ -125,24 +125,27 @@ export default function ComponentsPage() {
 										<Icon className="h-5 w-5 text-basalt-primary" strokeWidth={1.5} />
 									</div>
 									<div className="flex-1">
-										<p className="text-basalt-base font-medium text-foreground">{goal.name}</p>
-										<p className="text-basalt-sm text-muted-foreground">
+										<p className="text-basalt-base font-medium text-basalt-foreground">
+											{goal.name}
+										</p>
+										<p className="text-basalt-sm text-basalt-muted-foreground">
 											${goal.saved.toLocaleString()} {t("common.of")} $
 											{goal.target.toLocaleString()}
 										</p>
 									</div>
-									<span className="text-basalt-base font-semibold text-foreground">
+									<span className="text-basalt-base font-semibold text-basalt-foreground">
 										{goal.percent}%
 									</span>
 								</LayerCard.Header>
 								<LayerCard.Body className="space-y-basalt-card-sm">
 									<Meter
 										hideValue
+										tone={goal.onTrack ? "success" : "default"}
 										value={goal.percent}
 										aria-label={`${goal.name}: ${goal.percent}% of $${goal.target.toLocaleString()} saved`}
 									/>
 									<div className="flex flex-wrap items-center gap-basalt-space-lg">
-										<span className="text-basalt-sm text-muted-foreground">
+										<span className="text-basalt-sm text-basalt-muted-foreground">
 											{t("pages.components.monthlyTarget")} ${goal.monthlyTarget.toLocaleString()}
 										</span>
 										{goal.onTrack && (
