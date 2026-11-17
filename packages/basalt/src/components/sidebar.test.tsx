@@ -46,10 +46,11 @@ describe("Sidebar", () => {
 		for (const name of ["Home", "Report"]) {
 			expect(screen.getByRole("button", { name })).toHaveClass(
 				"px-basalt-row-x",
-				"py-basalt-space-lg",
-				"[&>svg:first-child]:size-basalt-sidebar-brand-slot",
+				"py-basalt-row-y",
+				"text-basalt-md",
+				"[&>svg:first-child]:size-basalt-icon-lg",
 			);
-			expect(screen.getByRole("button", { name })).not.toHaveClass("py-basalt-row-y");
+			expect(screen.getByRole("button", { name })).not.toHaveClass("py-basalt-space-lg");
 			expect(screen.getByRole("button", { name })).toHaveAttribute("data-basalt-hover-item");
 			expect(screen.getByRole("button", { name })).toHaveAttribute("data-sidebar-row");
 		}
@@ -58,10 +59,11 @@ describe("Sidebar", () => {
 		expect(group).toHaveClass(
 			"uppercase",
 			"font-semibold",
-			"text-basalt-sm",
-			"py-basalt-space-lg",
+			"text-basalt-xs",
+			"py-basalt-row-y",
 			"leading-basalt-row",
 		);
+		expect(group).not.toHaveClass("py-basalt-space-lg");
 		expect(group.closest('[data-slot="sidebar-group"]')).toHaveClass("pt-basalt-layout-sm");
 		expect(screen.getByRole("button", { name: "Home" })).toHaveClass("basalt-focus-inset");
 		expect(screen.getByText("Header")).toHaveClass("px-basalt-layout-lg");
@@ -668,11 +670,13 @@ describe("Sidebar", () => {
 		expect(search).toHaveClass(
 			"basalt-sidebar-row",
 			"w-full",
-			"text-basalt-base",
-			"[&>svg:first-child]:size-basalt-sidebar-brand-slot",
+			"text-basalt-md",
+			"leading-basalt-row",
+			"[&>svg:first-child]:size-basalt-icon-lg",
 		);
+		expect(screen.getByText("Search")).toHaveClass("text-basalt-md", "leading-basalt-row");
 		expect(search.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
-		expect(screen.getByText("⌘K")).toBeInTheDocument();
+		expect(screen.getByText("⌘K")).toHaveClass("text-basalt-xs");
 	});
 
 	it("renders one accessible icon search with a tooltip while collapsed", async () => {
@@ -796,15 +800,11 @@ describe("Sidebar", () => {
 		expect(search).toHaveFocus();
 	});
 
-	it("relaxes destination rows locally without a fixed height", () => {
+	it("keeps destination rows compact without a fixed height", () => {
 		render(<SidebarItem>Home</SidebarItem>);
 		const row = screen.getByRole("button", { name: "Home" });
-		expect(row).toHaveClass(
-			"py-basalt-space-lg",
-			"leading-basalt-row",
-			"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))]",
-		);
-		expect(row).not.toHaveClass("py-basalt-row-y");
+		expect(row).toHaveClass("py-basalt-row-y", "leading-basalt-row", "min-h-basalt-control");
+		expect(row).not.toHaveClass("py-basalt-space-lg");
 		expect(row.className.split(/\s+/)).not.toContain("h-basalt-14");
 	});
 
@@ -812,13 +812,14 @@ describe("Sidebar", () => {
 		render(<SidebarIconItem aria-label="Mail">Mail</SidebarIconItem>);
 		const button = screen.getByRole("button", { name: "Mail" });
 		expect(button).toHaveClass(
-			"py-basalt-space-lg",
-			"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))]",
+			"py-basalt-row-y",
+			"min-h-basalt-control",
+			"leading-basalt-row",
 			"w-basalt-control",
 			"justify-center",
 		);
 		expect(button).not.toHaveClass("w-full");
-		expect(button).not.toHaveClass("min-h-basalt-control");
+		expect(button).not.toHaveClass("py-basalt-space-lg");
 	});
 
 	it("toggles SidebarIconItem inactive and active classes and forwards button props", () => {

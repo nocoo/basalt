@@ -127,7 +127,7 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 			};
 		});
 	const expanded = await measure();
-	// 24px mark centered on the 34px rail axis (x = 22), wider than the 20px icon column.
+	// 24px mark centered on the 34px rail axis (x = 22), wider than the 16px icon column.
 	assert.ok(Math.abs(expanded.logo.x - 22) <= 0.5, JSON.stringify(expanded));
 	assert.ok(Math.abs(expanded.logo.width - 24) <= 0.5, JSON.stringify(expanded));
 	assert.ok(Math.abs(expanded.logo.height - 24) <= 0.5, JSON.stringify(expanded));
@@ -139,8 +139,8 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	);
 	assert.ok(expanded.chevronCenterX !== null, JSON.stringify(expanded));
 	for (const icon of [expanded.search, expanded.nav]) {
-		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(expanded));
-		assert.ok(Math.abs(icon.width - 20) <= 0.5, JSON.stringify(expanded));
+		assert.ok(Math.abs(icon.x - 26) <= 0.5, JSON.stringify(expanded));
+		assert.ok(Math.abs(icon.width - 16) <= 0.5, JSON.stringify(expanded));
 	}
 	assert.ok(Math.abs(expanded.avatar.x - 16) <= 0.5, JSON.stringify(expanded));
 	assert.ok(Math.abs(expanded.avatar.width - 36) <= 0.5, JSON.stringify(expanded));
@@ -198,8 +198,8 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	assert.ok(Math.abs(collapsed.logo.x - expanded.logo.x) <= 0.5, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.logo.y - expanded.logo.y) <= 0.5, JSON.stringify(collapsed));
 	for (const icon of [collapsed.search, collapsed.nav]) {
-		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(collapsed));
-		assert.ok(Math.abs(icon.width - 20) <= 0.5, JSON.stringify(collapsed));
+		assert.ok(Math.abs(icon.x - 26) <= 0.5, JSON.stringify(collapsed));
+		assert.ok(Math.abs(icon.width - 16) <= 0.5, JSON.stringify(collapsed));
 	}
 	assert.ok(Math.abs(collapsed.avatar.x - 16) <= 0.5, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.avatar.width - 36) <= 0.5, JSON.stringify(collapsed));
@@ -207,7 +207,7 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	assert.ok(collapsed.searchRow, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.toggleBox.x - 17) <= 0.5, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.toggleBox.width - 34) <= 0.5, JSON.stringify(collapsed));
-	assert.ok(Math.abs(collapsed.toggleBox.height - 38) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.toggleBox.height - 34) <= 0.5, JSON.stringify(collapsed));
 	for (const key of ["x", "width", "height"] as const) {
 		assert.ok(
 			Math.abs(collapsed.toggleBox[key] - (collapsed.searchRow?.[key] ?? Number.NaN)) <= 0.5,
@@ -476,6 +476,8 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 			left: row.getBoundingClientRect().left - box.left,
 			height: row.getBoundingClientRect().height,
 			padding: getComputedStyle(row).padding,
+			fontSize: getComputedStyle(row).fontSize,
+			lineHeight: getComputedStyle(row).lineHeight,
 		});
 		return {
 			width: box.width,
@@ -509,21 +511,27 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		};
 	});
 	assert.ok(
-		geometry.destinations.every((row) => row.height === 38),
+		geometry.destinations.every((row) => row.height === 34),
+		JSON.stringify(geometry),
+	);
+	assert.ok(
+		[geometry.search, ...geometry.destinations].every(
+			(row) => row.fontSize === "13px" && row.lineHeight === "22px",
+		),
 		JSON.stringify(geometry),
 	);
 	if (collapsed) {
 		assert.equal(geometry.width, 68);
 		assert.equal(geometry.paddingInline, "17px");
-		// Collapsed nav reserves the 38px toggle row plus the 8px gap above search.
-		assert.equal(geometry.paddingTop, "46px");
+		// Collapsed nav reserves the 34px toggle row plus the 8px gap above search.
+		assert.equal(geometry.paddingTop, "42px");
 		assert.equal(geometry.paddingBottom, "8px");
-		assert.deepEqual(geometry.directDestinationTops, [88, 130, 172], JSON.stringify(geometry));
-		assert.equal(geometry.search.top, 46, JSON.stringify(geometry));
-		assert.equal(geometry.search.height, 38, JSON.stringify(geometry));
+		assert.deepEqual(geometry.directDestinationTops, [80, 118, 156], JSON.stringify(geometry));
+		assert.equal(geometry.search.top, 42, JSON.stringify(geometry));
+		assert.equal(geometry.search.height, 34, JSON.stringify(geometry));
 		assert.equal(geometry.search.hoverItem, true, JSON.stringify(geometry));
 		assert.equal(geometry.search.left, 17, JSON.stringify(geometry));
-		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		assert.equal(geometry.search.padding, "6px 8px", JSON.stringify(geometry));
 		assert.deepEqual(
 			geometry.footerControl,
 			{ left: 20, center: 34, width: 28 },
@@ -540,7 +548,7 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 			JSON.stringify(geometry),
 		);
 		assert.ok(
-			geometry.destinations.every((row) => row.left === 17 && row.padding === "8px"),
+			geometry.destinations.every((row) => row.left === 17 && row.padding === "6px 8px"),
 			JSON.stringify(geometry),
 		);
 		assert.ok(
@@ -553,19 +561,19 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		assert.equal(geometry.search.top, 8, JSON.stringify(geometry));
 		assert.equal(geometry.search.hoverItem, false, JSON.stringify(geometry));
 		assert.equal(geometry.search.left, inset, JSON.stringify(geometry));
-		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		assert.equal(geometry.search.padding, "6px 8px", JSON.stringify(geometry));
 		assert.equal(geometry.footerControl.left, 16, JSON.stringify(geometry));
 		assert.equal(geometry.footerControl.width, geometry.width - 32, JSON.stringify(geometry));
 		const firstDestinationTop = geometry.search.top + geometry.search.height + 4;
 		assert.equal(geometry.directDestinationTops.length, 3, JSON.stringify(geometry));
 		geometry.directDestinationTops.forEach((top, index) => {
 			assert.ok(
-				Math.abs(top - (firstDestinationTop + index * 42)) < 0.01,
+				Math.abs(top - (firstDestinationTop + index * 38)) < 0.01,
 				JSON.stringify(geometry),
 			);
 		});
 		assert.ok(
-			geometry.destinations.every((row) => row.left === inset && row.padding === "8px"),
+			geometry.destinations.every((row) => row.left === inset && row.padding === "6px 8px"),
 			JSON.stringify(geometry),
 		);
 	}
@@ -655,7 +663,7 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 		viewports: 2,
 		themes: 2,
 		cssEntrypoints: 2,
-		rowHeight: 38,
+		rowHeight: 34,
 		railAxis: 34,
 		inset: 24,
 		navigationFamilies: 3,

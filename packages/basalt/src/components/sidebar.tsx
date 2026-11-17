@@ -323,7 +323,7 @@ export function Sidebar({
 		) : null;
 	const frameClass = cn(
 		BASALT_UI_CLASS,
-		"relative flex shrink-0 flex-col bg-basalt-background text-basalt-base text-basalt-foreground",
+		"relative flex shrink-0 flex-col bg-basalt-background text-basalt-md text-basalt-foreground",
 		OVERLAY_MOTION,
 		className,
 	);
@@ -413,7 +413,7 @@ export function Sidebar({
 }
 
 const SIDEBAR_ROW_CLASS =
-	"basalt-sidebar-row min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))] py-basalt-space-lg [&>svg:first-child]:size-basalt-sidebar-brand-slot";
+	"basalt-sidebar-row text-basalt-md leading-basalt-row [&>svg:first-child]:size-basalt-icon-lg [&>svg:first-child]:mx-[calc((var(--basalt-size-sidebar-brand-slot)-var(--basalt-size-icon-lg))/2)]";
 
 export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -644,14 +644,16 @@ export function SidebarSearch({
 			<Search className="text-basalt-foreground" strokeWidth={1.5} aria-hidden="true" />
 			<span
 				className={
-					collapsed ? "sr-only" : "flex-1 text-left text-basalt-base text-basalt-foreground"
+					collapsed
+						? "sr-only"
+						: "flex-1 text-left text-basalt-md leading-basalt-row text-basalt-foreground"
 				}
 			>
 				{children}
 				{collapsed && shortcut ? ` (${shortcut})` : null}
 			</span>
 			{!collapsed ? (
-				<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-sm font-medium text-basalt-muted-foreground sm:inline-block">
+				<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-basalt-muted-foreground sm:inline-block">
 					{shortcut}
 				</kbd>
 			) : null}
@@ -697,7 +699,7 @@ export function SidebarPartition({ className, ...props }: SidebarPartitionProps)
 		<p
 			data-slot="sidebar-partition"
 			className={cn(
-				"shrink-0 px-basalt-row-x pt-basalt-layout pb-basalt-space-lg text-basalt-sm font-semibold tracking-wide text-basalt-foreground uppercase",
+				"shrink-0 px-basalt-row-x pt-basalt-layout pb-basalt-space-lg text-basalt-xs font-semibold tracking-wide text-basalt-foreground uppercase",
 				className,
 			)}
 			{...props}
@@ -897,14 +899,14 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 					type="button"
 					data-slot="sidebar-group-label"
 					className={cn(
-						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-space-lg text-left text-basalt-sm font-semibold leading-basalt-row tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
+						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-row-y text-left text-basalt-xs font-semibold leading-basalt-row tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
 						FOCUS_INSET,
 					)}
 				>
 					<span className="min-w-0 truncate">{label}</span>
 					<ChevronUp
 						className={cn(
-							"h-basalt-4 w-basalt-4 text-basalt-muted-foreground transition-transform basalt-motion duration-basalt-normal",
+							"size-basalt-icon me-[calc((var(--basalt-size-icon-lg)-var(--basalt-size-icon))/2)] text-basalt-muted-foreground transition-transform basalt-motion duration-basalt-normal",
 							OVERLAY_MOTION,
 							!open && "rotate-180",
 						)}
@@ -1072,7 +1074,7 @@ export function SidebarUser({
 		>
 			{avatar}
 			<div className="min-w-0 flex-1">
-				<p className="truncate text-basalt-base font-medium text-basalt-foreground">{name}</p>
+				<p className="truncate text-basalt-md font-medium text-basalt-foreground">{name}</p>
 				{email ? (
 					<p className="truncate text-basalt-sm leading-[var(--basalt-leading-inline)] text-basalt-muted-foreground">
 						{email}

@@ -277,8 +277,8 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 			rowPadding: row ? getComputedStyle(row).padding : "",
 		};
 	});
-	assert.equal(expandedRail.rowHeight, 38, JSON.stringify(expandedRail));
-	assert.equal(expandedRail.rowPadding, "8px");
+	assert.equal(expandedRail.rowHeight, 34, JSON.stringify(expandedRail));
+	assert.equal(expandedRail.rowPadding, "6px 8px");
 	assert.equal(expandedRail.logoX, 22);
 	await page.getByRole("button", { name: "Collapse sidebar", exact: true }).click();
 	await page.waitForFunction(() => {

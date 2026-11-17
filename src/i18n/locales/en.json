@@ -879,11 +879,11 @@
 				},
 				"base": {
 					"name": "Body",
-					"roles": "Default controls, sidebar destinations, Label, Body prose, asChild disclosures"
+					"roles": "Default controls, Label, Body prose, asChild disclosures"
 				},
 				"md": {
 					"name": "Compact",
-					"roles": "Table/DataTable cells & captions, size=\"sm\" controls, SegmentControl, CodeBlock"
+					"roles": "Table/DataTable cells & captions, size=\"sm\" controls, sidebar destinations and search, SegmentControl, CodeBlock"
 				},
 				"sm": {
 					"name": "Auxiliary",
@@ -891,7 +891,7 @@
 				},
 				"xs": {
 					"name": "Micro",
-					"roles": "Compact 24px AvatarInitials, compact Meter size=\"sm\" readouts, chart micro-labels"
+					"roles": "Compact 24px AvatarInitials, compact Meter size=\"sm\" readouts, sidebar group/partition labels and search shortcut, chart micro-labels"
 				}
 			},
 			"geometry": "Line boxes & reading measures",

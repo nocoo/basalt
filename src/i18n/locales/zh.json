@@ -879,11 +879,11 @@
 				},
 				"base": {
 					"name": "正文 / 默认控件",
-					"roles": "默认尺寸按钮与输入框、侧栏导航项、Label、正文说明与 asChild 折叠头"
+					"roles": "默认尺寸按钮与输入框、Label、正文说明与 asChild 折叠头"
 				},
 				"md": {
 					"name": "紧凑数据 / 小控件",
-					"roles": "Table/DataTable 单元格与标题、size=\"sm\" 控件、分段器与代码块"
+					"roles": "Table/DataTable 单元格与标题、size=\"sm\" 控件、侧栏导航与搜索、分段器与代码块"
 				},
 				"sm": {
 					"name": "辅助标注",
@@ -891,7 +891,7 @@
 				},
 				"xs": {
 					"name": "微缩读数",
-					"roles": "24px 紧凑头像缩写、Meter size=\"sm\" 读数与密集图表微标注"
+					"roles": "24px 紧凑头像缩写、Meter size=\"sm\" 读数、侧栏分组与分区标签及搜索快捷键、密集图表微标注"
 				}
 			},
 			"geometry": "行盒高度与阅读度量",

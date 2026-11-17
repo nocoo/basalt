@@ -136,7 +136,7 @@
 	);
 	--basalt-size-sidebar-logo: 1.5rem;
 	--basalt-size-sidebar-width: 15rem;
-	--basalt-size-sidebar-row: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg));
+	--basalt-size-sidebar-row: var(--basalt-size-control);
 	--basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 

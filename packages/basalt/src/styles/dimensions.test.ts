@@ -147,9 +147,7 @@ describe("dimension token contract", () => {
 		}
 		expect(SIDEBAR_DEFAULT_WIDTH_PX).toBe(15 * 16);
 		for (const css of [tokens, standalone]) {
-			expect(css).toContain(
-				"--basalt-size-sidebar-row: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg))",
-			);
+			expect(css).toContain("--basalt-size-sidebar-row: var(--basalt-size-control)");
 			expect(css).toMatch(
 				/\[data-basalt-sidebar\]\[data-collapsed\] \[data-slot="sidebar-toggle"\] \{[^}]*inline-size: var\(--basalt-size-control\);[^}]*block-size: var\(--basalt-size-sidebar-row\);/,
 			);

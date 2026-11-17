@@ -156,7 +156,7 @@
 	);
   --basalt-size-sidebar-logo: 1.5rem;
   --basalt-size-sidebar-width: 15rem;
-  --basalt-size-sidebar-row: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg));
+  --basalt-size-sidebar-row: var(--basalt-size-control);
   --basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 :root, .light, [data-mode="light"] {
@@ -1638,6 +1638,9 @@
   .my-basalt-layout-xl {
     margin-block: var(--basalt-space-layout-xl);
   }
+  .me-\[calc\(\(var\(--basalt-size-icon-lg\)-var\(--basalt-size-icon\)\)\/2\)\] {
+    margin-inline-end: calc((var(--basalt-size-icon-lg) - var(--basalt-size-icon)) / 2);
+  }
   .mt-auto {
     margin-top: auto;
   }
@@ -1843,9 +1846,6 @@
   }
   .min-h-0 {
     min-height: 0px;
-  }
-  .min-h-\[calc\(var\(--basalt-line-row\)\+2\*var\(--basalt-space-lg\)\)\] {
-    min-height: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg));
   }
   .min-h-basalt-control {
     min-height: var(--basalt-size-control);
@@ -3881,9 +3881,12 @@
   .\[\&\>svg\]\:shrink-0 > svg {
     flex-shrink: 0;
   }
-  .\[\&\>svg\:first-child\]\:size-basalt-sidebar-brand-slot > svg:first-child {
-    width: var(--basalt-size-sidebar-brand-slot);
-    height: var(--basalt-size-sidebar-brand-slot);
+  .\[\&\>svg\:first-child\]\:mx-\[calc\(\(var\(--basalt-size-sidebar-brand-slot\)-var\(--basalt-size-icon-lg\)\)\/2\)\] > svg:first-child {
+    margin-inline: calc((var(--basalt-size-sidebar-brand-slot) - var(--basalt-size-icon-lg)) / 2);
+  }
+  .\[\&\>svg\:first-child\]\:size-basalt-icon-lg > svg:first-child {
+    width: var(--basalt-size-icon-lg);
+    height: var(--basalt-size-icon-lg);
   }
   .basalt-hover-list .\[\.basalt-hover-list_\&\]\:focus\:bg-transparent:focus {
     background-color: transparent;

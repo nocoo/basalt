@@ -254,9 +254,9 @@ export const LINE_BOX_SPECS: readonly LineBoxSpec[] = [
 	},
 	{
 		id: "sidebarRow",
-		typography: "14px / 22px",
-		inset: "8px y · 8px x",
-		targetHeight: "38px",
+		typography: "13px / 22px",
+		inset: "6px y · 8px x",
+		targetHeight: "34px",
 	},
 	{
 		id: "controlLg",

@@ -216,11 +216,13 @@ describe("AppSidebar", () => {
 		expect(icons.length).toBeGreaterThan(1);
 		for (const icon of icons) {
 			expect(icon).toHaveClass(
-				"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))]",
+				"min-h-basalt-control",
+				"py-basalt-row-y",
+				"leading-basalt-row",
 				"w-basalt-control",
 				"justify-center",
 			);
-			expect(icon).not.toHaveClass("min-h-basalt-control");
+			expect(icon).not.toHaveClass("py-basalt-space-lg");
 		}
 	});
 
