@@ -11,6 +11,21 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.5.1] - 2026-11-17
+
+### Changed
+
+- Align LayerCard and sidebar token expectations
+
+### Fixed
+
+- Add LayerCard asChild, tile shadow, and collapsed sidebar hiding
+- Refresh stale showcase assertions
+
+### Removed
+
+- Remove stale combobox showcase
+
 ## [3.5.0] - 2026-11-17
 
 ### Added
