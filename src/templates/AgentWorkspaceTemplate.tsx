@@ -44,7 +44,7 @@ import {
 import { Bot, FileCode, MessageSquare, Plus, Send, X } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-const mobileQuery = "(max-width: 767px)";
+const mobileQuery = "(width < 768px)";
 function subscribeMobile(notify: () => void) {
 	const media = window.matchMedia(mobileQuery);
 	media.addEventListener("change", notify);

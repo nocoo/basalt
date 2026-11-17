@@ -25,10 +25,13 @@ function currentMode(): StudioMode {
 		: "light";
 }
 
-function presetUrl(options: StudioPresetState): string {
+function presetUrl(options: StudioPresetState, includeDefault: boolean): string {
 	if (typeof window === "undefined") return "";
 	const url = new URL(window.location.href);
-	url.searchParams.set("preset", encodeStudioPreset(options));
+	const preset = encodeStudioPreset(options);
+	if (!includeDefault && preset === encodeStudioPreset(DEFAULT_STUDIO_STATE))
+		url.searchParams.delete("preset");
+	else url.searchParams.set("preset", preset);
 	return url.toString();
 }
 
@@ -76,16 +79,17 @@ export function useThemeStudioViewModel() {
 		observer.observe(root, { attributes: true, attributeFilter: ["class", "data-mode"] });
 		return () => observer.disconnect();
 	}, []);
-	const shareUrl = presetUrl(options);
+	const shareUrl = presetUrl(options, true);
+	const historyUrl = presetUrl(options, false);
 	useEffect(() => {
-		if (shareUrl && shareUrl !== window.location.href) {
+		if (historyUrl && historyUrl !== window.location.href) {
 			try {
-				window.history.replaceState(window.history.state, "", shareUrl);
+				window.history.replaceState(window.history.state, "", historyUrl);
 			} catch {
 				return;
 			}
 		}
-	}, [shareUrl]);
+	}, [historyUrl]);
 
 	function applyPreset(id: StudioPresetId) {
 		const preset = STUDIO_PRESETS.find((item) => item.id === id);

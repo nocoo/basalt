@@ -23,7 +23,7 @@ import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { BarChart3, LayoutDashboard, Users } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-const mobileQuery = "(max-width: 767px)";
+const mobileQuery = "(width < 768px)";
 function subscribeMobile(notify: () => void) {
 	const media = window.matchMedia(mobileQuery);
 	media.addEventListener("change", notify);

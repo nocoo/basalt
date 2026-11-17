@@ -124,6 +124,22 @@ describe("standalone template interactions", () => {
 			const dialog = screen.getByRole("dialog", { name: title });
 			fireEvent.click(within(dialog).getByRole("button", { name: item }));
 			await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+			if (item === "Runbooks") {
+				await waitFor(() =>
+					expect(screen.getByRole("checkbox", { name: "Confirm the alert" })).toHaveFocus(),
+				);
+			} else await waitFor(() => expect(trigger).toHaveFocus());
+			fireEvent.click(trigger);
+			fireEvent.keyDown(document, { key: "Escape" });
+			await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+			await waitFor(() => expect(trigger).toHaveFocus());
+			fireEvent.click(trigger);
+			fireEvent.click(
+				within(screen.getByRole("dialog", { name: title })).getByRole("button", {
+					name: "Close navigation",
+				}),
+			);
+			await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
 			await waitFor(() => expect(trigger).toHaveFocus());
 			if (item === "Members")
 				expect(
@@ -131,6 +147,72 @@ describe("standalone template interactions", () => {
 				).toBeInTheDocument();
 		},
 	);
+	it("returns to the menu when no runbook exists", async () => {
+		vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+			matches: true,
+			media: query,
+			onchange: null,
+			addListener() {},
+			removeListener() {},
+			addEventListener() {},
+			removeEventListener() {},
+			dispatchEvent: () => true,
+		}));
+		render(
+			<TooltipProvider>
+				<OpsInboxTemplate />
+			</TooltipProvider>,
+		);
+		fireEvent.change(screen.getByRole("textbox", { name: "Search incidents" }), {
+			target: { value: "missing" },
+		});
+		const trigger = screen.getByRole("button", { name: "Open navigation" });
+		fireEvent.click(trigger);
+		fireEvent.click(
+			within(screen.getByRole("dialog", { name: "Operations" })).getByRole("button", {
+				name: "Runbooks",
+			}),
+		);
+		await waitFor(() => expect(trigger).toHaveFocus());
+	});
+	it.each([
+		["agent", AgentWorkspaceTemplate],
+		["dashboard", ExecutiveDashboardTemplate],
+		["inbox", OpsInboxTemplate],
+		["settings", WorkspaceSettingsTemplate],
+	] as const)("keeps %s navigation available at fractional widths", (_name, Template) => {
+		let width = 767.5;
+		const listeners = new Set<EventListenerOrEventListenerObject>();
+		const matchMedia = vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+			matches: query === "(width < 768px)" && width < 768,
+			media: query,
+			onchange: null,
+			addListener() {},
+			removeListener() {},
+			addEventListener(_type: string, listener: EventListenerOrEventListenerObject | null) {
+				if (listener) listeners.add(listener);
+			},
+			removeEventListener(_type: string, listener: EventListenerOrEventListenerObject | null) {
+				if (listener) listeners.delete(listener);
+			},
+			dispatchEvent: () => true,
+		}));
+		render(
+			<TooltipProvider>
+				<Template />
+			</TooltipProvider>,
+		);
+		expect(matchMedia).toHaveBeenCalledWith("(width < 768px)");
+		expect(screen.getByRole("button", { name: "Open navigation" })).toBeInTheDocument();
+		width = 768;
+		act(() => {
+			for (const listener of listeners) {
+				if (typeof listener === "function") listener(new Event("change"));
+				else listener.handleEvent(new Event("change"));
+			}
+		});
+		expect(screen.queryByRole("button", { name: "Open navigation" })).not.toBeInTheDocument();
+	});
 	it("filters and sorts executive accounts", () => {
 		render(
 			<TooltipProvider>

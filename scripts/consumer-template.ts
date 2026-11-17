@@ -18,13 +18,22 @@ export async function assertConsumerTemplates(page: Page, url: string) {
 	await page.goto(`${url}/template?example=agent`);
 	await page.getByRole("heading", { name: "Prepare the release" }).waitFor();
 	const columns = page.locator("[data-basalt-island] > div").first();
-	const widths = await columns.evaluate((node) =>
-		Array.from(node.children, (child) => child.getBoundingClientRect().width),
+	const boxes = await columns.evaluate((node) =>
+		Array.from(node.children, (child) => {
+			const rect = child.getBoundingClientRect();
+			return { x: rect.x, y: rect.y, width: rect.width };
+		}),
 	);
+	const widths = boxes.map((box) => box.width);
 	assert.equal(widths.length, 2);
 	assert.ok(
 		widths.every((width) => width > 200),
 		`agent columns: ${widths}`,
+	);
+	assert.ok(Math.abs(boxes[0].y - boxes[1].y) <= 2, `agent column rows: ${JSON.stringify(boxes)}`);
+	assert.ok(
+		boxes[0].x + boxes[0].width <= boxes[1].x,
+		`agent column order: ${JSON.stringify(boxes)}`,
 	);
 	await page.setViewportSize({ width: 768, height: 900 });
 	const positions = await columns.evaluate((node) =>
@@ -44,6 +53,19 @@ export async function assertConsumerTemplates(page: Page, url: string) {
 		await menu.click();
 		const drawer = page.getByRole("dialog", { name: title });
 		await drawer.getByRole("button", { name: action }).click();
+		await drawer.waitFor({ state: "hidden" });
+		if (example === "ops") {
+			await page.waitForFunction(() => document.activeElement?.id === "INC-1042-0");
+		} else {
+			await page.waitForFunction(
+				() => document.activeElement?.getAttribute("aria-label") === "Open navigation",
+			);
+		}
+		await menu.click();
+		await drawer.waitFor({ state: "visible" });
+		await drawer.getByRole("button", { name: "Close navigation" }).focus();
+		await page.locator('[role="tooltip"]').waitFor({ state: "detached" });
+		await page.keyboard.press("Escape");
 		await drawer.waitFor({ state: "hidden" });
 		await page.waitForFunction(
 			() => document.activeElement?.getAttribute("aria-label") === "Open navigation",

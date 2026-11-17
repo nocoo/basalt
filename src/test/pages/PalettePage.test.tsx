@@ -83,7 +83,7 @@ describe("PalettePage", () => {
 		expect(code).toHaveTextContent('[data-mode="dark"] {');
 		fireEvent.click(screen.getByRole("button", { name: "Reset studio" }));
 		await waitFor(() => expect(window.localStorage.getItem("basalt-accent")).toBe("primary"));
-		expect(window.location.search).toBe("?other=kept&preset=00000");
+		expect(window.location.search).toBe("?other=kept");
 		expect(window.location.hash).toBe("#preview");
 		expect(code).toHaveTextContent("Default Basalt tokens — no overrides required.");
 	});

@@ -24,7 +24,7 @@ import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Activity, Inbox, ShieldCheck } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-const mobileQuery = "(max-width: 767px)";
+const mobileQuery = "(width < 768px)";
 function subscribeMobile(notify: () => void) {
 	const media = window.matchMedia(mobileQuery);
 	media.addEventListener("change", notify);
@@ -75,6 +75,7 @@ export default function OpsInboxTemplate() {
 		if (!mobile) setDrawerOpen(false);
 	}, [mobile]);
 	const navigationTrigger = useRef<HTMLButtonElement>(null);
+	const navigationReturnTarget = useRef<HTMLElement | null>(null);
 	const [items, setItems] = useState(INITIAL);
 	const [selected, setSelected] = useState(INITIAL[0].id);
 	const [filter, setFilter] = useState("all");
@@ -112,8 +113,11 @@ export default function OpsInboxTemplate() {
 					</SidebarItem>
 					<SidebarItem
 						onClick={() => {
-							setDrawerOpen(false);
-							if (incident) document.getElementById(`${incident.id}-0`)?.focus();
+							const target = incident ? document.getElementById(`${incident.id}-0`) : null;
+							if (drawer) {
+								navigationReturnTarget.current = target ?? navigationTrigger.current;
+								setDrawerOpen(false);
+							} else target?.focus();
 						}}
 					>
 						<ShieldCheck /> Runbooks
@@ -130,7 +134,7 @@ export default function OpsInboxTemplate() {
 				<div className="hidden md:block">{sidebar(false)}</div>
 				<SidebarDrawer
 					id="ops-navigation"
-					returnFocusRef={navigationTrigger}
+					returnFocusRef={navigationReturnTarget}
 					open={drawerOpen}
 					onOpenChange={setDrawerOpen}
 					title="Operations"
@@ -144,7 +148,10 @@ export default function OpsInboxTemplate() {
 							mobile && (
 								<AppHeaderMenuButton
 									ref={navigationTrigger}
-									onClick={() => setDrawerOpen(true)}
+									onClick={() => {
+										navigationReturnTarget.current = navigationTrigger.current;
+										setDrawerOpen(true);
+									}}
 									aria-expanded={drawerOpen}
 									aria-controls="ops-navigation"
 								/>

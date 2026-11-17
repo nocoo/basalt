@@ -63,7 +63,7 @@ describe("useThemeStudioViewModel", () => {
 		act(() => result.current.studio.reset());
 		await waitFor(() => expect(result.current.accent.accent).toBe("primary"));
 		expect(result.current.studio.options).toEqual(DEFAULT_STUDIO_STATE);
-		expect(window.location.search).toBe("?other=kept&preset=00000");
+		expect(window.location.search).toBe("?other=kept");
 		expect(result.current.studio.shareUrl).toContain("/palette?other=kept&preset=00000#details");
 	});
 	it("loads a shared preset, handles invalid links and keeps existing accent without a preset", async () => {
@@ -80,7 +80,7 @@ describe("useThemeStudioViewModel", () => {
 		shared.unmount();
 		window.history.replaceState(null, "", "/palette?preset=broken&x=1");
 		const invalid = renderHook(useStudioTest, { wrapper });
-		await waitFor(() => expect(window.location.search).toBe("?preset=00000&x=1"));
+		await waitFor(() => expect(window.location.search).toBe("?x=1"));
 		expect(invalid.result.current.studio.options).toEqual(DEFAULT_STUDIO_STATE);
 		invalid.unmount();
 		window.history.replaceState(null, "", "/palette");
@@ -89,6 +89,30 @@ describe("useThemeStudioViewModel", () => {
 		const initial = renderHook(useStudioTest, { wrapper: withAccent });
 		expect(initial.result.current.studio.options.accent).toBe("rose");
 		await waitFor(() => expect(window.location.search).toContain("preset="));
+	});
+	it("keeps an ordinary default visit clean and honors a later accent preference", async () => {
+		window.history.replaceState({ marker: 1 }, "", "/palette?other=kept#details");
+		const replace = vi.spyOn(window.history, "replaceState");
+		const first = renderHook(useStudioTest, { wrapper: AccentProvider });
+		expect(replace).not.toHaveBeenCalled();
+		expect(window.location.search).toBe("?other=kept");
+		const originalUrl = window.location.href;
+		const copy = vi.fn().mockResolvedValue(undefined);
+		await act(() => first.result.current.studio.copyShareLink(copy));
+		expect(new URL(copy.mock.calls[0][0]).searchParams.get("preset")).toBe("00000");
+		first.unmount();
+		window.history.pushState(null, "", "/dashboard");
+		const preferences = renderHook(useAccent, { wrapper: AccentProvider });
+		act(() => preferences.result.current.setAccent("rose"));
+		expect(localStorage.getItem("basalt-accent")).toBe("rose");
+		preferences.unmount();
+		act(() => window.history.back());
+		await waitFor(() => expect(window.location.href).toBe(originalUrl));
+		const returned = renderHook(useStudioTest, { wrapper: AccentProvider });
+		await waitFor(() => expect(returned.result.current.studio.options.accent).toBe("rose"));
+		expect(returned.result.current.accent.accent).toBe("rose");
+		expect(window.location.hash).toBe("#details");
+		expect(window.location.search).toContain("other=kept");
 	});
 	it("shares the default explicitly across different stored accents", async () => {
 		window.history.replaceState(null, "", "/palette");
