@@ -1565,7 +1565,7 @@ describe("ui catalog", () => {
 		expect(
 			CATALOG_API["layer-card"]?.map((surface) => surface.props.map((prop) => prop.name)),
 		).toEqual([
-			["className", "outlined", "padding"],
+			["asChild", "className", "outlined", "padding"],
 			["outlined"],
 			[],
 			["asChild", "divided"],
@@ -1578,7 +1578,8 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/layer-card");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(13);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(14);
+		expect(api).toHaveTextContent("asChild?");
 		expect(api).toHaveTextContent("className?");
 		expect(api).toHaveTextContent("outlined?");
 		expect(api).toHaveTextContent("padding?");
@@ -1589,7 +1590,8 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the card root.");
 		expect(api).toHaveTextContent("—");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(13);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(14);
+		expect(api).toHaveTextContent("asChild?");
 		expect(within(api as HTMLElement).queryByRole("cell", { name: /^id\??$/ })).toBeNull();
 		expect(within(api as HTMLElement).queryByRole("cell", { name: /^style\??$/ })).toBeNull();
 		expect(within(api as HTMLElement).queryByRole("cell", { name: /^role\??$/ })).toBeNull();

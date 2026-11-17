@@ -1850,11 +1850,20 @@ describe("catalog API generator contract 1/4", () => {
 	it("extracts LayerCard root props from LayerCardProps", () => {
 		const generated = generateProductionProps();
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"asChild",
 			"className",
 			"outlined",
 			"padding",
 		]);
 		expect(generated["layer-card"]).toEqual([
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description:
+					"Merge card surface, border, and shadow directly onto a single child element (such as a link).",
+			},
 			{
 				name: "className",
 				type: "string",
@@ -1876,7 +1885,7 @@ describe("catalog API generator contract 1/4", () => {
 				description: "Inner spacing for unstructured card content.",
 			},
 		]);
-		expect(generated["layer-card"]?.[0]).not.toHaveProperty("default");
+		expect(generated["layer-card"]?.[1]).not.toHaveProperty("default");
 		expect(generated["layer-card"]?.some((prop) => prop.name === "children")).toBe(false);
 		expect(generated["layer-card"]?.some((prop) => prop.name === "id")).toBe(false);
 		expect(generated["layer-card"]?.some((prop) => prop.name === "style")).toBe(false);
@@ -1955,6 +1964,7 @@ describe("catalog API generator contract 1/4", () => {
 			"labels",
 		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"asChild",
 			"className",
 			"outlined",
 			"padding",
@@ -2062,6 +2072,7 @@ describe("catalog API generator contract 1/4", () => {
 			"labels",
 		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"asChild",
 			"className",
 			"outlined",
 			"padding",
@@ -2144,6 +2155,7 @@ describe("catalog API generator contract 1/4", () => {
 			"labels",
 		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"asChild",
 			"className",
 			"outlined",
 			"padding",
@@ -2236,6 +2248,7 @@ describe("catalog API generator contract 1/4", () => {
 			"labels",
 		]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"asChild",
 			"className",
 			"outlined",
 			"padding",

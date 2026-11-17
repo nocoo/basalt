@@ -792,7 +792,9 @@
 		padding-inline: calc((var(--basalt-size-rail) - var(--basalt-size-control)) / 2);
 		padding-block-start: calc(var(--basalt-size-sidebar-row) + var(--basalt-space-lg));
 	}
-	[data-basalt-sidebar][data-collapsed] [data-slot="sidebar-brand-copy"],
+	[data-basalt-sidebar][data-collapsed] [data-slot="sidebar-brand-copy"] {
+		display: none;
+	}
 	[data-basalt-sidebar][data-collapsed] [data-slot="sidebar-partition"],
 	[data-basalt-sidebar][data-collapsed] [data-slot="sidebar-group-label"] {
 		display: none;

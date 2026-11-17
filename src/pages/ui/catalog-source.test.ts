@@ -269,6 +269,7 @@ describe("catalog source contract", () => {
 			"LayerCard.Empty",
 		]);
 		expect(CATALOG_API["layer-card"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"asChild",
 			"className",
 			"outlined",
 			"padding",
