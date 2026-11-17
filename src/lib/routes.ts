@@ -1,3 +1,4 @@
+import { TEMPLATE_SLUGS } from "../models/template-manifest";
 import { CATALOG_CATEGORIES, catalogCategoryPath } from "../pages/ui/catalog-categories";
 import { CATALOG_PAGE_STATUS } from "../pages/ui/generated/catalog-page-status";
 import { SHOWCASE_PAGES } from "./site";
@@ -25,6 +26,8 @@ const STATIC_APP_PATHS: ReadonlySet<string> = new Set([
 const CATALOG_SLUGS: ReadonlySet<string> = new Set(Object.keys(CATALOG_PAGE_STATUS));
 
 const CATALOG_ROUTE = /^\/ui\/([^/]+)(\/source)?$/;
+const TEMPLATE_VIEW_ROUTE = /^\/view\/([^/]+)$/;
+const TEMPLATE_SLUG_SET: ReadonlySet<string> = new Set(TEMPLATE_SLUGS);
 
 /** Drops one trailing slash so `/ui/button/` matches the canonical `/ui/button`. */
 export function normalizeAppPath(pathname: string): string {
@@ -34,10 +37,11 @@ export function normalizeAppPath(pathname: string): string {
 export function isKnownAppPath(pathname: string): boolean {
 	const path = normalizeAppPath(pathname);
 	if (STATIC_APP_PATHS.has(path)) return true;
-	const match = CATALOG_ROUTE.exec(path);
+	const template = TEMPLATE_VIEW_ROUTE.exec(path);
+	const match = template ?? CATALOG_ROUTE.exec(path);
 	if (!match) return false;
 	try {
-		return CATALOG_SLUGS.has(decodeURIComponent(match[1]));
+		return (template ? TEMPLATE_SLUG_SET : CATALOG_SLUGS).has(decodeURIComponent(match[1]));
 	} catch {
 		return false;
 	}

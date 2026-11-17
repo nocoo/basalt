@@ -1,0 +1,368 @@
+import { AppHeader, AppHeaderMenuButton } from "@nocoo/basalt/components/app-header";
+import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
+import { Badge } from "@nocoo/basalt/components/badge";
+import { Button } from "@nocoo/basalt/components/button";
+import { CodeHighlighted } from "@nocoo/basalt/components/code";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@nocoo/basalt/components/collapsible";
+import { Input } from "@nocoo/basalt/components/input";
+import { InputArea } from "@nocoo/basalt/components/input-area";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { Loader } from "@nocoo/basalt/components/loader";
+import { Meter } from "@nocoo/basalt/components/meter";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
+import {
+	ContentIsland,
+	Sidebar,
+	SidebarBrand,
+	SidebarDrawer,
+	SidebarGroup,
+	SidebarHeader,
+	SidebarIconItem,
+	SidebarItem,
+	SidebarNav,
+	SidebarProvider,
+	SidebarToggle,
+} from "@nocoo/basalt/components/sidebar";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@nocoo/basalt/components/tooltip";
+import { Bot, FileCode, MessageSquare, Plus, Send, X } from "lucide-react";
+import { useRef, useState } from "react";
+
+const ARTIFACTS = [
+	{
+		name: "plan.md",
+		code: "# Release checklist\n- Verify the migration\n- Review the deployment plan",
+	},
+	{ name: "changes.diff", code: "- timeout: 15\n+ timeout: 30\n+ retries: 2" },
+	{ name: "health.json", code: '{\n  "status": "healthy",\n  "checks": 12\n}' },
+];
+
+export default function AgentWorkspaceTemplate() {
+	const [search, setSearch] = useState("");
+	const [sessions, setSessions] = useState([
+		"Release readiness",
+		"API migration",
+		"Weekly summary",
+	]);
+	const [session, setSession] = useState("Release readiness");
+	const [turns, setTurns] = useState<Record<string, string[]>>({});
+	const [collapsed, setCollapsed] = useState(false);
+	const [drawerOpen, setDrawerOpen] = useState(false);
+	const navigationTrigger = useRef<HTMLButtonElement>(null);
+	const [draft, setDraft] = useState("");
+	const [files, setFiles] = useState(["release-notes.md", "checks.json"]);
+	const [artifact, setArtifact] = useState(ARTIFACTS[0]);
+	const [running, setRunning] = useState(true);
+	const [model, setModel] = useState("balanced");
+
+	function send(message: string) {
+		if (!message.trim()) return;
+		setTurns((current) => ({
+			...current,
+			[session]: [...(current[session] ?? []), message.trim()],
+		}));
+		setDraft("");
+	}
+
+	function sidebar(drawer: boolean) {
+		return (
+			<Sidebar className={drawer ? undefined : "hidden md:flex"} resizable={false}>
+				<SidebarHeader>
+					<SidebarBrand
+						logo={<Bot />}
+						name="Fieldwork"
+						action={
+							drawer ? (
+								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
+							) : (
+								<SidebarToggle />
+							)
+						}
+					/>
+				</SidebarHeader>
+				<SidebarNav aria-label="Sessions">
+					{collapsed && !drawer ? (
+						<TooltipProvider>
+							{sessions.map((name) => (
+								<Tooltip key={name}>
+									<TooltipTrigger asChild>
+										<SidebarIconItem
+											aria-label={name}
+											active={name === session}
+											onClick={() => setSession(name)}
+										>
+											<MessageSquare />
+										</SidebarIconItem>
+									</TooltipTrigger>
+									<TooltipContent side="right">{name}</TooltipContent>
+								</Tooltip>
+							))}
+						</TooltipProvider>
+					) : (
+						<>
+							<Input
+								aria-label="Search sessions"
+								placeholder="Search sessions"
+								value={search}
+								onChange={(event) => setSearch(event.target.value)}
+							/>
+							<Button
+								variant="outline"
+								onClick={() => {
+									const name = `New session ${sessions.length + 1}`;
+									setSessions((current) => [name, ...current]);
+									setSession(name);
+									setSearch("");
+									setDrawerOpen(false);
+								}}
+							>
+								<Plus /> New session
+							</Button>
+							<SidebarGroup label="Recent sessions">
+								{sessions
+									.filter((name) => name.toLowerCase().includes(search.toLowerCase()))
+									.map((name) => (
+										<SidebarItem
+											key={name}
+											active={name === session}
+											onClick={() => {
+												setSession(name);
+												setDrawerOpen(false);
+											}}
+										>
+											<MessageSquare />
+											{name}
+										</SidebarItem>
+									))}
+							</SidebarGroup>
+						</>
+					)}
+				</SidebarNav>
+			</Sidebar>
+		);
+	}
+
+	return (
+		<SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
+			<AppShell layout="responsive">
+				<AppSkipLink>Skip to content</AppSkipLink>
+				{sidebar(false)}
+				<SidebarDrawer
+					id="agent-navigation"
+					returnFocusRef={navigationTrigger}
+					open={drawerOpen}
+					onOpenChange={setDrawerOpen}
+					title="Sessions"
+				>
+					{sidebar(true)}
+				</SidebarDrawer>
+				<AppMain>
+					<AppHeader
+						leading={
+							<AppHeaderMenuButton
+								ref={navigationTrigger}
+								className="md:hidden"
+								onClick={() => setDrawerOpen(true)}
+								aria-expanded={drawerOpen}
+								aria-controls="agent-navigation"
+							/>
+						}
+						title={session}
+						actions={<Badge variant="outline">Local workspace</Badge>}
+					/>
+					<ContentIsland className="overflow-auto">
+						<div className="grid min-w-0 gap-basalt-layout-lg lg:grid-cols-[minmax(0,2fr)_minmax(15rem,1fr)]">
+							<div className="min-w-0 space-y-basalt-layout">
+								<div>
+									<p className="text-basalt-sm text-basalt-muted-foreground">
+										WORKSPACE / SESSIONS
+									</p>
+									<h1 className="text-basalt-3xl font-semibold">
+										{session === "Release readiness" ? "Prepare the release" : "Start a session"}
+									</h1>
+									<p className="text-basalt-base text-basalt-muted-foreground">
+										{session === "Release readiness"
+											? "Review the evidence, then choose the next step."
+											: "Ask the agent to help with your next task."}
+									</p>
+								</div>
+								{session === "Release readiness" && (
+									<>
+										<LayerCard>
+											<p className="text-basalt-sm font-medium text-basalt-muted-foreground">You</p>
+											<p>
+												Check whether the migration is ready to ship and summarize any remaining
+												risks.
+											</p>
+										</LayerCard>
+										<Collapsible asChild defaultOpen>
+											<LayerCard padding="none">
+												<LayerCard.Header asChild>
+													<CollapsibleTrigger className="w-full">
+														<Loader
+															size={14}
+															showLabel={false}
+															showElapsed={false}
+															label="Running"
+														/>{" "}
+														Inspecting the workspace <Badge variant="outline">2 steps</Badge>
+													</CollapsibleTrigger>
+												</LayerCard.Header>
+												<CollapsibleContent unstyled>
+													<LayerCard.Body className="space-y-basalt-card-sm">
+														<p className="text-basalt-sm">
+															<Badge variant="success">Complete</Badge> Checked the test report
+														</p>
+														<p className="text-basalt-sm">
+															<Loader size={14} showElapsed={false} label="Reviewing changes" />
+														</p>
+													</LayerCard.Body>
+													<CodeHighlighted
+														attached
+														title="checks.log"
+														code={"12 checks passed\nNo blocking migrations found"}
+													/>
+												</CollapsibleContent>
+											</LayerCard>
+										</Collapsible>
+										<LayerCard padding="none">
+											<LayerCard.Header>Choose how to proceed</LayerCard.Header>
+											<LayerCard.Body className="space-y-basalt-card-sm">
+												<p className="text-basalt-sm text-basalt-muted-foreground">
+													The release is ready for review. What should the agent prepare next?
+												</p>
+												<div className="flex flex-wrap gap-basalt-space-lg">
+													<Button
+														variant="outline"
+														onClick={() => send("Prepare a deployment plan.")}
+													>
+														Prepare deployment plan
+													</Button>
+													<Button
+														variant="outline"
+														onClick={() => send("Summarize remaining risks.")}
+													>
+														Summarize risks
+													</Button>
+												</div>
+											</LayerCard.Body>
+										</LayerCard>
+									</>
+								)}
+								{(turns[session] ?? []).map((turn, index) => (
+									<LayerCard key={`${index}-${turn}`}>
+										<p className="text-basalt-sm font-medium text-basalt-muted-foreground">You</p>
+										<p>{turn}</p>
+									</LayerCard>
+								))}
+								<LayerCard padding="none">
+									<LayerCard.Body className="space-y-basalt-card-sm">
+										<InputArea
+											aria-label="Message"
+											placeholder="Ask a follow-up question…"
+											value={draft}
+											onChange={(event) => setDraft(event.target.value)}
+										/>
+										<div className="flex flex-wrap gap-basalt-space-md">
+											{files.map((file) => (
+												<Badge key={file} variant="outline">
+													{file}
+													<Button
+														size="icon-sm"
+														variant="ghost"
+														aria-label={`Remove ${file}`}
+														onClick={() =>
+															setFiles((current) => current.filter((item) => item !== file))
+														}
+													>
+														<X />
+													</Button>
+												</Badge>
+											))}
+										</div>
+										<div className="flex flex-wrap items-center gap-basalt-space-lg">
+											<Select value={model} onValueChange={setModel}>
+												<SelectTrigger aria-label="Model">
+													<SelectValue />
+												</SelectTrigger>
+												<SelectContent>
+													<SelectItem value="balanced">Balanced</SelectItem>
+													<SelectItem value="fast">Fast</SelectItem>
+												</SelectContent>
+											</Select>
+											<div className="min-w-[8rem] flex-1">
+												<Meter label="Context" value={32} size="sm" />
+											</div>
+											<Button onClick={() => send(draft)}>
+												<Send /> Send
+											</Button>
+										</div>
+									</LayerCard.Body>
+								</LayerCard>
+							</div>
+							<aside className="min-w-0 space-y-basalt-layout">
+								<LayerCard padding="none">
+									<LayerCard.Header>Workspace files</LayerCard.Header>
+									<LayerCard.Body className="space-y-basalt-space-sm">
+										{ARTIFACTS.map((file) => (
+											<Button
+												key={file.name}
+												variant="ghost"
+												className="w-full justify-start"
+												aria-pressed={file.name === artifact.name}
+												onClick={() => setArtifact(file)}
+											>
+												<FileCode />
+												{file.name}
+											</Button>
+										))}
+									</LayerCard.Body>
+									<CodeHighlighted
+										attached
+										title={artifact.name}
+										code={artifact.code}
+										lineNumbers
+									/>
+								</LayerCard>
+								<LayerCard padding="none">
+									<LayerCard.Header>Background tasks</LayerCard.Header>
+									<LayerCard.Body className="space-y-basalt-card-sm">
+										<div className="flex items-center justify-between gap-basalt-space-lg">
+											<span>
+												{running ? (
+													<Loader size={14} showElapsed={false} label="Indexing files" />
+												) : (
+													"Indexing stopped"
+												)}
+											</span>
+											<Button variant="outline" size="sm" onClick={() => setRunning(!running)}>
+												{running ? "Stop" : "Resume"}
+											</Button>
+										</div>
+										<p className="text-basalt-sm text-basalt-muted-foreground">
+											Repository index · updated locally
+										</p>
+									</LayerCard.Body>
+								</LayerCard>
+							</aside>
+						</div>
+					</ContentIsland>
+				</AppMain>
+			</AppShell>
+		</SidebarProvider>
+	);
+}

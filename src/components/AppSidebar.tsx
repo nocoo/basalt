@@ -121,6 +121,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
 import { BasaltLogo } from "@/components/BasaltLogo";
 import { APP_VERSION } from "@/lib/version";
+import { TEMPLATE_MANIFEST } from "@/models/template-manifest";
 import {
 	CATALOG,
 	CATALOG_CATEGORIES,
@@ -158,6 +159,7 @@ const NAV_GROUPS: NavGroup[] = [
 		defaultOpen: true,
 		items: [
 			{ titleKey: "nav.dashboard", icon: LayoutDashboard, path: "/dashboard" },
+			{ titleKey: "nav.templates", icon: LayoutTemplate, path: "/templates" },
 			{ titleKey: "nav.components", icon: RectangleEllipsis, path: "/components" },
 			{ titleKey: "nav.health", icon: HeartPulse, path: "/health" },
 			{ titleKey: "nav.accounts", icon: Wallet, path: "/accounts" },
@@ -505,6 +507,9 @@ export function AppSidebar({
 	const commandCatalogEntries = CATALOG.filter((entry) =>
 		commandSearchMatches(catalogCommandValue(entry), searchQuery),
 	);
+	const commandTemplates = TEMPLATE_MANIFEST.filter((entry) =>
+		commandSearchMatches(`${t(entry.titleKey)} ${entry.slug}`, searchQuery),
+	);
 
 	return (
 		<SidebarProvider collapsed={collapsed} onCollapsedChange={onToggle}>
@@ -595,6 +600,24 @@ export function AppSidebar({
 								))}
 							</CommandGroup>
 						))}
+						{commandTemplates.length > 0 && (
+							<CommandGroup heading={t("nav.templates")}>
+								{commandTemplates.map((entry) => (
+									<CommandItem
+										key={entry.slug}
+										value={`${t(entry.titleKey)} ${entry.slug}`}
+										onSelect={() => handleSelect(`/view/${entry.slug}`)}
+										className="cursor-pointer gap-basalt-space-lg"
+									>
+										<LayoutTemplate
+											className="h-4 w-4 text-basalt-muted-foreground"
+											strokeWidth={1.5}
+										/>
+										<span>{t(entry.titleKey)}</span>
+									</CommandItem>
+								))}
+							</CommandGroup>
+						)}
 						{commandLibraryLead.length > 0 || commandCatalogEntries.length > 0 ? (
 							<CommandGroup heading={t("nav.kit")}>
 								{commandLibraryLead.map((item) => (

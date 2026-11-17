@@ -80,7 +80,7 @@ export function auditDesignSource(
 		if (GEOMETRY.test(utility) && /px/.test(utility)) add("relative-geometry", token);
 	}
 	const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-	const application = /^(?:src\/pages\/|src\/components\/)/.test(file);
+	const application = /^(?:src\/pages\/|src\/components\/|src\/templates\/)/.test(file);
 	let hasTemplate = false;
 	function visit(node: ts.Node) {
 		if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -181,7 +181,10 @@ export function auditDesignSource(
 				/\bp[xytrbl]?-/.test(classes)
 			)
 				add("use-layer-card", classes);
-			if (file.startsWith("src/pages/") && /^(?:select|textarea|button|input)$/.test(tag)) {
+			if (
+				/^src\/(?:pages|templates)\//.test(file) &&
+				/^(?:select|textarea|button|input)$/.test(tag)
+			) {
 				const hiddenInput =
 					tag === "input" &&
 					(/\b(?:sr-only|hidden)\b/.test(classes) || attrs.get("type") === '"hidden"');
@@ -312,6 +315,7 @@ export function runDesignAudit(root = process.cwd()) {
 		"packages/basalt/src/utils",
 		"src/pages",
 		"src/components",
+		"src/templates",
 		"src/styles",
 	];
 	const issues = targets.flatMap((dir) =>

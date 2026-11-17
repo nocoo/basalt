@@ -7,6 +7,15 @@ import {
 } from "./design-audit";
 
 describe("design audit rules (without scanning the repository)", () => {
+	it("applies application controls and surface ownership to standalone templates", () => {
+		const issues = auditDesignSource(
+			"src/templates/Example.tsx",
+			'<button>Save</button><LayerCard className="p-basalt-card" />',
+		);
+		expect(issues.map((issue) => issue.rule)).toEqual(
+			expect.arrayContaining(["use-library-control", "card-padding-prop"]),
+		);
+	});
 	it("preserves the visitor badge scale without exempting ordinary controls or motion", () => {
 		const source = '<Button className="px-6 py-3 rounded-xl text-sm h-12 duration-200" />';
 		expect(auditDesignSource("src/pages/LoginPage.tsx", source).map((issue) => issue.rule)).toEqual(

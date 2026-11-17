@@ -105,7 +105,12 @@ describe("edge worker", () => {
 			expect(response.headers.get("Strict-Transport-Security")).toContain("max-age=31536000");
 			expect(new URL(seen[1].url).pathname).toBe("/404");
 			expect(seen[1].headers.get("If-None-Match")).toBeNull();
-			for (const path of ["/ui/not-a-component", "/ui/button/extra", "/dashboard/extra"]) {
+			for (const path of [
+				"/ui/not-a-component",
+				"/ui/button/extra",
+				"/dashboard/extra",
+				"/view/unknown",
+			]) {
 				const miss = await handleEdgeRequest(request(`https://basaltui.com${path}`), assets());
 				expect(miss.status, path).toBe(404);
 			}
@@ -120,6 +125,9 @@ describe("edge worker", () => {
 		it("serves the app shell with 200 for client routes without a prerendered file", async () => {
 			for (const path of [
 				"/ui/button/source",
+				"/templates",
+				"/view/agent-workspace",
+				"/view/visitor-login",
 				"/examples/reader",
 				"/examples/workspace/",
 				"/loading",

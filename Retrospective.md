@@ -844,3 +844,17 @@ percentage is now derived from the counts with the same two-decimal rule the
 merger uses, and a reported percentage that disagrees with its counts is
 rejected even when it is above the floor. The coverage denominator and the four
 95% floors are unchanged.
+
+## Template preview theme isolation (2026-11-17)
+
+The first standalone viewport nested a non-persistent theme provider inside the
+site provider. Both providers still wrote to the same document, and React ran the
+outer provider's effect last, overwriting an explicit preview theme on first
+load. The site provider now leaves the document alone on viewport routes; the
+isolated provider owns it, and regression tests cover initial theme, same-origin
+messages and unchanged persisted preferences.
+
+During verification a zsh loop used `path` as its variable, temporarily replacing
+that shell's executable search path and causing later commands to fail. The
+shell exited without changing the environment or repository. Future shell loops
+use descriptive names rather than zsh's special parameters.

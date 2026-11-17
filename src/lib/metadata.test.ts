@@ -10,6 +10,7 @@ describe("page metadata", () => {
 		for (const [path, name] of [
 			["/ui", "Component library"],
 			["/dashboard", "Dashboard"],
+			["/templates", "Templates"],
 			["/banking", "Banking & Wealth"],
 			["/network", "Network Ops"],
 			["/ui/button", "Button"],
@@ -24,6 +25,7 @@ describe("page metadata", () => {
 			);
 		}
 		expect(pageMetadata("/ui/custom").description).toContain("Component");
+		expect(pageMetadata("/templates").description).toContain("standalone React source");
 		expect(pageMetadata("/custom").description).toContain("Interface");
 		expect(pageMetadata("/ui/overview/action", "Actions overview").description).toContain(
 			"Design thinking",

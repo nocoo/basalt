@@ -137,6 +137,19 @@ describe("AppSidebar", () => {
 		);
 	});
 
+	it("finds the templates gallery and individual standalone templates", async () => {
+		renderSidebar();
+		expect(screen.getByRole("link", { name: "Templates" })).toHaveAttribute("href", "/templates");
+		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+		const search = screen.getByPlaceholderText("Search pages...");
+		fireEvent.change(search, { target: { value: "agent workspace" } });
+		fireEvent.click(await screen.findByRole("option", { name: "Agent workspace" }));
+		expect(screen.getByTestId("router-location")).toHaveAttribute(
+			"data-pathname",
+			"/view/agent-workspace",
+		);
+	});
+
 	it("applies the ready gate in the command palette", async () => {
 		renderSidebar();
 		fireEvent.keyDown(document, { key: "k", ctrlKey: true });

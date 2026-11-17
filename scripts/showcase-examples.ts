@@ -4,6 +4,7 @@ import { setShowcaseTheme } from "./showcase-theme";
 
 const ROUTES = [
 	"/dashboard",
+	"/templates",
 	"/accounts",
 	"/portfolio",
 	"/progress-tracking",

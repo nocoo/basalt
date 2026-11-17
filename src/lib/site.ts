@@ -50,6 +50,7 @@ export interface CatalogLink {
 export const SHOWCASE_PAGES: readonly ShowcasePage[] = [
 	{ path: "/", titleKey: "nav.home", inSitemap: true },
 	{ path: "/dashboard", titleKey: "nav.dashboard", inSitemap: true },
+	{ path: "/templates", titleKey: "nav.templates", inSitemap: true },
 	{ path: "/ui", titleKey: "nav.kitIndex", inSitemap: true },
 	{ path: "/login", titleKey: "nav.login", inSitemap: true },
 	{ path: "/layout", titleKey: "nav.layout", inSitemap: true },

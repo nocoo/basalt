@@ -9,6 +9,8 @@ import {
 } from "./site";
 
 const PAGE_DESCRIPTIONS: Readonly<Record<string, string>> = {
+	"/templates":
+		"Explore interactive Basalt templates for agents, dashboards, workspaces, and sign-in. Preview responsive layouts and copy standalone React source.",
 	"/ui":
 		"Explore Basalt React components, charts, and reusable blocks. Browse live examples, TypeScript APIs, and source code for your next application.",
 	"/dashboard":

@@ -68,6 +68,7 @@
 		"scenarios": "Scenarios",
 		"pages": "Pages",
 		"dashboard": "Dashboard",
+		"templates": "Templates",
 		"components": "Components",
 		"health": "Health",
 		"accounts": "Care accounts",
@@ -105,6 +106,51 @@
 		"dialogs": "Dialogs"
 	},
 	"pages": {
+		"templates": {
+			"title": "Templates",
+			"description": "Explore complete interfaces, resize the preview, and copy standalone source.",
+			"filter": "Filter templates",
+			"mode": "Display mode",
+			"viewport": "Preview width",
+			"preview": "Preview",
+			"code": "Code",
+			"desktop": "Desktop",
+			"tablet": "Tablet",
+			"mobile": "Mobile",
+			"reload": "Reload preview",
+			"open": "Open standalone",
+			"copy": "Copy code",
+			"copied": "Copied",
+			"copyError": "Could not copy. Check clipboard permissions and try again.",
+			"filters": {
+				"all": "All",
+				"featured": "Featured",
+				"agents": "Agents",
+				"dashboards": "Dashboards",
+				"workspaces": "Workspaces",
+				"auth": "Auth"
+			},
+			"agentWorkspace": {
+				"title": "Agent workspace",
+				"description": "A collaborative agent session with a trace, composer and file inspector."
+			},
+			"opsInbox": {
+				"title": "Ops inbox",
+				"description": "Triage incidents, follow a runbook and update their status."
+			},
+			"executiveDashboard": {
+				"title": "Executive dashboard",
+				"description": "A concise performance overview with capacity and account data."
+			},
+			"workspaceSettings": {
+				"title": "Workspace settings",
+				"description": "Manage team preferences, access keys and quotas."
+			},
+			"visitorLogin": {
+				"title": "Visitor login",
+				"description": "A compact sign-in badge with optional verification."
+			}
+		},
 		"notFound": {
 			"title": "404",
 			"backHome": "Back to Homepage"

@@ -15,6 +15,7 @@ import { assertLibraryShowcases } from "./showcase-library";
 import { assertNavigationLists } from "./showcase-navigation";
 import { assertPageLayout } from "./showcase-page-layout";
 import { assertSelectionHierarchy } from "./showcase-selection";
+import { assertTemplatesShowcase } from "./showcase-templates";
 
 export async function runShowcaseSmoke() {
 	if (process.env.BASALT_SKIP_SHOWCASE_BUILD === "1") {
@@ -50,8 +51,9 @@ export async function runShowcaseSmoke() {
 			const navigation = await assertNavigationLists(page, url);
 			const selection = await assertSelectionHierarchy(page, url);
 			const pageLayout = await assertPageLayout(page, url);
+			const templates = await assertTemplatesShowcase(page, url);
 			assertNoPageFaults(faults);
-			return { landing, library, navigation, selection, pageLayout };
+			return { landing, library, navigation, selection, pageLayout, templates };
 		});
 		console.log(`Showcase smoke passed ${JSON.stringify(evidence)}`);
 	} finally {

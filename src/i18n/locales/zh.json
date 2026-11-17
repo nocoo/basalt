@@ -68,6 +68,7 @@
 		"scenarios": "场景",
 		"pages": "页面",
 		"dashboard": "仪表盘",
+		"templates": "模板",
 		"components": "组件",
 		"health": "健康",
 		"accounts": "护理账户",
@@ -105,6 +106,45 @@
 		"dialogs": "对话框"
 	},
 	"pages": {
+		"templates": {
+			"title": "模板",
+			"description": "探索完整界面，调整预览尺寸并复制独立源码。",
+			"filter": "筛选模板",
+			"mode": "显示模式",
+			"viewport": "预览宽度",
+			"preview": "预览",
+			"code": "代码",
+			"desktop": "桌面",
+			"tablet": "平板",
+			"mobile": "手机",
+			"reload": "重新加载预览",
+			"open": "打开独立页面",
+			"copy": "复制代码",
+			"copied": "已复制",
+			"copyError": "复制失败，请检查剪贴板权限后重试。",
+			"filters": {
+				"all": "全部",
+				"featured": "精选",
+				"agents": "智能体",
+				"dashboards": "仪表盘",
+				"workspaces": "工作区",
+				"auth": "登录"
+			},
+			"agentWorkspace": {
+				"title": "智能体工作区",
+				"description": "包含执行轨迹、输入区与文件检查器的协作会话。"
+			},
+			"opsInbox": { "title": "运维收件箱", "description": "分诊事件、执行操作手册并更新状态。" },
+			"executiveDashboard": {
+				"title": "管理驾驶舱",
+				"description": "汇总业务表现、容量与账户数据。"
+			},
+			"workspaceSettings": {
+				"title": "工作区设置",
+				"description": "管理团队偏好、访问密钥与配额。"
+			},
+			"visitorLogin": { "title": "访客登录", "description": "支持可选验证的紧凑登录卡片。" }
+		},
 		"notFound": {
 			"title": "404",
 			"backHome": "返回首页"

@@ -29,6 +29,7 @@ import { assertPaletteShowcases } from "./showcase-palette";
 import { assertRecordGeometry } from "./showcase-records";
 import { assertReusableShowcases } from "./showcase-reuse";
 import { assertSelectionHierarchy } from "./showcase-selection";
+import { assertTemplatesShowcase } from "./showcase-templates";
 
 /** Build and test the current source; never silently consume yesterday's dist. */
 export async function runShowcaseGate() {
@@ -73,6 +74,7 @@ export async function runShowcaseGate() {
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
 			const palette = await assertPaletteShowcases(page, url);
+			const templates = await assertTemplatesShowcase(page, url);
 			assertNoPageFaults(faults);
 			return {
 				landing,
@@ -94,6 +96,7 @@ export async function runShowcaseGate() {
 				reusable,
 				editing,
 				palette,
+				templates,
 			};
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);

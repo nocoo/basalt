@@ -2,7 +2,7 @@ import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
-import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
+import { BrowserRouter, Route, Link as RouterLink, Routes, useLocation } from "react-router";
 import { DeferredToaster } from "@/components/DeferredToaster";
 import { I18nReady } from "@/components/I18nReady";
 import { RouteScrollReset } from "@/components/RouteScrollReset";
@@ -33,6 +33,8 @@ const LayoutPage = lazy(() => import("./pages/LayoutPage"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage"));
 const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
 const TablesPage = lazy(() => import("./pages/TablesPage"));
+const TemplatesPage = lazy(() => import("./pages/TemplatesPage"));
+const TemplateViewportPage = lazy(() => import("./pages/TemplateViewportPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const NavigationPage = lazy(() => import("./pages/NavigationPage"));
 const NetworkOpsDashboardPage = lazy(() => import("./pages/NetworkOpsDashboardPage"));
@@ -102,10 +104,11 @@ function routeElement(Page: ComponentType, translated = true) {
 	);
 }
 
-const App = () => (
-	<ThemeProvider>
-		<SitePaletteProvider>
-			<BrowserRouter>
+function AppProviders() {
+	const { pathname } = useLocation();
+	return (
+		<ThemeProvider applyToDocument={!pathname.startsWith("/view/")}>
+			<SitePaletteProvider>
 				<LinkProvider render={AppLink}>
 					<TooltipProvider>
 						<DeferredToaster />
@@ -127,6 +130,7 @@ const App = () => (
 								<Route path="/interactive" element={routeElement(InteractivePage)} />
 								<Route path="/data" element={routeElement(DataPage)} />
 								<Route path="/dashboard" element={routeElement(DashboardPage)} />
+								<Route path="/templates" element={routeElement(TemplatesPage)} />
 								<Route path="/accounts" element={routeElement(AccountsPage)} />
 								<Route path="/progress-tracking" element={routeElement(ProgressTrackingPage)} />
 								<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />
@@ -153,6 +157,7 @@ const App = () => (
 								<Route path="/ui/:slug/source" element={routeElement(UiSourceViewerPage)} />
 							</Route>
 							{/* Standalone pages (no sidebar) */}
+							<Route path="/view/:slug" element={routeElement(TemplateViewportPage)} />
 							<Route path="/examples/reader" element={routeElement(ReaderPage)} />
 							<Route path="/examples/list-detail" element={routeElement(ListDetailPage)} />
 							<Route path="/examples/workspace" element={routeElement(WorkspacePage)} />
@@ -164,9 +169,15 @@ const App = () => (
 						</Routes>
 					</TooltipProvider>
 				</LinkProvider>
-			</BrowserRouter>
-		</SitePaletteProvider>
-	</ThemeProvider>
+			</SitePaletteProvider>
+		</ThemeProvider>
+	);
+}
+
+const App = () => (
+	<BrowserRouter>
+		<AppProviders />
+	</BrowserRouter>
 );
 
 export default App;
