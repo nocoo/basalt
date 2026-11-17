@@ -8,7 +8,7 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 	await page.locator('[data-status="ready"]').waitFor();
 	await page
 		.locator('[data-scenario="command-palette-simple-flat-list"]')
-		.getByRole("button", { name: "Search pages..." })
+		.getByRole("button", { name: "Search conversations..." })
 		.click();
 	await page.setViewportSize({ width: 640, height: 160 });
 	await page.getByRole("dialog").evaluate(async (node) => {
@@ -35,12 +35,25 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 		await page.locator('[data-status="ready"]').waitFor();
 		for (const dark of [false, true]) {
 			await setShowcaseTheme(page, dark);
-			for (const variant of ["with-grouped-items", "simple-flat-list"]) {
+			for (const variant of [
+				{
+					name: "with-grouped-items",
+					trigger: "Search pages...",
+					first: "Button",
+					second: "Input",
+				},
+				{
+					name: "simple-flat-list",
+					trigger: "Search conversations...",
+					first: "Sys2: 工作流编制",
+					second: "Pull And Run Code Locally",
+				},
+			]) {
 				await page.emulateMedia({ reducedMotion: "no-preference" });
-				const scenario = page.locator(`[data-scenario="command-palette-${variant}"]`);
-				await scenario.getByRole("button", { name: "Search pages...", exact: true }).click();
+				const scenario = page.locator(`[data-scenario="command-palette-${variant.name}"]`);
+				await scenario.getByRole("button", { name: variant.trigger, exact: true }).click();
 				const list = page.getByRole("listbox");
-				await page.getByRole("option", { name: "Button", exact: true }).waitFor();
+				await page.getByRole("option", { name: new RegExp(`^${variant.first}`) }).waitFor();
 				await page.getByRole("dialog").evaluate(async (node) => {
 					await Promise.all(
 						node.getAnimations({ subtree: true }).map((animation) => animation.finished),
@@ -62,8 +75,11 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 				);
 				await page.getByRole("combobox").press("ArrowDown");
 				await page.waitForFunction(
-					() =>
-						document.querySelector('[cmdk-item][data-selected="true"]')?.textContent === "Input",
+					(second) =>
+						document
+							.querySelector('[cmdk-item][data-selected="true"]')
+							?.textContent?.startsWith(second),
+					variant.second,
 				);
 				await page.waitForFunction(() =>
 					document
@@ -97,10 +113,13 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 					JSON.stringify({ before, ...movement }),
 				);
 				await page.emulateMedia({ reducedMotion: "reduce" });
-				await page.getByRole("option", { name: "Button", exact: true }).hover();
+				await page.getByRole("option", { name: new RegExp(`^${variant.first}`) }).hover();
 				await page.waitForFunction(
-					() =>
-						document.querySelector('[cmdk-item][data-selected="true"]')?.textContent === "Button",
+					(first) =>
+						document
+							.querySelector('[cmdk-item][data-selected="true"]')
+							?.textContent?.startsWith(first),
+					variant.first,
 				);
 				assert.equal(
 					await list.evaluate((node) => getComputedStyle(node, "::before").transitionDuration),
@@ -113,8 +132,8 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 							.querySelector<HTMLElement>("[cmdk-list]")
 							?.style.getPropertyValue("--basalt-command-width") === "0px",
 				);
-				await page.getByRole("combobox").fill("Input");
-				await page.getByRole("option", { name: "Input", exact: true }).waitFor();
+				await page.getByRole("combobox").fill(variant.second);
+				await page.getByRole("option", { name: new RegExp(`^${variant.second}`) }).waitFor();
 				await page.keyboard.press("Escape");
 				await page.getByRole("dialog").waitFor({ state: "detached" });
 			}

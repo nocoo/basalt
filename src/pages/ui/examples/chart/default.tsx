@@ -1,4 +1,9 @@
-import { ChartFrame, ChartLegend, chartTooltipProps } from "@nocoo/basalt/components/chart";
+import {
+	ChartFrame,
+	ChartLegend,
+	cartesianAxisProps,
+	chartTooltipProps,
+} from "@nocoo/basalt/components/chart";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const data = [
@@ -18,8 +23,8 @@ export default function ChartDefault() {
 		>
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart data={data}>
-					<XAxis dataKey="month" />
-					<YAxis />
+					<XAxis dataKey="month" {...cartesianAxisProps()} />
+					<YAxis {...cartesianAxisProps()} />
 					<Tooltip {...chartTooltipProps()} />
 					<Bar dataKey="value" fill={series[0].color} />
 				</BarChart>

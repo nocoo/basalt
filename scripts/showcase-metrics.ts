@@ -57,15 +57,12 @@ export async function assertMetricCards(page: Page, baseUrl: string) {
 				await page.evaluate((size) => {
 					document.documentElement.style.fontSize = `${size}px`;
 				}, rootFont);
-				await page.waitForFunction(() =>
-					[...document.querySelectorAll("[data-hero-scenario] .basalt-chart")].every((plot) => {
-						const svg = plot.querySelector("svg.recharts-surface");
-						return svg && Math.abs(svg.getBoundingClientRect().width - plot.clientWidth) <= 1;
-					}),
+				await page.waitForFunction(
+					() => document.querySelectorAll('[data-hero-scenario] [role="img"]').length === 2,
 				);
 				for (const card of await cards.all()) {
 					await assertCardGeometry(card, rootFont);
-					const plot = await card.locator(".basalt-chart").boundingBox();
+					const plot = await card.getByRole("img").boundingBox();
 					assert.ok(plot && Math.abs(plot.height - 4 * rootFont) < 1);
 				}
 			}

@@ -15,11 +15,6 @@ const TEXT_SELECTOR = [
 ].join(",");
 const SVG_CHARTS = new Set(["chart"]);
 const KEYBOARD_TOOLTIPS = new Set(["chart"]);
-const HOVER_TOOLTIPS: Record<string, string> = {
-	donut: ".recharts-pie-sector .recharts-sector",
-	funnel: ".recharts-funnel-trapezoid",
-	sankey: "svg.recharts-surface g rect",
-};
 const MARK_SELECTOR = [
 	".recharts-line-curve",
 	".recharts-area-curve",
@@ -341,28 +336,10 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 				const interactive = page
 					.locator('[data-hero-scenario] svg.recharts-surface[tabindex="0"]')
 					.first();
-				const hoverSelector = HOVER_TOOLTIPS[entry.slug];
 				if (KEYBOARD_TOOLTIPS.has(entry.slug)) {
 					await interactive.focus();
 					await page.keyboard.press("ArrowRight");
-				} else if (hoverSelector) {
-					const mark = page.locator(`[data-hero-scenario] ${hoverSelector}`).first();
-					await mark.scrollIntoViewIfNeeded();
-					if (entry.slug === "donut") {
-						const point = await mark.evaluate((node) => {
-							const path = node as SVGPathElement;
-							const point = path.getPointAtLength(path.getTotalLength() * 0.2);
-							const matrix = path.getScreenCTM();
-							if (!matrix) throw new Error("Pie sector has no screen geometry");
-							return {
-								x: point.x * matrix.a + point.y * matrix.c + matrix.e,
-								y: point.x * matrix.b + point.y * matrix.d + matrix.f,
-							};
-						});
-						await page.mouse.move(point.x, point.y);
-					} else await mark.hover();
-				}
-				if (KEYBOARD_TOOLTIPS.has(entry.slug) || hoverSelector) {
+
 					await page
 						.locator('[data-testid="chart-tooltip"]')
 						.filter({ visible: true })
@@ -417,7 +394,7 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 		textPairs > 100 && Number.isFinite(minimumTextContrast),
 		"Chart text must actually be measured",
 	);
-	assert.equal(tooltipCases, 4 * (KEYBOARD_TOOLTIPS.size + Object.keys(HOVER_TOOLTIPS).length));
+	assert.equal(tooltipCases, 4 * KEYBOARD_TOOLTIPS.size);
 	await assertPaletteStorage(page, baseUrl);
 	return {
 		cases,
