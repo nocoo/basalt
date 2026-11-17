@@ -215,13 +215,13 @@
 		"JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
 	--basalt-font-features: "cv02", "cv03", "cv04", "cv11";
 	--basalt-shadow-card:
-		inset 0 1px 0 0 rgb(255 255 255),
-		inset 0 -1px 0 0 rgb(0 0 0 / 0.055),
-		inset 0 0 0 1px rgb(255 255 255 / 0.65),
-		0 1px 2px 0 rgb(0 0 0 / 0.06),
-		0 12px 30px -13px rgb(0 0 0 / 0.16);
+		inset 0 1px 0 0 rgb(255 255 255 / 0.72),
+		inset 0 -1px 0 0 rgb(0 0 0 / 0.038),
+		inset 0 0 0 1px rgb(255 255 255 / 0.45),
+		0 1px 2px 0 rgb(0 0 0 / 0.04),
+		0 12px 30px -13px rgb(0 0 0 / 0.11);
 	--basalt-shadow-card-foot:
-		inset 0 -1px 0 0 rgb(0 0 0 / 0.055), inset 0 0 0 1px rgb(255 255 255 / 0.65);
+		inset 0 -1px 0 0 rgb(0 0 0 / 0.038), inset 0 0 0 1px rgb(255 255 255 / 0.45);
 	--basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.04);
 	/* Match the classic candy swatches; gray and preference ownership stay independent. */
 	--basalt-chart-blue: 204 88% 62%;
@@ -332,13 +332,13 @@
 	--basalt-input: 0 0% 18%;
 	--basalt-ring: var(--basalt-primary);
 	--basalt-shadow-card:
-		inset 0 1px 0 0 rgb(255 255 255 / 0.12),
-		inset 0 -1px 0 0 rgb(0 0 0 / 0.45),
-		inset 0 0 0 1px rgb(255 255 255 / 0.04),
-		0 1px 2px 0 rgb(0 0 0 / 0.32),
-		0 12px 30px -13px rgb(0 0 0 / 0.58);
+		inset 0 1px 0 0 rgb(255 255 255 / 0.085),
+		inset 0 -1px 0 0 rgb(0 0 0 / 0.32),
+		inset 0 0 0 1px rgb(255 255 255 / 0.028),
+		0 1px 2px 0 rgb(0 0 0 / 0.22),
+		0 12px 30px -13px rgb(0 0 0 / 0.4);
 	--basalt-shadow-card-foot:
-		inset 0 -1px 0 0 rgb(0 0 0 / 0.45), inset 0 0 0 1px rgb(255 255 255 / 0.04);
+		inset 0 -1px 0 0 rgb(0 0 0 / 0.32), inset 0 0 0 1px rgb(255 255 255 / 0.028);
 	--basalt-shadow-control: 0 0 #0000;
 	--basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.1);
 	--basalt-meter-track-shadow:
