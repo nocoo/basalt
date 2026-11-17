@@ -80,7 +80,7 @@ describe("useThemeStudioViewModel", () => {
 		shared.unmount();
 		window.history.replaceState(null, "", "/palette?preset=broken&x=1");
 		const invalid = renderHook(useStudioTest, { wrapper });
-		await waitFor(() => expect(window.location.search).toBe("?x=1"));
+		await waitFor(() => expect(window.location.search).toBe("?preset=00000&x=1"));
 		expect(invalid.result.current.studio.options).toEqual(DEFAULT_STUDIO_STATE);
 		invalid.unmount();
 		window.history.replaceState(null, "", "/palette");
@@ -129,6 +129,35 @@ describe("useThemeStudioViewModel", () => {
 		const recipient = renderHook(useStudioTest, { wrapper: AccentProvider });
 		await waitFor(() => expect(recipient.result.current.accent.accent).toBe("primary"));
 		expect(recipient.result.current.studio.options.accent).toBe("primary");
+	});
+	it("preserves an explicit default across back navigation until reset", async () => {
+		localStorage.setItem("basalt-accent", "rose");
+		window.history.replaceState(null, "", "/palette?preset=00000");
+		const first = renderHook(useStudioTest, { wrapper: AccentProvider });
+		await waitFor(() => expect(first.result.current.accent.accent).toBe("primary"));
+		expect(first.result.current.studio.options).toEqual(DEFAULT_STUDIO_STATE);
+		expect(window.location.search).toBe("?preset=00000");
+		first.unmount();
+		window.history.pushState(null, "", "/dashboard");
+		const preferences = renderHook(useAccent, { wrapper: AccentProvider });
+		act(() => preferences.result.current.setAccent("rose"));
+		expect(localStorage.getItem("basalt-accent")).toBe("rose");
+		preferences.unmount();
+		act(() => window.history.back());
+		await waitFor(() => expect(window.location.search).toBe("?preset=00000"));
+		const returned = renderHook(useStudioTest, { wrapper: AccentProvider });
+		await waitFor(() => expect(returned.result.current.accent.accent).toBe("primary"));
+		expect(returned.result.current.studio.options).toEqual(DEFAULT_STUDIO_STATE);
+		expect(window.location.search).toBe("?preset=00000");
+		act(() => returned.result.current.studio.applyPreset("ops"));
+		act(() => returned.result.current.studio.applyPreset("default"));
+		expect(window.location.search).toBe("?preset=00000");
+		act(() => returned.result.current.studio.reset());
+		expect(window.location.pathname).toBe("/palette");
+		expect(window.location.search).toBe("");
+		expect(new URL(returned.result.current.studio.shareUrl).searchParams.get("preset")).toBe(
+			"00000",
+		);
 	});
 	it("copies CSS and share links, including clipboard errors and default clipboard", async () => {
 		const { result } = renderHook(useStudioTest, { wrapper });

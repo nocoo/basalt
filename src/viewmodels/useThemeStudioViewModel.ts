@@ -54,6 +54,7 @@ export function useThemeStudioViewModel() {
 		};
 	});
 	const [options, setOptions] = useState(initial.options);
+	const [preserveDefaultPreset, setPreserveDefaultPreset] = useState(initial.hasPreset);
 	const pendingAccent = useRef<StudioAccent | null>(
 		initial.hasPreset ? initial.options.accent : null,
 	);
@@ -80,7 +81,7 @@ export function useThemeStudioViewModel() {
 		return () => observer.disconnect();
 	}, []);
 	const shareUrl = presetUrl(options, true);
-	const historyUrl = presetUrl(options, false);
+	const historyUrl = presetUrl(options, preserveDefaultPreset);
 	useEffect(() => {
 		if (historyUrl && historyUrl !== window.location.href) {
 			try {
@@ -136,7 +137,10 @@ export function useThemeStudioViewModel() {
 		presetId: matchingPresetId(options),
 		applyPreset,
 		updateOption,
-		reset: () => applyPreset("default"),
+		reset: () => {
+			setPreserveDefaultPreset(false);
+			applyPreset("default");
+		},
 		copyCssDiff: (write?: (text: string) => Promise<void>) => copy(cssDiff, "css", write),
 		copyShareLink: (write?: (text: string) => Promise<void>) => copy(shareUrl, "link", write),
 	};
