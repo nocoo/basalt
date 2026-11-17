@@ -37,6 +37,11 @@ describe("StatStrip", () => {
 		for (const term of list.querySelectorAll("dt")) {
 			expect(term.nextElementSibling?.tagName).toBe("DD");
 			expect(term.parentElement?.tagName).toBe("DIV");
+			expect(term.parentElement).toHaveClass(
+				"ring-1",
+				"ring-basalt-border/80",
+				"shadow-basalt-card",
+			);
 		}
 	});
 

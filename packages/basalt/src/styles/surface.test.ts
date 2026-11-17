@@ -213,6 +213,21 @@ describe("nested surface CSS", () => {
 		}
 	});
 
+	it("gives L2 island cards an edge-lit specular rim and gathered shadow in both themes", () => {
+		for (const selector of themeSelectors) {
+			const values = tokenValues(selector);
+			const cardShadow = values.get("--basalt-shadow-card")?.replace(/\s+/g, " ") ?? "";
+			expect(cardShadow, `${selector} top rim`).toContain("inset 0 1px 0 0");
+			expect(cardShadow, `${selector} downward shadow`).toContain("0 12px 30px -13px");
+			expect(values.get("--basalt-shadow-card-foot")?.replace(/\s+/g, " ")).toContain(
+				"inset 0 -1px 0 0",
+			);
+		}
+		expect(tokens).toContain(
+			'[data-basalt-surface] > [data-slot="card-well"]:last-child:not([data-outlined])',
+		);
+	});
+
 	it("pairs every solid badge fill with a foreground above the 4.5:1 text threshold", () => {
 		for (const selector of themeSelectors) {
 			const values = tokenValues(selector);

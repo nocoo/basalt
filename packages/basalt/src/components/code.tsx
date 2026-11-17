@@ -81,7 +81,9 @@ function CodePanel({
 			className={controlSurfaceClass(
 				cn(
 					"flex min-h-0 min-w-0 max-w-full flex-col overflow-hidden text-basalt-foreground",
-					attached && "rounded-none border-0 border-t shadow-none",
+					attached
+						? "rounded-none border-0 border-t shadow-none"
+						: "rounded-basalt-lg border-basalt-border/80 shadow-basalt-card",
 					className,
 				),
 			)}

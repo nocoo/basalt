@@ -212,7 +212,7 @@ interaction contracts; do not change their containment as a global workaround.
   display in NotFound (`src/pages/NotFound.tsx`, `text-basalt-10xl` only). Every
   other `src/` font-size class must use one of the seven canonical utilities.
 - Surfaces preserve the matte L0/L1/L2/L3 hierarchy. LayerCard adds a subtle
-  `ring-1 ring-basalt-border/80` perimeter and light-mode card shadow; `outlined`
+  `ring-1 ring-basalt-border/80` perimeter and edge-lit card shadow in both themes; `outlined`
   strengthens the perimeter. Structured non-`asChild` headers use 15px semibold
   foreground text with tight tracking; disclosure headers slotted with `asChild`
   retain 14px medium text. Controls contrast

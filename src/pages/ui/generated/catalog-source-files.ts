@@ -212,13 +212,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "9f403a18440b2a76",
+		"hash": "4cce9783a02df178",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "9f403a18440b2a76",
+		"hash": "4cce9783a02df178",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
@@ -332,7 +332,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"grid": {
 		"file": "packages/basalt/src/components/grid.tsx",
-		"hash": "404f317e84f94279",
+		"hash": "e58f6bd6beb5446e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/grid.js.map (sourcesContent[0])"
 	},
@@ -350,7 +350,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"stat-strip": {
 		"file": "packages/basalt/src/components/stat-strip.tsx",
-		"hash": "ea210d0b60572651",
+		"hash": "0cb3e92679e875d8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/stat-strip.js.map (sourcesContent[0])"
 	},
@@ -404,7 +404,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"upload-queue": {
 		"file": "packages/basalt/src/components/upload-queue.tsx",
-		"hash": "9b33884b78811d35",
+		"hash": "b038c0d0b930be69",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/upload-queue.js.map (sourcesContent[0])"
 	},

@@ -75,7 +75,7 @@ export function UploadItem({
 			data-basalt-surface=""
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex min-w-0 items-start gap-basalt-space-lg rounded-basalt-lg border border-basalt-border p-basalt-card-sm",
+				"flex min-w-0 items-start gap-basalt-space-lg rounded-basalt-lg border border-basalt-border p-basalt-card-sm shadow-basalt-card",
 				className,
 			)}
 		>

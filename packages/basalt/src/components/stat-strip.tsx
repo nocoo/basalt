@@ -37,7 +37,11 @@ export const StatStrip = React.forwardRef<HTMLDListElement, StatStripProps>(
 				aria-busy={loading ? true : ariaBusy}
 			>
 				{items.map((item, index) => (
-					<div key={index} data-basalt-surface="" className="rounded-basalt-lg p-basalt-card">
+					<div
+						key={index}
+						data-basalt-surface=""
+						className="rounded-basalt-lg p-basalt-card ring-1 ring-basalt-border/80 shadow-basalt-card"
+					>
 						<dt className="text-basalt-base font-medium text-basalt-muted-foreground">
 							{item.label}
 						</dt>

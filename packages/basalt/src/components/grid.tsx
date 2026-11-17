@@ -49,7 +49,7 @@ export function GridItem({ className, ...props }: GridItemProps) {
 		<div
 			data-basalt-surface=""
 			className={cn(
-				"flex items-center justify-center rounded-basalt-lg p-basalt-card text-basalt-base",
+				"flex items-center justify-center rounded-basalt-lg p-basalt-card text-basalt-base ring-1 ring-basalt-border/80 shadow-basalt-card",
 				className,
 			)}
 			{...props}

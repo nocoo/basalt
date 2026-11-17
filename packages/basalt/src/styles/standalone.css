@@ -162,9 +162,9 @@
 :root, .light, [data-mode="light"] {
   --basalt-background: 0 0% 95.7%;
   --basalt-foreground: 0 0% 10%;
-  --basalt-card: 0 0% 98%;
+  --basalt-card: 0 0% 97%;
   --basalt-card-foreground: 0 0% 10%;
-  --basalt-secondary: 0 0% 99.2%;
+  --basalt-secondary: 0 0% 99%;
   --basalt-secondary-foreground: 0 0% 10%;
   --basalt-popover: 0 0% 100%;
   --basalt-popover-foreground: 0 0% 10%;
@@ -238,7 +238,12 @@
   --basalt-font-display: "DM Sans", "Inter", system-ui, sans-serif;
   --basalt-font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
   --basalt-font-features: "cv02", "cv03", "cv04", "cv11";
-  --basalt-shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 1px -0.5px rgb(0 0 0 / 0.02);
+  --basalt-shadow-card: inset 0 1px 0 0 rgb(255 255 255),
+		inset 0 -1px 0 0 rgb(0 0 0 / 0.055),
+		inset 0 0 0 1px rgb(255 255 255 / 0.65),
+		0 1px 2px 0 rgb(0 0 0 / 0.06),
+		0 12px 30px -13px rgb(0 0 0 / 0.16);
+  --basalt-shadow-card-foot: inset 0 -1px 0 0 rgb(0 0 0 / 0.055), inset 0 0 0 1px rgb(255 255 255 / 0.65);
   --basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.04);
   --basalt-chart-blue: 204 88% 62%;
   --basalt-chart-pink: 345 88% 72%;
@@ -344,7 +349,12 @@
   --basalt-border: 0 0% 16%;
   --basalt-input: 0 0% 18%;
   --basalt-ring: var(--basalt-primary);
-  --basalt-shadow-card: 0 0 #0000;
+  --basalt-shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.12),
+		inset 0 -1px 0 0 rgb(0 0 0 / 0.45),
+		inset 0 0 0 1px rgb(255 255 255 / 0.04),
+		0 1px 2px 0 rgb(0 0 0 / 0.32),
+		0 12px 30px -13px rgb(0 0 0 / 0.58);
+  --basalt-shadow-card-foot: inset 0 -1px 0 0 rgb(0 0 0 / 0.45), inset 0 0 0 1px rgb(255 255 255 / 0.04);
   --basalt-shadow-control: 0 0 #0000;
   --basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.1);
   --basalt-meter-track-shadow: inset 0 1px 2px 0 hsl(var(--basalt-backdrop) / 0.35),
@@ -550,6 +560,9 @@
 }
 [data-basalt-surface]:not([data-basalt-surface-root] *)	[data-basalt-surface]	[data-basalt-surface]	[data-basalt-surface]:not([data-outlined]) {
   box-shadow: none;
+}
+[data-basalt-surface] > [data-slot="card-well"]:last-child:not([data-outlined]) {
+  box-shadow: var(--basalt-shadow-card-foot);
 }
 [data-basalt-table][data-density="compact"] > :where(thead, tbody, tfoot) > tr > :where(th, td), [data-basalt-table][data-density="compact"] > tr > :where(th, td) {
   height: var(--basalt-size-table-row-compact);
@@ -2459,6 +2472,12 @@
   }
   .border-basalt-border {
     border-color: hsl(var(--basalt-border));
+  }
+  .border-basalt-border\/80 {
+    border-color: hsl(var(--basalt-border));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-border)) 80%, transparent);
+    }
   }
   .border-basalt-destructive {
     border-color: hsl(var(--basalt-destructive));

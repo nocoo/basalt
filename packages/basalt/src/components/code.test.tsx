@@ -25,7 +25,12 @@ describe("Code", () => {
 		const { container } = render(<CodeBlock attached>{"const n = 1;"}</CodeBlock>);
 		const panel = container.querySelector("[data-basalt-code]");
 		expect(panel).toHaveClass("rounded-none", "border-0", "border-t", "shadow-none");
-		expect(panel).not.toHaveClass("border", "rounded-basalt-md");
+		expect(panel).not.toHaveClass(
+			"border",
+			"rounded-basalt-md",
+			"rounded-basalt-lg",
+			"shadow-basalt-card",
+		);
 		expect(panel).toHaveAttribute("data-code-attached", "true");
 		expect(panel).not.toHaveAttribute("attached");
 		expect(container.querySelector("code")).toHaveClass("px-basalt-panel-x");
@@ -91,7 +96,15 @@ describe("Code", () => {
 		);
 		const panel = container.querySelector("[data-basalt-code]");
 		expect(panel?.className.split(/\s+/)).toEqual(
-			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
+			expect.arrayContaining([
+				...CONTROL_SURFACE_CLASS.split(/\s+/).filter(
+					(token) =>
+						!["rounded-basalt-md", "border-basalt-border", "shadow-basalt-control"].includes(token),
+				),
+				"rounded-basalt-lg",
+				"border-basalt-border/80",
+				"shadow-basalt-card",
+			]),
 		);
 		expect(panel).toHaveAttribute("id", "block");
 		expect(screen.getByRole("region", { name: "setup.sh" })).toHaveAttribute("tabindex", "0");
