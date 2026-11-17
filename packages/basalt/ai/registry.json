@@ -2858,7 +2858,7 @@
 			"importPath": "@nocoo/basalt/components/button",
 			"subpath": "./components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "5ff32a8815dfa1a0",
+			"sourceHash": "027c905450e4fd8d",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11757,7 +11757,7 @@
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"subpath": "./components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "a6fa15004819d75c",
+			"sourceHash": "fe435dbc9e1af771",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11844,6 +11844,13 @@
 						{
 							"name": "LayerCard",
 							"props": [
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Merge card surface, border, and shadow directly onto a single child element (such as a link)."
+								},
 								{
 									"name": "className",
 									"type": "string",
@@ -11976,6 +11983,13 @@
 				{
 					"name": "LayerCard",
 					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge card surface, border, and shadow directly onto a single child element (such as a link)."
+						},
 						{
 							"name": "className",
 							"type": "string",
@@ -15737,7 +15751,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "f67ddcae9f54e428",
+			"sourceHash": "fd5adc597436e283",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -22771,7 +22785,7 @@
 			"exportName": "Button",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "5ff32a8815dfa1a0",
+			"sourceHash": "027c905450e4fd8d",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#button",
@@ -22830,7 +22844,7 @@
 			"exportName": "LinkButton",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "5ff32a8815dfa1a0",
+			"sourceHash": "027c905450e4fd8d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-button",
@@ -23299,7 +23313,7 @@
 			"exportName": "LayerCard",
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "a6fa15004819d75c",
+			"sourceHash": "fe435dbc9e1af771",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#layer-card",
@@ -23307,6 +23321,13 @@
 				{
 					"name": "LayerCard",
 					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge card surface, border, and shadow directly onto a single child element (such as a link)."
+						},
 						{
 							"name": "className",
 							"type": "string",
@@ -28741,7 +28762,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "f67ddcae9f54e428",
+			"sourceHash": "fd5adc597436e283",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",

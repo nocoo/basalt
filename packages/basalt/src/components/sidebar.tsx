@@ -695,6 +695,10 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
 export interface SidebarPartitionProps extends HTMLAttributes<HTMLParagraphElement> {}
 
 export function SidebarPartition({ className, ...props }: SidebarPartitionProps) {
+	const context = useContext(SidebarContext);
+	if (context?.collapsed) {
+		return null;
+	}
 	return (
 		<p
 			data-slot="sidebar-partition"
@@ -887,6 +891,18 @@ export interface SidebarGroupProps {
 
 export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGroupProps) {
 	const [open, setOpen] = useState(defaultOpen);
+	const context = useContext(SidebarContext);
+	if (context?.collapsed) {
+		return (
+			<div
+				data-slot="sidebar-group"
+				data-collapsed=""
+				className="flex shrink-0 flex-col gap-basalt-nav-gap"
+			>
+				{children}
+			</div>
+		);
+	}
 	return (
 		<Collapsible
 			open={open}

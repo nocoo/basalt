@@ -27,6 +27,11 @@ export type LayerCardPadding = keyof typeof PADDING_CLASSES;
 
 export type LayerCardProps = Omit<HTMLAttributes<HTMLDivElement>, "className"> & {
 	/**
+	 * Merge card surface, border, and shadow directly onto a single child element (such as a link).
+	 * @default false
+	 */
+	asChild?: boolean;
+	/**
 	 * Additional classes for the card root.
 	 */
 	className?: string;
@@ -106,10 +111,11 @@ function hasSlot(children: ReactNode, match: (type: unknown) => boolean): boolea
 }
 
 const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
-	({ className, children, outlined = false, padding = "md", ...props }, ref) => {
-		const structured = hasSlot(children, (type) => STRUCTURED_TYPES.has(type));
+	({ className, children, asChild = false, outlined = false, padding = "md", ...props }, ref) => {
+		const Component = asChild ? Slot : "div";
+		const structured = !asChild && hasSlot(children, (type) => STRUCTURED_TYPES.has(type));
 		return (
-			<div
+			<Component
 				ref={ref}
 				data-basalt-surface=""
 				data-card-structured={structured || undefined}
@@ -125,7 +131,7 @@ const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 				{...props}
 			>
 				{children}
-			</div>
+			</Component>
 		);
 	},
 );

@@ -17,6 +17,7 @@ import {
 	SidebarItem,
 	type SidebarItemProps,
 	SidebarNav,
+	SidebarPartition,
 	SidebarProvider,
 	SidebarSearch,
 	SidebarToggle,
@@ -1101,6 +1102,26 @@ describe("Sidebar", () => {
 		);
 		expect(screen.getByText("Items").className).toContain("overscroll-y-contain");
 		expect(screen.getByText("User").className).toContain("shrink-0");
+	});
+
+	it("hides partition and group labels while preserving group items when collapsed", () => {
+		render(
+			<SidebarProvider collapsed>
+				<Sidebar>
+					<SidebarNav>
+						<SidebarPartition>Workspace</SidebarPartition>
+						<SidebarGroup label="Delivery" defaultOpen={false}>
+							<SidebarIconItem href="/projects">
+								<span>Projects</span>
+							</SidebarIconItem>
+						</SidebarGroup>
+					</SidebarNav>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByText("Workspace")).not.toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Delivery" })).not.toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute("href", "/projects");
 	});
 });
 

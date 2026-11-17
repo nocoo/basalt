@@ -346,4 +346,21 @@ describe("LayerCard", () => {
 		expect(root.className).toContain("extra");
 		expect(ref.current).toBe(root);
 	});
+
+	it("merges card surface and shadow onto a child element with asChild", () => {
+		render(
+			<LayerCard asChild className="hover:bg-basalt-hover/60">
+				<a href="/projects/1">Project tile</a>
+			</LayerCard>,
+		);
+		const link = screen.getByRole("link", { name: "Project tile" });
+		expect(link).toHaveAttribute("href", "/projects/1");
+		expect(link).toHaveAttribute("data-basalt-surface");
+		expect(link).toHaveClass(
+			"ring-1",
+			"ring-basalt-border/80",
+			"shadow-basalt-card",
+			"p-basalt-card",
+		);
+	});
 });

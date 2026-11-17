@@ -6,6 +6,13 @@ export const API = [
 		name: "LayerCard",
 		props: [
 			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Merge card surface, border, and shadow directly onto a single child element (such as a link).",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,
