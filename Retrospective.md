@@ -867,3 +867,13 @@ elements without a separating accessible name, so assistive technology read
 the interaction test queries that complete accessible name. When composing a
 label with a badge, verify its computed accessible name rather than relying on
 the visual gap.
+
+## Theme studio copy and accent parity (2026-11-17)
+
+The first studio copy indicator tracked only which button had succeeded, so an
+accent change in the existing palette could leave a stale success message for
+old CSS or a prior link. The indicator now compares the copied payload with the
+current export, and a regression test changes the shared accent after copying.
+The provider's semantic accent calculation is private, so the pure studio model
+must mirror it; parity tests cover all built-in colors in both modes and a custom
+palette. Changes to the provider must keep those tests in sync.

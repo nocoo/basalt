@@ -875,6 +875,47 @@
 		},
 		"palette": {
 			"title": "调色板",
+			"studio": {
+				"title": "主题工作室",
+				"stage": "实时预览",
+				"stageMode": "工作室视图",
+				"preview": "01 微场景墙",
+				"code": "02 令牌差异 CSS",
+				"stageSample": "工作区概览",
+				"chartPreview": "图表颜色预览",
+				"surfacePreview": "表面层级预览",
+				"presetsLabel": "精选预设",
+				"presets": {
+					"default": "Basalt 默认",
+					"graphite": "纯石墨",
+					"limestone": "暖石灰岩",
+					"ops": "信号运维",
+					"editorial": "柔和编辑",
+					"terminal": "锐利终端",
+					"custom": "自定义"
+				},
+				"controls": {
+					"surfaceTint": "表面色调",
+					"radius": "圆角尺度",
+					"chartMode": "图表策略",
+					"fontPairing": "字体搭配"
+				},
+				"values": {
+					"surfaceTint": { "neutral": "中性", "warm": "暖色", "cool": "冷色" },
+					"radius": { "default": "默认", "sharp": "锐利", "soft": "柔和" },
+					"chartMode": { "categorical": "分类色", "monochrome": "单色" },
+					"fontPairing": { "default": "默认", "sans": "无衬线", "technical": "技术字体" }
+				},
+				"reset": "重置工作室",
+				"copyLink": "复制链接",
+				"copyCss": "复制 CSS",
+				"shareNote": "链接分享预设选项；自定义色板保留在当前浏览器。使用 CSS 时，请将 AccentProvider 的 applyToDocument 设为 false。",
+				"copyStatus": {
+					"css": "CSS 已复制。",
+					"link": "链接已复制。",
+					"error": "复制失败，请检查剪贴板权限后重试。"
+				}
+			},
 			"description": "控件使用 12 种糖果主色，图表使用 5 种固定配色。按你的喜好调整界面，同时保持图表含义稳定。",
 			"baseColors": "表面与辅助色彩令牌",
 			"themePalette": "控件主色 · 12 色",

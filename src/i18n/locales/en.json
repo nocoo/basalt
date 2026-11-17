@@ -890,6 +890,47 @@
 		},
 		"palette": {
 			"title": "Color palette",
+			"studio": {
+				"title": "Theme Studio",
+				"stage": "Live stage",
+				"stageMode": "Studio view",
+				"preview": "01 Micro-Scene Wall",
+				"code": "02 Token Diff CSS",
+				"stageSample": "Workspace overview",
+				"chartPreview": "Chart colors preview",
+				"surfacePreview": "Surface hierarchy preview",
+				"presetsLabel": "Curated presets",
+				"presets": {
+					"default": "Basalt Default",
+					"graphite": "Pure Graphite",
+					"limestone": "Warm Limestone",
+					"ops": "Signal Ops",
+					"editorial": "Soft Editorial",
+					"terminal": "Sharp Terminal",
+					"custom": "Custom"
+				},
+				"controls": {
+					"surfaceTint": "Surface Tint",
+					"radius": "Radius Scale",
+					"chartMode": "Chart Strategy",
+					"fontPairing": "Font Pairing"
+				},
+				"values": {
+					"surfaceTint": { "neutral": "Neutral", "warm": "Warm", "cool": "Cool" },
+					"radius": { "default": "Default", "sharp": "Sharp", "soft": "Soft" },
+					"chartMode": { "categorical": "Categorical", "monochrome": "Monochrome" },
+					"fontPairing": { "default": "Default", "sans": "Sans", "technical": "Technical" }
+				},
+				"reset": "Reset studio",
+				"copyLink": "Copy link",
+				"copyCss": "Copy CSS",
+				"shareNote": "Links share preset choices; custom palette colors remain in this browser. To use the CSS, set AccentProvider's applyToDocument to false.",
+				"copyStatus": {
+					"css": "CSS copied.",
+					"link": "Link copied.",
+					"error": "Copy failed. Check clipboard permissions and try again."
+				}
+			},
 			"description": "Twelve candy accents for controls. Five steady colors for data. Make the interface yours without changing the meaning of a chart.",
 			"baseColors": "Surface and utility tokens",
 			"themePalette": "Control accents · 12 colors",

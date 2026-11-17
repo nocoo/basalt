@@ -19,6 +19,7 @@ import { GroupedBarChart } from "@/components/charts/grouped-bar";
 import { LineChart } from "@/components/charts/line";
 import { PaletteEditor } from "@/components/PaletteEditor";
 import { ShowcasePage } from "@/components/ShowcasePage";
+import { ThemeStudio } from "@/components/showcase/ThemeStudio";
 import { formatPercent, formatUsd } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 
@@ -165,6 +166,10 @@ export default function PalettePage() {
 					</LayerCard>
 					<PaletteEditor />
 				</div>
+			</SectionRule>
+
+			<SectionRule title={t("pages.palette.studio.title")}>
+				<ThemeStudio />
 			</SectionRule>
 
 			<SectionRule title={t("pages.palette.chartPalette")}>
