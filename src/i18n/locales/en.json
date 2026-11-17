@@ -155,16 +155,10 @@
 			"title": "404",
 			"heading": "Page not found",
 			"description": "The requested route does not exist or has moved to a new location.",
-			"backHome": "Back to Homepage",
-			"openCatalog": "Open Dashboard",
-			"statusHint": "Route resolution · unmatched"
+			"backHome": "Back to Homepage"
 		},
 		"loading": {
-			"badge": "WORKSPACE",
-			"status": "Preparing workspace",
-			"description": "Synchronizing design tokens, preferences, and route modules.",
-			"stageLabel": "Session readiness",
-			"sessionNote": "Encrypted session active"
+			"status": "Preparing workspace"
 		},
 		"login": {
 			"welcomeBack": "Welcome back",
@@ -1330,9 +1324,6 @@
 			"colRequests": "Requests"
 		},
 		"static": {
-			"docBadge": "Legal",
-			"docCode": "DOC-TOS-2026.1",
-			"contentsTitle": "Clauses",
 			"termsOfService": "Terms of Service",
 			"lastUpdated": "Last updated: January 1, 2026",
 			"section1Title": "1. Acceptance of Terms",

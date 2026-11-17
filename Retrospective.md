@@ -877,3 +877,15 @@ current export, and a regression test changes the shared accent after copying.
 The provider's semantic accent calculation is private, so the pure studio model
 must mirror it; parity tests cover all built-in colors in both modes and a custom
 palette. Changes to the provider must keep those tests in sync.
+
+## Standalone utility page restraint (2026-11-17)
+
+An initial pass at refreshing `/loading`, `/404` and `/static-page` wrapped each
+route in multi-slot dashboard chrome—header bars, monospace status badges, theme
+toggles, synthetic progress meters, path readouts, status dots and a sticky
+clause sidebar—diluting the quiet single-object focus established by `/login`.
+The three routes were simplified back to one surface-rooted `LayerCard` island
+each, keeping only the essential mark, heading, prose and primary return link.
+When upgrading standalone utility screens to a new surface material, let the
+card elevation, rim light and whitespace carry the visual upgrade instead of
+inventing auxiliary telemetry or navigation chrome.
