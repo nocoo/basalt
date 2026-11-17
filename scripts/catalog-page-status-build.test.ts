@@ -37,6 +37,7 @@ const PAGE_MODULES = [
 	"ProgressTrackingPage.tsx",
 	"SettingsPage.tsx",
 	"StaticPage.tsx",
+	"TypefacePage.tsx",
 	"ui/UiIndexPage.tsx",
 	"ui/UiCategoryOverviewPage.tsx",
 	"ui/UiPlaceholderPage.tsx",

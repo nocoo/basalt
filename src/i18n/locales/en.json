@@ -90,6 +90,7 @@
 		"loadingStates": "Loading",
 		"animation": "Animation",
 		"colorPalette": "Color Palette",
+		"typeface": "Typeface",
 		"settings": "Settings",
 		"tables": "Tables",
 		"buttons": "Buttons",
@@ -831,6 +832,147 @@
 			"contrastNote": "Text and button shades adapt for contrast.",
 			"ringChart": "Ring tracks",
 			"ringDescription": "Empty, partial and complete. A quiet surface-colored track shows the remaining capacity; values keep the same readable text color."
+		},
+		"typeface": {
+			"title": "Typeface",
+			"description": "Positional typography rules for dense interfaces: three typefaces, seven canonical scale tiers, fixed line boxes, OpenType disambiguation, and tabular numerals.",
+			"families": "Typeface families",
+			"familiesHint": "Three self-hosted fonts separate display numerals, UI copy, and fixed-width telemetry.",
+			"familyToken": "Token",
+			"familyFeatures": "OpenType",
+			"familyStack": "Fallback stack",
+			"familyWeights": "Weights",
+			"familyRoles": {
+				"display": "Titles & primary KPIs",
+				"sans": "Default UI & prose",
+				"mono": "Code, IDs & telemetry"
+			},
+			"scale": "Seven-tier positional scale",
+			"scaleHint": "Typography is assigned by structural position, not by arbitrary breakpoint size steps.",
+			"scaleHeading": "Canonical scale ramp",
+			"scaleTableAria": "Basalt seven-tier typographic scale",
+			"modeLabel": "Specimen preview mode",
+			"modeRoles": "Roles",
+			"modeBilingual": "Bilingual",
+			"modeCustom": "Custom",
+			"customLabel": "Custom specimen preview text",
+			"customPlaceholder": "Enter preview text across all 7 tiers...",
+			"resetSpecimen": "Reset",
+			"colTier": "Tier",
+			"colToken": "Token & utility",
+			"colMetrics": "Line box · tracking · weight",
+			"colSpecimen": "Live specimen",
+			"colRoles": "Canonical roles",
+			"scaleFooter": "Independent display exemptions remain isolated to LandingPage, LoginPage, and NotFound (text-basalt-10xl). Never use sm:text-basalt-* responsive size jumps.",
+			"tiers": {
+				"3xl": {
+					"name": "Page / metric",
+					"roles": "PageHeader h1 and primary KPI numerals (StatCard, StatStrip)"
+				},
+				"xl": {
+					"name": "Section",
+					"roles": "Section h2/h3 headings, SectionRule variant=\"heading\", modal/drawer titles"
+				},
+				"lg": {
+					"name": "Card title",
+					"roles": "Structured non-asChild LayerCard.Header and dashboard panel headings"
+				},
+				"base": {
+					"name": "Body",
+					"roles": "Default controls, sidebar destinations, Label, Body prose, asChild disclosures"
+				},
+				"md": {
+					"name": "Compact",
+					"roles": "Table/DataTable cells & captions, size=\"sm\" controls, SegmentControl, CodeBlock"
+				},
+				"sm": {
+					"name": "Auxiliary",
+					"roles": "Badges, TableHead, field hints/errors, SectionRule uppercase labels, inline Code"
+				},
+				"xs": {
+					"name": "Micro",
+					"roles": "Compact 24px AvatarInitials, compact Meter size=\"sm\" readouts, chart micro-labels"
+				}
+			},
+			"geometry": "Line boxes & reading measures",
+			"geometryHint": "Controls reach target heights through font-size + line-height + shared padding — never hardcoded CSS heights.",
+			"controlGeometryTitle": "Interactive control line boxes",
+			"controlGeometryAria": "Control and surface line-box reference",
+			"actionSmLabel": "Compact (28px)",
+			"actionDefaultLabel": "Default (34px)",
+			"actionLgLabel": "Large (40px)",
+			"segmentTrackLabel": "Segmented track geometry",
+			"segmentFirst": "Compact 13px",
+			"segmentSecond": "34px track",
+			"colControl": "Surface / control",
+			"colTypography": "Font / line box",
+			"colInset": "Padding / border",
+			"colHeight": "Target height",
+			"lineBoxes": {
+				"controlSm": "Button / Input (sm)",
+				"controlDefault": "Button / Select (default)",
+				"segmentedTrack": "SegmentControl / ToggleGroup",
+				"sidebarRow": "Sidebar destination row",
+				"controlLg": "Button (lg)",
+				"tableRow": "Table / DataTable row",
+				"banner": "Banner surface"
+			},
+			"proseTitle": "Leading & reading measure",
+			"proseLeadTight": "Tight · 1.2 (Display & KPIs)",
+			"proseLeadBody": "Body · 1.43 (20px on 14px UI copy)",
+			"proseLeadRelaxed": "Relaxed · 1.5 (65ch reading prose)",
+			"proseMonoLabel": "Mono · 13px (--basalt-font-mono)",
+			"proseSampleTight": "Q4 Clinical Network Utilization — +18.4%",
+			"proseSampleBody": "Controls, labels, and form help align on crisp 20px body line boxes.",
+			"proseSampleRelaxed": "Long-form documentation paragraphs stay bounded around 65ch width with 1.5 relaxed leading so dense technical pages remain comfortable during extended sessions.",
+			"proseSampleMono": "bun add @nocoo/basalt # 01Il O0 -> fixed cell grid",
+			"opentype": "OpenType & numeric precision",
+			"opentypeHint": "Inter enables stylistic alternation (cv02, cv03, cv04, cv11) globally; metrics lock to fixed tabular advances.",
+			"disambiguationTitle": "Glyph disambiguation",
+			"featuresDefault": "Basalt default · cv02, cv03, cv04, cv11",
+			"featuresRaw": "Disabled · font-feature-settings: normal",
+			"samplePairs": {
+				"cv02": "cv02 · open 4",
+				"cv03": "cv03 · open 6",
+				"cv04": "cv04 · open 9",
+				"cv11": "cv11 · single-story a"
+			},
+			"numericTitle": "Tabular vs proportional numerals",
+			"tabularLabel": "tabular-nums (vertical decimal lock)",
+			"proportionalLabel": "proportional-nums (horizontal jitter)",
+			"meterSampleLabel": "Meter size=\"sm\" (11px mono)",
+			"composition": "Hierarchy in context & rules",
+			"compositionHint": "How the seven tiers compose inside a real card without colliding in visual weight.",
+			"contextHeader": "Runtime typography anatomy (15px Card Header)",
+			"contextSubtitle": "Subtitle description · 14px muted foreground",
+			"contextAction": "Toolbar parity (34px / 14px)",
+			"contextTableAria": "Annotated live typography composition table",
+			"colMember": "Owner (13px · 11px avatar)",
+			"colTierRole": "Tag (12px)",
+			"colUtilization": "Meter (11px readout)",
+			"contextOwnerName": "Sarah Nguyen",
+			"contextOwnerRole": "Tier-1 Lead",
+			"contextServiceTag": "Production",
+			"contextMemberTwo": "Mark Darnalds",
+			"contextTagTwo": "Verification",
+			"doTitle": "Typography norms",
+			"dontTitle": "Anti-patterns to avoid",
+			"doBadge": "Do",
+			"dontBadge": "Don't",
+			"doRules": [
+				"Keep toolbar Tabs, Buttons, and Selects at default 34px / 14px height unless the whole toolbar is intentionally compact.",
+				"Let Table and DataTable inherit text-basalt-md (13px) so data rows stay crisply one step below 14px controls.",
+				"Keep TableHead compact at 12px medium without artificial letter-spacing.",
+				"Apply font-basalt-display + tabular-nums on KPI figures and dynamic readouts.",
+				"Attach CodeHighlighted directly to LayerCard and use LayerCard.Header asChild only for disclosures."
+			],
+			"dontRules": [
+				"Do not mix size=\"sm\" buttons next to default 34px Selects or Tabs in card toolbars.",
+				"Do not use responsive text overrides such as text-basalt-sm sm:text-basalt-base.",
+				"Do not shrink arbitrary text with inline px font sizes or non-canonical tokens like text-basalt-2xl.",
+				"Do not force control heights with fixed h-* classes instead of line box + shared padding.",
+				"Do not drop secondary or placeholder text below 4.5:1 WCAG contrast."
+			]
 		},
 		"layout": {
 			"title": "Nested surfaces",

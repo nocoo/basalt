@@ -416,6 +416,7 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 	await assertFormDialogSpacing(page, baseUrl, 32, { trap: true });
 	await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
 	await assertNestedSurfaces(page, baseUrl);
+	await assertTypefacePage(page, baseUrl);
 	return { cases, compactActions: 34, standalone: true, collapsedRail: true };
 }
 
@@ -572,4 +573,35 @@ async function assertNestedSurfaces(page: Page, baseUrl: string) {
 		assert.ok(settings.bottomDiff <= 1, JSON.stringify(settings));
 		assert.ok(settings.widthDiff <= 2, JSON.stringify(settings));
 	}
+}
+
+async function assertTypefacePage(page: Page, baseUrl: string) {
+	await page.setViewportSize({ width: 1440, height: 1000 });
+	await page.goto(`${baseUrl}/typeface`);
+	await page.getByRole("heading", { level: 1, name: "Typeface" }).waitFor();
+	await page.evaluate(() => document.fonts.ready);
+	const report = await page.evaluate(() => {
+		const island = document.querySelector<HTMLElement>("[data-doc-scroll]");
+		const tiers = ["3xl", "xl", "lg", "base", "md", "sm", "xs"].map((id) => {
+			const node = document.querySelector<HTMLElement>(`[data-typeface-tier="${id}"]`);
+			if (!node) throw new Error(`Missing typeface tier specimen: ${id}`);
+			return [id, getComputedStyle(node).fontSize] as const;
+		});
+		return {
+			sizes: Object.fromEntries(tiers),
+			pageOverflow: document.documentElement.scrollWidth - innerWidth,
+			islandOverflow: island ? island.scrollWidth - island.clientWidth : 0,
+		};
+	});
+	assert.deepEqual(report.sizes, {
+		"3xl": "24px",
+		xl: "18px",
+		lg: "15px",
+		base: "14px",
+		md: "13px",
+		sm: "12px",
+		xs: "11px",
+	});
+	assert.ok(report.pageOverflow <= 1, JSON.stringify(report));
+	assert.ok(report.islandOverflow <= 1, JSON.stringify(report));
 }

@@ -28,6 +28,7 @@ const EXAMPLE_PAGES = [
 	"ProgressTrackingPage.tsx",
 	"SettingsPage.tsx",
 	"StaticPage.tsx",
+	"TypefacePage.tsx",
 	"WearableDashboardPage.tsx",
 ] as const;
 

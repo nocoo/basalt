@@ -42,6 +42,7 @@ const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const ProgressTrackingPage = lazy(() => import("./pages/ProgressTrackingPage"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const StaticPage = lazy(() => import("./pages/StaticPage"));
+const TypefacePage = lazy(() => import("./pages/TypefacePage"));
 const UiIndexPage = lazy(() => import("./pages/ui/UiIndexPage"));
 const UiCategoryOverviewPage = lazy(() => import("./pages/ui/UiCategoryOverviewPage"));
 const UiPlaceholderPage = lazy(() => import("./pages/ui/UiPlaceholderPage"));
@@ -137,6 +138,7 @@ const App = () => (
 								<Route path="/dialogs" element={routeElement(DialogsPage)} />
 								<Route path="/settings" element={routeElement(SettingsPage)} />
 								<Route path="/palette" element={routeElement(PalettePage)} />
+								<Route path="/typeface" element={routeElement(TypefacePage)} />
 								<Route path="/interactions" element={routeElement(InteractionShowcasePage)} />
 								<Route path="/health" element={routeElement(HealthPage)} />
 								<Route path="/wearable" element={routeElement(WearableDashboardPage)} />

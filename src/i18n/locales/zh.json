@@ -90,6 +90,7 @@
 		"loadingStates": "加载",
 		"animation": "动画",
 		"colorPalette": "调色板",
+		"typeface": "字体排版",
 		"settings": "设置",
 		"tables": "表格",
 		"buttons": "按钮",
@@ -831,6 +832,147 @@
 			"contrastNote": "文字与按钮明度会自动调整，确保对比度。",
 			"ringChart": "环形图轨道",
 			"ringDescription": "空值、部分完成、全部完成。未占用部分使用柔和的表面衬底，数值保持清晰的文字颜色。"
+		},
+		"typeface": {
+			"title": "字体排版",
+			"description": "面向高密度界面的位置化排版规范：三套内置字体族、七级标准字号、固定行盒节奏、OpenType 字形区分与等宽数字对齐。",
+			"families": "字体族体系",
+			"familiesHint": "三套自托管字体明确分离展示型数字、界面正文与等宽代码遥测。",
+			"familyToken": "CSS Token",
+			"familyFeatures": "OpenType 特性",
+			"familyStack": "回退字体栈",
+			"familyWeights": "字重样本",
+			"familyRoles": {
+				"display": "页面标题与主指标",
+				"sans": "默认界面与正文",
+				"mono": "代码、标识与读数"
+			},
+			"scale": "七级位置化字号体系",
+			"scaleHint": "字号由组件所在的结构层级决定，而非按屏幕宽度随意跳变。",
+			"scaleHeading": "标准字阶总览",
+			"scaleTableAria": "Basalt 七级标准字阶对照表",
+			"modeLabel": "示例预览模式",
+			"modeRoles": "场景",
+			"modeBilingual": "双语",
+			"modeCustom": "自定义",
+			"customLabel": "自定义各字阶实时预览文案",
+			"customPlaceholder": "输入任意测试文字，同步预览 7 个字号档位...",
+			"resetSpecimen": "重置",
+			"colTier": "字阶",
+			"colToken": "Token 与工具类",
+			"colMetrics": "行盒 · 字距 · 字重",
+			"colSpecimen": "实时样本",
+			"colRoles": "适用角色",
+			"scaleFooter": "独立展示缩放仅保留于 LandingPage、LoginPage 与 NotFound（text-basalt-10xl）；其余页面严禁引入 sm:text-basalt-* 响应式字号跳变。",
+			"tiers": {
+				"3xl": {
+					"name": "页面 / 指标",
+					"roles": "PageHeader 主标题与核心 KPI 数值（StatCard、StatStrip）"
+				},
+				"xl": {
+					"name": "分区标题",
+					"roles": "分区 h2/h3 标题、SectionRule heading 变体与弹窗/抽屉标题"
+				},
+				"lg": {
+					"name": "卡片标题",
+					"roles": "结构化非 asChild LayerCard.Header 与仪表盘面板标题"
+				},
+				"base": {
+					"name": "正文 / 默认控件",
+					"roles": "默认尺寸按钮与输入框、侧栏导航项、Label、正文说明与 asChild 折叠头"
+				},
+				"md": {
+					"name": "紧凑数据 / 小控件",
+					"roles": "Table/DataTable 单元格与标题、size=\"sm\" 控件、分段器与代码块"
+				},
+				"sm": {
+					"name": "辅助标注",
+					"roles": "徽章、TableHead 列头、字段提示与报错、大写分区标签与行内 Code"
+				},
+				"xs": {
+					"name": "微缩读数",
+					"roles": "24px 紧凑头像缩写、Meter size=\"sm\" 读数与密集图表微标注"
+				}
+			},
+			"geometry": "行盒高度与阅读度量",
+			"geometryHint": "控件高度由 font-size + line-height + 共享内边距自然撑出，禁止硬编码高度。",
+			"controlGeometryTitle": "交互控件行盒结构",
+			"controlGeometryAria": "控件与行盒目标高度对照表",
+			"actionSmLabel": "紧凑 (28px)",
+			"actionDefaultLabel": "默认 (34px)",
+			"actionLgLabel": "大号 (40px)",
+			"segmentTrackLabel": "分段选择器轨道结构",
+			"segmentFirst": "13px 标签",
+			"segmentSecond": "34px 轨道",
+			"colControl": "表面 / 控件",
+			"colTypography": "字号 / 行盒",
+			"colInset": "内边距 / 边框",
+			"colHeight": "目标高度",
+			"lineBoxes": {
+				"controlSm": "Button / Input (sm)",
+				"controlDefault": "Button / Select (默认)",
+				"segmentedTrack": "SegmentControl / ToggleGroup",
+				"sidebarRow": "侧栏导航行",
+				"controlLg": "Button (lg)",
+				"tableRow": "Table / DataTable 数据行",
+				"banner": "Banner 横幅表面"
+			},
+			"proseTitle": "行距与正文行宽",
+			"proseLeadTight": "Tight · 1.2（展示标题与指标）",
+			"proseLeadBody": "Body · 1.43（14px 界面文案 20px 行盒）",
+			"proseLeadRelaxed": "Relaxed · 1.5（65ch 长文本段落）",
+			"proseMonoLabel": "Mono · 13px（--basalt-font-mono）",
+			"proseSampleTight": "第四季度网络运行效率 — +18.4%",
+			"proseSampleBody": "表单控件、标签与字段说明统一对齐在清晰的 20px 正文行盒上。",
+			"proseSampleRelaxed": "说明性长段落通过 65ch 最大行宽与 1.5 宽松行距控制视野跨度，确保高信息密度页面在长时间阅读下依然舒适。",
+			"proseSampleMono": "bun add @nocoo/basalt # 01Il O0 -> 等宽对齐代码网格",
+			"opentype": "OpenType 字形区分与数字对齐",
+			"opentypeHint": "Inter 全局启用 cv02/cv03/cv04/cv11 字形变体；动态数字强制使用等宽字距。",
+			"disambiguationTitle": "易混字符区分对比",
+			"featuresDefault": "Basalt 默认 · cv02, cv03, cv04, cv11",
+			"featuresRaw": "关闭特性 · font-feature-settings: normal",
+			"samplePairs": {
+				"cv02": "cv02 · 开口 4",
+				"cv03": "cv03 · 敞口 6",
+				"cv04": "cv04 · 敞口 9",
+				"cv11": "cv11 · 单层 a"
+			},
+			"numericTitle": "等宽数字（Tabular）vs 比例数字",
+			"tabularLabel": "tabular-nums（小数点严格纵向对齐）",
+			"proportionalLabel": "proportional-nums（列对齐发生横向偏移）",
+			"meterSampleLabel": "Meter size=\"sm\"（11px 等宽读数）",
+			"composition": "真实容器组合与排版准则",
+			"compositionHint": "在同一卡片容器内直观校验 15px 标题、14px 控件、13px 数据、12px 列头与 11px 微标注的主次关系。",
+			"contextHeader": "运行时排版解剖（15px 卡片标题）",
+			"contextSubtitle": "辅助说明 · 14px 次级前景色",
+			"contextAction": "工具栏等高（34px / 14px）",
+			"contextTableAria": "卡片内七档字阶混合排版实时示例表",
+			"colMember": "负责人（13px · 11px 头像）",
+			"colTierRole": "状态标签（12px）",
+			"colUtilization": "用量进度（11px 读数）",
+			"contextOwnerName": "Sarah Nguyen",
+			"contextOwnerRole": "一线负责人",
+			"contextServiceTag": "Production",
+			"contextMemberTwo": "Mark Darnalds",
+			"contextTagTwo": "Verification",
+			"doTitle": "推荐规范",
+			"dontTitle": "禁止写法",
+			"doBadge": "规范",
+			"dontBadge": "反例",
+			"doRules": [
+				"工具栏中 Tab、Button 与 Select 保持默认 34px / 14px 对齐，避免孤立的小号按钮倒挂。",
+				"Table 与 DataTable 统一继承 text-basalt-md（13px），比上方 14px 控件稳定退后半阶。",
+				"TableHead 列头保持 12px font-medium，不加宽 tracking 字距。",
+				"KPI 主数字与动态指标统一配合 font-basalt-display 与 tabular-nums。",
+				"CodeHighlighted 直接作为 LayerCard 的 attached 子节点挂载；仅可折叠面板使用 LayerCard.Header asChild。"
+			],
+			"dontRules": [
+				"不要在常规工具栏的 34px Select / Tab 旁混用 Button size=\"sm\"。",
+				"不要使用 text-basalt-sm sm:text-basalt-base 这类随视口跳变的字号覆盖。",
+				"不要使用内联 px 字号或未纳入规范的中间档位（如 text-basalt-2xl）。",
+				"不要用硬编码 h-* 强行锁死文本控件高度，应由行盒与共享内边距撑出。",
+				"不要为了弱化说明文字而将其对比度压低到 4.5:1 以下。"
+			]
 		},
 		"layout": {
 			"title": "嵌套表面",

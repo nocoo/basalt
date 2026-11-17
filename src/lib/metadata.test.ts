@@ -13,6 +13,7 @@ describe("page metadata", () => {
 			["/banking", "Banking & Wealth"],
 			["/network", "Network Ops"],
 			["/ui/button", "Button"],
+			["/typeface", "Typeface"],
 			["/forms", "Forms"],
 		]) {
 			const page = pageMetadata(path, name);

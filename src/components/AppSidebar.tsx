@@ -192,6 +192,7 @@ const NAV_GROUPS: NavGroup[] = [
 const LIBRARY_LEAD: NavItem[] = [
 	{ titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" },
 	{ titleKey: "nav.colorPalette", icon: Palette, path: "/palette" },
+	{ titleKey: "nav.typeface", icon: Type, path: "/typeface" },
 	{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
 	{ titleKey: "nav.loadingStates", icon: Loader, path: "/loading-states" },
 	{ titleKey: "nav.animation", icon: Sparkles, path: "/animation" },

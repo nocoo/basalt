@@ -25,6 +25,8 @@ const PAGE_DESCRIPTIONS: Readonly<Record<string, string>> = {
 		"A responsive React sign-in page example built with Basalt form controls and matte surfaces. Preview the layout and adapt the open-source code.",
 	"/palette":
 		"Explore the Basalt design system color palette. Customize accent colors, chart palettes, and matte surfaces across light and dark themes.",
+	"/typeface":
+		"Explore the Basalt typography system: DM Sans, Inter, and JetBrains Mono across the 7-tier positional type scale, line boxes, OpenType features, and tabular numerals.",
 };
 
 export function pageMetadata(pathname: string, pageName?: string): PageMetadata {

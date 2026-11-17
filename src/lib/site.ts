@@ -54,6 +54,7 @@ export const SHOWCASE_PAGES: readonly ShowcasePage[] = [
 	{ path: "/login", titleKey: "nav.login", inSitemap: true },
 	{ path: "/layout", titleKey: "nav.layout", inSitemap: true },
 	{ path: "/palette", titleKey: "nav.colorPalette", inSitemap: true },
+	{ path: "/typeface", titleKey: "nav.typeface", inSitemap: true },
 	{ path: "/components", titleKey: "nav.components", inSitemap: true },
 	{ path: "/forms", titleKey: "nav.forms", inSitemap: true },
 	{ path: "/navigation", titleKey: "nav.navigation", inSitemap: true },

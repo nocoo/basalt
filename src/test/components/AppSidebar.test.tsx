@@ -61,6 +61,7 @@ describe("AppSidebar", () => {
 		expect(screen.getByRole("link", { name: "Component library" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Layout" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Color Palette" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Typeface" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Settings" })).toBeInTheDocument();
 		expect(screen.queryByText("System")).not.toBeInTheDocument();
 		expect(screen.queryByText("Controls")).not.toBeInTheDocument();
@@ -69,6 +70,7 @@ describe("AppSidebar", () => {
 		const links = [
 			"Component library",
 			"Color Palette",
+			"Typeface",
 			"Layout",
 			"Loading",
 			"Animation",

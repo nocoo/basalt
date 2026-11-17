@@ -20,6 +20,7 @@ const ROUTES = [
 	"/dialogs",
 	"/settings",
 	"/palette",
+	"/typeface",
 	"/interactions",
 	"/health",
 	"/wearable",
