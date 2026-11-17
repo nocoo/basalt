@@ -16,6 +16,19 @@ describe("design audit rules (without scanning the repository)", () => {
 			expect.arrayContaining(["use-library-control", "card-padding-prop"]),
 		);
 	});
+	it("enforces tokens and accepts compliant standalone template composition", () => {
+		expect(
+			auditDesignSource("src/templates/Example.tsx", '<div className="p-4 rounded-xl" />').map(
+				(issue) => issue.rule,
+			),
+		).toEqual(expect.arrayContaining(["spacing-token", "radius-token"]));
+		expect(
+			auditDesignSource(
+				"src/templates/Example.tsx",
+				'<main data-basalt-surface-root=""><LayerCard padding="none"><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body><Button>Save</Button></LayerCard.Body></LayerCard></main>',
+			),
+		).toEqual([]);
+	});
 	it("preserves the visitor badge scale without exempting ordinary controls or motion", () => {
 		const source = '<Button className="px-6 py-3 rounded-xl text-sm h-12 duration-200" />';
 		expect(auditDesignSource("src/pages/LoginPage.tsx", source).map((issue) => issue.rule)).toEqual(

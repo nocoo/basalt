@@ -9,6 +9,7 @@ import { SHOWCASE_PAGES } from "./site";
  * generated page-status manifests so the worker bundle stays small.
  */
 export const STANDALONE_EXAMPLE_PATHS = [
+	"/dev/examples",
 	"/examples/reader",
 	"/examples/list-detail",
 	"/examples/workspace",

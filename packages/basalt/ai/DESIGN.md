@@ -462,10 +462,24 @@ motion, intrinsic action sizing and library-control requirements still apply.
 These exceptions are not permission
 to recreate ordinary actions, selects or inputs.
 
+### Standalone template isolation
+
+Multi-region application templates render in isolated `/view/:slug` viewports outside
+`DashboardLayout` and are curated in `/templates` (`TemplatesPage`). Previews switch
+between Desktop, Tablet and Mobile widths. Copied source uses consumer-normalized
+`@nocoo/basalt/*` imports, never catalog-private `@/components/*` imports or host wrappers.
+
+### Signal restraint
+
+Neutral matte luminance (L0 to L3) owns hierarchy. Active or running work uses
+restrained motion (`Loader`) on a neutral foreground. Saturated semantic hues
+(`success`, `warning`, `danger`, `info`) are reserved for terminal outcomes, diffs
+and SLA breaches, paired with text or icon labels.
+
 ## Enforcement and acceptance
 
-`bun run design:check` scans library components/helpers and catalog examples,
-including CSS, for raw spacing/type/radius/motion values, fixed action overrides
+`bun run design:check` scans library components/helpers, catalog pages and standalone
+templates (`src/templates/`), including CSS, for raw spacing/type/radius/motion values, fixed action overrides
 and inline design repairs. The landing route's own CSS is exempt from the spacing,
 radius and type rules and still keeps motion tokens. Noncanonical Basalt font-size
 classes are rejected, including responsive and important variants; only NotFound's

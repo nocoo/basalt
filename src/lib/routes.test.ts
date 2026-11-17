@@ -56,6 +56,15 @@ describe("known app paths", () => {
 		expect(isKnownAppPath("/view/agent-workspace")).toBe(true);
 	});
 
+	it("keeps the dev harness known but out of public discovery", () => {
+		expect(isKnownAppPath("/dev/examples")).toBe(true);
+		expect(isKnownAppPath("/dev/examples/")).toBe(true);
+		expect(SHOWCASE_PAGES.some((page) => page.path === "/dev/examples")).toBe(false);
+		expect(readFileSync(resolve(__dirname, "../../public/sitemap.xml"), "utf8")).not.toContain(
+			"/dev/examples",
+		);
+	});
+
 	it("drops a single trailing slash only", () => {
 		expect(normalizeAppPath("/")).toBe("/");
 		expect(normalizeAppPath("/ui/")).toBe("/ui");

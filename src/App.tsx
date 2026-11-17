@@ -23,6 +23,7 @@ const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
 const ComponentsPage = lazy(() => import("./pages/ComponentsPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const DataPage = lazy(() => import("./pages/DataPage"));
+const DevExamplesPage = lazy(() => import("./pages/DevExamplesPage"));
 const DialogsPage = lazy(() => import("./pages/DialogsPage"));
 const FlowComparisonPage = lazy(() => import("./pages/FlowComparisonPage"));
 const FormsPage = lazy(() => import("./pages/FormsPage"));
@@ -107,7 +108,9 @@ function routeElement(Page: ComponentType, translated = true) {
 function AppProviders() {
 	const { pathname } = useLocation();
 	return (
-		<ThemeProvider applyToDocument={!pathname.startsWith("/view/")}>
+		<ThemeProvider
+			applyToDocument={!pathname.startsWith("/view/") && !/^\/dev\/examples\/?$/.test(pathname)}
+		>
 			<SitePaletteProvider>
 				<LinkProvider render={AppLink}>
 					<TooltipProvider>
@@ -158,6 +161,7 @@ function AppProviders() {
 							</Route>
 							{/* Standalone pages (no sidebar) */}
 							<Route path="/view/:slug" element={routeElement(TemplateViewportPage)} />
+							<Route path="/dev/examples" element={routeElement(DevExamplesPage)} />
 							<Route path="/examples/reader" element={routeElement(ReaderPage)} />
 							<Route path="/examples/list-detail" element={routeElement(ListDetailPage)} />
 							<Route path="/examples/workspace" element={routeElement(WorkspacePage)} />

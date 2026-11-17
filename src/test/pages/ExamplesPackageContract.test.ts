@@ -8,6 +8,7 @@ const EXAMPLE_PAGES = [
 	"ComponentsPage.tsx",
 	"DashboardPage.tsx",
 	"DataPage.tsx",
+	"DevExamplesPage.tsx",
 	"DialogsPage.tsx",
 	"FlowComparisonPage.tsx",
 	"FormsPage.tsx",
