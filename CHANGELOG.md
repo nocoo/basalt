@@ -11,6 +11,54 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-11-17
+
+### Added
+
+- Redesign static, loading, and 404 pages
+- Add edge-lit rim and shadow to island cards
+- Add template governance and dev harness
+- Upgrade palette to interactive theme studio
+- Add matte micro-scene wall and surface proof
+- Add standalone templates gallery and viewer
+- Refine sidebar row rhythm and typography
+- Neutralize light mode matte surfaces
+- Add dedicated Typeface specification and showcase page in Library
+- Standardize 7-tier type scale with 13px compact data and control roles
+- Redesign Meter with matte capsule bar, semantic tones, and precision segments
+- Adopt island container queries and refine container ergonomics
+- Refine light surface contrast, optical type scale, and self-hosted fonts
+- Export radix primitives under primitives subpath
+- Add icons subpath and inline chrome svgs
+
+### Changed
+
+- Simplify static, loading, and 404 pages
+- Soften island card rim and shadow by 30%
+- Document catalog and dev harness roles
+- Refresh landing 4.0 highlights, format usage snippets, and record polish phase
+- Align dashboard and showcase pages to container grid and basalt tokens
+- Update integration guide and recipes for 4.0
+- Prune unused controls and site brand mark
+- Replace bespoke charts with chart frame
+- Structure 4.0 plan into tracked phases
+- Add basalt 4.0 slimming and fleet plan
+
+### Fixed
+
+- Align catalog category card header layout
+- Preserve explicit default preset in url
+- Refine studio url and drawer focus return
+- Resolve template and studio review findings
+- Align nested surface slots and restore light surface polarity
+- Address pre-release polish review findings
+- Skip accessibility prop forwarding for fragments
+- Address phase 1 code review findings
+
+### Removed
+
+- Remove agent chat widgets and markdown deps
+
 ## [3.4.2] - 2026-11-16
 
 ### Added
