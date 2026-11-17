@@ -858,3 +858,12 @@ During verification a zsh loop used `path` as its variable, temporarily replacin
 that shell's executable search path and causing later commands to fail. The
 shell exited without changing the environment or repository. Future shell loops
 use descriptive names rather than zsh's special parameters.
+
+## Micro-scene navigation labels (2026-11-17)
+
+The first navigation preview rendered an inbox label and its count as adjacent
+elements without a separating accessible name, so assistive technology read
+"Inbox12". The row now exposes a localized name with a separated count, and
+the interaction test queries that complete accessible name. When composing a
+label with a badge, verify its computed accessible name rather than relying on
+the visual gap.

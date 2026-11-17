@@ -1,4 +1,4 @@
-import { Button } from "@nocoo/basalt/components/button";
+import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Meter } from "@nocoo/basalt/components/meter";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
@@ -27,6 +27,7 @@ import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
 import { SummaryMetricCard } from "@/components/dashboard/SummaryMetricCard";
 import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
 import { ShowcasePage } from "@/components/ShowcasePage";
+import { MicroSceneWall } from "@/components/showcase/MicroSceneWall";
 import { useTargetCardsViewModel } from "@/viewmodels/useTargetCardsViewModel";
 
 const GOAL_ICONS: Record<string, React.ElementType> = {
@@ -45,6 +46,16 @@ export default function ComponentsPage() {
 			title={t("pages.components.title")}
 			description={t("pages.components.description")}
 		>
+			<SectionRule
+				title={t("pages.components.microScenes")}
+				actions={
+					<LinkButton href="/templates" variant="outline" size="sm">
+						{t("pages.components.exploreTemplates")}
+					</LinkButton>
+				}
+			>
+				<MicroSceneWall />
+			</SectionRule>
 			<SectionRule title={t("pages.components.metricCards")}>
 				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-4">
 					<SummaryMetricCard />

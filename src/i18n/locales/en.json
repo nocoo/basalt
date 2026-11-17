@@ -228,6 +228,64 @@
 			"title": "Composable blocks and visual modules",
 			"description": "Metric cards, charts, lists, action grids, and target trackers that can be reused across pages.",
 			"eyebrow": "Components",
+			"microScenes": "Micro-scenes",
+			"exploreTemplates": "Explore templates",
+			"sceneWall": {
+				"controls": "Controls & attachments",
+				"searchAttachments": "Search attachments",
+				"availableAttachments": "Available attachments",
+				"noAttachments": "No matching files.",
+				"attachedFiles": "Attached files",
+				"removeAttachment": "Remove {{filename}}",
+				"notifications": "Notify on completion",
+				"includeDiff": "Include diff summary",
+				"navigation": "Workspace navigation",
+				"workspace": {
+					"overview": "Overview",
+					"inbox": "Inbox",
+					"schedules": "Schedules",
+					"members": "Members",
+					"billing": "Billing"
+				},
+				"trace": "Agent execution trace",
+				"running": "Running",
+				"completed": "Complete",
+				"tokenBudget": "Token budget",
+				"steps": {
+					"indexed": {
+						"label": "Indexed 148 tokens",
+						"detail": "Indexed the current workspace files."
+					},
+					"contrast": {
+						"label": "Auditing contrast pairs",
+						"detail": "Verified the foreground and surface pairs."
+					},
+					"rail": {
+						"label": "Verifying sidebar rail",
+						"detail": "Checking the collapsed rail geometry."
+					}
+				},
+				"decision": "Choose roll-out policy",
+				"decisionDescription": "Select the next action before continuing.",
+				"decisions": {
+					"canary": "Canary 10%",
+					"staged": "Staged workspace",
+					"draft": "Draft changelog only"
+				},
+				"decisionSelected": "Selected: {{choice}}",
+				"awaitingDecision": "Waiting for a decision.",
+				"operations": "Operations & allocation",
+				"metrics": { "deploys": "Weekly deploys", "failure": "Failure rate" },
+				"showChanges": "Show changes",
+				"hideChanges": "Hide changes",
+				"allocations": { "compute": "Compute", "storage": "Storage", "bandwidth": "Bandwidth" },
+				"ledger": "Compact ledger",
+				"ledgerFilter": "Filter invoices",
+				"invoice": "Invoice",
+				"amount": "Amount",
+				"status": "Status",
+				"statuses": { "all": "All", "paid": "Paid", "pending": "Pending", "failed": "Failed" }
+			},
 			"metricCards": "Metric Cards",
 			"charts": "Charts",
 			"heatmaps": "Heatmaps",
@@ -1026,6 +1084,25 @@
 			"eyebrow": "Layout",
 			"stack": "The stack",
 			"stackDesc": "ContentIsland already painted this page L1. Add LayerCard. Do not wrap the island again.",
+			"surfaceDiscipline": "Surface & signal discipline",
+			"surfaceDisciplineDesc": "Change the backdrop to compare a matte hierarchy with competing boundaries and noisy color.",
+			"inspector": {
+				"backdrop": "Backdrop context",
+				"backdrops": { "neutral": "Neutral Light", "warm": "Warm Field", "brand": "Brand Tint" },
+				"matteTitle": "Matte luminance",
+				"matteDescription": "L0 backdrop → L1 island → L2 card → L3 well. One owner per boundary.",
+				"releaseChecks": "Release checks",
+				"complete": "Checks completed",
+				"running": "Verifying release",
+				"borderTitle": "Double-border anti-pattern",
+				"borderDescription": "Repeated outlines compete with the card boundary.",
+				"extraBoundaries": "Two borders for one group",
+				"colorTitle": "Signal overload anti-pattern",
+				"colorDescription": "Color on every surface and label makes meaningful signals harder to find.",
+				"noisyInfo": "Info",
+				"noisyWarning": "Warning",
+				"noisyAlert": "Alert"
+			},
 			"l2Card": "L2 · LayerCard",
 			"l3Well": "L3 · LayerCard.Well",
 			"l3Plus": "L3+ nested LayerCard — transparent, no ring",

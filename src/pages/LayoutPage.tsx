@@ -6,6 +6,7 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
+import { SurfaceDisciplineInspector } from "@/components/showcase/SurfaceDisciplineInspector";
 import { cn } from "@/lib/utils";
 
 function Tile({ label, className = "" }: { label: string; className?: string }) {
@@ -55,6 +56,10 @@ export default function LayoutPage() {
 						</LayerCard>
 					</LayerCard.Well>
 				</LayerCard>
+			</SectionRule>
+
+			<SectionRule title={t("pages.layout.surfaceDiscipline")}>
+				<SurfaceDisciplineInspector />
 			</SectionRule>
 
 			<SectionRule title={t("pages.layout.bodyVsWell")}>
