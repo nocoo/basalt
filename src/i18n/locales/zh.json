@@ -147,7 +147,18 @@
 		},
 		"notFound": {
 			"title": "404",
-			"backHome": "返回首页"
+			"heading": "页面未找到",
+			"description": "当前访问的路由不存在，或已迁移至新的地址。",
+			"backHome": "返回首页",
+			"openCatalog": "进入控制台",
+			"statusHint": "路由解析 · 未命中"
+		},
+		"loading": {
+			"badge": "工作区",
+			"status": "正在准备工作区",
+			"description": "正在同步设计令牌、外观偏好与路由模块。",
+			"stageLabel": "会话就绪度",
+			"sessionNote": "安全加密连接已就绪"
 		},
 		"login": {
 			"welcomeBack": "欢迎回来",
@@ -1304,6 +1315,9 @@
 			"colRequests": "请求"
 		},
 		"static": {
+			"docBadge": "法律文件",
+			"docCode": "DOC-TOS-2026.1",
+			"contentsTitle": "条款目录",
 			"termsOfService": "服务条款",
 			"lastUpdated": "最后更新：2026 年 1 月 1 日",
 			"section1Title": "1. 条款接受",
