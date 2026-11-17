@@ -160,21 +160,21 @@
   --basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 :root, .light, [data-mode="light"] {
-  --basalt-background: 220 16% 92.8%;
-  --basalt-foreground: 222 24% 11%;
-  --basalt-card: 220 16% 95.8%;
-  --basalt-card-foreground: 222 24% 11%;
-  --basalt-secondary: 220 16% 98.4%;
-  --basalt-secondary-foreground: 222 24% 11%;
+  --basalt-background: 0 0% 95.7%;
+  --basalt-foreground: 0 0% 10%;
+  --basalt-card: 0 0% 98%;
+  --basalt-card-foreground: 0 0% 10%;
+  --basalt-secondary: 0 0% 99.2%;
+  --basalt-secondary-foreground: 0 0% 10%;
   --basalt-popover: 0 0% 100%;
-  --basalt-popover-foreground: 222 24% 11%;
+  --basalt-popover-foreground: 0 0% 10%;
   --basalt-bright: 0 0% 100%;
   --basalt-primary: 204 88% 32%;
   --basalt-primary-foreground: 0 0% 100%;
-  --basalt-muted: 220 15% 92%;
-  --basalt-muted-foreground: 220 10% 38%;
-  --basalt-accent: 220 15% 92%;
-  --basalt-accent-foreground: 222 24% 11%;
+  --basalt-muted: 0 0% 94.5%;
+  --basalt-muted-foreground: 0 0% 40%;
+  --basalt-accent: 0 0% 94.5%;
+  --basalt-accent-foreground: 0 0% 10%;
   --basalt-destructive: 0 72% 49%;
   --basalt-destructive-foreground: 0 0% 100%;
   --basalt-info: 221 72% 38%;
@@ -186,8 +186,8 @@
   --basalt-danger: 0 70% 40%;
   --basalt-danger-foreground: 0 0% 100%;
   --basalt-danger-tint: 0 78% 96%;
-  --basalt-border: 220 14% 86%;
-  --basalt-input: 220 14% 84%;
+  --basalt-border: 0 0% 89%;
+  --basalt-input: 0 0% 86%;
   --basalt-ring: var(--basalt-primary);
   --basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.065);
   --basalt-meter-track-shadow: inset 0 1px 1.5px 0 hsl(var(--basalt-backdrop) / 0.05),
@@ -238,8 +238,8 @@
   --basalt-font-display: "DM Sans", "Inter", system-ui, sans-serif;
   --basalt-font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
   --basalt-font-features: "cv02", "cv03", "cv04", "cv11";
-  --basalt-shadow-card: 0 1px 2px 0 rgb(15 23 42 / 0.03), 0 1px 1px -0.5px rgb(15 23 42 / 0.02);
-  --basalt-shadow-control: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+  --basalt-shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 1px -0.5px rgb(0 0 0 / 0.02);
+  --basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.04);
   --basalt-chart-blue: 204 88% 62%;
   --basalt-chart-pink: 345 88% 72%;
   --basalt-chart-green: 113 58% 62%;
@@ -289,7 +289,7 @@
   --basalt-badge-teal-foreground: 0 0% 100%;
   --basalt-badge-purple-foreground: 0 0% 100%;
   --basalt-chart-axis: 0 0% 40%;
-  --basalt-chart-muted: 220 12% 86%;
+  --basalt-chart-muted: 0 0% 89%;
   --basalt-heatmap-green-1: 113 50% 85%;
   --basalt-heatmap-green-2: 113 55% 65%;
   --basalt-heatmap-green-3: 113 60% 45%;

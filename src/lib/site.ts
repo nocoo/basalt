@@ -21,7 +21,7 @@ export const SITE = {
 		alt: "basalt. Hanbaiyu marble Forbidden City corner tower on a pale engineering field.",
 	},
 	locale: "en_US",
-	themeColorLight: "#edeff2",
+	themeColorLight: "#f4f4f4",
 	themeColorDark: "#171717",
 	packageName: "@nocoo/basalt",
 	github: "https://github.com/nocoo/basalt",
