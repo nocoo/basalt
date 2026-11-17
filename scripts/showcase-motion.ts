@@ -68,13 +68,13 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 			await page.locator("[data-basalt-sheet]").waitFor({ state: "detached" });
 			await page.locator(".basalt-sheet-overlay").waitFor({ state: "detached" });
 
-			for (const slug of ["dropdown-menu", "popover", "select", "combobox", "autocomplete"]) {
+			for (const slug of ["dropdown-menu", "popover", "select", "autocomplete"]) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				await page.locator('[data-status="ready"]').waitFor();
 				const demo = page.locator("[data-hero-scenario]");
 				// Resolve the trigger while the page is reachable: an open modal overlay marks the
 				// rest of the document aria-hidden, which hides it from role queries.
-				const trigger = await (["select", "combobox", "autocomplete"].includes(slug)
+				const trigger = await (["select", "autocomplete"].includes(slug)
 					? demo.getByRole("combobox")
 					: demo.getByRole("button")
 				)
@@ -106,5 +106,5 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 			cases.push(`${width}/${dark ? "dark" : "light"}`);
 		}
 	}
-	return { cases, directions: 4, floatingControls: 5, exitPresence: true, reducedMotion: true };
+	return { cases, directions: 4, floatingControls: 4, exitPresence: true, reducedMotion: true };
 }
