@@ -1,3 +1,4 @@
+import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
@@ -21,7 +22,7 @@ import {
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { CircleCheck, Plus, Search } from "lucide-react";
+import { ChevronRight, CircleCheck, Plus, Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { Link } from "react-router";
 import { catalogNavName } from "./catalog";
@@ -300,13 +301,18 @@ export function HomeGrid({ groups }: HomeGridProps) {
 			{tables.length > 0 ? (
 				<section className="min-w-0 max-w-full" aria-label="Tables">
 					<LayerCard padding="none">
-						<LayerCard.Header className="flex-wrap items-center">
-							<h2 className="text-basalt-xl font-medium text-basalt-foreground">Tables</h2>
-							<span className="text-basalt-base text-basalt-muted-foreground">
-								{tables.length} items
-							</span>
+						<LayerCard.Header divided className="flex-wrap items-center">
+							<div className="flex min-w-0 flex-wrap items-center gap-basalt-space-lg">
+								<h2>Tables</h2>
+								<Badge
+									variant="outline"
+									className="font-normal tabular-nums text-basalt-muted-foreground"
+								>
+									{tables.length} items
+								</Badge>
+							</div>
 						</LayerCard.Header>
-						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border @[44rem]/island:grid-cols-2">
+						<ul className="grid min-w-0 grid-cols-1 @[44rem]/island:grid-cols-2">
 							{tables.map((item) => (
 								<CatalogCard
 									key={item.entry.slug}
@@ -325,20 +331,30 @@ export function HomeGrid({ groups }: HomeGridProps) {
 			{componentGroups.map((group) => (
 				<section key={group.id} className="min-w-0 max-w-full" aria-label={group.label}>
 					<LayerCard padding="none">
-						<LayerCard.Header className="flex-wrap items-center">
-							<h2 className="text-basalt-xl font-medium text-basalt-foreground">{group.label}</h2>
-							<div className="flex min-w-0 max-w-full flex-wrap items-center gap-basalt-space-lg text-basalt-base">
-								<Link
-									to={catalogCategoryPath(group.id)}
-									aria-label={`${group.label} overview`}
-									className="text-basalt-primary hover:underline underline-offset-4"
+						<LayerCard.Header divided className="flex-wrap items-center">
+							<div className="flex min-w-0 flex-wrap items-center gap-basalt-space-lg">
+								<h2>{group.label}</h2>
+								<Badge
+									variant="outline"
+									className="font-normal tabular-nums text-basalt-muted-foreground"
 								>
-									Overview
-								</Link>
-								<span className="text-basalt-muted-foreground">{group.items.length} items</span>
+									{group.items.length} items
+								</Badge>
 							</div>
+							<Link
+								to={catalogCategoryPath(group.id)}
+								aria-label={`${group.label} overview`}
+								className="basalt-focus -my-basalt-space-xs inline-flex items-center gap-basalt-space-xs rounded-basalt-sm px-basalt-space-sm py-basalt-space-xs text-basalt-md font-medium tracking-normal text-basalt-muted-foreground no-underline transition-colors basalt-motion hover:bg-basalt-hover hover:text-basalt-foreground"
+							>
+								<span>Overview</span>
+								<ChevronRight
+									className="size-basalt-icon-sm shrink-0"
+									strokeWidth={1.5}
+									aria-hidden="true"
+								/>
+							</Link>
 						</LayerCard.Header>
-						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border @[44rem]/island:grid-cols-2 @[60rem]/island:grid-cols-3 @[84rem]/island:grid-cols-4">
+						<ul className="grid min-w-0 grid-cols-1 @[44rem]/island:grid-cols-2 @[60rem]/island:grid-cols-3 @[84rem]/island:grid-cols-4">
 							{group.items.map((item) => (
 								<CatalogCard key={item.entry.slug} item={item} className={GROUP_CARD_CLASS} />
 							))}

@@ -156,7 +156,11 @@ describe("ui catalog", () => {
 			expect(chartCard.querySelector("[data-release-status]")).toBeNull();
 			expect(chartCard.querySelector("[data-page-status]")).toBeNull();
 		}
-		expect(document.querySelector("ul.border-t.border-basalt-border")).toBeTruthy();
+		expect(
+			document.querySelector(
+				'[data-slot="card-header"][data-divided="true"].border-b.border-basalt-border',
+			),
+		).toBeTruthy();
 		expect(buttonCard?.querySelector(".rounded-lg")).toBeNull();
 		expect(
 			within(buttonCard as HTMLElement).getAllByRole("button", { name: "Add health record" }),

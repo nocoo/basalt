@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { CatalogIndexGroup, CatalogIndexItem } from "@/pages/ui/catalog-index";
@@ -87,6 +87,25 @@ describe("HomeGrid", () => {
 		).toHaveLength(1);
 		expect(screen.getByRole("region", { name: "Actions" }).querySelector("ul")).toHaveClass(
 			"@[60rem]/island:grid-cols-3",
+		);
+		for (const [regionName, countLabel] of [
+			["Tables", "3 items"],
+			["Actions", "1 items"],
+		] as const) {
+			const region = screen.getByRole("region", { name: regionName });
+			const header = region.querySelector("[data-slot='card-header']");
+			const heading = within(region).getByRole("heading", { level: 2, name: regionName });
+			const grid = region.querySelector("ul");
+			expect(header).toHaveAttribute("data-divided", "true");
+			expect(header).toHaveClass("p-basalt-card", "border-b");
+			expect(header).not.toHaveClass("pb-0");
+			expect(heading).not.toHaveClass("text-basalt-xl");
+			expect(grid).not.toHaveClass("border-t");
+			expect(within(region).getByText(countLabel)).toBeInTheDocument();
+		}
+		expect(screen.getByRole("link", { name: "Actions overview" })).toHaveAttribute(
+			"href",
+			"/ui/overview/action",
 		);
 	});
 });
