@@ -13,6 +13,8 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseSync } from "@swc/core";
+import { TEMPLATE_MANIFEST } from "../src/models/template-manifest";
+import { normalizeConsumerTemplateSource } from "../src/models/templates";
 import {
 	assertBrowserCleaned,
 	assertNoPageFaults,
@@ -46,6 +48,7 @@ import { assertConsumerProviders } from "./consumer-providers";
 import { assertConsumerRecipes, materializeApplicationRecipes } from "./consumer-recipes";
 import { assertConsumerResources } from "./consumer-resources";
 import { assertConsumerSlider } from "./consumer-slider";
+import { assertConsumerTemplates } from "./consumer-template";
 import { assertConsumerToast } from "./consumer-toast";
 
 export const HEAVY_PEERS = ["tailwindcss", "react-day-picker", "@tanstack/react-table"] as const;
@@ -61,6 +64,16 @@ export const ROOT_EXPORTS = [
 ] as const;
 
 export type ConsumerMode = "standalone" | "tailwind" | "next" | "heavy";
+
+export function materializeNextTemplate(repoRoot: string, consumerRoot: string) {
+	for (const { fileName } of TEMPLATE_MANIFEST) {
+		const source = readFileSync(join(repoRoot, "src/templates", fileName), "utf8");
+		writeFileSync(
+			join(consumerRoot, "app/template", fileName),
+			`${normalizeConsumerTemplateSource(source)}\n`,
+		);
+	}
+}
 
 export type Manifest = {
 	dependencies?: Record<string, string>;
@@ -1051,6 +1064,7 @@ export async function runConsumerGate(repoRoot: string, config: ConsumerGateConf
 			const tarballPath = join(tempRoot, tarballs[0]);
 			const consumerRoot = join(tempRoot, "consumer");
 			cpSync(fixtureRoot, consumerRoot, { recursive: true });
+			if (config.mode === "next") materializeNextTemplate(repoRoot, consumerRoot);
 			if (config.stylesheet) {
 				assertTailwindStylesheet(readFileSync(join(consumerRoot, config.stylesheet), "utf8"), {
 					fromDir: join(consumerRoot, "src"),
@@ -1240,6 +1254,12 @@ console.log(JSON.stringify({
 				evidence.marker = true;
 				evidence.launch = `${launch.command} ${launch.args[0]}`;
 				evidence.hydration = hydration;
+				evidence.templates = await withChromiumPage(profileDir, async (page) => {
+					const faults = attachPageFaults(page);
+					const result = await assertConsumerTemplates(page, `http://127.0.0.1:${port}`);
+					assertNoPageFaults(faults);
+					return result;
+				});
 				evidence.filters = await withChromiumPage(profileDir, async (page) => {
 					const faults = attachPageFaults(page);
 					await page.goto(`http://127.0.0.1:${port}/filters`, { waitUntil: "domcontentloaded" });

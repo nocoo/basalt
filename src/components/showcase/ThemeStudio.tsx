@@ -129,49 +129,7 @@ export function ThemeStudio() {
 						</Button>
 					</div>
 				</LayerCard.Header>
-				{vm.stageTab === "preview" ? (
-					<div
-						data-theme-studio-stage=""
-						style={vm.scopedVars as CSSProperties}
-						className="space-y-basalt-layout bg-basalt-background p-basalt-card"
-					>
-						<div className="flex flex-wrap items-center justify-between gap-basalt-layout">
-							<p className="font-basalt-display text-basalt-lg font-semibold text-basalt-foreground">
-								{t(`${prefix}.stageSample`)}
-							</p>
-							<div
-								role="img"
-								aria-label={t(`${prefix}.chartPreview`)}
-								className="flex gap-basalt-space-sm"
-							>
-								{[1, 2, 3, 4, 5].map((index) => (
-									<span
-										key={index}
-										aria-hidden="true"
-										className="h-basalt-4 w-basalt-4 rounded-basalt-sm"
-										style={{ backgroundColor: `hsl(var(--basalt-chart-${index}))` }}
-									/>
-								))}
-							</div>
-						</div>
-						<div
-							role="img"
-							aria-label={t(`${prefix}.surfacePreview`)}
-							className="grid grid-cols-4 gap-basalt-space-sm"
-						>
-							{["background", "card", "secondary", "bright"].map((token, index) => (
-								<span
-									key={token}
-									className="rounded-basalt-sm border border-basalt-border p-basalt-space-sm text-center text-basalt-xs text-basalt-foreground"
-									style={{ backgroundColor: `hsl(var(--basalt-${token}))` }}
-								>
-									L{index}
-								</span>
-							))}
-						</div>
-						<MicroSceneWall />
-					</div>
-				) : (
+				{vm.stageTab === "code" && (
 					<CodeHighlighted
 						attached
 						title="basalt-theme-overrides.css"
@@ -181,6 +139,49 @@ export function ThemeStudio() {
 					/>
 				)}
 			</LayerCard>
+			{vm.stageTab === "preview" && (
+				<div
+					data-theme-studio-stage=""
+					style={vm.scopedVars as CSSProperties}
+					className="space-y-basalt-layout bg-basalt-background p-basalt-card"
+				>
+					<div className="flex flex-wrap items-center justify-between gap-basalt-layout">
+						<p className="font-basalt-display text-basalt-lg font-semibold text-basalt-foreground">
+							{t(`${prefix}.stageSample`)}
+						</p>
+						<div
+							role="img"
+							aria-label={t(`${prefix}.chartPreview`)}
+							className="flex gap-basalt-space-sm"
+						>
+							{[1, 2, 3, 4, 5].map((index) => (
+								<span
+									key={index}
+									aria-hidden="true"
+									className="h-basalt-4 w-basalt-4 rounded-basalt-sm"
+									style={{ backgroundColor: `hsl(var(--basalt-chart-${index}))` }}
+								/>
+							))}
+						</div>
+					</div>
+					<div
+						role="img"
+						aria-label={t(`${prefix}.surfacePreview`)}
+						className="grid grid-cols-4 gap-basalt-space-sm"
+					>
+						{["background", "card", "secondary", "bright"].map((token, index) => (
+							<span
+								key={token}
+								className="rounded-basalt-sm border border-basalt-border p-basalt-space-sm text-center text-basalt-xs text-basalt-foreground"
+								style={{ backgroundColor: `hsl(var(--basalt-${token}))` }}
+							>
+								L{index}
+							</span>
+						))}
+					</div>
+					<MicroSceneWall />
+				</div>
+			)}
 		</div>
 	);
 }

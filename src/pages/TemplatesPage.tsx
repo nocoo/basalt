@@ -9,8 +9,9 @@ import { Copy, ExternalLink, RotateCw } from "lucide-react";
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
+import type { TemplateEntry } from "@/lib/template-catalog";
 import type { TemplateFilter, TemplateViewport } from "@/models/template-manifest";
-import { type TemplateEntry, viewportContainerClass } from "@/models/templates";
+import { viewportContainerClass } from "@/models/templates";
 import { useTemplatesShowcaseViewModel } from "@/viewmodels/useTemplatesShowcaseViewModel";
 
 const FILTERS: readonly TemplateFilter[] = [

@@ -35,9 +35,11 @@ describe("PalettePage", () => {
 		window.history.replaceState(null, "", "/palette?other=kept#preview");
 		window.localStorage.removeItem("basalt-accent");
 		const { container } = render(
-			<SitePaletteProvider>
-				<PalettePage />
-			</SitePaletteProvider>,
+			<div data-basalt-surface-root="">
+				<SitePaletteProvider>
+					<PalettePage />
+				</SitePaletteProvider>
+			</div>,
 		);
 		expect(container.querySelectorAll("[data-accent-choice]")).toHaveLength(12);
 		expect(container.querySelectorAll("[data-accent-swatch]")).toHaveLength(12);
@@ -47,6 +49,8 @@ describe("PalettePage", () => {
 		expect(container.querySelector("[data-palette-rings]")).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Theme Studio" })).toBeInTheDocument();
 		const stage = container.querySelector<HTMLElement>("[data-theme-studio-stage]");
+		expect(stage?.parentElement?.closest("[data-basalt-surface]")).toBeNull();
+		expect(stage?.closest("[data-basalt-surface-root]")).toBeInTheDocument();
 		expect(stage?.style.getPropertyValue("--basalt-background")).toBe("");
 		fireEvent.click(screen.getByRole("button", { name: "Signal Ops" }));
 		await waitFor(() => expect(window.localStorage.getItem("basalt-accent")).toBe("teal"));
@@ -76,10 +80,10 @@ describe("PalettePage", () => {
 		fireEvent.click(screen.getByRole("radio", { name: "02 Token Diff CSS" }));
 		const code = container.querySelector("[data-basalt-code]");
 		expect(code).toHaveTextContent("--basalt-radius-lg: 1rem;");
-		expect(code).toHaveTextContent(".dark {");
+		expect(code).toHaveTextContent('[data-mode="dark"] {');
 		fireEvent.click(screen.getByRole("button", { name: "Reset studio" }));
 		await waitFor(() => expect(window.localStorage.getItem("basalt-accent")).toBe("primary"));
-		expect(window.location.search).toBe("?other=kept");
+		expect(window.location.search).toBe("?other=kept&preset=00000");
 		expect(window.location.hash).toBe("#preview");
 		expect(code).toHaveTextContent("Default Basalt tokens — no overrides required.");
 	});

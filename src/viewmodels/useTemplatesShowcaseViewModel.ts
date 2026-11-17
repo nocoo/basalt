@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { filterTemplates, getTemplateBySlug } from "@/lib/template-catalog";
 import type { TemplateFilter, TemplateSlug, TemplateViewport } from "@/models/template-manifest";
-import { filterTemplates, getTemplateBySlug } from "@/models/templates";
 
 type Mode = "preview" | "code";
 

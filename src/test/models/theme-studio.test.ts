@@ -28,6 +28,15 @@ function contrast(first: string, second: string): number {
 	const values = [luminance(first), luminance(second)];
 	return (Math.max(...values) + 0.05) / (Math.min(...values) + 0.05);
 }
+function rgb(hsl: string): number[] {
+	const [hue, saturation, lightness] = hsl.split(/\s+/).map(Number.parseFloat);
+	const light = lightness / 100;
+	const amplitude = (saturation / 100) * Math.min(light, 1 - light);
+	return [0, 8, 4].map((offset) => {
+		const value = (offset + hue / 30) % 12;
+		return Math.round(255 * (light - amplitude * Math.max(-1, Math.min(value - 3, 9 - value, 1))));
+	});
+}
 
 describe("theme studio model", () => {
 	it("round trips every preset and rejects malformed or out-of-range values", () => {
@@ -59,10 +68,14 @@ describe("theme studio model", () => {
 					vars["--basalt-background"],
 					vars["--basalt-card"],
 					vars["--basalt-secondary"],
-					mode === "light" ? "0 0% 100%" : "0 0% 14%",
+					vars["--basalt-bright"],
 				];
 				for (let index = 1; index < surfaces.length; index += 1)
 					expect(luminance(surfaces[index])).toBeGreaterThan(luminance(surfaces[index - 1]));
+				const secondary = rgb(vars["--basalt-secondary"]);
+				expect(surfaceTint === "warm" ? secondary[0] : secondary[2]).toBeGreaterThan(
+					surfaceTint === "warm" ? secondary[2] : secondary[0],
+				);
 				for (const surface of surfaces)
 					expect(
 						contrast(surface, mode === "light" ? "0 0% 10%" : "0 0% 93%"),
@@ -102,7 +115,7 @@ describe("theme studio model", () => {
 							tinted["--basalt-background"],
 							tinted["--basalt-card"],
 							tinted["--basalt-secondary"],
-							mode === "light" ? "0 0% 100%" : "0 0% 14%",
+							tinted["--basalt-bright"],
 						]) {
 							expect(
 								contrast(primary, surface),
@@ -140,7 +153,15 @@ describe("theme studio model", () => {
 		};
 		const css = generateThemeCssDiff(options);
 		expect(css).toContain(":root {");
-		expect(css).toContain(".dark {");
+		expect(css).toContain('.dark,\n[data-mode="dark"] {');
+		const darkSelector = css.match(/\.dark,\s*\[data-mode="dark"\]/)?.[0];
+		expect(darkSelector).toBeDefined();
+		const host = document.createElement("div");
+		host.className = "dark";
+		expect(host.matches(darkSelector as string)).toBe(true);
+		host.className = "";
+		host.dataset.mode = "dark";
+		expect(host.matches(darkSelector as string)).toBe(true);
 		expect(css.match(/--basalt-chart-1: var\(--basalt-primary\);/g)).toHaveLength(2);
 		expect(css).toContain('--basalt-font-display: "JetBrains Mono"');
 		expect(css).toContain("--basalt-radius-island: 1rem;");

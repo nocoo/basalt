@@ -28,9 +28,7 @@ function currentMode(): StudioMode {
 function presetUrl(options: StudioPresetState): string {
 	if (typeof window === "undefined") return "";
 	const url = new URL(window.location.href);
-	if (encodeStudioPreset(options) === encodeStudioPreset(DEFAULT_STUDIO_STATE))
-		url.searchParams.delete("preset");
-	else url.searchParams.set("preset", encodeStudioPreset(options));
+	url.searchParams.set("preset", encodeStudioPreset(options));
 	return url.toString();
 }
 

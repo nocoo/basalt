@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@nocoo/basalt/components/button";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
@@ -16,9 +18,9 @@ export default function VisitorLoginTemplate() {
 	return (
 		<main
 			data-basalt-surface-root=""
-			className="flex min-h-screen items-center justify-center bg-basalt-background p-basalt-layout"
+			className="flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-layout"
 		>
-			<LayerCard padding="none" className="w-full max-w-[18rem] overflow-hidden">
+			<LayerCard padding="none" className="w-full overflow-hidden" style={{ maxWidth: "18rem" }}>
 				<div className="flex items-center gap-basalt-space-lg bg-basalt-primary px-basalt-card py-basalt-card-sm text-basalt-primary-foreground">
 					<Mountain className="size-basalt-icon-lg" strokeWidth={1.5} />
 					<span className="font-semibold">Northstar</span>

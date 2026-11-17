@@ -22,6 +22,7 @@ afterEach(() => {
 	window.history.replaceState(null, "", "/");
 	document.documentElement.classList.remove("dark");
 	document.documentElement.removeAttribute("data-mode");
+	localStorage.removeItem("basalt-accent");
 });
 
 describe("useThemeStudioViewModel", () => {
@@ -62,8 +63,8 @@ describe("useThemeStudioViewModel", () => {
 		act(() => result.current.studio.reset());
 		await waitFor(() => expect(result.current.accent.accent).toBe("primary"));
 		expect(result.current.studio.options).toEqual(DEFAULT_STUDIO_STATE);
-		expect(window.location.search).toBe("?other=kept");
-		expect(result.current.studio.shareUrl).toContain("/palette?other=kept#details");
+		expect(window.location.search).toBe("?other=kept&preset=00000");
+		expect(result.current.studio.shareUrl).toContain("/palette?other=kept&preset=00000#details");
 	});
 	it("loads a shared preset, handles invalid links and keeps existing accent without a preset", async () => {
 		const selected = STUDIO_PRESETS.find((preset) => preset.id === "limestone");
@@ -79,7 +80,7 @@ describe("useThemeStudioViewModel", () => {
 		shared.unmount();
 		window.history.replaceState(null, "", "/palette?preset=broken&x=1");
 		const invalid = renderHook(useStudioTest, { wrapper });
-		await waitFor(() => expect(window.location.search).toBe("?x=1"));
+		await waitFor(() => expect(window.location.search).toBe("?preset=00000&x=1"));
 		expect(invalid.result.current.studio.options).toEqual(DEFAULT_STUDIO_STATE);
 		invalid.unmount();
 		window.history.replaceState(null, "", "/palette");
@@ -88,6 +89,22 @@ describe("useThemeStudioViewModel", () => {
 		const initial = renderHook(useStudioTest, { wrapper: withAccent });
 		expect(initial.result.current.studio.options.accent).toBe("rose");
 		await waitFor(() => expect(window.location.search).toContain("preset="));
+	});
+	it("shares the default explicitly across different stored accents", async () => {
+		window.history.replaceState(null, "", "/palette");
+		const sender = renderHook(useStudioTest, { wrapper });
+		const write = vi.fn().mockResolvedValue(undefined);
+		await act(() => sender.result.current.studio.copyShareLink(write));
+		const share = write.mock.calls[0][0] as string;
+		expect(new URL(share).searchParams.get("preset")).toBe(
+			encodeStudioPreset(DEFAULT_STUDIO_STATE),
+		);
+		sender.unmount();
+		localStorage.setItem("basalt-accent", "rose");
+		window.history.replaceState(null, "", share);
+		const recipient = renderHook(useStudioTest, { wrapper: AccentProvider });
+		await waitFor(() => expect(recipient.result.current.accent.accent).toBe("primary"));
+		expect(recipient.result.current.studio.options.accent).toBe("primary");
 	});
 	it("copies CSS and share links, including clipboard errors and default clipboard", async () => {
 		const { result } = renderHook(useStudioTest, { wrapper });

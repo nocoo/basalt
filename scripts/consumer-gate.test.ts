@@ -32,6 +32,7 @@ import {
 	isOutsideRepo,
 	isPathInside,
 	type Manifest,
+	materializeNextTemplate,
 	NEXT_GATE,
 	OPTIONAL_HEAVY_PEERS,
 	STANDALONE_GATE,
@@ -46,6 +47,18 @@ import { allocatePort, processAlive, startHttpServer } from "./consumer-http";
 const sourceCtx = { fromDir: "/consumer/src", consumerRoot: "/consumer" };
 
 describe("standalone consumer gate helpers", () => {
+	it("materializes the copied client template for the Next server page", () => {
+		const root = mkdtempSync(join(tmpdir(), "basalt-template-next-"));
+		try {
+			mkdirSync(join(root, "app/template"), { recursive: true });
+			materializeNextTemplate(process.cwd(), root);
+			const source = readFileSync(join(root, "app/template/VisitorLoginTemplate.tsx"), "utf8");
+			expect(source.startsWith('"use client";\n')).toBe(true);
+			expect(source).not.toMatch(/from ["']@\//);
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
 	it("rejects a temp path inside the repository", () => {
 		expect(isPathInside("/repo", "/repo/fixtures")).toBe(true);
 		expect(isPathInside("/repo", "/tmp/basalt-gate-b-1")).toBe(false);

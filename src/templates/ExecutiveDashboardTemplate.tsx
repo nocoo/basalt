@@ -1,4 +1,6 @@
-import { AppHeader } from "@nocoo/basalt/components/app-header";
+"use client";
+
+import { AppHeader, AppHeaderMenuButton } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
@@ -10,14 +12,29 @@ import {
 	ContentIsland,
 	Sidebar,
 	SidebarBrand,
+	SidebarDrawer,
 	SidebarHeader,
 	SidebarItem,
 	SidebarNav,
 	SidebarProvider,
+	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { BarChart3, LayoutDashboard, Users } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const mobileQuery = "(max-width: 767px)";
+function subscribeMobile(notify: () => void) {
+	const media = window.matchMedia(mobileQuery);
+	media.addEventListener("change", notify);
+	return () => media.removeEventListener("change", notify);
+}
+function isMobile() {
+	return window.matchMedia(mobileQuery).matches;
+}
+function serverMobile() {
+	return false;
+}
 
 type Account = { name: string; owner: string; revenue: number; status: "On track" | "At risk" };
 const ACCOUNTS: Account[] = [
@@ -49,25 +66,70 @@ const COLUMNS: DataTableColumn<Account>[] = [
 
 export default function ExecutiveDashboardTemplate() {
 	const [filter, setFilter] = useState("");
+	const [drawerOpen, setDrawerOpen] = useState(false);
+	const navigationTrigger = useRef<HTMLButtonElement>(null);
+	const mobile = useSyncExternalStore(subscribeMobile, isMobile, serverMobile);
+	useEffect(() => {
+		if (!mobile) setDrawerOpen(false);
+	}, [mobile]);
+	function sidebar(drawer: boolean) {
+		return (
+			<Sidebar resizable={false}>
+				<SidebarHeader>
+					<SidebarBrand
+						logo={<BarChart3 />}
+						name="Northstar"
+						action={
+							drawer ? (
+								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
+							) : undefined
+						}
+					/>
+				</SidebarHeader>
+				<SidebarNav aria-label="Dashboard navigation">
+					<SidebarItem active onClick={() => setDrawerOpen(false)}>
+						<LayoutDashboard /> Overview
+					</SidebarItem>
+					<SidebarItem
+						onClick={() => {
+							setDrawerOpen(false);
+							document.getElementById("account-list")?.scrollIntoView();
+						}}
+					>
+						<Users /> Accounts
+					</SidebarItem>
+				</SidebarNav>
+			</Sidebar>
+		);
+	}
 	return (
 		<SidebarProvider>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				<Sidebar className="hidden md:flex" resizable={false}>
-					<SidebarHeader>
-						<SidebarBrand logo={<BarChart3 />} name="Northstar" />
-					</SidebarHeader>
-					<SidebarNav aria-label="Dashboard navigation">
-						<SidebarItem active>
-							<LayoutDashboard /> Overview
-						</SidebarItem>
-						<SidebarItem onClick={() => document.getElementById("account-list")?.scrollIntoView()}>
-							<Users /> Accounts
-						</SidebarItem>
-					</SidebarNav>
-				</Sidebar>
+				<div className="hidden md:block">{sidebar(false)}</div>
+				<SidebarDrawer
+					id="dashboard-navigation"
+					returnFocusRef={navigationTrigger}
+					open={drawerOpen}
+					onOpenChange={setDrawerOpen}
+					title="Dashboard navigation"
+				>
+					{sidebar(true)}
+				</SidebarDrawer>
 				<AppMain>
-					<AppHeader title="Overview" />
+					<AppHeader
+						title="Overview"
+						leading={
+							mobile && (
+								<AppHeaderMenuButton
+									ref={navigationTrigger}
+									onClick={() => setDrawerOpen(true)}
+									aria-expanded={drawerOpen}
+									aria-controls="dashboard-navigation"
+								/>
+							)
+						}
+					/>
 					<ContentIsland className="overflow-auto">
 						<div className="space-y-basalt-layout-lg">
 							<PageHeader
@@ -85,7 +147,7 @@ export default function ExecutiveDashboardTemplate() {
 								<StatCard title="Retention" value="96.4%" subtitle="Trailing 12 months" />
 								<StatCard title="Open orders" value="42" subtitle="Awaiting fulfillment" />
 							</StatGrid>
-							<div className="grid gap-basalt-layout md:grid-cols-2">
+							<div className="grid gap-basalt-layout sm:grid-cols-2">
 								<LayerCard padding="none">
 									<LayerCard.Header>Capacity</LayerCard.Header>
 									<LayerCard.Body className="space-y-basalt-card">

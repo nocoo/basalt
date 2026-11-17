@@ -1,4 +1,6 @@
-import { AppHeader } from "@nocoo/basalt/components/app-header";
+"use client";
+
+import { AppHeader, AppHeaderMenuButton } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
@@ -11,17 +13,38 @@ import {
 	ContentIsland,
 	Sidebar,
 	SidebarBrand,
+	SidebarDrawer,
 	SidebarHeader,
 	SidebarItem,
 	SidebarNav,
 	SidebarProvider,
+	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { KeyRound, Settings, Users } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const mobileQuery = "(max-width: 767px)";
+function subscribeMobile(notify: () => void) {
+	const media = window.matchMedia(mobileQuery);
+	media.addEventListener("change", notify);
+	return () => media.removeEventListener("change", notify);
+}
+function isMobile() {
+	return window.matchMedia(mobileQuery).matches;
+}
+function serverMobile() {
+	return false;
+}
 
 export default function WorkspaceSettingsTemplate() {
+	const mobile = useSyncExternalStore(subscribeMobile, isMobile, serverMobile);
+	const [drawerOpen, setDrawerOpen] = useState(false);
+	useEffect(() => {
+		if (!mobile) setDrawerOpen(false);
+	}, [mobile]);
+	const navigationTrigger = useRef<HTMLButtonElement>(null);
 	const [name, setName] = useState("Northstar studio");
 	const [email, setEmail] = useState("team@example.com");
 	const [saved, setSaved] = useState(false);
@@ -30,31 +53,69 @@ export default function WorkspaceSettingsTemplate() {
 	const [keys, setKeys] = useState(["Production key", "Development key"]);
 	const [nextKey, setNextKey] = useState(1);
 	const [tab, setTab] = useState("general");
+	function navigate(value: string) {
+		setTab(value);
+		setDrawerOpen(false);
+	}
+	function sidebar(drawer: boolean) {
+		return (
+			<Sidebar resizable={false}>
+				<SidebarHeader>
+					<SidebarBrand
+						logo={<Settings />}
+						name="Northstar"
+						action={
+							drawer ? (
+								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
+							) : undefined
+						}
+					/>
+				</SidebarHeader>
+				<SidebarNav aria-label="Workspace navigation">
+					<SidebarItem active={tab === "general"} onClick={() => navigate("general")}>
+						<Settings /> Settings
+					</SidebarItem>
+					<SidebarItem active={tab === "members"} onClick={() => navigate("members")}>
+						<Users /> Members
+					</SidebarItem>
+					<SidebarItem active={tab === "keys"} onClick={() => navigate("keys")}>
+						<KeyRound /> API keys
+					</SidebarItem>
+				</SidebarNav>
+			</Sidebar>
+		);
+	}
 
 	return (
 		<SidebarProvider>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				<Sidebar className="hidden md:flex" resizable={false}>
-					<SidebarHeader>
-						<SidebarBrand logo={<Settings />} name="Northstar" />
-					</SidebarHeader>
-					<SidebarNav aria-label="Workspace navigation">
-						<SidebarItem active={tab === "general"} onClick={() => setTab("general")}>
-							<Settings /> Settings
-						</SidebarItem>
-						<SidebarItem active={tab === "members"} onClick={() => setTab("members")}>
-							<Users /> Members
-						</SidebarItem>
-						<SidebarItem active={tab === "keys"} onClick={() => setTab("keys")}>
-							<KeyRound /> API keys
-						</SidebarItem>
-					</SidebarNav>
-				</Sidebar>
+				<div className="hidden md:block">{sidebar(false)}</div>
+				<SidebarDrawer
+					id="settings-navigation"
+					returnFocusRef={navigationTrigger}
+					open={drawerOpen}
+					onOpenChange={setDrawerOpen}
+					title="Workspace navigation"
+				>
+					{sidebar(true)}
+				</SidebarDrawer>
 				<AppMain>
-					<AppHeader title="Workspace settings" />
+					<AppHeader
+						title="Workspace settings"
+						leading={
+							mobile && (
+								<AppHeaderMenuButton
+									ref={navigationTrigger}
+									onClick={() => setDrawerOpen(true)}
+									aria-expanded={drawerOpen}
+									aria-controls="settings-navigation"
+								/>
+							)
+						}
+					/>
 					<ContentIsland className="overflow-auto">
-						<div className="mx-auto max-w-[64rem] space-y-basalt-layout-lg">
+						<div className="mx-auto space-y-basalt-layout-lg" style={{ maxWidth: "64rem" }}>
 							<PageHeader
 								title="Workspace settings"
 								description="Manage your team, access and usage."

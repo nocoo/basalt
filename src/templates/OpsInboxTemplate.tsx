@@ -1,8 +1,11 @@
-import { AppHeader } from "@nocoo/basalt/components/app-header";
+"use client";
+
+import { AppHeader, AppHeaderMenuButton } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
+import { Empty } from "@nocoo/basalt/components/empty";
 import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Meter } from "@nocoo/basalt/components/meter";
@@ -10,14 +13,29 @@ import {
 	ContentIsland,
 	Sidebar,
 	SidebarBrand,
+	SidebarDrawer,
 	SidebarHeader,
 	SidebarItem,
 	SidebarNav,
 	SidebarProvider,
+	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
 import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Activity, Inbox, ShieldCheck } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const mobileQuery = "(max-width: 767px)";
+function subscribeMobile(notify: () => void) {
+	const media = window.matchMedia(mobileQuery);
+	media.addEventListener("change", notify);
+	return () => media.removeEventListener("change", notify);
+}
+function isMobile() {
+	return window.matchMedia(mobileQuery).matches;
+}
+function serverMobile() {
+	return false;
+}
 
 type Incident = {
 	id: string;
@@ -51,6 +69,12 @@ const INITIAL: Incident[] = [
 ];
 
 export default function OpsInboxTemplate() {
+	const mobile = useSyncExternalStore(subscribeMobile, isMobile, serverMobile);
+	const [drawerOpen, setDrawerOpen] = useState(false);
+	useEffect(() => {
+		if (!mobile) setDrawerOpen(false);
+	}, [mobile]);
+	const navigationTrigger = useRef<HTMLButtonElement>(null);
 	const [items, setItems] = useState(INITIAL);
 	const [selected, setSelected] = useState(INITIAL[0].id);
 	const [filter, setFilter] = useState("all");
@@ -61,11 +85,41 @@ export default function OpsInboxTemplate() {
 			(filter === "all" || item.status === filter) &&
 			`${item.id} ${item.title} ${item.service}`.toLowerCase().includes(query.toLowerCase()),
 	);
-	const incident = items.find((item) => item.id === selected);
+	const incident = visible.find((item) => item.id === selected) ?? visible[0] ?? null;
 
 	function update(status: Incident["status"]) {
 		setItems((current) =>
-			current.map((item) => (item.id === selected ? { ...item, status } : item)),
+			current.map((item) => (item.id === incident?.id ? { ...item, status } : item)),
+		);
+	}
+	function sidebar(drawer: boolean) {
+		return (
+			<Sidebar resizable={false}>
+				<SidebarHeader>
+					<SidebarBrand
+						logo={<Activity />}
+						name="Signal desk"
+						action={
+							drawer ? (
+								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
+							) : undefined
+						}
+					/>
+				</SidebarHeader>
+				<SidebarNav aria-label="Operations">
+					<SidebarItem active onClick={() => setDrawerOpen(false)}>
+						<Inbox /> Inbox
+					</SidebarItem>
+					<SidebarItem
+						onClick={() => {
+							setDrawerOpen(false);
+							if (incident) document.getElementById(`${incident.id}-0`)?.focus();
+						}}
+					>
+						<ShieldCheck /> Runbooks
+					</SidebarItem>
+				</SidebarNav>
+			</Sidebar>
 		);
 	}
 
@@ -73,21 +127,30 @@ export default function OpsInboxTemplate() {
 		<SidebarProvider>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				<Sidebar className="hidden md:flex" resizable={false}>
-					<SidebarHeader>
-						<SidebarBrand logo={<Activity />} name="Signal desk" />
-					</SidebarHeader>
-					<SidebarNav aria-label="Operations">
-						<SidebarItem active>
-							<Inbox /> Inbox
-						</SidebarItem>
-						<SidebarItem onClick={() => document.getElementById(`${selected}-0`)?.focus()}>
-							<ShieldCheck /> Runbooks
-						</SidebarItem>
-					</SidebarNav>
-				</Sidebar>
+				<div className="hidden md:block">{sidebar(false)}</div>
+				<SidebarDrawer
+					id="ops-navigation"
+					returnFocusRef={navigationTrigger}
+					open={drawerOpen}
+					onOpenChange={setDrawerOpen}
+					title="Operations"
+				>
+					{sidebar(true)}
+				</SidebarDrawer>
 				<AppMain>
-					<AppHeader title="Operations inbox" />
+					<AppHeader
+						title="Operations inbox"
+						leading={
+							mobile && (
+								<AppHeaderMenuButton
+									ref={navigationTrigger}
+									onClick={() => setDrawerOpen(true)}
+									aria-expanded={drawerOpen}
+									aria-controls="ops-navigation"
+								/>
+							)
+						}
+					/>
 					<ContentIsland className="overflow-auto">
 						<div className="space-y-basalt-layout">
 							<div>
@@ -96,7 +159,7 @@ export default function OpsInboxTemplate() {
 									Triage the signals that need attention.
 								</p>
 							</div>
-							<div className="grid min-w-0 gap-basalt-layout lg:grid-cols-[minmax(15rem,1fr)_minmax(0,2fr)]">
+							<div className="grid min-w-0 gap-basalt-layout md:grid-cols-[minmax(12rem,20rem)_minmax(0,1fr)]">
 								<LayerCard padding="none">
 									<LayerCard.Header>Incident queue</LayerCard.Header>
 									<LayerCard.Body className="space-y-basalt-card-sm">
@@ -118,7 +181,7 @@ export default function OpsInboxTemplate() {
 											{visible.map((item) => (
 												<SidebarItem
 													key={item.id}
-													active={item.id === selected}
+													active={item.id === incident?.id}
 													onClick={() => setSelected(item.id)}
 												>
 													<div className="min-w-0">
@@ -139,7 +202,7 @@ export default function OpsInboxTemplate() {
 								</LayerCard>
 								<LayerCard padding="none">
 									<LayerCard.Header>{incident?.title ?? "Select an incident"}</LayerCard.Header>
-									{incident && (
+									{incident ? (
 										<LayerCard.Body className="space-y-basalt-layout">
 											<div className="flex flex-wrap items-center gap-basalt-space-lg">
 												<span className="text-basalt-sm text-basalt-muted-foreground">
@@ -205,6 +268,24 @@ export default function OpsInboxTemplate() {
 													Escalate
 												</Button>
 											</div>
+										</LayerCard.Body>
+									) : (
+										<LayerCard.Body>
+											<Empty
+												title="No incident selected"
+												description="No incidents match this filter."
+												action={
+													<Button
+														variant="outline"
+														onClick={() => {
+															setFilter("all");
+															setQuery("");
+														}}
+													>
+														Reset filter
+													</Button>
+												}
+											/>
 										</LayerCard.Body>
 									)}
 								</LayerCard>

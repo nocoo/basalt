@@ -128,12 +128,12 @@ const DEFAULT_SWATCHES: readonly StudioSwatch[] = [
 
 const SURFACES = {
 	warm: {
-		light: ["40 14% 95.7%", "40 12% 98%", "40 10% 99.2%", "40 12% 89%"],
-		dark: ["35 8% 9%", "35 7% 10.6%", "35 6% 12.2%", "35 7% 16%"],
+		light: ["40 14% 95.7%", "40 12% 98%", "40 30% 99.2%", "40 30% 99.8%", "40 12% 89%"],
+		dark: ["35 8% 9%", "35 7% 10.6%", "35 6% 12.2%", "35 6% 14%", "35 7% 16%"],
 	},
 	cool: {
-		light: ["215 12% 95.7%", "215 10% 98%", "215 8% 99.2%", "215 10% 89%"],
-		dark: ["215 8% 9%", "215 7% 10.6%", "215 6% 12.2%", "215 7% 16%"],
+		light: ["215 12% 95.7%", "215 10% 98%", "215 30% 99.2%", "215 30% 99.8%", "215 10% 89%"],
+		dark: ["215 8% 9%", "215 7% 10.6%", "215 6% 12.2%", "215 6% 14%", "215 7% 16%"],
 	},
 } as const;
 const RADIUS = {
@@ -264,11 +264,12 @@ export function computeStudioScopedVars(
 ): Record<string, string> {
 	const vars: Record<string, string> = {};
 	if (options.surfaceTint !== "neutral") {
-		const [background, card, secondary, border] = SURFACES[options.surfaceTint][mode];
+		const [background, card, secondary, bright, border] = SURFACES[options.surfaceTint][mode];
 		Object.assign(vars, {
 			"--basalt-background": background,
 			"--basalt-card": card,
 			"--basalt-secondary": secondary,
+			"--basalt-bright": bright,
 			"--basalt-border": border,
 		});
 	}
@@ -335,6 +336,8 @@ export function generateThemeCssDiff(
 					.map(([key, value]) => `  ${key}: ${value};`)
 					.join("\n")}\n}\n`
 			: "";
-	const css = [block(":root", light), block(".dark", darkOverrides)].filter(Boolean).join("\n");
+	const css = [block(":root", light), block('.dark,\n[data-mode="dark"]', darkOverrides)]
+		.filter(Boolean)
+		.join("\n");
 	return css || "/* Default Basalt tokens — no overrides required. */\n";
 }

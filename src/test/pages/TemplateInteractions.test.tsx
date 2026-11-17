@@ -1,11 +1,13 @@
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import AgentWorkspaceTemplate from "@/templates/AgentWorkspaceTemplate";
 import ExecutiveDashboardTemplate from "@/templates/ExecutiveDashboardTemplate";
 import OpsInboxTemplate from "@/templates/OpsInboxTemplate";
 import VisitorLoginTemplate from "@/templates/VisitorLoginTemplate";
 import WorkspaceSettingsTemplate from "@/templates/WorkspaceSettingsTemplate";
+
+afterEach(() => vi.restoreAllMocks());
 
 describe("standalone template interactions", () => {
 	it("keeps agent sessions, decisions, artifacts and tasks interactive", () => {
@@ -54,6 +56,81 @@ describe("standalone template interactions", () => {
 		});
 		expect(screen.getByRole("button", { name: /Queue backlog growing/ })).toBeInTheDocument();
 	});
+	it("keeps incident actions synchronized with the visible queue", () => {
+		render(
+			<TooltipProvider>
+				<OpsInboxTemplate />
+			</TooltipProvider>,
+		);
+		fireEvent.mouseDown(screen.getByRole("tab", { name: "Open" }));
+		fireEvent.click(screen.getByRole("button", { name: "Resolve" }));
+		expect(
+			screen.getByText("Queue backlog growing", { selector: "[data-slot=card-header]" }),
+		).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /Queue backlog growing/ })).toHaveAttribute(
+			"aria-current",
+			"page",
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Resolve" }));
+		expect(screen.getByText("No incident selected")).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Escalate" })).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Reset filter" }));
+		expect(screen.getByRole("button", { name: "Escalate" })).toBeInTheDocument();
+		fireEvent.change(screen.getByRole("textbox", { name: "Search incidents" }), {
+			target: { value: "no such incident" },
+		});
+		expect(screen.getByText("No incident selected")).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Resolve" })).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Reset filter" }));
+		expect(screen.getByRole("textbox", { name: "Search incidents" })).toHaveValue("");
+	});
+	it.each([
+		{
+			name: "executive dashboard",
+			Template: ExecutiveDashboardTemplate,
+			title: "Dashboard navigation",
+			item: "Accounts",
+		},
+		{ name: "operations inbox", Template: OpsInboxTemplate, title: "Operations", item: "Runbooks" },
+		{
+			name: "workspace settings",
+			Template: WorkspaceSettingsTemplate,
+			title: "Workspace navigation",
+			item: "Members",
+		},
+	])(
+		"opens $name mobile navigation and returns focus after navigation",
+		async ({ Template, title, item }) => {
+			vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+				matches: true,
+				media: query,
+				onchange: null,
+				addListener() {},
+				removeListener() {},
+				addEventListener() {},
+				removeEventListener() {},
+				dispatchEvent: () => true,
+			}));
+			const view = render(
+				<TooltipProvider>
+					<Template />
+				</TooltipProvider>,
+			);
+			const accounts = view.container.querySelector("#account-list");
+			if (accounts) Object.defineProperty(accounts, "scrollIntoView", { value: vi.fn() });
+			const trigger = screen.getByRole("button", { name: "Open navigation" });
+			act(() => trigger.focus());
+			fireEvent.click(trigger);
+			const dialog = screen.getByRole("dialog", { name: title });
+			fireEvent.click(within(dialog).getByRole("button", { name: item }));
+			await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+			await waitFor(() => expect(trigger).toHaveFocus());
+			if (item === "Members")
+				expect(
+					screen.getByRole("switch", { name: "Allow member invitations" }),
+				).toBeInTheDocument();
+		},
+	);
 	it("filters and sorts executive accounts", () => {
 		render(
 			<TooltipProvider>

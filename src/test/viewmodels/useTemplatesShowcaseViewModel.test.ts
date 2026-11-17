@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { getTemplateBySlug } from "@/models/templates";
+import { getTemplateBySlug } from "@/lib/template-catalog";
 import { useTemplatesShowcaseViewModel } from "@/viewmodels/useTemplatesShowcaseViewModel";
 
 describe("useTemplatesShowcaseViewModel", () => {

@@ -1,3 +1,5 @@
+"use client";
+
 import { AppHeader, AppHeaderMenuButton } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Badge } from "@nocoo/basalt/components/badge";
@@ -40,7 +42,20 @@ import {
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
 import { Bot, FileCode, MessageSquare, Plus, Send, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const mobileQuery = "(max-width: 767px)";
+function subscribeMobile(notify: () => void) {
+	const media = window.matchMedia(mobileQuery);
+	media.addEventListener("change", notify);
+	return () => media.removeEventListener("change", notify);
+}
+function isMobile() {
+	return window.matchMedia(mobileQuery).matches;
+}
+function serverMobile() {
+	return false;
+}
 
 const ARTIFACTS = [
 	{
@@ -52,6 +67,7 @@ const ARTIFACTS = [
 ];
 
 export default function AgentWorkspaceTemplate() {
+	const mobile = useSyncExternalStore(subscribeMobile, isMobile, serverMobile);
 	const [search, setSearch] = useState("");
 	const [sessions, setSessions] = useState([
 		"Release readiness",
@@ -62,6 +78,9 @@ export default function AgentWorkspaceTemplate() {
 	const [turns, setTurns] = useState<Record<string, string[]>>({});
 	const [collapsed, setCollapsed] = useState(false);
 	const [drawerOpen, setDrawerOpen] = useState(false);
+	useEffect(() => {
+		if (!mobile) setDrawerOpen(false);
+	}, [mobile]);
 	const navigationTrigger = useRef<HTMLButtonElement>(null);
 	const [draft, setDraft] = useState("");
 	const [files, setFiles] = useState(["release-notes.md", "checks.json"]);
@@ -80,7 +99,7 @@ export default function AgentWorkspaceTemplate() {
 
 	function sidebar(drawer: boolean) {
 		return (
-			<Sidebar className={drawer ? undefined : "hidden md:flex"} resizable={false}>
+			<Sidebar resizable={false}>
 				<SidebarHeader>
 					<SidebarBrand
 						logo={<Bot />}
@@ -160,7 +179,7 @@ export default function AgentWorkspaceTemplate() {
 		<SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				{sidebar(false)}
+				<div className="hidden md:block">{sidebar(false)}</div>
 				<SidebarDrawer
 					id="agent-navigation"
 					returnFocusRef={navigationTrigger}
@@ -173,19 +192,23 @@ export default function AgentWorkspaceTemplate() {
 				<AppMain>
 					<AppHeader
 						leading={
-							<AppHeaderMenuButton
-								ref={navigationTrigger}
-								className="md:hidden"
-								onClick={() => setDrawerOpen(true)}
-								aria-expanded={drawerOpen}
-								aria-controls="agent-navigation"
-							/>
+							mobile && (
+								<AppHeaderMenuButton
+									ref={navigationTrigger}
+									onClick={() => setDrawerOpen(true)}
+									aria-expanded={drawerOpen}
+									aria-controls="agent-navigation"
+								/>
+							)
 						}
 						title={session}
 						actions={<Badge variant="outline">Local workspace</Badge>}
 					/>
 					<ContentIsland className="overflow-auto">
-						<div className="grid min-w-0 gap-basalt-layout-lg lg:grid-cols-[minmax(0,2fr)_minmax(15rem,1fr)]">
+						<div
+							className="grid min-w-0 gap-basalt-layout-lg"
+							style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 22rem), 1fr))" }}
+						>
 							<div className="min-w-0 space-y-basalt-layout">
 								<div>
 									<p className="text-basalt-sm text-basalt-muted-foreground">
@@ -304,7 +327,7 @@ export default function AgentWorkspaceTemplate() {
 													<SelectItem value="fast">Fast</SelectItem>
 												</SelectContent>
 											</Select>
-											<div className="min-w-[8rem] flex-1">
+											<div className="flex-1" style={{ minWidth: "8rem" }}>
 												<Meter label="Context" value={32} size="sm" />
 											</div>
 											<Button onClick={() => send(draft)}>
