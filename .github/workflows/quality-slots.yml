@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -68,7 +68,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -120,7 +120,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 1
-      - uses: nocoo/base-ci/.github/actions/setup-security-scanners@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-security-scanners@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
       - name: Gitleaks over the checked-out content
         run: |
           set -euo pipefail
@@ -140,7 +140,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-security-scanners@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-security-scanners@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
       - name: OSV scan bun.lock
         run: |
           set -euo pipefail
@@ -161,7 +161,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -196,7 +196,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -230,7 +230,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -264,7 +264,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -298,7 +298,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -336,7 +336,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -396,7 +396,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -443,7 +443,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -482,7 +482,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -522,12 +522,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: nocoo/base-ci/.github/actions/setup-security-scanners@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-security-scanners@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
       - name: Install verified actionlint
         run: |
           set -euo pipefail
@@ -556,7 +556,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -576,7 +576,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@777bbe4f9bacab8a91d8c01974480a6ee23d28e0 # v2026.15
+      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
