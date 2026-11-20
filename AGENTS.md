@@ -1,122 +1,63 @@
 # Basalt
 
-Matte React design system and catalog at `https://basaltui.com`; npm package `@nocoo/basalt`.
-Profile: ts-worker-web with a published component-library lane.
-Direction: [INTEGRATION.md](INTEGRATION.md); numbered `docs/01`–`04` are historical plans and audits, not current API or quality truth. Frameworks must not rewrite this file.
+Matte React design system and catalog (`https://basaltui.com`; npm `@nocoo/basalt`; `ts-worker-web` + library lane).
+Docs: [README](README.md) · [DESIGN](DESIGN.md) · [INTEGRATION](INTEGRATION.md) · [Package](packages/basalt/README.md) · [Route Surfaces](docs/06-route-surfaces-and-harness.md) · [Gates & Release](docs/07-quality-gates-and-release.md) · [Retrospective](Retrospective.md)
 
-## Scope and instruction sources
+Sole project handbook; raise weaker hooks/CI instead of lowering it, and prevent frameworks from rewriting it. `docs/01`–`05` are historical plans/audits, not current API or quality truth.
 
-- This file is the only project handbook; nested files do not compete with it. Do not create a `CLAUDE.md` alias or copy.
-- This file is the contract; hooks, CI and configuration enforce it. Raise weaker enforcement instead of lowering this contract.
-- Human/API docs: [README.md](README.md), [INTEGRATION.md](INTEGRATION.md) and the [package README](packages/basalt/README.md). Version: root and `packages/basalt/package.json` must match; the site uses `src/lib/version.ts`. Enforcement: `.husky/`, CI/release workflows, `vitest.config.ts`, package verification and consumer scripts. Package contract: `packages/basalt/ai/` and `packages/basalt/scripts/verify-pack.ts`. Machine rules/accidents: global `AGENTS.md` and `rules/`; [Retrospective.md](Retrospective.md).
+## Commands
 
-## Design contract
+Run from root (TS 7, Bun 1.4.0, Node 26+ for consumers). Consumer gates need network; browser gates need Chromium (`test:layouts` also needs WebKit). No prod secrets needed.
 
-[DESIGN.md](DESIGN.md) owns component categories, intrinsic sizes, the four-step spacing scale, typography, colors, radii and motion. Components and catalog examples follow it. `bun run design:check` runs only at pre-push, not in normal build/dev or pre-commit.
-
-## Project invariants
-
-- Catalog routes inside `DashboardLayout` use app-local `ShowcasePage`, including all category overviews, documentation and source states. `ContentIsland` owns the page inset; card slots own their padding. Follow [DESIGN.md](DESIGN.md#page-composition), not copied wrapper styles. Structural/token checks run at pre-push only; tests exercise isolated rule fixtures.
-- Spacing is role-based: compact controls keep 2/4/6/8px; cards and layouts select 12/16/24/32px (`sm/md/lg/xl`, expressed in rem). Cards/grids default to 16px, page sections to 24px; never enlarge shared control tokens to fix a container.
-- Container boundaries have one owner: full-width disclosures use `LayerCard.Header asChild` on `CollapsibleTrigger`, expanded fields use Body inside unstyled content, attached code owns its inset. No native dashboard disclosures, painted/inset-free bars, `p-0` slot repairs or code-frame CSS patches. See DESIGN.md container boundary ownership.
-- Selection uses brighter selected tokens and readable labels without decorative side bars or frames, separate from hover/focus/disabled. Never use decorative accent/muted fills for selection. Sidebar group labels are uppercase disclosures, not destination rows. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
-
-- Root package is a private catalog; publish only `packages/basalt`. Keep CSS tokens and both Tailwind/standalone entrypoints in the verified tarball; never include secrets.
-- Preserve matte surface hierarchy, theme/contrast/accessibility behavior, public API and React client/SSR boundaries described in the integration guide.
-- Viewmodels have no View/DOM imports; pages remain thin. Catalog examples use mock data, with no business database or auth service.
-- Worker `theme-basalt` serves `dist/`; site CD belongs to `release.yml`, never a parallel laptop deployment. Vite and `worker/index.ts` expose `/api/live`; preserve status/version and production no-store caching. Assets use `not_found_handling = "none"`: the worker serves the app shell for client routes in `src/lib/routes.ts` and `dist/404.html` with HTTP 404 for anything else; register new `<Route>` paths there.
-- Keep the Bun lockfile; never delete it for installation. Temporary registry mirrors must not leak into the committed lock. Direct-dependency overrides use the existing `$name` convention.
-- Dependency reuse is proven, not assumed: `bun install` writes an install fingerprint (manifest, lockfile and Bun toolchain hashes) into `node_modules/.cache/`, and the hooks link an installed tree only when that fingerprint matches the tree under test. A missing or stale fingerprint means an isolated frozen install or a clear failure.
-- Every detached process group the quality tooling starts is registered in the process-group registry, so an interrupt, a step timeout or the supervisor deadline terminates the whole owned tree instead of leaving orphans.
-- Root and published package versions, catalog metadata and changelog must remain aligned for an authorized release.
-
-### Route surfaces and AI maintenance
-
-- **Public catalog showcase (`DashboardLayout` + `ShowcasePage`, e.g. `/dashboard`, `/components`, `/layout`, `/palette`, `/templates`, `/ui/*`):** visitor-facing pages listed in navigation, `SHOWCASE_PAGES` and `sitemap.xml`. `/dashboard` (`src/pages/DashboardPage.tsx`) proves multi-card analytics/chart grids and `@[...]/island` container responsiveness inside the full app shell; `/components`, `/layout` and `/palette` host `MicroSceneWall`, `SurfaceDisciplineInspector` and `ThemeStudio`.
-- **Standalone templates (`src/templates/*.tsx` + `/view/:slug` in `src/pages/TemplateViewportPage.tsx`):** copyable `"use client";` reference screens rendered outside `DashboardLayout` (`applyToDocument={false}` in `src/App.tsx`, synced from `/templates` via same-origin `postMessage`). Templates must import only public `@nocoo/basalt/*` entrypoints and use classes shipped in `@nocoo/basalt/styles/standalone` (no `@/` imports); enforced by `design:check`, `src/test/pages/TemplateStyles.test.ts` and `consumer:next`.
-- **Developer visual harness (`/dev/examples` in `src/pages/DevExamplesPage.tsx`):** shell-free internal regression canvas outside `DashboardLayout`, registered in `STANDALONE_EXAMPLE_PATHS` (`src/lib/routes.ts`) so the Worker serves HTTP 200 while keeping it out of navigation and `sitemap.xml`. Supports non-persisting `?theme=light|dark` (`ThemeProvider persist={false}` + `applyToDocument={false}`), comma-separated panel slicing (`?q=controls,data,overlay,micro-scenes,surface-inspector,templates`), frozen `:hover` inspection (`?hover=<selector>` cloned to `.__basalt_hover` with transitions disabled), and per-panel `PanelBoundary` reporting (`window.__basaltExamplesDone`, `window.__basaltFailures`).
-- **AI lookup and maintenance:** use `/dev/examples` (`?theme=`, `?q=`, `?hover=`) for fast, isolated primitive/token/hover checks without mutating host `localStorage` or loading heavy chart shells like `/dashboard`; use `/dashboard` and `/templates` to verify full-shell layout, container queries and iframe isolation. When adding or changing core primitives, surface contracts or templates, update `src/pages/DevExamplesPage.tsx` panels, `TEMPLATE_MANIFEST` (`src/models/template-manifest.ts`), `src/lib/routes.ts`, and byte-identical `DESIGN.md` / `packages/basalt/ai/DESIGN.md` together.
-
-## Setup and commands
-
-TypeScript 7, Bun 1.4.0, Node 26+ for consumer fixtures. Catalog: Vite 8/React, CSS tokens, Cloudflare Worker assets. Package: React 19 components with optional chart peers and separate import paths. Static/tests: TypeScript, Biome, Vitest/V8, Playwright and built external consumers. `src/` holds pages, models, viewmodels and catalog/lib; `packages/basalt/`, `fixtures/` and `scripts/` hold the publishable library, consumer examples and verification runners.
-
-Run from the root. Consumer gates create temporary external projects and need npm/network access; browser tests need Chromium; the mobile layout gate also needs WebKit. No production secrets or data are required.
-
-```bash
-bun install --frozen-lockfile
-bun run dev
-bun run typecheck
-bun run lint
-bun run build
-bun run test:coverage
-bun run --cwd packages/basalt build
-bun run playwright:install
-bun run consumer:next
-bun run test:showcase
-bun run test:layouts
-bun run package:prepublish
+```sh
+bun install --frozen-lockfile # Husky + install fingerprint
+bun run dev # https://basalt.dev.hexly.ai -> 127.0.0.1:7003
+bun run typecheck # S1: catalog/API/content/SEO + tsc (app/node)
+bun run lint # S2: Biome check-only, 0 errors / 0 warnings
+bun run build # catalog/SEO checks + site dist/
+bun run --cwd packages/basalt build # library packages/basalt/dist/
+bun run test:coverage # L1: Vitest/V8 (>=95% four floors)
+bun run playwright:install # Chromium + WebKit
+bun run consumer:next # blocking Next.js SSR/hydration/HTTP
+bun run test:showcase # full catalog showcase suite
+bun run test:layouts # Chromium + WebKit mobile layouts
+bun run package:prepublish # full pre-npm gate (pack/publint/consumers/e2e)
 ```
 
-`build` performs catalog/API/content/SEO checks and builds the site into `dist/`; the package build separately emits `packages/basalt/dist/`. `package:prepublish` runs types, lint, coverage, package build/types/pack/publint, Tailwind/standalone/Next/heavy/docs consumers, showcase tests and Chromium/WebKit mobile layout tests. Run `consumer:docs` only after building the package. `bun install` also writes the install fingerprint that the hooks use to prove the installed tree matches the manifests and the Bun toolchain.
+Run `bun run consumer:docs` only after building the package. `bun run design:check` runs at pre-push/CI (`L4`), not dev/build/pre-commit.
 
-## Testing and quality contract
+## Invariants
 
-System0 uses 12 fixed slots. Statuses are `impl`, `todo`, `na`; every selected check is
-check-only and every stage has a timeout. The measured column is warm Home wall time
-from the 2026-11-12 migration unless marked otherwise.
+- **Design contract**: [DESIGN.md](DESIGN.md) owns component categories, intrinsic sizes, spacing, type, colors, radii, and motion; follow it rather than local overrides.
+- **Page composition**: All `DashboardLayout` routes use `ShowcasePage`; `ContentIsland` owns page inset and card slots own padding ([DESIGN.md](DESIGN.md#page-composition)).
+- **Role-based spacing**: Controls use 2/4/6/8px; cards/layouts use 12/16/24/32px (`sm/md/lg/xl` rem; 16px cards/grids, 24px sections); never enlarge control tokens ([DESIGN.md](DESIGN.md#spacing)).
+- **Container boundaries**: Disclosures use `LayerCard.Header asChild` on `CollapsibleTrigger`, Body in unstyled content, attached code owns inset; no `p-0` slot repairs or native dashboard disclosures.
+- **Selection & nav**: Brighter selected tokens (no bars/frames or accent/muted fills), distinct from hover/focus/disabled; sidebar groups are disclosures ([DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy)).
+- **Package boundary**: Root is private; publish only `packages/basalt` with CSS tokens and Tailwind + standalone entrypoints (`packages/basalt/scripts/verify-pack.ts`); never include secrets.
+- **Architecture & API**: Preserve matte surfaces, theme/a11y, public API (`packages/basalt/ai/`), and client/SSR boundaries ([INTEGRATION.md](INTEGRATION.md)); ViewModels never import Views/DOM; mock data only.
+- **Worker & routes**: Worker `theme-basalt` serves `dist/` (`not_found_handling = "none"`): app shell for `src/lib/routes.ts`, `dist/404.html` (404) otherwise; keep `/api/live` status/version and prod `no-store`.
+- **Surfaces & harness**: Templates (`src/templates/`) import only `@nocoo/basalt/*` + standalone classes; use `/dev/examples` for isolated checks ([route surfaces](docs/06-route-surfaces-and-harness.md)).
+- **Contract sync**: Core primitive, surface, or template changes update `DevExamplesPage.tsx`, `TEMPLATE_MANIFEST`, `src/lib/routes.ts`, and byte-identical `DESIGN.md` / `packages/basalt/ai/DESIGN.md` together.
+- **Lockfile & overrides**: Never delete `bun.lock` or commit mirror URLs in it; direct-dependency overrides use `$name`.
+- **Release**: Keep root/`packages/basalt` versions, `src/lib/version.ts`, metadata, and `CHANGELOG.md` aligned; site CD via `release.yml` only, npm needs 2FA ([runbook](docs/07-quality-gates-and-release.md)).
 
-| Slot | Status | Command and check object                                                                                                                                                                         | Stage                      | Measured     |
-| ---- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- | ------------ |
-| S1   | impl   | `bun run typecheck`: catalog/API/content/SEO checks plus app and node `tsc --noEmit`                                                                                                             | pre-commit, CI             | 6.1–6.8s     |
-| S2   | impl   | `bun run lint`: Biome check-only, 0 errors and 0 warnings                                                                                                                                        | pre-commit, CI             | 0.3s         |
-| S3   | impl   | `bun run scripts/quality/workflow-lint.ts`: actionlint plus full-SHA `uses:` refs                                                                                                                | pre-commit (workflows), CI | <1s          |
-| G1   | impl   | Gitleaks with `[extend] useDefault = true`: staged index, Git-validated pushed range, or CI checkout                                                                                             | pre-commit, pre-push, CI   | 4.6–5.0s     |
-| G2   | impl   | `osv-scanner scan --lockfile=bun.lock --config=osv-scanner.toml`                                                                                                                                 | pre-push, CI               | 1.1–1.4s     |
-| B1   | impl   | `bun run --cwd packages/basalt build` and `bun run build`; shared once at pre-push before L1/L4/P1                                                                                               | pre-push, CI               | 9.4–9.7s     |
-| L1   | impl   | `bun run test:coverage`, `scripts/verify-pre-commit-coverage.ts`; consumes shared B1 package output; four 95% floors                                                                             | pre-push, CI               | 79.4–83.5s   |
-| L2   | na     | No `@cloudflare/vitest-pool-workers`/workerd suite; `worker/index.ts` tests run in Node with a mocked `ASSETS` binding (L1)                                                                      | CI (skipped)               | -            |
-| L3   | na     | Static Vite catalog and static-asset Worker; no service, protocol or storage boundary to integrate                                                                                               | CI (skipped)               | -            |
-| L4   | impl   | `bun run design:check` plus `bun run test:showcase:smoke`, Chromium against shared B1 `dist/`                                                                                                    | pre-push, CI               | 130.7–130.9s |
-| P1   | impl   | local `pack:check`/`publint` + standalone/heavy consumers on the shared B1 build; CI `types:check`/`pack:check`/`publint` + standalone/Tailwind/heavy/docs consumers from a fresh revision build | pre-push, CI               | 93.1–96.8s   |
-| Z1   | impl   | native aggregate over all slots plus blocking `Next.js consumer` and `Hook self-test`; checks results, skips and tested SHA                                                                      | CI                         | -            |
+## Quality & Local Gates
 
-`L3` is not hidden inside L4: `test:showcase:smoke` is a browser journey, while external
-package consumption is P1. `consumer:next` is the blocking Next.js SSR/hydration/HTTP
-consumer outside the 12 slots. `Cross-browser layouts (nightly)` and
-`Full showcase sweep (nightly)` are non-blocking extensions; they are not in Z1 because
-the default gates deliberately keep Chromium and a focused journey set.
+Follows `system1-quality`; CI slots and pinned `base-ci` revision live in `.github/workflows/quality-slots.yml` (`quality / Z1: Gate` required on `main`). Statuses: `enforced`, `planned`, `manual`, `N/A`.
 
-| Hook       | Behavior                                                                                                                                                                                                                                                                                                                                                    | Measured                             |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| pre-commit | A supervisor owns the deadline, handles interrupts and kills every registered process group; the body exports the index, rejects manifest/toolchain drift, proves the install fingerprint, then runs S1, S2, S3 (workflows only) and G1                                                                                                                     | 11.5–12.48s                          |
-| pre-push   | The supervisor reads stdin, owns the deadline and handles interrupts; the body skips deletions, builds a worktree per local OID, reuses the installed tree only on a matching install fingerprint (else frozen install), scans the pushed range (full history for a new ref), then runs G1/G2/B1 serially and L1/L4/P1 in parallel on the same B1 artifacts | gate 138.4–141.9s; push 143.5–147.0s |
+- **Exceptions**: `L2 Runtime` is `N/A` (Worker tests mock `ASSETS` in Node/L1; no workerd suite); `L3 Integration` is `N/A` (static catalog/Worker, no service/storage boundary).
+- **Coverage & CI jobs**: `L1` enforces 95% on all four metrics across `src/{models,viewmodels,lib}` and `packages/basalt/src`; `Next.js consumer` and `Hook self-test` block in `Z1`; nightlies are non-blocking.
+- **Local hooks**: `bun install` (`prepare`) installs `.husky/`; `pre-commit` checks staged index (`S1/S2/S3/G1`), `pre-push` checks per-OID worktrees (`G1/G2/B1` serial, `L1/L4/P1` parallel); never `--no-verify`.
+- **Gate safety**: Hooks reuse `node_modules` only on a verified install fingerprint and register detached process groups in `PgidRegistry` ([gates & release](docs/07-quality-gates-and-release.md)).
 
-Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch
-pushes. CI calls only `./.github/workflows/quality-slots.yml` from job `quality`, so the
-required check is `quality / Z1: Gate`. base-ci composites are pinned to
-`777bbe4f9bacab8a91d8c01974480a6ee23d28e0` (`v2026.15`); `deploy-worker.yml` uses the same
-SHA and passes `required-quality-check: "quality / Z1: Gate"`.
+## Resources & Isolation
 
-### Measured evidence (2026-11-12)
-
-- **Environment:** Home, Bun 1.4.4 against declared `bun@1.4.0`, Node 26.13.0, actionlint 1.7.12, Gitleaks 8.30.1, OSV Scanner 2.7.0, Python 3.9.6.
-- **Coverage (scoped Vitest denominator):** 267 files / 2296 tests; statements **98.10%** (4603/4692), branches **96.62%** (4498/4655), functions **99.09%** (1211/1222), lines **98.33%** (4309/4382); floors **95%** each. The review fixes added 15 regression tests (267 files / 2296 tests against the previous 265 / 2281) without changing the coverage denominator.
-- **pre-commit:** **11.5s** on the latest real commit, within the 15s target and 30s limit; cold/warm baselines were **12.48s**/**12.15s**. S1 is **6.1–6.8s** and G1 is **4.6–5.0s**.
-- **pre-push:** **138.4–141.9s** gate / **143.5–147.0s** push on the final commits after sharing B1 and running L1/L4/P1 in parallel. B1 **9.4–9.9s**, L1 **79.4–83.5s**, L4 **130.7–130.9s**, P1 **93.1–96.8s**; L4 remains the local critical path and the 2.5-minute target is met.
-- **CI:** **274–275s (4:34–4:35)** end to end on `a828295f` and `dea25554`, inside both the five-minute target and ten-minute limit. Queue delay was **0s** and job setup about **2–3s**. B1 **46–49s**; four unit shards **95–153s** (67/66/66/66 files, 422/469/748/642 tests); L1 merge/verify **19–21s**; L4 **149–161s**; P1 **258–263s**; Z1 **7–8s**. P1 is now the critical path. The four shards use `scripts/merge-coverage.ts` rather than Vitest's blob merge because the latter dropped one duplicate same-location function from the denominator; the merged denominator remains 4603/4692 statements, 4498/4655 branches, 1211/1222 functions and 4309/4382 lines.
-- **Self-test:** `bun run test:gate-self-test` covers healthy execution; S1/S2/S3/G1/G2/B1/L1/L4/P1 failures; missing Gitleaks/actionlint/OSV; scanner failure versus findings; unresolvable and empty secret ranges; step and stage timeouts; a hanging hook and its descendant cleanup; supervisor SIGINT and SIGTERM interrupts before and after the hook starts, including the groups it registered; a hanging tool query and a detached HTTP server under a step timeout; toolchain and lockfile drift; empty coverage; staged-index and pushed-range secrets; pushed OID selection; new-ref range that still scans commits; deleted refs; install fingerprint reuse, missing and stale proofs; focus guard; Z1 result, skip, SHA, declaration, blocking-job and output checks.
-- **Isolation gap:** consumer gates allocate external temp roots, loopback ports and browser profiles; the showcase build still writes the shared `dist/`.
-
-## Resources and isolation
-
-Dev uses 7003 (`https://basalt.dev.hexly.ai`); browser consumers allocate loopback ports and fresh local profiles. Keep runs separate from daily browser storage and catalog development builds. No D1 database, R2 fixture bucket or remote `-test` Worker is needed.
-
-## Operations / release
-
-Authorized maintainers use `bun run release` to align root/package versions and changelog, push `main`, verify CI, then publish the matching `vX.Y.Z` tag. `release.yml` proves source/run/version, requires `quality / Z1: Gate` on the same SHA, deploys `theme-basalt`, and runs `scripts/deploy-smoke.ts` for production redirects, headers and version. Workers Builds still deploys on push without waiting for Z1; GitHub release deployment is the Z1-gated path.
-For npm, pass `bun run package:prepublish`, then publish from `packages/basalt` with the owner's 2FA and the approved registry path. Never publish the repository root. Verify site behavior and `npm view @nocoo/basalt version`; npm and site deployment are distinct results.
+| Lane  | Endpoint / State                            | Boundary                                               |
+| ----- | ------------------------------------------- | ------------------------------------------------------ |
+| Dev   | `127.0.0.1:7003` (`basalt.dev.hexly.ai`)    | Local catalog; mock data, no DB/auth/R2                |
+| Tests | Temp roots, loopback ports, fresh profiles  | Isolated storage; showcase build writes shared `dist/` |
+| Prod  | `https://basaltui.com`, npm `@nocoo/basalt` | `release.yml` (Z1-gated) for site; 2FA for npm         |
 
 ## Retrospective
 
-Narratives remain in [Retrospective.md](Retrospective.md); keep recurring project lessons here, cross-project lessons in global rules/nmem and deterministic checks in hooks/tests.
+Record incident narratives in [Retrospective.md](Retrospective.md); promote recurring project constraints to `Invariants` above and enforceable safeguards to tests or hooks.
