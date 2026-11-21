@@ -154,13 +154,13 @@ export default function NavigationPage() {
 						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.short5Pages")}
 						</p>
-						<TablePager page={page1} pageSize={1} totalCount={5} onPageChange={setPage1} />
+						<TablePager page={page1} pageSize={10} totalCount={50} onPageChange={setPage1} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
 						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.long20Pages")}
 						</p>
-						<TablePager page={page2} pageSize={1} totalCount={20} onPageChange={setPage2} />
+						<TablePager page={page2} pageSize={10} totalCount={200} onPageChange={setPage2} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
 						<p className="text-basalt-sm text-muted-foreground font-mono">
