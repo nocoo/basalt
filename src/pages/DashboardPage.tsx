@@ -15,6 +15,12 @@ import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useStatsOverviewViewModel } from "@/viewmodels/useStatsOverviewViewModel";
 
+const DIRECTION_CLASSES = {
+	positive: "text-basalt-tag-success-foreground",
+	negative: "text-basalt-destructive",
+	neutral: "text-basalt-muted-foreground",
+} as const;
+
 export default function DashboardPage() {
 	const { t } = useTranslation();
 	const { stats } = useStatsOverviewViewModel();
@@ -33,7 +39,9 @@ export default function DashboardPage() {
 						value={s.value}
 						trendContent={
 							<>
-								<span className={`font-medium tabular-nums ${s.changeColorClass}`}>{s.change}</span>
+								<span className={`font-medium tabular-nums ${DIRECTION_CLASSES[s.direction]}`}>
+									{s.change}
+								</span>
 								{(s.change.startsWith("+") || s.change.startsWith("-")) && (
 									<span className="text-basalt-muted-foreground">
 										{t("dashboard.comparisonPeriodUnknown")}

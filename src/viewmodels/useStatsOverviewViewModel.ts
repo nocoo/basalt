@@ -4,13 +4,13 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { analyticsStats } from "@/data/mock";
-import { changeToColorClass, classifyChange } from "@/models/stats-overview";
+import { type ChangeDirection, classifyChange } from "@/models/stats-overview";
 
 export interface StatCard {
 	label: string;
 	value: string;
 	change: string;
-	changeColorClass: string;
+	direction: ChangeDirection;
 }
 
 export function useStatsOverviewViewModel() {
@@ -21,7 +21,7 @@ export function useStatsOverviewViewModel() {
 				label: t(s.labelKey),
 				value: s.valueKey ? t(s.valueKey) : s.value,
 				change: s.change,
-				changeColorClass: changeToColorClass(classifyChange(s.change)),
+				direction: classifyChange(s.change),
 			})),
 		[t],
 	);

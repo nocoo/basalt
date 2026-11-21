@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { changeToColorClass, classifyChange } from "@/models/stats-overview";
+import { classifyChange } from "@/models/stats-overview";
 
 describe("stats-overview model", () => {
 	describe("classifyChange", () => {
@@ -13,20 +13,6 @@ describe("stats-overview model", () => {
 
 		it("returns neutral for no prefix", () => {
 			expect(classifyChange("35%")).toBe("neutral");
-		});
-	});
-
-	describe("changeToColorClass", () => {
-		it("returns text-success for positive", () => {
-			expect(changeToColorClass("positive")).toBe("text-success");
-		});
-
-		it("returns text-destructive for negative", () => {
-			expect(changeToColorClass("negative")).toBe("text-destructive");
-		});
-
-		it("returns text-muted-foreground for neutral", () => {
-			expect(changeToColorClass("neutral")).toBe("text-muted-foreground");
 		});
 	});
 });
