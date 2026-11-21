@@ -26,6 +26,13 @@
 	.basalt-ui :is(code, kbd, samp, pre) {
 		font-family: var(--basalt-font-mono);
 		font-feature-settings: normal;
+		font-variant-ligatures: none;
+	}
+
+	.basalt-ui::selection,
+	.basalt-ui ::selection {
+		background-color: hsl(var(--basalt-primary) / 0.22);
+		color: hsl(var(--basalt-foreground));
 	}
 
 	:where(
@@ -182,6 +189,12 @@
 
 	[data-basalt-sidebar]:not([data-overlay]) {
 		top: var(--basalt-sticky-top, 0px);
+	}
+
+	[data-basalt-island],
+	[data-basalt-sidebar] {
+		scrollbar-color: hsl(var(--basalt-border)) transparent;
+		scrollbar-width: thin;
 	}
 }
 

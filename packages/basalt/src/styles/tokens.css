@@ -1,4 +1,5 @@
 :root {
+	accent-color: hsl(var(--basalt-primary));
 	--basalt-space-xs: 0.125rem;
 	--basalt-space-sm: 0.25rem;
 	--basalt-space-md: 0.375rem;
@@ -143,6 +144,7 @@
 :root,
 .light,
 [data-mode="light"] {
+	color-scheme: light;
 	--basalt-background: 0 0% 95.7%;
 	--basalt-foreground: 0 0% 10%;
 	--basalt-card: 0 0% 97%;
@@ -295,6 +297,7 @@
 
 .dark,
 [data-mode="dark"] {
+	color-scheme: dark;
 	--basalt-background: 0 0% 9%;
 	--basalt-foreground: 0 0% 93%;
 	--basalt-card: 0 0% 10.6%;

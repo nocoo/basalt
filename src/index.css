@@ -327,10 +327,17 @@
 		width: 100%;
 		min-width: 0;
 	}
+	html {
+		background-color: hsl(var(--basalt-background));
+	}
 	body {
 		@apply bg-background text-foreground;
 		font-family: var(--basalt-font-sans);
 		font-feature-settings: var(--basalt-font-features);
+	}
+	::selection {
+		background-color: hsl(var(--basalt-primary) / 0.22);
+		color: hsl(var(--basalt-foreground));
 	}
 }
 

@@ -20,6 +20,7 @@
 }
 @layer theme, base, components, utilities;
 :root {
+  accent-color: hsl(var(--basalt-primary));
   --basalt-space-xs: 0.125rem;
   --basalt-space-sm: 0.25rem;
   --basalt-space-md: 0.375rem;
@@ -160,6 +161,7 @@
   --basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 :root, .light, [data-mode="light"] {
+  color-scheme: light;
   --basalt-background: 0 0% 95.7%;
   --basalt-foreground: 0 0% 10%;
   --basalt-card: 0 0% 97%;
@@ -313,6 +315,7 @@
   --basalt-heatmap-orange-4: 43 65% 35%;
 }
 .dark, [data-mode="dark"] {
+  color-scheme: dark;
   --basalt-background: 0 0% 9%;
   --basalt-foreground: 0 0% 93%;
   --basalt-card: 0 0% 10.6%;
@@ -1257,6 +1260,11 @@
   .basalt-ui:is(code, kbd, samp, pre),	.basalt-ui :is(code, kbd, samp, pre) {
     font-family: var(--basalt-font-mono);
     font-feature-settings: normal;
+    font-variant-ligatures: none;
+  }
+  .basalt-ui::selection,	.basalt-ui ::selection {
+    background-color: hsl(var(--basalt-primary) / 0.22);
+    color: hsl(var(--basalt-foreground));
   }
   :where(	.basalt-ui:is(button, input, optgroup, select, textarea),	.basalt-ui :is(button, input, optgroup, select, textarea)	) {
     font-family: inherit;
@@ -1380,6 +1388,10 @@
   }
   [data-basalt-sidebar]:not([data-overlay]) {
     top: var(--basalt-sticky-top, 0px);
+  }
+  [data-basalt-island],	[data-basalt-sidebar] {
+    scrollbar-color: hsl(var(--basalt-border)) transparent;
+    scrollbar-width: thin;
   }
   [data-basalt-sheet] {
     --basalt-sidebar-height: 100%;

@@ -4,6 +4,8 @@ import postcss from "postcss";
 import { describe, expect, it } from "vitest";
 
 const tokens = readFileSync(path.join("packages/basalt/src/styles/tokens.css"), "utf8");
+const base = readFileSync(path.join("packages/basalt/src/styles/base.css"), "utf8");
+const standalone = readFileSync(path.join("packages/basalt/src/styles/standalone.css"), "utf8");
 const tailwind = readFileSync(path.join("packages/basalt/src/styles/tailwind.css"), "utf8");
 const themeSelectors = ['[data-mode="light"]', '[data-mode="dark"]'];
 
@@ -245,6 +247,17 @@ describe("nested surface CSS", () => {
 					4.5,
 				);
 			}
+		}
+	});
+
+	it("sets native color-scheme, accent-color, themed scrollbars, and disables code ligatures", () => {
+		expect(tokenValues('[data-mode="light"]').get("color-scheme")).toBe("light");
+		expect(tokenValues('[data-mode="dark"]').get("color-scheme")).toBe("dark");
+		expect(tokenValues(":root").get("accent-color")).toBe("hsl(var(--basalt-primary))");
+		for (const sheet of [base, standalone]) {
+			expect(sheet).toContain("font-variant-ligatures: none");
+			expect(sheet).toContain("scrollbar-color: hsl(var(--basalt-border)) transparent");
+			expect(sheet).toContain("scrollbar-width: thin");
 		}
 	});
 });
