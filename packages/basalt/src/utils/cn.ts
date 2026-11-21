@@ -6,6 +6,7 @@ const twMerge = extendTailwindMerge({
 		theme: {
 			spacing: [(value: string) => value.startsWith("basalt-")],
 			radius: [(value: string) => value.startsWith("basalt-")],
+			shadow: [(value: string) => value.startsWith("basalt-")],
 			text: [
 				"basalt-xs",
 				"basalt-sm",

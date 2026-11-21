@@ -18,7 +18,7 @@ export function overlayPanelClass(className?: string) {
 	return cn(
 		BASALT_UI_CLASS,
 		OVERLAY_LAYER,
-		"basalt-floating overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-basalt-menu-inset text-basalt-base text-basalt-popover-foreground shadow-md",
+		"basalt-floating overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-basalt-menu-inset text-basalt-base text-basalt-popover-foreground shadow-md [--basalt-hover-radius:var(--basalt-radius-sm)]",
 		OVERLAY_MOTION,
 		className,
 	);

@@ -61,7 +61,10 @@ describe("UploadQueue and UploadItem", () => {
 		for (const progress of [undefined, Number.NaN, Infinity]) {
 			rerender(<UploadItem file={{ ...file, status: "uploading", progress }} />);
 			expect(screen.getByRole("progressbar")).not.toHaveAttribute("aria-valuenow");
-			expect(screen.getByRole("progressbar").firstChild).toHaveClass("motion-reduce:animate-none");
+			expect(screen.getByRole("progressbar").firstChild).toHaveClass(
+				"animate-basalt-pulse",
+				"motion-reduce:animate-none",
+			);
 		}
 		rerender(<UploadItem file={{ ...file, status: "error" }} />);
 		expect(screen.queryByRole("alert")).not.toBeInTheDocument();

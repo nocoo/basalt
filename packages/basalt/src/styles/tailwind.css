@@ -266,7 +266,7 @@
 	--animate-basalt-accordion-up: basalt-accordion-up var(--basalt-motion-normal)
 		var(--basalt-motion-ease);
 	--animate-basalt-spin: basalt-spin 1s linear infinite;
-	--animate-pulse: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	--animate-basalt-pulse: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 	--animate-basalt-overlay-in: basalt-overlay-in var(--basalt-floating-duration-enter)
 		var(--basalt-motion-ease-enter);
 	--animate-basalt-overlay-out: basalt-overlay-out var(--basalt-floating-duration-exit)

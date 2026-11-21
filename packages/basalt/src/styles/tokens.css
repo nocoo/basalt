@@ -184,7 +184,7 @@
 	--basalt-hover-weight: 18%;
 	--basalt-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-primary)) 18%,
+		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
 		hsl(var(--basalt-surface-elevated))
 	);
 	--basalt-selected: 0 0% 100%;
@@ -353,7 +353,7 @@
 	--basalt-hover-weight: 18%;
 	--basalt-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-primary)) 18%,
+		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
 		hsl(var(--basalt-surface-elevated))
 	);
 	--basalt-selected: 0 0% 22%;
@@ -860,7 +860,7 @@
 		width: var(--basalt-hover-width, 0px);
 		height: var(--basalt-hover-height, 0px);
 		transform: translate(var(--basalt-hover-x, 0px), var(--basalt-hover-y, 0px));
-		border-radius: var(--basalt-radius-md);
+		border-radius: var(--basalt-hover-radius, var(--basalt-radius-md));
 		background: var(--basalt-hover);
 		opacity: 0;
 		transition: none;
@@ -924,9 +924,8 @@
 		transform: translate3d(var(--basalt-command-left, 0px), var(--basalt-command-top, 0px), 0);
 		width: var(--basalt-command-width, 0px);
 		height: var(--basalt-command-height, 0px);
-		border-radius: var(--basalt-radius-md);
+		border-radius: var(--basalt-radius-sm);
 		background: var(--basalt-hover);
-		will-change: transform;
 	}
 
 	.basalt-command-list[data-basalt-command-animated="true"]::before {

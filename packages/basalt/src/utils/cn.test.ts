@@ -39,4 +39,14 @@ describe("cn", () => {
 	it("resolves tailwind conflicts", () => {
 		expect(cn("px-basalt-space-lg", "px-basalt-space-lg")).toBe("px-basalt-space-lg");
 	});
+
+	it("merges Basalt shadows and ring colors cleanly", () => {
+		expect(cn("shadow-basalt-control", "shadow-none")).toBe("shadow-none");
+		expect(cn("shadow-basalt-control", "shadow-xs")).toBe("shadow-xs");
+		expect(cn("shadow-basalt-card", "shadow-basalt-control")).toBe("shadow-basalt-control");
+		expect(cn("ring-1 ring-basalt-border/80", "ring-basalt-border")).toBe(
+			"ring-1 ring-basalt-border",
+		);
+		expect(cn("ring-1 ring-basalt-border", "ring-transparent")).toBe("ring-1 ring-transparent");
+	});
 });

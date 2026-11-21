@@ -54,6 +54,7 @@ describe("overlay", () => {
 		expect(overlayPanelClass()).toContain(OVERLAY_LAYER);
 		expect(overlayPanelClass()).toContain(OVERLAY_MOTION);
 		expect(overlayPanelClass()).toContain("basalt-floating");
+		expect(overlayPanelClass()).toContain("[--basalt-hover-radius:var(--basalt-radius-sm)]");
 	});
 
 	it("shares a stacking layer and reduced-motion kill switch", () => {

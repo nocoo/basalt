@@ -57,16 +57,25 @@ describe("nested surface CSS", () => {
 
 	it("derives soft uniform matte hover from the configured primary in both themes", () => {
 		for (const [selector, weight] of [
-			['[data-mode="light"]', 18],
-			['[data-mode="dark"]', 18],
+			['[data-mode="light"]', "18%"],
+			['[data-mode="dark"]', "18%"],
 		] as const) {
-			expect(tokenValues(selector).get("--basalt-hover")?.replace(/\s+/g, "")).toBe(
-				`color-mix(insrgb,hsl(var(--basalt-primary))${weight}%,hsl(var(--basalt-surface-elevated)))`,
+			const values = tokenValues(selector);
+			expect(values.get("--basalt-hover-weight")).toBe(weight);
+			expect(values.get("--basalt-hover")?.replace(/\s+/g, "")).toBe(
+				"color-mix(insrgb,hsl(var(--basalt-primary))var(--basalt-hover-weight),hsl(var(--basalt-surface-elevated)))",
 			);
 		}
 		for (const selector of [".basalt-hover-list::before", ".basalt-command-list::before"]) {
 			expect(tokenValues(selector).get("background")).toBe("var(--basalt-hover)");
 		}
+		expect(tokenValues(".basalt-hover-list::before").get("border-radius")).toBe(
+			"var(--basalt-hover-radius, var(--basalt-radius-md))",
+		);
+		expect(tokenValues(".basalt-command-list::before").get("border-radius")).toBe(
+			"var(--basalt-radius-sm)",
+		);
+		expect(tokens).not.toContain("will-change: transform");
 		expect(tokens).not.toContain("--basalt-hover-end");
 		expect(tailwind).toContain("--color-basalt-hover: var(--basalt-hover);");
 	});

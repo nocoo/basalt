@@ -103,7 +103,7 @@ export function UploadItem({
 							style={{ width: progress === undefined ? "40%" : `${progress}%` }}
 							className={cn(
 								"h-full rounded-basalt-full bg-basalt-primary",
-								progress === undefined && "animate-pulse motion-reduce:animate-none",
+								progress === undefined && "animate-basalt-pulse motion-reduce:animate-none",
 							)}
 						/>
 					</div>

@@ -202,7 +202,7 @@
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-primary)) 18%,
+		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
 		hsl(var(--basalt-surface-elevated))
 	);
   }
@@ -370,7 +370,7 @@
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-primary)) 18%,
+		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
 		hsl(var(--basalt-surface-elevated))
 	);
   }
@@ -836,7 +836,7 @@
     width: var(--basalt-hover-width, 0px);
     height: var(--basalt-hover-height, 0px);
     transform: translate(var(--basalt-hover-x, 0px), var(--basalt-hover-y, 0px));
-    border-radius: var(--basalt-radius-md);
+    border-radius: var(--basalt-hover-radius, var(--basalt-radius-md));
     background: var(--basalt-hover);
     opacity: 0;
     transition: none;
@@ -891,9 +891,8 @@
     transform: translate3d(var(--basalt-command-left, 0px), var(--basalt-command-top, 0px), 0);
     width: var(--basalt-command-width, 0px);
     height: var(--basalt-command-height, 0px);
-    border-radius: var(--basalt-radius-md);
+    border-radius: var(--basalt-radius-sm);
     background: var(--basalt-hover);
-    will-change: transform;
   }
   .basalt-command-list[data-basalt-command-animated="true"]::before {
     transition: transform var(--basalt-motion-fast) var(--basalt-motion-ease);
@@ -2089,14 +2088,14 @@
   .rotate-180 {
     rotate: 180deg;
   }
+  .animate-basalt-pulse {
+    animation: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
   .animate-basalt-shimmer {
     animation: basalt-shimmer 1.5s ease-in-out infinite;
   }
   .animate-basalt-spin {
     animation: basalt-spin 1s linear infinite;
-  }
-  .animate-pulse {
-    animation: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
   .cursor-col-resize {
     cursor: col-resize;
@@ -3267,6 +3266,9 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
+  }
+  .\[--basalt-hover-radius\:var\(--basalt-radius-sm\)\] {
+    --basalt-hover-radius: var(--basalt-radius-sm);
   }
   .font-inherit {
     font: inherit;

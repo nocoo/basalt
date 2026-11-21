@@ -404,7 +404,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"upload-queue": {
 		"file": "packages/basalt/src/components/upload-queue.tsx",
-		"hash": "b038c0d0b930be69",
+		"hash": "1222bc11ec5a1c86",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/upload-queue.js.map (sourcesContent[0])"
 	},
