@@ -151,7 +151,7 @@ for (const spec of specs) {
 		fireEvent.click(screen.getByText("Mock"));
 		await flushFrame();
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
-		expect(indicator.style.transform).toBe("translate(50px, 0px)");
+		expect(indicator.style.transform).toBe("translate(50px)");
 		expect(indicator.style.width).toBe("48px");
 		expect(indicator.className).toContain("basalt-selection-motion");
 		expect(
@@ -283,7 +283,7 @@ describe("useSelectionIndicator", () => {
 		boxes.Second.height = 28;
 		act(() => resize([], {} as ResizeObserver));
 		await flushFrame();
-		expect(indicator.style.transform).toBe("translate(64px, 0px)");
+		expect(indicator.style.transform).toBe("translate(64px)");
 		expect(indicator).not.toHaveClass(SELECTION_INDICATOR_MOTION_CLASS);
 		fireEvent.click(screen.getByText("First"));
 		await flushFrame();
@@ -324,7 +324,7 @@ describe("useSelectionIndicator", () => {
 		fireEvent.click(screen.getByText("next"));
 		await flushFrame();
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
-		expect(indicator.style.transform).toBe("translate(50px, 0px)");
+		expect(indicator.style.transform).toBe("translate(50px)");
 		expect(indicator.style.width).toBe("44px");
 		restore();
 	});
