@@ -1,4 +1,5 @@
 import { Button } from "@nocoo/basalt/components/button";
+import { chart } from "@nocoo/basalt/components/chart";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
@@ -27,7 +28,6 @@ import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent } from "@/lib/format";
-import { chart } from "@/lib/palette";
 
 const weeklySteps = [
 	{ label: "Mon", value: 7800 },

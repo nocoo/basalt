@@ -83,14 +83,15 @@ describe("nested surface CSS", () => {
 	it("keeps the first eight numbered chart series distinct in both themes", () => {
 		for (const selector of themeSelectors) {
 			const values = tokenValues(selector);
-			const colors = Array.from({ length: 8 }, (_, index) => {
+			const colors = Array.from({ length: 24 }, (_, index) => {
 				const value = values.get(`--basalt-chart-${index + 1}`) ?? "";
 				const alias = /^var\((--basalt-chart-[\w-]+)\)$/.exec(value);
 				return alias ? values.get(alias[1]) : value;
 			});
 			expect(colors).not.toContain("");
 			expect(colors).not.toContain(undefined);
-			expect(new Set(colors).size).toBe(8);
+			expect(new Set(colors.slice(0, 8)).size).toBe(8);
+			expect(new Set(colors).size).toBe(24);
 		}
 	});
 

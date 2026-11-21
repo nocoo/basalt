@@ -18,6 +18,7 @@ import {
 	ChartTooltipRow,
 	ChartTooltipSummary,
 	cartesianAxisProps,
+	chart,
 	chartAxis,
 	chartFontSize,
 	chartTextStyle,
@@ -535,6 +536,12 @@ describe("chart type helpers", () => {
 		expect(withAlpha("chart-axis", 0.15)).toBe("hsl(var(--basalt-chart-axis) / 0.15)");
 		expect(seriesColor({ key: "y", color: "rgb(9, 8, 7)" }, 3)).toBe("rgb(9, 8, 7)");
 		expect(seriesColor(undefined, 4)).toBe(CHART_COLORS[4]);
+		expect(new Set(Object.values(chart)).size).toBe(24);
+		expect(chart.rose).toBe("hsl(var(--basalt-chart-2))");
+		expect(chart.sky).toBe("hsl(var(--basalt-chart-9))");
+		expect(chart.indigo).toBe("hsl(var(--basalt-chart-8))");
+		expect(chart.sky).not.toBe(chart.rose);
+		expect(chart.indigo).not.toBe(chart.primary);
 	});
 });
 

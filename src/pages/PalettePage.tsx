@@ -1,4 +1,5 @@
 import { Button } from "@nocoo/basalt/components/button";
+import { CHART_COLORS } from "@nocoo/basalt/components/chart";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import {
 	Collapsible,
@@ -21,7 +22,6 @@ import { PaletteEditor } from "@/components/PaletteEditor";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { ThemeStudio } from "@/components/showcase/ThemeStudio";
 import { formatPercent, formatUsd } from "@/lib/format";
-import { CHART_COLORS } from "@/lib/palette";
 
 // ── Mock data for example charts ──
 

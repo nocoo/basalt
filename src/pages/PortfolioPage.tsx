@@ -1,4 +1,5 @@
 import { Badge } from "@nocoo/basalt/components/badge";
+import { CHART_COLORS, withAlpha } from "@nocoo/basalt/components/chart";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import {
 	Table,
@@ -14,8 +15,9 @@ import { DonutChart } from "@/components/charts/donut";
 import { LineChart } from "@/components/charts/line";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent, formatUsd } from "@/lib/format";
-import { CHART_COLORS, CHART_TOKENS, withAlpha } from "@/lib/palette";
 import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
+
+const PORTFOLIO_CHART_TOKENS = ["chart-1", "chart-2", "chart-5", "chart-7", "chart-24"] as const;
 
 export default function PortfolioPage() {
 	const { t } = useTranslation();
@@ -150,7 +152,7 @@ export default function PortfolioPage() {
 											<div className="flex items-center gap-basalt-space-lg">
 												<div
 													className="flex h-8 w-8 items-center justify-center rounded-basalt-md"
-													style={{ background: withAlpha(CHART_TOKENS[i], 0.12) }}
+													style={{ background: withAlpha(PORTFOLIO_CHART_TOKENS[i], 0.12) }}
 												>
 													{item.up ? (
 														<TrendingUp

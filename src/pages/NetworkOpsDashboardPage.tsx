@@ -1,3 +1,4 @@
+import { chart } from "@nocoo/basalt/components/chart";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { AlertTriangle, Clock, Router, Server, Wifi } from "lucide-react";
@@ -10,7 +11,6 @@ import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
 import { ShowcasePage } from "@/components/ShowcasePage";
-import { chart } from "@/lib/palette";
 
 const latencyTrend = [
 	{ label: "00", value: 18 },

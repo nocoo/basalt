@@ -1,10 +1,10 @@
 // ViewModel for the Progress Tracking page.
 // Composes model logic with data source — View consumes this hook only.
 
+import { CHART_COLORS } from "@nocoo/basalt/components/chart";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { budgets, monthlyBudgetData } from "@/data/mock";
-import { CHART_COLORS } from "@/lib/palette";
 import { computeProgressPercent, computeProgressSummary } from "@/models/progress-tracking";
 
 export interface CategoryProgress {
