@@ -162,12 +162,12 @@ describe("catalog source contract", () => {
 			"actions",
 		]);
 		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
-			"size",
 			"title",
 			"description",
 			"breadcrumbs",
 			"actions",
 			"filters",
+			"className",
 		]);
 		expect(implementationFileFor(entry("stat-strip"))).toBe(
 			"packages/basalt/src/components/stat-strip.tsx",
