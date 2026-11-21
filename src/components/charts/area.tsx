@@ -1,29 +1,27 @@
-import type { ReactNode } from "react";
-import { Area, CartesianGrid, AreaChart as RechartsArea, Tooltip, XAxis, YAxis } from "recharts";
 import {
 	ANIMATION_PROPS,
 	CHART_PLOT_MARGIN,
 	CHART_PLOT_MARGIN_BARE,
 	CHART_TYPE,
+	ChartLegend,
+	type ChartSeriesDescriptor,
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
+	resolveChartSeries,
 	seriesColor,
-} from "./config";
+	type XYPoint,
+	xyFallbackKeys,
+} from "@nocoo/basalt/components/chart";
+import type { ReactNode } from "react";
+import { Area, CartesianGrid, AreaChart as RechartsArea, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartShell } from "./frame";
-import { ChartLegend } from "./legend";
 import type {
 	LineChartAxisDomain,
 	LineChartLegendRenderer,
 	LineChartNumericKeys,
 	LineChartTooltipRenderer,
 } from "./line";
-import {
-	type ChartSeriesDescriptor,
-	resolveChartSeries,
-	type XYPoint,
-	xyFallbackKeys,
-} from "./series";
 
 export type AreaChartProps<
 	TData extends { x: string | number } = XYPoint,

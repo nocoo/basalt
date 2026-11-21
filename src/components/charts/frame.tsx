@@ -1,10 +1,10 @@
 import {
 	ChartFrame as BasaltChartFrame,
 	type ChartFrameProps as BasaltChartFrameProps,
+	RESPONSIVE_CONTAINER_PROPS,
 } from "@nocoo/basalt/components/chart";
 import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { ResponsiveContainer } from "recharts";
-import { RESPONSIVE_CONTAINER_PROPS } from "./config";
 
 export type ChartFrameProps = Omit<BasaltChartFrameProps, "children"> & {
 	children: ReactElement<{

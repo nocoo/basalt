@@ -1,8 +1,15 @@
+import {
+	ANIMATION_PROPS,
+	type BulletPoint,
+	type BulletSeriesDescriptor,
+	cartesianAxisProps,
+	chartTooltipProps,
+	resolveChartSeries,
+	seriesColor,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Bar, BarChart as RechartsBar, Tooltip, XAxis, YAxis } from "recharts";
-import { ANIMATION_PROPS, cartesianAxisProps, chartTooltipProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { type BulletPoint, type BulletSeriesDescriptor, resolveChartSeries } from "./series";
 
 export type BulletChartProps = {
 	data: BulletPoint[];

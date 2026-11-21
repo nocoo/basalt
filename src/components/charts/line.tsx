@@ -1,25 +1,23 @@
-import type { ReactNode } from "react";
-import { CartesianGrid, Line, LineChart as RechartsLine, Tooltip, XAxis, YAxis } from "recharts";
 import {
 	ANIMATION_PROPS,
+	applyLeadColor,
 	CHART_PLOT_MARGIN,
 	CHART_PLOT_MARGIN_BARE,
 	CHART_TYPE,
+	ChartLegend,
+	type ChartSeriesDescriptor,
+	type ChartTooltipItem,
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
-	seriesColor,
-} from "./config";
-import { ChartShell } from "./frame";
-import { ChartLegend } from "./legend";
-import {
-	applyLeadColor,
-	type ChartSeriesDescriptor,
 	resolveChartSeries,
+	seriesColor,
 	type XYPoint,
 	xyFallbackKeys,
-} from "./series";
-import type { ChartTooltipItem } from "./tooltip";
+} from "@nocoo/basalt/components/chart";
+import type { ReactNode } from "react";
+import { CartesianGrid, Line, LineChart as RechartsLine, Tooltip, XAxis, YAxis } from "recharts";
+import { ChartShell } from "./frame";
 
 export type LineChartAxisDomain =
 	| [number | "auto" | "dataMin", number | "auto" | "dataMax"]

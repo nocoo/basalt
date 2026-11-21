@@ -1,8 +1,15 @@
+import {
+	ANIMATION_PROPS,
+	CHART_TYPE,
+	type ChartSeriesDescriptor,
+	chartTickStyle,
+	GRID_PROPS,
+	type RadarPoint,
+	seriesColor,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart as RechartsRadar } from "recharts";
-import { ANIMATION_PROPS, CHART_TYPE, chartTickStyle, GRID_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import type { ChartSeriesDescriptor, RadarPoint } from "./series";
 
 export type RadarChartProps = {
 	data: RadarPoint[];

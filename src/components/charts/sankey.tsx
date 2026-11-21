@@ -1,9 +1,13 @@
+import {
+	CHART_COLORS,
+	chartAxis,
+	chartFontSize,
+	chartTooltipProps,
+	type SankeyData,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Sankey, type SankeyNodeProps, Tooltip } from "recharts";
-import { chartFontSize, chartTooltipProps } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS, chartAxis } from "./palette";
-import type { SankeyData } from "./series";
 
 function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
 	return (

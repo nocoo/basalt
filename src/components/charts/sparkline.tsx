@@ -1,10 +1,15 @@
+import {
+	ANIMATION_PROPS,
+	type ChartSeriesDescriptor,
+	chart,
+	resolveChartSeries,
+	seriesColor,
+	type XYPoint,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Bar, Cell, BarChart as RechartsBar, XAxis, YAxis } from "recharts";
-import { ANIMATION_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
 import type { LineChartNumericKeys } from "./line";
-import { chart } from "./palette";
-import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
 export type SparklineProps<
 	TData extends { x: string | number } = XYPoint,

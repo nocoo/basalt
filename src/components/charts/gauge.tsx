@@ -1,11 +1,14 @@
+import {
+	ANIMATION_PROPS,
+	type ChartSeriesDescriptor,
+	chartMuted,
+	seriesColor,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { useId } from "react";
 import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 import { cn } from "@/lib/utils";
-import { ANIMATION_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { chartMuted } from "./palette";
-import type { ChartSeriesDescriptor } from "./series";
 
 export type GaugeProps = {
 	value: number;

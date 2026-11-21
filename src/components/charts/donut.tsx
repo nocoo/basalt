@@ -1,9 +1,14 @@
+import {
+	ANIMATION_PROPS,
+	ChartLegend,
+	type ChartSeriesDescriptor,
+	chartTooltipProps,
+	type NamedValue,
+	seriesColor,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import { ANIMATION_PROPS, chartTooltipProps, seriesColor } from "./config";
 import { ChartShell } from "./frame";
-import { ChartLegend } from "./legend";
-import type { ChartSeriesDescriptor, NamedValue } from "./series";
 
 export type DonutChartProps = {
 	data: NamedValue[];

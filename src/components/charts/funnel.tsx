@@ -1,9 +1,15 @@
+import {
+	ANIMATION_PROPS,
+	type ChartSeriesDescriptor,
+	chartAxis,
+	chartFontSize,
+	chartTooltipProps,
+	type NamedValue,
+	seriesColor,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Funnel, LabelList, FunnelChart as RechartsFunnel, Tooltip } from "recharts";
-import { ANIMATION_PROPS, chartFontSize, chartTooltipProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { chartAxis } from "./palette";
-import type { ChartSeriesDescriptor, NamedValue } from "./series";
 
 export type FunnelChartProps = {
 	data: NamedValue[];

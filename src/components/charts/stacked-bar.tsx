@@ -1,24 +1,26 @@
-import type { ReactNode } from "react";
-import { Bar, CartesianGrid, BarChart as RechartsBar, Tooltip, XAxis, YAxis } from "recharts";
 import {
 	ANIMATION_PROPS,
 	BAR_RADIUS,
 	CHART_PLOT_MARGIN,
 	CHART_PLOT_MARGIN_BARE,
+	ChartLegend,
+	type ChartSeriesDescriptor,
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
+	resolveChartSeries,
 	seriesColor,
-} from "./config";
+	type XYPoint,
+} from "@nocoo/basalt/components/chart";
+import type { ReactNode } from "react";
+import { Bar, CartesianGrid, BarChart as RechartsBar, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartShell } from "./frame";
-import { ChartLegend } from "./legend";
 import type {
 	LineChartAxisDomain,
 	LineChartLegendRenderer,
 	LineChartNumericKeys,
 	LineChartTooltipRenderer,
 } from "./line";
-import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
 export type StackedBarChartProps<
 	TData extends { x: string | number } = XYPoint,

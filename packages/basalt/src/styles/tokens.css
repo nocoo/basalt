@@ -199,7 +199,6 @@
 		hsl(var(--basalt-destructive)) 90%,
 		hsl(var(--basalt-background))
 	);
-	--basalt-zebra-fill: hsl(var(--basalt-bright));
 	--basalt-radius: var(--basalt-radius-lg);
 	--basalt-radius-island: var(--basalt-radius-lg);
 	--basalt-radius-card: var(--basalt-radius-lg);
@@ -368,7 +367,6 @@
 		hsl(var(--basalt-destructive)) 90%,
 		hsl(var(--basalt-background))
 	);
-	--basalt-zebra-fill: hsl(var(--basalt-bright));
 	/* Match the classic candy swatches; gray and preference ownership stay independent. */
 	--basalt-chart-blue: 204 90% 70%;
 	--basalt-chart-pink: 345 88% 77%;
@@ -437,7 +435,6 @@
 	--basalt-surface-current: var(--basalt-card);
 	--basalt-surface-elevated: var(--basalt-secondary);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
-	--basalt-zebra-fill: hsl(var(--basalt-secondary));
 }
 
 [data-basalt-surface-root] [data-basalt-surface] {
@@ -460,20 +457,17 @@
 		hsl(var(--basalt-destructive)) 90%,
 		hsl(var(--basalt-background))
 	);
-	--basalt-zebra-fill: hsl(var(--basalt-bright));
 }
 
 [data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] {
 	background: hsl(var(--basalt-bright));
 	--basalt-surface-current: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
-	--basalt-zebra-fill: transparent;
 }
 
 [data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] [data-basalt-surface] {
 	background: transparent;
 	--basalt-control-fill: hsl(var(--basalt-bright));
-	--basalt-zebra-fill: transparent;
 }
 
 [data-basalt-surface-root]
@@ -493,7 +487,6 @@
 		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
 		hsl(var(--basalt-surface-elevated))
 	);
-	--basalt-zebra-fill: hsl(var(--basalt-secondary));
 }
 
 /* biome-ignore lint/style/noDescendingSpecificity: Rootless surface trees cannot overlap a surface-root tree. */
@@ -516,7 +509,6 @@
 		hsl(var(--basalt-destructive)) 90%,
 		hsl(var(--basalt-background))
 	);
-	--basalt-zebra-fill: hsl(var(--basalt-bright));
 }
 
 [data-basalt-surface]:not([data-basalt-surface-root] *)
@@ -525,7 +517,6 @@
 	background: hsl(var(--basalt-bright));
 	--basalt-surface-current: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
-	--basalt-zebra-fill: transparent;
 }
 
 [data-basalt-surface]:not([data-basalt-surface-root] *)
@@ -534,7 +525,6 @@
 	[data-basalt-surface] {
 	background: transparent;
 	--basalt-control-fill: hsl(var(--basalt-bright));
-	--basalt-zebra-fill: transparent;
 }
 
 [data-basalt-surface]:not([data-basalt-surface-root] *)
@@ -702,19 +692,6 @@
 		flex-shrink: 0;
 		margin-inline-end: calc(-1 * var(--basalt-space-md));
 	}
-	.p-basalt-nav-inset {
-		padding: var(--basalt-space-nav-inset);
-	}
-	.px-basalt-nav-inset {
-		padding-inline: var(--basalt-space-nav-inset);
-	}
-	.px-basalt-sidebar-inset {
-		padding-inline: var(--basalt-space-sidebar-inset);
-	}
-	.size-basalt-sidebar-brand-slot {
-		inline-size: var(--basalt-size-sidebar-brand-slot);
-		block-size: var(--basalt-size-sidebar-brand-slot);
-	}
 	.basalt-sidebar-brand-logo {
 		display: flex;
 		flex-shrink: 0;
@@ -840,12 +817,6 @@
 			transition: none;
 		}
 	}
-	.basalt-chat-input {
-		field-sizing: content;
-		min-height: calc(1lh + var(--basalt-space-2));
-		max-height: calc(5lh + var(--basalt-space-2));
-		overscroll-behavior: contain;
-	}
 	.basalt-hover-list {
 		position: relative;
 		isolation: isolate;
@@ -876,14 +847,6 @@
 	@media (prefers-reduced-motion: reduce) {
 		.basalt-hover-list[data-hover-animated]::before {
 			transition: none;
-		}
-	}
-	.basalt-agent-reveal {
-		animation: basalt-tab-in var(--basalt-motion-normal) var(--basalt-motion-ease-enter);
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.basalt-agent-reveal {
-			animation: none;
 		}
 	}
 	[data-basalt-loader] > span {
@@ -1244,27 +1207,6 @@
 	to {
 		opacity: 1;
 		transform: translateY(0);
-	}
-}
-
-.basalt-chat-word {
-	animation: basalt-chat-word-in var(--basalt-motion-normal) var(--basalt-motion-ease) both;
-}
-
-@keyframes basalt-chat-word-in {
-	from {
-		opacity: 0;
-		filter: blur(3px);
-	}
-	to {
-		opacity: 1;
-		filter: blur(0);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.basalt-chat-word {
-		animation: none;
 	}
 }
 

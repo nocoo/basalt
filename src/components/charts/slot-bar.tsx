@@ -1,4 +1,13 @@
 import {
+	ANIMATION_PROPS,
+	BAR_RADIUS,
+	type ChartSeriesDescriptor,
+	cartesianAxisProps,
+	resolveChartSeries,
+	seriesColor,
+	type XYPoint,
+} from "@nocoo/basalt/components/chart";
+import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
@@ -7,10 +16,8 @@ import {
 import type { ReactNode } from "react";
 import { Bar, BarChart as RechartsBar, XAxis, YAxis } from "recharts";
 import { cn } from "@/lib/utils";
-import { ANIMATION_PROPS, BAR_RADIUS, cartesianAxisProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
 import type { LineChartNumericKeys } from "./line";
-import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
 export type SlotBarItem = {
 	color: string;

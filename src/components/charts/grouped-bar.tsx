@@ -1,3 +1,8 @@
+import {
+	type ChartSeriesDescriptor,
+	resolveChartSeries,
+	type XYPoint,
+} from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { BarChart } from "./bar";
 import type {
@@ -6,7 +11,6 @@ import type {
 	LineChartNumericKeys,
 	LineChartTooltipRenderer,
 } from "./line";
-import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
 export type GroupedBarChartProps<
 	TData extends { x: string | number } = XYPoint,
