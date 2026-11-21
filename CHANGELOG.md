@@ -11,6 +11,39 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.5.2] - 2026-11-21
+
+### Changed
+
+- Bump react-i18next 17.1.8 → 18.0.3
+- Bump i18next 26.7.1 → 27.2.2
+- Bump jsdom 30.1.3 → 31.0.1
+- Bump @testing-library/jest-dom 7.0.1 → 8.0.0
+- Bump wrangler 4.152.0 → 4.165.0
+- Bump lucide-react 1.72.0 → 1.77.0
+- Bump tailwind-merge 3.7.0 → 3.7.1
+- Bump vitest 5.1.0 → 5.1.1
+- Bump react-router 8.5.1 → 8.5.2
+- Bump i18next-browser-languagedetector 8.3.0 → 8.3.1
+- Bump @vitest/coverage-v8 5.1.0 → 5.1.1
+- Bump recharts 3.10.1 → 3.11.0
+- Bump @biomejs/biome 2.6.7 → 2.6.8
+- Bump postcss 8.5.32 → 8.5.33
+- Bump playwright 1.64.1 → 1.65.1
+- Bump base-ci to v2026.16
+- Normalize AGENTS.md to system1 v2 standard
+- Close 05 plan on 3.5.1 rollout without 4.0 phase
+- Align eagle release tag v0.15.1 in 05-plan-4-0.md
+- Mark P3.5 and P3.6 complete (31/31 active repos)
+- Mark P3.4 batch complete (22/31 active repos)
+- Record SidebarNav pt-* checkpoint from ellie PR #998
+- Mark P3.3 batch complete and record domain palette checkpoint
+- Sync 05-plan-4-0 progress and post-rollout polish checkpoints
+- Mark P3.2 Batch 2 completed (12/31 active repos on basalt 3.5.1)
+- Preserve custom sidebar domain features during template alignment
+- Refine 5-repo batch rollout plan with 3.5.1 lessons
+- Sync fleet basalt version ledger through 3.5.1 (P2 + P3.1)
+
 ## [3.5.1] - 2026-11-17
 
 ### Changed
