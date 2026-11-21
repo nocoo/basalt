@@ -682,6 +682,7 @@ export function formatJsonDeterministic(rawJson: string, filePath = "registry.js
 		{
 			input: rawJson,
 			encoding: "utf8",
+			stdio: ["pipe", "pipe", "pipe"],
 			maxBuffer: 10 * 1024 * 1024,
 			timeout: 10000,
 		},
