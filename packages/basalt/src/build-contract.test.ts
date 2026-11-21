@@ -1,6 +1,11 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import {
+	PREPUBLISH_STAGE_1,
+	PREPUBLISH_STAGE_2,
+	type PrepublishStep,
+} from "../../../scripts/package-prepublish";
 import { collectEsmClosure, rootBoundaryViolations } from "../scripts/root-boundary";
 
 const pkgRoot = "packages/basalt";
@@ -63,42 +68,44 @@ function classifyPrepublishSegment(segment: string) {
 	}
 }
 
-function assertPrepublishPipeline(script: string) {
-	if (/\b(npm|bun|pnpm|yarn)\s+publish\b/.test(script)) {
-		throw new Error("lifecycle must not publish");
-	}
-	if (/\bnpx\b|\bbunx\b/.test(script)) {
-		throw new Error("lifecycle must not bypass via npx/bunx");
-	}
-	if (/[;|]/.test(script) || /(?:^|[^&])&(?:[^&]|$)/.test(script)) {
-		throw new Error("lifecycle must be fail-fast");
-	}
-	const steps = script.split(/\s*&&\s*/).map((segment) => {
-		const id = classifyPrepublishSegment(segment);
-		if (!id) {
-			throw new Error(`lifecycle bypass via unknown step: ${segment}`);
+function assertPrepublishStages(
+	stage1: readonly PrepublishStep[],
+	stage2: readonly PrepublishStep[],
+) {
+	const allSteps = [...stage1, ...stage2];
+	const ids = allSteps.map((step) => {
+		const cmd = [step.command, ...step.args].join(" ");
+		if (/\b(npm|bun|pnpm|yarn)\s+publish\b/.test(cmd)) {
+			throw new Error("lifecycle must not publish");
+		}
+		if (/\bnpx\b|\bbunx\b/.test(cmd)) {
+			throw new Error("lifecycle must not bypass via npx/bunx");
+		}
+		const id = classifyPrepublishSegment(cmd);
+		if (!id || id !== step.id) {
+			throw new Error(`lifecycle bypass via unknown step: ${cmd}`);
 		}
 		return id;
 	});
 	const seen = new Set<string>();
-	for (const step of steps) {
-		if (seen.has(step)) {
-			throw new Error(`duplicate step: ${step}`);
+	for (const id of ids) {
+		if (seen.has(id)) {
+			throw new Error(`duplicate step: ${id}`);
 		}
-		seen.add(step);
+		seen.add(id);
 	}
 	for (const required of REQUIRED_PREPUBLISH_STEPS) {
 		if (!seen.has(required)) {
 			throw new Error(`missing step: ${required}`);
 		}
 	}
-	if (steps.length !== REQUIRED_PREPUBLISH_STEPS.length) {
+	if (ids.length !== REQUIRED_PREPUBLISH_STEPS.length) {
 		throw new Error("lifecycle step count mismatch");
 	}
-	if (steps.some((step, index) => step !== REQUIRED_PREPUBLISH_STEPS[index])) {
-		throw new Error("reordered steps");
+	if (!stage1.some((step) => step.id === "package-build")) {
+		throw new Error("reordered steps: package-build must run in stage 1");
 	}
-	return steps;
+	return ids;
 }
 
 describe("package build contract", () => {
@@ -254,40 +261,39 @@ describe("package build contract", () => {
 		}
 	});
 
-	it("locks the fail-fast package:prepublish pipeline in unique order", () => {
+	it("locks the fail-fast package:prepublish pipeline across staged runners", () => {
 		const root = JSON.parse(readFileSync("package.json", "utf8")) as {
 			scripts: Record<string, string>;
 		};
 		const pipeline = root.scripts["package:prepublish"];
-		expect(pipeline).toBeTruthy();
-		expect(pipeline).not.toContain("npx");
-		expect(pipeline).not.toContain("bunx");
-		expect(assertPrepublishPipeline(pipeline)).toEqual([...REQUIRED_PREPUBLISH_STEPS]);
+		expect(pipeline).toBe("bun scripts/package-prepublish.ts");
+		expect(new Set(assertPrepublishStages(PREPUBLISH_STAGE_1, PREPUBLISH_STAGE_2))).toEqual(
+			new Set(REQUIRED_PREPUBLISH_STEPS),
+		);
 	});
 
 	it("rejects prepublish pipelines that skip, duplicate, reorder, bypass, or publish", () => {
-		const root = JSON.parse(readFileSync("package.json", "utf8")) as {
-			scripts: Record<string, string>;
-		};
-		const good = root.scripts["package:prepublish"];
-		const withoutCoverage = good.replace(" && bun run test:coverage", "");
-		expect(withoutCoverage).not.toBe(good);
-		expect(() => assertPrepublishPipeline(withoutCoverage)).toThrow(/missing step: coverage/);
-		const duplicated = `${good} && bun run lint`;
-		expect(() => assertPrepublishPipeline(duplicated)).toThrow(/duplicate step: lint/);
-		const reordered = good.replace(
-			"bun run consumer:tailwind && bun run consumer:standalone",
-			"bun run consumer:standalone && bun run consumer:tailwind",
+		const withoutCoverage = PREPUBLISH_STAGE_2.filter((s) => s.id !== "coverage");
+		expect(() => assertPrepublishStages(PREPUBLISH_STAGE_1, withoutCoverage)).toThrow(
+			/missing step: coverage/,
 		);
-		expect(reordered).not.toBe(good);
-		expect(() => assertPrepublishPipeline(reordered)).toThrow(/reordered steps/);
-		const bypassOr = good.replace(" && bun run lint && ", " || bun run lint && ");
-		expect(bypassOr).not.toBe(good);
-		expect(() => assertPrepublishPipeline(bypassOr)).toThrow(/fail-fast/);
-		const unknown = `${good} && bun run build`;
-		expect(() => assertPrepublishPipeline(unknown)).toThrow(/unknown step/);
-		const publishes = `${good} && npm publish`;
-		expect(() => assertPrepublishPipeline(publishes)).toThrow(/must not publish/);
+		const duplicated = [...PREPUBLISH_STAGE_2, PREPUBLISH_STAGE_1[1]];
+		expect(() => assertPrepublishStages(PREPUBLISH_STAGE_1, duplicated)).toThrow(
+			/duplicate step: lint/,
+		);
+		const buildInStage2 = PREPUBLISH_STAGE_1.filter((s) => s.id !== "package-build");
+		const buildStep = PREPUBLISH_STAGE_1.find((s) => s.id === "package-build") as PrepublishStep;
+		expect(() => assertPrepublishStages(buildInStage2, [buildStep, ...PREPUBLISH_STAGE_2])).toThrow(
+			/reordered steps/,
+		);
+		const unknown: PrepublishStep = { id: "build", command: "bun", args: ["run", "build"] };
+		expect(() =>
+			assertPrepublishStages(PREPUBLISH_STAGE_1, [...PREPUBLISH_STAGE_2, unknown]),
+		).toThrow(/unknown step/);
+		const publishes: PrepublishStep = { id: "publish", command: "npm", args: ["publish"] };
+		expect(() =>
+			assertPrepublishStages(PREPUBLISH_STAGE_1, [...PREPUBLISH_STAGE_2, publishes]),
+		).toThrow(/must not publish/);
 	});
 
 	it.skipIf(!existsSync(path.join(pkgRoot, "dist/index.js")))(

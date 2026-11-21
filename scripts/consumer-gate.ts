@@ -1090,7 +1090,18 @@ export async function runConsumerGate(repoRoot: string, config: ConsumerGateConf
 				}
 			}
 
-			run("npm", ["install", "--no-fund", "--no-audit"], consumerRoot);
+			run(
+				"npm",
+				[
+					"install",
+					"--no-fund",
+					"--no-audit",
+					"--prefer-offline",
+					"--fetch-timeout=30000",
+					"--fetch-retries=2",
+				],
+				consumerRoot,
+			);
 			const recipeSources =
 				config.mode === "heavy"
 					? []

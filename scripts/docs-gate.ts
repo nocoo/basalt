@@ -476,11 +476,22 @@ export async function runDocsGate(repoRoot = process.cwd()) {
 		writeFileSync(pkgJsonPath, `${JSON.stringify(pkgJson, null, "\t")}\n`);
 
 		// 4. Install dependencies in clean consumer
-		const install = spawnSync("npm", ["install", "--no-fund", "--no-audit"], {
-			cwd: consumerDir,
-			stdio: "pipe",
-			encoding: "utf8",
-		});
+		const install = spawnSync(
+			"npm",
+			[
+				"install",
+				"--no-fund",
+				"--no-audit",
+				"--prefer-offline",
+				"--fetch-timeout=30000",
+				"--fetch-retries=2",
+			],
+			{
+				cwd: consumerDir,
+				stdio: "pipe",
+				encoding: "utf8",
+			},
+		);
 		if (install.status !== 0) {
 			throw new Error(`consumer npm install failed:\n${install.stderr}`);
 		}

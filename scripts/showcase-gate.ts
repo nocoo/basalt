@@ -1,13 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { chromium, type Page } from "playwright";
 import { build } from "vite";
 import { showcaseBuildConfig } from "./catalog-page-status-build";
-import {
-	assertNoPageFaults,
-	attachPageFaults,
-	createBrowserProfileDir,
-	withChromiumPage,
-} from "./consumer-browser";
+import { assertNoPageFaults, assertPinnedChromium, attachPageFaults } from "./consumer-browser";
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
 import { prerenderHtml } from "./prerender";
 import { assertCodePanels } from "./showcase-code";
@@ -52,54 +48,61 @@ export async function runShowcaseGate() {
 		url,
 	});
 	try {
-		const evidence = await withChromiumPage(createBrowserProfileDir(), async (page) => {
-			const faults = attachPageFaults(page);
-			page.setDefaultTimeout(12_000);
-			const landing = await assertLandingShowcase(page, url);
-			const library = await assertLibraryShowcases(page, url);
-			const motion = await assertOverlayMotion(page, url);
-			const command = await assertCommandSelection(page, url);
-			const loader = await assertLoaderShowcase(page, url);
-			const formGroups = await assertFormGroupSpacing(page, url);
-			const codePanels = await assertCodePanels(page, url);
-			const hover = await assertHoverAndDensity(page, url);
-			const navigation = await assertNavigationLists(page, url);
-			const selection = await assertSelectionHierarchy(page, url);
-			const dimensions = await assertDimensionTokens(page, url);
-			const pageLayout = await assertPageLayout(page, url);
-			const focus = await assertFocusBoundaries(page, url);
-			const metrics = await assertMetricCards(page, url);
-			const records = await assertRecordGeometry(page, url);
-			const examples = await assertExamplePages(page, url);
-			const reusable = await assertReusableShowcases(page, url);
-			const editing = await assertEditingShowcases(page, url);
-			const palette = await assertPaletteShowcases(page, url);
-			const templates = await assertTemplatesShowcase(page, url);
-			assertNoPageFaults(faults);
-			return {
-				landing,
-				library,
-				motion,
-				command,
-				loader,
-				formGroups,
-				codePanels,
-				hover,
-				navigation,
-				selection,
-				dimensions,
-				pageLayout,
-				focus,
-				metrics,
-				records,
-				examples,
-				reusable,
-				editing,
-				palette,
-				templates,
-			};
-		});
-		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
+		const executablePath = assertPinnedChromium();
+		const browser = await chromium.launch({ headless: true, executablePath });
+		try {
+			const tasks: Array<[string, (page: Page, baseUrl: string) => Promise<unknown>]> = [
+				["landing", assertLandingShowcase],
+				["library", assertLibraryShowcases],
+				["motion", assertOverlayMotion],
+				["command", assertCommandSelection],
+				["loader", assertLoaderShowcase],
+				["formGroups", assertFormGroupSpacing],
+				["codePanels", assertCodePanels],
+				["hover", assertHoverAndDensity],
+				["navigation", assertNavigationLists],
+				["selection", assertSelectionHierarchy],
+				["dimensions", assertDimensionTokens],
+				["pageLayout", assertPageLayout],
+				["focus", assertFocusBoundaries],
+				["metrics", assertMetricCards],
+				["records", assertRecordGeometry],
+				["examples", assertExamplePages],
+				["reusable", assertReusableShowcases],
+				["editing", assertEditingShowcases],
+				["palette", assertPaletteShowcases],
+				["templates", assertTemplatesShowcase],
+			];
+			const results = new Map<string, unknown>();
+			let cursor = 0;
+			const rawWorkers = Number(process.env.BASALT_SHOWCASE_WORKERS);
+			const workerCount = Math.min(
+				Number.isInteger(rawWorkers) && rawWorkers > 0 ? rawWorkers : 3,
+				tasks.length,
+			);
+			await Promise.all(
+				Array.from({ length: workerCount }, async () => {
+					while (cursor < tasks.length) {
+						const [key, runTask] = tasks[cursor++];
+						const context = await browser.newContext();
+						try {
+							const page = await context.newPage();
+							const faults = attachPageFaults(page);
+							page.setDefaultTimeout(20_000);
+							await page.goto(url, { waitUntil: "domcontentloaded" });
+							results.set(key, await runTask(page, url));
+							assertNoPageFaults(faults);
+						} finally {
+							await context.close();
+						}
+					}
+				}),
+			);
+			const evidence = Object.fromEntries(tasks.map(([key]) => [key, results.get(key)]));
+			console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
+		} finally {
+			await browser.close();
+		}
 	} finally {
 		await stopChild(child);
 		assertServerCleaned(child.pid, []);

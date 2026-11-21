@@ -35,29 +35,34 @@ try {
 		url,
 	});
 	try {
-		for (const engine of [chromium, webkit]) {
-			if (!existsSync(engine.executablePath()))
-				throw new Error(`Install pinned ${engine.name()} with playwright install ${engine.name()}`);
-			const browser = await engine.launch();
-			try {
-				const context = await browser.newContext();
-				const page = await context.newPage();
-				const faults = attachPageFaults(page);
-				const evidence = await assertMobileLayouts(page, url);
-				const focus = await assertFocusBoundaries(page, url);
-				assertNoPageFaults(faults);
-				console.log(
-					JSON.stringify({
+		const results = await Promise.all(
+			[chromium, webkit].map(async (engine) => {
+				if (!existsSync(engine.executablePath()))
+					throw new Error(
+						`Install pinned ${engine.name()} with playwright install ${engine.name()}`,
+					);
+				const browser = await engine.launch();
+				try {
+					const context = await browser.newContext();
+					const page = await context.newPage();
+					const faults = attachPageFaults(page);
+					const evidence = await assertMobileLayouts(page, url);
+					const focus = await assertFocusBoundaries(page, url);
+					assertNoPageFaults(faults);
+					return {
 						engine: engine.name(),
 						version: browser.version(),
 						evidence,
 						focus,
 						physicalIPhone: "manual verification required",
-					}),
-				);
-			} finally {
-				await browser.close();
-			}
+					};
+				} finally {
+					await browser.close();
+				}
+			}),
+		);
+		for (const result of results) {
+			console.log(JSON.stringify(result));
 		}
 	} finally {
 		await stopChild(child);
