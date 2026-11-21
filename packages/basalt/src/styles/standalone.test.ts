@@ -2,8 +2,17 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+const baseCss = readFileSync("packages/basalt/src/styles/base.css", "utf8");
 
 describe("standalone css", () => {
+	it("isolates app-main background so rounded islands never punch transparent corners", () => {
+		for (const sheet of [baseCss, css]) {
+			const block = sheet.match(/\[data-basalt-main\] \{([^}]+)\}/)?.[1] ?? "";
+			expect(block).toContain("isolation: isolate");
+			expect(block).toContain("background-color: hsl(var(--basalt-background))");
+		}
+	});
+
 	it("ships responsive scroll ownership and safe sticky geometry", () => {
 		for (const selector of [
 			"[data-basalt-shell]",

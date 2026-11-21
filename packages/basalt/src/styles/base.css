@@ -164,6 +164,8 @@
 	[data-basalt-main] {
 		height: var(--basalt-main-height, 100%);
 		overflow: var(--basalt-main-overflow, hidden);
+		isolation: isolate;
+		background-color: hsl(var(--basalt-background));
 	}
 
 	[data-basalt-island] {
