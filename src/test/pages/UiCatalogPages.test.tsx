@@ -982,12 +982,12 @@ describe("ui catalog", () => {
 			variants: [],
 		});
 		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
-			"size",
 			"title",
 			"description",
 			"breadcrumbs",
 			"actions",
 			"filters",
+			"className",
 		]);
 		expect(UI_EXAMPLES["page-header"]?.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "page-header-default", title: "Default" },
@@ -1043,7 +1043,8 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES["page-header"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).not.toContain("- className (");
+		expect(markdown).toContain("- className (string, optional, default —)");
+		expect(markdown).not.toContain("- size (");
 		expect(markdown).not.toContain("- children (");
 	});
 

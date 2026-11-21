@@ -345,5 +345,5 @@
  * Custom utilities
  */
 @utility font-display {
-	font-family: "DM Sans", system-ui, sans-serif;
+	font-family: var(--basalt-font-display);
 }

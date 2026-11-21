@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "fe435dbc9e1af771",
+		"hash": "684451cffd43e834",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -284,7 +284,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"command-palette": {
 		"file": "packages/basalt/src/components/command-palette.tsx",
-		"hash": "3dfb4859ca3ea73a",
+		"hash": "d4e4dee0f9c01c13",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/command-palette.js.map (sourcesContent[0])"
 	},
@@ -458,7 +458,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"page-header": {
 		"file": "packages/basalt/src/components/page-header.tsx",
-		"hash": "6f477292653ef7db",
+		"hash": "c7e8249b4839bd29",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/page-header.js.map (sourcesContent[0])"
 	},

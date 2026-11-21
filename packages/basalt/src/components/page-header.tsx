@@ -9,9 +9,8 @@ export interface PageHeaderBreadcrumb {
 	icon?: React.ReactNode;
 }
 
-export interface PageHeaderProps {
-	/** Page preset; all presets share the same title and description scale. @default "md" */
-	size?: "md" | "lg" | "xl";
+export interface PageHeaderProps
+	extends Omit<React.HTMLAttributes<HTMLElement>, "title" | "className"> {
 	/** The page title, rendered as the only heading. */
 	title: React.ReactNode;
 	/** Supporting text below the title. */
@@ -22,16 +21,27 @@ export interface PageHeaderProps {
 	actions?: React.ReactNode;
 	/** Own-row filters. Keep short filters in actions. */
 	filters?: React.ReactNode;
+	/** Additional classes for the header root. */
+	className?: string;
 }
 
-export function PageHeader({ actions, breadcrumbs, description, filters, title }: PageHeaderProps) {
+export function PageHeader({
+	actions,
+	breadcrumbs,
+	className,
+	description,
+	filters,
+	title,
+	...props
+}: PageHeaderProps) {
 	const titleId = React.useId();
 
 	return (
 		// biome-ignore lint/a11y/useAriaPropsSupportedByRole: the title heading names this header
 		<header
 			aria-labelledby={titleId}
-			className={cn(BASALT_UI_CLASS, "min-w-0 shrink-0 space-y-basalt-layout")}
+			className={cn(BASALT_UI_CLASS, "min-w-0 shrink-0 space-y-basalt-layout", className)}
+			{...props}
 		>
 			{breadcrumbs && breadcrumbs.length > 0 ? <Breadcrumbs items={[...breadcrumbs]} /> : null}
 			<div className="flex flex-col gap-basalt-layout md:flex-row md:items-start md:justify-between">

@@ -260,10 +260,13 @@ export interface CommandEmptyProps extends Omit<RadixCommandEmptyProps, "asChild
 export const CommandEmpty = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive.Empty>,
 	CommandEmptyProps
->((props, ref) => (
+>(({ className, ...props }, ref) => (
 	<CommandPrimitive.Empty
 		ref={ref}
-		className="py-basalt-space-lg text-center text-basalt-base text-basalt-muted-foreground"
+		className={cn(
+			"py-basalt-space-lg text-center text-basalt-base text-basalt-muted-foreground",
+			className,
+		)}
 		{...props}
 	/>
 ));

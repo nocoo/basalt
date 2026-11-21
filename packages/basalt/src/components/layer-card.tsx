@@ -14,7 +14,7 @@ import { Empty } from "./empty";
 import { FOCUS_INSET } from "./overlay";
 import { SkeletonLine } from "./skeleton-line";
 
-const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border/80 text-basalt-foreground shadow-basalt-card`;
+const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-card ring-1 ring-basalt-border/80 text-basalt-foreground shadow-basalt-card`;
 const PADDING_CLASSES = {
 	none: "",
 	sm: "p-basalt-card-sm",
@@ -152,7 +152,7 @@ function LayerCardHeader({
 				"flex min-w-0 justify-between gap-basalt-space-lg tracking-tight text-basalt-foreground",
 				asChild ? "text-basalt-base font-medium" : "text-basalt-lg font-semibold",
 				asChild
-					? "w-full items-center rounded-none rounded-t-basalt-lg last:rounded-b-basalt-lg data-[state=closed]:rounded-b-basalt-lg px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
+					? "w-full items-center rounded-none rounded-t-basalt-card last:rounded-b-basalt-card data-[state=closed]:rounded-b-basalt-card px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
 					: divided
 						? "items-start p-basalt-card border-b border-basalt-border"
 						: "items-start px-basalt-card pt-basalt-card pb-0",

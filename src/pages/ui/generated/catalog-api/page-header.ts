@@ -6,13 +6,6 @@ export const API = [
 		name: "PageHeader",
 		props: [
 			{
-				name: "size",
-				type: "\"lg\" | \"md\" | \"xl\"",
-				required: false,
-				default: "\"md\"",
-				description: "Page preset; all presets share the same title and description scale.",
-			},
-			{
 				name: "title",
 				type: "React.ReactNode",
 				required: true,
@@ -41,6 +34,12 @@ export const API = [
 				type: "React.ReactNode",
 				required: false,
 				description: "Own-row filters. Keep short filters in actions.",
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the header root.",
 			},
 		],
 	},

@@ -26,9 +26,9 @@ describe("LayerCard", () => {
 		expect(trigger).toHaveClass(
 			"basalt-focus",
 			"basalt-focus-inset",
-			"rounded-t-basalt-lg",
-			"last:rounded-b-basalt-lg",
-			"data-[state=closed]:rounded-b-basalt-lg",
+			"rounded-t-basalt-card",
+			"last:rounded-b-basalt-card",
+			"data-[state=closed]:rounded-b-basalt-card",
 			"px-basalt-card",
 			"py-basalt-card-sm",
 			"justify-between",
@@ -55,8 +55,8 @@ describe("LayerCard", () => {
 		const button = screen.getByRole("button", { name: "Open card" });
 		expect(button).toHaveClass(
 			"basalt-focus-inset",
-			"rounded-t-basalt-lg",
-			"last:rounded-b-basalt-lg",
+			"rounded-t-basalt-card",
+			"last:rounded-b-basalt-card",
 		);
 		expect(button).not.toHaveClass("rounded-basalt-md");
 		expect(button.parentElement).toHaveClass("overflow-hidden");

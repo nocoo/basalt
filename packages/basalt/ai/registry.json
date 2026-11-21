@@ -4559,7 +4559,7 @@
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"subpath": "./components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "3dfb4859ca3ea73a",
+			"sourceHash": "d4e4dee0f9c01c13",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11757,7 +11757,7 @@
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"subpath": "./components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "fe435dbc9e1af771",
+			"sourceHash": "684451cffd43e834",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13019,7 +13019,7 @@
 			"importPath": "@nocoo/basalt/components/page-header",
 			"subpath": "./components/page-header",
 			"sourceFile": "packages/basalt/src/components/page-header.tsx",
-			"sourceHash": "6f477292653ef7db",
+			"sourceHash": "c7e8249b4839bd29",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13067,13 +13067,6 @@
 							"name": "PageHeader",
 							"props": [
 								{
-									"name": "size",
-									"type": "\"lg\" | \"md\" | \"xl\"",
-									"required": false,
-									"default": "\"md\"",
-									"description": "Page preset; all presets share the same title and description scale."
-								},
-								{
 									"name": "title",
 									"type": "React.ReactNode",
 									"required": true,
@@ -13102,6 +13095,12 @@
 									"type": "React.ReactNode",
 									"required": false,
 									"description": "Own-row filters. Keep short filters in actions."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional classes for the header root."
 								}
 							]
 						}
@@ -13112,13 +13111,6 @@
 				{
 					"name": "PageHeader",
 					"props": [
-						{
-							"name": "size",
-							"type": "\"lg\" | \"md\" | \"xl\"",
-							"required": false,
-							"default": "\"md\"",
-							"description": "Page preset; all presets share the same title and description scale."
-						},
 						{
 							"name": "title",
 							"type": "React.ReactNode",
@@ -13148,6 +13140,12 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Own-row filters. Keep short filters in actions."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional classes for the header root."
 						}
 					]
 				}
@@ -23313,7 +23311,7 @@
 			"exportName": "LayerCard",
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "fe435dbc9e1af771",
+			"sourceHash": "684451cffd43e834",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#layer-card",
@@ -27745,7 +27743,7 @@
 			"exportName": "CommandPalette",
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "3dfb4859ca3ea73a",
+			"sourceHash": "d4e4dee0f9c01c13",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#command-palette",
@@ -30971,7 +30969,7 @@
 			"exportName": "PageHeader",
 			"importPath": "@nocoo/basalt/components/page-header",
 			"sourceFile": "packages/basalt/src/components/page-header.tsx",
-			"sourceHash": "6f477292653ef7db",
+			"sourceHash": "c7e8249b4839bd29",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#page-header",
@@ -30979,13 +30977,6 @@
 				{
 					"name": "PageHeader",
 					"props": [
-						{
-							"name": "size",
-							"type": "\"lg\" | \"md\" | \"xl\"",
-							"required": false,
-							"default": "\"md\"",
-							"description": "Page preset; all presets share the same title and description scale."
-						},
 						{
 							"name": "title",
 							"type": "React.ReactNode",
@@ -31015,6 +31006,12 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Own-row filters. Keep short filters in actions."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional classes for the header root."
 						}
 					]
 				}

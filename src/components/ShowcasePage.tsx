@@ -2,7 +2,10 @@ import { PageHeader, type PageHeaderProps } from "@nocoo/basalt/components/page-
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-type ShowcasePageProps = Omit<PageHeaderProps, "size"> &
+type ShowcasePageProps = Pick<
+	PageHeaderProps,
+	"title" | "description" | "actions" | "filters" | "breadcrumbs"
+> &
 	Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
 		variant?: "application" | "document";
 	};
@@ -29,7 +32,7 @@ export function ShowcasePage({
 			)}
 			{...props}
 		>
-			<PageHeader {...{ title, description, actions, filters, breadcrumbs }} size="lg" />
+			<PageHeader {...{ title, description, actions, filters, breadcrumbs }} />
 			{children}
 		</div>
 	);

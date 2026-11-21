@@ -2415,6 +2415,9 @@
   .rounded-\[inherit\] {
     border-radius: inherit;
   }
+  .rounded-basalt-card {
+    border-radius: var(--basalt-radius-card);
+  }
   .rounded-basalt-full {
     border-radius: var(--basalt-radius-full);
   }
@@ -2430,9 +2433,9 @@
   .rounded-none {
     border-radius: 0;
   }
-  .rounded-t-basalt-lg {
-    border-top-left-radius: var(--basalt-radius-lg);
-    border-top-right-radius: var(--basalt-radius-lg);
+  .rounded-t-basalt-card {
+    border-top-left-radius: var(--basalt-radius-card);
+    border-top-right-radius: var(--basalt-radius-card);
   }
   .rounded-l-basalt-md {
     border-top-left-radius: var(--basalt-radius-md);
@@ -3347,9 +3350,9 @@
     border-top-right-radius: var(--basalt-radius-md);
     border-bottom-right-radius: var(--basalt-radius-md);
   }
-  .last\:rounded-b-basalt-lg:last-child {
-    border-bottom-right-radius: var(--basalt-radius-lg);
-    border-bottom-left-radius: var(--basalt-radius-lg);
+  .last\:rounded-b-basalt-card:last-child {
+    border-bottom-right-radius: var(--basalt-radius-card);
+    border-bottom-left-radius: var(--basalt-radius-card);
   }
   .focus-within\:z-2:focus-within {
     z-index: 2;
@@ -3575,9 +3578,9 @@
     animation: basalt-overlay-out var(--basalt-floating-duration-exit)
 		var(--basalt-motion-ease-exit) forwards;
   }
-  .data-\[state\=closed\]\:rounded-b-basalt-lg[data-state="closed"] {
-    border-bottom-right-radius: var(--basalt-radius-lg);
-    border-bottom-left-radius: var(--basalt-radius-lg);
+  .data-\[state\=closed\]\:rounded-b-basalt-card[data-state="closed"] {
+    border-bottom-right-radius: var(--basalt-radius-card);
+    border-bottom-left-radius: var(--basalt-radius-card);
   }
   .data-\[state\=indeterminate\]\:bg-basalt-primary[data-state="indeterminate"] {
     background-color: hsl(var(--basalt-primary));

@@ -139,7 +139,7 @@ describe("CommandPalette", () => {
 			<CommandPalette open>
 				<CommandInput placeholder="Search pages..." />
 				<CommandList>
-					<CommandEmpty>No results</CommandEmpty>
+					<CommandEmpty className="custom-empty">No results</CommandEmpty>
 					<CommandItem>Button</CommandItem>
 				</CommandList>
 			</CommandPalette>,
@@ -147,7 +147,14 @@ describe("CommandPalette", () => {
 		fireEvent.change(screen.getByPlaceholderText("Search pages..."), {
 			target: { value: "zzzz" },
 		});
-		expect(screen.getByText("No results")).toBeInTheDocument();
+		const empty = screen.getByText("No results");
+		expect(empty).toBeInTheDocument();
+		expect(empty).toHaveClass(
+			"py-basalt-space-lg",
+			"text-center",
+			"text-basalt-muted-foreground",
+			"custom-empty",
+		);
 	});
 
 	it("skips a disabled command", () => {

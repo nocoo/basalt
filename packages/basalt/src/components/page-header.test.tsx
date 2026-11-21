@@ -3,8 +3,19 @@ import { describe, expect, it } from "vitest";
 import { PageHeader } from "./page-header";
 
 describe("PageHeader", () => {
-	it.each(["md", "lg", "xl"] as const)("keeps the %s heading content-sized", (size) => {
-		render(<PageHeader size={size} title="Overview" description="Readable summary" />);
+	it("keeps consistent heading scale and forwards className and header attributes", () => {
+		render(
+			<PageHeader
+				id="overview-header"
+				data-testid="page-header"
+				className="custom-header"
+				title="Overview"
+				description="Readable summary"
+			/>,
+		);
+		const banner = screen.getByTestId("page-header");
+		expect(banner).toHaveAttribute("id", "overview-header");
+		expect(banner).toHaveClass("basalt-ui", "min-w-0", "shrink-0", "custom-header");
 		const title = screen.getByRole("heading", { level: 1 });
 		expect(title).toHaveClass("text-basalt-3xl", "font-basalt-display", "leading-basalt-tight");
 		expect(title.parentElement).toHaveClass("space-y-basalt-space-lg");

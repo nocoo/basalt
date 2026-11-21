@@ -718,13 +718,6 @@ describe("catalog API generator contract 2/4", () => {
 				name: "PageHeader",
 				props: [
 					{
-						name: "size",
-						type: '"lg" | "md" | "xl"',
-						required: false,
-						default: '"md"',
-						description: "Page preset; all presets share the same title and description scale.",
-					},
-					{
 						name: "title",
 						type: "React.ReactNode",
 						required: true,
@@ -754,12 +747,17 @@ describe("catalog API generator contract 2/4", () => {
 						required: false,
 						description: "Own-row filters. Keep short filters in actions.",
 					},
+					{
+						name: "className",
+						type: "string",
+						required: false,
+						description: "Additional classes for the header root.",
+					},
 				],
 			},
 		]);
-		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
-			"className",
-		);
+		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("size");
+		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("id");
 		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
 	}, 60_000);
 
