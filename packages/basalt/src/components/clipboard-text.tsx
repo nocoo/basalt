@@ -26,7 +26,7 @@ export function ClipboardText({ text, copyText, className }: ClipboardTextProps)
 		<div
 			data-slot="clipboard-text"
 			className={controlSurfaceClass(
-				cn("inline-flex min-h-basalt-control max-w-full items-stretch shadow-xs", className),
+				cn("inline-flex min-h-basalt-control max-w-full items-stretch", className),
 			)}
 		>
 			<code className="flex min-w-0 items-center truncate rounded-l-basalt-md bg-transparent px-basalt-space-lg font-basalt-mono text-basalt-md text-basalt-foreground">

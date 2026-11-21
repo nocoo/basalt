@@ -41,7 +41,7 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
 			ref={ref}
 			className={controlSurfaceClass(
 				cn(
-					"flex w-full text-basalt-foreground shadow-xs placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
+					"flex w-full text-basalt-foreground placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
 					INPUT_AREA_SIZE_CLASS[size],
 					FOCUS_BORDER,
 					"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",

@@ -86,13 +86,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"input-area": {
 		"file": "packages/basalt/src/components/input-area.tsx",
-		"hash": "563b92444a65c3c5",
+		"hash": "bc893579cc5da93d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input-area.js.map (sourcesContent[0])"
 	},
 	"input-group": {
 		"file": "packages/basalt/src/components/input-group.tsx",
-		"hash": "1c7e90fa57dd31ea",
+		"hash": "e6dd48a93c4415cc",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input-group.js.map (sourcesContent[0])"
 	},
@@ -206,7 +206,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"clipboard-text": {
 		"file": "packages/basalt/src/components/clipboard-text.tsx",
-		"hash": "67654e59ac617cca",
+		"hash": "41dafd3c29346b25",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/clipboard-text.js.map (sourcesContent[0])"
 	},
