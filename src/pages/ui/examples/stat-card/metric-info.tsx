@@ -19,7 +19,7 @@ export default function StatCardMetricInfo() {
 					value="$48,250"
 					subtitle="vs. $42,100 last month"
 					icon={<TrendingUp strokeWidth={1.5} />}
-					iconColor="text-basalt-primary"
+					iconColor="text-basalt-link"
 					trend={{ value: 14.6, label: "MoM" }}
 					action={
 						<Tooltip>

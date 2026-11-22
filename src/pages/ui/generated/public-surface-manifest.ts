@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.5.2",
 	"totalModules": 105,
-	"totalSymbols": 653,
-	"totalValues": 362,
-	"totalTypes": 291,
+	"totalSymbols": 655,
+	"totalValues": 363,
+	"totalTypes": 292,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -6109,6 +6109,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/providers/accent"
 				},
 				{
+					"name": "deriveAccentTokens",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#accent-provider",
+					"ownerKind": "provider",
+					"originModule": "@nocoo/basalt/providers/accent"
+				},
+				{
 					"name": "accentForeground",
 					"isValue": true,
 					"isType": false,
@@ -6160,6 +6168,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "DEFAULT_ACCENT_ID",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "INTEGRATION.md#accent-provider",
+					"ownerKind": "provider",
+					"originModule": "@nocoo/basalt/providers/accent"
+				},
+				{
+					"name": "AccentTokens",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "INTEGRATION.md#accent-provider",
 					"ownerKind": "provider",
 					"originModule": "@nocoo/basalt/providers/accent"

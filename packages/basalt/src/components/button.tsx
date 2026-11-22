@@ -21,7 +21,7 @@ const buttonVariants = cva(
 				outline:
 					"basalt-choice border border-basalt-border bg-transparent hover:bg-basalt-hover hover:text-basalt-accent-foreground",
 				ghost: "basalt-choice hover:bg-basalt-hover hover:text-basalt-accent-foreground",
-				link: "text-basalt-primary underline-offset-4 hover:underline",
+				link: "text-basalt-link underline-offset-4 hover:underline",
 			},
 			size: {
 				default: "basalt-action [&_svg]:size-basalt-icon",

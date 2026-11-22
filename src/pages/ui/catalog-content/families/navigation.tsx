@@ -159,7 +159,7 @@ function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
 						</CommandItemMeta>
 						<CommandItemTrailing>
 							{item.status === "active" ? (
-								<CircleDot className="size-basalt-icon-sm text-basalt-primary" aria-hidden="true" />
+								<CircleDot className="size-basalt-icon-sm text-basalt-link" aria-hidden="true" />
 							) : item.status === "grid" ? (
 								<LayoutGrid
 									className="size-basalt-icon-sm text-basalt-muted-foreground"
@@ -416,7 +416,7 @@ export default function Example() {
             </CommandItemMeta>
             <CommandItemTrailing>
               {item.status === "active" ? (
-                <CircleDot className="size-basalt-icon-sm text-basalt-primary" aria-hidden="true" />
+                <CircleDot className="size-basalt-icon-sm text-basalt-link" aria-hidden="true" />
               ) : item.status === "grid" ? (
                 <LayoutGrid className="size-basalt-icon-sm text-basalt-muted-foreground" aria-hidden="true" />
               ) : null}

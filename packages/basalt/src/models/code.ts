@@ -18,7 +18,7 @@ export function codeLines(code: string, highlighted: boolean): CodeToken[][] {
 						? "text-basalt-chart-5"
 						: match[4]
 							? "text-basalt-chart-4"
-							: "text-basalt-primary",
+							: "text-basalt-link",
 			});
 			offset = index + match[0].length;
 		}

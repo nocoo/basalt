@@ -133,7 +133,7 @@ export default function ComponentsPage() {
 							<LayerCard key={goal.name}>
 								<LayerCard.Header className="items-center justify-start">
 									<div className="flex h-10 w-10 items-center justify-center rounded-basalt-md bg-basalt-primary/10">
-										<Icon className="h-5 w-5 text-basalt-primary" strokeWidth={1.5} />
+										<Icon className="h-5 w-5 text-basalt-link" strokeWidth={1.5} />
 									</div>
 									<div className="flex-1">
 										<p className="text-basalt-base font-medium text-basalt-foreground">

@@ -170,7 +170,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 					/>
 					<div className="flex items-center gap-basalt-card">
 						<div className="relative">
-							<div className="flex h-16 w-16 items-center justify-center rounded-basalt-full bg-basalt-primary/10 text-basalt-primary">
+							<div className="flex h-16 w-16 items-center justify-center rounded-basalt-full bg-basalt-primary/10 text-basalt-link">
 								<User className="h-7 w-7" strokeWidth={1.5} />
 							</div>
 							<Button

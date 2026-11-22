@@ -1,3 +1,5 @@
+import { deriveAccentTokens } from "@nocoo/basalt/providers/accent";
+
 export const STUDIO_ACCENTS = [
 	"primary",
 	"sky",
@@ -179,84 +181,6 @@ export function matchingPresetId(options: StudioPresetState): StudioPresetId | "
 	);
 }
 
-type Rgb = [number, number, number];
-function hslRgb(hue: number, saturation: number, lightness: number): Rgb {
-	const amplitude = saturation * Math.min(lightness, 1 - lightness);
-	const channel = (offset: number) => {
-		const value = (offset + hue / 30) % 12;
-		return 255 * (lightness - amplitude * Math.max(-1, Math.min(value - 3, 9 - value, 1)));
-	};
-	return [channel(0), channel(8), channel(4)];
-}
-function luminance(rgb: Rgb): number {
-	const [red, green, blue] = rgb.map((value) => {
-		const channel = value / 255;
-		return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
-	});
-	return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-}
-function contrast(first: Rgb, second: Rgb): number {
-	const values = [luminance(first), luminance(second)];
-	return (Math.max(...values) + 0.05) / (Math.min(...values) + 0.05);
-}
-function semanticAccent(
-	swatch: StudioSwatch,
-	mode: StudioMode,
-): { primary: string; foreground: string } {
-	const [hue, saturationPercent, originalLightness] = swatch[mode]
-		.split(/\s+/)
-		.map(Number.parseFloat);
-	const saturation = saturationPercent / 100;
-	const dark = mode === "dark";
-	const surfaces: Rgb[] = dark
-		? [
-				[23, 23, 23],
-				[27, 27, 27],
-				[31, 31, 31],
-				[36, 36, 36],
-			]
-		: [
-				[238, 239, 242],
-				[246, 247, 248],
-				[252, 252, 253],
-				[255, 255, 255],
-			];
-	const text: Rgb = dark ? [26, 26, 26] : [255, 255, 255];
-	let primary = swatch[mode];
-	for (
-		let lightness = dark
-			? Math.max(Math.round(originalLightness), 45)
-			: Math.min(Math.round(originalLightness), 60);
-		dark ? lightness <= 85 : lightness >= 15;
-		lightness += dark ? 1 : -1
-	) {
-		const color = hslRgb(hue, saturation, lightness / 100);
-		if (surfaces.some((surface) => contrast(color, surface) < 4.55) || contrast(color, text) < 4.55)
-			continue;
-		if (
-			surfaces.some(
-				(surface) =>
-					contrast(
-						color.map((channel, index) => channel * 0.9 + surface[index] * 0.1) as Rgb,
-						text,
-					) < 4.55,
-			)
-		)
-			continue;
-		primary = `${hue} ${Math.round(saturation * 100)}% ${lightness}%`;
-		break;
-	}
-	const [resolvedHue, resolvedSaturation, resolvedLightness] = primary
-		.split(/\s+/)
-		.map(Number.parseFloat);
-	const rgb = hslRgb(resolvedHue, resolvedSaturation / 100, resolvedLightness / 100);
-	return {
-		primary,
-		foreground:
-			contrast(rgb, [26, 26, 26]) >= contrast(rgb, [255, 255, 255]) ? "0 0% 10%" : "0 0% 100%",
-	};
-}
-
 export function computeStudioScopedVars(
 	options: StudioPresetState,
 	mode: StudioMode,
@@ -289,11 +213,14 @@ export function computeStudioScopedVars(
 		swatches.find((item) => item.id === options.accent) ??
 		DEFAULT_SWATCHES.find((item) => item.id === options.accent) ??
 		DEFAULT_SWATCHES[0];
-	const accent = semanticAccent(swatch, mode);
-	const baseline = semanticAccent(DEFAULT_SWATCHES[0], mode);
-	if (accent.primary !== baseline.primary) {
+	const dark = mode === "dark";
+	const accent = deriveAccentTokens(swatch, dark);
+	const baseline = deriveAccentTokens(DEFAULT_SWATCHES[0], dark);
+	if (accent.primary !== baseline.primary || accent.link !== baseline.link) {
 		vars["--basalt-primary"] = accent.primary;
-		vars["--basalt-primary-foreground"] = accent.foreground;
+		vars["--basalt-primary-foreground"] = accent.primaryForeground;
+		vars["--basalt-link"] = accent.link;
+		vars["--basalt-ring"] = accent.ring;
 	}
 	if (options.chartMode === "monochrome") {
 		const tones =
@@ -321,8 +248,8 @@ export function generateThemeCssDiff(
 		["light", light],
 		["dark", dark],
 	] as const) {
-		const baseline = semanticAccent(DEFAULT_SWATCHES[0], mode);
-		if (vars["--basalt-primary-foreground"] === baseline.foreground)
+		const baseline = deriveAccentTokens(DEFAULT_SWATCHES[0], mode === "dark");
+		if (vars["--basalt-primary-foreground"] === baseline.primaryForeground)
 			delete vars["--basalt-primary-foreground"];
 	}
 	const darkOverrides = Object.fromEntries(

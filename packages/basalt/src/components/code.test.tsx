@@ -164,7 +164,7 @@ describe("Code", () => {
 				}
 			/>,
 		);
-		expect(screen.getByText("export")).toHaveClass("text-basalt-primary");
+		expect(screen.getByText("export")).toHaveClass("text-basalt-link");
 		expect(screen.getByText("// note")).toHaveClass("text-basalt-muted-foreground");
 		expect(screen.getByText("1")).toHaveClass("text-basalt-chart-4");
 		expect(screen.getByText('"/api/users"')).toHaveClass("text-basalt-chart-5");

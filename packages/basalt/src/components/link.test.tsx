@@ -15,7 +15,7 @@ describe("Link", () => {
 		const link = screen.getByRole("link", { name: "Docs" });
 		expect(link.tagName).toBe("A");
 		expect(link).toHaveAttribute("href", "/docs");
-		expect(link).toHaveClass("text-basalt-primary", "underline-offset-4", "hover:underline");
+		expect(link).toHaveClass("text-basalt-link", "underline-offset-4", "hover:underline");
 	});
 
 	it("merges className onto the default anchor", () => {
@@ -27,7 +27,7 @@ describe("Link", () => {
 			</LinkProvider>,
 		);
 		expect(screen.getByRole("link", { name: "Docs" })).toHaveClass(
-			"text-basalt-primary",
+			"text-basalt-link",
 			"underline-offset-4",
 			"hover:underline",
 			"extra",

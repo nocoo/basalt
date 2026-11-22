@@ -162,7 +162,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 							</h3>
 							<LayerCard className="min-w-0 space-y-basalt-card text-basalt-base [overflow-wrap:anywhere]">
 								<div>
-									<code className="text-basalt-sm font-mono text-primary font-semibold">
+									<code className="text-basalt-sm font-mono text-basalt-link font-semibold">
 										{surface.callSignature}
 									</code>
 								</div>

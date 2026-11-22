@@ -22,7 +22,7 @@ function Stepper({ steps, current }: { steps: string[]; current: number }) {
 								i < current
 									? "bg-primary text-primary-foreground"
 									: i === current
-										? "border-2 border-primary text-primary"
+										? "border-2 border-primary text-basalt-link"
 										: "border border-border text-muted-foreground"
 							}`}
 						>
@@ -235,7 +235,7 @@ export default function NavigationPage() {
 												i < stepperIndex
 													? "bg-primary text-primary-foreground"
 													: i === stepperIndex
-														? "border-2 border-primary text-primary"
+														? "border-2 border-primary text-basalt-link"
 														: "border border-border text-muted-foreground"
 											}`}
 										>

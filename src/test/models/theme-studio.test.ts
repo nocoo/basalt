@@ -91,6 +91,8 @@ describe("theme studio model", () => {
 				applyAccent("primary", mode === "dark");
 				const baselinePrimary = root.style.getPropertyValue("--basalt-primary");
 				const baselineForeground = root.style.getPropertyValue("--basalt-primary-foreground");
+				const baselineLink = root.style.getPropertyValue("--basalt-link");
+				const baselineRing = root.style.getPropertyValue("--basalt-ring");
 				for (const accent of STUDIO_ACCENTS) {
 					applyAccent(accent, mode === "dark");
 					const vars = computeStudioScopedVars({ ...DEFAULT_STUDIO_STATE, accent }, mode);
@@ -101,8 +103,15 @@ describe("theme studio model", () => {
 						vars["--basalt-primary-foreground"] ?? baselineForeground,
 						`${accent} ${mode}`,
 					).toBe(root.style.getPropertyValue("--basalt-primary-foreground"));
+					expect(vars["--basalt-link"] ?? baselineLink, `${accent} ${mode}`).toBe(
+						root.style.getPropertyValue("--basalt-link"),
+					);
+					expect(vars["--basalt-ring"] ?? baselineRing, `${accent} ${mode}`).toBe(
+						root.style.getPropertyValue("--basalt-ring"),
+					);
 					const primary = vars["--basalt-primary"] ?? baselinePrimary;
 					const foreground = vars["--basalt-primary-foreground"] ?? baselineForeground;
+					const link = vars["--basalt-link"] ?? baselineLink;
 					expect(contrast(primary, foreground), `${accent} ${mode} button`).toBeGreaterThanOrEqual(
 						4.5,
 					);
@@ -118,7 +127,7 @@ describe("theme studio model", () => {
 							tinted["--basalt-bright"],
 						]) {
 							expect(
-								contrast(primary, surface),
+								contrast(link, surface),
 								`${accent} ${mode} ${surfaceTint}`,
 							).toBeGreaterThanOrEqual(4.5);
 						}
@@ -176,8 +185,12 @@ describe("theme studio model", () => {
 		expect(generateThemeCssDiff(DEFAULT_STUDIO_STATE, changed)).toContain("--basalt-primary:");
 		const darkSwatch = [{ id: "primary", light: "0 0% 50%", dark: "0 0% 1%" }];
 		expect(
-			computeStudioScopedVars(DEFAULT_STUDIO_STATE, "dark", darkSwatch)["--basalt-primary"],
+			computeStudioScopedVars(DEFAULT_STUDIO_STATE, "dark", darkSwatch)["--basalt-link"],
 		).not.toBe("0 0% 1%");
+		const brightDarkSwatch = [{ id: "primary", light: "0 0% 50%", dark: "0 0% 95%" }];
+		expect(
+			computeStudioScopedVars(DEFAULT_STUDIO_STATE, "dark", brightDarkSwatch)["--basalt-primary"],
+		).not.toBe("0 0% 95%");
 		expect(
 			computeStudioScopedVars({ ...DEFAULT_STUDIO_STATE, accent: "sky" }, "light", []),
 		).toEqual(computeStudioScopedVars({ ...DEFAULT_STUDIO_STATE, accent: "sky" }, "light"));

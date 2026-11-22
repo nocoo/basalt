@@ -183,6 +183,7 @@
 	--color-basalt-control: var(--basalt-control-fill);
 	--color-basalt-primary: hsl(var(--basalt-primary));
 	--color-basalt-primary-foreground: hsl(var(--basalt-primary-foreground));
+	--color-basalt-link: hsl(var(--basalt-link));
 	--color-basalt-muted: hsl(var(--basalt-muted));
 	--color-basalt-muted-foreground: hsl(var(--basalt-muted-foreground));
 	--color-basalt-accent: hsl(var(--basalt-accent));

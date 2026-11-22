@@ -72,7 +72,7 @@ const TIMELINE = [
 	},
 	{
 		icon: Star,
-		color: "text-basalt-primary",
+		color: "text-basalt-link",
 		title: "Milestone reached",
 		desc: "Sprint 8 completed",
 		time: "3 hr ago",
@@ -89,20 +89,20 @@ const SOLID_PILLS = [
 const SOFT_PILLS = [
 	{ label: "Blue", className: "bg-basalt-info/10 text-basalt-info" },
 	{ label: "Teal", className: "bg-basalt-success/10 text-basalt-success" },
-	{ label: "Indigo", className: "bg-basalt-primary/10 text-basalt-primary" },
+	{ label: "Indigo", className: "bg-basalt-primary/10 text-basalt-link" },
 	{ label: "Rose", className: "bg-basalt-destructive/10 text-basalt-destructive" },
 ];
 
 const OUTLINE_PILLS = [
 	{ label: "Outline", className: "border border-border text-basalt-foreground" },
-	{ label: "Primary", className: "border border-primary text-primary" },
+	{ label: "Primary", className: "border border-primary text-basalt-link" },
 	{ label: "Success", className: "border border-success text-success" },
 ];
 
 const ICON_PILLS = [
 	{ label: "Verified", icon: BadgeCheck, className: "bg-success/10 text-success" },
 	{ label: "At risk", icon: AlertTriangle, className: "bg-basalt-warning/10 text-basalt-warning" },
-	{ label: "AI", icon: Sparkles, className: "bg-basalt-primary/10 text-basalt-primary" },
+	{ label: "AI", icon: Sparkles, className: "bg-basalt-primary/10 text-basalt-link" },
 ];
 
 const DOT_PILLS = [

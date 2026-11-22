@@ -10,7 +10,7 @@ export function ActionGridCard({ demo = false }: { demo?: boolean }) {
 		{
 			icon: ArrowUpRight,
 			label: t("dashboard.sendMoney"),
-			color: "bg-basalt-primary/10 text-basalt-primary",
+			color: "bg-basalt-primary/10 text-basalt-link",
 		},
 		{
 			icon: ArrowDownLeft,

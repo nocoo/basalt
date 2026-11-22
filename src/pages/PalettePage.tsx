@@ -132,7 +132,7 @@ export default function PalettePage() {
 									<span className="mt-basalt-card-sm flex items-center justify-between gap-basalt-space-sm px-basalt-space-xs text-basalt-sm font-medium text-foreground">
 										{color.label}
 										{color.id === accent && (
-											<Check className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
+											<Check className="size-3.5 shrink-0 text-basalt-link" aria-hidden="true" />
 										)}
 									</span>
 								</button>

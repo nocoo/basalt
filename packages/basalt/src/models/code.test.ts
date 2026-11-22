@@ -19,7 +19,7 @@ describe("code lines", () => {
 			"const n = 12; // note\nconst text = `one\ntwo`;\n<div>plain</div>",
 			true,
 		);
-		expect(lines[0].find((token) => token.text === "const")?.className).toBe("text-basalt-primary");
+		expect(lines[0].find((token) => token.text === "const")?.className).toBe("text-basalt-link");
 		expect(lines[0].find((token) => token.text === "12")?.className).toBe("text-basalt-chart-4");
 		expect(lines[0].find((token) => token.text === "// note")?.className).toBe(
 			"text-basalt-muted-foreground",

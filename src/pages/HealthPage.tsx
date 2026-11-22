@@ -258,13 +258,11 @@ export default function HealthPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Moon className="h-4 w-4 text-basalt-primary" strokeWidth={1.5} />
+						<Moon className="h-4 w-4 text-basalt-link" strokeWidth={1.5} />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.health.sleepStages")}
 						</h2>
-						<span className="ml-auto text-basalt-base font-semibold text-basalt-primary">
-							7h 24m
-						</span>
+						<span className="ml-auto text-basalt-base font-semibold text-basalt-link">7h 24m</span>
 					</LayerCard.Header>
 					<LayerCard.Body className="space-y-basalt-card-sm">
 						<SlotBarChart

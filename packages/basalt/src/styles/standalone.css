@@ -170,8 +170,9 @@
   --basalt-popover: 0 0% 100%;
   --basalt-popover-foreground: 0 0% 10%;
   --basalt-bright: 0 0% 100%;
-  --basalt-primary: 204 88% 32%;
+  --basalt-primary: 204 88% 36%;
   --basalt-primary-foreground: 0 0% 100%;
+  --basalt-link: var(--basalt-primary);
   --basalt-muted: 0 0% 94.5%;
   --basalt-muted-foreground: 0 0% 40%;
   --basalt-accent: 0 0% 94.5%;
@@ -317,8 +318,9 @@
   --basalt-popover: 0 0% 16.5%;
   --basalt-popover-foreground: 0 0% 93%;
   --basalt-bright: 0 0% 15.5%;
-  --basalt-primary: 204 90% 70%;
-  --basalt-primary-foreground: 0 0% 10%;
+  --basalt-primary: 204 90% 40%;
+  --basalt-primary-foreground: 0 0% 100%;
+  --basalt-link: 204 90% 70%;
   --basalt-muted: 0 0% 12.5%;
   --basalt-muted-foreground: 0 0% 63%;
   --basalt-accent: 0 0% 15.5%;
@@ -343,7 +345,7 @@
   --basalt-badge-purple-foreground: 0 0% 10%;
   --basalt-border: 0 0% 19%;
   --basalt-input: 0 0% 22%;
-  --basalt-ring: var(--basalt-primary);
+  --basalt-ring: var(--basalt-link);
   --basalt-shadow-control: inset 0 1px 0 0 rgb(255 255 255 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.32);
   --basalt-shadow-solid: inset 0 1px 0 0 rgb(255 255 255 / 0.18), 0 1px 2px 0 rgb(0 0 0 / 0.4);
   --basalt-shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.06), inset 0 -1px 0 0 rgb(0 0 0 / 0.28),
@@ -2930,6 +2932,9 @@
   }
   .text-basalt-info-foreground {
     color: hsl(var(--basalt-info-foreground));
+  }
+  .text-basalt-link {
+    color: hsl(var(--basalt-link));
   }
   .text-basalt-muted-foreground {
     color: hsl(var(--basalt-muted-foreground));

@@ -172,17 +172,17 @@ const DARK_TEXT_RGB: [number, number, number] = [26, 26, 26]; // 0 0% 10%
 const WHITE_TEXT_RGB: [number, number, number] = [255, 255, 255]; // 0 0% 100%
 
 const LIGHT_SURFACES_RGB: [number, number, number][] = [
-	[238, 239, 242], // background
-	[246, 247, 248], // card
-	[252, 252, 253], // secondary
-	[255, 255, 255], // bright
+	[242, 242, 242], // background
+	[250, 250, 250], // card
+	[255, 255, 255], // secondary / bright / popover
 ];
 
 const DARK_SURFACES_RGB: [number, number, number][] = [
-	[23, 23, 23], // background
-	[27, 27, 27], // card
-	[31, 31, 31], // secondary
-	[36, 36, 36], // bright
+	[19, 19, 19], // background
+	[26, 26, 26], // card
+	[32, 32, 32], // secondary
+	[40, 40, 40], // bright
+	[42, 42, 42], // popover
 ];
 
 function compositeRgb(
@@ -196,36 +196,63 @@ function compositeRgb(
 	];
 }
 
-function deriveSemanticPrimary(swatch: AccentSwatch, dark: boolean): string {
+export interface AccentTokens {
+	primary: string;
+	primaryForeground: string;
+	link: string;
+	ring: string;
+}
+
+export function deriveAccentTokens(
+	swatch: { light: string; dark: string },
+	dark: boolean,
+): AccentTokens {
 	const [h, s, origL] = parseHslChannels(dark ? swatch.dark : swatch.light);
 	const targetSurfaces = dark ? DARK_SURFACES_RGB : LIGHT_SURFACES_RGB;
-	const foreground = dark ? DARK_TEXT_RGB : WHITE_TEXT_RGB;
-	const start = dark
-		? Math.max(Math.round(origL * 100), 45)
-		: Math.min(Math.round(origL * 100), 60);
+	let primary = dark ? swatch.dark : swatch.light;
+	const start = Math.min(Math.round(origL * 100), 60);
 
-	for (let l = start; dark ? l <= 85 : l >= 15; l += dark ? 1 : -1) {
+	for (let l = start; l >= 15; l--) {
 		const rgb = hslToRgbChannels(h, s, l / 100);
-		const minTextR = Math.min(...targetSurfaces.map((bg) => wcagContrast(rgb, bg)));
-		if (minTextR < 4.55) {
+		if (!dark && Math.min(...targetSurfaces.map((bg) => wcagContrast(rgb, bg))) < 4.55) {
 			continue;
 		}
-		if (wcagContrast(rgb, foreground) < 4.55) {
+		if (wcagContrast(rgb, WHITE_TEXT_RGB) < 4.55) {
 			continue;
 		}
 		let hoverOk = true;
 		for (const bg of targetSurfaces) {
 			const hoverBg = compositeRgb([...rgb, 0.9], bg);
-			if (wcagContrast(hoverBg, foreground) < 4.55) {
+			if (wcagContrast(hoverBg, WHITE_TEXT_RGB) < 4.55) {
 				hoverOk = false;
 				break;
 			}
 		}
 		if (hoverOk) {
-			return `${h} ${Math.round(s * 100)}% ${l}%`;
+			primary = `${h} ${Math.round(s * 100)}% ${l}%`;
+			break;
 		}
 	}
-	return dark ? swatch.dark : swatch.light;
+
+	let link = primary;
+	if (dark) {
+		link = swatch.dark;
+		const linkStart = Math.max(Math.round(origL * 100), 45);
+		for (let l = linkStart; l <= 85; l++) {
+			const rgb = hslToRgbChannels(h, s, l / 100);
+			if (targetSurfaces.every((bg) => wcagContrast(rgb, bg) >= 4.55)) {
+				link = `${h} ${Math.round(s * 100)}% ${l}%`;
+				break;
+			}
+		}
+	}
+
+	return {
+		primary,
+		primaryForeground: accentForeground(primary),
+		link,
+		ring: dark ? link : primary,
+	};
 }
 
 export function accentForeground(hsl: string) {
@@ -244,11 +271,12 @@ export function applyAccent(id: string, dark = false) {
 }
 
 function applySwatch(swatch: AccentSwatch, dark: boolean) {
-	const semanticPrimary = deriveSemanticPrimary(swatch, dark);
+	const tokens = deriveAccentTokens(swatch, dark);
 	const root = document.documentElement;
-	root.style.setProperty("--basalt-primary", semanticPrimary);
-	root.style.setProperty("--basalt-primary-foreground", accentForeground(semanticPrimary));
-	root.style.setProperty("--basalt-ring", semanticPrimary);
+	root.style.setProperty("--basalt-primary", tokens.primary);
+	root.style.setProperty("--basalt-primary-foreground", tokens.primaryForeground);
+	root.style.setProperty("--basalt-link", tokens.link);
+	root.style.setProperty("--basalt-ring", tokens.ring);
 	root.dataset.accent = swatch.id;
 }
 

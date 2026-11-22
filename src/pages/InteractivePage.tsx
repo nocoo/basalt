@@ -281,7 +281,7 @@ export default function InteractivePage() {
 								</span>
 							</div>
 							<div className="flex items-center gap-basalt-space-lg">
-								<Loader2 className="h-5 w-5 animate-spin motion-reduce:animate-none text-primary" />
+								<Loader2 className="h-5 w-5 animate-spin motion-reduce:animate-none text-basalt-link" />
 								<span className="text-basalt-base text-foreground">
 									{t("pages.interactive.progressProcessing")}
 								</span>

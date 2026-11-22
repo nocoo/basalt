@@ -1,10 +1,13 @@
+import { readFileSync } from "node:fs";
 import { act, render, screen } from "@testing-library/react";
+import postcss from "postcss";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
 	ACCENT_SWATCHES,
 	AccentProvider,
 	accentSwatchById,
 	applyAccent,
+	deriveAccentTokens,
 	useAccent,
 } from "./accent";
 
@@ -29,6 +32,7 @@ describe("accent", () => {
 		window.localStorage.clear();
 		document.documentElement.style.removeProperty("--basalt-primary");
 		document.documentElement.style.removeProperty("--basalt-primary-foreground");
+		document.documentElement.style.removeProperty("--basalt-link");
 		document.documentElement.style.removeProperty("--basalt-ring");
 		delete document.documentElement.dataset.accent;
 		for (const swatch of ACCENT_SWATCHES)
@@ -71,7 +75,8 @@ describe("accent", () => {
 		expect(document.documentElement.style.getPropertyValue("--basalt-accent-1")).toBe(
 			overrides.primary.dark,
 		);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe(
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toMatch(/^18 70%/);
+		expect(document.documentElement.style.getPropertyValue("--basalt-link")).toBe(
 			overrides.primary.dark,
 		);
 		rerender(
@@ -138,9 +143,43 @@ describe("accent", () => {
 		);
 	});
 
-	it("uses the dark stop when the page is dark", () => {
+	it("derives saturated dark primary with white text and bright link/ring", () => {
 		applyAccent("green", true);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("113 58% 70%");
+		const expected = deriveAccentTokens(accentSwatchById("green"), true);
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe(
+			expected.primary,
+		);
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary-foreground")).toBe(
+			"0 0% 100%",
+		);
+		expect(document.documentElement.style.getPropertyValue("--basalt-link")).toBe("113 58% 70%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("113 58% 70%");
+	});
+
+	it("matches tokens.css default light/dark primary and link to deriveAccentTokens", () => {
+		const css = readFileSync("packages/basalt/src/styles/tokens.css", "utf8");
+		const vars = (selector: string) => {
+			const map = new Map<string, string>();
+			postcss.parse(css).walkRules((rule) => {
+				if (rule.selectors.includes(selector)) {
+					rule.walkDecls((decl) => {
+						map.set(decl.prop, decl.value);
+					});
+				}
+			});
+			return map;
+		};
+		const light = vars('[data-mode="light"]');
+		const dark = vars('[data-mode="dark"]');
+		const lightTokens = deriveAccentTokens(ACCENT_SWATCHES[0], false);
+		const darkTokens = deriveAccentTokens(ACCENT_SWATCHES[0], true);
+		expect(light.get("--basalt-primary")).toBe(lightTokens.primary);
+		expect(light.get("--basalt-primary-foreground")).toBe(lightTokens.primaryForeground);
+		expect(light.get("--basalt-link")).toBe("var(--basalt-primary)");
+		expect(dark.get("--basalt-primary")).toBe(darkTokens.primary);
+		expect(dark.get("--basalt-primary-foreground")).toBe("0 0% 100%");
+		expect(dark.get("--basalt-link")).toBe(darkTokens.link);
+		expect(dark.get("--basalt-ring")).toBe("var(--basalt-link)");
 	});
 
 	it("exposes twelve control swatches independently of chart tokens", () => {
@@ -188,16 +227,16 @@ describe("accent", () => {
 		}
 
 		const lightSurfaces: [number, number, number][] = [
-			[238, 239, 242],
-			[246, 247, 248],
-			[252, 252, 253],
+			[242, 242, 242],
+			[250, 250, 250],
 			[255, 255, 255],
 		];
 		const darkSurfaces: [number, number, number][] = [
-			[23, 23, 23],
-			[27, 27, 27],
-			[31, 31, 31],
-			[36, 36, 36],
+			[19, 19, 19],
+			[26, 26, 26],
+			[32, 32, 32],
+			[40, 40, 40],
+			[42, 42, 42],
 		];
 
 		for (const swatch of ACCENT_SWATCHES) {
@@ -207,23 +246,28 @@ describe("accent", () => {
 				const fgHsl = document.documentElement.style.getPropertyValue(
 					"--basalt-primary-foreground",
 				);
+				const linkHsl = document.documentElement.style.getPropertyValue("--basalt-link");
+				const ringHsl = document.documentElement.style.getPropertyValue("--basalt-ring");
 
 				const [ph, ps, pl] = parseHsl(primaryHsl);
 				const pRgb = hslToRgb(ph, ps, pl);
 				const [fh, fs, fl] = parseHsl(fgHsl);
 				const fgRgb = hslToRgb(fh, fs, fl);
+				const [lh, ls, ll] = parseHsl(linkHsl);
+				const lRgb = hslToRgb(lh, ls, ll);
 
 				const surfaces = dark ? darkSurfaces : lightSurfaces;
 
-				// 1. Text contrast (e.g. link/text using primary color) against L0-L3 surfaces
+				// 1. Text/icon link contrast against surfaces
 				for (const bg of surfaces) {
-					expect(contrast(pRgb, bg)).toBeGreaterThanOrEqual(4.5);
+					expect(contrast(lRgb, bg)).toBeGreaterThanOrEqual(4.5);
 				}
+				expect(ringHsl).toBe(dark ? linkHsl : primaryHsl);
 
 				// 2. Default button contrast: foreground on primary background
 				expect(contrast(fgRgb, pRgb)).toBeGreaterThanOrEqual(4.5);
 
-				// 3. Hover button contrast: foreground on 90% opacity primary composite over L0-L3 surfaces
+				// 3. Hover button contrast: foreground on 90% opacity primary composite over surfaces
 				for (const bg of surfaces) {
 					const hoverBg = over([...pRgb, 0.9], bg);
 					expect(contrast(fgRgb, hoverBg)).toBeGreaterThanOrEqual(4.5);
@@ -534,7 +578,7 @@ describe("accent", () => {
 			</AccentProvider>,
 		);
 		expect(document.documentElement.dataset.accent).toBe("rose");
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("345 88% 44%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("345 88% 45%");
 	});
 
 	it("supports custom storageKey and cross-tab storage sync", () => {
@@ -1051,7 +1095,8 @@ describe("accent", () => {
 			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
 
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("113 58% 70%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("113 58% 33%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-link")).toBe("113 58% 70%");
 
 		// Unmount provider
 		unmount();
@@ -1075,6 +1120,7 @@ describe("accent", () => {
 		document.documentElement.className = "";
 		delete document.documentElement.dataset.accent;
 		document.documentElement.style.removeProperty("--basalt-primary");
+		document.documentElement.style.removeProperty("--basalt-link");
 	});
 
 	it("falls back to in-memory mode when window.localStorage is undefined and isolates from foreign sessionStorage events", () => {
