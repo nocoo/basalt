@@ -20,50 +20,97 @@ function tokenValues(selector: string) {
 	return values;
 }
 
-function luminance(values: Map<string, string>, name: string): number {
+function hslaChannels(values: Map<string, string>, name: string): [number, number, number, number] {
 	const value = values.get(`--basalt-${name}`) ?? "";
 	const alias = /^var\(--basalt-(.+)\)$/.exec(value);
-	if (alias) return luminance(values, alias[1]);
-	const [hue, saturation, lightness] = value.match(/[\d.]+/g)?.map(Number) ?? [];
+	if (alias) return hslaChannels(values, alias[1]);
+	const [colorPart, alphaPart] = value.split("/").map((part) => part.trim());
+	const [hue, saturation, lightness] = colorPart.match(/[\d.]+/g)?.map(Number) ?? [];
+	const alpha = alphaPart ? Number(alphaPart) : 1;
 	const light = lightness / 100;
 	const amplitude = (saturation / 100) * Math.min(light, 1 - light);
-	return [0, 8, 4].reduce((sum, offset, index) => {
+	const rgb = [0, 8, 4].map((offset) => {
 		const step = (offset + hue / 30) % 12;
-		const channel = light - amplitude * Math.max(-1, Math.min(step - 3, 9 - step, 1));
+		return light - amplitude * Math.max(-1, Math.min(step - 3, 9 - step, 1));
+	});
+	return [rgb[0], rgb[1], rgb[2], alpha];
+}
+
+function rgbLuminance(rgb: readonly [number, number, number]): number {
+	return rgb.reduce((sum, channel, index) => {
 		const linear = channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
 		return sum + linear * [0.2126, 0.7152, 0.0722][index];
 	}, 0);
 }
 
-function contrast(values: Map<string, string>, fill: string, foreground: string) {
-	const a = luminance(values, fill);
-	const b = luminance(values, foreground);
+function luminance(values: Map<string, string>, name: string): number {
+	const [r, g, b] = hslaChannels(values, name);
+	return rgbLuminance([r, g, b]);
+}
+
+function compositeOver(
+	values: Map<string, string>,
+	fill: string,
+	surface: string,
+): [number, number, number] {
+	const [fr, fg, fb, alpha] = hslaChannels(values, fill);
+	const [sr, sg, sb] = hslaChannels(values, surface);
+	return [
+		fr * alpha + sr * (1 - alpha),
+		fg * alpha + sg * (1 - alpha),
+		fb * alpha + sb * (1 - alpha),
+	];
+}
+
+function contrastRgb(
+	aRgb: readonly [number, number, number],
+	bRgb: readonly [number, number, number],
+) {
+	const a = rgbLuminance(aRgb);
+	const b = rgbLuminance(bRgb);
 	return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 
+function contrast(values: Map<string, string>, fill: string, foreground: string) {
+	const [fr, fg, fb] = hslaChannels(values, fill);
+	const [tr, tg, tb] = hslaChannels(values, foreground);
+	return contrastRgb([fr, fg, fb], [tr, tg, tb]);
+}
+
 describe("nested surface CSS", () => {
-	it("raises neutral selection above every surface without sacrificing text contrast", () => {
+	it("contrasts neutral selection with every container while keeping readable text", () => {
 		for (const selector of themeSelectors) {
 			const values = tokenValues(selector);
-			const selected = luminance(values, "selected");
+			const isLight = selector.includes("light");
 			for (const surface of ["background", "card", "secondary", "bright", "popover"]) {
-				expect(selected).toBeGreaterThanOrEqual(luminance(values, surface));
-			}
-			for (const foreground of ["selected-foreground", "muted-foreground"]) {
-				expect(contrast(values, "selected", foreground)).toBeGreaterThanOrEqual(4.5);
+				const composite = compositeOver(values, "selected", surface);
+				const compositeLum = rgbLuminance(composite);
+				const surfaceLum = luminance(values, surface);
+				if (isLight) {
+					expect(compositeLum, `${selector} on ${surface}`).toBeLessThan(surfaceLum);
+				} else {
+					expect(compositeLum, `${selector} on ${surface}`).toBeGreaterThan(surfaceLum);
+				}
+				for (const foreground of ["selected-foreground", "muted-foreground"]) {
+					const [tr, tg, tb] = hslaChannels(values, foreground);
+					expect(
+						contrastRgb(composite, [tr, tg, tb]),
+						`${selector} ${foreground} on ${surface}`,
+					).toBeGreaterThanOrEqual(4.5);
+				}
 			}
 		}
 	});
 
-	it("derives soft uniform matte hover from the configured primary in both themes", () => {
+	it("uses neutral foreground-tinted matte hover in both themes", () => {
 		for (const [selector, weight] of [
-			['[data-mode="light"]', "18%"],
-			['[data-mode="dark"]', "18%"],
+			['[data-mode="light"]', "4%"],
+			['[data-mode="dark"]', "6%"],
 		] as const) {
 			const values = tokenValues(selector);
 			expect(values.get("--basalt-hover-weight")).toBe(weight);
 			expect(values.get("--basalt-hover")?.replace(/\s+/g, "")).toBe(
-				"color-mix(insrgb,hsl(var(--basalt-primary))var(--basalt-hover-weight),hsl(var(--basalt-surface-elevated)))",
+				"hsl(var(--basalt-foreground)/var(--basalt-hover-weight))",
 			);
 		}
 		for (const selector of [".basalt-hover-list::before", ".basalt-command-list::before"]) {
@@ -77,6 +124,7 @@ describe("nested surface CSS", () => {
 		);
 		expect(tokens).not.toContain("will-change: transform");
 		expect(tokens).not.toContain("--basalt-hover-end");
+		expect(tokens).not.toContain("--basalt-surface-elevated");
 		expect(tailwind).toContain("--color-basalt-hover: var(--basalt-hover);");
 	});
 
@@ -98,13 +146,22 @@ describe("nested surface CSS", () => {
 	it("retains selected paint independently of moving hover and keeps semantic diffs", () => {
 		expect(tokens).toContain('.basalt-nav-item:not([data-hover-selected="true"])');
 		expect(tokens).toContain("background-color: hsl(var(--basalt-selected));");
+		expect(tokens).toContain("box-shadow: var(--basalt-selected-edge);");
 		expect(tokens).not.toContain("--basalt-selected-border");
 		expect(tokens).not.toContain("--basalt-selected-indicator");
+		let selectedEdgeCount = 0;
+		let resetShadowCount = 0;
 		postcss.parse(tokens).walkRules((rule) => {
 			if (rule.selector.includes("selected") || rule.selector.includes(".basalt-choice")) {
 				expect(rule.selector).not.toMatch(/::(?:before|after)/);
 				rule.walkDecls((declaration) => {
-					expect(declaration.prop).not.toMatch(/^(?:border|box-shadow|outline)/);
+					if (declaration.prop === "box-shadow") {
+						if (declaration.value === "var(--basalt-selected-edge)") selectedEdgeCount++;
+						else if (declaration.value === "none") resetShadowCount++;
+						else expect.fail(`Unexpected box-shadow on ${rule.selector}: ${declaration.value}`);
+					} else {
+						expect(declaration.prop).not.toMatch(/^(?:border|outline)/);
+					}
 				});
 			}
 			if ([".basalt-hover-list::before", ".basalt-command-list::before"].includes(rule.selector)) {
@@ -113,6 +170,8 @@ describe("nested surface CSS", () => {
 				});
 			}
 		});
+		expect(selectedEdgeCount).toBe(1);
+		expect(resetShadowCount).toBe(1);
 		expect(tokens).toContain("background: hsl(var(--basalt-danger-tint));");
 		expect(tokens).toContain("background: hsl(var(--basalt-info-tint));");
 		expect(tailwind).toContain("--color-basalt-selected: hsl(var(--basalt-selected));");

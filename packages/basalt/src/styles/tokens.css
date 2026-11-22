@@ -180,14 +180,10 @@
 		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.08);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-card);
-	--basalt-surface-elevated: var(--basalt-secondary);
-	--basalt-hover-weight: 18%;
-	--basalt-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
-		hsl(var(--basalt-surface-elevated))
-	);
-	--basalt-selected: 0 0% 100%;
+	--basalt-hover-weight: 4%;
+	--basalt-hover: hsl(var(--basalt-foreground) / var(--basalt-hover-weight));
+	--basalt-selected: 0 0% 10% / 0.055;
+	--basalt-selected-edge: inset 0 0 0 1px hsl(0 0% 10% / 0.06);
 	--basalt-selected-foreground: var(--basalt-foreground);
 	--basalt-primary-hover: color-mix(
 		in srgb,
@@ -348,14 +344,10 @@
 		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.12);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-card);
-	--basalt-surface-elevated: var(--basalt-secondary);
-	--basalt-hover-weight: 18%;
-	--basalt-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
-		hsl(var(--basalt-surface-elevated))
-	);
+	--basalt-hover-weight: 6%;
+	--basalt-hover: hsl(var(--basalt-foreground) / var(--basalt-hover-weight));
 	--basalt-selected: 0 0% 22%;
+	--basalt-selected-edge: inset 0 1px 0 0 rgb(255 255 255 / 0.06);
 	--basalt-selected-foreground: var(--basalt-foreground);
 	--basalt-primary-hover: color-mix(
 		in srgb,
@@ -433,7 +425,6 @@
 [data-basalt-surface-root] {
 	background: hsl(var(--basalt-card));
 	--basalt-surface-current: var(--basalt-card);
-	--basalt-surface-elevated: var(--basalt-secondary);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 }
 
@@ -446,23 +437,7 @@
 [data-basalt-surface-root] [data-basalt-surface] {
 	background: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-secondary);
-	--basalt-surface-elevated: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
-	--basalt-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
-		hsl(var(--basalt-surface-elevated))
-	);
-	--basalt-primary-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-primary)) 90%,
-		hsl(var(--basalt-background))
-	);
-	--basalt-destructive-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-destructive)) 90%,
-		hsl(var(--basalt-background))
-	);
 }
 
 [data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] {
@@ -492,13 +467,7 @@
 [data-basalt-surface]:not([data-basalt-surface-root] *):not([data-basalt-surface] *) {
 	background: hsl(var(--basalt-card));
 	--basalt-surface-current: var(--basalt-card);
-	--basalt-surface-elevated: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
-	--basalt-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
-		hsl(var(--basalt-surface-elevated))
-	);
 }
 
 /* biome-ignore lint/style/noDescendingSpecificity: Rootless surface trees cannot overlap a surface-root tree. */
@@ -506,21 +475,6 @@
 	background: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-secondary);
 	--basalt-control-fill: hsl(var(--basalt-bright));
-	--basalt-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
-		hsl(var(--basalt-surface-elevated))
-	);
-	--basalt-primary-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-primary)) 90%,
-		hsl(var(--basalt-background))
-	);
-	--basalt-destructive-hover: color-mix(
-		in srgb,
-		hsl(var(--basalt-destructive)) 90%,
-		hsl(var(--basalt-background))
-	);
 }
 
 [data-basalt-surface]:not([data-basalt-surface-root] *)
@@ -616,6 +570,7 @@
 ) {
 	background-color: hsl(var(--basalt-selected));
 	color: hsl(var(--basalt-selected-foreground));
+	box-shadow: var(--basalt-selected-edge);
 }
 
 .basalt-nav-item[data-hover-selected="true"] {
@@ -624,6 +579,7 @@
 
 .basalt-nav-item .basalt-choice[aria-current] {
 	background-color: transparent;
+	box-shadow: none;
 }
 
 @layer components {

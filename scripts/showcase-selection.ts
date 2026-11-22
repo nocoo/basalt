@@ -15,25 +15,31 @@ async function selectedPaint(row: Locator) {
 			context.fillRect(0, 0, 1, 1);
 			return [...context.getImageData(0, 0, 1, 1).data];
 		};
-		const luminance = (color: string) =>
-			rgba(color)
-				.slice(0, 3)
-				.reduce((sum, value, index) => {
-					const channel = value / 255;
-					const linear = channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
-					return sum + linear * [0.2126, 0.7152, 0.0722][index];
-				}, 0);
+		const luminance = (channels: number[]) =>
+			channels.slice(0, 3).reduce((sum, value, index) => {
+				const channel = value / 255;
+				const linear = channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+				return sum + linear * [0.2126, 0.7152, 0.0722][index];
+			}, 0);
 		const style = getComputedStyle(node);
 		let parent = node.parentElement;
 		while (parent && rgba(getComputedStyle(parent).backgroundColor)[3] === 0)
 			parent = parent.parentElement;
-		const foreground = luminance(style.color);
-		const background = luminance(style.backgroundColor);
+		const parentRgba = parent ? rgba(getComputedStyle(parent).backgroundColor) : [0, 0, 0, 255];
+		const fillRgba = rgba(style.backgroundColor);
+		const alpha = fillRgba[3] / 255;
+		const compositeRgba = [
+			fillRgba[0] * alpha + parentRgba[0] * (1 - alpha),
+			fillRgba[1] * alpha + parentRgba[1] * (1 - alpha),
+			fillRgba[2] * alpha + parentRgba[2] * (1 - alpha),
+		];
+		const foreground = luminance(rgba(style.color));
+		const background = luminance(compositeRgba);
 		return {
 			fill: style.backgroundColor,
 			opacity: style.opacity,
 			brightness: background,
-			parentBrightness: parent ? luminance(getComputedStyle(parent).backgroundColor) : 0,
+			parentBrightness: parent ? luminance(parentRgba) : 0,
 			contrast:
 				(Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05),
 			beforeContent: getComputedStyle(node, "::before").content,
@@ -69,7 +75,11 @@ export async function assertSelectionHierarchy(page: Page, baseUrl: string) {
 					before,
 					"Hover must not erase selected paint",
 				);
-				assert.ok(before.brightness >= before.parentBrightness, JSON.stringify(before));
+				if (dark) {
+					assert.ok(before.brightness >= before.parentBrightness, JSON.stringify(before));
+				} else {
+					assert.ok(before.brightness < before.parentBrightness, JSON.stringify(before));
+				}
 				assert.ok(before.contrast >= 4.5, JSON.stringify(before));
 				assert.equal(before.opacity, "1");
 				assert.equal(before.beforeContent, "none");
