@@ -224,10 +224,10 @@ interaction contracts; do not change their containment as a global workaround.
   Controls contrast with their parent: secondary/control buttons and inputs fill with
   `--basalt-control-fill` (`#fff` in light mode; `--basalt-secondary` on roots and
   `--basalt-bright` inside cards in dark mode) with edge-lit `--basalt-shadow-control`.
-  Solid `--basalt-primary` / `--basalt-destructive` actions use saturated ink-safe fills
+  Solid `--basalt-primary` / `--basalt-danger-solid` actions use saturated ink-safe fills
   with `--basalt-shadow-solid` (white foreground contrast `>= 4.5:1`); `outline`
   renders transparent hairline-only framing. Hover uses `--basalt-hover`,
-  `--basalt-primary-hover`, or `--basalt-destructive-hover`, not caller opacity.
+  `--basalt-primary-hover`, or `--basalt-danger-solid-hover`, not caller opacity.
 - Accent links, inline icon/text highlights, and focus rings read `--basalt-link`
   (`--basalt-primary` in light mode; lifted `204 90% 70%` in dark mode), while solid
   primary actions/badges stay on `--basalt-primary` (`204 90% 40%` in dark mode with
@@ -238,6 +238,16 @@ interaction contracts; do not change their containment as a global workaround.
   `shadow-sm`/`shadow-md`/`shadow-lg`/`shadow-xl` utilities or `backdrop-filter`.
   `Popover` sets `arrow={false}` by default; opt in with `arrow` only when directional
   anchor attribution is needed.
+- **Status tones.** Status feedback across `Badge`, `Banner`, and `Toast` uses five
+  unified tones (`neutral`, `info`, `success`, `warning`, `danger`). Neutral uses the
+  shared foreground/background/border tokens; each semantic tone defines four tokens
+  (`--basalt-{tone}` ink with `>= 4.5:1` contrast on surfaces and tint, `--basalt-{tone}-tint`
+  soft fill, `--basalt-{tone}-solid` saturated fill, and `--basalt-{tone}-solid-foreground`
+  white text). Former `--basalt-destructive*` tokens merge into `--basalt-danger-solid*`.
+  `Badge` defaults to `tone="neutral"` + `variant="soft"` (`solid` is reserved for
+  high-emphasis counts), and table status cells use `soft` + `dot`; non-semantic
+  hue labels belong only to `TagBadge`. `Toast` renders all tones on `--basalt-popover`
+  and signals tone strictly through its icon color (`[&_[data-icon]]:text-basalt-{tone}`).
 - Semantic states, tags, data series and brand imagery may choose semantic
   palettes; keep foreground/background pairs and verify both themes. Centralize
   shared values rather than declaring hex colors in component classes. Site-only
