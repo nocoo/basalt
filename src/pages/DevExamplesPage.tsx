@@ -26,7 +26,6 @@ import {
 } from "@nocoo/basalt/components/table";
 import { ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
 import { Component, type ComponentType, type ReactNode, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router";
 import { MicroSceneWall } from "@/components/showcase/MicroSceneWall";
 import { SurfaceDisciplineInspector } from "@/components/showcase/SurfaceDisciplineInspector";
@@ -134,15 +133,14 @@ function Overlay() {
 }
 
 function Templates() {
-	const { t } = useTranslation();
 	return (
 		<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 xl:grid-cols-3">
 			{TEMPLATE_MANIFEST.map((entry) => (
 				<LayerCard key={entry.slug} padding="none">
-					<LayerCard.Header>{t(entry.titleKey)}</LayerCard.Header>
+					<LayerCard.Header>{entry.title}</LayerCard.Header>
 					<LayerCard.Body className="space-y-basalt-card-sm">
 						<Badge variant="outline">{entry.category}</Badge>
-						<p className="text-basalt-sm text-basalt-muted-foreground">{t(entry.descriptionKey)}</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground">{entry.description}</p>
 					</LayerCard.Body>
 				</LayerCard>
 			))}

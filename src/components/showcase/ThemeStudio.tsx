@@ -12,7 +12,6 @@ import {
 	SelectValue,
 } from "@nocoo/basalt/components/select";
 import { type CSSProperties, useId } from "react";
-import { useTranslation } from "react-i18next";
 import { MicroSceneWall } from "@/components/showcase/MicroSceneWall";
 import {
 	CHART_MODES,
@@ -24,6 +23,36 @@ import {
 } from "@/models/theme-studio";
 import { useThemeStudioViewModel } from "@/viewmodels/useThemeStudioViewModel";
 
+const PRESET_LABELS: Record<string, string> = {
+	default: "Basalt Default",
+	graphite: "Pure Graphite",
+	limestone: "Warm Limestone",
+	ops: "Signal Ops",
+	editorial: "Soft Editorial",
+	terminal: "Sharp Terminal",
+	custom: "Custom",
+};
+
+const CONTROL_LABELS: Record<keyof ThemeStudioOptions, string> = {
+	surfaceTint: "Surface Tint",
+	radius: "Radius Scale",
+	chartMode: "Chart Strategy",
+	fontPairing: "Font Pairing",
+};
+
+const CONTROL_VALUE_LABELS: Record<keyof ThemeStudioOptions, Record<string, string>> = {
+	surfaceTint: { neutral: "Neutral", warm: "Warm", cool: "Cool" },
+	radius: { default: "Default", sharp: "Sharp", soft: "Soft" },
+	chartMode: { categorical: "Categorical", monochrome: "Monochrome" },
+	fontPairing: { default: "Default", sans: "Sans", technical: "Technical" },
+};
+
+const COPY_STATUS_MESSAGES = {
+	css: "CSS copied.",
+	link: "Link copied.",
+	error: "Copy failed. Check clipboard permissions and try again.",
+} as const;
+
 const CONTROLS: readonly { key: keyof ThemeStudioOptions; values: readonly string[] }[] = [
 	{ key: "surfaceTint", values: SURFACE_TINTS },
 	{ key: "radius", values: RADIUS_SCALES },
@@ -32,35 +61,33 @@ const CONTROLS: readonly { key: keyof ThemeStudioOptions; values: readonly strin
 ];
 
 export function ThemeStudio() {
-	const { t } = useTranslation();
 	const id = useId();
 	const vm = useThemeStudioViewModel();
-	const prefix = "pages.palette.studio";
 	return (
 		<div className="space-y-basalt-layout">
 			<LayerCard padding="none">
 				<LayerCard.Header className="flex-wrap items-center justify-between">
 					<div className="flex flex-wrap items-center gap-basalt-space-lg">
-						<span>{t(`${prefix}.title`)}</span>
-						<Badge variant="outline">{t(`${prefix}.presets.${vm.presetId}`)}</Badge>
+						<span>Theme Studio</span>
+						<Badge variant="outline">{PRESET_LABELS[vm.presetId] ?? vm.presetId}</Badge>
 					</div>
 					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Button size="sm" variant="outline" onClick={vm.reset}>
-							{t(`${prefix}.reset`)}
+							Reset studio
 						</Button>
 						<Button size="sm" variant="outline" onClick={() => void vm.copyShareLink()}>
-							{t(`${prefix}.copyLink`)}
+							Copy link
 						</Button>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body className="space-y-basalt-layout">
 					<div className="space-y-basalt-space-lg">
 						<p className="text-basalt-sm font-medium text-basalt-muted-foreground">
-							{t(`${prefix}.presetsLabel`)}
+							Curated presets
 						</p>
 						<div
 							role="group"
-							aria-label={t(`${prefix}.presetsLabel`)}
+							aria-label="Curated presets"
 							className="flex flex-wrap gap-basalt-space-lg"
 						>
 							{STUDIO_PRESETS.map((preset) => (
@@ -71,7 +98,7 @@ export function ThemeStudio() {
 									aria-pressed={vm.presetId === preset.id}
 									onClick={() => vm.applyPreset(preset.id)}
 								>
-									{t(`${prefix}.presets.${preset.id}`)}
+									{PRESET_LABELS[preset.id] ?? preset.id}
 								</Button>
 							))}
 						</div>
@@ -79,7 +106,7 @@ export function ThemeStudio() {
 					<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 lg:grid-cols-4">
 						{CONTROLS.map(({ key, values }) => (
 							<div key={key} className="space-y-basalt-space-lg">
-								<Label htmlFor={`${id}-${key}`}>{t(`${prefix}.controls.${key}`)}</Label>
+								<Label htmlFor={`${id}-${key}`}>{CONTROL_LABELS[key]}</Label>
 								<Select
 									value={vm.options[key]}
 									onValueChange={(value) =>
@@ -92,7 +119,7 @@ export function ThemeStudio() {
 									<SelectContent>
 										{values.map((value) => (
 											<SelectItem key={value} value={value}>
-												{t(`${prefix}.values.${key}.${value}`)}
+												{CONTROL_VALUE_LABELS[key][value] ?? value}
 											</SelectItem>
 										))}
 									</SelectContent>
@@ -100,10 +127,13 @@ export function ThemeStudio() {
 							</div>
 						))}
 					</div>
-					<p className="text-basalt-sm text-basalt-muted-foreground">{t(`${prefix}.shareNote`)}</p>
+					<p className="text-basalt-sm text-basalt-muted-foreground">
+						Links share preset choices; custom palette colors remain in this browser. To use the
+						CSS, set AccentProvider's applyToDocument to false.
+					</p>
 					{vm.copyStatus !== "idle" && (
 						<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
-							{t(`${prefix}.copyStatus.${vm.copyStatus}`)}
+							{COPY_STATUS_MESSAGES[vm.copyStatus]}
 						</p>
 					)}
 				</LayerCard.Body>
@@ -111,21 +141,21 @@ export function ThemeStudio() {
 			<LayerCard padding="none">
 				<LayerCard.Header className="flex-wrap items-center justify-between">
 					<div className="flex items-center gap-basalt-space-lg">
-						<span>{t(`${prefix}.stage`)}</span>
-						<Badge variant="outline">{t(`pages.palette.${vm.mode}`)}</Badge>
+						<span>Live stage</span>
+						<Badge variant="outline">{vm.mode === "dark" ? "Dark" : "Light"}</Badge>
 					</div>
 					<div className="flex flex-wrap items-center gap-basalt-space-lg">
 						<SegmentControl
-							aria-label={t(`${prefix}.stageMode`)}
+							aria-label="Studio view"
 							value={vm.stageTab}
 							onValueChange={(value) => vm.setStageTab(value as "preview" | "code")}
 							options={[
-								{ value: "preview", label: t(`${prefix}.preview`) },
-								{ value: "code", label: t(`${prefix}.code`) },
+								{ value: "preview", label: "01 Micro-Scene Wall" },
+								{ value: "code", label: "02 Token Diff CSS" },
 							]}
 						/>
 						<Button size="sm" variant="outline" onClick={() => void vm.copyCssDiff()}>
-							{t(`${prefix}.copyCss`)}
+							Copy CSS
 						</Button>
 					</div>
 				</LayerCard.Header>
@@ -147,13 +177,9 @@ export function ThemeStudio() {
 				>
 					<div className="flex flex-wrap items-center justify-between gap-basalt-layout">
 						<p className="font-basalt-display text-basalt-lg font-semibold text-basalt-foreground">
-							{t(`${prefix}.stageSample`)}
+							Workspace overview
 						</p>
-						<div
-							role="img"
-							aria-label={t(`${prefix}.chartPreview`)}
-							className="flex gap-basalt-space-sm"
-						>
+						<div role="img" aria-label="Chart colors preview" className="flex gap-basalt-space-sm">
 							{[1, 2, 3, 4, 5].map((index) => (
 								<span
 									key={index}
@@ -166,7 +192,7 @@ export function ThemeStudio() {
 					</div>
 					<div
 						role="img"
-						aria-label={t(`${prefix}.surfacePreview`)}
+						aria-label="Surface hierarchy preview"
 						className="grid grid-cols-4 gap-basalt-space-sm"
 					>
 						{["background", "card", "secondary", "bright"].map((token, index) => (

@@ -72,7 +72,6 @@ const CASES = [
 	["ui/segment-control", "[data-hero-scenario] [data-slot=segment-control-viewport] button", false],
 	["ui/sidebar", "[data-hero-scenario] [data-sidebar-row]", true],
 	["ui/editable-nav-item", "[data-hero-scenario] button[aria-label='Care library']", true],
-	["interactions", "[data-interaction-card] > button", true],
 ] as const;
 
 async function assertTableFocusPixels(region: Locator) {

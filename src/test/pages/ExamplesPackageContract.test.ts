@@ -5,16 +5,12 @@ import { describe, expect, it } from "vitest";
 const EXAMPLE_PAGES = [
 	"AccountsPage.tsx",
 	"BankingDashboardPage.tsx",
-	"ComponentsPage.tsx",
 	"DashboardPage.tsx",
-	"DataPage.tsx",
 	"DevExamplesPage.tsx",
 	"DialogsPage.tsx",
 	"FlowComparisonPage.tsx",
 	"FormsPage.tsx",
 	"HealthPage.tsx",
-	"InteractionShowcasePage.tsx",
-	"InteractivePage.tsx",
 	"LayoutPage.tsx",
 	"LoadingPage.tsx",
 	"LoadingStatesPage.tsx",
@@ -31,11 +27,9 @@ const EXAMPLE_PAGES = [
 	"StaticPage.tsx",
 	"TypefacePage.tsx",
 	"TemplatesPage.tsx",
-	"WearableDashboardPage.tsx",
 ] as const;
 
 const CHART_PAGES = [
-	"ComponentsPage.tsx",
 	"DashboardPage.tsx",
 	"FlowComparisonPage.tsx",
 	"HealthPage.tsx",
@@ -43,7 +37,6 @@ const CHART_PAGES = [
 	"PalettePage.tsx",
 	"PortfolioPage.tsx",
 	"ProgressTrackingPage.tsx",
-	"WearableDashboardPage.tsx",
 	"BankingDashboardPage.tsx",
 ] as const;
 

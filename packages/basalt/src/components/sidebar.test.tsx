@@ -1123,6 +1123,27 @@ describe("Sidebar", () => {
 		expect(screen.queryByRole("button", { name: "Delivery" })).not.toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute("href", "/projects");
 	});
+
+	it("renders an optional sibling action beside the expanded group trigger", () => {
+		render(
+			<SidebarProvider>
+				<Sidebar>
+					<SidebarNav>
+						<SidebarGroup
+							label="Actions"
+							action={<a href="/ui/overview/action">Actions overview</a>}
+						>
+							<SidebarItem href="/ui/button">Button</SidebarItem>
+						</SidebarGroup>
+					</SidebarNav>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		const trigger = screen.getByRole("button", { name: "Actions" });
+		const link = screen.getByRole("link", { name: "Actions overview" });
+		expect(trigger).not.toContainElement(link);
+		expect(link).toHaveAttribute("href", "/ui/overview/action");
+	});
 });
 
 describe("ContentIsland", () => {

@@ -1,5 +1,4 @@
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
-import { useTranslation } from "react-i18next";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
 import { BarChartCard } from "@/components/dashboard/BarChartCard";
@@ -22,13 +21,12 @@ const DIRECTION_CLASSES = {
 } as const;
 
 export default function DashboardPage() {
-	const { t } = useTranslation();
 	const { stats } = useStatsOverviewViewModel();
 
 	return (
 		<ShowcasePage
-			title={t("pages.dashboard.title")}
-			description={`${t("pages.dashboard.description")} ${t("demo.analyticsData")}`}
+			title="Health overview"
+			description="Care funding, appointments, and wellness progress in one place. Sample data, not a live service."
 		>
 			{/* Row 0: analytics stat cards */}
 			<StatGrid>
@@ -43,9 +41,7 @@ export default function DashboardPage() {
 									{s.change}
 								</span>
 								{(s.change.startsWith("+") || s.change.startsWith("-")) && (
-									<span className="text-basalt-muted-foreground">
-										{t("dashboard.comparisonPeriodUnknown")}
-									</span>
+									<span className="text-basalt-muted-foreground">period not specified</span>
 								)}
 							</>
 						}

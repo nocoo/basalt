@@ -12,7 +12,6 @@ import { Switch } from "@nocoo/basalt/components/switch";
 import { useAccent } from "@nocoo/basalt/providers/accent";
 import { Check } from "lucide-react";
 import { useId, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { AreaChart } from "@/components/charts/area";
 import { DonutChart } from "@/components/charts/donut";
 import { Gauge } from "@/components/charts/gauge";
@@ -96,23 +95,26 @@ function Swatch({ token, label }: { token: string; label: string }) {
 }
 
 export default function PalettePage() {
-	const { t } = useTranslation();
 	const { accent, setAccent, swatches } = useAccent();
 	const [preview, setPreview] = useState(false);
 	const previewId = useId();
 
 	return (
-		<ShowcasePage title={t("pages.palette.title")} description={t("pages.palette.description")}>
-			<SectionRule title={t("pages.palette.themePalette")}>
+		<ShowcasePage
+			title="Color palette"
+			description="Twelve candy accents for controls. Five steady colors for data. Make the interface yours without changing the meaning of a chart."
+		>
+			<SectionRule title="Control accents · 12 colors">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-card">
 						<p className="max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
-							{t("pages.palette.candyDescription")}
+							Inspired by the translucent iMac and the playful iPhone 5C. Choose an accent for
+							buttons, links and focus rings.
 						</p>
 						<div
 							className="grid grid-cols-3 gap-basalt-layout sm:grid-cols-4 xl:grid-cols-6"
 							role="group"
-							aria-label={t("pages.palette.themePalette")}
+							aria-label="Control accents · 12 colors"
 						>
 							{swatches.map((color) => (
 								<button
@@ -147,38 +149,39 @@ export default function PalettePage() {
 						className="flex flex-wrap items-center gap-x-basalt-card-sm gap-y-basalt-card-sm"
 					>
 						<Button aria-pressed={preview} onClick={() => setPreview(!preview)}>
-							{t(preview ? "pages.palette.previewActive" : "pages.palette.previewAction")}
+							{preview ? "Selected" : "Preview primary"}
 						</Button>
 						<label
 							htmlFor={`${previewId}-check`}
 							className="flex items-center gap-basalt-space-lg text-basalt-sm"
 						>
 							<Checkbox id={`${previewId}-check`} defaultChecked />
-							{t("pages.palette.previewCheckbox")}
+							Selected option
 						</label>
 						<label
 							htmlFor={`${previewId}-switch`}
 							className="flex items-center gap-basalt-space-lg text-basalt-sm"
 						>
 							<Switch id={`${previewId}-switch`} defaultChecked />
-							{t("pages.palette.previewSwitch")}
+							Enabled option
 						</label>
 						<span className="text-basalt-sm text-muted-foreground">
-							{t("pages.palette.contrastNote")}
+							Text and button shades adapt for contrast.
 						</span>
 					</LayerCard>
 					<PaletteEditor />
 				</div>
 			</SectionRule>
 
-			<SectionRule title={t("pages.palette.studio.title")}>
+			<SectionRule title="Theme Studio">
 				<ThemeStudio />
 			</SectionRule>
 
-			<SectionRule title={t("pages.palette.chartPalette")}>
+			<SectionRule title="Chart palette · 5 colors">
 				<LayerCard>
 					<p className="mb-basalt-card max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
-						{t("pages.palette.chartDescription")}
+						Blue, pink, green and yellow match the classic control palette, with the existing gray
+						alongside them. Chart colors stay fixed when you choose or customize an accent.
 					</p>
 					<div className="grid grid-cols-5 gap-basalt-layout" data-chart-palette>
 						{CHART_COLORS.map((color, index) => (
@@ -199,16 +202,16 @@ export default function PalettePage() {
 
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				{/* Line Chart */}
-				<SectionRule title={t("pages.palette.lineChart")}>
+				<SectionRule title="Line Chart">
 					<LayerCard>
 						<LineChart
 							data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
 							series={[
-								{ key: "y", label: t("pages.palette.seriesA") },
-								{ key: "y2", label: t("pages.palette.seriesB") },
-								{ key: "y3", label: t("pages.palette.seriesC") },
+								{ key: "y", label: "Series A" },
+								{ key: "y2", label: "Series B" },
+								{ key: "y3", label: "Series C" },
 							]}
-							ariaLabel={t("pages.palette.lineChartAria")}
+							ariaLabel="Example multi-series line chart"
 							className="h-[12.5rem] w-full"
 							showAxes
 							showLegend
@@ -216,12 +219,12 @@ export default function PalettePage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.palette.donutChart")}>
+				<SectionRule title="Donut Chart">
 					<LayerCard>
 						<div className="flex flex-col items-center">
 							<DonutChart
 								data={pieData}
-								ariaLabel={t("pages.palette.donutChartAria")}
+								ariaLabel="Example donut chart showing asset allocation"
 								className="h-[11.25rem] w-[11.25rem]"
 								valueFormatter={formatPercent}
 							/>
@@ -245,15 +248,15 @@ export default function PalettePage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.palette.groupedBarChart")}>
+				<SectionRule title="Grouped Bar Chart">
 					<LayerCard>
 						<GroupedBarChart
 							data={barData.map((row) => ({ x: row.name, y: row.income, y2: row.expense }))}
 							series={[
-								{ key: "y", label: t("pages.palette.income") },
-								{ key: "y2", label: t("pages.palette.expense") },
+								{ key: "y", label: "Care Visits" },
+								{ key: "y2", label: "Recovery" },
 							]}
-							ariaLabel={t("pages.palette.groupedBarChartAria")}
+							ariaLabel="Example grouped bar chart showing income vs expense"
 							className="h-[12.5rem] w-full"
 							showAxes
 							showLegend
@@ -262,15 +265,15 @@ export default function PalettePage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.palette.areaChart")}>
+				<SectionRule title="Area Chart (Positive / Negative)">
 					<LayerCard>
 						<AreaChart
 							data={areaData.map((row) => ({ x: row.name, y: row.inflow, y2: row.outflow }))}
 							series={[
-								{ key: "y", label: t("pages.palette.inflow") },
-								{ key: "y2", label: t("pages.palette.outflow") },
+								{ key: "y", label: "Inflow" },
+								{ key: "y2", label: "Outflow" },
 							]}
-							ariaLabel={t("pages.palette.areaChartAria")}
+							ariaLabel="Example area chart showing positive and negative cash flow"
 							className="h-[12.5rem] w-full"
 							showAxes
 							showLegend
@@ -279,7 +282,7 @@ export default function PalettePage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.palette.ringChart")}>
+				<SectionRule title="Ring tracks">
 					<LayerCard>
 						<LayerCard.Header
 							data-palette-rings
@@ -290,14 +293,15 @@ export default function PalettePage() {
 									key={value}
 									value={value}
 									valueFormatter={(number) => `${number}%`}
-									ariaLabel={`${t("pages.palette.ringChart")} ${value}%`}
+									ariaLabel={`Ring tracks ${value}%`}
 									className="h-28 w-28"
 								/>
 							))}
 						</LayerCard.Header>
 						<LayerCard.Body>
 							<p className="text-basalt-sm leading-basalt-relaxed text-muted-foreground">
-								{t("pages.palette.ringDescription")}
+								Empty, partial and complete. A quiet surface-colored track shows the remaining
+								capacity; values keep the same readable text color.
 							</p>
 						</LayerCard.Body>
 					</LayerCard>
@@ -307,7 +311,7 @@ export default function PalettePage() {
 				<LayerCard>
 					<LayerCard.Header asChild>
 						<CollapsibleTrigger className="w-full hover:bg-basalt-hover">
-							{t("pages.palette.baseColors")}
+							Surface and utility tokens
 						</CollapsibleTrigger>
 					</LayerCard.Header>
 					<CollapsibleContent unstyled>

@@ -9,11 +9,8 @@ const ROUTES = [
 	"/portfolio",
 	"/progress-tracking",
 	"/flow-comparison",
-	"/components",
 	"/forms",
 	"/navigation",
-	"/interactive",
-	"/data",
 	"/layout",
 	"/loading-states",
 	"/animation",
@@ -22,9 +19,7 @@ const ROUTES = [
 	"/settings",
 	"/palette",
 	"/typeface",
-	"/interactions",
 	"/health",
-	"/wearable",
 	"/banking",
 	"/network",
 	"/login",
@@ -122,14 +117,7 @@ async function assertNetwork(page: Page, baseUrl: string, width: number) {
 
 async function assertAnalytics(page: Page, route: string, width: number) {
 	if (
-		[
-			"/health",
-			"/wearable",
-			"/banking",
-			"/network",
-			"/progress-tracking",
-			"/flow-comparison",
-		].includes(route) &&
+		["/health", "/banking", "/network", "/progress-tracking", "/flow-comparison"].includes(route) &&
 		width === 390
 	) {
 		const cards = page.locator('[data-showcase-page] [data-slot="stat-card"]');
@@ -142,25 +130,22 @@ async function assertAnalytics(page: Page, route: string, width: number) {
 			`${route}: metrics must share the first row`,
 		);
 	}
-	if (route === "/health" || route === "/wearable") {
+	if (route === "/health") {
 		await page.getByText("Sample day", { exact: true }).waitFor();
 		assert.equal(await page.getByRole("button", { name: "Previous day" }).count(), 0);
 		assert.equal(await page.getByRole("list", { name: "Daily timeline" }).locator("li").count(), 5);
 		await page.getByRole("group", { name: "Weekly steps", exact: true }).waitFor();
-		const metric = route === "/health" ? "Activities" : "Workouts";
 		assert.match(
 			(await page
-				.getByRole("button", { name: new RegExp(`^2026-12-31, ${metric}:`) })
+				.getByRole("button", { name: /^2026-12-31, Activities:/ })
 				.getAttribute("aria-label")) ?? "",
 			/: [1-9]/,
 		);
-		if (route === "/health") {
-			assert.equal(await page.getByRole("button", { name: "Generate insight" }).isDisabled(), true);
-			assert.equal(
-				await page.getByRole("list", { name: "Insight timeline" }).locator("li").count(),
-				4,
-			);
-		}
+		assert.equal(await page.getByRole("button", { name: "Generate insight" }).isDisabled(), true);
+		assert.equal(
+			await page.getByRole("list", { name: "Insight timeline" }).locator("li").count(),
+			4,
+		);
 	}
 	if (route === "/network") {
 		assert.equal(
@@ -234,28 +219,24 @@ async function assertSettings(page: Page, baseUrl: string) {
 	assert.equal(await page.getByText(/^MacBook Pro — Chrome\s*Current$/).count(), 1);
 }
 
-async function assertData(page: Page, baseUrl: string) {
-	await page.goto(`${baseUrl}/data`);
-	const table = page.getByRole("table", { name: "Data Table", exact: true });
+async function assertTablesLedger(page: Page, baseUrl: string) {
+	await page.goto(`${baseUrl}/tables`);
+	const ledger = page.locator('[data-table-showcase="ledger"]');
+	const table = ledger.getByRole("table", { name: "Ledger", exact: true });
 	await table.waitFor();
-	const query = page.getByRole("textbox", { name: "Search", exact: true });
-	await query.fill("no-invoice");
-	await page.getByRole("button", { name: "Reset filters", exact: true }).click();
-	await page.getByRole("combobox", { name: "Filter", exact: true }).click();
-	await page.getByRole("option", { name: "Paid", exact: true }).click();
-	assert.equal(await table.locator("tbody tr").count(), 2);
+	const query = ledger.getByRole("textbox", { name: "Search invoices", exact: true });
+	await query.fill("North");
 	assert.ok((await table.locator("tbody").textContent())?.includes("North Clinic"));
+	await query.fill("");
 	await table.getByRole("button", { name: "Amount", exact: true }).focus();
 	await page.keyboard.press("Enter");
 	assert.ok((await table.locator("tbody tr").first().textContent())?.includes("Atlas Care Center"));
-	await page.getByRole("combobox", { name: "Filter", exact: true }).click();
-	await page.getByRole("option", { name: "All statuses", exact: true }).click();
-	await page.getByRole("button", { name: "Next page", exact: true }).click();
+	await ledger.getByRole("button", { name: "Next page", exact: true }).click();
 	assert.equal(await table.locator("tbody tr").count(), 2);
 	await query.fill("Harbor");
 	assert.equal(await table.locator("tbody tr").count(), 1);
 	assert.equal(
-		await page.getByRole("button", { name: "Previous page", exact: true }).isDisabled(),
+		await ledger.getByRole("button", { name: "Previous page", exact: true }).isDisabled(),
 		true,
 	);
 }
@@ -263,7 +244,6 @@ async function assertData(page: Page, baseUrl: string) {
 export async function assertExamplePages(page: Page, baseUrl: string) {
 	const cases: string[] = [];
 	await page.addInitScript(() => {
-		localStorage.setItem("language", "en");
 		localStorage.setItem("theme", sessionStorage.getItem("showcase-theme") ?? "light");
 	});
 	await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
@@ -301,14 +281,14 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		await assertNetwork(page, baseUrl, width);
 		await assertForms(page, baseUrl);
 		await assertSettings(page, baseUrl);
-		await assertData(page, baseUrl);
-		cases.push(`${width}:light:network/forms/settings/data`);
+		await assertTablesLedger(page, baseUrl);
+		cases.push(`${width}:light:network/forms/settings/tables`);
 		await setShowcaseTheme(page, true);
 		await assertNetwork(page, baseUrl, width);
 		await assertForms(page, baseUrl);
 		await assertSettings(page, baseUrl);
-		await assertData(page, baseUrl);
-		cases.push(`${width}:dark:network/forms/settings/data`);
+		await assertTablesLedger(page, baseUrl);
+		cases.push(`${width}:dark:network/forms/settings/tables`);
 		await setShowcaseTheme(page, false);
 	}
 	for (const rootFont of [16, 32]) {
@@ -367,28 +347,6 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 			}
 			cases.push(`${width}:ui/${slug}`);
 		}
-	}
-	for (const language of ["en", "zh"]) {
-		await page.goto(`${baseUrl}/interactive`);
-		await page.evaluate((language) => localStorage.setItem("language", language), language);
-		// A language control is the real application adapter; reload has an English test default.
-		if (language === "zh") await page.getByText("中文", { exact: true }).click();
-		await page
-			.getByRole("heading", {
-				name: language === "zh" ? "交互式组件" : "Interactive components",
-				exact: true,
-			})
-			.waitFor();
-		await page
-			.getByText(language === "zh" ? "有新版本可用" : "New update available", { exact: true })
-			.first()
-			.waitFor();
-		await page.locator("[data-doc-scroll] h1").waitFor();
-		assert.equal(
-			/pages\.interactive\.alert\w+/.test(await page.locator("body").textContent()),
-			false,
-		);
-		cases.push(`interactive:${language}`);
 	}
 	return cases;
 }

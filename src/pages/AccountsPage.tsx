@@ -25,14 +25,12 @@ import {
 	Wallet as WalletIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useAccountsViewModel } from "@/viewmodels/useAccountsViewModel";
 import { useCardShowcaseViewModel } from "@/viewmodels/useCardShowcaseViewModel";
 import { useRecordListViewModel } from "@/viewmodels/useRecordListViewModel";
 
 export default function AccountsPage() {
-	const { t } = useTranslation();
 	const { accountList, activityList } = useAccountsViewModel();
 	const [showBalance, setShowBalance] = useState(true);
 	const { cards, cardCount, formatBalance } = useCardShowcaseViewModel(showBalance);
@@ -40,13 +38,13 @@ export default function AccountsPage() {
 
 	return (
 		<ShowcasePage
-			title={t("pages.accounts.title")}
-			description={t("pages.accounts.description")}
+			title="Care accounts"
+			description="Care funds, payment cards, and treatment expenses."
 			actions={
 				<>
-					<Button icon={<Plus />}>{t("pages.accounts.addMoney")}</Button>
+					<Button icon={<Plus />}>Add Money</Button>
 					<Button variant="secondary" icon={<ArrowUpRight />}>
-						{t("pages.accounts.send")}
+						Send
 					</Button>
 				</>
 			}
@@ -66,7 +64,7 @@ export default function AccountsPage() {
 
 			{/* Card showcase */}
 			<SectionRule
-				title={t("pages.accounts.cardsActive", { count: cardCount })}
+				title={`${cardCount} cards active`}
 				className="space-y-basalt-card"
 				actions={
 					<Button
@@ -80,8 +78,7 @@ export default function AccountsPage() {
 						) : (
 							<EyeOff className="size-basalt-icon-lg" />
 						)}
-						{showBalance ? t("pages.accounts.hide") : t("pages.accounts.show")}{" "}
-						{t("pages.accounts.balances")}
+						{showBalance ? "Hide" : "Show"} balances
 					</Button>
 				}
 			>
@@ -103,25 +100,19 @@ export default function AccountsPage() {
 								</p>
 								<dl className="grid grid-cols-3 gap-basalt-card-sm border-t border-basalt-border/60 pt-basalt-card-sm">
 									<div className="min-w-0 space-y-basalt-space-sm">
-										<dt className="text-basalt-sm text-basalt-muted-foreground">
-											{t("pages.accounts.validThru")}
-										</dt>
+										<dt className="text-basalt-sm text-basalt-muted-foreground">Valid Thru</dt>
 										<dd className="font-mono tabular-nums font-semibold text-basalt-sm text-basalt-foreground">
 											{card.expiry}
 										</dd>
 									</div>
 									<div className="min-w-0 space-y-basalt-space-sm">
-										<dt className="text-basalt-sm text-basalt-muted-foreground">
-											{t("pages.accounts.balance")}
-										</dt>
+										<dt className="text-basalt-sm text-basalt-muted-foreground">Balance</dt>
 										<dd className="font-mono tabular-nums font-semibold text-basalt-sm text-basalt-foreground break-words">
 											{formatBalance(card.balance)}
 										</dd>
 									</div>
 									<div className="min-w-0 space-y-basalt-space-sm">
-										<dt className="text-basalt-sm text-basalt-muted-foreground">
-											{t("pages.accounts.limit")}
-										</dt>
+										<dt className="text-basalt-sm text-basalt-muted-foreground">limit</dt>
 										<dd className="font-mono tabular-nums font-semibold text-basalt-sm text-basalt-foreground break-words">
 											{formatBalance(card.limit)}
 										</dd>
@@ -148,7 +139,7 @@ export default function AccountsPage() {
 								aria-valuenow={card.utilization}
 								aria-valuemin={0}
 								aria-valuemax={100}
-								aria-label={`${card.bank} ${card.name} ${t("pages.accounts.creditUtilization")}: ${card.utilization}%`}
+								aria-label={`${card.bank} ${card.name} credit utilization: ${card.utilization}%`}
 							>
 								<div
 									className="h-full rounded-basalt-full bg-foreground/60 transition-[width,opacity] basalt-motion"
@@ -157,8 +148,7 @@ export default function AccountsPage() {
 								/>
 							</div>
 							<p className="text-basalt-sm text-muted-foreground mt-basalt-space-md">
-								${card.balance.toLocaleString()} / ${card.limit.toLocaleString()}{" "}
-								{t("pages.accounts.limit")}
+								${card.balance.toLocaleString()} / ${card.limit.toLocaleString()} limit
 							</p>
 						</LayerCard>
 					))}
@@ -169,15 +159,13 @@ export default function AccountsPage() {
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
 					<Lock className="size-basalt-icon-lg text-basalt-muted-foreground" />
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.accounts.cardSecurity")}
-					</h2>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Card Security</h2>
 				</LayerCard.Header>
 				<LayerCard.Body className="grid grid-cols-1 gap-basalt-layout md:grid-cols-3">
 					{[
-						{ key: "onlinePayments", label: t("pages.accounts.onlinePayments") },
-						{ key: "contactless", label: t("pages.accounts.contactless") },
-						{ key: "atmWithdrawal", label: t("pages.accounts.atmWithdrawal") },
+						{ key: "onlinePayments", label: "Online Payments" },
+						{ key: "contactless", label: "Contactless" },
+						{ key: "atmWithdrawal", label: "ATM Withdrawal" },
 					].map((feat) => (
 						<div key={feat.key} className="flex items-center justify-between gap-basalt-card">
 							<label
@@ -196,9 +184,7 @@ export default function AccountsPage() {
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
 					<Activity className="size-basalt-icon-lg text-basalt-muted-foreground" />
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.accounts.recentActivity")}
-					</h2>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Recent Activity</h2>
 				</LayerCard.Header>
 				<LayerCard.Body className="divide-y divide-basalt-border/60">
 					{activityList.map((item, i) => (
@@ -233,7 +219,7 @@ export default function AccountsPage() {
 
 			{/* Transactions */}
 			<SectionRule
-				title={t("pages.accounts.transactions", { count: totalCount })}
+				title={`${totalCount} transactions`}
 				className="space-y-basalt-card"
 				actions={
 					<Button
@@ -241,7 +227,7 @@ export default function AccountsPage() {
 						type="button"
 						className="flex items-center gap-basalt-space-lg text-muted-foreground"
 					>
-						<Filter className="size-basalt-icon" /> {t("pages.accounts.filterLabel")}
+						<Filter className="size-basalt-icon" /> Filter
 					</Button>
 				}
 			>
@@ -252,19 +238,17 @@ export default function AccountsPage() {
 							className="size-basalt-icon-lg text-basalt-muted-foreground"
 							aria-hidden="true"
 						/>
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.accounts.transactionsTitle")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Transactions</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
-						<Table aria-label={t("pages.accounts.transactionsTitle")}>
+						<Table aria-label="Transactions">
 							<TableHeader>
 								<TableRow>
-									<TableHead>{t("pages.accounts.transaction")}</TableHead>
-									<TableHead>{t("pages.accounts.category")}</TableHead>
-									<TableHead>{t("pages.accounts.date")}</TableHead>
-									<TableHead className="text-right">{t("pages.accounts.amount")}</TableHead>
-									<TableHead className="text-right">{t("pages.accounts.status")}</TableHead>
+									<TableHead>Transaction</TableHead>
+									<TableHead>Category</TableHead>
+									<TableHead>Date</TableHead>
+									<TableHead className="text-right">Amount</TableHead>
+									<TableHead className="text-right">Status</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>

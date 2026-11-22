@@ -2,8 +2,6 @@ import { act, fireEvent, render, screen, waitFor, within } from "@testing-librar
 import { describe, expect, it } from "vitest";
 import { MicroSceneWall } from "@/components/showcase/MicroSceneWall";
 import { SurfaceDisciplineInspector } from "@/components/showcase/SurfaceDisciplineInspector";
-import i18n from "@/i18n";
-import ComponentsPage from "@/pages/ComponentsPage";
 import LayoutPage from "@/pages/LayoutPage";
 
 describe("MicroSceneWall", () => {
@@ -123,17 +121,6 @@ describe("surface discipline inspector", () => {
 });
 
 describe("showcase integration", () => {
-	it("renders the wall first and links to the templates gallery", () => {
-		const { container } = render(<ComponentsPage />);
-		expect(screen.getByRole("heading", { name: "Micro-scenes" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Explore templates" })).toHaveAttribute(
-			"href",
-			"/templates",
-		);
-		const sections = container.querySelectorAll("[data-showcase-page] > section");
-		expect(sections[0]).toContainElement(container.querySelector("[data-micro-scene-wall]"));
-		expect(screen.getByRole("heading", { name: "Metric Cards" })).toBeInTheDocument();
-	});
 	it("places the inspector immediately after the surface stack", () => {
 		const { container } = render(<LayoutPage />);
 		expect(
@@ -143,20 +130,5 @@ describe("showcase integration", () => {
 		const inspector = container.querySelector<HTMLElement>("[data-surface-inspector-stage]");
 		expect(stack?.nextElementSibling).toContainElement(inspector);
 		expect(screen.getByRole("heading", { name: "Body vs Well" })).toBeInTheDocument();
-	});
-	it("localizes both showcases in Chinese", async () => {
-		const previous = i18n.language;
-		try {
-			await act(async () => i18n.changeLanguage("zh"));
-			const wall = render(<MicroSceneWall />);
-			expect(screen.getByRole("navigation", { name: "工作区导航" })).toBeInTheDocument();
-			expect(screen.getByRole("button", { name: "金丝雀 10%" })).toBeInTheDocument();
-			wall.unmount();
-			render(<SurfaceDisciplineInspector />);
-			expect(screen.getByRole("radio", { name: "暖色背景" })).toBeInTheDocument();
-			expect(screen.getByText("双重边框反例")).toBeInTheDocument();
-		} finally {
-			await act(async () => i18n.changeLanguage(previous));
-		}
 	});
 });

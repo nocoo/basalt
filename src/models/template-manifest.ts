@@ -17,8 +17,8 @@ export interface TemplateMetadata {
 	featured: boolean;
 	heightRem: number;
 	fileName: string;
-	titleKey: string;
-	descriptionKey: string;
+	title: string;
+	description: string;
 }
 
 export const TEMPLATE_MANIFEST: readonly TemplateMetadata[] = [
@@ -28,8 +28,8 @@ export const TEMPLATE_MANIFEST: readonly TemplateMetadata[] = [
 		featured: true,
 		heightRem: 48,
 		fileName: "AgentWorkspaceTemplate.tsx",
-		titleKey: "pages.templates.agentWorkspace.title",
-		descriptionKey: "pages.templates.agentWorkspace.description",
+		title: "Agent workspace",
+		description: "A collaborative agent session with a trace, composer and file inspector.",
 	},
 	{
 		slug: "ops-inbox",
@@ -37,8 +37,8 @@ export const TEMPLATE_MANIFEST: readonly TemplateMetadata[] = [
 		featured: true,
 		heightRem: 44,
 		fileName: "OpsInboxTemplate.tsx",
-		titleKey: "pages.templates.opsInbox.title",
-		descriptionKey: "pages.templates.opsInbox.description",
+		title: "Ops inbox",
+		description: "Triage incidents, follow a runbook and update their status.",
 	},
 	{
 		slug: "executive-dashboard",
@@ -46,8 +46,8 @@ export const TEMPLATE_MANIFEST: readonly TemplateMetadata[] = [
 		featured: true,
 		heightRem: 48,
 		fileName: "ExecutiveDashboardTemplate.tsx",
-		titleKey: "pages.templates.executiveDashboard.title",
-		descriptionKey: "pages.templates.executiveDashboard.description",
+		title: "Executive dashboard",
+		description: "A concise performance overview with capacity and account data.",
 	},
 	{
 		slug: "workspace-settings",
@@ -55,8 +55,8 @@ export const TEMPLATE_MANIFEST: readonly TemplateMetadata[] = [
 		featured: false,
 		heightRem: 44,
 		fileName: "WorkspaceSettingsTemplate.tsx",
-		titleKey: "pages.templates.workspaceSettings.title",
-		descriptionKey: "pages.templates.workspaceSettings.description",
+		title: "Workspace settings",
+		description: "Manage team preferences, access keys and quotas.",
 	},
 	{
 		slug: "visitor-login",
@@ -64,8 +64,8 @@ export const TEMPLATE_MANIFEST: readonly TemplateMetadata[] = [
 		featured: true,
 		heightRem: 42,
 		fileName: "VisitorLoginTemplate.tsx",
-		titleKey: "pages.templates.visitorLogin.title",
-		descriptionKey: "pages.templates.visitorLogin.description",
+		title: "Visitor login",
+		description: "A compact sign-in badge with optional verification.",
 	},
 ];
 

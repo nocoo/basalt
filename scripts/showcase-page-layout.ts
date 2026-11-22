@@ -340,15 +340,12 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 	for (const width of [390, 1440]) {
 		await page.emulateMedia({ reducedMotion: "reduce" });
 		await page.setViewportSize({ width, height: 1000 });
-		await page.goto(`${baseUrl}/interactions`);
-		await page.locator("[data-interaction-card]").first().waitFor();
-		for (const trigger of await page.locator("[data-interaction-card] > button").all()) {
-			assert.equal(await trigger.evaluate((node) => getComputedStyle(node).padding), "12px 16px");
-		}
-		const feedback = page.getByRole("button", { name: /Send Feedback/ });
-		await feedback.focus();
+		await page.goto(`${baseUrl}/dialogs`);
+		const contribution = page.getByRole("button", { name: "Open contribution", exact: true });
+		await contribution.waitFor();
+		await contribution.focus();
 		await page.keyboard.press("Enter");
-		const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+		const dialog = page.getByRole("dialog", { name: "Log contribution" });
 		await dialog.waitFor();
 		await settleOverlay(dialog);
 		assert.equal(
@@ -356,18 +353,22 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 			width < 640 ? "16px" : "24px",
 		);
 		const spacing = await dialog.evaluate((node) => {
-			const header = node.firstElementChild as HTMLElement;
-			const form = node.querySelector("form") as HTMLElement;
-			const fields = [
-				form.querySelector("#feedback-name")?.parentElement,
-				form.querySelector("#feedback-message")?.parentElement,
-			];
-			const footer = form.lastElementChild as HTMLElement;
+			const header = node.querySelector('[data-slot="dialog-header"]') ?? node.firstElementChild;
+			const fieldsWrap = node.querySelector("[data-dialog-fields]");
+			const fields = Array.from(fieldsWrap?.children ?? []) as HTMLElement[];
+			const footer = node.querySelector('[data-slot="dialog-footer"]') as HTMLElement | null;
 			return {
-				headerGap: form.getBoundingClientRect().top - header.getBoundingClientRect().bottom,
+				headerGap:
+					header && fieldsWrap
+						? Math.round(
+								fieldsWrap.getBoundingClientRect().top - header.getBoundingClientRect().bottom,
+							)
+						: -1,
 				fieldGap:
 					fields[0] && fields[1]
-						? fields[1].getBoundingClientRect().top - fields[0].getBoundingClientRect().bottom
+						? Math.round(
+								fields[1].getBoundingClientRect().top - fields[0].getBoundingClientRect().bottom,
+							)
 						: -1,
 				footerGap:
 					fields[1] && footer
@@ -377,12 +378,11 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 						: -1,
 			};
 		});
-		assert.equal(spacing.headerGap, 16);
-		assert.equal(spacing.fieldGap, 16);
+		assert.equal(spacing.headerGap, 16, JSON.stringify(spacing));
+		assert.equal(spacing.fieldGap, 16, JSON.stringify(spacing));
 		assert.equal(spacing.footerGap, 16, JSON.stringify(spacing));
 		await page.keyboard.press("Escape");
 		await dialog.waitFor({ state: "hidden" });
-		// Pre-existing: this controlled demo has no DialogTrigger, so Escape restores BODY.
 	}
 	await page.setViewportSize({ width: 1440, height: 1000 });
 	await page.goto(`${baseUrl}/ui`);

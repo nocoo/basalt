@@ -46,33 +46,10 @@ export interface MonthlyBudget {
 	actual: number;
 }
 
-export interface Goal {
-	name: string;
-	target: number;
-	saved: number;
-	icon: string;
-}
-
 export interface PortfolioItem {
 	name: string;
 	value: number;
 	allocation: number;
 	change: string;
 	up: boolean;
-}
-
-export type ToastTone = "neutral" | "success" | "danger" | "warning" | "info";
-
-export interface ShowcaseToast {
-	id: string;
-	title: string;
-	description: string;
-	tone: ToastTone;
-}
-
-export interface ShowcaseDialog {
-	id: string;
-	title: string;
-	description: string;
-	style: "info" | "form" | "confirm";
 }

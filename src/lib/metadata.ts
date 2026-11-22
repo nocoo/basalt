@@ -19,8 +19,8 @@ const PAGE_DESCRIPTIONS: Readonly<Record<string, string>> = {
 		"A React banking and wealth dashboard template with balances, portfolios, and transaction views. Built with the open-source Basalt design system.",
 	"/network":
 		"A React network operations dashboard template for traffic, service health, and system activity. Explore the live Basalt components and charts.",
-	"/wearable":
-		"A React health and activity dashboard template with wearable metrics and trends. Explore the live example built with Basalt components and charts.",
+	"/health":
+		"A React health and activity dashboard template with sleep, readiness, activity, and timeline views. Explore the live example built with Basalt components and charts.",
 	"/layout":
 		"Build a responsive React application shell with Basalt: sidebar navigation, a header, scrollable content, page headings, and layered surfaces.",
 	"/login":

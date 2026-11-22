@@ -136,7 +136,12 @@ describe("DashboardLayout", () => {
 		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
 			"Actions",
 		);
-		expect(container.querySelector("[data-basalt-header]")).toHaveClass(
+		expect(container.querySelector("[data-basalt-header] nav")).toHaveClass(
+			"min-w-0",
+			"overflow-x-auto",
+			"whitespace-nowrap",
+		);
+		expect(container.querySelector("[data-basalt-header]")).not.toHaveClass(
 			"max-sm:[&_nav]:max-w-[42vw]",
 		);
 		expect(container.querySelector("[data-basalt-header] h1")).toBeNull();

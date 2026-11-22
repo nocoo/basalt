@@ -350,8 +350,8 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 		}
 
 	await page.setViewportSize({ width: 1280, height: 1000 });
-	await page.goto(`${baseUrl}/data`);
-	const invoices = page.getByRole("table", { name: "Data Table", exact: true });
+	await page.goto(`${baseUrl}/tables`);
+	const invoices = page.getByRole("table", { name: "Ledger", exact: true });
 	await invoices.waitFor();
 	await assertRailsAcrossSorts(invoices, "Invoice", "Amount", "start");
 	await assertRailsAcrossSorts(invoices, "Amount", "Invoice", "end");

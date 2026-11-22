@@ -19,7 +19,6 @@ import {
 	Sparkles,
 	Zap,
 } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { HeatmapCalendar, heatmapColorScales } from "@/components/charts/heatmap-calendar";
 import { SlotBarChart } from "@/components/charts/slot-bar";
 import { Timeline } from "@/components/charts/timeline";
@@ -104,140 +103,94 @@ const recommendationImpact = [
 	{ label: "Focus", value: 20 },
 ];
 
+const statCards = [
+	{
+		title: "Steps",
+		value: "9,840",
+		subtitle: "Daily target 12k",
+		icon: <Footprints />,
+		trend: { value: 6.2, label: "vs last week" },
+	},
+	{
+		title: "Calories",
+		value: "2,130",
+		subtitle: "Daily burn",
+		icon: <Flame />,
+		trend: { value: -1.4, label: "vs yesterday" },
+	},
+	{
+		title: "Hydration",
+		value: "2.4L",
+		subtitle: "Goal 3.0L",
+		icon: <Droplet />,
+		trend: { value: 8.3, label: "vs last week" },
+	},
+	{
+		title: "Sleep",
+		value: "7h 24m",
+		subtitle: "Consistency 82%",
+		icon: <Moon />,
+		trend: { value: 2.1, label: "vs last week" },
+	},
+];
+
+const aiStatCards = [
+	{
+		title: "Insight Score",
+		value: "92",
+		subtitle: "Quality tier A",
+		icon: <Brain />,
+		trend: { value: 4.2, label: "vs last week" },
+	},
+	{
+		title: "Risk Alerts",
+		value: "3",
+		subtitle: "2 resolved",
+		icon: <AlertTriangle />,
+		trend: { value: -1.5, label: "vs last week" },
+	},
+	{
+		title: "Automation",
+		value: "68%",
+		subtitle: "Tasks handled",
+		icon: <Zap />,
+		trend: { value: 6.8, label: "vs last month" },
+	},
+];
+
+const timelineEvents = [
+	{ id: "t1", time: "06:30", title: "Wake up", subtitle: "Rested" },
+	{ id: "t2", time: "07:10", title: "Hydration", subtitle: "400ml" },
+	{ id: "t3", time: "12:20", title: "Walk", subtitle: "3.2km" },
+	{ id: "t4", time: "18:10", title: "Workout", subtitle: "Strength 45m" },
+	{ id: "t5", time: "21:40", title: "Wind down", subtitle: "Stretching" },
+] as const;
+
+const insightTimeline = [
+	{ id: "i1", time: "07:30", title: "Sleep debt detected", subtitle: "Recommend early wind down" },
+	{ id: "i2", time: "09:10", title: "Hydration dip", subtitle: "Add 400ml before noon" },
+	{ id: "i3", time: "13:20", title: "Focus window", subtitle: "Schedule deep work block" },
+	{ id: "i4", time: "17:40", title: "Recovery needed", subtitle: "Light movement recommended" },
+] as const;
+
+const recommendations = [
+	{ title: "Shift bedtime by 30 minutes", status: "New" },
+	{ title: "Add a 20-minute walk", status: "Active" },
+	{ title: "Reduce caffeine after 3 PM", status: "Active" },
+	{ title: "Plan protein-forward lunch", status: "Queued" },
+] as const;
+
 export default function HealthPage() {
-	const { t, i18n } = useTranslation();
-
-	const statCards = [
-		{
-			title: t("pages.health.steps"),
-			value: "9,840",
-			subtitle: t("pages.health.dailyTarget12k"),
-			icon: <Footprints />,
-			trend: { value: 6.2, label: t("common.vsLastWeek") },
-		},
-		{
-			title: t("pages.health.calories"),
-			value: "2,130",
-			subtitle: t("pages.health.burnedToday"),
-			icon: <Flame />,
-			trend: { value: -1.4, label: t("common.vsYesterday") },
-		},
-		{
-			title: t("pages.health.hydration"),
-			value: "2.4L",
-			subtitle: t("pages.health.goal3L"),
-			icon: <Droplet />,
-			trend: { value: 8.3, label: t("common.vsLastWeek") },
-		},
-		{
-			title: t("pages.health.sleep"),
-			value: "7h 24m",
-			subtitle: t("pages.health.consistency82"),
-			icon: <Moon />,
-			trend: { value: 2.1, label: t("common.vsLastWeek") },
-		},
-	];
-
-	const aiStatCards = [
-		{
-			title: t("pages.health.insightScore"),
-			value: "92",
-			subtitle: t("pages.health.qualityTierA"),
-			icon: <Brain />,
-			trend: { value: 4.2, label: t("common.vsLastWeek") },
-		},
-		{
-			title: t("pages.health.riskAlerts"),
-			value: "3",
-			subtitle: t("pages.health.resolved2"),
-			icon: <AlertTriangle />,
-			trend: { value: -1.5, label: t("common.vsLastWeek") },
-		},
-		{
-			title: t("pages.health.automation"),
-			value: "68%",
-			subtitle: t("pages.health.tasksHandled"),
-			icon: <Zap />,
-			trend: { value: 6.8, label: t("common.vsLastMonth") },
-		},
-	];
-
-	const timelineEvents = [
-		{
-			id: "t1",
-			time: "06:30",
-			title: t("pages.health.wakeUp"),
-			subtitle: t("pages.health.rested"),
-		},
-		{
-			id: "t2",
-			time: "07:10",
-			title: t("pages.health.hydration"),
-			subtitle: "400ml",
-		},
-		{
-			id: "t3",
-			time: "12:20",
-			title: t("pages.health.walk"),
-			subtitle: "3.2km",
-		},
-		{
-			id: "t4",
-			time: "18:10",
-			title: t("pages.health.workout"),
-			subtitle: t("pages.health.strength45m"),
-		},
-		{
-			id: "t5",
-			time: "21:40",
-			title: t("pages.health.windDown"),
-			subtitle: t("pages.health.stretching"),
-		},
-	];
-
-	const insightTimeline = [
-		{
-			id: "i1",
-			time: "07:30",
-			title: t("pages.health.sleepDebtDetected"),
-			subtitle: t("pages.health.recommendEarlyWindDown"),
-		},
-		{
-			id: "i2",
-			time: "09:10",
-			title: t("pages.health.hydrationDip"),
-			subtitle: t("pages.health.add400mlBeforeNoon"),
-		},
-		{
-			id: "i3",
-			time: "13:20",
-			title: t("pages.health.focusWindow"),
-			subtitle: t("pages.health.scheduleDeepWorkBlock"),
-		},
-		{
-			id: "i4",
-			time: "17:40",
-			title: t("pages.health.recoveryNeeded"),
-			subtitle: t("pages.health.lightMovementRecommended"),
-		},
-	];
-
-	const recommendations = [
-		{ title: t("pages.health.shiftBedtime"), status: t("pages.health.new") },
-		{ title: t("pages.health.addWalk"), status: t("pages.health.active") },
-		{ title: t("pages.health.reduceCaffeine"), status: t("pages.health.active") },
-		{ title: t("pages.health.planProteinLunch"), status: t("pages.health.queued") },
-	];
-
 	return (
-		<ShowcasePage title={t("pages.health.title")} description={t("pages.health.description")}>
+		<ShowcasePage
+			title="Health activity"
+			description="Sample sleep, heart rate, activity, and insight data."
+		>
 			<SectionRule
-				title={t("pages.health.sampleDay")}
+				title="Sample day"
 				actions={
 					<span className="text-basalt-base text-basalt-muted-foreground">
-						{new Intl.DateTimeFormat(i18n.language, { dateStyle: "full" }).format(
-							new Date(2026, 1, 13),
-						)}
+						{new Intl.DateTimeFormat("en-US", { dateStyle: "full" }).format(new Date(2026, 1, 13))}
 					</span>
 				}
 			/>
@@ -259,21 +212,19 @@ export default function HealthPage() {
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
 						<Moon className="size-basalt-icon-lg text-basalt-link" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.health.sleepStages")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Sleep stages</h2>
 						<span className="ml-auto text-basalt-base font-semibold text-basalt-link">7h 24m</span>
 					</LayerCard.Header>
 					<LayerCard.Body className="space-y-basalt-card-sm">
 						<SlotBarChart
 							items={sleepSlots.map((item, index) => ({
 								...item,
-								label: t("pages.health.sampleSlot", { number: index + 1 }),
+								label: `Sample slot ${index + 1}`,
 							}))}
-							ariaLabel={t("pages.health.sleepStagesSample")}
+							ariaLabel="Illustrative sleep stages, not actual measurements"
 						/>
 						<p className="text-basalt-sm text-basalt-muted-foreground">
-							{t("pages.health.sampleColors")}
+							Illustrative colors, not actual measurements
 						</p>
 					</LayerCard.Body>
 				</LayerCard>
@@ -281,7 +232,7 @@ export default function HealthPage() {
 					<LayerCard.Header className="items-center justify-start">
 						<Heart className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.health.heartRateZones")}
+							Heart rate zones
 						</h2>
 						<span className="ml-auto text-basalt-base font-semibold text-basalt-foreground">
 							72 bpm
@@ -291,12 +242,12 @@ export default function HealthPage() {
 						<SlotBarChart
 							items={heartRateSlots.map((item, index) => ({
 								...item,
-								label: t("pages.health.sampleSlot", { number: index + 1 }),
+								label: `Sample slot ${index + 1}`,
 							}))}
-							ariaLabel={t("pages.health.heartRateSample")}
+							ariaLabel="Illustrative heart rate zones, not actual measurements"
 						/>
 						<p className="text-basalt-sm text-basalt-muted-foreground">
-							{t("pages.health.sampleColors")}
+							Illustrative colors, not actual measurements
 						</p>
 					</LayerCard.Body>
 				</LayerCard>
@@ -306,17 +257,12 @@ export default function HealthPage() {
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
 						<Footprints className="size-basalt-icon-lg text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.health.weeklySteps")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Weekly steps</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<BarChartWidget
-							data={weeklySteps.map((item) => ({
-								...item,
-								label: t(`dashboard.weekdays.${item.label.toLowerCase()}`),
-							}))}
-							ariaLabel={t("pages.health.weeklySteps")}
+							data={weeklySteps}
+							ariaLabel="Weekly steps"
 							height={200}
 							color={chart.green}
 						/>
@@ -326,16 +272,13 @@ export default function HealthPage() {
 					<LayerCard.Header className="items-center justify-start">
 						<Sparkles className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.health.monthlySleepTrend")}
+							Monthly sleep trend
 						</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<LineChartWidget
-							data={monthlySleep.map((item, index) => ({
-								...item,
-								label: t("pages.health.week", { number: index + 1 }),
-							}))}
-							ariaLabel={t("pages.health.monthlySleepTrend")}
+							data={monthlySleep}
+							ariaLabel="Monthly sleep trend"
 							height={200}
 							color={chart.indigo}
 							valueFormatter={(v) => `${v}h`}
@@ -349,16 +292,13 @@ export default function HealthPage() {
 					<LayerCard.Header className="items-center justify-start">
 						<Activity className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.health.activityBreakdown")}
+							Activity breakdown
 						</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<DonutChartWidget
-							data={activityBreakdown.map((item) => ({
-								...item,
-								label: t(`pages.health.activity${item.label}`),
-							}))}
-							ariaLabel={t("pages.health.activityBreakdown")}
+							data={activityBreakdown}
+							ariaLabel="Activity breakdown"
 							height={220}
 							showLegend
 							valueFormatter={formatPercent}
@@ -368,13 +308,11 @@ export default function HealthPage() {
 				<LayerCard className="lg:col-span-2">
 					<LayerCard.Header className="items-center justify-start">
 						<Activity className="size-basalt-icon-lg text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.health.dailyTimeline")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Daily timeline</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<Timeline
-							ariaLabel={t("pages.health.dailyTimeline")}
+							ariaLabel="Daily timeline"
 							items={timelineEvents.map((event) => ({
 								id: event.id,
 								at: event.time,
@@ -389,26 +327,26 @@ export default function HealthPage() {
 				<LayerCard.Header className="items-center justify-start">
 					<Activity className="size-basalt-icon-lg text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.health.activityHeatmap2026")}
+						Activity heatmap — 2026
 					</h2>
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<HeatmapCalendar
-						ariaLabel={t("pages.health.activityHeatmap2026")}
+						ariaLabel="Activity heatmap — 2026"
 						data={heatmapData}
 						year={2026}
 						colorScale={heatmapColorScales.green}
-						metricLabel={t("pages.health.activities")}
-						locale={i18n.language}
-						lessLabel={t("common.less")}
-						moreLabel={t("common.more")}
+						metricLabel="Activities"
+						locale="en-US"
+						lessLabel="Less"
+						moreLabel="More"
 					/>
 				</LayerCard.Body>
 			</LayerCard>
 
-			<SectionRule title={t("pages.health.lifeAiInsights")}>
+			<SectionRule title="Life.ai Insights">
 				<p className="text-basalt-base text-basalt-muted-foreground">
-					{t("pages.health.insightsExample")}
+					Example insights, not medical advice.
 				</p>
 				<StatGrid columns={3} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 					{aiStatCards.map((stat) => (
@@ -428,16 +366,13 @@ export default function HealthPage() {
 						<LayerCard.Header className="items-center justify-start">
 							<ShieldCheck className="size-basalt-icon-lg text-basalt-muted-foreground" />
 							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-								{t("pages.health.aiReadinessTrend")}
+								AI readiness trend
 							</h2>
 						</LayerCard.Header>
 						<LayerCard.Body>
 							<LineChartWidget
-								data={readinessTrend.map((item) => ({
-									...item,
-									label: t(`dashboard.weekdays.${item.label.toLowerCase()}`),
-								}))}
-								ariaLabel={t("pages.health.aiReadinessTrend")}
+								data={readinessTrend}
+								ariaLabel="AI readiness trend"
 								height={200}
 								color={chart.primary}
 								valueFormatter={formatPercent}
@@ -448,16 +383,13 @@ export default function HealthPage() {
 						<LayerCard.Header className="items-center justify-start">
 							<Zap className="size-basalt-icon-lg text-basalt-muted-foreground" />
 							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-								{t("pages.health.recommendationImpact")}
+								Recommendation impact
 							</h2>
 						</LayerCard.Header>
 						<LayerCard.Body>
 							<BarChartWidget
-								data={recommendationImpact.map((item) => ({
-									...item,
-									label: t(`pages.health.impact${item.label}`),
-								}))}
-								ariaLabel={t("pages.health.recommendationImpact")}
+								data={recommendationImpact}
+								ariaLabel="Recommendation impact"
 								height={200}
 								color={chart.teal}
 							/>
@@ -469,26 +401,15 @@ export default function HealthPage() {
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
 							<MessageSquare className="size-basalt-icon-lg text-basalt-muted-foreground" />
-							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-								{t("pages.health.promptStudio")}
-							</h2>
+							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Prompt studio</h2>
 						</LayerCard.Header>
 						<LayerCard.Body className="space-y-basalt-card">
 							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.health.insightsDemo")}
+								Demo only. Insight generation is unavailable.
 							</p>
-							<Textarea
-								rows={5}
-								placeholder={t("pages.health.promptPlaceholder")}
-								aria-label={t("pages.health.promptStudio")}
-							/>
+							<Textarea rows={5} placeholder="Enter a sample prompt" aria-label="Prompt studio" />
 							<div className="flex flex-wrap gap-basalt-space-lg">
-								{[
-									t("pages.health.summarizeWeek"),
-									t("pages.health.improveSleep"),
-									t("pages.health.boostFocus"),
-									t("pages.health.planRecovery"),
-								].map((chip) => (
+								{["Summarize week", "Improve sleep", "Boost focus", "Plan recovery"].map((chip) => (
 									<Button
 										variant="ghost"
 										type="button"
@@ -501,7 +422,7 @@ export default function HealthPage() {
 								))}
 							</div>
 							<Button className="w-full" disabled>
-								{t("pages.health.generateInsight")}
+								Generate insight
 							</Button>
 						</LayerCard.Body>
 					</LayerCard>
@@ -510,7 +431,7 @@ export default function HealthPage() {
 						<LayerCard.Header className="items-center justify-start">
 							<CheckCircle2 className="size-basalt-icon-lg text-basalt-muted-foreground" />
 							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-								{t("pages.health.recommendedActions")}
+								Recommended actions
 							</h2>
 						</LayerCard.Header>
 						<LayerCard.Body className="divide-y divide-basalt-border/60">
@@ -527,12 +448,12 @@ export default function HealthPage() {
 						<LayerCard.Header className="items-center justify-start">
 							<Brain className="size-basalt-icon-lg text-basalt-muted-foreground" />
 							<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-								{t("pages.health.insightTimeline")}
+								Insight timeline
 							</h2>
 						</LayerCard.Header>
 						<LayerCard.Body>
 							<Timeline
-								ariaLabel={t("pages.health.insightTimeline")}
+								ariaLabel="Insight timeline"
 								items={insightTimeline.map((event) => ({
 									id: event.id,
 									at: event.time,

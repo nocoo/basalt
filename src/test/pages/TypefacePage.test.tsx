@@ -1,6 +1,5 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import i18n from "@/i18n";
 import { DEFAULT_CUSTOM_SPECIMEN, TYPE_SCALE_TIERS } from "@/models/typeface";
 import TypefacePage from "@/pages/TypefacePage";
 
@@ -61,24 +60,5 @@ describe("TypefacePage", () => {
 		expect(container.querySelector('[data-typeface-tier="md"]')).toHaveTextContent(
 			DEFAULT_CUSTOM_SPECIMEN,
 		);
-	});
-
-	it("supports Chinese localization", async () => {
-		const previous = i18n.language;
-		try {
-			await act(async () => i18n.changeLanguage("zh"));
-			render(<TypefacePage />);
-			expect(screen.getByRole("heading", { level: 1, name: "字体排版" })).toBeInTheDocument();
-			expect(screen.getByRole("heading", { name: "字体族体系" })).toBeInTheDocument();
-			expect(screen.getByRole("heading", { name: "七级位置化字号体系" })).toBeInTheDocument();
-			const sidebarRow = screen.getByText("侧栏导航行").closest("tr");
-			expect(sidebarRow).toHaveTextContent("13px / 22px");
-			expect(sidebarRow).toHaveTextContent("6px y · 8px x");
-			expect(sidebarRow).toHaveTextContent("34px");
-			expect(screen.getByText(/侧栏导航与搜索/)).toBeInTheDocument();
-			expect(screen.getByText(/侧栏分组与分区标签及搜索快捷键/)).toBeInTheDocument();
-		} finally {
-			await act(async () => i18n.changeLanguage(previous));
-		}
 	});
 });

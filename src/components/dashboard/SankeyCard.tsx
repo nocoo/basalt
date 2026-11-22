@@ -1,14 +1,13 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { useTranslation } from "react-i18next";
 import { SankeyChart } from "@/components/charts/sankey";
 
 const data = {
 	nodes: [
-		{ name: "dashboard.sankeyVisits" },
-		{ name: "dashboard.sankeySignup" },
-		{ name: "dashboard.sankeyActivate" },
-		{ name: "dashboard.sankeyUpgrade" },
-		{ name: "dashboard.sankeyChurn" },
+		{ name: "Visits" },
+		{ name: "Signup" },
+		{ name: "Activate" },
+		{ name: "Upgrade" },
+		{ name: "Churn" },
 	],
 	links: [
 		{ source: 0, target: 1, value: 1200 },
@@ -19,20 +18,13 @@ const data = {
 };
 
 export function SankeyCard() {
-	const { t } = useTranslation();
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-					{t("dashboard.userFlowSankey")}
-				</h2>
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">User flow (Sankey)</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">
-				<SankeyChart
-					data={{ ...data, nodes: data.nodes.map((node) => ({ name: t(node.name) })) }}
-					ariaLabel={t("dashboard.userFlowSankey")}
-					className="h-full w-full"
-				/>
+				<SankeyChart data={data} ariaLabel="User flow (Sankey)" className="h-full w-full" />
 			</LayerCard.Body>
 		</LayerCard>
 	);

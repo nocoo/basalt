@@ -1,6 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { useDataShowcaseViewModel } from "@/viewmodels/useDataShowcaseViewModel";
 import { useDemoSubmission } from "@/viewmodels/useDemoSubmission";
 import { useFormsViewModel } from "@/viewmodels/useFormsViewModel";
 import { useSettingsViewModel } from "@/viewmodels/useSettingsViewModel";
@@ -104,31 +103,5 @@ describe("local example service lifecycle", () => {
 		act(() => result.current.revoke("MacBook Pro — Chrome"));
 		expect(result.current.sessions).toHaveLength(2);
 		expect(result.current.notice).toBe("revoked");
-	});
-});
-
-describe("invoice data composition", () => {
-	it("filters, sorts raw amounts, resets page selection, and exposes empty results", () => {
-		const { result } = renderHook(() => useDataShowcaseViewModel());
-		expect(result.current.rows.map((row) => row.id)).toEqual(["INV-2041", "INV-2042"]);
-		act(() => result.current.setPage(99));
-		expect(result.current.page).toBe(2);
-		act(() => result.current.setQuery("  ATLAS "));
-		expect(result.current.page).toBe(1);
-		expect(result.current.rows.map((row) => row.customer)).toEqual(["Atlas Care Center"]);
-		act(() => result.current.setStatus("Pending"));
-		expect(result.current.total).toBe(0);
-		expect(result.current.rows).toEqual([]);
-		act(() => result.current.reset());
-		act(() => result.current.sortBy("amount"));
-		expect(result.current.rows.map((row) => row.amount)).toEqual([3250, 5950]);
-		act(() => result.current.sortBy("amount"));
-		expect(result.current.rows.map((row) => row.amount)).toEqual([12400, 8100]);
-		act(() => result.current.setStatus("Paid"));
-		expect(result.current.total).toBe(2);
-		act(() => result.current.sortBy("customer"));
-		expect(result.current.rows[0].customer).toBe("Atlas Care Center");
-		act(() => result.current.setPage(-1));
-		expect(result.current.page).toBe(1);
 	});
 });

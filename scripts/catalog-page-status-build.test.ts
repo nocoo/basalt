@@ -17,15 +17,11 @@ interface BuiltChunk {
 const PAGE_MODULES = [
 	"AccountsPage.tsx",
 	"BankingDashboardPage.tsx",
-	"ComponentsPage.tsx",
 	"DashboardPage.tsx",
-	"DataPage.tsx",
 	"DialogsPage.tsx",
 	"FlowComparisonPage.tsx",
 	"FormsPage.tsx",
 	"HealthPage.tsx",
-	"InteractionShowcasePage.tsx",
-	"InteractivePage.tsx",
 	"LayoutPage.tsx",
 	"LoadingPage.tsx",
 	"LoginPage.tsx",
@@ -41,7 +37,6 @@ const PAGE_MODULES = [
 	"ui/UiIndexPage.tsx",
 	"ui/UiCategoryOverviewPage.tsx",
 	"ui/UiPlaceholderPage.tsx",
-	"WearableDashboardPage.tsx",
 ] as const;
 
 describe("application route build boundary", () => {

@@ -1,6 +1,5 @@
 import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { Globe } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { LineChart } from "@/components/charts/line";
 import { formatUsd } from "@/lib/format";
 
@@ -22,25 +21,24 @@ const BALANCE = [8120, 8090, 8060, 8180, 8340, 8510, 8680, 8740, 8690, 8610, 854
 const DATA = HOURS.map((x, index) => ({ x, y: BALANCE[index] }));
 
 export function SummaryMetricCard() {
-	const { t } = useTranslation();
 	return (
 		<StatCard
-			title={t("dashboard.totalBalance")}
+			title="Available care funds"
 			value="$8,800"
 			icon={<Globe />}
-			trend={{ value: 3.1, label: t("common.vsLastMonth") }}
+			trend={{ value: 3.1, label: "vs last month" }}
 		>
 			<div className="space-y-basalt-card-sm">
 				<LineChart
 					data={DATA}
-					series={[{ key: "y", label: t("dashboard.totalBalance") }]}
-					ariaLabel={t("dashboard.totalBalanceAria")}
+					series={[{ key: "y", label: "Available care funds" }]}
+					ariaLabel="Available care funds across 12 intervals, $8,120 to $8,800; line chart, vertical scale $8,000 to $9,000"
 					className="h-basalt-16 w-full"
 					valueFormatter={formatUsd}
 					yDomain={[8000, 9000]}
 				/>
 				<p className="text-basalt-sm text-basalt-muted-foreground">
-					{t("dashboard.balancePeriod")}
+					Today, every 2 hours · $8k–$9k care-fund scale
 				</p>
 			</div>
 		</StatCard>

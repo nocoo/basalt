@@ -10,7 +10,6 @@ import {
 	TableRow,
 } from "@nocoo/basalt/components/table";
 import { Briefcase, PieChart as PieChartIcon, TrendingDown, TrendingUp } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { DonutChart } from "@/components/charts/donut";
 import { LineChart } from "@/components/charts/line";
 import { ShowcasePage } from "@/components/ShowcasePage";
@@ -20,27 +19,26 @@ import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
 const PORTFOLIO_CHART_TOKENS = ["chart-1", "chart-2", "chart-5", "chart-7", "chart-24"] as const;
 
 export default function PortfolioPage() {
-	const { t } = useTranslation();
 	const { totalValue, holdings, performanceData } = usePortfolioViewModel();
 
 	return (
 		<ShowcasePage
-			title={t("pages.portfolio.title")}
-			description={`${t("pages.portfolio.description")} ${t("demo.analyticsData")}`}
+			title="Care fund allocation"
+			description="Treatment fund allocation, funding trends, and available reserves. Sample data, not a live service."
 		>
 			<div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-basalt-layout sm:grid-cols-3">
 				<LayerCard>
 					<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
-						{t("pages.portfolio.portfolioValue")}
+						Portfolio Value
 					</p>
 					<p className="text-basalt-3xl font-semibold text-basalt-foreground font-basalt-display tracking-tight">
 						${totalValue.toLocaleString()}
 					</p>
-					<Badge tone="success">{t("pages.portfolio.allTime")}</Badge>
+					<Badge tone="success">+8.6% all time</Badge>
 				</LayerCard>
 				<LayerCard>
 					<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
-						{t("pages.portfolio.todaysChange")}
+						Today's Change
 					</p>
 					<p className="text-basalt-3xl font-semibold text-basalt-success font-basalt-display tracking-tight">
 						+$342.50
@@ -49,7 +47,7 @@ export default function PortfolioPage() {
 				</LayerCard>
 				<LayerCard>
 					<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
-						{t("pages.portfolio.totalReturn")}
+						Total Return
 					</p>
 					<p className="text-basalt-3xl font-semibold text-basalt-foreground font-basalt-display tracking-tight">
 						$8,600
@@ -63,23 +61,23 @@ export default function PortfolioPage() {
 					<LayerCard.Header className="items-center justify-start">
 						<TrendingUp className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.portfolio.portfolioPerformance")}
+							Portfolio Performance
 						</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<LineChart
 							data={performanceData.map((row) => ({
-								x: t(`dashboard.months.${row.month.toLowerCase()}`),
+								x: row.month,
 								y: row.value,
 							}))}
-							series={[{ key: "y", label: t("pages.portfolio.value") }]}
-							ariaLabel={t("pages.portfolio.performanceAria")}
+							series={[{ key: "y", label: "Value" }]}
+							ariaLabel="Portfolio performance line chart over time"
 							className="h-[11.25rem] w-full md:h-[12.5rem]"
 							showAxes
 							valueFormatter={formatUsd}
 						/>
 						<p className="text-basalt-sm text-basalt-muted-foreground">
-							{t("pages.portfolio.trendSampleNote")}
+							Sample trend is separate from current holdings.
 						</p>
 					</LayerCard.Body>
 				</LayerCard>
@@ -88,13 +86,13 @@ export default function PortfolioPage() {
 					<LayerCard.Header className="items-center justify-start">
 						<PieChartIcon className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.portfolio.assetAllocation")}
+							Asset Allocation
 						</h2>
 					</LayerCard.Header>
 					<LayerCard.Body className="flex flex-col items-center">
 						<DonutChart
 							data={holdings.map((item) => ({ name: item.name, value: item.allocation }))}
-							ariaLabel={t("pages.portfolio.allocationAria")}
+							ariaLabel="Asset allocation donut chart"
 							className="h-[10rem] w-[10rem] md:h-[11.25rem] md:w-[11.25rem]"
 							valueFormatter={formatPercent}
 						/>
@@ -124,24 +122,22 @@ export default function PortfolioPage() {
 						className="size-basalt-icon-lg text-basalt-muted-foreground"
 						aria-hidden="true"
 					/>
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.portfolio.holdings")}
-					</h2>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Holdings</h2>
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<div
 						role="region"
 						// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 						tabIndex={0}
-						aria-label={t("pages.portfolio.holdingsScroll")}
+						aria-label="Holdings table, scroll horizontally"
 						className="overflow-x-auto basalt-focus basalt-focus-inset"
 					>
-						<Table aria-label={t("pages.portfolio.holdings")}>
+						<Table aria-label="Holdings">
 							<TableHeader>
 								<TableRow>
-									<TableHead>{t("pages.portfolio.asset")}</TableHead>
-									<TableHead className="text-right">{t("pages.portfolio.value")}</TableHead>
-									<TableHead className="text-right">{t("pages.portfolio.change")}</TableHead>
+									<TableHead>Asset</TableHead>
+									<TableHead className="text-right">Value</TableHead>
+									<TableHead className="text-right">Change</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
@@ -184,7 +180,7 @@ export default function PortfolioPage() {
 						</Table>
 					</div>
 					<p className="mt-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
-						{t("dashboard.listComparisonUnknown")}
+						Changes: vs. prior 30 days
 					</p>
 				</LayerCard.Body>
 			</LayerCard>

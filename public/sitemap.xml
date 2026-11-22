@@ -13,13 +13,7 @@
     <loc>https://basaltui.com/banking</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/components</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/dashboard</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/data</loc>
   </url>
   <url>
     <loc>https://basaltui.com/dialogs</loc>
@@ -32,12 +26,6 @@
   </url>
   <url>
     <loc>https://basaltui.com/health</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/interactions</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/interactive</loc>
   </url>
   <url>
     <loc>https://basaltui.com/layout</loc>
@@ -347,8 +335,5 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/upload-queue</loc>
-  </url>
-  <url>
-    <loc>https://basaltui.com/wearable</loc>
   </url>
 </urlset>

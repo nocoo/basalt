@@ -2000,7 +2000,7 @@
 			"importPath": "@nocoo/basalt/components/app-header",
 			"subpath": "./components/app-header",
 			"sourceFile": "packages/basalt/src/components/app-header.tsx",
-			"sourceHash": "ee0e40db545e9610",
+			"sourceHash": "fc04925659dc78c4",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -2970,7 +2970,7 @@
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"subpath": "./components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
-			"sourceHash": "343e2f89ad2fe4b9",
+			"sourceHash": "28ce0774d2ba5176",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17597,7 +17597,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "2d47a835a2b3573f",
+			"sourceHash": "275f3c24cb2425e3",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18210,6 +18210,12 @@
 									"description": "Uncontrolled initial open state for the collapsible group."
 								},
 								{
+									"name": "action",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional sibling action rendered beside the group trigger."
+								},
+								{
 									"name": "children",
 									"type": "React.ReactNode",
 									"required": true,
@@ -18688,6 +18694,12 @@
 							"required": false,
 							"default": "true",
 							"description": "Uncontrolled initial open state for the collapsible group."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional sibling action rendered beside the group trigger."
 						},
 						{
 							"name": "children",
@@ -31285,7 +31297,7 @@
 			"exportName": "Breadcrumbs",
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
-			"sourceHash": "343e2f89ad2fe4b9",
+			"sourceHash": "28ce0774d2ba5176",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#breadcrumbs",
@@ -31553,7 +31565,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "2d47a835a2b3573f",
+			"sourceHash": "275f3c24cb2425e3",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -31877,6 +31889,12 @@
 							"required": false,
 							"default": "true",
 							"description": "Uncontrolled initial open state for the collapsible group."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional sibling action rendered beside the group trigger."
 						},
 						{
 							"name": "children",

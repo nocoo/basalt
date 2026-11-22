@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom/vitest";
 import { vi } from "vitest";
-import "../i18n";
 
 // Node 26 ships an experimental global Web Storage API that shadows the
 // `localStorage` jsdom would otherwise expose via `window`; without a

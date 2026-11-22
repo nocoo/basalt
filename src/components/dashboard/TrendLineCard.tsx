@@ -1,6 +1,5 @@
 import { StatCard } from "@nocoo/basalt/components/stat-card";
 import { Activity } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { LineChart } from "@/components/charts/line";
 import { formatUsd } from "@/lib/format";
 
@@ -15,29 +14,23 @@ const DATA = [
 ];
 
 export function TrendLineCard() {
-	const { t } = useTranslation();
 	const latest = formatUsd(DATA[DATA.length - 1].y);
 	return (
 		<StatCard
-			title={t("dashboard.spendingTrend")}
+			title="Care spending trend"
 			value={latest}
 			icon={<Activity />}
-			trend={{ value: -1.8, label: t("dashboard.comparisonPeriodUnknown") }}
+			trend={{ value: -1.8, label: "period not specified" }}
 		>
 			<div className="space-y-basalt-card-sm">
 				<LineChart
-					data={DATA.map((row) => ({
-						...row,
-						x: t(`dashboard.weekdays.${row.x.toLowerCase()}`),
-					}))}
-					series={[{ key: "y", label: t("dashboard.spendingTrend") }]}
-					ariaLabel={t("dashboard.spendingTrendAria", { latest })}
+					data={DATA}
+					series={[{ key: "y", label: "Care spending trend" }]}
+					ariaLabel={`Care spending from Monday to Sunday; latest daily spending ${latest}`}
 					className="h-basalt-16 w-full"
 					valueFormatter={formatUsd}
 				/>
-				<p className="text-basalt-sm text-basalt-muted-foreground">
-					{t("dashboard.spendingPeriod")}
-				</p>
+				<p className="text-basalt-sm text-basalt-muted-foreground">Mon–Sun · daily care spending</p>
 			</div>
 		</StatCard>
 	);

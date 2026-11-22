@@ -1,5 +1,4 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { useTranslation } from "react-i18next";
 import { HeatmapCalendar, heatmapColorScales } from "@/components/charts/heatmap-calendar";
 
 const heatmapData = Array.from({ length: 365 }).map((_, i) => {
@@ -14,24 +13,21 @@ const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 });
 
 export function HeatmapCard() {
-	const { t, i18n } = useTranslation();
 	return (
 		<LayerCard className="flex h-full flex-col">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-					{t("dashboard.engagementHeatmap")}
-				</h2>
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Engagement heatmap</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1">
 				<HeatmapCalendar
-					ariaLabel={t("dashboard.engagementHeatmap")}
+					ariaLabel="Engagement heatmap"
 					data={heatmapData}
 					year={2026}
 					colorScale={heatmapColorScales.blue}
-					metricLabel={t("dashboard.sessions")}
-					locale={i18n.language}
-					lessLabel={t("common.less")}
-					moreLabel={t("common.more")}
+					metricLabel="Sessions"
+					locale="en-US"
+					lessLabel="Less"
+					moreLabel="More"
 				/>
 			</LayerCard.Body>
 		</LayerCard>

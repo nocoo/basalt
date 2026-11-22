@@ -16,7 +16,6 @@ import {
 } from "@nocoo/basalt/components/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { TagBadge, type TagColor } from "@nocoo/basalt/components/tag-badge";
-import { useTranslation } from "react-i18next";
 import { Sparkline } from "@/components/charts/sparkline";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent, formatUsd } from "@/lib/format";
@@ -81,13 +80,12 @@ function deviceStatus(status: string) {
 }
 
 export default function TablesPage() {
-	const { t } = useTranslation();
 	const vm = useTableShowcaseViewModel();
 
 	const companyColumns: DataTableColumn<CompanyRow>[] = [
 		{
 			id: "name",
-			header: t("pages.tables.colCompany"),
+			header: "Company",
 			accessor: (row) => <span className="font-medium">{row.name}</span>,
 			sortValue: (row) => row.name,
 			cellClassName: DENSE,
@@ -95,7 +93,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "tags",
-			header: t("pages.tables.colSegment"),
+			header: "Segment & stage",
 			accessor: (row) => <TagStack tags={row.tags} />,
 			sortable: false,
 			cellClassName: DENSE,
@@ -103,7 +101,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "owner",
-			header: t("pages.tables.colOwner"),
+			header: "Owner",
 			accessor: (row) => <OwnerCell name={row.owner} initials={row.initials} />,
 			sortValue: (row) => row.owner,
 			cellClassName: DENSE,
@@ -112,7 +110,7 @@ export default function TablesPage() {
 		{
 			id: "deals",
 			textAlign: "end",
-			header: t("pages.tables.colDeals"),
+			header: "Open deals",
 			accessor: (row) => row.deals,
 			cellClassName: `${DENSE} tabular-nums`,
 			headerClassName: DENSE,
@@ -121,7 +119,7 @@ export default function TablesPage() {
 		{
 			id: "pipeline",
 			textAlign: "end",
-			header: t("pages.tables.colPipeline"),
+			header: "Pipeline value",
 			accessor: (row) => formatUsd(row.pipeline),
 			sortValue: (row) => row.pipeline,
 			cellClassName: `${DENSE} tabular-nums`,
@@ -129,12 +127,12 @@ export default function TablesPage() {
 		},
 		{
 			id: "win",
-			header: t("pages.tables.colWin"),
+			header: "Win probability",
 			accessor: (row) => (
 				<Meter
 					value={row.win}
 					size="sm"
-					aria-label={`${row.name} ${t("pages.tables.colWin")}`}
+					aria-label={`${row.name} Win probability`}
 					className="w-32"
 				/>
 			),
@@ -144,12 +142,12 @@ export default function TablesPage() {
 		},
 		{
 			id: "trend",
-			header: t("pages.tables.colTrend"),
+			header: "Activity trend",
 			accessor: (row) => (
 				<Sparkline
 					className="h-4 w-16"
 					data={row.trend.map((y, x) => ({ x, y }))}
-					ariaLabel={`${row.name} ${t("pages.tables.colTrend")}`}
+					ariaLabel={`${row.name} Activity trend`}
 					summary={<span className="sr-only">{row.trend.join(", ")}</span>}
 					accessibilityLayer={false}
 				/>
@@ -160,7 +158,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "last",
-			header: t("pages.tables.colLast"),
+			header: "Last interaction",
 			accessor: (row) => (
 				<span className="text-basalt-muted-foreground">
 					{row.lastDate}
@@ -176,7 +174,7 @@ export default function TablesPage() {
 	const dealColumns: DataTableColumn<DealRow>[] = [
 		{
 			id: "name",
-			header: t("pages.tables.colDeal"),
+			header: "Deal",
 			accessor: (row) => <span className="font-medium">{row.name}</span>,
 			sortValue: (row) => row.name,
 			cellClassName: DENSE,
@@ -184,14 +182,14 @@ export default function TablesPage() {
 		},
 		{
 			id: "company",
-			header: t("pages.tables.colCompany"),
+			header: "Company",
 			accessor: (row) => row.company,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
 		},
 		{
 			id: "stage",
-			header: t("pages.tables.colStage"),
+			header: "Stage",
 			accessor: (row) => <TagBadge name={row.stage} color={TAG_COLOR[row.stage]} size="sm" />,
 			sortValue: (row) => row.stage,
 			cellClassName: DENSE,
@@ -200,7 +198,7 @@ export default function TablesPage() {
 		{
 			id: "value",
 			textAlign: "end",
-			header: t("pages.tables.colValue"),
+			header: "Value",
 			accessor: (row) => formatUsd(row.value),
 			sortValue: (row) => row.value,
 			cellClassName: `${DENSE} tabular-nums`,
@@ -208,14 +206,14 @@ export default function TablesPage() {
 		},
 		{
 			id: "close",
-			header: t("pages.tables.colClose"),
+			header: "Close",
 			accessor: (row) => row.close,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
 		},
 		{
 			id: "owner",
-			header: t("pages.tables.colOwner"),
+			header: "Owner",
 			accessor: (row) => row.owner,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
@@ -225,7 +223,7 @@ export default function TablesPage() {
 	const forecastColumns: DataTableColumn<(typeof vm.forecast)[number]>[] = [
 		{
 			id: "stage",
-			header: t("pages.tables.colStage"),
+			header: "Stage",
 			accessor: (row) => <TagBadge name={row.stage} color={TAG_COLOR[row.stage]} size="sm" />,
 			sortValue: (row) => row.stage,
 			cellClassName: DENSE,
@@ -234,7 +232,7 @@ export default function TablesPage() {
 		{
 			id: "count",
 			textAlign: "end",
-			header: t("pages.tables.colCompanies"),
+			header: "Companies",
 			accessor: (row) => row.count,
 			cellClassName: `${DENSE} tabular-nums`,
 			headerClassName: DENSE,
@@ -242,7 +240,7 @@ export default function TablesPage() {
 		{
 			id: "pipeline",
 			textAlign: "end",
-			header: t("pages.tables.colPipeline"),
+			header: "Pipeline value",
 			accessor: (row) => formatUsd(row.pipeline),
 			sortValue: (row) => row.pipeline,
 			cellClassName: `${DENSE} tabular-nums`,
@@ -250,12 +248,12 @@ export default function TablesPage() {
 		},
 		{
 			id: "win",
-			header: t("pages.tables.colWin"),
+			header: "Win probability",
 			accessor: (row) => (
 				<Meter
 					value={row.win}
 					size="sm"
-					aria-label={`${row.stage} ${t("pages.tables.colWin")}`}
+					aria-label={`${row.stage} Win probability`}
 					className="w-32"
 				/>
 			),
@@ -268,21 +266,21 @@ export default function TablesPage() {
 	const invoiceColumns: DataTableColumn<(typeof vm.invoices)[number]>[] = [
 		{
 			id: "id",
-			header: t("pages.tables.colInvoice"),
+			header: "Invoice",
 			accessor: (row) => row.id,
 			cellClassName: `${DENSE} font-medium`,
 			headerClassName: DENSE,
 		},
 		{
 			id: "customer",
-			header: t("pages.tables.colCustomer"),
+			header: "Customer",
 			accessor: (row) => row.customer,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
 		},
 		{
 			id: "status",
-			header: t("pages.tables.colStatus"),
+			header: "Status",
 			accessor: (row) => (
 				<Badge dot tone={invoiceStatus(row.status)}>
 					{row.status}
@@ -295,7 +293,7 @@ export default function TablesPage() {
 		{
 			id: "amount",
 			textAlign: "end",
-			header: t("pages.tables.colAmount"),
+			header: "Amount",
 			accessor: (row) => formatUsd(row.amount),
 			sortValue: (row) => row.amount,
 			cellClassName: `${DENSE} tabular-nums`,
@@ -303,7 +301,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "date",
-			header: t("pages.tables.colDate"),
+			header: "Date",
 			accessor: (row) => row.date,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
@@ -313,7 +311,7 @@ export default function TablesPage() {
 	const deviceColumns: DataTableColumn<DeviceRow>[] = [
 		{
 			id: "name",
-			header: t("pages.tables.colDevice"),
+			header: "Device",
 			accessor: (row) => <span className="font-medium">{row.name}</span>,
 			sortValue: (row) => row.name,
 			cellClassName: DENSE,
@@ -321,14 +319,14 @@ export default function TablesPage() {
 		},
 		{
 			id: "region",
-			header: t("pages.tables.colRegion"),
+			header: "Region",
 			accessor: (row) => row.region,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
 		},
 		{
 			id: "status",
-			header: t("pages.tables.colStatus"),
+			header: "Status",
 			accessor: (row) => (
 				<Badge dot tone={deviceStatus(row.status)}>
 					{row.status}
@@ -340,13 +338,13 @@ export default function TablesPage() {
 		},
 		{
 			id: "battery",
-			header: t("pages.tables.colBattery"),
+			header: "Battery",
 			accessor: (row) => (
 				<Meter
 					value={row.battery}
 					size="sm"
 					tone="auto"
-					aria-label={`${row.name} ${t("pages.tables.colBattery")}`}
+					aria-label={`${row.name} Battery`}
 					className="w-32"
 				/>
 			),
@@ -357,7 +355,7 @@ export default function TablesPage() {
 		{
 			id: "requests",
 			textAlign: "end",
-			header: t("pages.tables.colRequests"),
+			header: "Requests",
 			accessor: (row) => row.requests.toLocaleString("en-US"),
 			sortValue: (row) => row.requests,
 			cellClassName: `${DENSE} tabular-nums`,
@@ -366,24 +364,30 @@ export default function TablesPage() {
 	];
 
 	return (
-		<ShowcasePage title={t("pages.tables.title")} description={t("pages.tables.description")}>
-			<SectionRule title={t("pages.tables.pipeline")} hint={t("pages.tables.pipelineHint")}>
+		<ShowcasePage
+			title="Tables"
+			description="Dense headers, filters and cell recipes. Recombine the chrome with different bodies."
+		>
+			<SectionRule
+				title="Pipeline"
+				hint="Tabs switch the body. Filters stay. Cells mix tags, owners, money, meters and trends."
+			>
 				<LayerCard padding="none" data-table-showcase="pipeline">
 					<Tabs value={vm.tab} onValueChange={(value) => vm.setTab(value as TableShowcaseTab)}>
 						<div className="flex flex-wrap items-center justify-between gap-basalt-card px-basalt-card pt-basalt-card-sm">
 							<TabsList>
-								<TabsTrigger value="companies">{t("pages.tables.tabCompanies")}</TabsTrigger>
-								<TabsTrigger value="deals">{t("pages.tables.tabDeals")}</TabsTrigger>
-								<TabsTrigger value="forecast">{t("pages.tables.tabForecast")}</TabsTrigger>
+								<TabsTrigger value="companies">Companies</TabsTrigger>
+								<TabsTrigger value="deals">Deals</TabsTrigger>
+								<TabsTrigger value="forecast">Forecast</TabsTrigger>
 							</TabsList>
 							<div className="flex flex-wrap gap-basalt-space-lg">
-								<Button variant="outline">{t("pages.tables.export")}</Button>
-								<Button>{t("pages.tables.newCompany")}</Button>
+								<Button variant="outline">Export</Button>
+								<Button>New company</Button>
 							</div>
 						</div>
 						<div className="border-b border-basalt-border/60 px-basalt-card py-basalt-card-sm">
 							<FilterBar
-								label={t("pages.tables.filters")}
+								label="Pipeline filters"
 								active={vm.owner !== "all" || vm.stage !== "all"}
 								onClear={() => {
 									vm.setOwner("all");
@@ -391,11 +395,11 @@ export default function TablesPage() {
 								}}
 							>
 								<Select value={vm.owner} onValueChange={vm.setOwner}>
-									<SelectTrigger aria-label={t("pages.tables.colOwner")} className="w-44">
-										<SelectValue placeholder={t("pages.tables.allOwners")} />
+									<SelectTrigger aria-label="Owner" className="w-44">
+										<SelectValue placeholder="All owners" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="all">{t("pages.tables.allOwners")}</SelectItem>
+										<SelectItem value="all">All owners</SelectItem>
 										{vm.owners.map((name) => (
 											<SelectItem key={name} value={name}>
 												{name}
@@ -404,11 +408,11 @@ export default function TablesPage() {
 									</SelectContent>
 								</Select>
 								<Select value={vm.stage} onValueChange={vm.setStage}>
-									<SelectTrigger aria-label={t("pages.tables.colStage")} className="w-40">
-										<SelectValue placeholder={t("pages.tables.anyStage")} />
+									<SelectTrigger aria-label="Stage" className="w-40">
+										<SelectValue placeholder="Any stage" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="all">{t("pages.tables.anyStage")}</SelectItem>
+										<SelectItem value="all">Any stage</SelectItem>
 										{vm.stages.map((name) => (
 											<SelectItem key={name} value={name}>
 												{name}
@@ -421,7 +425,7 @@ export default function TablesPage() {
 						<div className="min-w-0">
 							<TabsContent value="companies" className="mt-0">
 								<DataTable
-									aria-label={t("pages.tables.tabCompanies")}
+									aria-label="Companies"
 									edge="attached"
 									data={[...vm.companies]}
 									columns={companyColumns}
@@ -433,7 +437,7 @@ export default function TablesPage() {
 							</TabsContent>
 							<TabsContent value="deals" className="mt-0">
 								<DataTable
-									aria-label={t("pages.tables.tabDeals")}
+									aria-label="Deals"
 									edge="attached"
 									data={[...vm.deals]}
 									columns={dealColumns}
@@ -442,7 +446,7 @@ export default function TablesPage() {
 							</TabsContent>
 							<TabsContent value="forecast" className="mt-0">
 								<DataTable
-									aria-label={t("pages.tables.tabForecast")}
+									aria-label="Forecast"
 									edge="attached"
 									data={vm.forecast}
 									columns={forecastColumns}
@@ -454,31 +458,27 @@ export default function TablesPage() {
 					<div className="grid grid-cols-2 gap-basalt-card border-t border-basalt-border/60 px-basalt-card py-basalt-card-sm text-basalt-sm text-basalt-muted-foreground md:grid-cols-4">
 						<div>
 							{vm.tab === "deals"
-								? t("pages.tables.dealsInView", { count: vm.dealCount })
-								: t("pages.tables.companiesInView", { count: vm.companyCount })}
+								? `${vm.dealCount} deals in view`
+								: `${vm.companyCount} companies in view`}
 						</div>
-						<div className="tabular-nums">
-							{t("pages.tables.pipelineSum", { value: formatUsd(vm.pipelineSum) })}
-						</div>
-						<div className="tabular-nums">
-							{t("pages.tables.winAvg", { value: formatPercent(vm.winAvg) })}
-						</div>
-						<div>{t("pages.tables.addCalculation")}</div>
+						<div className="tabular-nums">{`Sum of pipeline ${formatUsd(vm.pipelineSum)}`}</div>
+						<div className="tabular-nums">{`Avg win ${formatPercent(vm.winAvg)}`}</div>
+						<div>Add calculation</div>
 					</div>
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.tables.ledger")} hint={t("pages.tables.ledgerHint")}>
+			<SectionRule title="Ledger" hint="Search header, status tags, tabular money and paged rows.">
 				<LayerCard className="space-y-basalt-card" data-table-showcase="ledger">
 					<Input
 						className="max-w-64"
-						aria-label={t("pages.tables.searchInvoices")}
-						placeholder={t("pages.tables.searchInvoices")}
+						aria-label="Search invoices"
+						placeholder="Search invoices"
 						value={vm.invoiceQuery}
 						onChange={(event) => vm.setInvoiceQuery(event.target.value)}
 					/>
 					<DataTable
-						aria-label={t("pages.tables.ledger")}
+						aria-label="Ledger"
 						data={[...vm.invoices]}
 						columns={invoiceColumns}
 						filter={vm.invoiceQuery}
@@ -488,19 +488,19 @@ export default function TablesPage() {
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.tables.fleet")} hint={t("pages.tables.fleetHint")}>
+			<SectionRule title="Fleet" hint="Status filter with battery meters in the same grid.">
 				<LayerCard className="space-y-basalt-card" data-table-showcase="fleet">
 					<FilterBar
-						label={t("pages.tables.deviceFilters")}
+						label="Device filters"
 						active={vm.deviceStatus !== "all"}
 						onClear={() => vm.setDeviceStatus("all")}
 					>
 						<Select value={vm.deviceStatus} onValueChange={vm.setDeviceStatus}>
-							<SelectTrigger aria-label={t("pages.tables.colStatus")} className="w-40">
-								<SelectValue placeholder={t("pages.tables.anyStatus")} />
+							<SelectTrigger aria-label="Status" className="w-40">
+								<SelectValue placeholder="Any status" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">{t("pages.tables.anyStatus")}</SelectItem>
+								<SelectItem value="all">Any status</SelectItem>
 								{vm.deviceStates.map((name) => (
 									<SelectItem key={name} value={name}>
 										{name}
@@ -510,7 +510,7 @@ export default function TablesPage() {
 						</Select>
 					</FilterBar>
 					<DataTable
-						aria-label={t("pages.tables.fleet")}
+						aria-label="Fleet"
 						data={[...vm.devices]}
 						columns={deviceColumns}
 						getRowId={(row) => row.id}

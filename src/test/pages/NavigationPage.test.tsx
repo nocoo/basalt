@@ -9,9 +9,8 @@ describe("NavigationPage", () => {
 	it("uses TablePager for the with-context range instead of a hand-built string", () => {
 		expect(source).toContain("@nocoo/basalt/components/table-pager");
 		expect(source).toContain("formatRange");
-		expect(source).toContain('t("common.showing")');
-		expect(source).toContain('t("common.of")');
-		expect(source).toContain('t("common.results")');
+		expect(source).toContain("Showing");
+		expect(source).toContain("results");
 		expect(source).not.toContain("41-50");
 		expect(source).toContain("<TablePager page={page1}");
 		expect(source).toContain("<TablePager page={page2}");

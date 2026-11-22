@@ -1,32 +1,24 @@
 import { CHART_COLORS } from "@nocoo/basalt/components/chart";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Target } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { DonutChart } from "@/components/charts/donut";
 import { formatPercent } from "@/lib/format";
 
-const categories = [
-	{ nameKey: "dashboard.categoryNutrition", value: 35 },
-	{ nameKey: "dashboard.categoryMobility", value: 20 },
-	{ nameKey: "dashboard.categorySupplies", value: 25 },
-	{ nameKey: "dashboard.categoryLab", value: 20 },
-];
+const data = [
+	{ name: "Nutrition", value: 35 },
+	{ name: "Mobility", value: 20 },
+	{ name: "Medical supplies", value: 25 },
+	{ name: "Lab services", value: 20 },
+].map((item, index) => ({ ...item, fill: CHART_COLORS[index] }));
 
 export function DonutChartCard() {
-	const { t } = useTranslation();
-	const data = categories.map((item, index) => ({
-		name: t(item.nameKey),
-		value: item.value,
-		fill: CHART_COLORS[index],
-	}));
-
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
 					<Target className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("dashboard.expenseBreakdown")}
+						Care Spend Breakdown
 					</h2>
 				</div>
 			</LayerCard.Header>
@@ -35,7 +27,7 @@ export function DonutChartCard() {
 					<div className="flex min-h-0 w-full flex-1 items-center justify-center">
 						<DonutChart
 							data={data}
-							ariaLabel={t("dashboard.expenseBreakdownAria")}
+							ariaLabel="Care spending breakdown: Nutrition 35%, Medical supplies 25%, Mobility 20%, Lab services 20%"
 							className="aspect-square h-full max-h-[11.25rem] min-h-[6.25rem]"
 							valueFormatter={formatPercent}
 						/>

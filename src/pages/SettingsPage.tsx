@@ -17,7 +17,6 @@ import { Textarea } from "@nocoo/basalt/components/textarea";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Bell, Camera, CreditCard, Globe, Palette, Shield, Smartphone, User } from "lucide-react";
 import { useRef } from "react";
-import { useTranslation } from "react-i18next";
 import { DemoFeedback } from "@/components/examples/DemoFeedback";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useSettingsViewModel } from "@/viewmodels/useSettingsViewModel";
@@ -25,52 +24,57 @@ import { useSettingsViewModel } from "@/viewmodels/useSettingsViewModel";
 // -- Settings sections nav --
 
 const SECTIONS = [
-	{ id: "profile", labelKey: "pages.settings.profile", icon: User },
-	{ id: "notifications", labelKey: "pages.settings.notifications", icon: Bell },
-	{ id: "security", labelKey: "pages.settings.security", icon: Shield },
-	{ id: "appearance", labelKey: "pages.settings.appearance", icon: Palette },
+	{ id: "profile", label: "Profile", icon: User },
+	{ id: "notifications", label: "Notifications", icon: Bell },
+	{ id: "security", label: "Security", icon: Shield },
+	{ id: "appearance", label: "Appearance", icon: Palette },
 ] as const;
 
 type SettingsVM = ReturnType<typeof useSettingsViewModel>;
+
+const DEMO_NOTICES = {
+	preferences: "Preferences updated for this demo.",
+	revoked: "Session removed from this demo.",
+} as const;
 
 // -- Notification toggles --
 
 interface NotifToggle {
 	id: string;
-	labelKey: string;
-	descriptionKey: string;
+	label: string;
+	description: string;
 	defaultOn: boolean;
 }
 
 const NOTIFICATION_TOGGLES: NotifToggle[] = [
 	{
 		id: "email",
-		labelKey: "pages.settings.emailNotifications",
-		descriptionKey: "pages.settings.emailNotificationsDesc",
+		label: "Email notifications",
+		description: "Receive transaction alerts via email",
 		defaultOn: true,
 	},
 	{
 		id: "push",
-		labelKey: "pages.settings.pushNotifications",
-		descriptionKey: "pages.settings.pushNotificationsDesc",
+		label: "Push notifications",
+		description: "Browser and mobile push alerts",
 		defaultOn: true,
 	},
 	{
 		id: "marketing",
-		labelKey: "pages.settings.marketingEmails",
-		descriptionKey: "pages.settings.marketingEmailsDesc",
+		label: "Marketing emails",
+		description: "Tips, product updates, and offers",
 		defaultOn: false,
 	},
 	{
 		id: "weekly",
-		labelKey: "pages.settings.weeklyDigest",
-		descriptionKey: "pages.settings.weeklyDigestDesc",
+		label: "Weekly digest",
+		description: "Summary of your weekly spending",
 		defaultOn: true,
 	},
 	{
 		id: "security",
-		labelKey: "pages.settings.securityAlerts",
-		descriptionKey: "pages.settings.securityAlertsDesc",
+		label: "Security alerts",
+		description: "Login attempts and password changes",
 		defaultOn: true,
 	},
 ];
@@ -80,42 +84,46 @@ const NOTIFICATION_TOGGLES: NotifToggle[] = [
 export default function SettingsPage() {
 	const vm = useSettingsViewModel();
 	const { activeSection, setActiveSection } = vm;
-	const { t } = useTranslation();
 
 	return (
-		<ShowcasePage title={t("pages.settings.title")} description={t("pages.settings.description")}>
+		<ShowcasePage
+			title="Settings"
+			description="Manage your profile, security, and appearance preferences."
+		>
 			<div className="grid grid-cols-1 gap-basalt-layout @[52rem]/island:grid-cols-4">
 				{/* Left nav */}
 				<LayerCard className="flex flex-col @[52rem]/island:col-span-1" padding="none">
 					<LayerCard.Body className="flex-1">
 						<SidebarNav
-							aria-label={t("pages.settings.title")}
+							aria-label="Settings"
 							className="flex-row flex-wrap @[52rem]/island:flex-col"
 						>
-							{SECTIONS.map(({ id, labelKey, icon: Icon }) => (
+							{SECTIONS.map(({ id, label, icon: Icon }) => (
 								<SidebarItem
 									className="w-auto @[52rem]/island:w-full"
 									type="button"
 									key={id}
 									onClick={() => setActiveSection(id)}
-									aria-label={t(labelKey)}
+									aria-label={label}
 									active={activeSection === id}
 								>
 									<Icon />
-									<span>{t(labelKey)}</span>
+									<span>{label}</span>
 								</SidebarItem>
 							))}
 						</SidebarNav>
 					</LayerCard.Body>
 					<LayerCard.Footer className="flex-col items-start">
-						<p className="text-basalt-sm text-basalt-muted-foreground">{t("demo.localOnly")}</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							Local demo. These actions do not update a real account or service.
+						</p>
 						{vm.notice && (
 							<p
 								role="status"
 								aria-live="polite"
 								className="text-basalt-sm text-basalt-muted-foreground"
 							>
-								{t(`demo.${vm.notice}`)}
+								{DEMO_NOTICES[vm.notice]}
 							</p>
 						)}
 					</LayerCard.Footer>
@@ -136,7 +144,6 @@ export default function SettingsPage() {
 // ── Profile ──
 
 function ProfileSection({ vm }: { vm: SettingsVM }) {
-	const { t } = useTranslation();
 	const photoInput = useRef<HTMLInputElement>(null);
 
 	return (
@@ -145,13 +152,13 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 				<div className="flex items-center gap-basalt-space-lg">
 					<User className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.settings.profileInfo")}
+						Profile Information
 					</h2>
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body>
 				<form
-					aria-label={t("pages.settings.profileInfo")}
+					aria-label="Profile Information"
 					className="min-h-0 flex-1 space-y-basalt-card"
 					onSubmit={(event) => {
 						event.preventDefault();
@@ -165,7 +172,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 						className="sr-only"
 						tabIndex={-1}
 						ref={photoInput}
-						aria-label={t("demo.profilePhoto")}
+						aria-label="Choose a profile photo"
 						onChange={(event) => vm.setPhoto(event.currentTarget.files?.[0]?.name ?? "")}
 					/>
 					<div className="flex items-center gap-basalt-card">
@@ -178,7 +185,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 								size="icon"
 								type="button"
 								className="absolute -bottom-1 -right-1"
-								aria-label={t("pages.settings.changePhoto")}
+								aria-label="Change profile photo"
 								onClick={() => photoInput.current?.click()}
 							>
 								<Camera className="size-basalt-icon-sm" aria-hidden="true" />
@@ -203,7 +210,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 					<div className="grid grid-cols-1 gap-basalt-card sm:grid-cols-2">
 						<div className="space-y-basalt-space-lg">
 							<Label htmlFor="settings-first-name" className="text-basalt-foreground">
-								{t("pages.settings.firstName")}
+								First name
 							</Label>
 							<Input
 								id="settings-first-name"
@@ -216,7 +223,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 						</div>
 						<div className="space-y-basalt-space-lg">
 							<Label htmlFor="settings-last-name" className="text-basalt-foreground">
-								{t("pages.settings.lastName")}
+								Last name
 							</Label>
 							<Input
 								id="settings-last-name"
@@ -229,7 +236,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 						</div>
 						<div className="space-y-basalt-space-lg">
 							<Label htmlFor="settings-email" className="text-basalt-foreground">
-								{t("pages.login.email")}
+								Email
 							</Label>
 							<Input
 								id="settings-email"
@@ -243,7 +250,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 						</div>
 						<div className="space-y-basalt-space-lg">
 							<Label htmlFor="settings-phone" className="text-basalt-foreground">
-								{t("pages.settings.phone")}
+								Phone
 							</Label>
 							<Input
 								id="settings-phone"
@@ -258,7 +265,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 
 					<div className="space-y-basalt-space-lg">
 						<Label htmlFor="settings-bio" className="text-basalt-foreground">
-							{t("pages.settings.bio")}
+							Bio
 						</Label>
 						<Textarea
 							id="settings-bio"
@@ -272,10 +279,10 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 
 					<div className="flex justify-end gap-basalt-space-lg">
 						<Button variant="secondary" type="button" onClick={vm.cancelProfile}>
-							{t("common.cancel")}
+							Cancel
 						</Button>
 						<Button variant="default" type="submit" disabled={vm.profileSave.status === "pending"}>
-							{t("common.save")}
+							Save changes
 						</Button>
 					</div>
 					<DemoFeedback {...vm.profileSave} />
@@ -288,15 +295,13 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 // ── Notifications ──
 
 function NotificationsSection({ vm }: { vm: SettingsVM }) {
-	const { t } = useTranslation();
-
 	return (
 		<LayerCard className="flex flex-col" padding="none">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
 					<Bell className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.settings.notificationPrefs")}
+						Notification Preferences
 					</h2>
 				</div>
 			</LayerCard.Header>
@@ -311,11 +316,9 @@ function NotificationsSection({ vm }: { vm: SettingsVM }) {
 								htmlFor={`notif-${item.id}`}
 								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
-								{t(item.labelKey)}
+								{item.label}
 							</label>
-							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t(item.descriptionKey)}
-							</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">{item.description}</p>
 						</div>
 						<Switch
 							id={`notif-${item.id}`}
@@ -332,8 +335,6 @@ function NotificationsSection({ vm }: { vm: SettingsVM }) {
 // ── Security ──
 
 function SecuritySection({ vm }: { vm: SettingsVM }) {
-	const { t } = useTranslation();
-
 	return (
 		<div className="space-y-basalt-card">
 			{/* Password */}
@@ -341,14 +342,12 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Shield className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.settings.passwordTitle")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Password</h2>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<form
-						aria-label={t("pages.settings.passwordTitle")}
+						aria-label="Password"
 						className="min-h-0 flex-1 space-y-basalt-card"
 						onSubmit={(event) => {
 							event.preventDefault();
@@ -362,7 +361,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 					>
 						<div className="space-y-basalt-space-lg">
 							<Label htmlFor="settings-current-password" className="text-basalt-foreground">
-								{t("pages.settings.currentPassword")}
+								Current password
 							</Label>
 							<Input
 								id="settings-current-password"
@@ -377,7 +376,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 						<div className="grid grid-cols-1 gap-basalt-card sm:grid-cols-2">
 							<div className="space-y-basalt-space-lg">
 								<Label htmlFor="settings-new-password" className="text-basalt-foreground">
-									{t("pages.settings.newPassword")}
+									New password
 								</Label>
 								<Input
 									id="settings-new-password"
@@ -392,7 +391,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 							</div>
 							<div className="space-y-basalt-space-lg">
 								<Label htmlFor="settings-confirm-password" className="text-basalt-foreground">
-									{t("pages.settings.confirmPassword")}
+									Confirm new password
 								</Label>
 								<Input
 									id="settings-confirm-password"
@@ -412,12 +411,12 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 								type="submit"
 								disabled={vm.passwordSave.status === "pending"}
 							>
-								{t("pages.settings.updatePassword")}
+								Update password
 							</Button>
 						</div>
 						{vm.passwordError && (
 							<p role="alert" className="text-basalt-base text-basalt-danger-solid">
-								{t("demo.passwordMismatch")}
+								Use at least 8 characters and matching passwords.
 							</p>
 						)}
 						<DemoFeedback {...vm.passwordSave} />
@@ -431,7 +430,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 					<div className="flex items-center gap-basalt-space-lg">
 						<Smartphone className="size-basalt-icon text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.settings.twoFactor")}
+							Two-Factor Authentication
 						</h2>
 					</div>
 				</LayerCard.Header>
@@ -442,10 +441,10 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 								htmlFor="2fa-authenticator"
 								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
-								{t("pages.settings.authenticatorApp")}
+								Authenticator app
 							</label>
 							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.settings.authenticatorDesc")}
+								Add an extra layer of security with TOTP
 							</p>
 						</div>
 						<Switch
@@ -461,10 +460,10 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 								htmlFor="2fa-sms"
 								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
-								{t("pages.settings.smsVerification")}
+								SMS verification
 							</label>
 							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.settings.smsDesc")}
+								Receive codes via text message
 							</p>
 						</div>
 						<Switch
@@ -481,9 +480,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Globe className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.settings.activeSessions")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Active Sessions</h2>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body className="min-h-0 flex-1 divide-y divide-basalt-border/60">
@@ -497,7 +494,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 									{session.device}
 									{session.current && (
 										<Badge tone="success" className="ml-basalt-space-lg">
-											{t("common.currentBadge")}
+											Current
 										</Badge>
 									)}
 								</p>
@@ -508,9 +505,9 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 									variant="destructive"
 									type="button"
 									onClick={() => vm.revoke(session.device)}
-									aria-label={`${t("common.revoke")} ${session.device}`}
+									aria-label={`Revoke ${session.device}`}
 								>
-									{t("common.revoke")}
+									Revoke
 								</Button>
 							)}
 						</div>
@@ -524,7 +521,6 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 // ── Appearance ──
 
 function AppearanceSection({ vm }: { vm: SettingsVM }) {
-	const { t, i18n } = useTranslation();
 	const { theme: activeTheme, setTheme } = useTheme();
 
 	return (
@@ -534,22 +530,16 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Palette className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.settings.themeTitle")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Theme</h2>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body className="min-h-0 flex-1">
-					<div
-						className="grid grid-cols-3 gap-basalt-layout"
-						role="radiogroup"
-						aria-label={t("pages.settings.themeTitle")}
-					>
+					<div className="grid grid-cols-3 gap-basalt-layout" role="radiogroup" aria-label="Theme">
 						{(
 							[
-								{ key: "light", label: t("pages.settings.light") },
-								{ key: "dark", label: t("pages.settings.dark") },
-								{ key: "system", label: t("pages.settings.systemTheme") },
+								{ key: "light", label: "Light" },
+								{ key: "dark", label: "Dark" },
+								{ key: "system", label: "System" },
 							] as const
 						).map((theme) => (
 							<label
@@ -585,14 +575,12 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 				</LayerCard.Body>
 			</LayerCard>
 
-			{/* Currency & language */}
+			{/* Preferences */}
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<CreditCard className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							{t("pages.settings.preferences")}
-						</h2>
+						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Preferences</h2>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body
@@ -604,11 +592,11 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 								htmlFor="settings-currency"
 								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
-								{t("pages.settings.currency")}
+								Currency
 							</label>
 							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.settings.currencyDesc")} ·{" "}
-								{new Intl.NumberFormat(i18n.language, {
+								Default display currency ·{" "}
+								{new Intl.NumberFormat("en-US", {
 									style: "currency",
 									currency: vm.currency,
 								}).format(1240)}
@@ -630,41 +618,13 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 					<div className="flex items-center justify-between">
 						<div className="space-y-basalt-space-xs">
 							<label
-								htmlFor="settings-language"
-								className="text-basalt-base text-basalt-foreground cursor-pointer"
-							>
-								{t("pages.settings.interfaceLanguage")}
-							</label>
-							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.settings.interfaceLanguageDesc")}
-							</p>
-						</div>
-						<Select
-							value={i18n.resolvedLanguage}
-							onValueChange={(value) => {
-								void i18n.changeLanguage(value);
-							}}
-						>
-							<SelectTrigger id="settings-language" className="w-auto">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="en">English</SelectItem>
-								<SelectItem value="zh">简体中文</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-					<Separator className="bg-basalt-border" />
-					<div className="flex items-center justify-between">
-						<div className="space-y-basalt-space-xs">
-							<label
 								htmlFor="settings-compact-mode"
 								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
-								{t("pages.settings.compactMode")}
+								Compact mode
 							</label>
 							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.settings.compactModeDesc")}
+								Use tighter spacing in this preferences preview.
 							</p>
 						</div>
 						<Switch

@@ -159,7 +159,10 @@ describe("AppHeader breadcrumbs label", () => {
 		const { rerender } = render(
 			<AppHeader breadcrumbs={[{ href: "/", label: "首页" }]} breadcrumbsLabel="面包屑导航" />,
 		);
-		expect(screen.getByRole("navigation", { name: "面包屑导航" })).toBeInTheDocument();
+		const nav = screen.getByRole("navigation", { name: "面包屑导航" });
+		expect(nav).toBeInTheDocument();
+		expect(nav).toHaveClass("min-w-0", "overflow-x-auto");
+		expect(nav.parentElement).toHaveClass("min-w-0", "flex-1", "overflow-hidden");
 		rerender(<AppHeader breadcrumbs={[{ href: "/", label: "Home" }]} />);
 		expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
 	});

@@ -1,3 +1,4 @@
+import { SHOWCASE_ROUTES, SHOWCASE_TITLES, type ShowcaseRouteEntry } from "../models/navigation";
 import {
 	CATALOG_CATEGORIES,
 	type CatalogCategory,
@@ -35,11 +36,7 @@ export const SITE = {
 
 export type ShowcaseCategory = CatalogCategory;
 
-export interface ShowcasePage {
-	path: string;
-	titleKey: string;
-	inSitemap: boolean;
-}
+export type ShowcasePage = ShowcaseRouteEntry;
 
 export interface CatalogLink {
 	slug: string;
@@ -47,42 +44,9 @@ export interface CatalogLink {
 	category: ShowcaseCategory;
 }
 
-export const SHOWCASE_PAGES: readonly ShowcasePage[] = [
-	{ path: "/", titleKey: "nav.home", inSitemap: true },
-	{ path: "/dashboard", titleKey: "nav.dashboard", inSitemap: true },
-	{ path: "/templates", titleKey: "nav.templates", inSitemap: true },
-	{ path: "/ui", titleKey: "nav.kitIndex", inSitemap: true },
-	{ path: "/login", titleKey: "nav.login", inSitemap: true },
-	{ path: "/layout", titleKey: "nav.layout", inSitemap: true },
-	{ path: "/palette", titleKey: "nav.colorPalette", inSitemap: true },
-	{ path: "/typeface", titleKey: "nav.typeface", inSitemap: true },
-	{ path: "/components", titleKey: "nav.components", inSitemap: true },
-	{ path: "/forms", titleKey: "nav.forms", inSitemap: true },
-	{ path: "/navigation", titleKey: "nav.navigation", inSitemap: true },
-	{ path: "/interactive", titleKey: "nav.interactive", inSitemap: true },
-	{ path: "/data", titleKey: "nav.data", inSitemap: true },
-	{ path: "/accounts", titleKey: "nav.accounts", inSitemap: true },
-	{ path: "/progress-tracking", titleKey: "nav.progressTracking", inSitemap: true },
-	{ path: "/flow-comparison", titleKey: "nav.flowComparison", inSitemap: true },
-	{ path: "/portfolio", titleKey: "nav.portfolio", inSitemap: true },
-	{ path: "/loading-states", titleKey: "nav.loadingStates", inSitemap: true },
-	{ path: "/animation", titleKey: "nav.animation", inSitemap: true },
-	{ path: "/tables", titleKey: "nav.tables", inSitemap: true },
-	{ path: "/dialogs", titleKey: "nav.dialogs", inSitemap: true },
-	{ path: "/settings", titleKey: "nav.settings", inSitemap: true },
-	{ path: "/interactions", titleKey: "nav.interactions", inSitemap: true },
-	{ path: "/health", titleKey: "nav.health", inSitemap: true },
-	{ path: "/wearable", titleKey: "nav.wearableHealth", inSitemap: true },
-	{ path: "/banking", titleKey: "nav.bankingWealth", inSitemap: true },
-	{ path: "/network", titleKey: "nav.networkOps", inSitemap: true },
-	{ path: "/static-page", titleKey: "nav.staticPage", inSitemap: true },
-	{ path: "/loading", titleKey: "nav.loading", inSitemap: false },
-	{ path: "/404", titleKey: "nav.notFoundPage", inSitemap: false },
-];
+export const SHOWCASE_PAGES: readonly ShowcasePage[] = SHOWCASE_ROUTES;
 
-export const SHOWCASE_TITLE_KEYS: Readonly<Record<string, string>> = Object.fromEntries(
-	SHOWCASE_PAGES.map((page) => [page.path, page.titleKey]),
-);
+export { SHOWCASE_TITLES };
 
 export const SHOWCASE_PATHS: readonly string[] = SHOWCASE_PAGES.filter(
 	(page) => page.inSitemap,

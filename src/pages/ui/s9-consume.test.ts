@@ -7,7 +7,7 @@ import { catalogPageStatus } from "./catalog-page-status";
 const ROOT = path.join(process.cwd(), "src");
 const POLLUTION = /Cloudflare|Kumo|Workers?\b|API key|\bsecret\b/i;
 const LOCAL_UI = /from ["']@\/components\/ui\//;
-const DEMO_TABLE_PAGES = ["DataPage.tsx", "AccountsPage.tsx", "PortfolioPage.tsx"] as const;
+const DEMO_TABLE_PAGES = ["TablesPage.tsx", "AccountsPage.tsx", "PortfolioPage.tsx"] as const;
 const LIVE_SHELL = ["DashboardLayout.tsx", "AppSidebar.tsx"] as const;
 
 function walk(dir: string): string[] {
@@ -60,7 +60,7 @@ describe("S9 package consume", () => {
 	it("uses library table primitives on demo table pages", () => {
 		for (const name of DEMO_TABLE_PAGES) {
 			const source = readFileSync(path.join(ROOT, "pages", name), "utf8");
-			expect(source, name).toContain("@nocoo/basalt/components/table");
+			expect(source, name).toMatch(/@nocoo\/basalt\/components\/(data-)?table/);
 			expect(source, name).not.toMatch(/<table\b/);
 		}
 	});

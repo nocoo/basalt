@@ -314,7 +314,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"breadcrumbs": {
 		"file": "packages/basalt/src/components/breadcrumbs.tsx",
-		"hash": "343e2f89ad2fe4b9",
+		"hash": "28ce0774d2ba5176",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/breadcrumbs.js.map (sourcesContent[0])"
 	},
@@ -344,7 +344,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "2d47a835a2b3573f",
+		"hash": "275f3c24cb2425e3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},

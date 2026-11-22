@@ -323,6 +323,12 @@ export const API = [
 				description: "Uncontrolled initial open state for the collapsible group.",
 			},
 			{
+				name: "action",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional sibling action rendered beside the group trigger.",
+			},
+			{
 				name: "children",
 				type: "React.ReactNode",
 				required: true,

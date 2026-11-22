@@ -882,12 +882,16 @@ export interface SidebarGroupProps {
 	 */
 	defaultOpen?: boolean;
 	/**
+	 * Optional sibling action rendered beside the group trigger.
+	 */
+	action?: ReactNode;
+	/**
 	 * Navigation items rendered inside the group.
 	 */
 	children: ReactNode;
 }
 
-export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGroupProps) {
+export function SidebarGroup({ label, defaultOpen = true, action, children }: SidebarGroupProps) {
 	const [open, setOpen] = useState(defaultOpen);
 	const context = useContext(SidebarContext);
 	if (context?.collapsed) {
@@ -908,25 +912,28 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 			data-slot="sidebar-group"
 			className="shrink-0 pt-basalt-layout-sm"
 		>
-			<CollapsibleTrigger asChild>
-				<button
-					type="button"
-					data-slot="sidebar-group-label"
-					className={cn(
-						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-row-y text-left text-basalt-xs font-semibold leading-basalt-row tracking-wider text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
-						FOCUS_INSET,
-					)}
-				>
-					<span className="min-w-0 truncate">{label}</span>
-					<ChevronUp
+			<div className="flex items-center gap-basalt-space-xs">
+				<CollapsibleTrigger asChild>
+					<button
+						type="button"
+						data-slot="sidebar-group-label"
 						className={cn(
-							"size-basalt-icon me-[calc((var(--basalt-size-icon-lg)-var(--basalt-size-icon))/2)] text-basalt-muted-foreground transition-transform basalt-motion duration-basalt-normal",
-							OVERLAY_MOTION,
-							!open && "rotate-180",
+							"flex min-w-0 flex-1 cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-row-y text-left text-basalt-xs font-semibold leading-basalt-row tracking-wider text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
+							FOCUS_INSET,
 						)}
-					/>
-				</button>
-			</CollapsibleTrigger>
+					>
+						<span className="min-w-0 truncate">{label}</span>
+						<ChevronUp
+							className={cn(
+								"size-basalt-icon me-[calc((var(--basalt-size-icon-lg)-var(--basalt-size-icon))/2)] text-basalt-muted-foreground transition-transform basalt-motion duration-basalt-normal",
+								OVERLAY_MOTION,
+								!open && "rotate-180",
+							)}
+						/>
+					</button>
+				</CollapsibleTrigger>
+				{action ? <div className="shrink-0">{action}</div> : null}
+			</div>
 			<CollapsibleContent unstyled>
 				<div className="flex flex-col gap-basalt-nav-gap pt-basalt-nav-gap">{children}</div>
 			</CollapsibleContent>

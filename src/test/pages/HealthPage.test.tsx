@@ -1,7 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import HealthPage from "@/pages/HealthPage";
-import WearableDashboardPage from "@/pages/WearableDashboardPage";
 
 describe("HealthPage", () => {
 	it("marks unavailable insights as a demo while keeping the prompt editable", () => {
@@ -20,10 +19,7 @@ describe("HealthPage", () => {
 		}
 	});
 
-	it.each([
-		["health", HealthPage, "Daily timeline", "Activities"],
-		["wearable", WearableDashboardPage, "Daily timeline", "Workouts"],
-	] as const)(
+	it.each([["health", HealthPage, "Daily timeline", "Activities"]] as const)(
 		"shows a truthful sample day, accessible charts and full-year data for %s",
 		(_name, Page, timeline, metric) => {
 			render(<Page />);

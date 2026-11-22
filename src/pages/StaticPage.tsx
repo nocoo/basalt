@@ -1,7 +1,6 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
 import { ArrowLeft } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { useSiteTitle } from "@/hooks/use-site-title";
 
 const TOP_AMBIENT = [
@@ -12,49 +11,48 @@ const TOP_AMBIENT = [
 ].join(" ");
 
 interface SectionSpec {
-	titleKey: string;
-	bodyKey: string;
-	itemKeys?: readonly string[];
+	title: string;
+	body: string;
+	items?: readonly string[];
 }
 
 const SECTIONS: readonly SectionSpec[] = [
 	{
-		titleKey: "pages.static.section1Title",
-		bodyKey: "pages.static.section1Body",
+		title: "1. Acceptance of Terms",
+		body: "By accessing or using this service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use this service.",
 	},
 	{
-		titleKey: "pages.static.section2Title",
-		bodyKey: "pages.static.section2Body",
-		itemKeys: [
-			"pages.static.section2Item1",
-			"pages.static.section2Item2",
-			"pages.static.section2Item3",
-			"pages.static.section2Item4",
+		title: "2. Service Description",
+		body: "This application provides the following features:",
+		items: [
+			"Feature overview and dashboard analytics",
+			"Account management and tracking",
+			"Data visualization and reporting",
+			"Import and export capabilities",
 		],
 	},
 	{
-		titleKey: "pages.static.section3Title",
-		bodyKey: "pages.static.section3Body",
-		itemKeys: [
-			"pages.static.section3Item1",
-			"pages.static.section3Item2",
-			"pages.static.section3Item3",
-			"pages.static.section3Item4",
+		title: "3. User Responsibilities",
+		body: "When using this service, you agree to:",
+		items: [
+			"Provide accurate and truthful registration information",
+			"Safeguard your account credentials",
+			"Be responsible for all activity under your account",
+			"Not use the service for any unlawful purpose",
 		],
 	},
 	{
-		titleKey: "pages.static.section4Title",
-		bodyKey: "pages.static.section4Body",
+		title: "4. Limitation of Liability",
+		body: "To the maximum extent permitted by law, the service provider shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of or inability to use this service.",
 	},
 	{
-		titleKey: "pages.static.section5Title",
-		bodyKey: "pages.static.section5Body",
+		title: "5. Modifications",
+		body: "We reserve the right to modify or discontinue this service at any time. We will provide notice of significant changes through the application or via email.",
 	},
 ];
 
 export default function StaticPage() {
-	const { t } = useTranslation();
-	useSiteTitle(t("nav.staticPage"));
+	useSiteTitle("Static Page");
 
 	return (
 		<div
@@ -69,11 +67,11 @@ export default function StaticPage() {
 			<div className="relative mx-auto max-w-2xl space-y-basalt-layout">
 				<Link
 					href="/"
-					aria-label={t("common.back")}
+					aria-label="Back"
 					className="basalt-focus inline-flex items-center gap-basalt-space-md rounded-basalt-sm text-basalt-md text-basalt-muted-foreground no-underline transition-colors basalt-motion hover:text-basalt-foreground"
 				>
 					<ArrowLeft className="size-basalt-icon" aria-hidden="true" />
-					<span>{t("common.back")}</span>
+					<span>Back</span>
 				</Link>
 
 				<main>
@@ -81,26 +79,26 @@ export default function StaticPage() {
 						<LayerCard padding="lg" className="space-y-basalt-card-lg">
 							<header className="space-y-basalt-space-sm border-b border-basalt-border pb-basalt-card-lg">
 								<h1 className="font-basalt-display text-basalt-3xl font-semibold tracking-tight text-basalt-foreground">
-									{t("pages.static.termsOfService")}
+									Terms of Service
 								</h1>
 								<p className="text-basalt-sm text-basalt-muted-foreground">
-									{t("pages.static.lastUpdated")}
+									Last updated: January 1, 2026
 								</p>
 							</header>
 
 							<div className="space-y-basalt-card-lg">
 								{SECTIONS.map((section) => (
-									<section key={section.titleKey} className="space-y-basalt-space-sm">
+									<section key={section.title} className="space-y-basalt-space-sm">
 										<h2 className="text-basalt-lg font-semibold tracking-tight text-basalt-foreground">
-											{t(section.titleKey)}
+											{section.title}
 										</h2>
 										<p className="text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
-											{t(section.bodyKey)}
+											{section.body}
 										</p>
-										{section.itemKeys ? (
+										{section.items ? (
 											<ul className="list-disc space-y-basalt-space-sm pl-basalt-card text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
-												{section.itemKeys.map((itemKey) => (
-													<li key={itemKey}>{t(itemKey)}</li>
+												{section.items.map((item) => (
+													<li key={item}>{item}</li>
 												))}
 											</ul>
 										) : null}
@@ -110,7 +108,8 @@ export default function StaticPage() {
 
 							<footer className="border-t border-basalt-border pt-basalt-card">
 								<p className="text-basalt-sm leading-basalt-relaxed text-basalt-muted-foreground">
-									{t("pages.static.footerText")}
+									By using this service, you acknowledge that you have read these terms and agree to
+									abide by them. For questions, contact support.
 								</p>
 							</footer>
 						</LayerCard>

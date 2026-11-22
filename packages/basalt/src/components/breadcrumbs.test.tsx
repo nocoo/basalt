@@ -63,5 +63,6 @@ describe("Breadcrumbs", () => {
 		expect(classTokens(plain.className)).toContain("text-basalt-muted-foreground");
 		expect(classTokens(current.className)).toContain("text-basalt-foreground");
 		expect(classTokens(current.className)).not.toContain("text-basalt-muted-foreground");
+		expect(nav).toHaveClass("min-w-0", "overflow-x-auto", "whitespace-nowrap");
 	});
 });

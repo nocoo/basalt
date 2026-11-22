@@ -9,7 +9,6 @@ import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { MapPin } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { DemoFeedback } from "@/components/examples/DemoFeedback";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useFormsViewModel } from "@/viewmodels/useFormsViewModel";
@@ -18,19 +17,18 @@ const FORM_STACK_CLASS = "space-y-basalt-layout";
 const FIELD_STACK_CLASS = "space-y-basalt-space-lg";
 
 export default function FormsPage() {
-	const { t } = useTranslation();
 	const vm = useFormsViewModel();
 
 	return (
-		<ShowcasePage title={t("pages.forms.title")} description={t("pages.forms.description")}>
+		<ShowcasePage
+			title="Form layouts that feel premium"
+			description="Input clusters, validation states, and action blocks designed for conversion and clarity."
+		>
 			<div className="grid grid-cols-1 gap-basalt-layout @[48rem]/island:grid-cols-2">
-				<SectionRule
-					title={t("pages.forms.profileForm")}
-					className="flex flex-col space-y-0 gap-basalt-layout-sm"
-				>
+				<SectionRule title="Profile Form" className="flex flex-col space-y-0 gap-basalt-layout-sm">
 					<LayerCard padding="lg" className="flex-1">
 						<form
-							aria-label={t("pages.forms.profileForm")}
+							aria-label="Profile Form"
 							data-form-stack=""
 							className={FORM_STACK_CLASS}
 							onSubmit={(event) => {
@@ -44,42 +42,32 @@ export default function FormsPage() {
 							<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
 								<div data-field="" className={FIELD_STACK_CLASS}>
 									<Label htmlFor="profile-first" className="text-basalt-foreground">
-										{t("pages.forms.firstName")}
+										First name
 									</Label>
-									<Input
-										id="profile-first"
-										name="firstName"
-										required
-										placeholder={t("pages.forms.firstNamePlaceholder")}
-									/>
+									<Input id="profile-first" name="firstName" required placeholder="Alex" />
 								</div>
 								<div data-field="" className={FIELD_STACK_CLASS}>
 									<Label htmlFor="profile-last" className="text-basalt-foreground">
-										{t("pages.forms.lastName")}
+										Last name
 									</Label>
-									<Input
-										id="profile-last"
-										name="lastName"
-										required
-										placeholder={t("pages.forms.lastNamePlaceholder")}
-									/>
+									<Input id="profile-last" name="lastName" required placeholder="Johnson" />
 								</div>
 							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
 								<Label htmlFor="profile-email" className="text-basalt-foreground">
-									{t("pages.forms.email")}
+									Email
 								</Label>
 								<Input
 									id="profile-email"
 									name="email"
 									required
 									type="email"
-									placeholder={t("pages.forms.emailPlaceholder")}
+									placeholder="alex@basalt.app"
 								/>
 							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
 								<Label htmlFor="profile-location" className="text-basalt-foreground">
-									{t("pages.forms.location")}
+									Location
 								</Label>
 								<InputGroup>
 									<InputGroup.Addon>
@@ -88,25 +76,22 @@ export default function FormsPage() {
 									<InputGroup.Input
 										id="profile-location"
 										name="location"
-										placeholder={t("pages.forms.locationPlaceholder")}
+										placeholder="San Francisco, CA"
 									/>
 								</InputGroup>
 							</div>
 							<Button type="submit" loading={vm.profile.status === "pending"}>
-								{t("pages.forms.saveProfile")}
+								Save profile
 							</Button>
 							<DemoFeedback {...vm.profile} />
 						</form>
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule
-					title={t("pages.forms.security")}
-					className="flex flex-col space-y-0 gap-basalt-layout-sm"
-				>
+				<SectionRule title="Security" className="flex flex-col space-y-0 gap-basalt-layout-sm">
 					<LayerCard padding="lg" className="flex-1">
 						<form
-							aria-label={t("pages.forms.security")}
+							aria-label="Security"
 							data-form-stack=""
 							className={FORM_STACK_CLASS}
 							onSubmit={(event) => {
@@ -121,7 +106,7 @@ export default function FormsPage() {
 						>
 							<div data-field="" className={FIELD_STACK_CLASS}>
 								<Label htmlFor="security-password" className="text-basalt-foreground">
-									{t("pages.forms.password")}
+									Password
 								</Label>
 								<Input
 									id="security-password"
@@ -135,7 +120,7 @@ export default function FormsPage() {
 							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
 								<Label htmlFor="security-confirm" className="text-basalt-foreground">
-									{t("pages.forms.confirmPassword")}
+									Confirm password
 								</Label>
 								<Input
 									id="security-confirm"
@@ -150,24 +135,20 @@ export default function FormsPage() {
 							<div className="flex items-center justify-between gap-basalt-card rounded-basalt-md border border-basalt-border/60 p-basalt-card-sm">
 								<div>
 									<p className="text-basalt-base text-basalt-foreground">
-										{t("pages.forms.twoFactorAuth")}
+										Two-factor authentication
 									</p>
 									<p className="text-basalt-sm text-basalt-muted-foreground">
-										{t("pages.forms.twoFactorDesc")}
+										Add a layer of protection
 									</p>
 								</div>
-								<Switch
-									name="twoFactor"
-									defaultChecked
-									aria-label={t("pages.forms.twoFactorAuth")}
-								/>
+								<Switch name="twoFactor" defaultChecked aria-label="Two-factor authentication" />
 							</div>
 							<Button type="submit" variant="secondary" loading={vm.security.status === "pending"}>
-								{t("pages.forms.updateSecurity")}
+								Update security
 							</Button>
 							{vm.passwordError && (
 								<p role="alert" className="text-basalt-base text-basalt-danger-solid">
-									{t("demo.passwordMismatch")}
+									Use at least 8 characters and matching passwords.
 								</p>
 							)}
 							<DemoFeedback {...vm.security} />
@@ -177,13 +158,10 @@ export default function FormsPage() {
 			</div>
 
 			<div className="grid grid-cols-1 gap-basalt-layout @[60rem]/island:grid-cols-3">
-				<SectionRule
-					title={t("pages.forms.newsletter")}
-					className="flex flex-col space-y-0 gap-basalt-layout-sm"
-				>
+				<SectionRule title="Newsletter" className="flex flex-col space-y-0 gap-basalt-layout-sm">
 					<LayerCard padding="lg" className="flex-1">
 						<form
-							aria-label={t("pages.forms.newsletter")}
+							aria-label="Newsletter"
 							data-form-stack=""
 							className={FORM_STACK_CLASS}
 							onSubmit={(event) => {
@@ -195,14 +173,14 @@ export default function FormsPage() {
 						>
 							<div data-field="" className={FIELD_STACK_CLASS}>
 								<Label htmlFor="news-email" className="text-basalt-foreground">
-									{t("pages.forms.newsletterEmail")}
+									Email
 								</Label>
 								<Input
 									id="news-email"
 									name="email"
 									required
 									type="email"
-									placeholder={t("pages.forms.newsletterEmailPlaceholder")}
+									placeholder="you@company.com"
 								/>
 							</div>
 							<div className="flex items-center gap-basalt-space-lg">
@@ -211,29 +189,26 @@ export default function FormsPage() {
 									htmlFor="news-consent"
 									className="text-basalt-sm text-basalt-muted-foreground cursor-pointer"
 								>
-									{t("pages.forms.agreeUpdates")}
+									I agree to receive product updates.
 								</label>
 							</div>
 							<Button type="submit" loading={vm.newsletter.status === "pending"}>
-								{t("pages.forms.subscribe")}
+								Subscribe
 							</Button>
 							<DemoFeedback {...vm.newsletter} />
 						</form>
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule
-					title={t("pages.forms.fileUpload")}
-					className="flex flex-col space-y-0 gap-basalt-layout-sm"
-				>
+				<SectionRule title="File Upload" className="flex flex-col space-y-0 gap-basalt-layout-sm">
 					<LayerCard padding="lg" className="flex-1">
 						<div className="space-y-basalt-card">
 							<FileDropzone
-								label={t("pages.forms.fileUpload")}
-								description={t("pages.forms.fileTypes")}
+								label="File Upload"
+								description="PNG, JPG, or PDF up to 4MB"
 								accept="image/png,image/jpeg,application/pdf"
 								maxSize={4 * 1024 * 1024}
-								browseLabel={t("pages.forms.browseFiles")}
+								browseLabel="Browse files"
 								onFilesAccepted={(files) =>
 									vm.setFiles(files.map(({ name, size }) => ({ name, size })))
 								}
@@ -249,19 +224,16 @@ export default function FormsPage() {
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule
-					title={t("pages.forms.successState")}
-					className="flex flex-col space-y-0 gap-basalt-layout-sm"
-				>
+				<SectionRule title="Success State" className="flex flex-col space-y-0 gap-basalt-layout-sm">
 					<LayerCard padding="lg" className="flex-1">
 						<p className="text-basalt-base font-medium text-basalt-foreground">
-							{t(
-								vm.profile.result || vm.newsletter.result || vm.security.result
-									? "pages.forms.formSubmitted"
-									: "demo.noSubmissions",
-							)}
+							{vm.profile.result || vm.newsletter.result || vm.security.result
+								? "Form submitted"
+								: "No submissions yet"}
 						</p>
-						<p className="text-basalt-sm text-basalt-muted-foreground">{t("demo.localOnly")}</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							Local demo. These actions do not update a real account or service.
+						</p>
 						<Separator className="my-basalt-card-sm bg-basalt-border" />
 						<Button
 							variant="secondary"
@@ -269,7 +241,7 @@ export default function FormsPage() {
 							aria-expanded={vm.detailsOpen}
 							onClick={() => vm.setDetailsOpen(!vm.detailsOpen)}
 						>
-							{t("pages.forms.viewDetails")}
+							View details
 						</Button>
 						{vm.detailsOpen && (
 							<pre className="mt-basalt-card-sm whitespace-pre-wrap break-words text-basalt-sm">

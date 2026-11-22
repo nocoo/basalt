@@ -54,17 +54,25 @@ describe("AppSidebar", () => {
 		Element.prototype.scrollIntoView = vi.fn();
 	});
 
-	it("keeps example pages and lists every library export", { timeout: 45_000 }, () => {
+	it("keeps example pages, sibling category overviews, and all library exports", {
+		timeout: 45_000,
+	}, () => {
 		renderSidebar();
 		expect(screen.getByText("Examples")).toBeInTheDocument();
 		expect(screen.getByText("Library")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Overview" })).toBeInTheDocument();
+		expect(screen.getByText("Scenarios")).toBeInTheDocument();
+		expect(screen.getByText("Pages")).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Component library" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Layout" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Color Palette" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Typeface" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Settings" })).toBeInTheDocument();
-		expect(screen.queryByText("System")).not.toBeInTheDocument();
-		expect(screen.queryByText("Controls")).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: "Components" })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: "Data" })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: "Interactive" })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: /Wearable/ })).not.toBeInTheDocument();
+		expect(screen.queryByText("WIP")).not.toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Dashboard" })).toBeInTheDocument();
 		const following = Node.DOCUMENT_POSITION_FOLLOWING;
 		const links = [
@@ -75,8 +83,6 @@ describe("AppSidebar", () => {
 			"Loading",
 			"Animation",
 			"Tables",
-			"Interactive",
-			"Data",
 			"Forms",
 			"Navigation",
 			"Dialogs",
@@ -90,13 +96,13 @@ describe("AppSidebar", () => {
 		}
 		expect(
 			screen
-				.getByRole("link", { name: /Interactions/ })
+				.getByRole("link", { name: "Templates" })
 				.compareDocumentPosition(screen.getByRole("link", { name: "Settings" })) & following,
 		).toBeTruthy();
 		expect(
 			screen
 				.getByRole("link", { name: "Settings" })
-				.compareDocumentPosition(screen.getByRole("link", { name: "Wearable Health" })) & following,
+				.compareDocumentPosition(screen.getByRole("link", { name: "Health" })) & following,
 		).toBeTruthy();
 		for (const entry of CATALOG) {
 			expect(navRows(new RegExp(`^${catalogNavName(entry)}`))).not.toHaveLength(0);
@@ -106,13 +112,19 @@ describe("AppSidebar", () => {
 		expect(screen.getByRole("link", { name: /^Clipboard Text/ })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Page Header" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Section Rule" })).toBeInTheDocument();
-		const components = screen.getByRole("button", { name: "Actions", expanded: true });
-		expect(components).toHaveAttribute("aria-expanded", "true");
-		fireEvent.click(components);
-		expect(components).toHaveAttribute("aria-expanded", "false");
+		const actionsTrigger = screen.getByRole("button", { name: "Actions", expanded: true });
+		const actionsOverview = screen.getByRole("link", { name: "Actions overview" });
+		expect(actionsOverview).toHaveAttribute("href", "/ui/overview/action");
+		expect(actionsTrigger.contains(actionsOverview)).toBe(false);
+		expect(actionsOverview).toHaveTextContent("Overview");
+		expect(actionsTrigger).toHaveAttribute("aria-expanded", "true");
+		fireEvent.click(actionsTrigger);
+		expect(actionsTrigger).toHaveAttribute("aria-expanded", "false");
 		expect(screen.getByRole("link", { name: "Dashboard" })).toBeInTheDocument();
 		expect(navRows("Layouts")).not.toHaveLength(0);
-		expect(navRows("Blocks").length).toBeGreaterThan(1);
+		expect(navRows("Blocks")).toHaveLength(1);
+		expect(screen.getByRole("img", { name: "Zheng Li" })).toHaveTextContent("ZL");
+		expect(document.querySelector('aside img[src*="avatar.vercel.sh"]')).toBeNull();
 	});
 
 	it("keeps every retained sidebar entry ready", () => {

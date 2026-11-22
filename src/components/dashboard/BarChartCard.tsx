@@ -1,27 +1,25 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PiggyBank } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { BarChart } from "@/components/charts/bar";
 import { formatUsd } from "@/lib/format";
 
 const data = [
-	{ name: "Jan", value: 12000 },
-	{ name: "Feb", value: 15000 },
-	{ name: "Mar", value: 11000 },
-	{ name: "Apr", value: 18000 },
-	{ name: "May", value: 14000 },
-	{ name: "Jun", value: 20000 },
-	{ name: "Jul", value: 16000 },
-	{ name: "Aug", value: 22000 },
-	{ name: "Sep", value: 13000 },
-	{ name: "Oct", value: 17000 },
-	{ name: "Nov", value: 25000 },
-	{ name: "Dec", value: 19000 },
+	{ x: "Jan", y: 12000 },
+	{ x: "Feb", y: 15000 },
+	{ x: "Mar", y: 11000 },
+	{ x: "Apr", y: 18000 },
+	{ x: "May", y: 14000 },
+	{ x: "Jun", y: 20000 },
+	{ x: "Jul", y: 16000 },
+	{ x: "Aug", y: 22000 },
+	{ x: "Sep", y: 13000 },
+	{ x: "Oct", y: 17000 },
+	{ x: "Nov", y: 25000 },
+	{ x: "Dec", y: 19000 },
 ];
 
 export function BarChartCard() {
-	const { t } = useTranslation();
-	const total = formatUsd(data.reduce((sum, row) => sum + row.value, 0));
+	const total = formatUsd(data.reduce((sum, row) => sum + row.y, 0));
 
 	return (
 		<LayerCard className="flex flex-col h-full">
@@ -29,7 +27,7 @@ export function BarChartCard() {
 				<div className="flex items-center gap-basalt-space-lg">
 					<PiggyBank className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("dashboard.usageCategory")}
+						Monthly care spending
 					</h2>
 				</div>
 				<div className="flex items-baseline gap-basalt-space-lg">
@@ -37,18 +35,15 @@ export function BarChartCard() {
 						{total}
 					</p>
 					<span className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("dashboard.totalTransactions")}
+						total for Jan–Dec
 					</span>
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
 				<BarChart
-					data={data.map((row) => ({
-						x: t(`dashboard.months.${row.name.toLowerCase()}`),
-						y: row.value,
-					}))}
-					series={[{ key: "y", label: t("dashboard.spend") }]}
-					ariaLabel={t("dashboard.usageCategoryAria", { total })}
+					data={data}
+					series={[{ key: "y", label: "Spend" }]}
+					ariaLabel={`Monthly care spending from January to December, totaling ${total}`}
 					className="min-h-[12.5rem] w-full flex-1"
 					showAxes
 					valueFormatter={formatUsd}

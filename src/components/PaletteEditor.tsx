@@ -9,12 +9,15 @@ import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { ACCENT_SWATCHES } from "@nocoo/basalt/providers/accent";
 import { useEffect, useId, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { classicPaletteColors, isHexColor, validPaletteColors } from "@/lib/custom-palette";
 import { useSitePalette } from "./SitePaletteProvider";
 
+const MODE_LABELS = {
+	classic: "Classic palette",
+	custom: "Custom palette",
+} as const;
+
 export function PaletteEditor() {
-	const { t } = useTranslation();
 	const { preference, apply, restoreClassic } = useSitePalette();
 	const [draft, setDraft] = useState(preference.colors);
 	const [message, setMessage] = useState("");
@@ -25,17 +28,18 @@ export function PaletteEditor() {
 		<LayerCard>
 			<LayerCard.Header className="flex-wrap">
 				<div className="space-y-basalt-space-sm">
-					<h3 className="text-basalt-base font-medium">{t("pages.palette.customTitle")}</h3>
+					<h3 className="text-basalt-base font-medium">Your own palette</h3>
 					<p className="max-w-2xl text-basalt-sm leading-basalt-relaxed text-muted-foreground">
-						{t("pages.palette.customDescription")}
+						Edit the light and dark colors, then save to apply them. Your palette stays in this
+						browser across pages and visits. Chart colors stay fixed.
 					</p>
 				</div>
-				<Badge variant="outline">{t(`pages.palette.mode.${preference.mode}`)}</Badge>
+				<Badge variant="outline">{MODE_LABELS[preference.mode]}</Badge>
 			</LayerCard.Header>
 			<Collapsible>
 				<LayerCard.Header asChild>
 					<CollapsibleTrigger className="w-full hover:bg-basalt-hover">
-						{t("pages.palette.editColors")}
+						Customize all 12 colors
 					</CollapsibleTrigger>
 				</LayerCard.Header>
 				<CollapsibleContent unstyled>
@@ -45,7 +49,11 @@ export function PaletteEditor() {
 							onSubmit={(event) => {
 								event.preventDefault();
 								if (valid)
-									setMessage(t(apply(draft) ? "pages.palette.saved" : "pages.palette.sessionOnly"));
+									setMessage(
+										apply(draft)
+											? "Custom palette saved in this browser."
+											: "Applied for this session. Browser storage is unavailable.",
+									);
 							}}
 						>
 							<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 xl:grid-cols-3">
@@ -58,6 +66,7 @@ export function PaletteEditor() {
 											{swatch.label}
 										</legend>
 										{(["light", "dark"] as const).map((mode) => {
+											const modeLabel = mode === "light" ? "Light" : "Dark";
 											const color = draft[swatch.id][mode];
 											const update = (value: string) => {
 												setDraft((current) => ({
@@ -66,7 +75,7 @@ export function PaletteEditor() {
 												}));
 												setMessage("");
 											};
-											const label = `${swatch.label} · ${t(`pages.palette.${mode}`)}`;
+											const label = `${swatch.label} · ${modeLabel}`;
 											return (
 												<div
 													key={mode}
@@ -76,11 +85,11 @@ export function PaletteEditor() {
 														htmlFor={`${id}-${swatch.id}-${mode}`}
 														className="text-basalt-sm text-muted-foreground"
 													>
-														{t(`pages.palette.${mode}`)}
+														{modeLabel}
 													</label>
 													<input
 														type="color"
-														aria-label={`${label} ${t("pages.palette.colorPicker")}`}
+														aria-label={`${label} color picker`}
 														className="size-9 cursor-pointer rounded-basalt-md border border-border bg-transparent p-basalt-space-sm"
 														value={isHexColor(color) ? color : "#000000"}
 														onChange={(event) => update(event.target.value)}
@@ -105,12 +114,12 @@ export function PaletteEditor() {
 							</div>
 							{!valid && (
 								<p id={`${id}-error`} role="alert" className="text-basalt-sm text-destructive">
-									{t("pages.palette.invalidColor")}
+									Use a six-digit hex color, such as #73c2fb, for every swatch.
 								</p>
 							)}
 							<div className="flex flex-wrap gap-basalt-space-lg">
 								<Button type="submit" disabled={!valid}>
-									{t("pages.palette.saveCustom")}
+									Save custom palette
 								</Button>
 								<Button
 									variant="outline"
@@ -119,7 +128,7 @@ export function PaletteEditor() {
 										setMessage("");
 									}}
 								>
-									{t("pages.palette.resetDraft")}
+									Reset draft colors
 								</Button>
 							</div>
 						</form>
@@ -132,10 +141,14 @@ export function PaletteEditor() {
 					variant="outline"
 					disabled={preference.mode === "classic"}
 					onClick={() =>
-						setMessage(t(restoreClassic() ? "pages.palette.restored" : "pages.palette.sessionOnly"))
+						setMessage(
+							restoreClassic()
+								? "Classic palette restored. Your custom colors are kept in the editor."
+								: "Applied for this session. Browser storage is unavailable.",
+						)
 					}
 				>
-					{t("pages.palette.useClassic")}
+					Restore classic palette
 				</Button>
 				<p role="status" className="text-basalt-sm text-muted-foreground">
 					{message}

@@ -1,38 +1,29 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { useTranslation } from "react-i18next";
 import { AreaChart } from "@/components/charts/area";
 
 const data = [
-	{ name: "Mon", core: 120, growth: 80, churn: 30 },
-	{ name: "Tue", core: 140, growth: 92, churn: 28 },
-	{ name: "Wed", core: 150, growth: 96, churn: 26 },
-	{ name: "Thu", core: 160, growth: 110, churn: 22 },
-	{ name: "Fri", core: 170, growth: 120, churn: 18 },
+	{ x: "Mon", y: 120, y2: 80, y3: 30 },
+	{ x: "Tue", y: 140, y2: 92, y3: 28 },
+	{ x: "Wed", y: 150, y2: 96, y3: 26 },
+	{ x: "Thu", y: 160, y2: 110, y3: 22 },
+	{ x: "Fri", y: 170, y2: 120, y3: 18 },
 ];
 
 export function StackedAreaCard() {
-	const { t } = useTranslation();
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-					{t("dashboard.stackedActivity")}
-				</h2>
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Stacked activity</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">
 				<AreaChart
-					data={data.map((row) => ({
-						x: t(`dashboard.weekdays.${row.name.toLowerCase()}`),
-						y: row.core,
-						y2: row.growth,
-						y3: row.churn,
-					}))}
+					data={data}
 					series={[
-						{ key: "y", label: t("dashboard.core") },
-						{ key: "y2", label: t("dashboard.growth") },
-						{ key: "y3", label: t("dashboard.churn") },
+						{ key: "y", label: "Core" },
+						{ key: "y2", label: "Growth" },
+						{ key: "y3", label: "Churn" },
 					]}
-					ariaLabel={t("dashboard.stackedActivity")}
+					ariaLabel="Stacked activity"
 					className="h-full w-full"
 					showAxes
 					showLegend

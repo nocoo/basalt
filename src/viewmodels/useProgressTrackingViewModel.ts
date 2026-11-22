@@ -3,7 +3,6 @@
 
 import { CHART_COLORS } from "@nocoo/basalt/components/chart";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { budgets, monthlyBudgetData } from "@/data/mock";
 import { computeProgressPercent, computeProgressSummary } from "@/models/progress-tracking";
 
@@ -16,19 +15,18 @@ export interface CategoryProgress {
 }
 
 export function useProgressTrackingViewModel() {
-	const { t } = useTranslation();
 	const summary = useMemo(() => computeProgressSummary(budgets), []);
 
 	const categories: CategoryProgress[] = useMemo(
 		() =>
 			budgets.map((b, i) => ({
-				category: t(b.category),
+				category: b.category,
 				spent: b.spent,
 				limit: b.limit,
 				progress: computeProgressPercent(b.spent, b.limit),
 				color: CHART_COLORS[i % CHART_COLORS.length],
 			})),
-		[t],
+		[],
 	);
 
 	return { summary, categories, comparisonData: monthlyBudgetData };

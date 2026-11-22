@@ -10,16 +10,15 @@ import { LoadingScreen } from "@nocoo/basalt/components/loading-screen";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
-import { useTranslation } from "react-i18next";
 import { BasaltMark } from "@/components/BasaltMark";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useLoadingShowcaseViewModel } from "@/viewmodels/useLoadingShowcaseViewModel";
 
 const METRICS = [
-	{ labelKey: "pages.loadingStates.metricRequests", value: "148,290", width: 70 },
-	{ labelKey: "pages.loadingStates.metricProjects", value: "24", width: 48 },
-	{ labelKey: "pages.loadingStates.metricSuccess", value: "99.98%", width: 62 },
-	{ labelKey: "pages.loadingStates.metricLatency", value: "42 ms", width: 55 },
+	{ label: "Requests", value: "148,290", width: 70 },
+	{ label: "Projects", value: "24", width: 48 },
+	{ label: "Success rate", value: "99.98%", width: 62 },
+	{ label: "Latency", value: "42 ms", width: 55 },
 ] as const;
 
 const WORKSPACES = [
@@ -39,26 +38,25 @@ function BoneAvatar() {
 }
 
 export default function LoadingStatesPage() {
-	const { t } = useTranslation();
 	const { busy, toggleBusy } = useLoadingShowcaseViewModel();
 
 	return (
 		<ShowcasePage
-			title={t("pages.loadingStates.title")}
-			description={t("pages.loadingStates.description")}
+			title="Loading"
+			description="Skeleton bones, spinners and busy controls. Replay to see the same layout before and after data arrives."
 			actions={
 				<Button variant="outline" onClick={toggleBusy}>
-					{busy ? t("pages.loadingStates.showLoaded") : t("pages.loadingStates.replay")}
+					{busy ? "Show loaded" : "Replay loading"}
 				</Button>
 			}
 		>
 			<div role="status" aria-live="polite" className="sr-only">
-				{busy ? t("pages.loadingStates.statusLoading") : t("pages.loadingStates.statusLoaded")}
+				{busy ? "Loading showcase" : "Showcase loaded"}
 			</div>
 
 			<SectionRule
-				title={t("pages.loadingStates.primitives")}
-				hint={t("pages.loadingStates.primitivesHint")}
+				title="Bones"
+				hint="Skeleton provides shimmer line, block, and circle placeholder bones."
 			>
 				<div className="grid gap-basalt-layout lg:grid-cols-2">
 					<LayerCard className="space-y-basalt-card-sm">
@@ -74,23 +72,23 @@ export default function LoadingStatesPage() {
 						</div>
 					</LayerCard>
 					<LayerCard>
-						<LayerCard.Loading label={t("pages.loadingStates.cardLoadingLabel")} />
+						<LayerCard.Loading label="Loading card" />
 					</LayerCard>
 				</div>
 			</SectionRule>
 
 			<SectionRule
-				title={t("pages.loadingStates.spinners")}
-				hint={t("pages.loadingStates.spinnersHint")}
+				title="Spinners"
+				hint="Loader is the library mark. Button loading and InputGroup use the same motion."
 			>
 				<LayerCard>
 					<div className="flex flex-wrap items-center gap-basalt-space-lg">
 						<Loader size={16} showLabel={false} showElapsed={false} />
 						<Loader size={24} />
 						<Loader size={36} />
-						<Button loading>{t("pages.loadingStates.buttonBusy")}</Button>
+						<Button loading>Saving</Button>
 						<InputGroup className="max-w-56">
-							<InputGroup.Input defaultValue="atlas" aria-label={t("pages.loadingStates.query")} />
+							<InputGroup.Input defaultValue="atlas" aria-label="Loading query" />
 							<InputGroup.Addon align="end">
 								<Loader size={16} showLabel={false} showElapsed={false} />
 							</InputGroup.Addon>
@@ -99,27 +97,22 @@ export default function LoadingStatesPage() {
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.loadingStates.metrics")}>
+			<SectionRule title="Metrics">
 				<StatGrid>
 					{METRICS.map((metric) => (
-						<StatCard
-							key={metric.labelKey}
-							title={t(metric.labelKey)}
-							value={metric.value}
-							loading={busy}
-						/>
+						<StatCard key={metric.label} title={metric.label} value={metric.value} loading={busy} />
 					))}
 				</StatGrid>
 			</SectionRule>
 
 			<SectionRule
-				title={t("pages.loadingStates.dashboard")}
-				hint={t("pages.loadingStates.dashboardHint")}
+				title="Dashboard"
+				hint="Keep the grid. Swap values for bones of the same height."
 			>
 				<div aria-busy={busy} data-loading-composition="dashboard" className="space-y-basalt-card">
 					<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 xl:grid-cols-4">
 						{METRICS.map((metric) => (
-							<LayerCard key={metric.labelKey} className="min-h-28 space-y-basalt-card-sm">
+							<LayerCard key={metric.label} className="min-h-28 space-y-basalt-card-sm">
 								{busy ? (
 									<>
 										<Skeleton width={`${metric.width}%`} height={10} />
@@ -128,9 +121,7 @@ export default function LoadingStatesPage() {
 									</>
 								) : (
 									<>
-										<p className="text-basalt-sm text-basalt-muted-foreground">
-											{t(metric.labelKey)}
-										</p>
+										<p className="text-basalt-sm text-basalt-muted-foreground">{metric.label}</p>
 										<p className="text-basalt-3xl font-semibold tabular-nums">{metric.value}</p>
 									</>
 								)}
@@ -155,19 +146,19 @@ export default function LoadingStatesPage() {
 							</div>
 						) : (
 							<p className="text-basalt-base text-basalt-muted-foreground">
-								{t("pages.loadingStates.dashboardLoaded")}
+								Request volume is up 18.6% from last week.
 							</p>
 						)}
 					</LayerCard>
 				</div>
 			</SectionRule>
 
-			<SectionRule title={t("pages.loadingStates.list")}>
+			<SectionRule title="List">
 				<LayerCard padding="none" aria-busy={busy} data-loading-composition="list">
 					<div className="grid grid-cols-[minmax(0,1fr)_5.625rem_5.625rem] gap-basalt-layout border-b border-basalt-border px-basalt-card py-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
-						<span>{t("pages.loadingStates.colWorkspace")}</span>
-						<span>{t("pages.loadingStates.colStatus")}</span>
-						<span className="text-right">{t("pages.loadingStates.colRequests")}</span>
+						<span>Workspace</span>
+						<span>Status</span>
+						<span className="text-right">Requests</span>
 					</div>
 					{WORKSPACES.map((row, index) => (
 						<div
@@ -202,7 +193,7 @@ export default function LoadingStatesPage() {
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.loadingStates.detail")}>
+			<SectionRule title="Detail">
 				<div
 					aria-busy={busy}
 					data-loading-composition="detail"
@@ -221,11 +212,9 @@ export default function LoadingStatesPage() {
 									</>
 								) : (
 									<>
-										<h2 className="text-basalt-xl font-semibold">
-											{t("pages.loadingStates.detailTitle")}
-										</h2>
+										<h2 className="text-basalt-xl font-semibold">Atlas production</h2>
 										<p className="text-basalt-base text-basalt-muted-foreground">
-											{t("pages.loadingStates.detailBody")}
+											A shared home for production services.
 										</p>
 									</>
 								)}
@@ -240,7 +229,8 @@ export default function LoadingStatesPage() {
 								</div>
 							) : (
 								<p className="text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
-									{t("pages.loadingStates.detailCopy")}
+									Atlas handles production traffic across three regions. Deployments are reviewed
+									before release.
 								</p>
 							)}
 						</LayerCard.Body>
@@ -255,19 +245,15 @@ export default function LoadingStatesPage() {
 							</div>
 						) : (
 							<DescriptionList columns={1}>
-								<DescriptionList.Item term={t("pages.loadingStates.region")}>
-									US East
-								</DescriptionList.Item>
-								<DescriptionList.Item term={t("pages.loadingStates.owner")}>
-									Platform
-								</DescriptionList.Item>
+								<DescriptionList.Item term="Region">US East</DescriptionList.Item>
+								<DescriptionList.Item term="Owner">Platform</DescriptionList.Item>
 							</DescriptionList>
 						)}
 					</LayerCard>
 				</div>
 			</SectionRule>
 
-			<SectionRule title={t("pages.loadingStates.table")}>
+			<SectionRule title="Table">
 				<LayerCard padding="none">
 					<DataTable
 						edge="attached"
@@ -276,17 +262,17 @@ export default function LoadingStatesPage() {
 						columns={[
 							{
 								id: "name",
-								header: t("pages.loadingStates.colWorkspace"),
+								header: "Workspace",
 								accessor: (row) => row.name,
 							},
 							{
 								id: "region",
-								header: t("pages.loadingStates.region"),
+								header: "Region",
 								accessor: (row) => row.region,
 							},
 							{
 								id: "status",
-								header: t("pages.loadingStates.colStatus"),
+								header: "Status",
 								accessor: (row) => row.status,
 							},
 						]}
@@ -295,19 +281,19 @@ export default function LoadingStatesPage() {
 			</SectionRule>
 
 			<SectionRule
-				title={t("pages.loadingStates.screen")}
-				hint={t("pages.loadingStates.screenHint")}
+				title="Full screen"
+				hint="LoadingScreen is a route, not a card. The Pages item opens it full viewport."
 			>
 				<LayerCard>
 					<div className="space-y-basalt-card">
 						<div className="relative h-40 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
 							<LoadingScreen
-								label={t("pages.loadingStates.screenLabel")}
+								label="Loading"
 								mark={<BasaltMark className="h-basalt-8 w-basalt-8 text-basalt-foreground" />}
 								className="absolute inset-0 z-0"
 							/>
 						</div>
-						<Link href="/loading">{t("pages.loadingStates.openScreen")}</Link>
+						<Link href="/loading">Open loading screen</Link>
 					</div>
 				</LayerCard>
 			</SectionRule>

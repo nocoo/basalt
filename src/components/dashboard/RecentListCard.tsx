@@ -1,49 +1,27 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
 import { ArrowDownLeft, ArrowLeftRight, ArrowUpRight } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 const transactions = [
-	{ nameKey: "dashboard.activitySleep", amount: -15.99, dateKey: "common.today", type: "expense" },
-	{
-		nameKey: "dashboard.activityBenefit",
-		amount: 5200.0,
-		dateKey: "dashboard.activityYesterday",
-		type: "income",
-	},
-	{
-		nameKey: "dashboard.activityNutrition",
-		amount: -82.4,
-		dateKey: "dashboard.activityYesterday",
-		type: "expense",
-	},
-	{
-		nameKey: "dashboard.activityTherapy",
-		amount: 1200.0,
-		dateKey: "dashboard.activityFeb8",
-		type: "income",
-	},
-	{
-		nameKey: "dashboard.activityLab",
-		amount: -145.0,
-		dateKey: "dashboard.activityFeb7",
-		type: "expense",
-	},
-];
+	{ name: "Sleep coaching", amount: -15.99, date: "Today", type: "expense" },
+	{ name: "Employer wellness benefit", amount: 5200.0, date: "Yesterday", type: "income" },
+	{ name: "Nutrition consult", amount: -82.4, date: "Yesterday", type: "expense" },
+	{ name: "Therapy reimbursement", amount: 1200.0, date: "Feb 8", type: "income" },
+	{ name: "Lab testing", amount: -145.0, date: "Feb 7", type: "expense" },
+] as const;
 
 export function RecentListCard() {
-	const { t } = useTranslation();
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header>
 				<div className="flex items-center gap-basalt-space-lg">
 					<ArrowLeftRight className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("dashboard.recentTransactions")}
+						Recent Care Activity
 					</h2>
 				</div>
 				<Link href="/accounts" className="shrink-0 text-basalt-sm">
-					{t("common.viewAll")}
+					View All
 				</Link>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
@@ -60,8 +38,8 @@ export function RecentListCard() {
 								)}
 							</div>
 							<div className="flex-1 min-w-0">
-								<p className="text-basalt-base text-basalt-foreground truncate">{t(tx.nameKey)}</p>
-								<p className="text-basalt-sm text-basalt-muted-foreground">{t(tx.dateKey)}</p>
+								<p className="text-basalt-base text-basalt-foreground truncate">{tx.name}</p>
+								<p className="text-basalt-sm text-basalt-muted-foreground">{tx.date}</p>
 							</div>
 							<span
 								className={`text-basalt-base font-medium tabular-nums ${tx.amount > 0 ? "text-basalt-success" : "text-basalt-foreground"}`}

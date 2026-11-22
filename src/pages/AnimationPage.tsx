@@ -39,21 +39,19 @@ import {
 import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { toast } from "@nocoo/basalt/components/toast";
-import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useAnimationShowcaseViewModel } from "@/viewmodels/useAnimationShowcaseViewModel";
 
 export default function AnimationPage() {
-	const { t } = useTranslation();
 	const { paused, togglePaused } = useAnimationShowcaseViewModel();
 
 	return (
 		<ShowcasePage
-			title={t("pages.animation.title")}
-			description={t("pages.animation.description")}
+			title="Animation"
+			description="Overlay, collapse, tab and continuous motion from the library. Pause to inspect the resting frame."
 			actions={
 				<Button variant="outline" onClick={togglePaused}>
-					{paused ? t("pages.animation.play") : t("pages.animation.pause")}
+					{paused ? "Play motion" : "Pause motion"}
 				</Button>
 			}
 		>
@@ -64,119 +62,121 @@ export default function AnimationPage() {
 				}
 			>
 				<SectionRule
-					title={t("pages.animation.continuous")}
-					hint={t("pages.animation.continuousHint")}
+					title="Continuous"
+					hint="Loader spin, skeleton shimmer and button busy share motion-reduce:animate-none."
 				>
 					<div className="grid gap-basalt-layout md:grid-cols-3">
 						<LayerCard className="flex flex-col items-center gap-basalt-card-sm">
 							<Loader size={32} />
-							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.animation.loaderLabel")}
-							</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">Loader</p>
 						</LayerCard>
 						<LayerCard className="space-y-basalt-card-sm">
 							<Skeleton width="88%" />
 							<Skeleton width="64%" />
 							<Skeleton width="72%" />
-							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.animation.shimmerLabel")}
-							</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">Shimmer</p>
 						</LayerCard>
 						<LayerCard className="flex flex-col items-center justify-center gap-basalt-card-sm">
-							<Button loading>{t("pages.animation.buttonBusy")}</Button>
-							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t("pages.animation.buttonHint")}
-							</p>
+							<Button loading>Saving</Button>
+							<p className="text-basalt-sm text-basalt-muted-foreground">Button loading</p>
 						</LayerCard>
 					</div>
 				</SectionRule>
 
-				<SectionRule title={t("pages.animation.overlays")} hint={t("pages.animation.overlaysHint")}>
+				<SectionRule
+					title="Overlays"
+					hint="Dialog, sheet, popover and toast enter and leave with overlay tokens."
+				>
 					<LayerCard>
 						<div className="flex flex-wrap gap-basalt-space-lg">
 							<Dialog>
 								<DialogTrigger asChild>
-									<Button variant="outline">{t("pages.animation.openDialog")}</Button>
+									<Button variant="outline">Open dialog</Button>
 								</DialogTrigger>
 								<DialogContent>
-									<DialogTitle>{t("pages.animation.dialogTitle")}</DialogTitle>
-									<DialogDescription>{t("pages.animation.dialogBody")}</DialogDescription>
+									<DialogTitle>Motion dialog</DialogTitle>
+									<DialogDescription>
+										Overlay fade and dialog scale use the library tokens.
+									</DialogDescription>
 									<div className="mt-basalt-card flex justify-end">
 										<DialogClose asChild>
-											<Button>{t("common.close")}</Button>
+											<Button>Close</Button>
 										</DialogClose>
 									</div>
 								</DialogContent>
 							</Dialog>
 							<Sheet>
 								<SheetTrigger asChild>
-									<Button variant="outline">{t("pages.animation.openSheet")}</Button>
+									<Button variant="outline">Open sheet</Button>
 								</SheetTrigger>
 								<SheetContent>
-									<SheetTitle>{t("pages.animation.sheetTitle")}</SheetTitle>
-									<SheetDescription>{t("pages.animation.sheetBody")}</SheetDescription>
+									<SheetTitle>Motion sheet</SheetTitle>
+									<SheetDescription>Sheets slide in from the edge.</SheetDescription>
 									<div className="mt-basalt-card flex justify-end">
 										<SheetClose asChild>
-											<Button variant="outline">{t("common.close")}</Button>
+											<Button variant="outline">Close</Button>
 										</SheetClose>
 									</div>
 								</SheetContent>
 							</Sheet>
 							<Popover>
 								<PopoverTrigger asChild>
-									<Button variant="outline">{t("pages.animation.openPopover")}</Button>
+									<Button variant="outline">Open popover</Button>
 								</PopoverTrigger>
 								<PopoverContent>
-									<PopoverTitle>{t("pages.animation.popoverTitle")}</PopoverTitle>
-									<PopoverDescription>{t("pages.animation.popoverBody")}</PopoverDescription>
+									<PopoverTitle>Motion popover</PopoverTitle>
+									<PopoverDescription>Popovers use the overlay in and out pair.</PopoverDescription>
 								</PopoverContent>
 							</Popover>
 							<Button
 								variant="secondary"
-								onClick={() => toast.success(t("pages.animation.toastMessage"))}
+								onClick={() => toast.success("Saved with overlay motion.")}
 							>
-								{t("pages.animation.toast")}
+								Toast
 							</Button>
 						</div>
 					</LayerCard>
 				</SectionRule>
 
-				<SectionRule title={t("pages.animation.collapse")} hint={t("pages.animation.collapseHint")}>
+				<SectionRule
+					title="Collapse"
+					hint="Accordion and collapsible animate height. Tabs slide the indicator."
+				>
 					<div className="grid gap-basalt-layout lg:grid-cols-2">
 						<LayerCard>
 							<Accordion type="single" collapsible defaultValue="one">
 								<AccordionItem value="one">
-									<AccordionTrigger>{t("pages.animation.accordionOne")}</AccordionTrigger>
-									<AccordionContent>{t("pages.animation.accordionOneBody")}</AccordionContent>
+									<AccordionTrigger>First item</AccordionTrigger>
+									<AccordionContent>Height animates open and closed.</AccordionContent>
 								</AccordionItem>
 								<AccordionItem value="two">
-									<AccordionTrigger>{t("pages.animation.accordionTwo")}</AccordionTrigger>
-									<AccordionContent>{t("pages.animation.accordionTwoBody")}</AccordionContent>
+									<AccordionTrigger>Second item</AccordionTrigger>
+									<AccordionContent>Items share the same motion.</AccordionContent>
 								</AccordionItem>
 							</Accordion>
 						</LayerCard>
 						<LayerCard className="space-y-basalt-card">
 							<Collapsible defaultOpen>
-								<CollapsibleTrigger>{t("pages.animation.collapsible")}</CollapsibleTrigger>
+								<CollapsibleTrigger>Details</CollapsibleTrigger>
 								<CollapsibleContent>
 									<p className="text-basalt-base text-basalt-muted-foreground">
-										{t("pages.animation.collapsibleBody")}
+										Extra context revealed with collapsible motion.
 									</p>
 								</CollapsibleContent>
 							</Collapsible>
 							<Tabs defaultValue="overview">
 								<TabsList>
-									<TabsTrigger value="overview">{t("pages.animation.tabOverview")}</TabsTrigger>
-									<TabsTrigger value="activity">{t("pages.animation.tabActivity")}</TabsTrigger>
+									<TabsTrigger value="overview">Overview</TabsTrigger>
+									<TabsTrigger value="activity">Activity</TabsTrigger>
 								</TabsList>
 								<TabsContent value="overview">
 									<p className="pt-basalt-card-sm text-basalt-base text-basalt-muted-foreground">
-										{t("pages.animation.tabOverviewBody")}
+										Tab panels fade in.
 									</p>
 								</TabsContent>
 								<TabsContent value="activity">
 									<p className="pt-basalt-card-sm text-basalt-base text-basalt-muted-foreground">
-										{t("pages.animation.tabActivityBody")}
+										The underline tracks the active tab.
 									</p>
 								</TabsContent>
 							</Tabs>
@@ -185,10 +185,14 @@ export default function AnimationPage() {
 				</SectionRule>
 			</div>
 
-			<SectionRule title={t("pages.animation.reduced")} hint={t("pages.animation.reducedHint")}>
+			<SectionRule
+				title="Reduced motion"
+				hint="prefers-reduced-motion already stops these animations in the library."
+			>
 				<LayerCard>
 					<p className="text-basalt-base text-basalt-muted-foreground">
-						{t("pages.animation.reducedCopy")}
+						The pause control on this page is a demo overlay. Real products should keep the
+						operating-system setting; do not add a second motion preference.
 					</p>
 				</LayerCard>
 			</SectionRule>

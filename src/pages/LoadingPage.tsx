@@ -1,6 +1,5 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Loader } from "@nocoo/basalt/components/loader";
-import { useTranslation } from "react-i18next";
 import { BasaltLogo } from "@/components/BasaltLogo";
 import { useSiteTitle } from "@/hooks/use-site-title";
 
@@ -13,8 +12,7 @@ const AMBIENT_BACKDROP = [
 ].join(" ");
 
 export default function LoadingPage() {
-	const { t } = useTranslation();
-	useSiteTitle(t("nav.loading"));
+	useSiteTitle("Loading");
 
 	return (
 		<div
@@ -29,7 +27,7 @@ export default function LoadingPage() {
 			<main className="relative w-full max-w-[18rem]">
 				<LayerCard padding="xl" className="flex flex-col items-center gap-basalt-card text-center">
 					<BasaltLogo className="size-basalt-14 object-contain" sizes="3.5rem" />
-					<Loader size={14} label={t("pages.loading.status")} showElapsed={false} />
+					<Loader size={14} label="Preparing workspace" showElapsed={false} />
 				</LayerCard>
 			</main>
 		</div>

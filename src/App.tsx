@@ -4,7 +4,6 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
 import { BrowserRouter, Route, Link as RouterLink, Routes, useLocation } from "react-router";
 import { DeferredToaster } from "@/components/DeferredToaster";
-import { I18nReady } from "@/components/I18nReady";
 import { RouteScrollReset } from "@/components/RouteScrollReset";
 import { SitePaletteProvider } from "@/components/SitePaletteProvider";
 import LandingPage from "./pages/LandingPage";
@@ -20,16 +19,12 @@ const DashboardLayout = lazy(() =>
 const AccountsPage = lazy(() => import("./pages/AccountsPage"));
 const AnimationPage = lazy(() => import("./pages/AnimationPage"));
 const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
-const ComponentsPage = lazy(() => import("./pages/ComponentsPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
-const DataPage = lazy(() => import("./pages/DataPage"));
 const DevExamplesPage = lazy(() => import("./pages/DevExamplesPage"));
 const DialogsPage = lazy(() => import("./pages/DialogsPage"));
 const FlowComparisonPage = lazy(() => import("./pages/FlowComparisonPage"));
 const FormsPage = lazy(() => import("./pages/FormsPage"));
 const HealthPage = lazy(() => import("./pages/HealthPage"));
-const InteractionShowcasePage = lazy(() => import("./pages/InteractionShowcasePage"));
-const InteractivePage = lazy(() => import("./pages/InteractivePage"));
 const LayoutPage = lazy(() => import("./pages/LayoutPage"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage"));
 const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
@@ -50,7 +45,6 @@ const UiIndexPage = lazy(() => import("./pages/ui/UiIndexPage"));
 const UiCategoryOverviewPage = lazy(() => import("./pages/ui/UiCategoryOverviewPage"));
 const UiPlaceholderPage = lazy(() => import("./pages/ui/UiPlaceholderPage"));
 const UiSourceViewerPage = lazy(() => import("./pages/ui/UiSourceViewerPage"));
-const WearableDashboardPage = lazy(() => import("./pages/WearableDashboardPage"));
 
 function AppLink({
 	href,
@@ -88,18 +82,11 @@ function RouteLoadingFallback() {
 	);
 }
 
-/** Application routes wait for i18next; the prerendered landing renders without it. */
-function routeElement(Page: ComponentType, translated = true) {
+function routeElement(Page: ComponentType) {
 	return (
 		<Suspense fallback={<RouteLoadingFallback />}>
 			<RouteScrollReset>
-				{translated ? (
-					<I18nReady>
-						<Page />
-					</I18nReady>
-				) : (
-					<Page />
-				)}
+				<Page />
 			</RouteScrollReset>
 		</Suspense>
 	);
@@ -116,22 +103,17 @@ function AppProviders() {
 					<TooltipProvider>
 						<DeferredToaster />
 						<Routes>
-							<Route path="/" element={routeElement(LandingPage, false)} />
+							<Route path="/" element={routeElement(LandingPage)} />
 							{/* Layout route: sidebar + header wraps all dashboard pages */}
 							<Route
 								element={
 									<Suspense fallback={<RouteLoadingFallback />}>
-										<I18nReady>
-											<DashboardLayout />
-										</I18nReady>
+										<DashboardLayout />
 									</Suspense>
 								}
 							>
-								<Route path="/components" element={routeElement(ComponentsPage)} />
 								<Route path="/forms" element={routeElement(FormsPage)} />
 								<Route path="/navigation" element={routeElement(NavigationPage)} />
-								<Route path="/interactive" element={routeElement(InteractivePage)} />
-								<Route path="/data" element={routeElement(DataPage)} />
 								<Route path="/dashboard" element={routeElement(DashboardPage)} />
 								<Route path="/templates" element={routeElement(TemplatesPage)} />
 								<Route path="/accounts" element={routeElement(AccountsPage)} />
@@ -146,9 +128,7 @@ function AppProviders() {
 								<Route path="/settings" element={routeElement(SettingsPage)} />
 								<Route path="/palette" element={routeElement(PalettePage)} />
 								<Route path="/typeface" element={routeElement(TypefacePage)} />
-								<Route path="/interactions" element={routeElement(InteractionShowcasePage)} />
 								<Route path="/health" element={routeElement(HealthPage)} />
-								<Route path="/wearable" element={routeElement(WearableDashboardPage)} />
 								<Route path="/banking" element={routeElement(BankingDashboardPage)} />
 								<Route path="/network" element={routeElement(NetworkOpsDashboardPage)} />
 								<Route path="/ui" element={routeElement(UiIndexPage)} />

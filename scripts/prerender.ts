@@ -1,6 +1,5 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import english from "../src/i18n/locales/en.json";
 import {
 	applyCrawlPage,
 	applyNotFoundDocument,
@@ -22,12 +21,7 @@ export function crawlPages() {
 		...CATALOG_CATEGORIES.map((category) => categoryCrawlPage(category.id)),
 		...SHOWCASE_PAGES.filter(
 			(page) => page.inSitemap && page.path !== "/" && page.path !== "/ui",
-		).map((page) =>
-			showcaseCrawlPage(
-				page.path,
-				english.nav[page.titleKey.slice("nav.".length) as keyof typeof english.nav],
-			),
-		),
+		).map((page) => showcaseCrawlPage(page.path, page.title)),
 		...CATALOG.map((entry) => catalogCrawlPage(entry.slug, catalogNavName(entry))),
 	];
 }

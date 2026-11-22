@@ -1,7 +1,6 @@
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import i18n from "@/i18n";
 import SettingsPage from "@/pages/SettingsPage";
 
 describe("SettingsPage", () => {
@@ -47,21 +46,5 @@ describe("SettingsPage", () => {
 		const notice = screen.getByRole("status");
 		expect(notice).toHaveAttribute("aria-live", "polite");
 		expect(notice.closest("[data-basalt-surface]")).toBe(island);
-	});
-
-	it("preserves language selection through the shared provider", async () => {
-		render(
-			<ThemeProvider>
-				<SettingsPage />
-			</ThemeProvider>,
-		);
-		try {
-			fireEvent.click(screen.getByRole("button", { name: "Appearance" }));
-			fireEvent.keyDown(screen.getByRole("combobox", { name: "Language" }), { key: "ArrowDown" });
-			fireEvent.click(screen.getByRole("option", { name: "简体中文" }));
-			await waitFor(() => expect(i18n.resolvedLanguage).toBe("zh"));
-		} finally {
-			await i18n.changeLanguage("en");
-		}
 	});
 });

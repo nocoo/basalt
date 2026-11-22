@@ -6,11 +6,8 @@ import type {
 	ActivityItem,
 	Budget,
 	CreditCard,
-	Goal,
 	MonthlyBudget,
 	PortfolioItem,
-	ShowcaseDialog,
-	ShowcaseToast,
 	Transaction,
 } from "@/models/types";
 
@@ -148,11 +145,11 @@ export const transactions: Transaction[] = [
 
 // ── Budget ──
 export const budgets: Budget[] = [
-	{ category: "pages.progressTracking.categoryNutrition", spent: 420, limit: 600 },
-	{ category: "pages.progressTracking.categoryMobility", spent: 180, limit: 300 },
-	{ category: "pages.progressTracking.categorySleep", spent: 95, limit: 150 },
-	{ category: "pages.progressTracking.categorySupplies", spent: 310, limit: 400 },
-	{ category: "pages.progressTracking.categoryLab", spent: 245, limit: 250 },
+	{ category: "Nutrition & Dining", spent: 420, limit: 600 },
+	{ category: "Mobility & exercise", spent: 180, limit: 300 },
+	{ category: "Sleep & recovery", spent: 95, limit: 150 },
+	{ category: "Medical supplies", spent: 310, limit: 400 },
+	{ category: "Lab services", spent: 245, limit: 250 },
 ];
 
 export const monthlyBudgetData: MonthlyBudget[] = [
@@ -164,25 +161,12 @@ export const monthlyBudgetData: MonthlyBudget[] = [
 	{ month: "Dec", budget: 1700, actual: 1650 },
 ];
 
-// ── Goals ──
-export const goals: Goal[] = [
-	{ name: "Emergency care", target: 10000, saved: 7500, icon: "shield" },
-	{ name: "Rest and recovery", target: 5000, saved: 2200, icon: "plane" },
-	{ name: "Mobility goal", target: 30000, saved: 12000, icon: "car" },
-	{ name: "Long-term wellness", target: 60000, saved: 18000, icon: "home" },
-];
-
 // ── Analytics ──
 export const analyticsStats = [
-	{ labelKey: "dashboard.metricDailySpend", value: "$142", valueKey: null, change: "-3.2%" },
-	{ labelKey: "dashboard.metricTouchpoints", value: "8.4", valueKey: null, change: "+1.5%" },
-	{ labelKey: "dashboard.metricPlanRate", value: "24%", valueKey: null, change: "+2.1%" },
-	{
-		labelKey: "dashboard.metricTopFocus",
-		value: "Nutrition",
-		valueKey: "dashboard.categoryNutrition",
-		change: "35%",
-	},
+	{ label: "Avg. daily care spend", value: "$142", change: "-3.2%" },
+	{ label: "Care touchpoints/day", value: "8.4", change: "+1.5%" },
+	{ label: "Care plan rate", value: "24%", change: "+2.1%" },
+	{ label: "Top health focus", value: "Nutrition", change: "35%" },
 ];
 
 // ── Care Funding Flow ──
@@ -199,23 +183,11 @@ export const monthlyFlow = [
 
 // ── Care Funds ──
 export const portfolio: PortfolioItem[] = [
-	{ name: "pages.portfolio.fundPrimary", value: 45000, allocation: 45, change: "+12.4%", up: true },
-	{ name: "pages.portfolio.fundTherapy", value: 20000, allocation: 20, change: "+3.2%", up: true },
-	{ name: "pages.portfolio.fundRecovery", value: 15000, allocation: 15, change: "+7.8%", up: true },
-	{
-		name: "pages.portfolio.fundMedication",
-		value: 10000,
-		allocation: 10,
-		change: "-5.1%",
-		up: false,
-	},
-	{
-		name: "pages.portfolio.fundEmergency",
-		value: 10000,
-		allocation: 10,
-		change: "+0.5%",
-		up: true,
-	},
+	{ name: "Primary care fund", value: 45000, allocation: 45, change: "+12.4%", up: true },
+	{ name: "Therapy fund", value: 20000, allocation: 20, change: "+3.2%", up: true },
+	{ name: "Recovery fund", value: 15000, allocation: 15, change: "+7.8%", up: true },
+	{ name: "Medication fund", value: 10000, allocation: 10, change: "-5.1%", up: false },
+	{ name: "Emergency reserve", value: 10000, allocation: 10, change: "+0.5%", up: true },
 ];
 
 export const performanceData = [
@@ -231,61 +203,4 @@ export const performanceData = [
 	{ month: "Oct", value: 98700 },
 	{ month: "Nov", value: 101200 },
 	{ month: "Dec", value: 104800 },
-];
-
-// ── Interaction Showcase ──
-export const showcaseToasts: ShowcaseToast[] = [
-	{
-		id: "t1",
-		title: "Changes saved",
-		description: "Your wellness profile has been updated successfully.",
-		tone: "success",
-	},
-	{
-		id: "t2",
-		title: "New message",
-		description: "Your care team sent a new appointment reminder.",
-		tone: "neutral",
-	},
-	{
-		id: "t3",
-		title: "Payment failed",
-		description: "Your card was declined. Please try another method.",
-		tone: "danger",
-	},
-	{
-		id: "t4",
-		title: "Storage almost full",
-		description: "You have used 90% of your available storage.",
-		tone: "warning",
-	},
-	{
-		id: "t5",
-		title: "Update available",
-		description: "A new version of the app is ready to install.",
-		tone: "info",
-	},
-];
-
-export const showcaseDialogs: ShowcaseDialog[] = [
-	{
-		id: "d1",
-		title: "About Basalt",
-		description:
-			"This health management demo brings wellness records, appointments, care plans, and care funding together.",
-		style: "info",
-	},
-	{
-		id: "d2",
-		title: "Send Feedback",
-		description: "Let us know how we can improve your experience.",
-		style: "form",
-	},
-	{
-		id: "d3",
-		title: "Delete Account",
-		description:
-			"This action cannot be undone. All your data will be permanently removed from our servers.",
-		style: "confirm",
-	},
 ];

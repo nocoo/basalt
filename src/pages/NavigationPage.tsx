@@ -7,7 +7,6 @@ import { TablePager } from "@nocoo/basalt/components/table-pager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { CheckCircle2, FileText, FolderOpen, Home } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
 
 /* ── Stepper ── */
@@ -49,98 +48,81 @@ function Stepper({ steps, current }: { steps: string[]; current: number }) {
 
 export default function NavigationPage() {
 	const [period, setPeriod] = useState("day");
-	const { t } = useTranslation();
 	const [page1, setPage1] = useState(1);
 	const [page2, setPage2] = useState(5);
 	const [stepperIndex, setStepperIndex] = useState(1);
 
-	const stepperSteps = [
-		t("pages.navigation.account"),
-		t("pages.navigation.profile"),
-		t("pages.navigation.preferences"),
-		t("pages.navigation.review"),
-		t("pages.navigation.complete"),
-	];
+	const stepperSteps = ["Account", "Profile", "Preferences", "Review", "Complete"];
 
 	const underlineTabs = [
-		{ label: t("pages.navigation.all"), value: "all" },
-		{ label: t("pages.navigation.activeTab"), value: "active" },
-		{ label: t("pages.navigation.archived"), value: "archived" },
-		{ label: t("pages.navigation.drafts"), value: "drafts" },
+		{ label: "All", value: "all" },
+		{ label: "Active", value: "active" },
+		{ label: "Archived", value: "archived" },
+		{ label: "Drafts", value: "drafts" },
 	];
 
 	const pillTabs = [
-		{ label: t("pages.navigation.day"), value: "day" },
-		{ label: t("pages.navigation.week"), value: "week" },
-		{ label: t("pages.navigation.month"), value: "month" },
-		{ label: t("pages.navigation.year"), value: "year" },
+		{ label: "Day", value: "day" },
+		{ label: "Week", value: "week" },
+		{ label: "Month", value: "month" },
+		{ label: "Year", value: "year" },
 	];
 
 	return (
 		<ShowcasePage
-			title={t("pages.navigation.title")}
-			description={t("pages.navigation.description")}
+			title="Navigation and wayfinding"
+			description="Breadcrumbs, pagination, steppers, and tab patterns for guiding users through hierarchies and multi-step flows."
 		>
-			<SectionRule title={t("pages.navigation.breadcrumbs")}>
+			<SectionRule title="Breadcrumbs">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.simple")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">simple</p>
 						<Breadcrumbs
 							className="flex-wrap gap-y-basalt-space-lg"
 							items={[
-								{ label: t("pages.navigation.home") },
-								{ label: t("pages.navigation.products") },
-								{ label: t("pages.navigation.electronics") },
-								{ label: t("pages.navigation.headphones") },
+								{ label: "Home" },
+								{ label: "Products" },
+								{ label: "Electronics" },
+								{ label: "Headphones" },
 							]}
 						/>
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.withIcons")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">with icons</p>
 						<Breadcrumbs
 							className="flex-wrap gap-y-basalt-space-lg"
 							items={[
 								{
-									label: t("pages.navigation.home"),
+									label: "Home",
 									icon: <Home className="size-basalt-icon" />,
 								},
 								{
-									label: t("pages.navigation.documents"),
+									label: "Documents",
 									icon: <FolderOpen className="size-basalt-icon" />,
 								},
 								{
-									label: t("pages.navigation.reports"),
+									label: "Reports",
 									icon: <FolderOpen className="size-basalt-icon" />,
 								},
 								{
-									label: t("pages.navigation.q4Summary"),
+									label: "Q4 Summary.pdf",
 									icon: <FileText className="size-basalt-icon" />,
 								},
 							]}
 						/>
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.insideCard")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">inside a card</p>
 						<div>
 							<Breadcrumbs
 								className="flex-wrap gap-y-basalt-space-lg"
-								items={[
-									{ label: t("pages.navigation.dashboard") },
-									{ label: t("pages.navigation.settings") },
-									{ label: t("pages.navigation.notifications") },
-								]}
+								items={[{ label: "Dashboard" }, { label: "Settings" }, { label: "Notifications" }]}
 							/>
 							<p className="text-basalt-base text-foreground font-medium mt-basalt-card-sm">
-								{t("pages.navigation.notificationPrefs")}
+								Notification Preferences
 							</p>
 							<p className="text-basalt-sm text-muted-foreground mt-basalt-space-sm">
-								{t("pages.navigation.notificationPrefsDesc")}
+								Choose how you want to be notified about updates.
 							</p>
 						</div>
 					</LayerCard>
@@ -148,24 +130,18 @@ export default function NavigationPage() {
 			</SectionRule>
 
 			{/* Pagination */}
-			<SectionRule title={t("pages.navigation.pagination")}>
+			<SectionRule title="Pagination">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.short5Pages")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">short (5 pages)</p>
 						<TablePager page={page1} pageSize={10} totalCount={50} onPageChange={setPage1} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.long20Pages")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">long (20 pages)</p>
 						<TablePager page={page2} pageSize={10} totalCount={200} onPageChange={setPage2} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.withContext")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">with context</p>
 						<TablePager
 							page={page2}
 							pageSize={10}
@@ -173,12 +149,11 @@ export default function NavigationPage() {
 							onPageChange={setPage2}
 							formatRange={({ start, end, totalCount }) => (
 								<>
-									{t("common.showing")}{" "}
+									Showing{" "}
 									<span className="font-medium text-foreground">
 										{start}-{end}
 									</span>{" "}
-									{t("common.of")} <span className="font-medium text-foreground">{totalCount}</span>{" "}
-									{t("common.results")}
+									of <span className="font-medium text-foreground">{totalCount}</span> results
 								</>
 							)}
 						/>
@@ -187,12 +162,10 @@ export default function NavigationPage() {
 			</SectionRule>
 
 			{/* Stepper / Wizard */}
-			<SectionRule title={t("pages.navigation.stepperWizard")}>
+			<SectionRule title="Stepper / Wizard">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-card">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.horizontalStepper")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">horizontal stepper</p>
 						<Stepper steps={stepperSteps} current={stepperIndex} />
 						<div className="flex items-center gap-basalt-space-lg mt-basalt-card-sm">
 							<Button
@@ -201,14 +174,14 @@ export default function NavigationPage() {
 								disabled={stepperIndex === 0}
 								onClick={() => setStepperIndex((i) => i - 1)}
 							>
-								{t("common.back")}
+								Back
 							</Button>
 							<Button
 								size="sm"
 								disabled={stepperIndex === stepperSteps.length - 1}
 								onClick={() => setStepperIndex((i) => i + 1)}
 							>
-								{stepperIndex === stepperSteps.length - 2 ? t("common.finish") : t("common.next")}
+								{stepperIndex === stepperSteps.length - 2 ? "Finish" : "Next"}
 							</Button>
 							<Button
 								variant="ghost"
@@ -216,16 +189,14 @@ export default function NavigationPage() {
 								className="ml-auto"
 								onClick={() => setStepperIndex(0)}
 							>
-								{t("common.reset")}
+								Reset
 							</Button>
 						</div>
 					</LayerCard>
 
 					{/* Vertical stepper */}
 					<LayerCard className="space-y-basalt-card">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.verticalStepper")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">vertical stepper</p>
 						<div className="max-w-sm">
 							{stepperSteps.map((step, i) => (
 								<div key={step} className="flex gap-basalt-space-lg">
@@ -255,10 +226,10 @@ export default function NavigationPage() {
 										</p>
 										<p className="text-basalt-sm text-muted-foreground">
 											{i < stepperIndex
-												? t("pages.navigation.completed")
+												? "Completed"
 												: i === stepperIndex
-													? t("pages.navigation.inProgress")
-													: t("pages.navigation.pending")}
+													? "In progress"
+													: "Pending"}
 										</p>
 									</div>
 								</div>
@@ -269,49 +240,39 @@ export default function NavigationPage() {
 			</SectionRule>
 
 			{/* Tabs Variants */}
-			<SectionRule title={t("pages.navigation.tabPatterns")}>
+			<SectionRule title="Tab Patterns">
 				<div className="space-y-basalt-card">
 					{/* Standard tabs */}
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.standardTabs")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">standard tabs</p>
 						<Tabs defaultValue="overview">
 							<TabsList>
-								<TabsTrigger value="overview">{t("pages.navigation.overview")}</TabsTrigger>
-								<TabsTrigger value="analytics">{t("pages.navigation.analytics")}</TabsTrigger>
-								<TabsTrigger value="reports">{t("pages.navigation.reports")}</TabsTrigger>
-								<TabsTrigger value="settings">{t("pages.navigation.settings")}</TabsTrigger>
+								<TabsTrigger value="overview">Overview</TabsTrigger>
+								<TabsTrigger value="analytics">Analytics</TabsTrigger>
+								<TabsTrigger value="reports">Reports</TabsTrigger>
+								<TabsTrigger value="settings">Settings</TabsTrigger>
 							</TabsList>
 							<TabsContent value="overview">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.overviewContent")}
-									</p>
+									<p className="text-basalt-base text-foreground">Overview content area</p>
 									<p className="text-basalt-sm text-muted-foreground mt-basalt-space-sm">
-										{t("pages.navigation.overviewContentDesc")}
+										Tab panels hold the content for each section.
 									</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="analytics">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.analyticsContent")}
-									</p>
+									<p className="text-basalt-base text-foreground">Analytics content area</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="reports">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.reportsContent")}
-									</p>
+									<p className="text-basalt-base text-foreground">Reports content area</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="settings">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.settingsContent")}
-									</p>
+									<p className="text-basalt-base text-foreground">Settings content area</p>
 								</div>
 							</TabsContent>
 						</Tabs>
@@ -319,9 +280,7 @@ export default function NavigationPage() {
 
 					{/* Underline tabs */}
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.underlineStyle")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">underline style</p>
 						<Tabs defaultValue="all">
 							<TabsList>
 								{underlineTabs.map((tab) => (
@@ -332,30 +291,22 @@ export default function NavigationPage() {
 							</TabsList>
 							<TabsContent value="all">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.showingAll")}
-									</p>
+									<p className="text-basalt-base text-foreground">Showing all items</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="active">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.showingActive")}
-									</p>
+									<p className="text-basalt-base text-foreground">Showing active items</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="archived">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.showingArchived")}
-									</p>
+									<p className="text-basalt-base text-foreground">Showing archived items</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="drafts">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">
-										{t("pages.navigation.showingDrafts")}
-									</p>
+									<p className="text-basalt-base text-foreground">Showing draft items</p>
 								</div>
 							</TabsContent>
 						</Tabs>
@@ -363,11 +314,9 @@ export default function NavigationPage() {
 
 					{/* Pill tabs */}
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">
-							{t("pages.navigation.pillStyle")}
-						</p>
+						<p className="text-basalt-sm text-muted-foreground font-mono">pill style</p>
 						<SegmentControl
-							legend={t("pages.navigation.pillStyle")}
+							legend="pill style"
 							options={pillTabs}
 							value={period}
 							onValueChange={setPeriod}

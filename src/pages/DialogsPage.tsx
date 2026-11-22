@@ -37,17 +37,16 @@ import {
 import { Separator } from "@nocoo/basalt/components/separator";
 import { Textarea } from "@nocoo/basalt/components/textarea";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
 
 const DIALOG_FIELDS_CLASS = "mt-basalt-layout space-y-basalt-layout";
 const DIALOG_SECTION_CLASS = "mt-basalt-layout space-y-basalt-layout-lg";
 
-const DIALOG_SIZES: { size: DialogSize; width: string }[] = [
-	{ size: "sm", width: "288px" },
-	{ size: "md", width: "384px" },
-	{ size: "lg", width: "512px" },
-	{ size: "xl", width: "768px" },
+const DIALOG_SIZES: { size: DialogSize; label: string; width: string }[] = [
+	{ size: "sm", label: "Small", width: "288px" },
+	{ size: "md", label: "Medium", width: "384px" },
+	{ size: "lg", label: "Large", width: "512px" },
+	{ size: "xl", label: "Extra large", width: "768px" },
 ];
 
 function DialogHeading({ title, description }: { title: string; description?: string }) {
@@ -64,54 +63,59 @@ function DialogColumnTitle({ children }: { children: string }) {
 }
 
 const UNIT_LOGS = [
-	{ date: "2026-03-01", action: "care plan", amount: "$12,400.00" },
-	{ date: "2026-04-12", action: "care adjustment", amount: "$800.00" },
-	{ date: "2026-06-20", action: "care plan", amount: "$4,200.00" },
+	{ date: "2026-03-01", action: "Add care funds", amount: "$12,400.00" },
+	{ date: "2026-04-12", action: "Adjust", amount: "$800.00" },
+	{ date: "2026-06-20", action: "Add care funds", amount: "$4,200.00" },
 ] as const;
 
 export default function DialogsPage() {
-	const { t } = useTranslation();
 	const [confirmOpen, setConfirmOpen] = useState(false);
 	const [destroyOpen, setDestroyOpen] = useState(false);
 
 	return (
-		<ShowcasePage title={t("pages.dialogs.title")} description={t("pages.dialogs.description")}>
-			<SectionRule title={t("pages.dialogs.anatomy")} hint={t("pages.dialogs.anatomyHint")}>
+		<ShowcasePage
+			title="Dialogs"
+			description="Standard overlay for decisions, short forms, and confirmations. Use Dialog, AlertDialog, and ConfirmDialog — never a native dialog or button."
+		>
+			<SectionRule title="Anatomy" hint="Copy this structure so every product dialog matches.">
 				<LayerCard>
 					<DescriptionList columns={1}>
-						<DescriptionList.Item term={t("pages.dialogs.width")}>
-							{t("pages.dialogs.widthValue")}
+						<DescriptionList.Item term="Width">
+							Default size is md (384px). sm 288px, lg 512px, xl 768px. The panel pads 16px on
+							mobile and 24px on desktop and scrolls if content overflows.
 						</DescriptionList.Item>
-						<DescriptionList.Item term={t("pages.dialogs.titleRow")}>
-							{t("pages.dialogs.titleRowValue")}
+						<DescriptionList.Item term="Title and close">
+							Title is top-left. Optional close is a ghost icon Button, absolute top-right, labeled
+							Close. Confirm and alert dialogs omit it.
 						</DescriptionList.Item>
-						<DescriptionList.Item term={t("pages.dialogs.subtitle")}>
-							{t("pages.dialogs.subtitleValue")}
+						<DescriptionList.Item term="Subtitle">
+							DialogDescription sits under the title. One or two sentences, muted.
 						</DescriptionList.Item>
-						<DescriptionList.Item term={t("pages.dialogs.actions")}>
-							{t("pages.dialogs.actionsValue")}
+						<DescriptionList.Item term="Actions">
+							DialogFooter sits 16px below the body, bottom-right. Cancel is outline first, confirm
+							is last. ConfirmDialog focuses Cancel first and does not dismiss on outside click.
 						</DescriptionList.Item>
 					</DescriptionList>
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.dialogs.standard")} hint={t("pages.dialogs.standardHint")}>
+			<SectionRule title="Standard" hint="Informational dialog with close, cancel, and confirm.">
 				<LayerCard>
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button>{t("pages.dialogs.openStandard")}</Button>
+							<Button>Open standard</Button>
 						</DialogTrigger>
-						<DialogContent size="md" closeLabel={t("common.close")}>
+						<DialogContent size="md" closeLabel="Close">
 							<DialogHeading
-								title={t("pages.dialogs.standardTitle")}
-								description={t("pages.dialogs.standardBody")}
+								title="Rename care team"
+								description="This name appears in the sidebar and in share links. You can change it later."
 							/>
 							<DialogFooter>
 								<DialogClose asChild>
-									<Button variant="outline">{t("common.cancel")}</Button>
+									<Button variant="outline">Cancel</Button>
 								</DialogClose>
 								<DialogClose asChild>
-									<Button>{t("common.apply")}</Button>
+									<Button>Apply</Button>
 								</DialogClose>
 							</DialogFooter>
 						</DialogContent>
@@ -119,20 +123,23 @@ export default function DialogsPage() {
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.dialogs.sizes")} hint={t("pages.dialogs.sizesHint")}>
+			<SectionRule
+				title="Sizes"
+				hint="Pick a size. Do not set a custom max-width unless the content cannot fit these four."
+			>
 				<LayerCard>
 					<div className="flex flex-wrap gap-basalt-space-lg">
-						{DIALOG_SIZES.map(({ size, width }) => (
+						{DIALOG_SIZES.map(({ size, label, width }) => (
 							<Dialog key={size}>
 								<DialogTrigger asChild>
 									<Button variant="outline">
-										{t(`pages.dialogs.size.${size}`)} ({width})
+										{label} ({width})
 									</Button>
 								</DialogTrigger>
-								<DialogContent size={size} closeLabel={t("common.close")}>
+								<DialogContent size={size} closeLabel="Close">
 									<DialogHeading
-										title={t(`pages.dialogs.size.${size}`)}
-										description={t("pages.dialogs.sizeBody", { size, width })}
+										title={label}
+										description={`size="${size}" stays ${width} wide on desktop.`}
 									/>
 								</DialogContent>
 							</Dialog>
@@ -141,24 +148,27 @@ export default function DialogsPage() {
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.dialogs.money")} hint={t("pages.dialogs.moneyHint")}>
+			<SectionRule
+				title="Money flows"
+				hint="From a small send to a wide review. Complex panels get the top-right close. Confirmations do not."
+			>
 				<LayerCard>
 					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="outline">{t("pages.dialogs.openSend")}</Button>
+								<Button variant="outline">Open send</Button>
 							</DialogTrigger>
 							<DialogContent size="sm" showCloseButton={false}>
 								<DialogHeading
-									title={t("pages.dialogs.sendTitle")}
-									description={t("pages.dialogs.sendBody")}
+									title="Send $1,200?"
+									description="Transfer from your care reserve to your treatment fund. This posts today."
 								/>
 								<DialogFooter>
 									<DialogClose asChild>
-										<Button variant="outline">{t("common.cancel")}</Button>
+										<Button variant="outline">Cancel</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button>{t("pages.dialogs.send")}</Button>
+										<Button>Send</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
@@ -166,27 +176,27 @@ export default function DialogsPage() {
 
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="outline">{t("pages.dialogs.openLog")}</Button>
+								<Button variant="outline">Open contribution</Button>
 							</DialogTrigger>
-							<DialogContent size="md" closeLabel={t("common.close")}>
+							<DialogContent size="md" closeLabel="Close">
 								<DialogHeading
-									title={t("pages.dialogs.logTitle")}
-									description={t("pages.dialogs.logBody")}
+									title="Log contribution"
+									description="Record cash in or out of a holding."
 								/>
 								<div data-dialog-fields="" className={DIALOG_FIELDS_CLASS}>
-									<Field label={t("pages.dialogs.operation")}>
-										<Input defaultValue={t("pages.dialogs.invest")} />
+									<Field label="Operation">
+										<Input defaultValue="Add care funds" />
 									</Field>
-									<Field label={t("pages.dialogs.amount")}>
+									<Field label="Amount">
 										<Input defaultValue="12,400.00" inputMode="decimal" />
 									</Field>
 								</div>
 								<DialogFooter>
 									<DialogClose asChild>
-										<Button variant="outline">{t("common.cancel")}</Button>
+										<Button variant="outline">Cancel</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button>{t("common.save")}</Button>
+										<Button>Save changes</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
@@ -194,33 +204,33 @@ export default function DialogsPage() {
 
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="outline">{t("pages.dialogs.openHolding")}</Button>
+								<Button variant="outline">Open holding</Button>
 							</DialogTrigger>
-							<DialogContent size="lg" closeLabel={t("common.close")}>
+							<DialogContent size="lg" closeLabel="Close">
 								<DialogHeading
-									title={t("pages.dialogs.holdingTitle")}
-									description={t("pages.dialogs.holdingBody")}
+									title="Edit treatment fund"
+									description="Care program, payment channel, and available funding."
 								/>
 								<div data-dialog-fields="" className={DIALOG_FIELDS_CLASS}>
-									<Field label={t("pages.dialogs.holdingName")}>
-										<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
+									<Field label="Treatment fund">
+										<Input defaultValue="Recovery fund" />
 									</Field>
-									<Field label={t("pages.dialogs.channel")}>
-										<Input defaultValue={t("pages.dialogs.channelValue")} />
+									<Field label="Channel">
+										<Input defaultValue="Care account" />
 									</Field>
-									<Field label={t("pages.dialogs.amount")}>
+									<Field label="Amount">
 										<Input defaultValue="80,000.00" inputMode="decimal" />
 									</Field>
-									<Field label={t("pages.dialogs.note")} required={false}>
-										<Textarea defaultValue={t("pages.dialogs.noteValue")} />
+									<Field label="Note" required={false}>
+										<Textarea defaultValue="Reserved for the next recovery program." />
 									</Field>
 								</div>
 								<DialogFooter>
 									<DialogClose asChild>
-										<Button variant="outline">{t("common.cancel")}</Button>
+										<Button variant="outline">Cancel</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button>{t("common.save")}</Button>
+										<Button>Save changes</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
@@ -228,33 +238,27 @@ export default function DialogsPage() {
 
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="outline">{t("pages.dialogs.openReview")}</Button>
+								<Button variant="outline">Open review</Button>
 							</DialogTrigger>
-							<DialogContent size="xl" closeLabel={t("common.close")}>
+							<DialogContent size="xl" closeLabel="Close">
 								<DialogHeading
-									title={t("pages.dialogs.reviewTitle")}
-									description={t("pages.dialogs.reviewBody")}
+									title="Review transfer"
+									description="Check the route before the money leaves."
 								/>
 								<div className="mt-basalt-layout">
 									<DescriptionList columns={2}>
-										<DescriptionList.Item term={t("pages.dialogs.from")}>
-											{t("pages.dialogs.fromValue")}
-										</DescriptionList.Item>
-										<DescriptionList.Item term={t("pages.dialogs.to")}>
-											{t("pages.dialogs.toValue")}
-										</DescriptionList.Item>
-										<DescriptionList.Item term={t("pages.dialogs.amount")}>
-											$12,400.00
-										</DescriptionList.Item>
-										<DescriptionList.Item term={t("pages.dialogs.fee")}>$0.00</DescriptionList.Item>
+										<DescriptionList.Item term="From">Care reserve</DescriptionList.Item>
+										<DescriptionList.Item term="To">Treatment fund</DescriptionList.Item>
+										<DescriptionList.Item term="Amount">$12,400.00</DescriptionList.Item>
+										<DescriptionList.Item term="Fee">$0.00</DescriptionList.Item>
 									</DescriptionList>
 								</div>
 								<DialogFooter>
 									<DialogClose asChild>
-										<Button variant="outline">{t("common.cancel")}</Button>
+										<Button variant="outline">Cancel</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button>{t("pages.dialogs.send")}</Button>
+										<Button>Send</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
@@ -262,31 +266,31 @@ export default function DialogsPage() {
 
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="outline">{t("pages.dialogs.openUnit")}</Button>
+								<Button variant="outline">Open unit editor</Button>
 							</DialogTrigger>
 							<DialogContent
 								size="xl"
-								closeLabel={t("common.close")}
+								closeLabel="Close"
 								className="sm:w-[min(72rem,calc(100vw-2rem))]"
 							>
 								<DialogHeading
-									title={t("pages.dialogs.unitTitle")}
-									description={t("pages.dialogs.unitBody")}
+									title="Edit care funding record · U-2044"
+									description="Basics, product operations, and history in one commit. Save applies them together."
 								/>
 								<div data-dialog-fields="" className={DIALOG_SECTION_CLASS}>
 									<div className="grid grid-cols-1 items-start gap-basalt-layout lg:grid-cols-3">
 										<div className="space-y-basalt-layout">
-											<DialogColumnTitle>{t("pages.dialogs.unitBasics")}</DialogColumnTitle>
-											<Field label={t("pages.dialogs.unitCode")}>
+											<DialogColumnTitle>Basics</DialogColumnTitle>
+											<Field label="Code">
 												<Input defaultValue="U-2044" />
 											</Field>
-											<Field label={t("pages.dialogs.amount")}>
+											<Field label="Amount">
 												<Input defaultValue="80,000.00" inputMode="decimal" />
 											</Field>
 											<div className="grid grid-cols-2 gap-basalt-layout">
 												<Select defaultValue="USD">
-													<Field label={t("pages.dialogs.currency")}>
-														<SelectTrigger aria-label={t("pages.dialogs.currency")}>
+													<Field label="Currency">
+														<SelectTrigger aria-label="Currency">
 															<SelectValue />
 														</SelectTrigger>
 													</Field>
@@ -297,78 +301,68 @@ export default function DialogsPage() {
 													</SelectContent>
 												</Select>
 												<Select defaultValue="active">
-													<Field label={t("pages.dialogs.status")}>
-														<SelectTrigger aria-label={t("pages.dialogs.status")}>
+													<Field label="Status">
+														<SelectTrigger aria-label="Status">
 															<SelectValue />
 														</SelectTrigger>
 													</Field>
 													<SelectContent>
-														<SelectItem value="active">
-															{t("pages.dialogs.statusActive")}
-														</SelectItem>
-														<SelectItem value="planned">
-															{t("pages.dialogs.statusPlanned")}
-														</SelectItem>
-														<SelectItem value="archived">
-															{t("pages.dialogs.statusArchived")}
-														</SelectItem>
+														<SelectItem value="active">Active</SelectItem>
+														<SelectItem value="planned">Planned</SelectItem>
+														<SelectItem value="archived">Archived</SelectItem>
 													</SelectContent>
 												</Select>
 											</div>
 											<Select defaultValue="usd-cash">
-												<Field label={t("pages.dialogs.strategy")}>
-													<SelectTrigger aria-label={t("pages.dialogs.strategy")}>
+												<Field label="Strategy">
+													<SelectTrigger aria-label="Strategy">
 														<SelectValue />
 													</SelectTrigger>
 												</Field>
 												<SelectContent>
-													<SelectItem value="usd-cash">{t("pages.dialogs.strategyUsd")}</SelectItem>
-													<SelectItem value="long">{t("pages.dialogs.strategyLong")}</SelectItem>
-													<SelectItem value="short">{t("pages.dialogs.strategyShort")}</SelectItem>
+													<SelectItem value="usd-cash">USD cash</SelectItem>
+													<SelectItem value="long">Long-term</SelectItem>
+													<SelectItem value="short">Short-term</SelectItem>
 												</SelectContent>
 											</Select>
-											<Field label={t("pages.dialogs.startDate")}>
+											<Field label="Start date">
 												<Input defaultValue="2024-11-01" />
 											</Field>
-											<Field label={t("pages.dialogs.unitNote")} required={false}>
-												<Textarea defaultValue={t("pages.dialogs.unitNoteValue")} />
+											<Field label="Unit note" required={false}>
+												<Textarea defaultValue="Rolled from the 36-month certificate." />
 											</Field>
 										</div>
 										<div className="space-y-basalt-layout">
-											<DialogColumnTitle>{t("pages.dialogs.unitProduct")}</DialogColumnTitle>
-											<Field label={t("pages.dialogs.product")}>
-												<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
+											<DialogColumnTitle>Product and operations</DialogColumnTitle>
+											<Field label="Product">
+												<Input defaultValue="Recovery fund" />
 											</Field>
-											<Field label={t("pages.dialogs.channel")}>
-												<Input defaultValue={t("pages.dialogs.channelValue")} />
+											<Field label="Channel">
+												<Input defaultValue="Care account" />
 											</Field>
 											<div className="space-y-basalt-layout">
-												<p className="text-basalt-sm text-muted-foreground">
-													{t("pages.dialogs.stagedOps")}
-												</p>
+												<p className="text-basalt-sm text-muted-foreground">Stage an operation</p>
 												<div className="flex flex-wrap gap-basalt-space-lg">
 													<Button type="button" variant="outline" size="sm">
-														{t("pages.dialogs.invest")}
+														Add care funds
 													</Button>
 													<Button type="button" variant="outline" size="sm">
-														{t("pages.dialogs.withdraw")}
+														Withdraw
 													</Button>
 													<Button type="button" variant="outline" size="sm">
-														{t("pages.dialogs.switchProduct")}
+														Switch product
 													</Button>
 												</div>
 											</div>
 											<DescriptionList columns={1}>
-												<DescriptionList.Item term={t("pages.dialogs.lock")}>
-													{t("pages.dialogs.lockValue")}
+												<DescriptionList.Item term="Lock window">
+													90 days · next open 2026-09-15
 												</DescriptionList.Item>
-												<DescriptionList.Item term={t("pages.dialogs.nextOpen")}>
-													2026-09-15
-												</DescriptionList.Item>
+												<DescriptionList.Item term="Next open">2026-09-15</DescriptionList.Item>
 											</DescriptionList>
 										</div>
 										<div className="space-y-basalt-layout">
-											<DialogColumnTitle>{t("pages.dialogs.unitHistory")}</DialogColumnTitle>
+											<DialogColumnTitle>History</DialogColumnTitle>
 											<div className="space-y-basalt-layout">
 												{UNIT_LOGS.map((log) => (
 													<div
@@ -376,9 +370,7 @@ export default function DialogsPage() {
 														className="flex flex-wrap items-baseline gap-basalt-card-sm"
 													>
 														<div>
-															<p className="text-basalt-base text-foreground">
-																{t(`pages.dialogs.${log.action}`)}
-															</p>
+															<p className="text-basalt-base text-foreground">{log.action}</p>
 															<p className="text-basalt-sm text-muted-foreground">{log.date}</p>
 														</div>
 														<p className="ms-auto text-basalt-base tabular-nums">{log.amount}</p>
@@ -390,10 +382,10 @@ export default function DialogsPage() {
 									<div className="space-y-basalt-layout">
 										<Separator />
 										<div className="grid gap-basalt-layout sm:grid-cols-[minmax(0,1fr)_11rem]">
-											<Field label={t("pages.dialogs.commitNote")} required={false}>
-												<Input placeholder={t("pages.dialogs.commitNotePlaceholder")} />
+											<Field label="Commit note" required={false}>
+												<Input placeholder="Why this change (written to the log)" />
 											</Field>
-											<Field label={t("pages.dialogs.operationDate")}>
+											<Field label="Operation date">
 												<Input defaultValue="2026-09-04" />
 											</Field>
 										</div>
@@ -401,10 +393,10 @@ export default function DialogsPage() {
 								</div>
 								<DialogFooter>
 									<DialogClose asChild>
-										<Button variant="outline">{t("common.cancel")}</Button>
+										<Button variant="outline">Cancel</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button>{t("common.save")}</Button>
+										<Button>Save changes</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
@@ -413,28 +405,31 @@ export default function DialogsPage() {
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.dialogs.form")} hint={t("pages.dialogs.formHint")}>
+			<SectionRule
+				title="Form"
+				hint="Short forms stay on md. Use Field and Input, then cancel and save."
+			>
 				<LayerCard>
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant="outline">{t("pages.dialogs.openForm")}</Button>
+							<Button variant="outline">Open form</Button>
 						</DialogTrigger>
-						<DialogContent size="md" closeLabel={t("common.close")}>
+						<DialogContent size="md" closeLabel="Close">
 							<DialogHeading
-								title={t("pages.dialogs.formTitle")}
-								description={t("pages.dialogs.formBody")}
+								title="Create care team"
+								description="A care team coordinates patients, appointments, and shared records."
 							/>
 							<div data-dialog-fields="" className={DIALOG_FIELDS_CLASS}>
-								<Field label={t("pages.dialogs.workspaceName")}>
-									<Input placeholder={t("pages.dialogs.workspacePlaceholder")} />
+								<Field label="Care team name">
+									<Input placeholder="Harbor Clinic" />
 								</Field>
 							</div>
 							<DialogFooter>
 								<DialogClose asChild>
-									<Button variant="outline">{t("common.cancel")}</Button>
+									<Button variant="outline">Cancel</Button>
 								</DialogClose>
 								<DialogClose asChild>
-									<Button>{t("common.save")}</Button>
+									<Button>Save changes</Button>
 								</DialogClose>
 							</DialogFooter>
 						</DialogContent>
@@ -442,42 +437,47 @@ export default function DialogsPage() {
 				</LayerCard>
 			</SectionRule>
 
-			<SectionRule title={t("pages.dialogs.confirm")} hint={t("pages.dialogs.confirmHint")}>
+			<SectionRule
+				title="Confirm and destroy"
+				hint="ConfirmDialog for yes/no. AlertDialog for a destructive acknowledgment that cannot be dismissed by clicking outside."
+			>
 				<LayerCard>
 					<div className="flex flex-wrap gap-basalt-space-lg">
 						<ConfirmDialog
 							open={confirmOpen}
 							onOpenChange={setConfirmOpen}
-							title={t("pages.dialogs.confirmTitle")}
-							description={t("pages.dialogs.confirmBody")}
-							confirmLabel={t("common.apply")}
-							cancelLabel={t("common.cancel")}
+							title="Apply this layout?"
+							description="The current arrangement will replace the saved default."
+							confirmLabel="Apply"
+							cancelLabel="Cancel"
 							onConfirm={() => setConfirmOpen(false)}
-							trigger={<Button variant="outline">{t("pages.dialogs.openConfirm")}</Button>}
+							trigger={<Button variant="outline">Open confirm</Button>}
 						/>
 						<ConfirmDialog
 							open={destroyOpen}
 							onOpenChange={setDestroyOpen}
-							title={t("pages.dialogs.destroyTitle")}
-							description={t("pages.dialogs.destroyBody")}
-							confirmLabel={t("common.delete")}
-							cancelLabel={t("common.cancel")}
+							title="Delete care team?"
+							description="This permanently removes the simulated team and its shared records."
+							confirmLabel="Delete"
+							cancelLabel="Cancel"
 							variant="destructive"
 							onConfirm={() => setDestroyOpen(false)}
-							trigger={<Button variant="destructive">{t("pages.dialogs.openDestroy")}</Button>}
+							trigger={<Button variant="destructive">Open destructive</Button>}
 						/>
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
-								<Button variant="destructive">{t("pages.dialogs.openAlert")}</Button>
+								<Button variant="destructive">Open alert</Button>
 							</AlertDialogTrigger>
 							<AlertDialogContent size="md">
 								<AlertDialogHeader>
-									<AlertDialogTitle>{t("pages.dialogs.alertTitle")}</AlertDialogTitle>
-									<AlertDialogDescription>{t("pages.dialogs.alertBody")}</AlertDialogDescription>
+									<AlertDialogTitle>Delete care team?</AlertDialogTitle>
+									<AlertDialogDescription>
+										This action cannot be undone. All data will be permanently removed.
+									</AlertDialogDescription>
 								</AlertDialogHeader>
 								<AlertDialogFooter>
-									<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-									<AlertDialogAction>{t("common.delete")}</AlertDialogAction>
+									<AlertDialogCancel>Cancel</AlertDialogCancel>
+									<AlertDialogAction>Delete</AlertDialogAction>
 								</AlertDialogFooter>
 							</AlertDialogContent>
 						</AlertDialog>

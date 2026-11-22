@@ -1,5 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@nocoo/basalt/components/avatar";
-import { Badge } from "@nocoo/basalt/components/badge";
+import { AvatarInitials } from "@nocoo/basalt/components/avatar";
 import {
 	CommandEmpty,
 	CommandGroup,
@@ -35,13 +34,6 @@ import {
 	Bell,
 	BookOpen,
 	Calendar,
-	CalendarDays,
-	CalendarRange,
-	ChartArea,
-	ChartColumn,
-	ChartColumnStacked,
-	ChartLine,
-	ChartPie,
 	ChevronRight,
 	ChevronsDown,
 	ChevronsDownUp,
@@ -60,14 +52,11 @@ import {
 	FileQuestion,
 	FileText,
 	Filter,
+	FolderInput,
 	FormInput,
 	Gauge,
-	GitBranch,
-	GitFork,
-	Globe,
 	Hash,
 	HeartPulse,
-	History,
 	Inbox,
 	Keyboard,
 	Layers,
@@ -80,21 +69,19 @@ import {
 	Loader,
 	Loader2,
 	LogIn,
+	type LucideIcon,
 	Megaphone,
 	Menu,
 	MessageCircle,
 	MessageSquare,
 	Minus,
-	Mountain,
 	MousePointer2,
 	MousePointerClick,
 	Navigation,
 	Palette,
 	PanelLeft,
 	PanelRight,
-	PanelTop,
 	PiggyBank,
-	Radar,
 	RectangleEllipsis,
 	Search,
 	Settings,
@@ -103,358 +90,234 @@ import {
 	Square,
 	SquareCheck,
 	Sun,
-	SwatchBook,
 	Table,
 	Table2,
 	Tag,
 	TextCursorInput,
 	ToggleLeft,
 	ToggleRight,
-	Trash2,
 	TrendingUp,
 	TriangleAlert,
 	Type,
+	Upload,
 	UserRound,
 	Wallet,
 	Wrench,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { BasaltLogo } from "@/components/BasaltLogo";
 import { APP_VERSION } from "@/lib/version";
-import { TEMPLATE_MANIFEST } from "@/models/template-manifest";
-import {
-	CATALOG,
-	CATALOG_CATEGORIES,
-	type CatalogEntry,
-	catalogNavName,
-	libraryNavEntries,
-} from "@/pages/ui/catalog";
-import { catalogCategoryPath } from "@/pages/ui/catalog-categories";
-import { type CatalogPageStatus, catalogPageStatus } from "@/pages/ui/catalog-page-status";
+import type { NavIconId, ShellNavGroup, ShellNavItem } from "@/models/navigation";
+import { useShellNavigationViewModel } from "@/viewmodels/useShellNavigationViewModel";
 
-// ── Navigation data model ──
-
-interface NavItem {
-	titleKey?: string;
-	title?: string;
-	accessibleTitle?: string;
-	icon: React.ElementType;
-	path: string;
-	badge?: number;
-	external?: boolean;
-	catalogSlug?: string;
-	pageStatus?: CatalogPageStatus;
-}
-
-interface NavGroup {
-	labelKey?: string;
-	label?: string;
-	items: NavItem[];
-	defaultOpen?: boolean;
-}
-
-const NAV_GROUPS: NavGroup[] = [
-	{
-		labelKey: "nav.blocks",
-		defaultOpen: true,
-		items: [
-			{ titleKey: "nav.dashboard", icon: LayoutDashboard, path: "/dashboard" },
-			{ titleKey: "nav.templates", icon: LayoutTemplate, path: "/templates" },
-			{ titleKey: "nav.components", icon: RectangleEllipsis, path: "/components" },
-			{ titleKey: "nav.health", icon: HeartPulse, path: "/health" },
-			{ titleKey: "nav.accounts", icon: Wallet, path: "/accounts" },
-			{ titleKey: "nav.progressTracking", icon: PiggyBank, path: "/progress-tracking" },
-			{ titleKey: "nav.flowComparison", icon: TrendingUp, path: "/flow-comparison" },
-			{ titleKey: "nav.portfolio", icon: LineChart, path: "/portfolio" },
-			{ titleKey: "nav.interactions", icon: Layers, path: "/interactions", badge: 3 },
-			{ titleKey: "nav.settings", icon: Settings, path: "/settings" },
-		],
-	},
-	{
-		labelKey: "nav.scenarios",
-		defaultOpen: true,
-		items: [
-			{ titleKey: "nav.wearableHealth", icon: HeartPulse, path: "/wearable" },
-			{ titleKey: "nav.bankingWealth", icon: Wallet, path: "/banking" },
-			{ titleKey: "nav.networkOps", icon: LineChart, path: "/network" },
-		],
-	},
-	{
-		labelKey: "nav.pages",
-		defaultOpen: true,
-		items: [
-			{ titleKey: "nav.login", icon: LogIn, path: "/login", external: true },
-			{ titleKey: "nav.staticPage", icon: FileText, path: "/static-page", external: true },
-			{ titleKey: "nav.loading", icon: Loader, path: "/loading", external: true },
-			{ titleKey: "nav.notFoundPage", icon: FileQuestion, path: "/404", external: true },
-		],
-	},
-];
-
-const LIBRARY_LEAD: NavItem[] = [
-	{ titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" },
-	{ titleKey: "nav.colorPalette", icon: Palette, path: "/palette" },
-	{ titleKey: "nav.typeface", icon: Type, path: "/typeface" },
-	{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
-	{ titleKey: "nav.loadingStates", icon: Loader, path: "/loading-states" },
-	{ titleKey: "nav.animation", icon: Sparkles, path: "/animation" },
-	{ titleKey: "nav.tables", icon: Table2, path: "/tables" },
-	{ titleKey: "nav.interactive", icon: MousePointerClick, path: "/interactive" },
-	{ titleKey: "nav.data", icon: Eye, path: "/data" },
-	{ titleKey: "nav.forms", icon: FormInput, path: "/forms" },
-	{ titleKey: "nav.navigation", icon: Navigation, path: "/navigation" },
-	{ titleKey: "nav.dialogs", icon: AppWindow, path: "/dialogs" },
-];
-
-const CATALOG_ICONS: Record<string, React.ElementType> = {
-	button: RectangleEllipsis,
-	"link-button": ExternalLink,
-	text: Type,
-	label: Tag,
-	separator: Minus,
-	link: Link2,
-	tooltip: MessageCircle,
-	"theme-toggle": Sun,
-	"layer-card": Square,
-	"basalt-mark": Mountain,
-	field: FormInput,
-	input: TextCursorInput,
-	textarea: AlignLeft,
-	"input-group": Columns3,
-	"sensitive-input": EyeOff,
-	checkbox: SquareCheck,
-	radio: Circle,
-	switch: ToggleLeft,
-	select: ChevronsUpDown,
-	combobox: ChevronsUpDown,
-	autocomplete: Search,
-	"date-picker": Calendar,
-	slider: SlidersHorizontal,
-	toggle: ToggleRight,
-	"toggle-group": ToggleRight,
-	badge: Award,
-	banner: Megaphone,
-	empty: Inbox,
-	loader: Loader,
-	spinner: Loader2,
-	skeleton: Minus,
-	kbd: Keyboard,
-	meter: Gauge,
-	progress: Activity,
-	toast: Bell,
-	"clipboard-text": Clipboard,
-	fab: Sparkles,
-	dock: PanelRight,
+const NAV_ICONS: Record<NavIconId, LucideIcon> = {
+	activity: Activity,
+	"align-left": AlignLeft,
+	"app-window": AppWindow,
+	award: Award,
+	"bar-chart": BarChart3,
+	bell: Bell,
+	"book-open": BookOpen,
+	calendar: Calendar,
+	"chevron-right": ChevronRight,
+	"chevrons-down": ChevronsDown,
+	"chevrons-down-up": ChevronsDownUp,
+	"chevrons-up-down": ChevronsUpDown,
+	circle: Circle,
+	clipboard: Clipboard,
 	code: Code,
-	"code-block": FileCode,
-	avatar: UserRound,
-	accordion: ChevronsDownUp,
-	dialog: AppWindow,
-	"alert-dialog": TriangleAlert,
-	popover: MessageSquare,
-	"dropdown-menu": Menu,
-	"context-menu": MousePointer2,
-	"hover-card": CreditCard,
-	sheet: PanelRight,
-	"command-palette": Command,
-	tabs: Columns3,
-	table: Table,
-	"data-table": Table2,
-	pagination: Ellipsis,
-	collapsible: ChevronsDown,
-	breadcrumbs: ChevronRight,
-	"navigation-menu": Navigation,
-	"menu-bar": PanelTop,
-	toolbar: Wrench,
-	"table-of-contents": List,
-	grid: LayoutGrid,
-	"section-rule": Minus,
-	sidebar: PanelLeft,
-	flow: GitBranch,
-	"theme-provider": Palette,
-	"link-provider": Link2,
-	"stat-card": Hash,
-	"slot-bar": BarChart3,
-	bar: ChartColumn,
-	line: ChartLine,
-	area: ChartArea,
-	donut: ChartPie,
-	"grouped-bar": ChartColumnStacked,
-	"stacked-bar": ChartColumnStacked,
-	sparkline: Activity,
-	"heatmap-calendar": CalendarDays,
+	columns: Columns3,
+	command: Command,
+	"credit-card": CreditCard,
+	ellipsis: Ellipsis,
+	"external-link": ExternalLink,
+	eye: Eye,
+	"eye-off": EyeOff,
+	"file-code": FileCode,
+	"file-question": FileQuestion,
+	"file-text": FileText,
+	filter: Filter,
+	"folder-input": FolderInput,
+	"form-input": FormInput,
 	gauge: Gauge,
-	radar: Radar,
-	funnel: Filter,
-	bullet: Minus,
-	timeline: History,
-	sankey: GitFork,
-	"item-list": List,
-	"date-navigation": CalendarRange,
-	palette: SwatchBook,
-	charts: BarChart3,
-	timeseries: ChartLine,
-	maps: Globe,
-	"custom-chart": Sparkles,
-	"page-header": LayoutTemplate,
-	"resource-list": List,
-	"delete-resource": Trash2,
-	"chart-colors": SwatchBook,
+	hash: Hash,
+	"heart-pulse": HeartPulse,
+	inbox: Inbox,
+	keyboard: Keyboard,
+	layers: Layers,
+	"layout-dashboard": LayoutDashboard,
+	"layout-grid": LayoutGrid,
+	"layout-template": LayoutTemplate,
+	"line-chart": LineChart,
+	link: Link2,
+	list: List,
+	loader: Loader,
+	"loader-circle": Loader2,
+	"log-in": LogIn,
+	megaphone: Megaphone,
+	menu: Menu,
+	"message-circle": MessageCircle,
+	"message-square": MessageSquare,
+	minus: Minus,
+	"mouse-pointer": MousePointer2,
+	"mouse-pointer-click": MousePointerClick,
+	navigation: Navigation,
+	palette: Palette,
+	"panel-left": PanelLeft,
+	"panel-right": PanelRight,
+	"piggy-bank": PiggyBank,
+	"rectangle-ellipsis": RectangleEllipsis,
+	search: Search,
+	settings: Settings,
+	sliders: SlidersHorizontal,
+	sparkles: Sparkles,
+	square: Square,
+	"square-check": SquareCheck,
+	sun: Sun,
+	table: Table,
+	"table-grid": Table2,
+	tag: Tag,
+	"text-cursor": TextCursorInput,
+	"toggle-left": ToggleLeft,
+	"toggle-right": ToggleRight,
+	"trending-up": TrendingUp,
+	"triangle-alert": TriangleAlert,
+	type: Type,
+	upload: Upload,
+	"user-round": UserRound,
+	wallet: Wallet,
+	wrench: Wrench,
 };
 
-const CATALOG_PAGE_STATUS_BY_SLUG = new Map(
-	CATALOG.map((entry) => [entry.slug, catalogPageStatus(entry.slug)]),
-);
-
-function catalogNavItem(entry: CatalogEntry, fallbackIcon: React.ElementType): NavItem {
-	return {
-		title: catalogNavName(entry),
-		path: `/ui/${entry.slug}`,
-		icon: CATALOG_ICONS[entry.slug] ?? fallbackIcon,
-		catalogSlug: entry.slug,
-		pageStatus: CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug),
-	};
-}
-
-const CATEGORY_OVERVIEWS: NavItem[] = CATALOG_CATEGORIES.map((category) => ({
-	title: "Overview",
-	accessibleTitle: `${category.label} overview`,
-	path: catalogCategoryPath(category.id),
-	icon: BookOpen,
-}));
-
-const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category, index) => ({
-	label: category.label,
-	defaultOpen: true,
-	items: [
-		CATEGORY_OVERVIEWS[index],
-		...libraryNavEntries(category.id).map((entry) => catalogNavItem(entry, RectangleEllipsis)),
-	],
-}));
-
-const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), ...LIBRARY_LEAD];
-
-function itemTitle(item: NavItem, t: (key: string) => string) {
-	return item.title ?? t(item.titleKey ?? "");
-}
-
-function groupLabel(group: NavGroup, t: (key: string) => string) {
-	return group.label ?? t(group.labelKey ?? "");
-}
-
-function commandSearchMatches(value: string, query: string) {
-	const tokens = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-	const normalizedValue = value.toLocaleLowerCase();
-	return tokens.every((token) => normalizedValue.includes(token));
-}
-
-function catalogCommandValue(entry: CatalogEntry) {
-	return `${catalogNavName(entry)} ${entry.name} ${entry.slug}`;
-}
-
-function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: string }) {
-	const { t } = useTranslation();
-	const isPlanned = item.pageStatus === "planned";
-	const content = (
-		<>
-			<item.icon className="size-basalt-icon-lg shrink-0" />
-			<span className="flex-1 truncate text-left">{itemTitle(item, t)}</span>
-			{item.external ? (
+function NavItemButton({
+	path,
+	label,
+	iconId,
+	external,
+	catalogSlug,
+	currentPath,
+}: {
+	path: string;
+	label: string;
+	iconId: NavIconId;
+	external?: boolean;
+	catalogSlug?: string;
+	currentPath: string;
+}) {
+	const Icon = NAV_ICONS[iconId];
+	return (
+		<SidebarItem
+			href={path}
+			active={!external && currentPath === path}
+			data-catalog-slug={catalogSlug}
+			target={external ? "_blank" : undefined}
+			rel={external ? "noopener noreferrer" : undefined}
+		>
+			<Icon className="size-basalt-icon-lg shrink-0" />
+			<span className="flex-1 truncate text-left">{label}</span>
+			{external ? (
 				<span className="flex size-basalt-icon-lg shrink-0 items-center justify-center">
 					<ExternalLink className="size-basalt-icon-sm text-basalt-muted-foreground" />
 				</span>
 			) : null}
-			{item.badge ? (
-				<span className="flex h-[var(--basalt-line-body)] shrink-0 items-center justify-center">
-					<span className="flex h-4 min-w-[1rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-md text-basalt-xs font-medium text-badge-red-foreground">
-						{item.badge}
-					</span>
-				</span>
-			) : null}
-			{isPlanned ? (
-				<Badge variant="outline" data-page-status="planned" className="ml-auto shrink-0">
-					Planned
-				</Badge>
-			) : null}
-		</>
-	);
-	if (isPlanned) {
-		return (
-			<SidebarItem aria-label={item.accessibleTitle} disabled data-catalog-slug={item.catalogSlug}>
-				{content}
-			</SidebarItem>
-		);
-	}
-	return (
-		<SidebarItem
-			href={item.path}
-			aria-label={item.accessibleTitle}
-			active={!item.external && currentPath === item.path}
-			data-catalog-slug={item.catalogSlug}
-			target={item.external ? "_blank" : undefined}
-			rel={item.external ? "noopener noreferrer" : undefined}
-		>
-			{content}
 		</SidebarItem>
 	);
 }
 
-function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath: string }) {
-	const { t } = useTranslation();
+function NavGroupSection({ group, currentPath }: { group: ShellNavGroup; currentPath: string }) {
 	return (
-		<SidebarGroup label={groupLabel(group, t)} defaultOpen={group.defaultOpen ?? true}>
+		<SidebarGroup label={group.label} defaultOpen={group.defaultOpen}>
 			{group.items.map((item) => (
-				<NavItemButton key={item.path} item={item} currentPath={currentPath} />
+				<NavItemButton
+					key={item.path}
+					path={item.path}
+					label={item.label}
+					iconId={item.iconId}
+					external={item.external}
+					currentPath={currentPath}
+				/>
 			))}
 		</SidebarGroup>
 	);
 }
 
-function LibraryNav({ currentPath }: { currentPath: string }) {
+function LibraryNav({
+	guideItems,
+	categoryGroups,
+	currentPath,
+}: {
+	guideItems: readonly ShellNavItem[];
+	categoryGroups: ReturnType<typeof useShellNavigationViewModel>["libraryCategoryGroups"];
+	currentPath: string;
+}) {
 	return (
 		<div>
 			<div className="flex flex-col gap-basalt-nav-gap">
-				{LIBRARY_LEAD.map((item) => (
-					<NavItemButton key={item.path} item={item} currentPath={currentPath} />
+				{guideItems.map((item) => (
+					<NavItemButton
+						key={item.path}
+						path={item.path}
+						label={item.label}
+						iconId={item.iconId}
+						external={item.external}
+						currentPath={currentPath}
+					/>
 				))}
 			</div>
-			{LIBRARY_GROUPS.map((group) => (
-				<NavGroupSection key={group.label} group={group} currentPath={currentPath} />
+			{categoryGroups.map((group) => (
+				<SidebarGroup
+					key={group.category}
+					label={group.label}
+					defaultOpen
+					action={
+						<Link
+							href={group.overviewPath}
+							aria-label={group.overviewTitle}
+							aria-current={currentPath === group.overviewPath ? "page" : undefined}
+							className="basalt-focus inline-flex shrink-0 items-center rounded-basalt-sm px-basalt-space-sm py-basalt-space-xs text-basalt-xs font-medium text-basalt-muted-foreground no-underline transition-colors basalt-motion hover:bg-basalt-hover hover:text-basalt-foreground aria-[current=page]:bg-basalt-selected aria-[current=page]:text-basalt-foreground"
+						>
+							Overview
+						</Link>
+					}
+				>
+					{group.items.map((item) => (
+						<NavItemButton
+							key={item.path}
+							path={item.path}
+							label={item.label}
+							iconId={item.iconId}
+							catalogSlug={item.slug}
+							currentPath={currentPath}
+						/>
+					))}
+				</SidebarGroup>
 			))}
 		</div>
 	);
 }
 
-function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: string }) {
-	const { t } = useTranslation();
+function CollapsedNavItem({ item, currentPath }: { item: ShellNavItem; currentPath: string }) {
+	const Icon = NAV_ICONS[item.iconId];
 	return (
 		<Tooltip delayDuration={0}>
 			<TooltipTrigger asChild>
 				<SidebarIconItem
 					href={item.path}
 					active={!item.external && currentPath === item.path}
-					aria-label={itemTitle(item, t)}
+					aria-label={item.label}
 					target={item.external ? "_blank" : undefined}
 					rel={item.external ? "noopener noreferrer" : undefined}
 				>
-					<item.icon className="size-basalt-icon-lg" />
-					{item.badge ? (
-						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-sm text-basalt-xs font-medium text-badge-red-foreground">
-							{item.badge}
-						</span>
-					) : null}
+					<Icon className="size-basalt-icon-lg" />
 				</SidebarIconItem>
 			</TooltipTrigger>
 			<TooltipContent side="right" sideOffset={8}>
-				{itemTitle(item, t)}
+				{item.label}
 			</TooltipContent>
 		</Tooltip>
 	);
 }
-
-// ── Main sidebar component ──
 
 interface AppSidebarProps {
 	collapsed: boolean;
@@ -470,11 +333,11 @@ export function AppSidebar({
 	resizable = true,
 	drawer = false,
 }: AppSidebarProps) {
-	const { pathname } = useLocation();
 	const navigate = useNavigate();
-	const { t } = useTranslation();
 	const [searchOpen, setSearchOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
+	const vm = useShellNavigationViewModel(searchQuery);
+
 	const handleSearchOpenChange = useCallback((open: boolean) => {
 		setSearchOpen(open);
 		if (!open) {
@@ -502,19 +365,6 @@ export function AppSidebar({
 		},
 		[navigate],
 	);
-	const commandNavGroups = NAV_GROUPS.map((group) => ({
-		...group,
-		items: group.items.filter((item) => commandSearchMatches(itemTitle(item, t), searchQuery)),
-	})).filter((group) => group.items.length > 0);
-	const commandLibraryLead = [...LIBRARY_LEAD, ...CATEGORY_OVERVIEWS].filter((item) =>
-		commandSearchMatches(item.accessibleTitle ?? itemTitle(item, t), searchQuery),
-	);
-	const commandCatalogEntries = CATALOG.filter((entry) =>
-		commandSearchMatches(catalogCommandValue(entry), searchQuery),
-	);
-	const commandTemplates = TEMPLATE_MANIFEST.filter((entry) =>
-		commandSearchMatches(`${t(entry.titleKey)} ${entry.slug}`, searchQuery),
-	);
 
 	return (
 		<SidebarProvider collapsed={collapsed} onCollapsedChange={onToggle}>
@@ -522,7 +372,7 @@ export function AppSidebar({
 				<SidebarHeader>
 					<SidebarBrand
 						logo={
-							<Link href="/" aria-label={t("nav.home")} className="no-underline hover:no-underline">
+							<Link href="/" aria-label="Home" className="no-underline hover:no-underline">
 								<BasaltLogo alt="" data-sidebar-brand-image="" className="object-contain" />
 							</Link>
 						}
@@ -533,34 +383,38 @@ export function AppSidebar({
 								<SidebarToggle
 									data-sidebar-toggle=""
 									mode="dismiss"
-									dismissLabel={t("common.closeNav")}
+									dismissLabel="Close navigation menu"
 									onDismiss={onToggle}
 								/>
 							) : (
 								<SidebarToggle
 									data-sidebar-toggle=""
-									collapseLabel={t("common.collapseSidebar")}
-									expandLabel={t("common.expandSidebar")}
+									collapseLabel="Collapse sidebar"
+									expandLabel="Expand sidebar"
 								/>
 							)
 						}
 					/>
 				</SidebarHeader>
 				<SidebarNav>
-					<SidebarSearch onClick={() => setSearchOpen(true)}>{t("common.search")}</SidebarSearch>
+					<SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
 					{collapsed ? (
-						ALL_NAV_ITEMS.map((item) => (
-							<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
+						vm.collapsedNavItems.map((item) => (
+							<CollapsedNavItem key={item.path} item={item} currentPath={vm.pathname} />
 						))
 					) : (
 						<>
-							<SidebarPartition>{t("nav.examples")}</SidebarPartition>
-							{NAV_GROUPS.map((group) => (
-								<NavGroupSection key={group.labelKey} group={group} currentPath={pathname} />
+							<SidebarPartition>Examples</SidebarPartition>
+							{vm.navGroups.map((group) => (
+								<NavGroupSection key={group.id} group={group} currentPath={vm.pathname} />
 							))}
 							<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
-							<SidebarPartition>{t("nav.kit")}</SidebarPartition>
-							<LibraryNav currentPath={pathname} />
+							<SidebarPartition>Library</SidebarPartition>
+							<LibraryNav
+								guideItems={vm.libraryGuideItems}
+								categoryGroups={vm.libraryCategoryGroups}
+								currentPath={vm.pathname}
+							/>
 						</>
 					)}
 				</SidebarNav>
@@ -568,14 +422,9 @@ export function AppSidebar({
 					<SidebarUser
 						name="Zheng Li"
 						email="zhengli@example.com"
-						avatar={
-							<Avatar className="h-9 w-9 shrink-0">
-								<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-								<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-							</Avatar>
-						}
+						avatar={<AvatarInitials name="Zheng Li" initials="ZL" />}
 						onSignOut={() => {}}
-						signOutLabel={t("common.logOut")}
+						signOutLabel="Log out"
 					/>
 				</SidebarFooter>
 				<CommandPalette
@@ -584,81 +433,73 @@ export function AppSidebar({
 					shouldFilter={false}
 				>
 					<CommandInput
-						placeholder={t("common.searchPages")}
+						placeholder="Search pages..."
 						value={searchQuery}
 						onValueChange={setSearchQuery}
 					/>
 					<CommandList>
-						<CommandEmpty>{t("common.noResults")}</CommandEmpty>
-						{commandNavGroups.map((group) => (
-							<CommandGroup key={group.labelKey} heading={groupLabel(group, t)}>
-								{group.items.map((item) => (
-									<CommandItem
-										key={item.path}
-										value={itemTitle(item, t)}
-										onSelect={() => handleSelect(item.path)}
-										className="cursor-pointer gap-basalt-space-lg"
-									>
-										<item.icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
-										<span>{itemTitle(item, t)}</span>
-									</CommandItem>
-								))}
+						<CommandEmpty>No results found.</CommandEmpty>
+						{vm.commandResults.navGroups.map((group) => (
+							<CommandGroup key={group.id} heading={group.label}>
+								{group.items.map((item) => {
+									const Icon = NAV_ICONS[item.iconId];
+									return (
+										<CommandItem
+											key={item.path}
+											value={item.label}
+											onSelect={() => handleSelect(item.path)}
+											className="cursor-pointer gap-basalt-space-lg"
+										>
+											<Icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
+											<span>{item.label}</span>
+										</CommandItem>
+									);
+								})}
 							</CommandGroup>
 						))}
-						{commandTemplates.length > 0 && (
-							<CommandGroup heading={t("nav.templates")}>
-								{commandTemplates.map((entry) => (
+						{vm.commandResults.templates.length > 0 && (
+							<CommandGroup heading="Templates">
+								{vm.commandResults.templates.map((entry) => (
 									<CommandItem
 										key={entry.slug}
-										value={`${t(entry.titleKey)} ${entry.slug}`}
+										value={`${entry.title} ${entry.slug}`}
 										onSelect={() => handleSelect(`/view/${entry.slug}`)}
 										className="cursor-pointer gap-basalt-space-lg"
 									>
 										<LayoutTemplate className="size-basalt-icon-lg text-basalt-muted-foreground" />
-										<span>{t(entry.titleKey)}</span>
+										<span>{entry.title}</span>
 									</CommandItem>
 								))}
 							</CommandGroup>
 						)}
-						{commandLibraryLead.length > 0 || commandCatalogEntries.length > 0 ? (
-							<CommandGroup heading={t("nav.kit")}>
-								{commandLibraryLead.map((item) => (
-									<CommandItem
-										key={item.path}
-										value={`${item.accessibleTitle ?? itemTitle(item, t)} ${item.path}`}
-										onSelect={() => handleSelect(item.path)}
-										className="cursor-pointer gap-basalt-space-lg"
-									>
-										<item.icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
-										<span>{item.accessibleTitle ?? itemTitle(item, t)}</span>
-									</CommandItem>
-								))}
-								{commandCatalogEntries.map((entry) => {
-									const isPlanned = CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug) === "planned";
+						{vm.commandResults.libraryEntries.length > 0 ||
+						vm.commandResults.catalogEntries.length > 0 ? (
+							<CommandGroup heading="Library">
+								{vm.commandResults.libraryEntries.map((item) => {
+									const Icon = NAV_ICONS[item.iconId];
 									return (
 										<CommandItem
-											key={entry.slug}
-											value={catalogCommandValue(entry)}
-											disabled={isPlanned}
-											data-catalog-slug={entry.slug}
-											onSelect={isPlanned ? undefined : () => handleSelect(`/ui/${entry.slug}`)}
-											className={
-												isPlanned ? "gap-basalt-space-lg" : "cursor-pointer gap-basalt-space-lg"
-											}
+											key={item.path}
+											value={`${item.label} ${item.path}`}
+											onSelect={() => handleSelect(item.path)}
+											className="cursor-pointer gap-basalt-space-lg"
 										>
-											<span>{catalogNavName(entry)}</span>
-											{isPlanned ? (
-												<Badge
-													variant="outline"
-													data-page-status="planned"
-													className="ml-auto shrink-0"
-												>
-													Planned
-												</Badge>
-											) : null}
+											<Icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
+											<span>{item.label}</span>
 										</CommandItem>
 									);
 								})}
+								{vm.commandResults.catalogEntries.map((entry) => (
+									<CommandItem
+										key={entry.slug}
+										value={entry.searchValue}
+										data-catalog-slug={entry.slug}
+										onSelect={() => handleSelect(entry.path)}
+										className="cursor-pointer gap-basalt-space-lg"
+									>
+										<span>{entry.name}</span>
+									</CommandItem>
+								))}
 							</CommandGroup>
 						) : null}
 					</CommandList>

@@ -1,42 +1,36 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { ArrowUpDown } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { GroupedBarChart } from "@/components/charts/grouped-bar";
 import { formatUsd } from "@/lib/format";
 
 const data = [
-	{ month: "Jul", income: 4200, expense: 3100 },
-	{ month: "Aug", income: 4800, expense: 3600 },
-	{ month: "Sep", income: 4500, expense: 3900 },
-	{ month: "Oct", income: 5100, expense: 3400 },
-	{ month: "Nov", income: 4700, expense: 4100 },
-	{ month: "Dec", income: 5500, expense: 3800 },
+	{ x: "Jul", y: 4200, y2: 3100 },
+	{ x: "Aug", y: 4800, y2: 3600 },
+	{ x: "Sep", y: 4500, y2: 3900 },
+	{ x: "Oct", y: 5100, y2: 3400 },
+	{ x: "Nov", y: 4700, y2: 4100 },
+	{ x: "Dec", y: 5500, y2: 3800 },
 ];
 
 export function GroupedBarCard() {
-	const { t } = useTranslation();
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
 					<ArrowUpDown className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("dashboard.incomeVsExpense")}
+						Reimbursements vs care spending
 					</h2>
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
 				<GroupedBarChart
-					data={data.map((row) => ({
-						x: t(`dashboard.months.${row.month.toLowerCase()}`),
-						y: row.income,
-						y2: row.expense,
-					}))}
+					data={data}
 					series={[
-						{ key: "y", label: t("dashboard.income") },
-						{ key: "y2", label: t("dashboard.expense") },
+						{ key: "y", label: "Care reimbursements" },
+						{ key: "y2", label: "Care spending" },
 					]}
-					ariaLabel={t("dashboard.incomeVsExpenseAria")}
+					ariaLabel="Grouped bar chart comparing monthly care reimbursements and care spending from July to December"
 					className="min-h-[12.5rem] w-full flex-1"
 					showAxes
 					showLegend

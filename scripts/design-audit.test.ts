@@ -35,7 +35,7 @@ describe("design audit rules (without scanning the repository)", () => {
 			["motion-token", "intrinsic-action-size"],
 		);
 		expect(
-			auditDesignSource("src/pages/InteractivePage.tsx", source).map((issue) => issue.rule),
+			auditDesignSource("src/pages/FormsPage.tsx", source).map((issue) => issue.rule),
 		).toContain("control-spacing-owner");
 	});
 	it("keeps selected state separate from decorative and disabled fills", () => {

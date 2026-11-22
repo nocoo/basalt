@@ -1,42 +1,29 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { BarChart3, LayoutGrid } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { GroupedBarChart } from "@/components/charts/grouped-bar";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatUsd } from "@/lib/format";
 import { useProgressTrackingViewModel } from "@/viewmodels/useProgressTrackingViewModel";
 
 export default function ProgressTrackingPage() {
-	const { t } = useTranslation();
 	const { summary, categories, comparisonData } = useProgressTrackingViewModel();
 
 	return (
 		<ShowcasePage
-			title={t("pages.progressTracking.title")}
-			description={`${t("pages.progressTracking.description")} ${t("demo.analyticsData")}`}
+			title="Care budget tracking"
+			description="Track care expenses against nutrition, therapy, and wellness budgets. Sample data, not a live service."
 		>
 			<StatGrid columns={3} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
-				<StatCard
-					title={t("pages.progressTracking.totalBudget")}
-					value={`$${summary.totalLimit.toLocaleString()}`}
-				/>
-				<StatCard
-					title={t("pages.progressTracking.spentSoFar")}
-					value={`$${summary.totalSpent.toLocaleString()}`}
-				/>
-				<StatCard
-					title={t("pages.progressTracking.remaining")}
-					value={`$${summary.remaining.toLocaleString()}`}
-				/>
+				<StatCard title="Total Budget" value={`$${summary.totalLimit.toLocaleString()}`} />
+				<StatCard title="Spent So Far" value={`$${summary.totalSpent.toLocaleString()}`} />
+				<StatCard title="Remaining" value={`$${summary.remaining.toLocaleString()}`} />
 			</StatGrid>
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
 					<LayoutGrid className="size-basalt-icon-lg text-basalt-muted-foreground" />
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.progressTracking.categoryBudgets")}
-					</h2>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Category Budgets</h2>
 				</LayerCard.Header>
 				<LayerCard.Body className="flex flex-col gap-basalt-card">
 					{categories.map((cat) => (
@@ -53,10 +40,7 @@ export default function ProgressTrackingPage() {
 								aria-valuenow={cat.progress}
 								aria-valuemin={0}
 								aria-valuemax={100}
-								aria-label={t("pages.progressTracking.categoryProgressAria", {
-									category: cat.category,
-									percent: cat.progress,
-								})}
+								aria-label={`${cat.category} budget: ${cat.progress}% spent`}
 							>
 								<div
 									className="h-full rounded-basalt-full transition-[width,opacity] basalt-motion"
@@ -72,22 +56,20 @@ export default function ProgressTrackingPage() {
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
 					<BarChart3 className="size-basalt-icon-lg text-basalt-muted-foreground" />
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("pages.progressTracking.budgetVsActual")}
-					</h2>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Budget vs Actual</h2>
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<GroupedBarChart
 						data={comparisonData.map((row) => ({
-							x: t(`dashboard.months.${row.month.toLowerCase()}`),
+							x: row.month,
 							y: row.budget,
 							y2: row.actual,
 						}))}
 						series={[
-							{ key: "y", label: t("pages.progressTracking.budget") },
-							{ key: "y2", label: t("pages.progressTracking.actual") },
+							{ key: "y", label: "Budget" },
+							{ key: "y2", label: "Actual" },
 						]}
-						ariaLabel={t("pages.progressTracking.budgetVsActualAria")}
+						ariaLabel="Budget vs actual spending grouped bar chart by month"
 						className="h-[11.25rem] w-full md:h-[12.5rem]"
 						showAxes
 						showLegend

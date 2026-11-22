@@ -1,7 +1,12 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { useId } from "react";
-import { useTranslation } from "react-i18next";
+
+const STATUS_MESSAGES = {
+	pending: "Saving…",
+	success: "Saved locally.",
+	error: "The demo request failed. Your input is preserved.",
+} as const;
 
 export function DemoFeedback({
 	status,
@@ -14,7 +19,6 @@ export function DemoFeedback({
 	setFailNext: (value: boolean) => void;
 	retry: () => void;
 }) {
-	const { t } = useTranslation();
 	const id = useId();
 	return (
 		<div className="space-y-basalt-space-lg text-basalt-sm" data-demo-feedback>
@@ -25,17 +29,19 @@ export function DemoFeedback({
 					disabled={status === "pending"}
 					onCheckedChange={(value) => setFailNext(value === true)}
 				/>
-				<label htmlFor={id}>{t("demo.failNext")}</label>
+				<label htmlFor={id}>Simulate a failed submission</label>
 			</div>
 			{status !== "idle" && (
 				<div
 					role={status === "error" ? "alert" : "status"}
-					className={status === "error" ? "text-destructive" : "text-muted-foreground"}
+					className={
+						status === "error" ? "text-basalt-danger-solid" : "text-basalt-muted-foreground"
+					}
 				>
-					{t(`demo.${status}`)}
+					{STATUS_MESSAGES[status]}
 					{status === "error" && (
 						<Button variant="ghost" size="sm" onClick={retry}>
-							{t("demo.retry")}
+							Retry
 						</Button>
 					)}
 				</div>

@@ -4,16 +4,12 @@ import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet"
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Outlet, useLocation } from "react-router";
+import { Outlet } from "react-router";
 import { AccentPicker } from "@/components/AccentPicker";
 import { AppSidebar } from "@/components/AppSidebar";
-import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useSiteTitle } from "@/hooks/use-site-title";
-import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
-import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
-import { catalogCategory, catalogCategoryPath } from "@/pages/ui/catalog-categories";
+import { useShellNavigationViewModel } from "@/viewmodels/useShellNavigationViewModel";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -22,8 +18,6 @@ function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (typeof el.checkVisibility === "function") {
 		return el.checkVisibility();
 	}
-	// In browser environments with layout, getClientRects() > 0 when rendered.
-	// In jsdom without layout engine, getClientRects().length is always 0.
 	return true;
 }
 
@@ -31,64 +25,18 @@ export function DashboardLayout() {
 	const [collapsed, setCollapsed] = useState(false);
 	const isMobile = useIsMobile();
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const location = useLocation();
-	const { t } = useTranslation();
+	const { pathname, title, breadcrumbs } = useShellNavigationViewModel();
 
 	const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
 	const mobileSheetRef = useRef<HTMLDivElement | null>(null);
-	const catalogSlug = location.pathname.startsWith("/ui/")
-		? location.pathname.slice("/ui/".length).split("/")[0]
-		: undefined;
-	const catalogEntry = catalogSlug ? CATALOG_BY_SLUG.get(catalogSlug) : undefined;
-	const overviewCategory =
-		catalogSlug === "overview" ? catalogCategory(location.pathname.split("/")[3]) : undefined;
-	const catalogTitle = catalogEntry ? catalogNavName(catalogEntry) : undefined;
-	const titleKey = SHOWCASE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
-	const title = overviewCategory
-		? `${overviewCategory.label} overview`
-		: catalogTitle
-			? `${catalogTitle}${location.pathname.endsWith("/source") ? " source" : ""}`
-			: t(titleKey);
 	useSiteTitle(title);
-	const rootPath = location.pathname.startsWith("/ui") ? "/ui" : "/dashboard";
-	const crumbs = [
-		location.pathname === "/dashboard"
-			? { label: t("nav.dashboard") }
-			: { href: "/dashboard", label: t("nav.dashboard") },
-	];
-	if (rootPath === "/ui") {
-		crumbs.push(
-			location.pathname === "/ui"
-				? { label: t("nav.kitIndex") }
-				: { href: "/ui", label: t("nav.kitIndex") },
-		);
-	}
-	const entryCategory = catalogCategory(catalogEntry?.category);
-	if (catalogEntry && entryCategory) {
-		crumbs.push({ href: catalogCategoryPath(entryCategory.id), label: entryCategory.label });
-	}
-	if (overviewCategory) {
-		crumbs.push({ label: overviewCategory.label });
-	} else if (catalogEntry) {
-		crumbs.push(
-			location.pathname.endsWith("/source")
-				? { href: `/ui/${catalogEntry.slug}`, label: catalogTitle ?? title }
-				: { label: catalogTitle ?? title },
-		);
-		if (location.pathname.endsWith("/source")) {
-			crumbs.push({ label: title });
-		}
-	} else if (location.pathname !== "/dashboard" && location.pathname !== "/ui") {
-		crumbs.push({ label: title });
-	}
 
 	// Close mobile sidebar on route change: pathname is the intentional trigger.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value used inside
 	useEffect(() => {
 		setMobileOpen(false);
-	}, [location.pathname]);
+	}, [pathname]);
 
-	// Close mobile sidebar and clean up if viewport resizes to desktop.
 	useEffect(() => {
 		if (!isMobile) {
 			setMobileOpen(false);
@@ -108,7 +56,7 @@ export function DashboardLayout() {
 
 	return (
 		<AppShell className="relative h-dvh" data-dashboard-shell>
-			<AppSkipLink>{t("common.skipToMain")}</AppSkipLink>
+			<AppSkipLink>Skip to main content</AppSkipLink>
 			{!isMobile ? (
 				<AppSidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
 			) : (
@@ -131,7 +79,7 @@ export function DashboardLayout() {
 							}
 						}}
 					>
-						<SheetTitle className="sr-only">{t("common.openNav")}</SheetTitle>
+						<SheetTitle className="sr-only">Open navigation menu</SheetTitle>
 						<AppSidebar
 							collapsed={false}
 							onToggle={() => setMobileOpen(false)}
@@ -143,34 +91,32 @@ export function DashboardLayout() {
 			)}
 			<AppMain>
 				<AppHeader
-					className="max-sm:[&_nav]:max-w-[42vw] max-sm:[&_nav]:overflow-x-auto max-sm:[&_nav]:whitespace-nowrap max-sm:[&_nav>span]:shrink-0"
 					leading={
 						isMobile ? (
 							<AppHeaderMenuButton
 								ref={mobileTriggerRef}
-								label={t("common.openNav")}
+								label="Open navigation menu"
 								onClick={() => setMobileOpen(true)}
 							/>
 						) : null
 					}
-					breadcrumbs={crumbs}
-					breadcrumbsLabel={t("common.breadcrumb")}
+					breadcrumbs={breadcrumbs.map((segment) => ({ ...segment }))}
+					breadcrumbsLabel="Breadcrumb"
 					title={undefined}
 					actions={
 						<>
-							<LanguageToggle />
 							<AccentPicker />
 							<ProjectLinks
 								github="nocoo/basalt"
 								hexly="basalt"
 								name="Basalt"
-								githubLabel={t("common.github")}
+								githubLabel="GitHub repository"
 							/>
 							<ThemeToggle
 								labels={{
-									light: t("common.themeLight"),
-									dark: t("common.themeDark"),
-									system: t("common.themeSystem"),
+									light: "Switch to light theme",
+									dark: "Switch to dark theme",
+									system: "Use system theme",
 								}}
 							/>
 						</>

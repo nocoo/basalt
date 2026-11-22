@@ -7,7 +7,6 @@ import { SegmentControl } from "@nocoo/basalt/components/segment-control";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Copy, ExternalLink, RotateCw } from "lucide-react";
 import { useEffect, useRef, useSyncExternalStore } from "react";
-import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import type { TemplateEntry } from "@/lib/template-catalog";
 import type { TemplateFilter, TemplateViewport } from "@/models/template-manifest";
@@ -70,60 +69,77 @@ function TemplateFrame({
 	);
 }
 
+const FILTER_LABELS: Record<TemplateFilter, string> = {
+	all: "All",
+	featured: "Featured",
+	agents: "Agents",
+	dashboards: "Dashboards",
+	workspaces: "Workspaces",
+	auth: "Auth",
+};
+
+const VIEWPORT_LABELS: Record<TemplateViewport, string> = {
+	desktop: "Desktop",
+	tablet: "Tablet",
+	mobile: "Mobile",
+};
+
 export default function TemplatesPage() {
-	const { t } = useTranslation();
 	const { theme } = useTheme();
 	const systemDark = useSyncExternalStore(subscribeSystemTheme, systemTheme, () => false);
 	const resolvedTheme = theme === "system" ? (systemDark ? "dark" : "light") : theme;
 	const vm = useTemplatesShowcaseViewModel();
 	return (
-		<ShowcasePage title={t("pages.templates.title")} description={t("pages.templates.description")}>
+		<ShowcasePage
+			title="Templates"
+			description="Explore complete interfaces, resize the preview, and copy standalone source."
+		>
 			<SegmentControl
-				aria-label={t("pages.templates.filter")}
+				aria-label="Filter templates"
 				value={vm.filter}
 				onValueChange={(value) => vm.setFilter(value as TemplateFilter)}
-				options={FILTERS.map((value) => ({ value, label: t(`pages.templates.filters.${value}`) }))}
+				options={FILTERS.map((value) => ({ value, label: FILTER_LABELS[value] }))}
 			/>
 			{vm.entries.map((entry) => (
-				<SectionRule key={entry.slug} title={t(entry.titleKey)}>
+				<SectionRule key={entry.slug} title={entry.title}>
 					<LayerCard padding="none">
 						<LayerCard.Header className="flex-wrap justify-between">
 							<div className="min-w-0">
 								<div className="flex flex-wrap items-center gap-basalt-space-lg">
-									<span>{t(entry.titleKey)}</span>
-									<Badge variant="outline">{t(`pages.templates.filters.${entry.category}`)}</Badge>
+									<span>{entry.title}</span>
+									<Badge variant="outline">{FILTER_LABELS[entry.category]}</Badge>
 								</div>
 								<p className="text-basalt-sm font-normal text-basalt-muted-foreground">
-									{t(entry.descriptionKey)}
+									{entry.description}
 								</p>
 							</div>
 							<div className="flex flex-wrap items-center gap-basalt-space-lg">
 								<SegmentControl
-									aria-label={t("pages.templates.mode")}
+									aria-label="Display mode"
 									value={vm.mode(entry.slug)}
 									onValueChange={(value) => vm.setMode(entry.slug, value as "preview" | "code")}
 									options={[
-										{ value: "preview", label: t("pages.templates.preview") },
-										{ value: "code", label: t("pages.templates.code") },
+										{ value: "preview", label: "Preview" },
+										{ value: "code", label: "Code" },
 									]}
 								/>
 								{vm.mode(entry.slug) === "preview" && (
 									<>
 										<SegmentControl
-											aria-label={t("pages.templates.viewport")}
+											aria-label="Preview width"
 											value={vm.viewport(entry.slug)}
 											onValueChange={(value) =>
 												vm.setViewport(entry.slug, value as TemplateViewport)
 											}
 											options={VIEWPORTS.map((value) => ({
 												value,
-												label: t(`pages.templates.${value}`),
+												label: VIEWPORT_LABELS[value],
 											}))}
 										/>
 										<Button
 											variant="ghost"
 											size="icon-sm"
-											aria-label={t("pages.templates.reload")}
+											aria-label="Reload preview"
 											onClick={() => vm.reload(entry.slug)}
 										>
 											<RotateCw />
@@ -138,19 +154,17 @@ export default function TemplatesPage() {
 									rel="noopener noreferrer"
 								>
 									<ExternalLink />
-									{t("pages.templates.open")}
+									Open standalone
 								</LinkButton>
 								<Button variant="outline" size="sm" onClick={() => void vm.copySource(entry.slug)}>
 									<Copy />
-									{vm.copiedSlug === entry.slug
-										? t("pages.templates.copied")
-										: t("pages.templates.copy")}
+									{vm.copiedSlug === entry.slug ? "Copied" : "Copy code"}
 								</Button>
 							</div>
 						</LayerCard.Header>
 						{vm.copyError === entry.slug && (
 							<LayerCard.Body>
-								<p role="alert">{t("pages.templates.copyError")}</p>
+								<p role="alert">Could not copy. Check clipboard permissions and try again.</p>
 							</LayerCard.Body>
 						)}
 						{vm.mode(entry.slug) === "preview" ? (

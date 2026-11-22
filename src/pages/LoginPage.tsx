@@ -1,6 +1,5 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { Wallet } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { BasaltLogo } from "@/components/BasaltLogo";
 import { useSiteTitle } from "@/hooks/use-site-title";
 
@@ -20,8 +19,7 @@ function Barcode() {
 }
 
 export default function LoginPage() {
-	const { t } = useTranslation();
-	useSiteTitle(t("nav.login"));
+	useSiteTitle("Login");
 	const year = new Date().getFullYear();
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 
@@ -73,7 +71,7 @@ export default function LoginPage() {
 								<span className="text-sm font-semibold text-primary-foreground">basalt.</span>
 							</div>
 							<span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
-								{t("pages.badgeLogin.visitor")}
+								Visitor
 							</span>
 						</div>
 						<div className="mt-3 flex items-center justify-between">
@@ -89,10 +87,8 @@ export default function LoginPage() {
 					<div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
 						<BasaltLogo className="h-24 w-24 object-contain" sizes="6rem" />
 
-						<p className="mt-5 text-lg font-semibold text-foreground">
-							{t("pages.badgeLogin.welcome")}
-						</p>
-						<p className="mt-1 text-xs text-muted-foreground">{t("pages.badgeLogin.signInDesc")}</p>
+						<p className="mt-5 text-lg font-semibold text-foreground">Welcome</p>
+						<p className="mt-1 text-xs text-muted-foreground">Sign in to get your badge</p>
 
 						<div className="mt-5 h-px w-full bg-border" />
 						<div className="flex-1" />
@@ -116,20 +112,18 @@ export default function LoginPage() {
 									fill="#EA4335"
 								/>
 							</svg>
-							{t("pages.badgeLogin.continueWithGoogle")}
+							Continue with Google
 						</Button>
 
 						<p className="mt-3 text-center text-[10px] leading-relaxed text-muted-foreground/60">
-							{t("pages.badgeLogin.termsText")}
+							By signing in you agree to our Terms of Service and Privacy Policy
 						</p>
 					</div>
 
 					<div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-border bg-secondary/50 py-2.5">
 						<div className="flex items-center gap-1.5">
 							<div className="h-1.5 w-1.5 animate-pulse motion-reduce:animate-none rounded-full bg-success" />
-							<span className="text-[10px] text-muted-foreground">
-								{t("pages.badgeLogin.secureAuth")}
-							</span>
+							<span className="text-[10px] text-muted-foreground">Secure authentication</span>
 						</div>
 					</div>
 				</div>

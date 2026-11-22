@@ -331,18 +331,17 @@ export function AppHeader({
 			)}
 			{...props}
 		>
-			<div className="flex min-w-0 items-center gap-basalt-space-lg">
+			<div className="flex min-w-0 flex-1 items-center gap-basalt-space-lg">
 				{leading ? (
 					<div data-basalt-header-leading="" className="flex shrink-0 items-center">
 						{leading}
 					</div>
 				) : null}
-				<div className="flex min-w-0 items-center gap-basalt-space-sm">
+				<div className="flex min-w-0 flex-1 items-center gap-basalt-space-sm overflow-hidden">
 					{breadcrumbs && breadcrumbs.length > 0 ? (
 						<>
 							<Breadcrumbs
 								items={breadcrumbs}
-								className="min-w-0"
 								{...(breadcrumbsLabel !== undefined ? { "aria-label": breadcrumbsLabel } : {})}
 							/>
 							{title ? (

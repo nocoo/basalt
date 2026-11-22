@@ -15,7 +15,7 @@ import {
 	renderSitemap,
 	requiredIndexHtmlSnippets,
 	SHOWCASE_PATHS,
-	SHOWCASE_TITLE_KEYS,
+	SHOWCASE_TITLES,
 	SITE,
 	SITE_ORIGIN,
 	sitemapPaths,
@@ -70,9 +70,9 @@ describe("site metadata", () => {
 		}
 		expect(SHOWCASE_PATHS).not.toContain("/404");
 		expect(SHOWCASE_PATHS).not.toContain("/loading");
-		expect(SHOWCASE_TITLE_KEYS["/404"]).toBe("nav.notFoundPage");
-		expect(SHOWCASE_TITLE_KEYS["/loading"]).toBe("nav.loading");
-		expect(SHOWCASE_TITLE_KEYS["/ui"]).toBe("nav.kitIndex");
+		expect(SHOWCASE_TITLES["/404"]).toBe("404 Page");
+		expect(SHOWCASE_TITLES["/loading"]).toBe("Loading");
+		expect(SHOWCASE_TITLES["/ui"]).toBe("Component library");
 	});
 
 	it("sorts sitemap paths and includes catalog slugs", () => {

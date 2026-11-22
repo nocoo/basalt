@@ -24,7 +24,6 @@ import {
 } from "@nocoo/basalt/components/table";
 import { CalendarDays, CreditCard, Inbox, LayoutDashboard, Users, X } from "lucide-react";
 import { useId, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import {
 	ALLOCATIONS,
@@ -52,12 +51,51 @@ const WORKSPACE_ICONS = {
 	members: Users,
 	billing: CreditCard,
 };
+const WORKSPACE_LABELS: Record<WorkspaceItem, string> = {
+	overview: "Overview",
+	inbox: "Inbox",
+	schedules: "Schedules",
+	members: "Members",
+	billing: "Billing",
+};
+const STEP_COPY: Record<(typeof TRACE_STEPS)[number]["id"], { label: string; detail: string }> = {
+	indexed: {
+		label: "Indexed 148 tokens",
+		detail: "Indexed the current workspace files.",
+	},
+	contrast: {
+		label: "Auditing contrast pairs",
+		detail: "Verified the foreground and surface pairs.",
+	},
+	rail: {
+		label: "Verifying sidebar rail",
+		detail: "Checking the collapsed rail geometry.",
+	},
+};
+const DECISION_LABELS: Record<Decision, string> = {
+	canary: "Canary 10%",
+	staged: "Staged workspace",
+	draft: "Draft changelog only",
+};
+const METRIC_LABELS: Record<(typeof METRICS)[number]["id"], string> = {
+	deploys: "Weekly deploys",
+	failure: "Failure rate",
+};
+const ALLOCATION_LABELS: Record<(typeof ALLOCATIONS)[number]["id"], string> = {
+	compute: "Compute",
+	storage: "Storage",
+	bandwidth: "Bandwidth",
+};
 const LEDGER_FILTERS: readonly LedgerFilter[] = ["all", "paid", "pending", "failed"];
+const STATUS_LABELS: Record<LedgerFilter, string> = {
+	all: "All",
+	paid: "Paid",
+	pending: "Pending",
+	failed: "Failed",
+};
 const MONEY = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 
 export function MicroSceneWall({ className }: { className?: string }) {
-	const { t } = useTranslation();
-	const prefix = "pages.components.sceneWall";
 	const id = useId();
 	const [attachments, setAttachments] = useState<readonly string[]>(INITIAL_ATTACHMENTS);
 	const [query, setQuery] = useState("");
@@ -75,18 +113,18 @@ export function MicroSceneWall({ className }: { className?: string }) {
 			data-micro-scene-wall=""
 		>
 			<LayerCard padding="none">
-				<LayerCard.Header>{t(`${prefix}.controls`)}</LayerCard.Header>
+				<LayerCard.Header>Controls &amp; attachments</LayerCard.Header>
 				<LayerCard.Body className="space-y-basalt-card-sm">
 					<Input
 						size="sm"
-						aria-label={t(`${prefix}.searchAttachments`)}
-						placeholder={t(`${prefix}.searchAttachments`)}
+						aria-label="Search attachments"
+						placeholder="Search attachments"
 						value={query}
 						onChange={(event) => setQuery(event.target.value)}
 					/>
 					<div
 						role="group"
-						aria-label={t(`${prefix}.availableAttachments`)}
+						aria-label="Available attachments"
 						className="flex flex-wrap gap-basalt-space-sm"
 					>
 						{availableAttachments.map((filename) => (
@@ -102,15 +140,13 @@ export function MicroSceneWall({ className }: { className?: string }) {
 							</Button>
 						))}
 						{availableAttachments.length === 0 && (
-							<p className="text-basalt-sm text-basalt-muted-foreground">
-								{t(`${prefix}.noAttachments`)}
-							</p>
+							<p className="text-basalt-sm text-basalt-muted-foreground">No matching files.</p>
 						)}
 					</div>
 					<div
 						role="group"
 						className="flex flex-wrap gap-basalt-space-sm"
-						aria-label={t(`${prefix}.attachedFiles`)}
+						aria-label="Attached files"
 					>
 						{attachments.map((filename) => (
 							<Badge key={filename} variant="outline">
@@ -118,7 +154,7 @@ export function MicroSceneWall({ className }: { className?: string }) {
 								<Button
 									variant="ghost"
 									size="icon-sm"
-									aria-label={t(`${prefix}.removeAttachment`, { filename })}
+									aria-label={`Remove ${filename}`}
 									onClick={() => setAttachments((current) => removeAttachment(current, filename))}
 								>
 									<X />
@@ -128,7 +164,7 @@ export function MicroSceneWall({ className }: { className?: string }) {
 					</div>
 					<Separator />
 					<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
-						<Label htmlFor={`${id}-notifications`}>{t(`${prefix}.notifications`)}</Label>
+						<Label htmlFor={`${id}-notifications`}>Notify on completion</Label>
 						<Switch
 							id={`${id}-notifications`}
 							size="sm"
@@ -143,28 +179,26 @@ export function MicroSceneWall({ className }: { className?: string }) {
 							checked={includeDiff}
 							onCheckedChange={(checked) => setIncludeDiff(checked === true)}
 						/>
-						<Label htmlFor={`${id}-diff`}>{t(`${prefix}.includeDiff`)}</Label>
+						<Label htmlFor={`${id}-diff`}>Include diff summary</Label>
 					</div>
 				</LayerCard.Body>
 			</LayerCard>
 
 			<LayerCard padding="none">
-				<LayerCard.Header>{t(`${prefix}.navigation`)}</LayerCard.Header>
-				<SidebarNav
-					aria-label={t(`${prefix}.navigation`)}
-					className="pt-basalt-card-sm pb-basalt-card"
-				>
+				<LayerCard.Header>Workspace navigation</LayerCard.Header>
+				<SidebarNav aria-label="Workspace navigation" className="pt-basalt-card-sm pb-basalt-card">
 					{WORKSPACE_ITEMS.map((item) => {
 						const Icon = WORKSPACE_ICONS[item.id];
+						const label = WORKSPACE_LABELS[item.id];
 						return (
 							<SidebarItem
 								key={item.id}
-								aria-label={`${t(`${prefix}.workspace.${item.id}`)}${"count" in item ? ` ${item.count}` : ""}`}
+								aria-label={`${label}${"count" in item ? ` ${item.count}` : ""}`}
 								active={active === item.id}
 								onClick={() => setActive((current) => selectWorkspaceItem(current, item.id))}
 							>
 								<Icon />
-								<span className="flex-1">{t(`${prefix}.workspace.${item.id}`)}</span>
+								<span className="flex-1">{label}</span>
 								{"count" in item && <Badge variant="outline">{item.count}</Badge>}
 							</SidebarItem>
 						);
@@ -173,35 +207,30 @@ export function MicroSceneWall({ className }: { className?: string }) {
 			</LayerCard>
 
 			<LayerCard padding="none">
-				<LayerCard.Header>{t(`${prefix}.trace`)}</LayerCard.Header>
+				<LayerCard.Header>Agent execution trace</LayerCard.Header>
 				<LayerCard.Body className="space-y-basalt-card-sm">
 					{TRACE_STEPS.map((step) => (
 						<Collapsible key={step.id}>
 							<CollapsibleTrigger>
 								<span className="flex flex-wrap items-center gap-basalt-space-lg text-basalt-md">
 									{step.status === "running" ? (
-										<Loader
-											size={14}
-											showLabel={false}
-											showElapsed={false}
-											label={t(`${prefix}.running`)}
-										/>
+										<Loader size={14} showLabel={false} showElapsed={false} label="Running" />
 									) : (
-										<Badge tone="success">{t(`${prefix}.completed`)}</Badge>
+										<Badge tone="success">Complete</Badge>
 									)}
-									{t(`${prefix}.steps.${step.id}.label`)}
+									{STEP_COPY[step.id].label}
 								</span>
 							</CollapsibleTrigger>
 							<CollapsibleContent unstyled>
 								<p className="py-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
-									{t(`${prefix}.steps.${step.id}.detail`)}
+									{STEP_COPY[step.id].detail}
 								</p>
 							</CollapsibleContent>
 						</Collapsible>
 					))}
 					<Separator />
 					<Meter
-						label={t(`${prefix}.tokenBudget`)}
+						label="Token budget"
 						value={TOKEN_BUDGET.value}
 						customValue={`${TOKEN_BUDGET.value}% · ${TOKEN_BUDGET.reading}`}
 						size="sm"
@@ -210,14 +239,14 @@ export function MicroSceneWall({ className }: { className?: string }) {
 			</LayerCard>
 
 			<LayerCard padding="none">
-				<LayerCard.Header>{t(`${prefix}.decision`)}</LayerCard.Header>
+				<LayerCard.Header>Choose roll-out policy</LayerCard.Header>
 				<LayerCard.Body className="space-y-basalt-card-sm">
 					<p className="text-basalt-md text-basalt-muted-foreground">
-						{t(`${prefix}.decisionDescription`)}
+						Select the next action before continuing.
 					</p>
 					<div
 						role="group"
-						aria-label={t(`${prefix}.decision`)}
+						aria-label="Choose roll-out policy"
 						className="flex flex-col gap-basalt-space-sm"
 					>
 						{DECISIONS.map((option) => (
@@ -229,26 +258,24 @@ export function MicroSceneWall({ className }: { className?: string }) {
 								aria-pressed={decision === option.id}
 								onClick={() => setDecision((current) => selectDecision(current, option.id))}
 							>
-								{t(`${prefix}.decisions.${option.id}`)}
+								{DECISION_LABELS[option.id]}
 							</Button>
 						))}
 					</div>
 					<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
-						{decision
-							? t(`${prefix}.decisionSelected`, { choice: t(`${prefix}.decisions.${decision}`) })
-							: t(`${prefix}.awaitingDecision`)}
+						{decision ? `Selected: ${DECISION_LABELS[decision]}` : "Waiting for a decision."}
 					</p>
 				</LayerCard.Body>
 			</LayerCard>
 
 			<LayerCard padding="none">
-				<LayerCard.Header>{t(`${prefix}.operations`)}</LayerCard.Header>
+				<LayerCard.Header>Operations &amp; allocation</LayerCard.Header>
 				<LayerCard.Body className="space-y-basalt-card-sm">
 					<div className="grid grid-cols-2 gap-basalt-card-sm">
 						{METRICS.map((metric) => (
 							<div key={metric.id}>
 								<p className="text-basalt-sm text-basalt-muted-foreground">
-									{t(`${prefix}.metrics.${metric.id}`)}
+									{METRIC_LABELS[metric.id]}
 								</p>
 								<p className="text-basalt-xl font-semibold tabular-nums">{metric.value}</p>
 								{showChanges && (
@@ -265,14 +292,14 @@ export function MicroSceneWall({ className }: { className?: string }) {
 						aria-pressed={showChanges}
 						onClick={() => setShowChanges((current) => !current)}
 					>
-						{showChanges ? t(`${prefix}.hideChanges`) : t(`${prefix}.showChanges`)}
+						{showChanges ? "Hide changes" : "Show changes"}
 					</Button>
 					<Separator />
 					<div className="space-y-basalt-card-sm">
 						{ALLOCATIONS.map((item) => (
 							<Meter
 								key={item.id}
-								label={t(`${prefix}.allocations.${item.id}`)}
+								label={ALLOCATION_LABELS[item.id]}
 								value={item.value}
 								size="sm"
 								className={
@@ -287,11 +314,11 @@ export function MicroSceneWall({ className }: { className?: string }) {
 			</LayerCard>
 
 			<LayerCard padding="none">
-				<LayerCard.Header>{t(`${prefix}.ledger`)}</LayerCard.Header>
+				<LayerCard.Header>Compact ledger</LayerCard.Header>
 				<LayerCard.Body className="space-y-basalt-card-sm">
 					<div
 						role="group"
-						aria-label={t(`${prefix}.ledgerFilter`)}
+						aria-label="Filter invoices"
 						className="flex flex-wrap gap-basalt-space-sm"
 					>
 						{LEDGER_FILTERS.map((filter) => (
@@ -303,17 +330,17 @@ export function MicroSceneWall({ className }: { className?: string }) {
 								className="aria-pressed:bg-basalt-selected aria-pressed:text-basalt-selected-foreground"
 								onClick={() => setLedgerFilter(filter)}
 							>
-								{t(`${prefix}.statuses.${filter}`)}
+								{STATUS_LABELS[filter]}
 							</Button>
 						))}
 					</div>
 					<div className="overflow-x-auto">
-						<Table density="compact" aria-label={t(`${prefix}.ledger`)}>
+						<Table density="compact" aria-label="Compact ledger">
 							<TableHeader>
 								<TableRow>
-									<TableHead>{t(`${prefix}.invoice`)}</TableHead>
-									<TableHead textAlign="end">{t(`${prefix}.amount`)}</TableHead>
-									<TableHead>{t(`${prefix}.status`)}</TableHead>
+									<TableHead>Invoice</TableHead>
+									<TableHead textAlign="end">Amount</TableHead>
+									<TableHead>Status</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
@@ -334,7 +361,7 @@ export function MicroSceneWall({ className }: { className?: string }) {
 															: "warning"
 												}
 											>
-												{t(`${prefix}.statuses.${row.status}`)}
+												{STATUS_LABELS[row.status]}
 											</Badge>
 										</TableCell>
 									</TableRow>

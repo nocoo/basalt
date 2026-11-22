@@ -322,7 +322,7 @@ function TemplateShowcase({ Link }: { Link: LandingLinkComponent }) {
 				))}
 				<div className="landing-showcase-more">
 					<span>There’s more to build on.</span>
-					<Link href="/wearable">
+					<Link href="/health">
 						Health & activity
 						<ArrowUpRight size={13} aria-hidden="true" />
 					</Link>

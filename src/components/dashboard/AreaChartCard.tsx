@@ -1,44 +1,35 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { BarChart3 } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { AreaChart } from "@/components/charts/area";
 import { formatUsd } from "@/lib/format";
 
 const data = [
-	{ day: "Mon", income: 420, expense: 320 },
-	{ day: "Tue", income: 380, expense: 450 },
-	{ day: "Wed", income: 510, expense: 280 },
-	{ day: "Thu", income: 620, expense: 390 },
-	{ day: "Fri", income: 480, expense: 520 },
-	{ day: "Sat", income: 350, expense: 180 },
-	{ day: "Sun", income: 290, expense: 150 },
+	{ x: "Mon", y: 420, y2: 320 },
+	{ x: "Tue", y: 380, y2: 450 },
+	{ x: "Wed", y: 510, y2: 280 },
+	{ x: "Thu", y: 620, y2: 390 },
+	{ x: "Fri", y: 480, y2: 520 },
+	{ x: "Sat", y: 350, y2: 180 },
+	{ x: "Sun", y: 290, y2: 150 },
 ];
 
 export function AreaChartCard() {
-	const { t } = useTranslation();
-
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
 					<BarChart3 className="size-basalt-icon text-basalt-muted-foreground" />
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						{t("dashboard.weeklyActivity")}
-					</h2>
+					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Weekly Activity</h2>
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
 				<AreaChart
-					data={data.map((row) => ({
-						x: t(`dashboard.weekdays.${row.day.toLowerCase()}`),
-						y: row.income,
-						y2: row.expense,
-					}))}
+					data={data}
 					series={[
-						{ key: "y", label: t("dashboard.income") },
-						{ key: "y2", label: t("dashboard.expense") },
+						{ key: "y", label: "Care reimbursements" },
+						{ key: "y2", label: "Care spending" },
 					]}
-					ariaLabel={t("dashboard.weeklyActivityAria")}
+					ariaLabel="Weekly activity area chart comparing income and expense from Monday to Sunday"
 					className="min-h-[12.5rem] w-full flex-1"
 					showAxes
 					showLegend

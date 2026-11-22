@@ -1,38 +1,29 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { useTranslation } from "react-i18next";
 import { StackedBarChart } from "@/components/charts/stacked-bar";
 
-const stackedData = [
-	{ name: "Mon", a: 120, b: 80, c: 60 },
-	{ name: "Tue", a: 140, b: 90, c: 70 },
-	{ name: "Wed", a: 160, b: 110, c: 80 },
-	{ name: "Thu", a: 150, b: 95, c: 75 },
-	{ name: "Fri", a: 170, b: 120, c: 90 },
+const data = [
+	{ x: "Mon", y: 120, y2: 80, y3: 60 },
+	{ x: "Tue", y: 140, y2: 90, y3: 70 },
+	{ x: "Wed", y: 160, y2: 110, y3: 80 },
+	{ x: "Thu", y: 150, y2: 95, y3: 75 },
+	{ x: "Fri", y: 170, y2: 120, y3: 90 },
 ];
 
 export function StackedBarCard() {
-	const { t } = useTranslation();
 	return (
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
-				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-					{t("dashboard.stackedEngagement")}
-				</h2>
+				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Stacked engagement</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">
 				<StackedBarChart
-					data={stackedData.map((row) => ({
-						x: t(`dashboard.weekdays.${row.name.toLowerCase()}`),
-						y: row.a,
-						y2: row.b,
-						y3: row.c,
-					}))}
+					data={data}
 					series={[
-						{ key: "y", label: t("dashboard.core") },
-						{ key: "y2", label: t("dashboard.growth") },
-						{ key: "y3", label: t("dashboard.churn") },
+						{ key: "y", label: "Core" },
+						{ key: "y2", label: "Growth" },
+						{ key: "y3", label: "Churn" },
 					]}
-					ariaLabel={t("dashboard.stackedEngagement")}
+					ariaLabel="Stacked engagement"
 					className="h-full w-full"
 					showAxes
 					showLegend
