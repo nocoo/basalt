@@ -11,6 +11,8 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.6.0] - 2026-11-23
+
 ### Added
 
 - Add `Spinner`, `Kbd`, `Progress`, `Pagination`, and `Combobox` primitives (`@nocoo/basalt` and granular subpaths)
