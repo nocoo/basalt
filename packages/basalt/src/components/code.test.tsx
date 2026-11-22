@@ -155,15 +155,22 @@ describe("Code", () => {
 			<CodeHighlighted title="example.ts" code={"const n = 1;\r\n"} lineNumbers />,
 		);
 		fireEvent.click(screen.getByRole("button", { name: "Copy code" }));
-		await screen.findByRole("alert");
+		await screen.findByRole("button", { name: "Copy failed" });
+		const statusRegion = screen.getByRole("status");
+		expect(screen.queryByRole("alert")).toBeNull();
+		expect(statusRegion).toHaveTextContent("Could not copy code. Try again.");
 		fireEvent.click(screen.getByRole("button", { name: "Copy failed" }));
 		await screen.findByRole("button", { name: "Copied" });
+		expect(statusRegion.textContent).toBe("Code copied\u00A0");
+		fireEvent.click(screen.getByRole("button", { name: "Copied" }));
+		await act(async () => undefined);
+		expect(statusRegion.textContent).toBe("Code copied");
 		expect(writeText).toHaveBeenLastCalledWith("const n = 1;\r\n");
 		rerender(<CodeHighlighted code="Changed" />);
 		expect(screen.getByRole("button", { name: "Copy code" })).toBeInTheDocument();
 		Object.assign(navigator, { clipboard: undefined });
 		await act(async () => fireEvent.click(screen.getByRole("button", { name: "Copy code" })));
-		expect(screen.getByRole("alert")).toHaveTextContent("Could not copy code");
+		expect(screen.getByRole("status")).toHaveTextContent("Could not copy code");
 	});
 	it("highlights comments, strings, numbers and multiline code", () => {
 		render(

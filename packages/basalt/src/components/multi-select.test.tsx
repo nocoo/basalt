@@ -188,12 +188,17 @@ describe("MultiSelect", () => {
 		);
 		const input = await screen.findByRole("combobox");
 		fireEvent.keyDown(input, { key: "Enter", isComposing: true });
+		fireEvent.keyDown(input, { key: "Enter", keyCode: 229 });
 		fireEvent.keyDown(input, { key: "Enter" });
 		fireEvent.keyDown(input, { key: "ArrowUp" });
 		fireEvent.click(screen.getByRole("option"));
 		fireEvent.keyDown(screen.getByRole("button", { name: "Models" }), {
 			key: "Backspace",
 			isComposing: true,
+		});
+		fireEvent.keyDown(screen.getByRole("button", { name: "Models" }), {
+			key: "Backspace",
+			keyCode: 229,
 		});
 		expect(change).not.toHaveBeenCalled();
 		expect(input).not.toHaveAttribute("aria-activedescendant");

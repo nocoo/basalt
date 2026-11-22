@@ -14,10 +14,30 @@ describe("SensitiveInput", () => {
 				hideLabel="Hide password"
 			/>,
 		);
-		expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
-		expect(screen.getByLabelText("Password").parentElement).toHaveClass("basalt-focus-group");
-		fireEvent.click(screen.getByRole("button", { name: "Show password" }));
-		expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
+		const input = screen.getByLabelText("Password");
+		const toggle = screen.getByRole("button", { name: "Show password" });
+		expect(input).toHaveAttribute("type", "password");
+		expect(input.id).toBeTruthy();
+		expect(toggle).toHaveAttribute("aria-controls", input.id);
+		expect(input.parentElement).toHaveClass("basalt-focus-group");
+		fireEvent.click(toggle);
+		expect(input).toHaveAttribute("type", "text");
+	});
+
+	it("uses explicit id for aria-controls on the toggle button", () => {
+		render(
+			<SensitiveInput
+				id="api-secret"
+				aria-label="API Secret"
+				revealLabel="Show"
+				hideLabel="Hide"
+			/>,
+		);
+		expect(screen.getByLabelText("API Secret")).toHaveAttribute("id", "api-secret");
+		expect(screen.getByRole("button", { name: "Show" })).toHaveAttribute(
+			"aria-controls",
+			"api-secret",
+		);
 	});
 
 	it("accepts required labels and native attributes, and rejects type or missing labels", () => {

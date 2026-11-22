@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+export type CopyStatus = "idle" | "copied" | "error";
+
 export interface UseCopyResult {
 	copied: boolean;
+	status: CopyStatus;
+	announcementCount: number;
 	copy: (text: string) => Promise<boolean>;
 }
 
@@ -9,7 +13,10 @@ export interface UseCopyResult {
  * Manages transient clipboard copy feedback with timer reset and unmount cleanup.
  */
 export function useCopy(timeout = 2000): UseCopyResult {
-	const [copied, setCopied] = useState(false);
+	const [state, setState] = useState<{ status: CopyStatus; announcementCount: number }>({
+		status: "idle",
+		announcementCount: 0,
+	});
 	const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const mountedRef = useRef(true);
 
@@ -24,30 +31,49 @@ export function useCopy(timeout = 2000): UseCopyResult {
 		};
 	}, []);
 
+	const scheduleReset = useCallback(() => {
+		if (timerRef.current !== null) {
+			clearTimeout(timerRef.current);
+		}
+		timerRef.current = setTimeout(() => {
+			if (mountedRef.current) {
+				setState((current) => ({ ...current, status: "idle" }));
+			}
+			timerRef.current = null;
+		}, timeout);
+	}, [timeout]);
+
 	const copy = useCallback(
 		async (text: string): Promise<boolean> => {
 			try {
 				await navigator.clipboard.writeText(text);
 			} catch {
+				if (mountedRef.current) {
+					setState((current) => ({
+						status: "error",
+						announcementCount: current.announcementCount + 1,
+					}));
+					scheduleReset();
+				}
 				return false;
 			}
 			if (!mountedRef.current) {
 				return true;
 			}
-			if (timerRef.current !== null) {
-				clearTimeout(timerRef.current);
-			}
-			setCopied(true);
-			timerRef.current = setTimeout(() => {
-				if (mountedRef.current) {
-					setCopied(false);
-				}
-				timerRef.current = null;
-			}, timeout);
+			setState((current) => ({
+				status: "copied",
+				announcementCount: current.announcementCount + 1,
+			}));
+			scheduleReset();
 			return true;
 		},
-		[timeout],
+		[scheduleReset],
 	);
 
-	return { copied, copy };
+	return {
+		copied: state.status === "copied",
+		status: state.status,
+		announcementCount: state.announcementCount,
+		copy,
+	};
 }

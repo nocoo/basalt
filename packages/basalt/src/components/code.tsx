@@ -186,11 +186,11 @@ function CodePanel({
 				</span>
 			</pre>
 			{copyable && (
-				<span role={vm.status === "error" ? "alert" : "status"} className="sr-only">
+				<span role="status" className="sr-only">
 					{vm.status === "copied"
-						? "Code copied"
+						? `Code copied${vm.announcementCount % 2 === 0 ? "\u00A0" : ""}`
 						: vm.status === "error"
-							? "Could not copy code. Try again."
+							? `Could not copy code. Try again.${vm.announcementCount % 2 === 0 ? "\u00A0" : ""}`
 							: ""}
 				</span>
 			)}

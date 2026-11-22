@@ -41,7 +41,7 @@ export function dialogPanelClass({
 } = {}) {
 	return cn(
 		BASALT_UI_CLASS,
-		"fixed top-1/2 left-1/2 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-basalt-lg p-basalt-card sm:p-basalt-card-lg text-basalt-foreground shadow-basalt-modal ring-1 ring-basalt-border",
+		"fixed top-1/2 left-1/2 w-full max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-y-auto overscroll-contain rounded-basalt-lg p-basalt-card sm:p-basalt-card-lg text-basalt-foreground shadow-basalt-modal ring-1 ring-basalt-border",
 		OVERLAY_LAYER,
 		"data-[state=open]:animate-basalt-dialog-in data-[state=closed]:animate-basalt-dialog-out",
 		OVERLAY_MOTION,

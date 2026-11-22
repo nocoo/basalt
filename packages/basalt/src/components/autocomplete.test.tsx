@@ -222,6 +222,10 @@ describe("Autocomplete", () => {
 		expect(input).toHaveValue("App");
 		expect(input).toHaveAttribute("aria-expanded", "true");
 		expect(screen.getByRole("option", { name: "Apple" })).toBeVisible();
+
+		fireEvent.keyDown(input, { key: "Enter", keyCode: 229 });
+		expect(onValueChange).toHaveBeenCalledTimes(1);
+		expect(screen.getByRole("option", { name: "Apple" })).toBeVisible();
 	});
 
 	it("ignores pointermove on options when pointer position has not changed", () => {

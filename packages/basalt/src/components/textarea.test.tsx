@@ -18,7 +18,10 @@ const SIZE_CLASS = {
 } as const;
 
 describe("Textarea", () => {
-	afterEach(() => vi.restoreAllMocks());
+	afterEach(() => {
+		vi.restoreAllMocks();
+		vi.unstubAllGlobals();
+	});
 
 	it("renders a textarea with control surface styling", () => {
 		render(<Textarea aria-label="Notes" />);
@@ -26,6 +29,7 @@ describe("Textarea", () => {
 		expect(area).toBeEnabled();
 		expect(area).toHaveAttribute("data-slot", "textarea");
 		expect(area).not.toHaveAttribute("rows");
+		expect(area).toHaveClass("resize-y");
 		expect(area.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
@@ -63,7 +67,8 @@ describe("Textarea", () => {
 		);
 	});
 
-	it("auto-resizes to scrollHeight and clamps at maxRows", () => {
+	it("auto-resizes to scrollHeight and clamps at maxRows when field-sizing is unsupported", () => {
+		vi.stubGlobal("CSS", { supports: () => false });
 		let currentScrollHeight = 64;
 		vi.spyOn(HTMLTextAreaElement.prototype, "scrollHeight", "get").mockImplementation(
 			() => currentScrollHeight,
@@ -203,5 +208,32 @@ describe("Textarea", () => {
 
 		rerender(<Textarea ref={fnRef} aria-label="Notes" />);
 		expect(fnRef).toHaveBeenCalledWith(area);
+	});
+
+	it("uses native field-sizing without scrollHeight reads when supported", () => {
+		vi.stubGlobal("CSS", {
+			supports: (property: string, value: string) =>
+				property === "field-sizing" && value === "content",
+		});
+		const scrollSpy = vi.spyOn(HTMLTextAreaElement.prototype, "scrollHeight", "get");
+		render(
+			<Textarea
+				aria-label="Notes"
+				autoResize
+				maxRows={4}
+				style={{ fontFamily: "inherit" }}
+				defaultValue="Hello"
+			/>,
+		);
+		const area = screen.getByRole("textbox", { name: "Notes" }) as HTMLTextAreaElement;
+		expect(area).toHaveClass("resize-none", "[field-sizing:content]");
+		expect(area.style.maxBlockSize).toBe(
+			"calc(4lh + 2 * var(--basalt-space-lg) + 2 * var(--basalt-border-width))",
+		);
+		expect(area.style.fontFamily).toBe("inherit");
+		expect(area.style.height).toBe("");
+		fireEvent.change(area, { target: { value: "Hello\nWorld" } });
+		expect(scrollSpy).not.toHaveBeenCalled();
+		expect(area.style.height).toBe("");
 	});
 });

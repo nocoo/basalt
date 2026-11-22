@@ -1,6 +1,7 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { isImeComposing } from "../utils/ime";
 import { Pencil } from "../utils/internal-icons";
 import { Button } from "./button";
 import { Input } from "./input";
@@ -176,7 +177,7 @@ export function InlineEditable({
 							setFailure(undefined);
 						}}
 						onKeyDown={(event) => {
-							if (event.nativeEvent.isComposing) return;
+							if (isImeComposing(event)) return;
 							if (event.key === "Enter") {
 								event.preventDefault();
 								void save("save");

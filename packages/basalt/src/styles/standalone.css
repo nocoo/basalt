@@ -187,6 +187,7 @@
   --basalt-danger-solid: 0 72% 49%;
   --basalt-danger-solid-foreground: 0 0% 100%;
   --basalt-border: 0 0% 89%;
+  --basalt-scrollbar-thumb: 0 0% 52%;
   --basalt-input: 0 0% 86%;
   --basalt-ring: var(--basalt-primary);
   --basalt-well: hsl(var(--basalt-foreground) / 0.065);
@@ -205,7 +206,7 @@
   --basalt-primary-hover: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-primary-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -213,7 +214,7 @@
   --basalt-danger-solid-hover: hsl(var(--basalt-danger-solid));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-danger-solid-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -338,6 +339,7 @@
   --basalt-danger-solid: 0 72% 51%;
   --basalt-danger-solid-foreground: 0 0% 100%;
   --basalt-border: 0 0% 19%;
+  --basalt-scrollbar-thumb: 0 0% 46%;
   --basalt-input: 0 0% 22%;
   --basalt-ring: var(--basalt-link);
   --basalt-shadow-control: inset 0 1px 0 0 rgb(255 255 255 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.32);
@@ -365,7 +367,7 @@
   --basalt-primary-hover: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-primary-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -373,7 +375,7 @@
   --basalt-danger-solid-hover: hsl(var(--basalt-danger-solid));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-danger-solid-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -1670,8 +1672,12 @@
     top: var(--basalt-sticky-top, 0px);
   }
   [data-basalt-island],	[data-basalt-sidebar] {
-    scrollbar-color: hsl(var(--basalt-border)) transparent;
-    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--basalt-scrollbar-thumb)) transparent;
+  }
+  @media (prefers-contrast: more) {
+    [data-basalt-island],	[data-basalt-sidebar] {
+      scrollbar-color: hsl(var(--basalt-foreground)) transparent;
+    }
   }
   [data-basalt-sheet] {
     --basalt-sidebar-height: 100%;
@@ -2029,6 +2035,9 @@
   .table-row {
     display: table-row;
   }
+  .\[field-sizing\:content\] {
+    field-sizing: content;
+  }
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
@@ -2172,11 +2181,11 @@
   .max-h-\[18\.75rem\] {
     max-height: 18.75rem;
   }
+  .max-h-\[calc\(100dvh-2rem\)\] {
+    max-height: calc(100dvh - 2rem);
+  }
   .max-h-\[calc\(100dvh-min\(14vh\,7rem\)-var\(--basalt-space-layout\)\)\] {
     max-height: calc(100dvh - min(14vh, 7rem) - var(--basalt-space-layout));
-  }
-  .max-h-\[calc\(100vh-2rem\)\] {
-    max-height: calc(100vh - 2rem);
   }
   .max-h-\[var\(--radix-popover-content-available-height\)\] {
     max-height: var(--radix-popover-content-available-height);
@@ -2450,6 +2459,9 @@
   }
   .resize-none {
     resize: none;
+  }
+  .resize-y {
+    resize: vertical;
   }
   .scroll-p-basalt-space-sm {
     scroll-padding: var(--basalt-space-sm);
@@ -2744,6 +2756,9 @@
   }
   .overflow-y-hidden\! {
     overflow-y: hidden !important;
+  }
+  .overscroll-contain {
+    overscroll-behavior: contain;
   }
   .overscroll-x-contain {
     overscroll-behavior-x: contain;

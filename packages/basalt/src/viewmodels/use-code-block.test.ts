@@ -24,10 +24,15 @@ describe("code block viewmodel", () => {
 		rerender({ code: "Changed" });
 		await act(async () => resolve());
 		expect(result.current.status).toBe("idle");
+		expect(result.current.announcementCount).toBe(0);
 		await act(async () => result.current.copy(vi.fn().mockRejectedValue(new Error("Denied"))));
 		expect(result.current.status).toBe("error");
+		expect(result.current.announcementCount).toBe(1);
 		await act(async () => result.current.copy(vi.fn().mockResolvedValue(undefined)));
 		expect(result.current.status).toBe("copied");
+		expect(result.current.announcementCount).toBe(2);
+		await act(async () => result.current.copy(vi.fn().mockResolvedValue(undefined)));
+		expect(result.current.announcementCount).toBe(3);
 	});
 	it.each([true, false])(
 		"ignores clipboard settlement after unmount, success=%s",

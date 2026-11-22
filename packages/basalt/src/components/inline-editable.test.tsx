@@ -97,6 +97,7 @@ describe("InlineEditable", () => {
 		expect(screen.getByRole("alert")).toHaveTextContent("Too short");
 		fireEvent.change(input, { target: { value: "Valid name" } });
 		fireEvent.keyDown(input, { key: "Enter", isComposing: true });
+		fireEvent.keyDown(input, { key: "Enter", keyCode: 229 });
 		expect(save).not.toHaveBeenCalled();
 		fireEvent.keyDown(input, { key: "Escape" });
 		expect(screen.getByRole("button", { name: "Edit Name" })).toHaveTextContent("Old");

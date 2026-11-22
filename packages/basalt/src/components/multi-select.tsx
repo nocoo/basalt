@@ -5,6 +5,7 @@ import {
 	SELECT_TRIGGER_CHEVRON_CLASS,
 	selectTriggerClass,
 } from "../utils/control-surface";
+import { isImeComposing } from "../utils/ime";
 import { Check, ChevronDown, X } from "../utils/internal-icons";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Input } from "./input";
@@ -230,7 +231,7 @@ export function MultiSelect({
 						aria-describedby={`${id}-count`}
 						className={selectTriggerClass()}
 						onKeyDown={(event) => {
-							if (event.nativeEvent.isComposing) return;
+							if (isImeComposing(event)) return;
 							if (event.key === "ArrowDown" || event.key === "ArrowUp") {
 								event.preventDefault();
 								changeOpen(true);
@@ -274,7 +275,7 @@ export function MultiSelect({
 							setActive(null);
 						}}
 						onKeyDown={(event) => {
-							if (event.nativeEvent.isComposing) return;
+							if (isImeComposing(event)) return;
 							if (event.key === "ArrowDown" || event.key === "ArrowUp") {
 								event.preventDefault();
 								if (!loading && enabled.length) {

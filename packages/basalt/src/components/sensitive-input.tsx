@@ -29,6 +29,7 @@ export type SensitiveInputProps = Omit<React.ComponentProps<"input">, "type" | "
 export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputProps>(
 	(
 		{
+			id,
 			className,
 			revealLabel,
 			hideLabel,
@@ -40,6 +41,8 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 		ref,
 	) => {
 		const [revealed, setRevealed] = React.useState(false);
+		const generatedId = React.useId();
+		const inputId = id ?? generatedId;
 		return (
 			<div
 				className={controlSurfaceClass(
@@ -48,6 +51,7 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 			>
 				<Input
 					ref={ref}
+					id={inputId}
 					type={revealed ? "text" : "password"}
 					size={size}
 					passwordManagerIgnore={passwordManagerIgnore}
@@ -61,6 +65,7 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 					size={size === "md" ? "icon" : size}
 					className="basalt-action-icon basalt-action-inset shrink-0"
 					aria-label={revealed ? hideLabel : revealLabel}
+					aria-controls={inputId}
 					disabled={disabled}
 					onClick={() => setRevealed((value) => !value)}
 				>

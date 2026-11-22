@@ -172,6 +172,7 @@
 	--basalt-danger-solid: 0 72% 49%;
 	--basalt-danger-solid-foreground: 0 0% 100%;
 	--basalt-border: 0 0% 89%;
+	--basalt-scrollbar-thumb: 0 0% 52%;
 	--basalt-input: 0 0% 86%;
 	--basalt-ring: var(--basalt-primary);
 	--basalt-well: hsl(var(--basalt-foreground) / 0.065);
@@ -190,12 +191,12 @@
 	--basalt-selected-edge: inset 0 0 0 1px hsl(0 0% 10% / 0.06);
 	--basalt-selected-foreground: var(--basalt-foreground);
 	--basalt-primary-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
 	--basalt-danger-solid-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -327,6 +328,7 @@
 	--basalt-danger-solid: 0 72% 51%;
 	--basalt-danger-solid-foreground: 0 0% 100%;
 	--basalt-border: 0 0% 19%;
+	--basalt-scrollbar-thumb: 0 0% 46%;
 	--basalt-input: 0 0% 22%;
 	--basalt-ring: var(--basalt-link);
 	--basalt-shadow-control: inset 0 1px 0 0 rgb(255 255 255 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.32);
@@ -357,12 +359,12 @@
 	--basalt-selected-edge: inset 0 1px 0 0 rgb(255 255 255 / 0.06);
 	--basalt-selected-foreground: var(--basalt-foreground);
 	--basalt-primary-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
 	--basalt-danger-solid-hover: color-mix(
-		in srgb,
+		in oklab,
 		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);

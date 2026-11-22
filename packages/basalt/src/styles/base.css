@@ -197,8 +197,14 @@
 
 	[data-basalt-island],
 	[data-basalt-sidebar] {
-		scrollbar-color: hsl(var(--basalt-border)) transparent;
-		scrollbar-width: thin;
+		scrollbar-color: hsl(var(--basalt-scrollbar-thumb)) transparent;
+	}
+
+	@media (prefers-contrast: more) {
+		[data-basalt-island],
+		[data-basalt-sidebar] {
+			scrollbar-color: hsl(var(--basalt-foreground)) transparent;
+		}
 	}
 }
 

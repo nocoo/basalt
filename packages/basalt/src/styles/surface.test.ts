@@ -385,14 +385,28 @@ describe("nested surface CSS", () => {
 		}
 	});
 
-	it("sets native color-scheme, accent-color, themed scrollbars, and disables code ligatures", () => {
+	it("sets native color-scheme, accent-color, accessible themed scrollbars, oklab mixes, and disables code ligatures", () => {
 		expect(tokenValues('[data-mode="light"]').get("color-scheme")).toBe("light");
 		expect(tokenValues('[data-mode="dark"]').get("color-scheme")).toBe("dark");
 		expect(tokenValues(":root").get("accent-color")).toBe("hsl(var(--basalt-primary))");
+		for (const selector of themeSelectors) {
+			const values = tokenValues(selector);
+			for (const surface of ["background", "card", "secondary"] as const) {
+				expect(
+					contrast(values, surface, "scrollbar-thumb"),
+					`${selector} scrollbar-thumb on ${surface}`,
+				).toBeGreaterThanOrEqual(3);
+			}
+			expect(values.get("--basalt-primary-hover")).toContain("in oklab");
+			expect(values.get("--basalt-danger-solid-hover")).toContain("in oklab");
+		}
+		expect(tokens).not.toContain("in srgb");
 		for (const sheet of [base, standalone]) {
 			expect(sheet).toContain("font-variant-ligatures: none");
-			expect(sheet).toContain("scrollbar-color: hsl(var(--basalt-border)) transparent");
-			expect(sheet).toContain("scrollbar-width: thin");
+			expect(sheet).toContain("scrollbar-color: hsl(var(--basalt-scrollbar-thumb)) transparent");
+			expect(sheet).toContain("prefers-contrast: more");
+			expect(sheet).toContain("scrollbar-color: hsl(var(--basalt-foreground)) transparent");
+			expect(sheet).not.toContain("scrollbar-width: thin");
 		}
 	});
 });

@@ -19,6 +19,13 @@ export const API = [
 				description: "Optional alternate text string written to clipboard instead of `text`.",
 			},
 			{
+				name: "copyLabel",
+				type: "string",
+				required: false,
+				default: "\"Copy\"",
+				description: "Accessible label for the copy button. Override when multiple copy controls appear on the same page.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

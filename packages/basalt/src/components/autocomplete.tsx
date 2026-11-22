@@ -1,6 +1,7 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { type ComponentPropsWithoutRef, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
+import { isImeComposing } from "../utils/ime";
 import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "../utils/overlay";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Input, type InputSize } from "./input";
@@ -193,7 +194,7 @@ export function Autocomplete({
 			return;
 		}
 		const onKey = (event: KeyboardEvent) => {
-			if (event.key !== "Escape" || event.isComposing) {
+			if (event.key !== "Escape" || isImeComposing(event)) {
 				return;
 			}
 			event.preventDefault();
@@ -275,7 +276,7 @@ export function Autocomplete({
 							setOpen(true);
 						}}
 						onKeyDown={(event) => {
-							if (event.nativeEvent.isComposing || event.key === "Process") {
+							if (isImeComposing(event)) {
 								return;
 							}
 							if (event.key === "ArrowDown") {
@@ -346,11 +347,7 @@ export function Autocomplete({
 							lastPointerPos.current = { x: event.clientX, y: event.clientY };
 						}}
 						onEscapeKeyDown={(e) => {
-							const evt = e as unknown as {
-								isComposing?: boolean;
-								nativeEvent?: { isComposing?: boolean };
-							};
-							if (evt.isComposing || evt.nativeEvent?.isComposing) {
+							if (isImeComposing(e as unknown as Parameters<typeof isImeComposing>[0])) {
 								e.preventDefault();
 							}
 						}}
