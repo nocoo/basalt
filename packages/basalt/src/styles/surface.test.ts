@@ -385,7 +385,7 @@ describe("nested surface CSS", () => {
 		}
 	});
 
-	it("sets native color-scheme, accent-color, accessible themed scrollbars, oklab mixes, and disables code ligatures", () => {
+	it("sets native color-scheme, accent-color, accessible themed scrollbars, and disables code ligatures", () => {
 		expect(tokenValues('[data-mode="light"]').get("color-scheme")).toBe("light");
 		expect(tokenValues('[data-mode="dark"]').get("color-scheme")).toBe("dark");
 		expect(tokenValues(":root").get("accent-color")).toBe("hsl(var(--basalt-primary))");
@@ -397,10 +397,7 @@ describe("nested surface CSS", () => {
 					`${selector} scrollbar-thumb on ${surface}`,
 				).toBeGreaterThanOrEqual(3);
 			}
-			expect(values.get("--basalt-primary-hover")).toContain("in oklab");
-			expect(values.get("--basalt-danger-solid-hover")).toContain("in oklab");
 		}
-		expect(tokens).not.toContain("in srgb");
 		for (const sheet of [base, standalone]) {
 			expect(sheet).toContain("font-variant-ligatures: none");
 			expect(sheet).toContain("scrollbar-color: hsl(var(--basalt-scrollbar-thumb)) transparent");

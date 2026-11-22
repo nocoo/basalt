@@ -206,7 +206,7 @@
   --basalt-primary-hover: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-primary-hover: color-mix(
-		in oklab,
+		in srgb,
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -214,7 +214,7 @@
   --basalt-danger-solid-hover: hsl(var(--basalt-danger-solid));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-danger-solid-hover: color-mix(
-		in oklab,
+		in srgb,
 		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -367,7 +367,7 @@
   --basalt-primary-hover: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-primary-hover: color-mix(
-		in oklab,
+		in srgb,
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
@@ -375,7 +375,7 @@
   --basalt-danger-solid-hover: hsl(var(--basalt-danger-solid));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-danger-solid-hover: color-mix(
-		in oklab,
+		in srgb,
 		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
