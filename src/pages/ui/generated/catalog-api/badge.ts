@@ -26,6 +26,19 @@ export const API = [
 				default: "false",
 				description: "Renders a small circular dot indicator before children.",
 			},
+			{
+				name: "onDismiss",
+				type: "() => void",
+				required: false,
+				description: "Renders an inline dismiss button on the trailing edge of the badge.",
+			},
+			{
+				name: "dismissLabel",
+				type: "string",
+				required: false,
+				default: "\"Dismiss\"",
+				description: "Accessible label for the inline dismiss button.",
+			},
 		],
 	},
 ];

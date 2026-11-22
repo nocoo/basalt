@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { X } from "../utils/internal-icons";
 
 export type BadgeTone = "neutral" | "info" | "success" | "warning" | "danger";
 export type BadgeVariant = "soft" | "solid" | "outline";
@@ -54,16 +55,41 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 	 * @default false
 	 */
 	dot?: boolean;
+
+	/**
+	 * Renders an inline dismiss button on the trailing edge of the badge.
+	 */
+	onDismiss?: () => void;
+
+	/**
+	 * Accessible label for the inline dismiss button.
+	 *
+	 * @default "Dismiss"
+	 */
+	dismissLabel?: string;
 }
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-	({ className, tone = "neutral", variant = "soft", dot, children, ...props }, ref) => (
+	(
+		{
+			className,
+			tone = "neutral",
+			variant = "soft",
+			dot,
+			onDismiss,
+			dismissLabel = "Dismiss",
+			children,
+			...props
+		},
+		ref,
+	) => (
 		<span
 			ref={ref}
 			data-slot="badge"
 			className={cn(
 				BASALT_UI_CLASS,
 				"inline-flex items-center gap-basalt-space-md rounded-basalt-full border basalt-inline font-medium",
+				onDismiss && "gap-basalt-space-sm ps-basalt-control-x-sm pe-basalt-space-xs",
 				TONE_CLASSES[tone][variant],
 				className,
 			)}
@@ -73,6 +99,21 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 				<span className="size-basalt-1_5 rounded-basalt-full bg-current" aria-hidden="true" />
 			) : null}
 			{children}
+			{onDismiss ? (
+				<button
+					type="button"
+					aria-label={dismissLabel}
+					onClick={onDismiss}
+					className={cn(
+						"basalt-focus basalt-focus-inset inline-flex size-basalt-4 shrink-0 items-center justify-center rounded-basalt-full text-current transition-colors basalt-motion",
+						variant === "solid"
+							? "opacity-80 hover:opacity-100"
+							: "opacity-70 hover:bg-basalt-hover hover:opacity-100",
+					)}
+				>
+					<X className="size-basalt-icon-sm" aria-hidden="true" />
+				</button>
+			) : null}
 		</span>
 	),
 );

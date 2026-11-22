@@ -2590,7 +2590,7 @@
 			"importPath": "@nocoo/basalt/components/badge",
 			"subpath": "./components/badge",
 			"sourceFile": "packages/basalt/src/components/badge.tsx",
-			"sourceHash": "5b48171e88846355",
+			"sourceHash": "5529f30d5f46f3b0",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2665,6 +2665,19 @@
 									"required": false,
 									"default": "false",
 									"description": "Renders a small circular dot indicator before children."
+								},
+								{
+									"name": "onDismiss",
+									"type": "() => void",
+									"required": false,
+									"description": "Renders an inline dismiss button on the trailing edge of the badge."
+								},
+								{
+									"name": "dismissLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Dismiss\"",
+									"description": "Accessible label for the inline dismiss button."
 								}
 							]
 						}
@@ -2695,6 +2708,19 @@
 							"required": false,
 							"default": "false",
 							"description": "Renders a small circular dot indicator before children."
+						},
+						{
+							"name": "onDismiss",
+							"type": "() => void",
+							"required": false,
+							"description": "Renders an inline dismiss button on the trailing edge of the badge."
+						},
+						{
+							"name": "dismissLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Dismiss\"",
+							"description": "Accessible label for the inline dismiss button."
 						}
 					]
 				}
@@ -11389,7 +11415,7 @@
 			"importPath": "@nocoo/basalt/components/filter-bar",
 			"subpath": "./components/filter-bar",
 			"sourceFile": "packages/basalt/src/components/filter-bar.tsx",
-			"sourceHash": "11f5316ad487ab98",
+			"sourceHash": "8ddbc8fa229112ef",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -14155,7 +14181,7 @@
 			"importPath": "@nocoo/basalt/components/multi-select",
 			"subpath": "./components/multi-select",
 			"sourceFile": "packages/basalt/src/components/multi-select.tsx",
-			"sourceHash": "0afa8ab388c8d35d",
+			"sourceHash": "0d1046aaffef6dcc",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -26957,7 +26983,7 @@
 			"exportName": "Badge",
 			"importPath": "@nocoo/basalt/components/badge",
 			"sourceFile": "packages/basalt/src/components/badge.tsx",
-			"sourceHash": "5b48171e88846355",
+			"sourceHash": "5529f30d5f46f3b0",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#badge",
@@ -26985,6 +27011,19 @@
 							"required": false,
 							"default": "false",
 							"description": "Renders a small circular dot indicator before children."
+						},
+						{
+							"name": "onDismiss",
+							"type": "() => void",
+							"required": false,
+							"description": "Renders an inline dismiss button on the trailing edge of the badge."
+						},
+						{
+							"name": "dismissLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Dismiss\"",
+							"description": "Accessible label for the inline dismiss button."
 						}
 					]
 				}
@@ -32383,7 +32422,7 @@
 			"exportName": "MultiSelect",
 			"importPath": "@nocoo/basalt/components/multi-select",
 			"sourceFile": "packages/basalt/src/components/multi-select.tsx",
-			"sourceHash": "0afa8ab388c8d35d",
+			"sourceHash": "0d1046aaffef6dcc",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#multi-select",
@@ -32557,7 +32596,7 @@
 			"exportName": "FilterBar",
 			"importPath": "@nocoo/basalt/components/filter-bar",
 			"sourceFile": "packages/basalt/src/components/filter-bar.tsx",
-			"sourceHash": "11f5316ad487ab98",
+			"sourceHash": "8ddbc8fa229112ef",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#filter-bar",

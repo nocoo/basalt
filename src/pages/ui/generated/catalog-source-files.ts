@@ -164,7 +164,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"badge": {
 		"file": "packages/basalt/src/components/badge.tsx",
-		"hash": "5b48171e88846355",
+		"hash": "5529f30d5f46f3b0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/badge.js.map (sourcesContent[0])"
 	},
@@ -380,13 +380,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"multi-select": {
 		"file": "packages/basalt/src/components/multi-select.tsx",
-		"hash": "0afa8ab388c8d35d",
+		"hash": "0d1046aaffef6dcc",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/multi-select.js.map (sourcesContent[0])"
 	},
 	"filter-bar": {
 		"file": "packages/basalt/src/components/filter-bar.tsx",
-		"hash": "11f5316ad487ab98",
+		"hash": "8ddbc8fa229112ef",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/filter-bar.js.map (sourcesContent[0])"
 	},

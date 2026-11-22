@@ -22,7 +22,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nocoo/basalt/components/table";
-import { CalendarDays, CreditCard, Inbox, LayoutDashboard, Users, X } from "lucide-react";
+import { CalendarDays, CreditCard, Inbox, LayoutDashboard, Users } from "lucide-react";
 import { useId, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -149,16 +149,13 @@ export function MicroSceneWall({ className }: { className?: string }) {
 						aria-label="Attached files"
 					>
 						{attachments.map((filename) => (
-							<Badge key={filename} variant="outline">
+							<Badge
+								key={filename}
+								variant="outline"
+								dismissLabel={`Remove ${filename}`}
+								onDismiss={() => setAttachments((current) => removeAttachment(current, filename))}
+							>
 								{filename}
-								<Button
-									variant="ghost"
-									size="icon-sm"
-									aria-label={`Remove ${filename}`}
-									onClick={() => setAttachments((current) => removeAttachment(current, filename))}
-								>
-									<X />
-								</Button>
 							</Badge>
 						))}
 					</div>

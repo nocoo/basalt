@@ -197,14 +197,14 @@ export function MultiSelect({
 						return (
 							<span
 								key={item}
-								className="inline-flex max-w-full items-center gap-basalt-space-sm rounded-basalt-md border border-basalt-border bg-basalt-selected py-basalt-space-xs pl-basalt-space-lg text-basalt-sm"
+								className="inline-flex max-w-full items-center gap-basalt-space-sm rounded-basalt-md border border-basalt-border bg-basalt-selected basalt-inline ps-basalt-space-lg pe-basalt-space-xs"
 							>
 								<span className="min-w-0 break-words">{text}</span>
 								<button
 									type="button"
 									disabled={disabled || option?.disabled}
 									aria-label={`${removeLabel} ${text}`}
-									className="basalt-focus basalt-focus-inset rounded-basalt-sm p-basalt-space-sm disabled:opacity-50"
+									className="basalt-focus basalt-focus-inset inline-flex size-basalt-4 shrink-0 items-center justify-center rounded-basalt-sm text-current opacity-70 transition-colors basalt-motion hover:bg-basalt-hover hover:opacity-100 disabled:pointer-events-none disabled:opacity-40"
 									onClick={() => changeValue(selected.filter((value) => value !== item))}
 								>
 									<X className="size-basalt-icon-sm" aria-hidden="true" />

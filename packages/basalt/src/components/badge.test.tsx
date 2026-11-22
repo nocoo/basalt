@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Badge, type BadgeTone, type BadgeVariant } from "./badge";
 
 const TONE_VARIANT_CASES: readonly [BadgeTone, BadgeVariant, readonly string[]][] = [
@@ -68,5 +68,29 @@ describe("Badge", () => {
 		const badge = screen.getByText("Queued");
 		expect(ref.current).toBe(badge);
 		expect(badge).toHaveAttribute("data-slot", "badge");
+	});
+
+	it("renders a compact concentric dismiss button when onDismiss is provided", () => {
+		const dismiss = vi.fn();
+		const { rerender } = render(
+			<Badge variant="outline" onDismiss={dismiss}>
+				tokens.diff
+			</Badge>,
+		);
+		const badge = screen.getByText("tokens.diff");
+		expect(badge).toHaveClass("basalt-inline", "ps-basalt-control-x-sm", "pe-basalt-space-xs");
+		const button = screen.getByRole("button", { name: "Dismiss" });
+		expect(button).toHaveClass("size-basalt-4", "rounded-basalt-full", "hover:bg-basalt-hover");
+		fireEvent.click(button);
+		expect(dismiss).toHaveBeenCalledOnce();
+
+		rerender(
+			<Badge variant="solid" onDismiss={dismiss} dismissLabel="Remove tokens.diff">
+				tokens.diff
+			</Badge>,
+		);
+		const custom = screen.getByRole("button", { name: "Remove tokens.diff" });
+		expect(custom).toHaveClass("opacity-80", "hover:opacity-100");
+		expect(custom).not.toHaveClass("hover:bg-basalt-hover");
 	});
 });

@@ -41,7 +41,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
-import { Bot, FileCode, MessageSquare, Plus, Send, X } from "lucide-react";
+import { Bot, FileCode, MessageSquare, Plus, Send } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 const mobileQuery = "(width < 768px)";
@@ -302,18 +302,15 @@ export default function AgentWorkspaceTemplate() {
 										/>
 										<div className="flex flex-wrap gap-basalt-space-md">
 											{files.map((file) => (
-												<Badge key={file} variant="outline">
+												<Badge
+													key={file}
+													variant="outline"
+													dismissLabel={`Remove ${file}`}
+													onDismiss={() =>
+														setFiles((current) => current.filter((item) => item !== file))
+													}
+												>
 													{file}
-													<Button
-														size="icon-sm"
-														variant="ghost"
-														aria-label={`Remove ${file}`}
-														onClick={() =>
-															setFiles((current) => current.filter((item) => item !== file))
-														}
-													>
-														<X />
-													</Button>
 												</Badge>
 											))}
 										</div>

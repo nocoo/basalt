@@ -79,7 +79,7 @@ export function FilterChip({
 		<span
 			className={cn(
 				BASALT_UI_CLASS,
-				"inline-flex max-w-full items-center gap-basalt-space-sm rounded-basalt-full border border-basalt-border bg-basalt-selected py-basalt-space-sm pl-basalt-space-lg pr-basalt-space-sm text-basalt-sm",
+				"inline-flex max-w-full items-center gap-basalt-space-sm rounded-basalt-full border border-basalt-border bg-basalt-selected basalt-inline ps-basalt-control-x-sm pe-basalt-space-xs",
 				className,
 			)}
 		>
@@ -92,7 +92,7 @@ export function FilterChip({
 				disabled={disabled}
 				aria-label={removeLabel ?? `Remove ${label}`}
 				onClick={onRemove}
-				className="basalt-focus basalt-focus-inset shrink-0 rounded-basalt-full p-basalt-space-sm disabled:opacity-50"
+				className="basalt-focus basalt-focus-inset inline-flex size-basalt-4 shrink-0 items-center justify-center rounded-basalt-full text-current opacity-70 transition-colors basalt-motion hover:bg-basalt-hover hover:opacity-100 disabled:pointer-events-none disabled:opacity-40"
 			>
 				<X className="size-basalt-icon-sm" aria-hidden="true" />
 			</button>
