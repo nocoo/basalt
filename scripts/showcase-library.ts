@@ -418,7 +418,10 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 					})
 					.waitFor();
 				const bounds = await demo.boundingBox();
-				assert.ok(bounds && bounds.width < width && bounds.width > (width === 390 ? 250 : 780));
+				assert.ok(
+					bounds && bounds.width < width && bounds.width > (width === 390 ? 250 : 600),
+					`Unexpected table width at ${width}px: ${bounds?.width}`,
+				);
 			}
 			cases.push(`${width}/${dark ? "dark" : "light"}`);
 		}

@@ -5,6 +5,7 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@nocoo/basalt/components/collapsible";
+import { Combobox } from "@nocoo/basalt/components/combobox";
 import {
 	Dialog,
 	DialogClose,
@@ -13,9 +14,13 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@nocoo/basalt/components/dialog";
+import { Kbd } from "@nocoo/basalt/components/kbd";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { Meter } from "@nocoo/basalt/components/meter";
+import { Pagination } from "@nocoo/basalt/components/pagination";
+import { Progress } from "@nocoo/basalt/components/progress";
+import { Spinner } from "@nocoo/basalt/components/spinner";
 import {
 	Table,
 	TableBody,
@@ -69,6 +74,16 @@ function Controls() {
 				<Button variant="outline">Secondary</Button>
 				<Badge variant="outline">Pending</Badge>
 				<Badge tone="success">Complete</Badge>
+				<Kbd>⌘K</Kbd>
+				<Combobox
+					aria-label="Example framework"
+					options={[
+						{ value: "react", label: "React" },
+						{ value: "vite", label: "Vite" },
+					]}
+					defaultValue="react"
+					className="w-40"
+				/>
 			</LayerCard.Body>
 		</LayerCard>
 	);
@@ -79,10 +94,17 @@ function Data() {
 		<LayerCard padding="none">
 			<LayerCard.Header>Table, meter &amp; status trace</LayerCard.Header>
 			<LayerCard.Body className="space-y-basalt-card-sm">
-				<Meter label="Capacity" value={68} size="sm" />
-				<p className="flex items-center gap-basalt-space-lg">
-					<Loader size={14} showElapsed={false} label="Running" /> Processing
-				</p>
+				<div className="flex flex-wrap items-center gap-basalt-space-lg">
+					<Meter label="Capacity" value={68} size="sm" className="min-w-40 flex-1" />
+					<Progress aria-label="Sync progress" value={68} className="min-w-40 flex-1" />
+				</div>
+				<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
+					<p className="flex items-center gap-basalt-space-lg">
+						<Loader size={14} showElapsed={false} label="Running" />
+						<Spinner size="sm" aria-hidden="true" /> Processing
+					</p>
+					<Pagination aria-label="Example pagination" defaultPage={2} pageCount={5} />
+				</div>
 				<Table aria-label="Status trace" density="compact">
 					<TableHeader>
 						<TableRow>

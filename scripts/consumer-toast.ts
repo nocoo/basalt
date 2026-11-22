@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import type { ToastOptions, ToastVariant } from "@nocoo/basalt/components/toast";
+import type { ToastCallOptions, ToastTone } from "@nocoo/basalt/components/toast";
 import type { Page } from "playwright";
 
 export async function assertConsumerToast(page: Page) {
@@ -9,27 +9,33 @@ export async function assertConsumerToast(page: Page) {
 	const tag = await page.evaluate(() => window.toastAudit?.ref?.tagName);
 	assert.equal(tag, "SECTION", "Toaster public ref must point to SECTION element");
 
-	// 2. 15 variations: 5 variants x 3 icon options (omitted, false, custom)
-	const variants = ["default", "success", "error", "warning", "info"] as const;
+	// 2. 15 variations: 5 tones x 3 icon options (omitted, false, custom)
+	const tones = [
+		"neutral",
+		"success",
+		"danger",
+		"warning",
+		"info",
+	] as const satisfies readonly ToastTone[];
 	const iconKinds = ["omitted", "false", "custom"] as const;
 
-	for (const variant of variants) {
+	for (const tone of tones) {
 		for (const iconKind of iconKinds) {
-			const title = `Icon ${variant} ${iconKind}`;
+			const title = `Icon ${tone} ${iconKind}`;
 			const id = await page.evaluate(
-				({ v, k, t }) => {
+				({ t, k, msg }) => {
 					const audit = window.toastAudit;
 					if (!audit) throw new Error("toastAudit missing");
 					audit.toast.dismiss();
-					const options: ToastOptions & { variant?: ToastVariant } = {
-						variant: v,
+					const options: ToastCallOptions = {
+						tone: t,
 						duration: Number.POSITIVE_INFINITY,
 					};
 					if (k === "false") options.icon = false;
 					if (k === "custom") options.icon = "★";
-					return audit.toast(t, options);
+					return audit.toast(msg, options);
 				},
-				{ v: variant, k: iconKind, t: title },
+				{ t: tone, k: iconKind, msg: title },
 			);
 
 			const item = page.locator("[data-sonner-toast]").filter({ hasText: title });
@@ -37,11 +43,11 @@ export async function assertConsumerToast(page: Page) {
 
 			const iconCount = await item.locator("[data-icon]").count();
 			const expected =
-				iconKind === "false" || (iconKind === "omitted" && variant === "default") ? 0 : 1;
+				iconKind === "false" || (iconKind === "omitted" && tone === "neutral") ? 0 : 1;
 			assert.equal(
 				iconCount,
 				expected,
-				`${variant} with icon=${iconKind} expected ${expected} icons, got ${iconCount}`,
+				`${tone} with icon=${iconKind} expected ${expected} icons, got ${iconCount}`,
 			);
 
 			if (iconKind === "custom") {

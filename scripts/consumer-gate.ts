@@ -1193,12 +1193,13 @@ const spec = ${JSON.stringify(item.spec)};
 const resolved = import.meta.resolve(spec);
 const mod = await import(spec);
 const real = realpathSync(new URL(resolved));
+const value = mod[${JSON.stringify(item.exportName)}];
 console.log(JSON.stringify({
   spec,
   resolved,
   real,
   hasExport: ${JSON.stringify(item.exportName)} in mod,
-  exportType: typeof mod[${JSON.stringify(item.exportName)}],
+  isComponent: typeof value === "function" || (typeof value === "object" && value !== null && "$$typeof" in value),
 }));`,
 						],
 						consumerRoot,
@@ -1208,14 +1209,14 @@ console.log(JSON.stringify({
 						resolved: string;
 						real: string;
 						hasExport: boolean;
-						exportType: string;
+						isComponent: boolean;
 					};
 					assertGranularResolution({
 						spec: item.spec,
 						resolved: parsed.resolved,
 						real: parsed.real,
 						exportName: item.exportName,
-						hasExport: parsed.hasExport && parsed.exportType === "function",
+						hasExport: parsed.hasExport && parsed.isComponent,
 						expectedRoot,
 						repoRoot: realpathSync(repoRoot),
 						fileSuffix: item.fileSuffix,

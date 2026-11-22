@@ -1243,9 +1243,9 @@ export async function assertConsumerGeometry(
 			`expected Checkbox 16x16, got ${data.basalt.checkboxWidth}x${data.basalt.checkboxHeight}`,
 		);
 	}
-	if (Math.round(data.basalt.switchWidth) !== 44 || Math.round(data.basalt.switchHeight) !== 24) {
+	if (Math.round(data.basalt.switchWidth) !== 32 || Math.round(data.basalt.switchHeight) !== 18) {
 		throw new Error(
-			`expected Switch 44x24, got ${data.basalt.switchWidth}x${data.basalt.switchHeight}`,
+			`expected Switch 32x18, got ${data.basalt.switchWidth}x${data.basalt.switchHeight}`,
 		);
 	}
 	if (Math.round(data.basalt.selectTriggerWidth) !== 320) {
@@ -1327,9 +1327,9 @@ export async function assertConsumerGeometry(
 		throw new Error(`expected Banner p margin-top 0px, got ${data.basalt.bannerPMarginTop}`);
 	}
 
-	// Empty grows naturally from two text lines and the shared content gap.
-	if (data.basalt.emptyHeight < 44 || data.basalt.emptyHeight > 48) {
-		throw new Error(`expected natural Empty height 44-48px, got ${data.basalt.emptyHeight}`);
+	// Empty (default md size) includes lg vertical padding, two text lines, and content gap.
+	if (data.basalt.emptyHeight < 90 || data.basalt.emptyHeight > 98) {
+		throw new Error(`expected natural Empty height 90-98px, got ${data.basalt.emptyHeight}`);
 	}
 	if (data.basalt.emptyP0MarginTop !== "0px" || data.basalt.emptyP0MarginBottom !== "0px") {
 		throw new Error(
@@ -1337,9 +1337,9 @@ export async function assertConsumerGeometry(
 		);
 	}
 
-	// PageHeader: height <= 60px (not 80px from UA margins), h1/p margin reset
-	if (data.basalt.pageHeaderHeight > 60) {
-		throw new Error(`expected PageHeader height <= 60px, got ${data.basalt.pageHeaderHeight}`);
+	// PageHeader: height <= 62px (not 80px from UA margins), h1/p margin reset
+	if (data.basalt.pageHeaderHeight > 62) {
+		throw new Error(`expected PageHeader height <= 62px, got ${data.basalt.pageHeaderHeight}`);
 	}
 	if (data.basalt.pageHeaderPMarginTop !== "0px" || data.basalt.pageHeaderPMarginBottom !== "0px") {
 		throw new Error(

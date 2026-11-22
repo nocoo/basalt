@@ -10,7 +10,6 @@ import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
-	ContextMenuPanel,
 	ContextMenuTrigger,
 } from "@nocoo/basalt/components/context-menu";
 import {
@@ -59,7 +58,6 @@ export type ModuleStem =
 	| "popover-aschild-noarrow"
 	| "tooltip"
 	| "dropdown-menu"
-	| "context-menu-panel"
 	| "context-menu-bare"
 	| "menu-bar";
 
@@ -226,14 +224,6 @@ const RENDERERS: Record<ModuleStem, (config: AuditConfig) => React.ReactNode> = 
 				<DropdownMenuItem>Inside action</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
-	),
-	"context-menu-panel": ({ forceMount, epoch }) => (
-		<ContextMenu key={epoch}>
-			<ContextMenuTrigger data-audit-trigger={true}>Trigger</ContextMenuTrigger>
-			<ContextMenuPanel data-audit-content="context-menu-panel" forceMount={forceMount}>
-				<ContextMenuItem>Inside action</ContextMenuItem>
-			</ContextMenuPanel>
-		</ContextMenu>
 	),
 	"context-menu-bare": ({ forceMount, epoch }) => (
 		<ContextMenu key={epoch}>

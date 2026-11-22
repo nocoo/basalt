@@ -11,7 +11,6 @@ const SLUGS = [
 	"popover-aschild-noarrow",
 	"tooltip",
 	"dropdown-menu",
-	"context-menu-panel",
 	"context-menu-bare",
 	"menu-bar",
 ] as const;

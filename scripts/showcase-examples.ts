@@ -219,11 +219,11 @@ async function assertTablesLedger(page: Page, baseUrl: string) {
 	await table.waitFor();
 	const query = ledger.getByRole("textbox", { name: "Search invoices", exact: true });
 	await query.fill("North");
-	assert.ok((await table.locator("tbody").textContent())?.includes("North Clinic"));
+	assert.ok((await table.locator("tbody").textContent())?.includes("Cedar Family Care North"));
 	await query.fill("");
 	await table.getByRole("button", { name: "Amount", exact: true }).focus();
 	await page.keyboard.press("Enter");
-	assert.ok((await table.locator("tbody tr").first().textContent())?.includes("Atlas Care Center"));
+	assert.ok((await table.locator("tbody tr").first().textContent())?.includes("Echo Systems"));
 	await ledger.getByRole("button", { name: "Next page", exact: true }).click();
 	assert.equal(await table.locator("tbody tr").count(), 2);
 	await query.fill("Harbor");

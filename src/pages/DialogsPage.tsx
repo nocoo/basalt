@@ -287,7 +287,7 @@ export default function DialogsPage() {
 											<Field label="Amount">
 												<Input defaultValue="80,000.00" inputMode="decimal" />
 											</Field>
-											<div className="grid grid-cols-2 gap-basalt-layout">
+											<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
 												<Select defaultValue="USD">
 													<Field label="Currency">
 														<SelectTrigger aria-label="Currency">
