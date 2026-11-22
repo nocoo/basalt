@@ -5,12 +5,15 @@ import LoginPage from "@/pages/LoginPage";
 
 describe("LoginPage", () => {
 	it("uses the badge login as the default sign-in surface", () => {
-		render(
+		const { container } = render(
 			<MemoryRouter>
 				<LoginPage />
 			</MemoryRouter>,
 		);
 
+		expect(screen.getByRole("main")).toBeInTheDocument();
+		expect(screen.getByRole("heading", { level: 1, name: "Welcome" })).toBeInTheDocument();
+		expect(container.innerHTML).not.toMatch(/text-\[(?:9|10)px\]/);
 		expect(screen.getByRole("button", { name: "Continue with Google" })).toHaveAttribute(
 			"type",
 			"button",

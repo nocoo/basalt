@@ -105,85 +105,89 @@ export default function UiIndexPage() {
 			}
 		>
 			{filtersOpen ? (
-				<LayerCard id="catalog-filters" className="space-y-basalt-card">
-					<div className="flex flex-col gap-basalt-space-lg xl:flex-row xl:flex-wrap xl:items-end">
-						<div className="min-w-0 flex-1 space-y-basalt-space-lg xl:max-w-sm">
-							<label
-								htmlFor="catalog-search"
-								className="block text-basalt-sm font-medium text-basalt-muted-foreground"
-							>
-								Search
-							</label>
-							<InputGroup>
-								<InputGroup.Addon>
-									<Search aria-hidden="true" />
-								</InputGroup.Addon>
-								<InputGroup.Input
-									ref={searchInputRef}
-									id="catalog-search"
-									type="search"
-									value={searchValue}
-									onChange={(event) => {
-										const nextValue = event.currentTarget.value;
-										setSearchValue(nextValue);
-										updateQuery({ q: nextValue });
-									}}
-									placeholder="Search components, charts, and blocks"
-									autoComplete="off"
-								/>
-							</InputGroup>
-						</div>
-						<div className="space-y-basalt-space-lg">
-							<label
-								htmlFor="catalog-category"
-								className="block text-basalt-sm font-medium text-basalt-muted-foreground"
-							>
-								Category
-							</label>
-							<Select
-								value={query.category}
-								onValueChange={(category) =>
-									updateQuery({ category: category as CatalogIndexCategory })
+				<search aria-label="Filter components">
+					<LayerCard id="catalog-filters" className="space-y-basalt-card">
+						<div className="flex flex-col gap-basalt-space-lg xl:flex-row xl:flex-wrap xl:items-end">
+							<div className="min-w-0 flex-1 space-y-basalt-space-lg xl:max-w-sm">
+								<label
+									htmlFor="catalog-search"
+									className="block text-basalt-sm font-medium text-basalt-muted-foreground"
+								>
+									Search
+								</label>
+								<InputGroup>
+									<InputGroup.Addon>
+										<Search aria-hidden="true" />
+									</InputGroup.Addon>
+									<InputGroup.Input
+										ref={searchInputRef}
+										id="catalog-search"
+										type="search"
+										value={searchValue}
+										onChange={(event) => {
+											const nextValue = event.currentTarget.value;
+											setSearchValue(nextValue);
+											updateQuery({ q: nextValue });
+										}}
+										placeholder="Search components, charts, and blocks"
+										autoComplete="off"
+									/>
+								</InputGroup>
+							</div>
+							<div className="space-y-basalt-space-lg">
+								<label
+									htmlFor="catalog-category"
+									className="block text-basalt-sm font-medium text-basalt-muted-foreground"
+								>
+									Category
+								</label>
+								<Select
+									value={query.category}
+									onValueChange={(category) =>
+										updateQuery({ category: category as CatalogIndexCategory })
+									}
+								>
+									<SelectTrigger id="catalog-category">
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="all">All</SelectItem>
+										{CATALOG_CATEGORIES.map((category) => (
+											<SelectItem key={category.id} value={category.id}>
+												{category.label}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+							<SegmentControl
+								legend="Release"
+								value={query.release}
+								options={RELEASE_OPTIONS}
+								allOption={{ value: "all" }}
+								onValueChange={(release) =>
+									updateQuery({ release: release as CatalogIndexRelease })
 								}
-							>
-								<SelectTrigger id="catalog-category">
-									<SelectValue />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="all">All</SelectItem>
-									{CATALOG_CATEGORIES.map((category) => (
-										<SelectItem key={category.id} value={category.id}>
-											{category.label}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
+							/>
 						</div>
-						<SegmentControl
-							legend="Release"
-							value={query.release}
-							options={RELEASE_OPTIONS}
-							allOption={{ value: "all" }}
-							onValueChange={(release) => updateQuery({ release: release as CatalogIndexRelease })}
-						/>
-					</div>
-					<div className="flex min-h-8 flex-wrap items-center justify-between gap-basalt-space-lg">
-						<p
-							role="status"
-							aria-live="polite"
-							aria-atomic="true"
-							data-result-summary
-							className="text-basalt-base text-basalt-muted-foreground"
-						>
-							{resultCount} {resultCount === 1 ? "result" : "results"}
-						</p>
-						{hasFilters ? (
-							<Button variant="ghost" size="sm" onClick={resetFilters}>
-								Reset filters
-							</Button>
-						) : null}
-					</div>
-				</LayerCard>
+						<div className="flex min-h-8 flex-wrap items-center justify-between gap-basalt-space-lg">
+							<p
+								role="status"
+								aria-live="polite"
+								aria-atomic="true"
+								data-result-summary
+								className="text-basalt-base text-basalt-muted-foreground"
+							>
+								{resultCount} {resultCount === 1 ? "result" : "results"}
+							</p>
+							{hasFilters ? (
+								<Button variant="ghost" size="sm" onClick={resetFilters}>
+									Reset filters
+								</Button>
+							) : null}
+						</div>
+					</LayerCard>
+				</search>
 			) : null}
 
 			{resultCount > 0 ? (

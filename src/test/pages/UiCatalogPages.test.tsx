@@ -103,6 +103,7 @@ describe("ui catalog", () => {
 		expect(screen.queryByRole("searchbox", { name: "Search" })).not.toBeInTheDocument();
 		fireEvent.click(filtersToggle);
 		expect(filtersToggle).toHaveAttribute("aria-expanded", "true");
+		expect(document.querySelector('search[aria-label="Filter components"]')).toBeInTheDocument();
 		expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
 		expect(document.getElementById("catalog-filters")).toHaveAttribute("data-basalt-surface");
 		expect(document.getElementById("catalog-filters")).toHaveClass("p-basalt-card");

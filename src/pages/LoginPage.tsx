@@ -24,7 +24,7 @@ export default function LoginPage() {
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 
 	return (
-		<div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-basalt-background p-4">
+		<main className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-basalt-background p-4">
 			<div
 				className="pointer-events-none absolute inset-0"
 				style={{
@@ -67,20 +67,23 @@ export default function LoginPage() {
 								}}
 							/>
 							<div className="flex items-center gap-2">
-								<Wallet className="h-4 w-4 stroke-[1.5] text-basalt-primary-foreground" />
+								<Wallet
+									aria-hidden="true"
+									className="h-4 w-4 stroke-[1.5] text-basalt-primary-foreground"
+								/>
 								<span className="text-sm font-semibold text-basalt-primary-foreground">
 									basalt.
 								</span>
 							</div>
-							<span className="text-[10px] font-medium uppercase tracking-widest text-basalt-primary-foreground/60">
+							<span className="text-basalt-xs font-medium uppercase tracking-widest text-basalt-primary-foreground/60">
 								Visitor
 							</span>
 						</div>
 						<div className="mt-3 flex items-center justify-between">
-							<span className="font-mono text-[9px] tracking-wider text-basalt-primary-foreground/40">
+							<span className="font-mono text-basalt-xs tracking-wider text-basalt-primary-foreground/40">
 								ID {year}-{today.slice(4)}
 							</span>
-							<div className="h-6">
+							<div className="h-6" aria-hidden="true">
 								<Barcode />
 							</div>
 						</div>
@@ -89,7 +92,7 @@ export default function LoginPage() {
 					<div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
 						<BasaltLogo className="h-24 w-24 object-contain" sizes="6rem" />
 
-						<p className="mt-5 text-lg font-semibold text-basalt-foreground">Welcome</p>
+						<h1 className="mt-5 text-basalt-xl font-semibold text-basalt-foreground">Welcome</h1>
 						<p className="mt-1 text-xs text-basalt-muted-foreground">Sign in to get your badge</p>
 
 						<div className="mt-5 h-px w-full bg-basalt-border" />
@@ -117,7 +120,7 @@ export default function LoginPage() {
 							Continue with Google
 						</Button>
 
-						<p className="mt-3 text-center text-[10px] leading-relaxed text-basalt-muted-foreground/60">
+						<p className="mt-3 text-center text-basalt-xs leading-relaxed text-basalt-muted-foreground/60">
 							By signing in you agree to our Terms of Service and Privacy Policy
 						</p>
 					</div>
@@ -125,13 +128,13 @@ export default function LoginPage() {
 					<div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-basalt-border bg-basalt-secondary/50 py-2.5">
 						<div className="flex items-center gap-1.5">
 							<div className="h-1.5 w-1.5 animate-pulse motion-reduce:animate-none rounded-full bg-basalt-success" />
-							<span className="text-[10px] text-basalt-muted-foreground">
+							<span className="text-basalt-xs text-basalt-muted-foreground">
 								Secure authentication
 							</span>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 }

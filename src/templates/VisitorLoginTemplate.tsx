@@ -13,7 +13,9 @@ export default function VisitorLoginTemplate() {
 	const [password, setPassword] = useState("");
 	const [twoFactor, setTwoFactor] = useState(false);
 	const [code, setCode] = useState("");
-	const [message, setMessage] = useState("");
+	const [feedback, setFeedback] = useState<{ tone: "error" | "success"; text: string } | null>(
+		null,
+	);
 
 	return (
 		<main
@@ -22,7 +24,7 @@ export default function VisitorLoginTemplate() {
 		>
 			<LayerCard padding="none" className="w-full overflow-hidden" style={{ maxWidth: "18rem" }}>
 				<div className="flex items-center gap-basalt-space-lg bg-basalt-primary px-basalt-card py-basalt-card-sm text-basalt-primary-foreground">
-					<Mountain className="size-basalt-icon-lg" />
+					<Mountain className="size-basalt-icon-lg" aria-hidden="true" />
 					<span className="font-semibold">Northstar</span>
 				</div>
 				<LayerCard.Body className="space-y-basalt-card">
@@ -36,10 +38,10 @@ export default function VisitorLoginTemplate() {
 						className="space-y-basalt-card-sm"
 						onSubmit={(event) => {
 							event.preventDefault();
-							setMessage(
+							setFeedback(
 								twoFactor && code !== "123456"
-									? "Enter the demo verification code 123456."
-									: "Demo verified. No credentials were sent.",
+									? { tone: "error", text: "Enter the demo verification code 123456." }
+									: { tone: "success", text: "Demo verified. No credentials were sent." },
 							);
 						}}
 					>
@@ -47,9 +49,13 @@ export default function VisitorLoginTemplate() {
 							<Label htmlFor="visitor-email">Email</Label>
 							<Input
 								id="visitor-email"
+								name="username"
 								type="email"
 								required
-								autoComplete="email"
+								autoComplete="username"
+								autoCorrect="off"
+								autoCapitalize="none"
+								spellCheck={false}
 								value={email}
 								onChange={(event) => setEmail(event.target.value)}
 							/>
@@ -58,6 +64,7 @@ export default function VisitorLoginTemplate() {
 							<Label htmlFor="visitor-password">Password</Label>
 							<Input
 								id="visitor-password"
+								name="password"
 								type="password"
 								required
 								autoComplete="current-password"
@@ -74,7 +81,10 @@ export default function VisitorLoginTemplate() {
 								<Label htmlFor="visitor-code">Verification code</Label>
 								<Input
 									id="visitor-code"
+									name="code"
 									inputMode="numeric"
+									autoComplete="one-time-code"
+									aria-invalid={feedback?.tone === "error" || undefined}
 									value={code}
 									onChange={(event) => setCode(event.target.value)}
 								/>
@@ -83,11 +93,15 @@ export default function VisitorLoginTemplate() {
 						<Button type="submit" className="w-full">
 							Sign in
 						</Button>
-						{message && (
-							<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
-								{message}
+						{feedback?.tone === "error" ? (
+							<p role="alert" className="text-basalt-sm text-basalt-danger">
+								{feedback.text}
 							</p>
-						)}
+						) : feedback?.tone === "success" ? (
+							<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
+								{feedback.text}
+							</p>
+						) : null}
 					</form>
 				</LayerCard.Body>
 				<LayerCard.Footer>

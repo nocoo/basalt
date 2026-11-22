@@ -54,7 +54,7 @@
 	color: var(--basalt-scene-ink);
 }
 .landing :where(h2) {
-	font-size: clamp(2rem, 3.6vw, 3.25rem);
+	font-size: clamp(2rem, 1rem + 2.5vw, 3.25rem);
 	font-weight: 500;
 	line-height: 1.08;
 	letter-spacing: -0.032em;
@@ -321,7 +321,7 @@
 .landing-hero-copy :where(h1) {
 	max-width: 15ch;
 	margin-top: 1.75rem;
-	font-size: clamp(2.75rem, 6.4vw, 5.5rem);
+	font-size: clamp(2.75rem, 1.25rem + 4.8vw, 5.5rem);
 	font-weight: 500;
 	line-height: 1;
 	letter-spacing: -0.04em;
@@ -341,7 +341,7 @@
 	max-width: 38rem;
 	margin-top: 1.5rem;
 	color: var(--basalt-scene-ink-soft);
-	font-size: clamp(1rem, 1.35vw, 1.125rem);
+	font-size: clamp(1rem, 0.875rem + 0.3vw, 1.125rem);
 	line-height: 1.65;
 	text-shadow: 0 0.0625rem 1rem var(--basalt-scene-shade-45);
 }
@@ -584,7 +584,7 @@
 	max-width: 36rem;
 	color: var(--basalt-scene-ink);
 	font-family: var(--basalt-font-display);
-	font-size: clamp(1.1875rem, 1.75vw, 1.4375rem);
+	font-size: clamp(1.1875rem, 0.95rem + 0.5vw, 1.4375rem);
 	font-weight: 500;
 	line-height: 1.42;
 	letter-spacing: -0.02em;
@@ -608,7 +608,7 @@
 }
 .landing-stats :where(strong) {
 	font-family: var(--basalt-font-display);
-	font-size: clamp(2.75rem, 5vw, 3.75rem);
+	font-size: clamp(2.75rem, 1.5rem + 2.5vw, 3.75rem);
 	font-weight: 400;
 	line-height: 1;
 	letter-spacing: -0.05em;
@@ -756,7 +756,7 @@
 	padding-block: 1.25rem;
 	color: var(--basalt-scene-ink-muted);
 	font-family: var(--basalt-font-display);
-	font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+	font-size: clamp(1.125rem, 0.95rem + 0.45vw, 1.375rem);
 	font-weight: 500;
 	letter-spacing: -0.025em;
 	list-style: none;
@@ -1181,7 +1181,7 @@
 }
 .landing-brand-intro :where(h2) {
 	margin-top: 1.25rem;
-	font-size: clamp(2rem, 3.2vw, 2.875rem);
+	font-size: clamp(2rem, 1rem + 2.2vw, 2.875rem);
 }
 .landing-brand-intro > :where(p:last-child) {
 	margin-top: 1.25rem;
@@ -1337,7 +1337,7 @@
 	padding-block: 1.5rem;
 	color: var(--basalt-scene-ink-soft);
 	font-family: var(--basalt-font-display);
-	font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+	font-size: clamp(1.0625rem, 0.95rem + 0.35vw, 1.25rem);
 	font-weight: 500;
 	letter-spacing: -0.02em;
 	list-style: none;
@@ -1392,7 +1392,7 @@
 	gap: 1.5rem;
 }
 .landing-cta-copy :where(h2) {
-	font-size: clamp(2.125rem, 4.6vw, 4rem);
+	font-size: clamp(2.125rem, 1rem + 3.2vw, 4rem);
 	line-height: 1.02;
 }
 .landing-cta-copy :where(p) {
@@ -1608,24 +1608,52 @@
 		font-size: var(--basalt-text-xs);
 	}
 }
+@media (prefers-reduced-motion: no-preference) {
+	@supports (interpolate-size: allow-keywords) {
+		.landing-showcase-list :where(details),
+		.landing-faq-list :where(details) {
+			interpolate-size: allow-keywords;
+		}
+		.landing-showcase-list :where(details)::details-content,
+		.landing-faq-list :where(details)::details-content {
+			block-size: 0;
+			overflow: clip;
+			transition:
+				block-size var(--basalt-motion-normal) var(--basalt-motion-ease),
+				content-visibility var(--basalt-motion-normal) allow-discrete;
+		}
+		.landing-showcase-list :where(details[open])::details-content,
+		.landing-faq-list :where(details[open])::details-content {
+			block-size: auto;
+		}
+	}
+}
 @media (prefers-reduced-motion: reduce) {
+	.landing {
+		scroll-behavior: auto;
+	}
 	.landing-brand-artwork[data-motion] :where(.landing-brand-float) {
 		animation: none;
 	}
 	.landing-brand-mark {
 		transform: none;
+		transition: none;
 	}
 	.landing-brand-controls {
 		display: none;
 	}
-	.landing :where(*),
-	.landing *::before,
-	.landing *::after {
-		transition: none;
-		scroll-behavior: auto;
+	.landing-button {
+		transition: background-color var(--basalt-motion-normal) var(--basalt-motion-ease);
 	}
 	.landing-button:hover,
-	.landing-showcase-window:hover {
+	.landing-showcase-window:hover,
+	.landing-text-link:where(:hover) :where(svg) {
 		transform: none;
+	}
+	.landing-text-link :where(svg),
+	.landing-showcase-window,
+	.landing-showcase-list :where(summary svg),
+	.landing-faq-list :where(summary svg) {
+		transition: none;
 	}
 }
