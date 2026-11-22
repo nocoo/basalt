@@ -901,7 +901,7 @@ export function DatePicker({
 					aria-invalid={invalidState}
 					className={cn(
 						"justify-start font-normal",
-						hasDestructiveStyle && "border-basalt-destructive text-basalt-destructive",
+						hasDestructiveStyle && "border-basalt-danger-solid text-basalt-danger-solid",
 						className,
 					)}
 				>
@@ -912,7 +912,7 @@ export function DatePicker({
 				<span
 					id={errorId}
 					role="alert"
-					className="mt-basalt-space-sm block text-basalt-sm text-basalt-destructive"
+					className="mt-basalt-space-sm block text-basalt-sm text-basalt-danger-solid"
 				>
 					{validationMessage}
 				</span>

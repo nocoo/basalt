@@ -128,9 +128,9 @@ describe("catalog page content loader", () => {
 		expect(loadCatalogPageContent("banner")).toBe(first);
 		const content = await first;
 		expect(content?.docs.description).toBe(
-			"Displays contextual inline messages for informational, alert, or error states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping variant and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
+			"Displays contextual inline messages for neutral, informational, success, warning, or danger states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping tone and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
 		);
-		expect(content?.examples[0]?.id).toBe("banner-variants");
+		expect(content?.examples[0]?.id).toBe("banner-tones");
 		expect(loadFamily).toHaveBeenCalledWith("feedback");
 	});
 

@@ -112,7 +112,7 @@ export default function UiCategoryOverviewPage() {
 			<SectionRule
 				variant="heading"
 				title="In this group"
-				actions={<Badge variant="secondary">{entries.length} items</Badge>}
+				actions={<Badge>{entries.length} items</Badge>}
 				className="space-y-basalt-card"
 			>
 				<LayerCard>

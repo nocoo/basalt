@@ -82,7 +82,7 @@ const TIMELINE = [
 const SOLID_PILLS = [
 	{ label: "Primary", className: "bg-primary text-primary-foreground" },
 	{ label: "Success", className: "bg-success text-success-foreground" },
-	{ label: "Warning", className: "bg-basalt-warning text-basalt-warning-foreground" },
+	{ label: "Warning", className: "bg-basalt-warning-solid text-basalt-warning-solid-foreground" },
 	{ label: "Error", className: "bg-destructive text-destructive-foreground" },
 ];
 
@@ -90,7 +90,7 @@ const SOFT_PILLS = [
 	{ label: "Blue", className: "bg-basalt-info/10 text-basalt-info" },
 	{ label: "Teal", className: "bg-basalt-success/10 text-basalt-success" },
 	{ label: "Indigo", className: "bg-basalt-primary/10 text-basalt-link" },
-	{ label: "Rose", className: "bg-basalt-destructive/10 text-basalt-destructive" },
+	{ label: "Rose", className: "bg-basalt-danger-solid/10 text-basalt-danger-solid" },
 ];
 
 const OUTLINE_PILLS = [
@@ -118,8 +118,8 @@ const DOT_PILLS = [
 	},
 	{
 		label: "Offline",
-		dot: "bg-basalt-destructive",
-		className: "bg-basalt-destructive/10 text-basalt-destructive",
+		dot: "bg-basalt-danger-solid",
+		className: "bg-basalt-danger-solid/10 text-basalt-danger-solid",
 	},
 ];
 
@@ -156,13 +156,13 @@ export default function DataPage() {
 							<div className="flex items-center gap-basalt-space-sm mt-basalt-card-sm">
 								{kpi.trend === "up" && <TrendingUp className="h-3.5 w-3.5 text-basalt-success" />}
 								{kpi.trend === "down" && (
-									<TrendingDown className="h-3.5 w-3.5 text-basalt-destructive" />
+									<TrendingDown className="h-3.5 w-3.5 text-basalt-danger-solid" />
 								)}
 								{kpi.trend === "flat" && (
 									<Minus className="size-basalt-icon-sm text-basalt-muted-foreground" />
 								)}
 								<span
-									className={`text-basalt-sm font-medium tabular-nums ${kpi.trend === "up" ? "text-basalt-success" : kpi.trend === "down" ? "text-basalt-destructive" : "text-basalt-muted-foreground"}`}
+									className={`text-basalt-sm font-medium tabular-nums ${kpi.trend === "up" ? "text-basalt-success" : kpi.trend === "down" ? "text-basalt-danger-solid" : "text-basalt-muted-foreground"}`}
 								>
 									{kpi.change}
 								</span>
@@ -257,17 +257,18 @@ export default function DataPage() {
 									<TableCell className="ps-basalt-table-edge">{row.id}</TableCell>
 									<TableCell>{row.customer}</TableCell>
 									<TableCell>
-										<span
-											className={`rounded-basalt-full px-basalt-space-lg py-basalt-space-xs text-basalt-sm font-medium ${
+										<Badge
+											dot
+											tone={
 												row.status === "Paid"
-													? "bg-success/10 text-success"
+													? "success"
 													: row.status === "Pending"
-														? "bg-basalt-warning/10 text-basalt-warning"
-														: "bg-destructive/10 text-destructive"
-											}`}
+														? "warning"
+														: "danger"
+											}
 										>
 											{row.status}
-										</span>
+										</Badge>
 									</TableCell>
 									<TableCell textAlign="end">
 										{new Intl.NumberFormat("en-US", {
@@ -372,9 +373,11 @@ export default function DataPage() {
 									{t("pages.data.variants")}
 								</p>
 								<div className="flex flex-wrap items-center gap-basalt-space-lg">
-									<Badge>Default</Badge>
-									<Badge variant="secondary">Secondary</Badge>
-									<Badge variant="destructive">Destructive</Badge>
+									<Badge>Soft</Badge>
+									<Badge variant="solid">Solid</Badge>
+									<Badge tone="danger" variant="solid">
+										Danger
+									</Badge>
 									<Badge variant="outline">Outline</Badge>
 								</div>
 							</div>
@@ -383,17 +386,20 @@ export default function DataPage() {
 									{t("pages.data.semantic")}
 								</p>
 								<div className="flex flex-wrap items-center gap-basalt-space-lg">
-									<Badge className="border-transparent bg-basalt-success/15 text-basalt-success">
+									<Badge dot tone="neutral">
+										Offline
+									</Badge>
+									<Badge dot tone="info">
+										Info
+									</Badge>
+									<Badge dot tone="success">
 										Active
 									</Badge>
-									<Badge className="border-transparent bg-basalt-warning/15 text-basalt-warning">
+									<Badge dot tone="warning">
 										Pending
 									</Badge>
-									<Badge className="border-transparent bg-basalt-destructive/15 text-basalt-destructive">
+									<Badge dot tone="danger">
 										Failed
-									</Badge>
-									<Badge className="border-transparent bg-basalt-info/15 text-basalt-info">
-										Info
 									</Badge>
 								</div>
 							</div>

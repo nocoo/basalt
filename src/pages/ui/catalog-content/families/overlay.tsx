@@ -518,8 +518,8 @@ export default function Example() {
 	</AlertDialogTrigger>
 	<AlertDialogContent>
 		<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
-			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
-				<AlertTriangle className="size-5 text-basalt-destructive" />
+			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-danger-solid/20">
+				<AlertTriangle className="size-5 text-basalt-danger-solid" />
 			</div>
 			<AlertDialogTitle>Delete Account?</AlertDialogTitle>
 		</div>
@@ -545,8 +545,8 @@ export default function Example() {
 						</AlertDialogTrigger>
 						<AlertDialogContent>
 							<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
-								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
-									<AlertTriangle className="size-5 text-basalt-destructive" />
+								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-danger-solid/20">
+									<AlertTriangle className="size-5 text-basalt-danger-solid" />
 								</div>
 								<AlertDialogTitle>Delete Account?</AlertDialogTitle>
 							</div>
@@ -572,8 +572,8 @@ export default function Example() {
 	</DialogTrigger>
 	<DialogContent disablePointerDismissal>
 		<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
-			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
-				<AlertTriangle className="size-5 text-basalt-destructive" />
+			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-danger-solid/20">
+				<AlertTriangle className="size-5 text-basalt-danger-solid" />
 			</div>
 			<DialogTitle>Delete care plan?</DialogTitle>
 		</div>
@@ -599,8 +599,8 @@ export default function Example() {
 						</DialogTrigger>
 						<DialogContent disablePointerDismissal>
 							<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
-								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
-									<AlertTriangle className="size-5 text-basalt-destructive" />
+								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-danger-solid/20">
+									<AlertTriangle className="size-5 text-basalt-danger-solid" />
 								</div>
 								<DialogTitle>Delete care plan?</DialogTitle>
 							</div>
@@ -953,8 +953,8 @@ export default function Example() {
 						</AlertDialogTrigger>
 						<AlertDialogContent>
 							<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
-								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
-									<AlertTriangle className="size-5 text-basalt-destructive" />
+								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-danger-solid/20">
+									<AlertTriangle className="size-5 text-basalt-danger-solid" />
 								</div>
 								<AlertDialogTitle>Delete Account?</AlertDialogTitle>
 							</div>

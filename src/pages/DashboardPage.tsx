@@ -16,8 +16,8 @@ import { ShowcasePage } from "@/components/ShowcasePage";
 import { useStatsOverviewViewModel } from "@/viewmodels/useStatsOverviewViewModel";
 
 const DIRECTION_CLASSES = {
-	positive: "text-basalt-tag-success-foreground",
-	negative: "text-basalt-destructive",
+	positive: "text-basalt-success",
+	negative: "text-basalt-danger-solid",
 	neutral: "text-basalt-muted-foreground",
 } as const;
 

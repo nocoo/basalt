@@ -216,12 +216,17 @@ export default function OpsInboxTemplate() {
 													{incident.id} · {incident.service}
 												</span>
 												<Badge
-													variant={
+													tone={
 														incident.status === "resolved"
 															? "success"
 															: incident.status === "escalated"
 																? "warning"
-																: "outline"
+																: "neutral"
+													}
+													variant={
+														incident.status === "resolved" || incident.status === "escalated"
+															? "soft"
+															: "outline"
 													}
 												>
 													{incident.status}

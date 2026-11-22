@@ -234,7 +234,7 @@ export function InlineEditable({
 				</p>
 			)}
 			{message && (
-				<p id={`${id}-error`} role="alert" className="text-basalt-sm text-basalt-destructive">
+				<p id={`${id}-error`} role="alert" className="text-basalt-sm text-basalt-danger-solid">
 					{message}
 				</p>
 			)}

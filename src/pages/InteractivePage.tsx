@@ -71,28 +71,28 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
 
-const ALERT_VARIANTS = {
-	info: "default",
-	success: "secondary",
-	warning: "alert",
-	error: "error",
+const ALERT_TONES = {
+	info: "info",
+	success: "success",
+	warning: "warning",
+	danger: "danger",
 } as const;
 
 function InlineAlert({
-	variant,
+	tone,
 	title,
 	message,
 }: {
-	variant: keyof typeof ALERT_VARIANTS;
+	tone: keyof typeof ALERT_TONES;
 	title: string;
 	message: string;
 }) {
 	return (
 		<Banner
-			variant={ALERT_VARIANTS[variant]}
+			tone={ALERT_TONES[tone]}
 			title={title}
 			description={message}
-			icon={variant === "success" ? <CheckCircle2 /> : undefined}
+			icon={tone === "success" ? <CheckCircle2 /> : undefined}
 		/>
 	);
 }
@@ -148,22 +148,22 @@ export default function InteractivePage() {
 
 	const alertData = [
 		{
-			variant: "info" as const,
+			tone: "info" as const,
 			title: t("pages.interactive.alertInfoTitle"),
 			message: t("pages.interactive.alertInfoMessage"),
 		},
 		{
-			variant: "success" as const,
+			tone: "success" as const,
 			title: t("pages.interactive.alertSuccessTitle"),
 			message: t("pages.interactive.alertSuccessMessage"),
 		},
 		{
-			variant: "warning" as const,
+			tone: "warning" as const,
 			title: t("pages.interactive.alertWarningTitle"),
 			message: t("pages.interactive.alertWarningMessage"),
 		},
 		{
-			variant: "error" as const,
+			tone: "danger" as const,
 			title: t("pages.interactive.alertErrorTitle"),
 			message: t("pages.interactive.alertErrorMessage"),
 		},
@@ -226,7 +226,7 @@ export default function InteractivePage() {
 						<Button
 							size="sm"
 							variant="destructive"
-							onClick={() => toast.error(t("pages.interactive.toastError"))}
+							onClick={() => toast.danger(t("pages.interactive.toastError"))}
 						>
 							<XCircle className="h-3.5 w-3.5" /> {t("pages.interactive.error")}
 						</Button>
@@ -252,8 +252,8 @@ export default function InteractivePage() {
 				<div className="space-y-basalt-card-sm">
 					{alertData.map((alert) => (
 						<InlineAlert
-							key={alert.variant}
-							variant={alert.variant}
+							key={alert.tone}
+							tone={alert.tone}
 							title={alert.title}
 							message={alert.message}
 						/>
@@ -323,7 +323,7 @@ export default function InteractivePage() {
 					</LayerCard>
 					<LayerCard className="flex flex-col items-center text-center">
 						<XCircle
-							className="h-10 w-10 text-basalt-destructive/60 mb-basalt-card-sm"
+							className="h-10 w-10 text-basalt-danger-solid/60 mb-basalt-card-sm"
 							strokeWidth={1}
 						/>
 						<p className="text-basalt-base font-medium text-foreground mb-basalt-space-sm">
@@ -447,7 +447,7 @@ export default function InteractivePage() {
 								</AlertDialogHeader>
 								<AlertDialogFooter>
 									<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-									<AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-basalt-destructive-hover">
+									<AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-basalt-danger-solid-hover">
 										{t("common.delete")}
 									</AlertDialogAction>
 								</AlertDialogFooter>

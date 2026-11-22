@@ -248,7 +248,7 @@ export default function AgentWorkspaceTemplate() {
 												<CollapsibleContent unstyled>
 													<LayerCard.Body className="space-y-basalt-card-sm">
 														<p className="text-basalt-sm">
-															<Badge variant="success">Complete</Badge> Checked the test report
+															<Badge tone="success">Complete</Badge> Checked the test report
 														</p>
 														<p className="text-basalt-sm">
 															<Loader size={14} showElapsed={false} label="Reviewing changes" />

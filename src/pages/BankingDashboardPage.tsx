@@ -100,7 +100,7 @@ export default function BankingDashboardPage() {
 							>
 								<div className="flex min-w-0 items-center gap-basalt-space-lg">
 									<div
-										className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "in" ? "bg-basalt-success/10" : "bg-basalt-destructive/10"}`}
+										className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "in" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 									>
 										{item.direction === "in" ? (
 											<ArrowDownLeft
@@ -109,7 +109,7 @@ export default function BankingDashboardPage() {
 											/>
 										) : (
 											<ArrowUpRight
-												className="h-3.5 w-3.5 text-basalt-destructive"
+												className="h-3.5 w-3.5 text-basalt-danger-solid"
 												strokeWidth={1.5}
 											/>
 										)}

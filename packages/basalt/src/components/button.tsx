@@ -17,7 +17,7 @@ const buttonVariants = cva(
 				secondary:
 					"basalt-choice border border-basalt-border bg-basalt-control text-basalt-foreground shadow-basalt-control hover:bg-basalt-hover",
 				destructive:
-					"bg-basalt-destructive text-basalt-destructive-foreground shadow-basalt-solid hover:bg-basalt-destructive-hover active:translate-y-px",
+					"bg-basalt-danger-solid text-basalt-danger-solid-foreground shadow-basalt-solid hover:bg-basalt-danger-solid-hover active:translate-y-px",
 				outline:
 					"basalt-choice border border-basalt-border bg-transparent hover:bg-basalt-hover hover:text-basalt-accent-foreground",
 				ghost: "basalt-choice hover:bg-basalt-hover hover:text-basalt-accent-foreground",

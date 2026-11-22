@@ -15,40 +15,41 @@ const bannerVariants = cva(
 	"basalt-banner flex w-full items-start gap-basalt-space-lg rounded-basalt-md",
 	{
 		variants: {
-			variant: {
-				default: "bg-basalt-info-tint text-basalt-info",
-				alert: "bg-basalt-warning-tint text-basalt-warning",
-				error: "bg-basalt-danger-tint text-basalt-danger",
-				secondary: "text-basalt-foreground",
+			tone: {
+				neutral: "text-basalt-foreground",
+				info: "bg-basalt-info-tint text-basalt-info",
+				success: "bg-basalt-success-tint text-basalt-success",
+				warning: "bg-basalt-warning-tint text-basalt-warning",
+				danger: "bg-basalt-danger-tint text-basalt-danger",
 			},
 			size: {
 				base: "",
 				sm: "",
 			},
 		},
-		defaultVariants: { variant: "default", size: "base" },
+		defaultVariants: { tone: "neutral", size: "base" },
 	},
 );
 
-type BannerVariant = NonNullable<VariantProps<typeof bannerVariants>["variant"]>;
+type BannerTone = NonNullable<VariantProps<typeof bannerVariants>["tone"]>;
 type BannerSize = NonNullable<VariantProps<typeof bannerVariants>["size"]>;
 
-const BannerContext = createContext<{ variant: BannerVariant; size: BannerSize }>({
-	variant: "default",
+const BannerContext = createContext<{ tone: BannerTone; size: BannerSize }>({
+	tone: "neutral",
 	size: "base",
 });
 
 export interface BannerProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "children">,
-		Omit<VariantProps<typeof bannerVariants>, "variant" | "size"> {
+		Omit<VariantProps<typeof bannerVariants>, "tone" | "size"> {
 	/**
-	 * Visual tone variant of the banner.
+	 * Semantic tone of the banner.
 	 *
-	 * Note: Defaults to "default" (informational). Passing null falls back to "default".
+	 * Note: Defaults to "neutral" (surface card with foreground text). Passing null falls back to "neutral".
 	 *
-	 * @default "default"
+	 * @default "neutral"
 	 */
-	variant?: VariantProps<typeof bannerVariants>["variant"];
+	tone?: VariantProps<typeof bannerVariants>["tone"];
 
 	/**
 	 * Sizing preset controlling action placement; shared banner padding stays consistent.
@@ -102,7 +103,7 @@ export interface BannerActionProps
 	> {
 	/**
 	 * Visual style variant. Preserves "ghost" and "secondary"; all other values
-	 * are mapped contextually to "destructive" (when parent Banner variant is "error")
+	 * are mapped contextually to "destructive" (when parent Banner tone is "danger")
 	 * or "default".
 	 *
 	 * Note: Ordinary function component without forwarded ref.
@@ -156,7 +157,7 @@ function isBannerAction(node: ReactNode): boolean {
 
 function BannerRoot({
 	className,
-	variant = "default",
+	tone = "neutral",
 	size = "base",
 	title,
 	description,
@@ -165,7 +166,7 @@ function BannerRoot({
 	children,
 	...props
 }: BannerProps) {
-	const resolvedVariant = variant ?? "default";
+	const resolvedTone = tone ?? "neutral";
 	const resolvedSize = size ?? "base";
 	const structured = title != null || description != null;
 	const nodes = Children.toArray(action);
@@ -175,12 +176,12 @@ function BannerRoot({
 	const inlineActions = resolvedSize === "sm" ? other : [];
 
 	return (
-		<BannerContext.Provider value={{ variant: resolvedVariant, size: resolvedSize }}>
+		<BannerContext.Provider value={{ tone: resolvedTone, size: resolvedSize }}>
 			<div
-				data-basalt-surface={resolvedVariant === "secondary" ? "" : undefined}
+				data-basalt-surface={resolvedTone === "neutral" ? "" : undefined}
 				className={cn(
 					BASALT_UI_CLASS,
-					bannerVariants({ variant: resolvedVariant, size: resolvedSize }),
+					bannerVariants({ tone: resolvedTone, size: resolvedSize }),
 					className,
 				)}
 				{...props}
@@ -195,7 +196,7 @@ function BannerRoot({
 					{description ? (
 						<div
 							className={cn(
-								resolvedVariant === "secondary" ? "text-basalt-muted-foreground" : "text-current",
+								resolvedTone === "neutral" ? "text-basalt-muted-foreground" : "text-current",
 							)}
 						>
 							{description}
@@ -228,7 +229,7 @@ export function BannerAction({
 			? "ghost"
 			: variant === "secondary"
 				? "secondary"
-				: banner.variant === "error"
+				: banner.tone === "danger"
 					? "destructive"
 					: "default";
 	const iconOnly = children == null || children === "";

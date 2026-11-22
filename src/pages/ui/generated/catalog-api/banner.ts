@@ -6,11 +6,11 @@ export const API = [
 		name: "Banner",
 		props: [
 			{
-				name: "variant",
-				type: "\"alert\" | \"default\" | \"error\" | \"secondary\" | null",
+				name: "tone",
+				type: "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\" | null",
 				required: false,
-				default: "\"default\"",
-				description: "Visual tone variant of the banner.\n\nNote: Defaults to \"default\" (informational). Passing null falls back to \"default\".",
+				default: "\"neutral\"",
+				description: "Semantic tone of the banner.\n\nNote: Defaults to \"neutral\" (surface card with foreground text). Passing null falls back to \"neutral\".",
 			},
 			{
 				name: "size",
@@ -59,7 +59,7 @@ export const API = [
 				type: "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
 				required: false,
 				default: "\"default\"",
-				description: "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner variant is \"error\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref.",
+				description: "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner tone is \"danger\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref.",
 			},
 			{
 				name: "size",

@@ -182,7 +182,7 @@ export function LoginForm({
 				/>
 			</Field>
 			{error && (
-				<p role="alert" className="text-basalt-sm text-basalt-destructive">
+				<p role="alert" className="text-basalt-sm text-basalt-danger-solid">
 					{error}
 				</p>
 			)}
@@ -409,7 +409,7 @@ export default function ResourcesRecipe() {
 						This action removes the project from this local demo.
 					</AlertDialogDescription>
 					{deleteError ? (
-						<p role="alert" className="text-basalt-destructive">
+						<p role="alert" className="text-basalt-danger-solid">
 							{deleteError}
 						</p>
 					) : null}

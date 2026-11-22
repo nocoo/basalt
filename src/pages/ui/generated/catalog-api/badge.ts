@@ -6,11 +6,18 @@ export const API = [
 		name: "Badge",
 		props: [
 			{
-				name: "variant",
-				type: "\"blue\" | \"default\" | \"destructive\" | \"error\" | \"info\" | \"orange\" | \"outline\" | \"purple\" | \"red\" | \"secondary\" | \"success\" | \"teal\" | \"warning\" | null",
+				name: "tone",
+				type: "BadgeTone",
 				required: false,
-				default: "\"default\"",
-				description: "Visual style variant for the badge.\n\nNote: Supports standard semantic tones and decorative color tokens.\nPass null to omit variant styling.",
+				default: "\"neutral\"",
+				description: "Semantic status tone of the badge.",
+			},
+			{
+				name: "variant",
+				type: "BadgeVariant",
+				required: false,
+				default: "\"soft\"",
+				description: "Surface emphasis style for the badge.",
 			},
 			{
 				name: "dot",

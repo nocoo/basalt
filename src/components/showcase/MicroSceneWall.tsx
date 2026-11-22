@@ -187,7 +187,7 @@ export function MicroSceneWall({ className }: { className?: string }) {
 											label={t(`${prefix}.running`)}
 										/>
 									) : (
-										<Badge variant="success">{t(`${prefix}.completed`)}</Badge>
+										<Badge tone="success">{t(`${prefix}.completed`)}</Badge>
 									)}
 									{t(`${prefix}.steps.${step.id}.label`)}
 								</span>
@@ -325,12 +325,13 @@ export function MicroSceneWall({ className }: { className?: string }) {
 										</TableCell>
 										<TableCell>
 											<Badge
-												variant={
+												dot
+												tone={
 													row.status === "paid"
 														? "success"
 														: row.status === "failed"
-															? "error"
-															: "outline"
+															? "danger"
+															: "warning"
 												}
 											>
 												{t(`${prefix}.statuses.${row.status}`)}

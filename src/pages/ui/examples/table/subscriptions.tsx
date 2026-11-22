@@ -252,7 +252,7 @@ export default function SubscriptionTable() {
 				</div>
 			</div>
 			{selected.length > 0 ? (
-				<Banner variant="secondary" className="flex-wrap items-center">
+				<Banner className="flex-wrap items-center">
 					<span>{selected.length} care plans selected</span>
 					<Button
 						size="sm"
@@ -374,7 +374,7 @@ export default function SubscriptionTable() {
 										<p className="whitespace-nowrap font-medium">{row.name}</p>
 										<div className="mt-basalt-space-lg flex items-center gap-basalt-space-md">
 											<Badge variant="outline">{row.team}</Badge>
-											<Badge variant="secondary">{row.plan}</Badge>
+											<Badge>{row.plan}</Badge>
 										</div>
 									</TableCell>
 									<TableCell textAlign="end" className="font-medium">
@@ -385,9 +385,7 @@ export default function SubscriptionTable() {
 									</TableCell>
 									<TableCell>
 										<Badge
-											variant={
-												row.change > 15 ? "warning" : row.change < 0 ? "success" : "secondary"
-											}
+											tone={row.change > 15 ? "warning" : row.change < 0 ? "success" : "neutral"}
 										>
 											{changeText(row)}
 										</Badge>
@@ -419,13 +417,8 @@ export default function SubscriptionTable() {
 											}).format(new Date(row.renewal))}
 										</p>
 										<Badge
-											variant={
-												row.status === "Review"
-													? "warning"
-													: row.status === "Renewing"
-														? "info"
-														: "outline"
-											}
+											dot
+											tone={row.status === "Active" ? "success" : "warning"}
 											className="mt-basalt-space-md"
 										>
 											{row.status}

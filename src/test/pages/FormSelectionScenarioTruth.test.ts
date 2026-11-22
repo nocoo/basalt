@@ -503,7 +503,7 @@ describe("form selection scenario truth", () => {
 		expect(inlineSuffix.code).toContain('defaultValue="atlas"');
 		expect(inlineSuffix.code).toContain('aria-label="Subdomain"');
 		expect(inlineSuffix.code).toContain("<InputGroup.Suffix>.example.com</InputGroup.Suffix>");
-		expect(inlineSuffix.code).toContain('className="text-basalt-heatmap-green-3"');
+		expect(inlineSuffix.code).toContain('className="text-basalt-success"');
 		expect(scenario("input-group", "input-group-icon").code).toContain('aria-label="Search"');
 		expect(scenario("input-group", "input-group-icon").code).toContain('placeholder="Search"');
 		expect(scenario("input-group", "input-group-icon").code).toContain("<Search />");

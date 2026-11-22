@@ -77,7 +77,7 @@ function invoiceStatus(status: string) {
 function deviceStatus(status: string) {
 	if (status === "Online") return "success";
 	if (status === "Warning") return "warning";
-	return "danger";
+	return "neutral";
 }
 
 export default function TablesPage() {
@@ -283,7 +283,11 @@ export default function TablesPage() {
 		{
 			id: "status",
 			header: t("pages.tables.colStatus"),
-			accessor: (row) => <TagBadge name={row.status} color={invoiceStatus(row.status)} size="sm" />,
+			accessor: (row) => (
+				<Badge dot tone={invoiceStatus(row.status)}>
+					{row.status}
+				</Badge>
+			),
 			sortValue: (row) => row.status,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
@@ -325,7 +329,11 @@ export default function TablesPage() {
 		{
 			id: "status",
 			header: t("pages.tables.colStatus"),
-			accessor: (row) => <TagBadge name={row.status} color={deviceStatus(row.status)} size="sm" />,
+			accessor: (row) => (
+				<Badge dot tone={deviceStatus(row.status)}>
+					{row.status}
+				</Badge>
+			),
 			sortValue: (row) => row.status,
 			cellClassName: DENSE,
 			headerClassName: DENSE,

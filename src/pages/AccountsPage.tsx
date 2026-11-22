@@ -95,9 +95,7 @@ export default function AccountsPage() {
 									</h2>
 									<p className="text-basalt-sm text-basalt-muted-foreground">{card.bank}</p>
 								</div>
-								<Badge variant="secondary" className="shrink-0 uppercase">
-									{card.network}
-								</Badge>
+								<Badge className="shrink-0 uppercase">{card.network}</Badge>
 							</LayerCard.Header>
 							<LayerCard.Body className="space-y-basalt-card-lg">
 								<p className="py-basalt-card-sm font-mono tabular-nums tracking-[0.14em] text-basalt-xl text-basalt-foreground">
@@ -210,13 +208,13 @@ export default function AccountsPage() {
 						>
 							<div className="flex items-center gap-basalt-space-lg">
 								<div
-									className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-destructive/10"}`}
+									className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 								>
 									{item.direction === "positive" ? (
 										<ArrowDownLeft className="h-3.5 w-3.5 text-basalt-success" strokeWidth={1.5} />
 									) : (
 										<ArrowUpRight
-											className="h-3.5 w-3.5 text-basalt-destructive"
+											className="h-3.5 w-3.5 text-basalt-danger-solid"
 											strokeWidth={1.5}
 										/>
 									)}
@@ -279,7 +277,7 @@ export default function AccountsPage() {
 										<TableCell>
 											<div className="flex items-center gap-basalt-space-lg">
 												<div
-													className={`flex h-7 w-7 items-center justify-center rounded-basalt-md ${tx.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-destructive/10"}`}
+													className={`flex h-7 w-7 items-center justify-center rounded-basalt-md ${tx.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 												>
 													{tx.direction === "positive" ? (
 														<ArrowDownLeft
@@ -289,7 +287,7 @@ export default function AccountsPage() {
 														/>
 													) : (
 														<ArrowUpRight
-															className="h-3 w-3 text-basalt-destructive"
+															className="h-3 w-3 text-basalt-danger-solid"
 															strokeWidth={1.5}
 															aria-hidden="true"
 														/>
@@ -306,7 +304,7 @@ export default function AccountsPage() {
 											{tx.formattedAmount}
 										</TableCell>
 										<TableCell className="text-right">
-											<Badge variant={tx.statusVariant === "success" ? "success" : "warning"}>
+											<Badge dot tone={tx.statusVariant === "success" ? "success" : "warning"}>
 												{tx.status}
 											</Badge>
 										</TableCell>
@@ -323,13 +321,13 @@ export default function AccountsPage() {
 						<LayerCard key={tx.id}>
 							<div className="flex items-center gap-basalt-space-lg">
 								<div
-									className={`flex h-8 w-8 items-center justify-center rounded-basalt-md shrink-0 ${tx.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-destructive/10"}`}
+									className={`flex h-8 w-8 items-center justify-center rounded-basalt-md shrink-0 ${tx.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 								>
 									{tx.direction === "positive" ? (
 										<ArrowDownLeft className="h-3.5 w-3.5 text-basalt-success" strokeWidth={1.5} />
 									) : (
 										<ArrowUpRight
-											className="h-3.5 w-3.5 text-basalt-destructive"
+											className="h-3.5 w-3.5 text-basalt-danger-solid"
 											strokeWidth={1.5}
 										/>
 									)}

@@ -109,7 +109,7 @@ export function UploadItem({
 					</div>
 				)}
 				{file.status === "error" && file.error && (
-					<p role="alert" className="break-words text-basalt-sm text-basalt-destructive">
+					<p role="alert" className="break-words text-basalt-sm text-basalt-danger-solid">
 						{file.error}
 					</p>
 				)}

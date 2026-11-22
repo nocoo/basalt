@@ -1,44 +1,52 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 
-const badgeVariants = cva(
-	"inline-flex items-center gap-basalt-space-md rounded-basalt-full border basalt-inline font-medium",
-	{
-		variants: {
-			variant: {
-				default: "border-transparent bg-basalt-primary text-basalt-primary-foreground",
-				secondary: "border-transparent bg-basalt-secondary text-basalt-foreground",
-				destructive: "border-transparent bg-basalt-destructive text-basalt-destructive-foreground",
-				outline: "border-basalt-border text-basalt-foreground",
-				info: "border-transparent bg-basalt-info-tint text-basalt-info",
-				success: "border-transparent bg-basalt-badge-green text-basalt-badge-green-foreground",
-				warning: "border-transparent bg-basalt-warning-tint text-basalt-warning",
-				error: "border-transparent bg-basalt-danger-tint text-basalt-danger",
-				red: "border-transparent bg-basalt-danger text-basalt-danger-foreground",
-				orange: "border-transparent bg-basalt-warning text-basalt-warning-foreground",
-				teal: "border-transparent bg-basalt-badge-teal text-basalt-badge-teal-foreground",
-				blue: "border-transparent bg-basalt-info text-basalt-info-foreground",
-				purple: "border-transparent bg-basalt-badge-purple text-basalt-badge-purple-foreground",
-			},
-		},
-		defaultVariants: { variant: "default" },
-	},
-);
+export type BadgeTone = "neutral" | "info" | "success" | "warning" | "danger";
+export type BadgeVariant = "soft" | "solid" | "outline";
 
-export interface BadgeProps
-	extends React.HTMLAttributes<HTMLSpanElement>,
-		Omit<VariantProps<typeof badgeVariants>, "variant"> {
+const TONE_CLASSES: Record<BadgeTone, Record<BadgeVariant, string>> = {
+	neutral: {
+		soft: "border-transparent bg-basalt-foreground/6 text-basalt-foreground",
+		solid: "border-transparent bg-basalt-foreground text-basalt-background",
+		outline: "border-basalt-border bg-transparent text-basalt-foreground",
+	},
+	info: {
+		soft: "border-transparent bg-basalt-info-tint text-basalt-info",
+		solid: "border-transparent bg-basalt-info-solid text-basalt-info-solid-foreground",
+		outline: "border-basalt-info/40 bg-transparent text-basalt-info",
+	},
+	success: {
+		soft: "border-transparent bg-basalt-success-tint text-basalt-success",
+		solid: "border-transparent bg-basalt-success-solid text-basalt-success-solid-foreground",
+		outline: "border-basalt-success/40 bg-transparent text-basalt-success",
+	},
+	warning: {
+		soft: "border-transparent bg-basalt-warning-tint text-basalt-warning",
+		solid: "border-transparent bg-basalt-warning-solid text-basalt-warning-solid-foreground",
+		outline: "border-basalt-warning/40 bg-transparent text-basalt-warning",
+	},
+	danger: {
+		soft: "border-transparent bg-basalt-danger-tint text-basalt-danger",
+		solid: "border-transparent bg-basalt-danger-solid text-basalt-danger-solid-foreground",
+		outline: "border-basalt-danger/40 bg-transparent text-basalt-danger",
+	},
+};
+
+export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 	/**
-	 * Visual style variant for the badge.
+	 * Semantic status tone of the badge.
 	 *
-	 * Note: Supports standard semantic tones and decorative color tokens.
-	 * Pass null to omit variant styling.
-	 *
-	 * @default "default"
+	 * @default "neutral"
 	 */
-	variant?: VariantProps<typeof badgeVariants>["variant"];
+	tone?: BadgeTone;
+
+	/**
+	 * Surface emphasis style for the badge.
+	 *
+	 * @default "soft"
+	 */
+	variant?: BadgeVariant;
 
 	/**
 	 * Renders a small circular dot indicator before children.
@@ -48,9 +56,24 @@ export interface BadgeProps
 	dot?: boolean;
 }
 
-export function Badge({ className, variant, dot, children, ...props }: BadgeProps) {
+export function Badge({
+	className,
+	tone = "neutral",
+	variant = "soft",
+	dot,
+	children,
+	...props
+}: BadgeProps) {
 	return (
-		<span className={cn(BASALT_UI_CLASS, badgeVariants({ variant }), className)} {...props}>
+		<span
+			className={cn(
+				BASALT_UI_CLASS,
+				"inline-flex items-center gap-basalt-space-md rounded-basalt-full border basalt-inline font-medium",
+				TONE_CLASSES[tone][variant],
+				className,
+			)}
+			{...props}
+		>
 			{dot ? (
 				<span className="size-basalt-1_5 rounded-basalt-full bg-current" aria-hidden="true" />
 			) : null}

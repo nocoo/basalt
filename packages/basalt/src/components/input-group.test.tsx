@@ -29,7 +29,7 @@ describe("InputGroup", () => {
 		const input = screen.getByRole("textbox", { name: "Invalid query" });
 		expect(input.parentElement).toHaveClass(
 			"basalt-focus-group",
-			"has-[input[aria-invalid=true]]:border-basalt-destructive",
+			"has-[input[aria-invalid=true]]:border-basalt-danger-solid",
 		);
 		expect(input.className).not.toMatch(/focus-visible:(?:border-transparent|ring-0)/);
 	});

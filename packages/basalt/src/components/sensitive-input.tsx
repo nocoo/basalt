@@ -43,7 +43,7 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 		return (
 			<div
 				className={controlSurfaceClass(
-					"basalt-focus-group flex has-[input[aria-invalid=true]]:border-basalt-destructive",
+					"basalt-focus-group flex has-[input[aria-invalid=true]]:border-basalt-danger-solid",
 				)}
 			>
 				<Input

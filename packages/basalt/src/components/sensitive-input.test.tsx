@@ -120,7 +120,7 @@ describe("SensitiveInput", () => {
 			<SensitiveInput aria-label="Password" aria-invalid revealLabel="Show" hideLabel="Hide" />,
 		);
 		expect(screen.getByLabelText("Password").className).toContain(
-			"aria-invalid:border-basalt-destructive",
+			"aria-invalid:border-basalt-danger-solid",
 		);
 	});
 

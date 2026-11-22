@@ -416,7 +416,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 							</Button>
 						</div>
 						{vm.passwordError && (
-							<p role="alert" className="text-basalt-base text-basalt-destructive">
+							<p role="alert" className="text-basalt-base text-basalt-danger-solid">
 								{t("demo.passwordMismatch")}
 							</p>
 						)}
@@ -499,7 +499,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 								<p className="text-basalt-base text-basalt-foreground">
 									{session.device}
 									{session.current && (
-										<Badge variant="success" className="ml-basalt-space-lg">
+										<Badge tone="success" className="ml-basalt-space-lg">
 											{t("common.currentBadge")}
 										</Badge>
 									)}

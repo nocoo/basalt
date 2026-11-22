@@ -129,8 +129,8 @@
 	--accent: var(--basalt-accent);
 	--accent-foreground: var(--basalt-accent-foreground);
 
-	--destructive: var(--basalt-destructive);
-	--destructive-foreground: var(--basalt-destructive-foreground);
+	--destructive: var(--basalt-danger-solid);
+	--destructive-foreground: var(--basalt-danger-solid-foreground);
 
 	--border: var(--basalt-border);
 	--input: var(--basalt-input);
@@ -225,8 +225,8 @@
 	--accent: var(--basalt-accent);
 	--accent-foreground: var(--basalt-accent-foreground);
 
-	--destructive: var(--basalt-destructive);
-	--destructive-foreground: var(--basalt-destructive-foreground);
+	--destructive: var(--basalt-danger-solid);
+	--destructive-foreground: var(--basalt-danger-solid-foreground);
 
 	--border: var(--basalt-border);
 	--input: var(--basalt-input);

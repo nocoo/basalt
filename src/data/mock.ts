@@ -239,31 +239,31 @@ export const showcaseToasts: ShowcaseToast[] = [
 		id: "t1",
 		title: "Changes saved",
 		description: "Your wellness profile has been updated successfully.",
-		variant: "success",
+		tone: "success",
 	},
 	{
 		id: "t2",
 		title: "New message",
 		description: "Your care team sent a new appointment reminder.",
-		variant: "default",
+		tone: "neutral",
 	},
 	{
 		id: "t3",
 		title: "Payment failed",
 		description: "Your card was declined. Please try another method.",
-		variant: "error",
+		tone: "danger",
 	},
 	{
 		id: "t4",
 		title: "Storage almost full",
 		description: "You have used 90% of your available storage.",
-		variant: "warning",
+		tone: "warning",
 	},
 	{
 		id: "t5",
 		title: "Update available",
 		description: "A new version of the app is ready to install.",
-		variant: "info",
+		tone: "info",
 	},
 ];
 

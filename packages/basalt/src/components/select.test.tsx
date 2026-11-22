@@ -329,8 +329,8 @@ describe("Select", () => {
 		);
 		const trigger = screen.getByRole("combobox", { name: "Version" });
 		expect(trigger).toHaveAttribute("aria-invalid", "true");
-		expect(trigger.className).toContain("aria-invalid:border-basalt-destructive");
-		expect(trigger.className).toContain("aria-invalid:focus-visible:border-basalt-destructive");
+		expect(trigger.className).toContain("aria-invalid:border-basalt-danger-solid");
+		expect(trigger.className).toContain("aria-invalid:focus-visible:border-basalt-danger-solid");
 	});
 
 	it("disables the trigger while loading", () => {

@@ -1,4 +1,4 @@
-import { Badge } from "@nocoo/basalt/components/badge";
+import { Badge, type BadgeTone, type BadgeVariant } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	Table,
@@ -14,21 +14,9 @@ import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/provide
 import { useState } from "react";
 
 const SURFACES = ["background", "card", "secondary", "bright"] as const;
-const BADGE_VARIANTS = [
-	"default",
-	"secondary",
-	"destructive",
-	"outline",
-	"info",
-	"success",
-	"warning",
-	"error",
-	"red",
-	"orange",
-	"teal",
-	"blue",
-	"purple",
-] as const;
+const BADGE_SAMPLES: ReadonlyArray<{ tone: BadgeTone; variant: BadgeVariant }> = (
+	["neutral", "info", "success", "warning", "danger"] as const
+).flatMap((tone) => (["soft", "solid", "outline"] as const).map((variant) => ({ tone, variant })));
 
 function ContrastControls() {
 	const { theme, setTheme } = useTheme();
@@ -109,9 +97,14 @@ function ContrastContent() {
 					</span>
 
 					<div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
-						{BADGE_VARIANTS.map((variant) => (
-							<Badge key={variant} variant={variant} data-sample={`badge-${variant}`}>
-								{variant}
+						{BADGE_SAMPLES.map(({ tone, variant }) => (
+							<Badge
+								key={`${tone}-${variant}`}
+								tone={tone}
+								variant={variant}
+								data-sample={`badge-${tone}-${variant}`}
+							>
+								{tone} {variant}
 							</Badge>
 						))}
 					</div>

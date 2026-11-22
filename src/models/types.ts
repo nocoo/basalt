@@ -61,13 +61,13 @@ export interface PortfolioItem {
 	up: boolean;
 }
 
-export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
+export type ToastTone = "neutral" | "success" | "danger" | "warning" | "info";
 
 export interface ShowcaseToast {
 	id: string;
 	title: string;
 	description: string;
-	variant: ToastVariant;
+	tone: ToastTone;
 }
 
 export interface ShowcaseDialog {

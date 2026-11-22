@@ -61,7 +61,7 @@ describe("AlertDialog", () => {
 			"border-basalt-border",
 		);
 		expect(screen.getByRole("button", { name: "Delete Account" }).className).toContain(
-			"bg-basalt-destructive",
+			"bg-basalt-danger-solid",
 		);
 	});
 
@@ -93,7 +93,7 @@ describe("AlertDialog", () => {
 		);
 		expect(screen.getByRole("link", { name: "Keep" }).className).toContain("border-basalt-border");
 		expect(screen.getByRole("link", { name: "Delete" }).className).toContain(
-			"bg-basalt-destructive",
+			"bg-basalt-danger-solid",
 		);
 	});
 });

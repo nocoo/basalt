@@ -33,9 +33,9 @@ describe("package registry generator and AI package assets", () => {
 		expect(registry.packageName).toBe("@nocoo/basalt");
 		expect(registry.packageVersion).toBe(rootPkg.version);
 		expect(registry.totalModules).toBe(105);
-		expect(registry.totalSymbols).toBe(655);
+		expect(registry.totalSymbols).toBe(657);
 		expect(registry.totalValues).toBe(363);
-		expect(registry.totalTypes).toBe(292);
+		expect(registry.totalTypes).toBe(294);
 		expect(registry.totalCssExports).toBe(3);
 		expect(registry.totalCatalogEntries).toBe(77);
 
@@ -66,7 +66,7 @@ describe("package registry generator and AI package assets", () => {
 		const registry = structuredClone(referenceRegistry);
 		const toastCat = registry.catalogEntries.find((c) => c.slug === "toast");
 		expect(toastCat).toBeDefined();
-		expect(toastCat?.api).toHaveLength(7);
+		expect(toastCat?.api).toHaveLength(9);
 
 		const toasterSurface = toastCat?.api.find((s) => s.name === "Toaster");
 		expect(toasterSurface).toBeDefined();
@@ -78,7 +78,7 @@ describe("package registry generator and AI package assets", () => {
 			"toast(message: React.ReactNode, options?: ToastCallOptions): number | string",
 		);
 		expect(toastCallable?.options?.name).toBe("ToastCallOptions");
-		expect(toastCallable?.options?.props.map((p) => p.name)).toContain("variant");
+		expect(toastCallable?.options?.props.map((p) => p.name)).toContain("tone");
 
 		const successCallable = toastCat?.api.find((s) => s.name === "toast.success");
 		expect(successCallable).toBeDefined();

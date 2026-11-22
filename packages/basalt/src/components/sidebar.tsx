@@ -481,7 +481,6 @@ export function SidebarBrand({
 				{version != null ? (
 					<Badge
 						data-slot="sidebar-brand-version"
-						variant="secondary"
 						className="shrink-0 text-basalt-muted-foreground"
 					>
 						{version}

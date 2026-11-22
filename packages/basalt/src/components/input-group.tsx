@@ -27,7 +27,7 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 					cn(
 						"flex w-full items-center text-basalt-base",
 						"[&>:first-child]:rounded-l-basalt-md [&>:last-child]:rounded-r-basalt-md",
-						"basalt-focus-group has-[input[aria-invalid=true]]:border-basalt-destructive",
+						"basalt-focus-group has-[input[aria-invalid=true]]:border-basalt-danger-solid",
 						"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-basalt-space-lg",
 						"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-basalt-space-lg",
 						"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",

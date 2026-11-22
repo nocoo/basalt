@@ -8,16 +8,14 @@ import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const FEEDBACK_SCENARIOS = {
 	badge: [
-		"badge-primary-badges",
-		"badge-other-color-variants",
-		"badge-color-tokens",
+		"badge-tone-matrix",
 		"badge-dot-badges",
 		"badge-in-a-sentence",
 		"badge-with-an-icon",
 		"badge-linked-badge",
 	],
 	banner: [
-		"banner-variants",
+		"banner-tones",
 		"banner-with-icon",
 		"banner-with-action",
 		"banner-with-multiple-actions",
@@ -47,10 +45,12 @@ const FEEDBACK_SCENARIOS = {
 	toast: [
 		"toast-title-only",
 		"toast-title-and-description",
-		"toast-success-variant",
-		"toast-error-variant",
-		"toast-warning-variant",
-		"toast-info-variant",
+		"toast-success-tone",
+		"toast-danger-tone",
+		"toast-warning-tone",
+		"toast-info-tone",
+		"toast-loading",
+		"toast-promise",
 		"toast-close-button",
 		"toast-hidden-close",
 		"toast-custom-icon",
@@ -71,7 +71,7 @@ const FEEDBACK_DESCRIPTIONS = {
 	badge:
 		"Compact status labels. Inherits standard span element attributes and forwards children; does not expose a public ref.",
 	banner:
-		"Displays contextual inline messages for informational, alert, or error states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping variant and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
+		"Displays contextual inline messages for neutral, informational, success, warning, or danger states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping tone and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
 	empty:
 		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
 	loader:
@@ -136,7 +136,7 @@ describe("feedback catalog content family", () => {
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {
 		expect(feedback.banner?.examples.map((example) => example.id)).toEqual([
-			"banner-variants",
+			"banner-tones",
 			"banner-with-icon",
 			"banner-with-action",
 			"banner-with-multiple-actions",
@@ -146,7 +146,7 @@ describe("feedback catalog content family", () => {
 		expect(feedback.banner?.examples.some((example) => example.id === "banner-default")).toBe(
 			false,
 		);
-		expect(feedback.banner?.examples[0]?.code).toContain('variant="secondary"');
+		expect(feedback.banner?.examples[0]?.code).toContain('tone="success"');
 		expect(feedback.banner?.examples[2]?.code).toContain("<Banner.Action>Update</Banner.Action>");
 		expect(feedback.banner?.examples[5]?.code).toContain("<strong>custom content</strong>");
 	});
@@ -175,7 +175,7 @@ describe("feedback catalog content family", () => {
 		}
 		expect(feedback.banner?.docs.api).toBe(bannerApi);
 		expect(feedback.banner?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
-			"variant",
+			"tone",
 			"size",
 			"title",
 			"description",

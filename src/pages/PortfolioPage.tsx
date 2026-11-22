@@ -36,7 +36,7 @@ export default function PortfolioPage() {
 					<p className="text-basalt-3xl font-semibold text-basalt-foreground font-basalt-display tracking-tight">
 						${totalValue.toLocaleString()}
 					</p>
-					<Badge variant="success">{t("pages.portfolio.allTime")}</Badge>
+					<Badge tone="success">{t("pages.portfolio.allTime")}</Badge>
 				</LayerCard>
 				<LayerCard>
 					<p className="text-basalt-base font-medium text-basalt-muted-foreground mb-basalt-space-sm">
@@ -177,7 +177,7 @@ export default function PortfolioPage() {
 											${item.value.toLocaleString()}
 										</TableCell>
 										<TableCell
-											className={`text-right ${item.up ? "text-basalt-success" : "text-basalt-destructive"}`}
+											className={`text-right ${item.up ? "text-basalt-success" : "text-basalt-danger-solid"}`}
 										>
 											{item.change}
 										</TableCell>

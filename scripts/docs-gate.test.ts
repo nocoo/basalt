@@ -395,12 +395,10 @@ describe("documentation tarball compilation gate", () => {
 		expect(dialogSizes?.code).toContain('size: "xl"');
 		expect(dialogSizes?.code).toContain('This size="{size}"');
 
-		const toastVariants = scenarioModules.find((m) => m.id === "toast-success-variant");
-		expect(toastVariants).toBeDefined();
-		expect(toastVariants?.code).toContain(
-			'import { toast } from "@nocoo/basalt/components/toast";',
-		);
-		expect(toastVariants?.code).toContain("toast.success");
+		const toastTones = scenarioModules.find((m) => m.id === "toast-success-tone");
+		expect(toastTones).toBeDefined();
+		expect(toastTones?.code).toContain('import { toast } from "@nocoo/basalt/components/toast";');
+		expect(toastTones?.code).toContain("toast.success");
 
 		const popoverSides = scenarioModules.find((m) => m.id === "popover-sides");
 		expect(popoverSides).toBeDefined();

@@ -301,13 +301,11 @@ describe("nested surface CSS", () => {
 		}
 	});
 
-	it("exposes the control fill to Tailwind", () => {
+	it("exposes the control fill and tone tokens to Tailwind", () => {
 		expect(tailwind).toContain("--color-basalt-control: var(--basalt-control-fill);");
-		expect(tailwind).toContain("--color-basalt-success: var(--basalt-success);");
+		expect(tailwind).toContain("--color-basalt-success: hsl(var(--basalt-success));");
 		for (const selector of themeSelectors) {
-			expect(tokenValues(selector).get("--basalt-success")).toBe(
-				"var(--basalt-tag-success-foreground)",
-			);
+			expect(tokenValues(selector).get("--basalt-success")).toMatch(/^\d+ \d+% \d+%$/);
 		}
 	});
 
@@ -347,22 +345,37 @@ describe("nested surface CSS", () => {
 		);
 	});
 
-	it("pairs every solid badge fill with a foreground above the 4.5:1 text threshold", () => {
+	it("pairs every solid tone fill with a foreground above the 4.5:1 text threshold", () => {
 		for (const selector of themeSelectors) {
 			const values = tokenValues(selector);
 			for (const [fill, foreground] of [
 				["primary", "primary-foreground"],
-				["destructive", "destructive-foreground"],
-				["info", "info-foreground"],
-				["warning", "warning-foreground"],
-				["danger", "danger-foreground"],
-				["badge-green", "badge-green-foreground"],
-				["badge-teal", "badge-teal-foreground"],
-				["badge-purple", "badge-purple-foreground"],
+				["success-solid", "success-solid-foreground"],
+				["info-solid", "info-solid-foreground"],
+				["warning-solid", "warning-solid-foreground"],
+				["danger-solid", "danger-solid-foreground"],
 			] as const) {
 				expect(contrast(values, fill, foreground), `${selector} ${fill}`).toBeGreaterThanOrEqual(
 					4.5,
 				);
+			}
+		}
+	});
+
+	it("ensures every tone ink achieves 4.5:1 contrast over its tint and all neutral surfaces", () => {
+		for (const selector of themeSelectors) {
+			const values = tokenValues(selector);
+			for (const tone of ["success", "info", "warning", "danger"] as const) {
+				expect(
+					contrast(values, `${tone}-tint`, tone),
+					`${selector} ${tone} on ${tone}-tint`,
+				).toBeGreaterThanOrEqual(4.5);
+				for (const surface of ["background", "card", "secondary", "bright"] as const) {
+					expect(
+						contrast(values, surface, tone),
+						`${selector} ${tone} on ${surface}`,
+					).toBeGreaterThanOrEqual(4.5);
+				}
 			}
 		}
 	});

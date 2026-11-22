@@ -173,8 +173,8 @@ export function StatCard({
 						<span
 							className={cn(
 								"font-medium tabular-nums",
-								isPositiveTrend && "text-basalt-tag-success-foreground",
-								isNegativeTrend && "text-basalt-destructive",
+								isPositiveTrend && "text-basalt-success",
+								isNegativeTrend && "text-basalt-danger-solid",
 								!isPositiveTrend && !isNegativeTrend && "text-basalt-muted-foreground",
 							)}
 						>

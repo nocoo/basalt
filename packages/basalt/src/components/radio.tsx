@@ -132,7 +132,7 @@ export const RadioGroup = React.forwardRef<
 					{items}
 				</RadioGroupPrimitive.Root>
 				{invalid ? (
-					<p id={errorId} className="text-basalt-sm text-basalt-destructive" role="alert">
+					<p id={errorId} className="text-basalt-sm text-basalt-danger-solid" role="alert">
 						{error}
 					</p>
 				) : null}

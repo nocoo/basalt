@@ -161,17 +161,22 @@
 	--basalt-muted-foreground: 0 0% 40%;
 	--basalt-accent: 0 0% 94.5%;
 	--basalt-accent-foreground: 0 0% 10%;
-	--basalt-destructive: 0 72% 49%;
-	--basalt-destructive-foreground: 0 0% 100%;
+	--basalt-success: 150 64% 27%;
+	--basalt-success-tint: 145 60% 94%;
+	--basalt-success-solid: 150 64% 30%;
+	--basalt-success-solid-foreground: 0 0% 100%;
 	--basalt-info: 221 72% 38%;
-	--basalt-info-foreground: 0 0% 100%;
 	--basalt-info-tint: 217 80% 95%;
+	--basalt-info-solid: 221 72% 44%;
+	--basalt-info-solid-foreground: 0 0% 100%;
 	--basalt-warning: 28 72% 36%;
-	--basalt-warning-foreground: 0 0% 100%;
-	--basalt-warning-tint: 40 86% 95%;
+	--basalt-warning-tint: 40 86% 94%;
+	--basalt-warning-solid: 26 80% 38%;
+	--basalt-warning-solid-foreground: 0 0% 100%;
 	--basalt-danger: 0 70% 40%;
-	--basalt-danger-foreground: 0 0% 100%;
 	--basalt-danger-tint: 0 78% 96%;
+	--basalt-danger-solid: 0 72% 49%;
+	--basalt-danger-solid-foreground: 0 0% 100%;
 	--basalt-border: 0 0% 89%;
 	--basalt-input: 0 0% 86%;
 	--basalt-ring: var(--basalt-primary);
@@ -191,9 +196,9 @@
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
-	--basalt-destructive-hover: color-mix(
+	--basalt-danger-solid-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-destructive)) 90%,
+		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
 	--basalt-radius: var(--basalt-radius-lg);
@@ -265,13 +270,6 @@
 	--basalt-accent-10: 280 53% 71%;
 	--basalt-accent-11: 237 66% 69%;
 	--basalt-accent-12: 210 20% 87%;
-	--basalt-success: var(--basalt-tag-success-foreground);
-	--basalt-badge-green: 113 60% 30%;
-	--basalt-badge-green-foreground: 0 0% 100%;
-	--basalt-badge-teal: 182 62% 30%;
-	--basalt-badge-purple: 280 53% 40%;
-	--basalt-badge-teal-foreground: 0 0% 100%;
-	--basalt-badge-purple-foreground: 0 0% 100%;
 	--basalt-chart-axis: 0 0% 40%;
 	--basalt-chart-muted: 0 0% 89%;
 	--basalt-heatmap-green-1: 113 50% 85%;
@@ -311,24 +309,22 @@
 	--basalt-muted-foreground: 0 0% 63%;
 	--basalt-accent: 0 0% 15.5%;
 	--basalt-accent-foreground: 0 0% 93%;
-	--basalt-destructive: 0 72% 51%;
-	--basalt-destructive-foreground: 0 0% 100%;
+	--basalt-success: 150 55% 62%;
+	--basalt-success-tint: 150 30% 15%;
+	--basalt-success-solid: 150 64% 30%;
+	--basalt-success-solid-foreground: 0 0% 100%;
 	--basalt-info: 217 80% 72%;
 	--basalt-info-tint: 217 40% 16%;
+	--basalt-info-solid: 221 72% 46%;
+	--basalt-info-solid-foreground: 0 0% 100%;
 	--basalt-warning: 32 80% 68%;
 	--basalt-warning-tint: 32 35% 16%;
+	--basalt-warning-solid: 26 80% 38%;
+	--basalt-warning-solid-foreground: 0 0% 100%;
 	--basalt-danger: 0 75% 70%;
-	--basalt-danger-foreground: 0 0% 10%;
 	--basalt-danger-tint: 0 40% 16%;
-	--basalt-info-foreground: 0 0% 10%;
-	--basalt-warning-foreground: 0 0% 10%;
-	--basalt-success: var(--basalt-tag-success-foreground);
-	--basalt-badge-green: 113 55% 62%;
-	--basalt-badge-green-foreground: 0 0% 10%;
-	--basalt-badge-teal: var(--basalt-accent-3);
-	--basalt-badge-purple: var(--basalt-accent-10);
-	--basalt-badge-teal-foreground: 0 0% 10%;
-	--basalt-badge-purple-foreground: 0 0% 10%;
+	--basalt-danger-solid: 0 72% 51%;
+	--basalt-danger-solid-foreground: 0 0% 100%;
 	--basalt-border: 0 0% 19%;
 	--basalt-input: 0 0% 22%;
 	--basalt-ring: var(--basalt-link);
@@ -360,9 +356,9 @@
 		hsl(var(--basalt-primary)) 90%,
 		hsl(var(--basalt-background))
 	);
-	--basalt-destructive-hover: color-mix(
+	--basalt-danger-solid-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-destructive)) 90%,
+		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
 	/* Match the classic candy swatches; gray and preference ownership stay independent. */

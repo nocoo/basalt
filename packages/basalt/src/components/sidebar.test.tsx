@@ -108,7 +108,7 @@ describe("Sidebar", () => {
 		expect(version).toHaveClass(
 			"basalt-inline",
 			"rounded-basalt-full",
-			"bg-basalt-secondary",
+			"bg-basalt-foreground/6",
 			"text-basalt-muted-foreground",
 			"shrink-0",
 		);

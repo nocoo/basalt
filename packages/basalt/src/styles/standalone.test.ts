@@ -38,7 +38,7 @@ describe("standalone css", () => {
 		expect(css).toContain(".min-h-basalt-textarea-sm");
 		expect(css).toContain(".min-h-basalt-textarea-lg");
 		expect(css).toContain(".h-basalt-1_5");
-		expect(css).toContain("aria-invalid\\:border-basalt-destructive");
+		expect(css).toContain("aria-invalid\\:border-basalt-danger-solid");
 		expect(css).toContain(".bg-basalt-primary");
 		expect(css).toContain("--basalt-primary");
 		expect(css).not.toContain("img, svg, video, canvas");

@@ -134,7 +134,7 @@ export default function StatCardStateTransition() {
 							Refreshing ingestion telemetry...
 						</span>
 					) : state === "error" ? (
-						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-destructive">
+						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-danger-solid">
 							<AlertCircle className="h-4 w-4" />
 							Wearable sync offline
 						</span>
@@ -203,7 +203,7 @@ export default function StatCardStateTransition() {
 								role="alert"
 								className="flex flex-col items-center justify-center space-y-basalt-space-lg text-center"
 							>
-								<div className="rounded-basalt-full bg-basalt-destructive/10 p-basalt-space-lg text-basalt-destructive">
+								<div className="rounded-basalt-full bg-basalt-danger-solid/10 p-basalt-space-lg text-basalt-danger-solid">
 									<AlertCircle className="h-6 w-6" />
 								</div>
 								<div>

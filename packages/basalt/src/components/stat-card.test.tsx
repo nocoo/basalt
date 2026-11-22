@@ -90,10 +90,10 @@ describe("StatCard", () => {
 	it("styles positive, negative, and zero trends and optional labels", () => {
 		const { rerender } = render(<StatCard value="12.4k" trend={{ value: 12, label: "wow" }} />);
 		const positive = screen.getByText("+12%");
-		expect(positive).toHaveClass("text-basalt-tag-success-foreground");
+		expect(positive).toHaveClass("text-basalt-success");
 		expect(screen.getByText("wow")).toBeInTheDocument();
 		rerender(<StatCard value="12.4k" trend={{ value: -5 }} />);
-		expect(screen.getByText("-5%")).toHaveClass("text-basalt-destructive");
+		expect(screen.getByText("-5%")).toHaveClass("text-basalt-danger-solid");
 		expect(screen.queryByText("wow")).toBeNull();
 		rerender(<StatCard value="12.4k" trend={{ value: 0 }} />);
 		expect(screen.getByText("0%")).toHaveClass("text-basalt-muted-foreground");

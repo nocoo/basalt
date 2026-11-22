@@ -109,7 +109,7 @@ export default function ResourceListSkeleton() {
 										className="rounded-basalt-full"
 									/>
 								) : (
-									<Badge variant={row.status === "Active" ? "success" : "warning"}>
+									<Badge dot tone={row.status === "Active" ? "success" : "warning"}>
 										{row.status}
 									</Badge>
 								)}

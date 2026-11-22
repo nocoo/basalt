@@ -5,7 +5,7 @@ import InteractionShowcasePage from "@/pages/InteractionShowcasePage";
 vi.mock("@nocoo/basalt/components/toast", () => ({
 	toast: Object.assign(vi.fn(), {
 		success: vi.fn(),
-		error: vi.fn(),
+		danger: vi.fn(),
 		warning: vi.fn(),
 		info: vi.fn(),
 	}),
@@ -22,15 +22,15 @@ vi.mock("@/viewmodels/useInteractionShowcaseViewModel", () => ({
 				id: "t1",
 				title: "Changes saved",
 				description: "Profile updated.",
-				variant: "success",
-				variantLabel: "Success",
+				tone: "success",
+				toneLabel: "Success",
 			},
 			{
 				id: "t2",
 				title: "Payment failed",
 				description: "Card declined.",
-				variant: "error",
-				variantLabel: "Error",
+				tone: "danger",
+				toneLabel: "Danger",
 			},
 		],
 		dialogs: [
@@ -48,13 +48,13 @@ vi.mock("@/viewmodels/useInteractionShowcaseViewModel", () => ({
 				style: "confirm",
 			},
 		],
-		toastVariants: ["default", "success", "error", "warning", "info"],
-		variantLabels: [
-			{ variant: "default", label: "Default" },
-			{ variant: "success", label: "Success" },
-			{ variant: "error", label: "Error" },
-			{ variant: "warning", label: "Warning" },
-			{ variant: "info", label: "Info" },
+		toastTones: ["neutral", "success", "danger", "warning", "info"],
+		toneLabels: [
+			{ tone: "neutral", label: "Neutral" },
+			{ tone: "success", label: "Success" },
+			{ tone: "danger", label: "Danger" },
+			{ tone: "warning", label: "Warning" },
+			{ tone: "info", label: "Info" },
 		],
 		activeDialog: null,
 		openDialog: mockOpenDialog,
@@ -113,10 +113,10 @@ describe("InteractionShowcasePage", () => {
 		}
 	});
 
-	it("renders toast variant labels", () => {
+	it("renders toast tone labels", () => {
 		render(<InteractionShowcasePage />);
 		expect(screen.getByText("Success")).toBeInTheDocument();
-		expect(screen.getByText("Error")).toBeInTheDocument();
+		expect(screen.getByText("Danger")).toBeInTheDocument();
 	});
 
 	it("renders dialog section with cards", () => {

@@ -115,7 +115,7 @@ function HomeInputGroup() {
 			<InputGroup.Input defaultValue="primary" aria-label="Care provider" />
 			<InputGroup.Suffix> clinic</InputGroup.Suffix>
 			<InputGroup.Addon align="end">
-				<CircleCheck className="text-basalt-heatmap-green-3" />
+				<CircleCheck className="text-basalt-success" />
 			</InputGroup.Addon>
 		</InputGroup>
 	);

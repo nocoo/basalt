@@ -94,9 +94,9 @@ export function SurfaceDisciplineInspector() {
 							>
 								<p className="text-basalt-md font-medium">{t(`${prefix}.releaseChecks`)}</p>
 								<div className="flex flex-wrap gap-basalt-space-sm">
-									<Badge variant="info">{t(`${prefix}.noisyInfo`)}</Badge>
-									<Badge variant="warning">{t(`${prefix}.noisyWarning`)}</Badge>
-									<Badge variant="error">{t(`${prefix}.noisyAlert`)}</Badge>
+									<Badge tone="info">{t(`${prefix}.noisyInfo`)}</Badge>
+									<Badge tone="warning">{t(`${prefix}.noisyWarning`)}</Badge>
+									<Badge tone="danger">{t(`${prefix}.noisyAlert`)}</Badge>
 								</div>
 							</div>
 						</LayerCard.Body>

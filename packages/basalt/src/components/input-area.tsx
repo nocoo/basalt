@@ -44,7 +44,7 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
 					"flex w-full text-basalt-foreground placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
 					INPUT_AREA_SIZE_CLASS[size],
 					FOCUS_BORDER,
-					"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",
+					"aria-invalid:border-basalt-danger-solid aria-invalid:focus-visible:border-basalt-danger-solid",
 					passwordManagerIgnore && "keeper-ignore",
 					className,
 				),

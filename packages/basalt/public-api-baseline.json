@@ -1,6 +1,6 @@
 {
 	"packageVersion": "4.0.0-pending",
-	"sourceBaseline": "4.0-overhaul (95 paths / 477 symbols)",
+	"sourceBaseline": "4.0-overhaul (95 paths / 479 symbols)",
 	"capturedAfter": "P1.1-P1.6 plus round-1 review fixes; package manifests remain 3.4.2 until release",
 	"entries": [
 		{
@@ -658,6 +658,16 @@
 				},
 				{
 					"name": "BadgeProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "BadgeTone",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "BadgeVariant",
 					"value": false,
 					"type": true
 				}
@@ -2252,7 +2262,7 @@
 					"type": true
 				},
 				{
-					"name": "ToastVariant",
+					"name": "ToastTone",
 					"value": false,
 					"type": true
 				}

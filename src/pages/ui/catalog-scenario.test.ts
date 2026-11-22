@@ -1277,7 +1277,7 @@ describe("source-backed input-group scenarios", () => {
 			"<InputGroup.Suffix>.example.com</InputGroup.Suffix>",
 		);
 		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('align="end"');
-		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('className="text-basalt-heatmap-green-3"');
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('className="text-basalt-success"');
 		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain('from "@nocoo/basalt/icons"');
 		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain("import { Search }");
 		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain("<Search />");

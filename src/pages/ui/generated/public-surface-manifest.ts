@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.5.2",
 	"totalModules": 105,
-	"totalSymbols": 655,
+	"totalSymbols": 657,
 	"totalValues": 363,
-	"totalTypes": 292,
+	"totalTypes": 294,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -1354,6 +1354,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "Badge",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/badge"
+				},
+				{
+					"name": "BadgeTone",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/badge"
+				},
+				{
+					"name": "BadgeVariant",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/badge",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/badge"
@@ -5529,7 +5545,7 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/toast"
 				},
 				{
-					"name": "ToastVariant",
+					"name": "ToastTone",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/toast",

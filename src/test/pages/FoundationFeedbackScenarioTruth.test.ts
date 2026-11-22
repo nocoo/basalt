@@ -51,16 +51,14 @@ function expectUsageImportsCover(usage: string, names: string[]) {
 describe("foundation feedback scenario truth", () => {
 	it("keeps audited scenario ids and counts", () => {
 		expect(UI_EXAMPLES.badge?.map((item) => item.id)).toEqual([
-			"badge-primary-badges",
-			"badge-other-color-variants",
-			"badge-color-tokens",
+			"badge-tone-matrix",
 			"badge-dot-badges",
 			"badge-in-a-sentence",
 			"badge-with-an-icon",
 			"badge-linked-badge",
 		]);
 		expect(UI_EXAMPLES.banner?.map((item) => item.id)).toEqual([
-			"banner-variants",
+			"banner-tones",
 			"banner-with-icon",
 			"banner-with-action",
 			"banner-with-multiple-actions",
@@ -147,10 +145,12 @@ describe("foundation feedback scenario truth", () => {
 		expect(UI_EXAMPLES.toast?.map((item) => item.id)).toEqual([
 			"toast-title-only",
 			"toast-title-and-description",
-			"toast-success-variant",
-			"toast-error-variant",
-			"toast-warning-variant",
-			"toast-info-variant",
+			"toast-success-tone",
+			"toast-danger-tone",
+			"toast-warning-tone",
+			"toast-info-tone",
+			"toast-loading",
+			"toast-promise",
 			"toast-close-button",
 			"toast-hidden-close",
 			"toast-custom-icon",

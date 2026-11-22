@@ -10,7 +10,15 @@ import { Meter } from "@nocoo/basalt/components/meter";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Text } from "@nocoo/basalt/components/text";
 import { toast } from "@nocoo/basalt/components/toast";
-import { AlertTriangle, Check, CircleAlert, Inbox, Info, X } from "@nocoo/basalt/icons";
+import {
+	AlertTriangle,
+	Check,
+	CircleAlert,
+	CircleCheck,
+	Inbox,
+	Info,
+	X,
+} from "@nocoo/basalt/icons";
 import type { ReactNode } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
@@ -104,61 +112,116 @@ export default catalogContentFamily({
 		},
 		examples: [
 			{
-				id: catalogScenarioId("badge", "primary-badges"),
-				title: "Primary Badges",
-				code: scenarioModule("<Badge>Default</Badge>", [
-					'import { Badge } from "@nocoo/basalt/components/badge";',
-				]),
-				render: () => <Badge>Default</Badge>,
-			},
-			{
-				id: catalogScenarioId("badge", "other-color-variants"),
-				title: "Other color variants",
+				id: catalogScenarioId("badge", "tone-matrix"),
+				title: "Tone and variant matrix",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
-	<Badge variant="secondary">Secondary</Badge>
-	<Badge variant="info">Info</Badge>
-	<Badge variant="success">Success</Badge>
-	<Badge variant="warning">Warning</Badge>
-	<Badge variant="error">Error</Badge>
-	<Badge variant="destructive">Destructive</Badge>
-	<Badge variant="outline">Outline</Badge>
+					`<div className="grid grid-cols-[5rem_repeat(3,auto)] items-center justify-items-start gap-basalt-space-lg">
+	<span className="text-basalt-md text-basalt-muted-foreground">Neutral</span>
+	<Badge tone="neutral" variant="soft">
+		Soft
+	</Badge>
+	<Badge tone="neutral" variant="solid">
+		Solid
+	</Badge>
+	<Badge tone="neutral" variant="outline">
+		Outline
+	</Badge>
+	<span className="text-basalt-md text-basalt-muted-foreground">Info</span>
+	<Badge tone="info" variant="soft">
+		Soft
+	</Badge>
+	<Badge tone="info" variant="solid">
+		Solid
+	</Badge>
+	<Badge tone="info" variant="outline">
+		Outline
+	</Badge>
+	<span className="text-basalt-md text-basalt-muted-foreground">Success</span>
+	<Badge tone="success" variant="soft">
+		Soft
+	</Badge>
+	<Badge tone="success" variant="solid">
+		Solid
+	</Badge>
+	<Badge tone="success" variant="outline">
+		Outline
+	</Badge>
+	<span className="text-basalt-md text-basalt-muted-foreground">Warning</span>
+	<Badge tone="warning" variant="soft">
+		Soft
+	</Badge>
+	<Badge tone="warning" variant="solid">
+		Solid
+	</Badge>
+	<Badge tone="warning" variant="outline">
+		Outline
+	</Badge>
+	<span className="text-basalt-md text-basalt-muted-foreground">Danger</span>
+	<Badge tone="danger" variant="soft">
+		Soft
+	</Badge>
+	<Badge tone="danger" variant="solid">
+		Solid
+	</Badge>
+	<Badge tone="danger" variant="outline">
+		Outline
+	</Badge>
 </div>`,
 					['import { Badge } from "@nocoo/basalt/components/badge";'],
 				),
 				render: () => (
-					<Preview>
-						<Badge variant="secondary">Secondary</Badge>
-						<Badge variant="info">Info</Badge>
-						<Badge variant="success">Success</Badge>
-						<Badge variant="warning">Warning</Badge>
-						<Badge variant="error">Error</Badge>
-						<Badge variant="destructive">Destructive</Badge>
-						<Badge variant="outline">Outline</Badge>
-					</Preview>
-				),
-			},
-			{
-				id: catalogScenarioId("badge", "color-tokens"),
-				title: "Color tokens",
-				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
-	<Badge variant="red">Red</Badge>
-	<Badge variant="orange">Orange</Badge>
-	<Badge variant="teal">Teal</Badge>
-	<Badge variant="blue">Blue</Badge>
-	<Badge variant="purple">Purple</Badge>
-</div>`,
-					['import { Badge } from "@nocoo/basalt/components/badge";'],
-				),
-				render: () => (
-					<Preview>
-						<Badge variant="red">Red</Badge>
-						<Badge variant="orange">Orange</Badge>
-						<Badge variant="teal">Teal</Badge>
-						<Badge variant="blue">Blue</Badge>
-						<Badge variant="purple">Purple</Badge>
-					</Preview>
+					<div className="grid grid-cols-[5rem_repeat(3,auto)] items-center justify-items-start gap-basalt-space-lg">
+						<span className="text-basalt-md text-basalt-muted-foreground">Neutral</span>
+						<Badge tone="neutral" variant="soft">
+							Soft
+						</Badge>
+						<Badge tone="neutral" variant="solid">
+							Solid
+						</Badge>
+						<Badge tone="neutral" variant="outline">
+							Outline
+						</Badge>
+						<span className="text-basalt-md text-basalt-muted-foreground">Info</span>
+						<Badge tone="info" variant="soft">
+							Soft
+						</Badge>
+						<Badge tone="info" variant="solid">
+							Solid
+						</Badge>
+						<Badge tone="info" variant="outline">
+							Outline
+						</Badge>
+						<span className="text-basalt-md text-basalt-muted-foreground">Success</span>
+						<Badge tone="success" variant="soft">
+							Soft
+						</Badge>
+						<Badge tone="success" variant="solid">
+							Solid
+						</Badge>
+						<Badge tone="success" variant="outline">
+							Outline
+						</Badge>
+						<span className="text-basalt-md text-basalt-muted-foreground">Warning</span>
+						<Badge tone="warning" variant="soft">
+							Soft
+						</Badge>
+						<Badge tone="warning" variant="solid">
+							Solid
+						</Badge>
+						<Badge tone="warning" variant="outline">
+							Outline
+						</Badge>
+						<span className="text-basalt-md text-basalt-muted-foreground">Danger</span>
+						<Badge tone="danger" variant="soft">
+							Soft
+						</Badge>
+						<Badge tone="danger" variant="solid">
+							Solid
+						</Badge>
+						<Badge tone="danger" variant="outline">
+							Outline
+						</Badge>
+					</div>
 				),
 			},
 			{
@@ -167,7 +230,7 @@ export default catalogContentFamily({
 				code: scenarioModule(
 					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Badge dot>Live</Badge>
-	<Badge dot variant="success">
+	<Badge dot tone="success">
 		Healthy
 	</Badge>
 </div>`,
@@ -176,7 +239,7 @@ export default catalogContentFamily({
 				render: () => (
 					<Preview>
 						<Badge dot>Live</Badge>
-						<Badge dot variant="success">
+						<Badge dot tone="success">
 							Healthy
 						</Badge>
 					</Preview>
@@ -208,16 +271,16 @@ export default catalogContentFamily({
 	<Badge>
 		<Check className="size-3" /> Verified
 	</Badge>
-	<Badge variant="success">
+	<Badge tone="success">
 		<Check className="size-3" /> Healthy
 	</Badge>
-	<Badge variant="warning">
+	<Badge tone="warning">
 		<AlertTriangle className="size-3" /> Warning
 	</Badge>
-	<Badge variant="error">
-		<CircleAlert className="size-3" /> Error
+	<Badge tone="danger">
+		<CircleAlert className="size-3" /> Danger
 	</Badge>
-	<Badge variant="info">
+	<Badge tone="info">
 		<Info className="size-3" /> Info
 	</Badge>
 </div>`,
@@ -231,16 +294,16 @@ export default catalogContentFamily({
 						<Badge>
 							<Check className="size-3" /> Verified
 						</Badge>
-						<Badge variant="success">
+						<Badge tone="success">
 							<Check className="size-3" /> Healthy
 						</Badge>
-						<Badge variant="warning">
+						<Badge tone="warning">
 							<AlertTriangle className="size-3" /> Warning
 						</Badge>
-						<Badge variant="error">
-							<CircleAlert className="size-3" /> Error
+						<Badge tone="danger">
+							<CircleAlert className="size-3" /> Danger
 						</Badge>
-						<Badge variant="info">
+						<Badge tone="info">
 							<Info className="size-3" /> Info
 						</Badge>
 					</Preview>
@@ -271,8 +334,8 @@ export default catalogContentFamily({
 			...extraDocs(
 				"Banner",
 				"banner",
-				"Displays contextual inline messages for informational, alert, or error states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping variant and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
-				'<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />',
+				"Displays contextual inline messages for neutral, informational, success, warning, or danger states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping tone and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
+				'<Banner tone="info" icon={<Info />} title="Update available" description="A new version is ready to install." />',
 				undefined,
 				`import { Banner } from "@nocoo/basalt/components/banner";
 import { Info } from "@nocoo/basalt/icons";
@@ -280,6 +343,7 @@ import { Info } from "@nocoo/basalt/icons";
 export default function Example() {
 	return (
 		<Banner
+			tone="info"
 			icon={<Info />}
 			title="Update available"
 			description="A new version is ready to install."
@@ -291,63 +355,75 @@ export default function Example() {
 		},
 		examples: [
 			{
-				id: catalogScenarioId("banner", "variants"),
-				title: "Variants",
+				id: catalogScenarioId("banner", "tones"),
+				title: "Tones",
 				code: scenarioModule(
 					`<div className="w-full space-y-basalt-space-lg">
 	<Banner
+		icon={<Info />}
+		title="Maintenance scheduled"
+		description="This service will be unavailable for 10 minutes."
+	/>
+	<Banner
+		tone="info"
 		icon={<Info />}
 		title="Update available"
 		description="A new version is ready to install."
 	/>
 	<Banner
+		tone="success"
+		icon={<CircleCheck />}
+		title="Verification complete"
+		description="Your care credentials have been verified."
+	/>
+	<Banner
+		tone="warning"
 		icon={<AlertTriangle />}
-		variant="alert"
 		title="Session expiring"
 		description="Your session will expire in 5 minutes."
 	/>
 	<Banner
+		tone="danger"
 		icon={<CircleAlert />}
-		variant="error"
 		title="Save failed"
 		description="We couldn't save your changes. Please try again."
-	/>
-	<Banner
-		icon={<Info />}
-		variant="secondary"
-		title="Maintenance scheduled"
-		description="This service will be unavailable for 10 minutes."
 	/>
 </div>`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
-						'import { AlertTriangle, CircleAlert, Info } from "@nocoo/basalt/icons";',
+						'import { AlertTriangle, CircleAlert, CircleCheck, Info } from "@nocoo/basalt/icons";',
 					],
 				),
 				render: () => (
 					<div className="w-full space-y-basalt-space-lg">
 						<Banner
 							icon={<Info />}
+							title="Maintenance scheduled"
+							description="This service will be unavailable for 10 minutes."
+						/>
+						<Banner
+							tone="info"
+							icon={<Info />}
 							title="Update available"
 							description="A new version is ready to install."
 						/>
 						<Banner
+							tone="success"
+							icon={<CircleCheck />}
+							title="Verification complete"
+							description="Your care credentials have been verified."
+						/>
+						<Banner
+							tone="warning"
 							icon={<AlertTriangle />}
-							variant="alert"
 							title="Session expiring"
 							description="Your session will expire in 5 minutes."
 						/>
 						<Banner
+							tone="danger"
 							icon={<CircleAlert />}
-							variant="error"
 							title="Save failed"
 							description="We couldn't save your changes. Please try again."
-						/>
-						<Banner
-							icon={<Info />}
-							variant="secondary"
-							title="Maintenance scheduled"
-							description="This service will be unavailable for 10 minutes."
 						/>
 					</div>
 				),
@@ -358,7 +434,7 @@ export default function Example() {
 				code: scenarioModule(
 					`<Banner
 	icon={<AlertTriangle />}
-	variant="alert"
+	tone="warning"
 	title="Review required"
 	description="Please review your care coordination details before proceeding."
 />`,
@@ -370,7 +446,7 @@ export default function Example() {
 				render: () => (
 					<Banner
 						icon={<AlertTriangle />}
-						variant="alert"
+						tone="warning"
 						title="Review required"
 						description="Please review your care coordination details before proceeding."
 					/>
@@ -382,6 +458,7 @@ export default function Example() {
 				code: scenarioModule(
 					`<div className="w-full space-y-basalt-space-lg">
 	<Banner
+		tone="info"
 		icon={<Info />}
 		title="Update available"
 		description="A new version is ready to install."
@@ -393,7 +470,7 @@ export default function Example() {
 		}
 	/>
 	<Banner
-		variant="error"
+		tone="danger"
 		icon={<CircleAlert />}
 		title="Save failed"
 		description="We couldn't save your changes. Please try again."
@@ -413,6 +490,7 @@ export default function Example() {
 				render: () => (
 					<div className="w-full space-y-basalt-space-lg">
 						<Banner
+							tone="info"
 							icon={<Info />}
 							title="Update available"
 							description="A new version is ready to install."
@@ -424,7 +502,7 @@ export default function Example() {
 							}
 						/>
 						<Banner
-							variant="error"
+							tone="danger"
 							icon={<CircleAlert />}
 							title="Save failed"
 							description="We couldn't save your changes. Please try again."
@@ -444,7 +522,7 @@ export default function Example() {
 				code: scenarioModule(
 					`<Banner
 	icon={<AlertTriangle />}
-	variant="error"
+	tone="danger"
 	title="Your account is 90 days past due."
 	description="Pay now to avoid interruption."
 	action={
@@ -462,7 +540,7 @@ export default function Example() {
 				render: () => (
 					<Banner
 						icon={<AlertTriangle />}
-						variant="error"
+						tone="danger"
 						title="Your account is 90 days past due."
 						description="Pay now to avoid interruption."
 						action={
@@ -480,11 +558,13 @@ export default function Example() {
 				code: scenarioModule(
 					`<div className="w-full space-y-basalt-space-lg">
 	<Banner
+		tone="info"
 		size="sm"
 		description="A patient record named Atlas already exists."
 		action={<Link href="#">Open patient record</Link>}
 	/>
 	<Banner
+		tone="info"
 		size="sm"
 		description="A patient record named Atlas already exists."
 		action={
@@ -494,7 +574,7 @@ export default function Example() {
 			</>
 		}
 	/>
-	<Banner size="sm" description="A patient record named Atlas already exists." />
+	<Banner tone="info" size="sm" description="A patient record named Atlas already exists." />
 </div>`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
@@ -505,11 +585,13 @@ export default function Example() {
 				render: () => (
 					<div className="w-full space-y-basalt-space-lg">
 						<Banner
+							tone="info"
 							size="sm"
 							description="A patient record named Atlas already exists."
 							action={<Link href="#">Open patient record</Link>}
 						/>
 						<Banner
+							tone="info"
 							size="sm"
 							description="A patient record named Atlas already exists."
 							action={
@@ -519,7 +601,11 @@ export default function Example() {
 								</>
 							}
 						/>
-						<Banner size="sm" description="A patient record named Atlas already exists." />
+						<Banner
+							tone="info"
+							size="sm"
+							description="A patient record named Atlas already exists."
+						/>
 					</div>
 				),
 			},
@@ -528,6 +614,7 @@ export default function Example() {
 				title: "Custom content",
 				code: scenarioModule(
 					`<Banner
+	tone="info"
 	icon={<Info />}
 	title="Custom content supported"
 	description={
@@ -544,6 +631,7 @@ export default function Example() {
 				),
 				render: () => (
 					<Banner
+						tone="info"
 						icon={<Info />}
 						title="Custom content supported"
 						description={
@@ -906,32 +994,70 @@ export function App() {
 				),
 			},
 			{
-				id: catalogScenarioId("toast", "success-variant"),
-				title: "Success Variant",
+				id: catalogScenarioId("toast", "success-tone"),
+				title: "Success tone",
 				code: toastScenarioModule(
 					'<Button onClick={() => toast.success("Care plan updated")}>Success</Button>',
 				),
 				render: () => <Button onClick={() => toast.success("Care plan updated")}>Success</Button>,
 			},
 			{
-				id: catalogScenarioId("toast", "error-variant"),
-				title: "Error Variant",
-				code: toastScenarioModule('<Button onClick={() => toast.error("Failed")}>Error</Button>'),
-				render: () => <Button onClick={() => toast.error("Failed")}>Error</Button>,
+				id: catalogScenarioId("toast", "danger-tone"),
+				title: "Danger tone",
+				code: toastScenarioModule('<Button onClick={() => toast.danger("Failed")}>Danger</Button>'),
+				render: () => <Button onClick={() => toast.danger("Failed")}>Danger</Button>,
 			},
 			{
-				id: catalogScenarioId("toast", "warning-variant"),
-				title: "Warning Variant",
+				id: catalogScenarioId("toast", "warning-tone"),
+				title: "Warning tone",
 				code: toastScenarioModule(
 					'<Button onClick={() => toast.warning("Expiring")}>Warning</Button>',
 				),
 				render: () => <Button onClick={() => toast.warning("Expiring")}>Warning</Button>,
 			},
 			{
-				id: catalogScenarioId("toast", "info-variant"),
-				title: "Info Variant",
+				id: catalogScenarioId("toast", "info-tone"),
+				title: "Info tone",
 				code: toastScenarioModule('<Button onClick={() => toast.info("Queued")}>Info</Button>'),
 				render: () => <Button onClick={() => toast.info("Queued")}>Info</Button>,
+			},
+			{
+				id: catalogScenarioId("toast", "loading"),
+				title: "Loading",
+				code: toastScenarioModule(
+					'<Button onClick={() => toast.loading("Syncing records")}>Loading</Button>',
+				),
+				render: () => <Button onClick={() => toast.loading("Syncing records")}>Loading</Button>,
+			},
+			{
+				id: catalogScenarioId("toast", "promise"),
+				title: "Promise",
+				code: toastScenarioModule(
+					`<Button
+	onClick={() =>
+		toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
+			loading: "Saving care plan",
+			success: "Care plan saved",
+			error: "Save failed",
+		})
+	}
+>
+	Run promise
+</Button>`,
+				),
+				render: () => (
+					<Button
+						onClick={() =>
+							toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
+								loading: "Saving care plan",
+								success: "Care plan saved",
+								error: "Save failed",
+							})
+						}
+					>
+						Run promise
+					</Button>
+				),
 			},
 			{
 				id: catalogScenarioId("toast", "close-button"),

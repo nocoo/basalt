@@ -7,7 +7,7 @@ export default function InputGroupInlineSuffix() {
 			<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
 			<InputGroup.Suffix>.example.com</InputGroup.Suffix>
 			<InputGroup.Addon align="end">
-				<CircleCheck className="text-basalt-heatmap-green-3" />
+				<CircleCheck className="text-basalt-success" />
 			</InputGroup.Addon>
 		</InputGroup>
 	);

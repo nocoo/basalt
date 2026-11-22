@@ -13,7 +13,7 @@ export function GaugeCard() {
 		if (s >= 740) return { label: t("dashboard.excellent"), color: "text-basalt-success" };
 		if (s >= 670) return { label: t("dashboard.good"), color: "text-basalt-foreground" };
 		if (s >= 580) return { label: t("dashboard.fair"), color: "text-basalt-warning" };
-		return { label: t("dashboard.poor"), color: "text-basalt-destructive" };
+		return { label: t("dashboard.poor"), color: "text-basalt-danger-solid" };
 	}
 
 	const { label, color } = getScoreLabel(score);

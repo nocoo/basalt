@@ -19,23 +19,23 @@ import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
-import type { ToastVariant } from "@/models/types";
+import type { ToastTone } from "@/models/types";
 import { useInteractionShowcaseViewModel } from "@/viewmodels/useInteractionShowcaseViewModel";
 
-// ── Variant → icon + color mapping ──
+// ── Tone → icon + color mapping ──
 
-const VARIANT_ICON: Record<ToastVariant, React.ElementType> = {
-	default: Bell,
+const TONE_ICON: Record<ToastTone, React.ElementType> = {
+	neutral: Bell,
 	success: CheckCircle2,
-	error: XCircle,
+	danger: XCircle,
 	warning: AlertTriangle,
 	info: Info,
 };
 
-const VARIANT_STYLE: Record<ToastVariant, string> = {
-	default: "text-foreground",
-	success: "text-success",
-	error: "text-destructive",
+const TONE_STYLE: Record<ToastTone, string> = {
+	neutral: "text-basalt-foreground",
+	success: "text-basalt-success",
+	danger: "text-basalt-danger",
 	warning: "text-basalt-warning",
 	info: "text-basalt-info",
 };
@@ -48,13 +48,13 @@ function ToastSection() {
 	const { t } = useTranslation();
 	const { toasts } = useInteractionShowcaseViewModel();
 
-	const fireToast = (variant: ToastVariant, title: string, description: string) => {
-		switch (variant) {
+	const fireToast = (tone: ToastTone, title: string, description: string) => {
+		switch (tone) {
 			case "success":
 				toast.success(title, { description });
 				break;
-			case "error":
-				toast.error(title, { description });
+			case "danger":
+				toast.danger(title, { description });
 				break;
 			case "warning":
 				toast.warning(title, { description });
@@ -74,15 +74,15 @@ function ToastSection() {
 		>
 			<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 lg:grid-cols-3">
 				{toasts.map((t) => {
-					const Icon = VARIANT_ICON[t.variant];
-					const colorClass = VARIANT_STYLE[t.variant];
+					const Icon = TONE_ICON[t.tone];
+					const colorClass = TONE_STYLE[t.tone];
 					return (
 						<LayerCard key={t.id} className="h-full" data-interaction-card>
 							<LayerCard.Header asChild>
 								<Button
 									variant="ghost"
 									type="button"
-									onClick={() => fireToast(t.variant, t.title, t.description)}
+									onClick={() => fireToast(t.tone, t.title, t.description)}
 									className="h-full items-start justify-start text-left"
 								>
 									<Icon
@@ -95,7 +95,7 @@ function ToastSection() {
 											{t.description}
 										</p>
 										<span className="mt-basalt-space-md inline-block rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-sm font-medium text-muted-foreground">
-											{t.variantLabel}
+											{t.toneLabel}
 										</span>
 									</div>
 								</Button>
@@ -197,7 +197,7 @@ function DialogSection() {
 								type="button"
 								onClick={() => {
 									closeDialog();
-									toast.error(t("pages.interactionShowcase.accountDeleted"), {
+									toast.danger(t("pages.interactionShowcase.accountDeleted"), {
 										description: t("pages.interactionShowcase.accountDeletedDesc"),
 									});
 								}}

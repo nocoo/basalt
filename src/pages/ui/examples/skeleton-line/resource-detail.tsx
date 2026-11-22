@@ -81,7 +81,7 @@ export default function ResourceDetailSkeleton() {
 								{loading ? (
 									<SkeletonLine minWidth={78} maxWidth={78} height={12} />
 								) : item.name === "Status" ? (
-									<Badge variant="success" dot>
+									<Badge tone="success" dot>
 										{item.value}
 									</Badge>
 								) : (

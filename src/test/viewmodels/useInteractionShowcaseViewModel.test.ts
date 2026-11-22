@@ -3,16 +3,16 @@ import { describe, expect, it } from "vitest";
 import { useInteractionShowcaseViewModel } from "@/viewmodels/useInteractionShowcaseViewModel";
 
 describe("useInteractionShowcaseViewModel", () => {
-	it("returns toast demos with variantLabel", () => {
+	it("returns toast demos with toneLabel", () => {
 		const { result } = renderHook(() => useInteractionShowcaseViewModel());
 		expect(result.current.toasts.length).toBeGreaterThan(0);
 		result.current.toasts.forEach((t) => {
 			expect(t).toHaveProperty("id");
 			expect(t).toHaveProperty("title");
 			expect(t).toHaveProperty("description");
-			expect(t).toHaveProperty("variant");
-			expect(t).toHaveProperty("variantLabel");
-			expect(typeof t.variantLabel).toBe("string");
+			expect(t).toHaveProperty("tone");
+			expect(t).toHaveProperty("toneLabel");
+			expect(typeof t.toneLabel).toBe("string");
 		});
 	});
 
@@ -50,12 +50,12 @@ describe("useInteractionShowcaseViewModel", () => {
 		expect(result.current.getDialogById("nonexistent")).toBeUndefined();
 	});
 
-	it("returns variant labels for all variants", () => {
+	it("returns tone labels for all tones", () => {
 		const { result } = renderHook(() => useInteractionShowcaseViewModel());
-		expect(result.current.variantLabels).toHaveLength(5);
-		result.current.variantLabels.forEach((vl) => {
-			expect(vl).toHaveProperty("variant");
-			expect(vl).toHaveProperty("label");
+		expect(result.current.toneLabels).toHaveLength(5);
+		result.current.toneLabels.forEach((tl) => {
+			expect(tl).toHaveProperty("tone");
+			expect(tl).toHaveProperty("label");
 		});
 	});
 });

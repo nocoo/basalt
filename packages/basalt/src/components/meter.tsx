@@ -6,9 +6,9 @@ const SEGMENT_COUNT = 20;
 
 const TONE_FILL_CLASSES = {
 	default: "bg-basalt-primary",
-	success: "bg-basalt-badge-green",
-	warning: "bg-basalt-warning",
-	danger: "bg-basalt-danger",
+	success: "bg-basalt-success-solid",
+	warning: "bg-basalt-warning-solid",
+	danger: "bg-basalt-danger-solid",
 } as const;
 
 const BAR_SIZE_CLASSES = {

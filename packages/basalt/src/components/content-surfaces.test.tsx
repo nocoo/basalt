@@ -10,7 +10,7 @@ import { UploadItem } from "./upload-queue";
 
 describe("content surface ownership", () => {
 	it.each<[string, ComponentType]>([
-		["neutral banner", () => <Banner variant="secondary">Content</Banner>],
+		["neutral banner", () => <Banner>Content</Banner>],
 		["grid item", () => <GridItem>Content</GridItem>],
 		["stat item", () => <StatStrip items={[{ label: "Content", value: 1 }]} />],
 		["metric card", () => <StatCard label="Content" value="1" />],
@@ -35,7 +35,7 @@ describe("content surface ownership", () => {
 	});
 
 	it("keeps semantic banners outside the neutral stack", () => {
-		render(<Banner variant="error">Failure</Banner>);
+		render(<Banner tone="danger">Failure</Banner>);
 		expect(screen.getByText("Failure")).not.toHaveAttribute("data-basalt-surface");
 	});
 });

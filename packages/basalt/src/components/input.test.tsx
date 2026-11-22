@@ -54,8 +54,8 @@ describe("Input", () => {
 	it("keeps a destructive invalid border that focus-visible cannot replace", () => {
 		render(<Input aria-label="Name" aria-invalid />);
 		const input = screen.getByRole("textbox", { name: "Name" });
-		expect(input.className).toContain("aria-invalid:border-basalt-destructive");
-		expect(input.className).toContain("aria-invalid:focus-visible:border-basalt-destructive");
+		expect(input.className).toContain("aria-invalid:border-basalt-danger-solid");
+		expect(input.className).toContain("aria-invalid:focus-visible:border-basalt-danger-solid");
 		expect(input).toHaveClass("basalt-focus");
 	});
 

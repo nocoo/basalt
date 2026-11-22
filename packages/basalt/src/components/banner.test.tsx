@@ -9,39 +9,53 @@ describe("Banner", () => {
 		expect(screen.getByText("A new version is ready.")).toBeInTheDocument();
 	});
 
-	it("uses high-contrast tints instead of heatmap fills", () => {
-		const { rerender } = render(<Banner title="Info" />);
-		expect(screen.getByText("Info").parentElement?.parentElement?.className).toContain(
-			"bg-basalt-info-tint",
+	it("renders neutral surface by default and applies semantic tone classes", () => {
+		const { rerender } = render(
+			<Banner
+				title="Update"
+				description="A new version is ready."
+				role="status"
+				aria-label="Notice"
+			/>,
 		);
-		rerender(<Banner variant="alert" title="Warn" />);
-		expect(screen.getByText("Warn").parentElement?.parentElement?.className).toContain(
-			"text-basalt-warning",
-		);
-		rerender(<Banner variant="error" title="Fail" />);
-		expect(screen.getByText("Fail").parentElement?.parentElement?.className).toContain(
-			"bg-basalt-danger-tint",
-		);
+		const root = screen.getByRole("status", { name: "Notice" });
+		expect(root).toHaveAttribute("data-basalt-surface");
+		expect(root).toHaveClass("basalt-banner", "text-basalt-foreground");
+		expect(screen.getByText("A new version is ready.")).toHaveClass("text-basalt-muted-foreground");
+		expect(root.className).not.toContain("bg-basalt-info-tint");
+
+		rerender(<Banner tone="info" title="Info" role="status" aria-label="Notice" />);
+		expect(root).toHaveClass("bg-basalt-info-tint", "text-basalt-info");
+		expect(root).not.toHaveAttribute("data-basalt-surface");
+
+		rerender(<Banner tone="success" title="Done" role="status" aria-label="Notice" />);
+		expect(root).toHaveClass("bg-basalt-success-tint", "text-basalt-success");
+
+		rerender(<Banner tone="warning" title="Warn" role="status" aria-label="Notice" />);
+		expect(root).toHaveClass("bg-basalt-warning-tint", "text-basalt-warning");
+
+		rerender(<Banner tone="danger" title="Fail" role="status" aria-label="Notice" />);
+		expect(root).toHaveClass("bg-basalt-danger-tint", "text-basalt-danger");
 	});
 
 	it("renders children without a title", () => {
-		render(<Banner variant="alert">Just copy</Banner>);
+		render(<Banner tone="warning">Just copy</Banner>);
 		expect(screen.getByText("Just copy")).toBeInTheDocument();
 	});
 
-	it("renders secondary and compact sizes", () => {
+	it("renders neutral and compact sizes", () => {
 		const { rerender } = render(
-			<Banner variant="secondary" title="Maintenance scheduled" description="Ten minutes." />,
+			<Banner tone="neutral" title="Maintenance scheduled" description="Ten minutes." />,
 		);
 		expect(screen.getByText("Maintenance scheduled")).toBeInTheDocument();
 		rerender(<Banner size="sm" description="A DNS record already exists." />);
 		expect(screen.getByText("A DNS record already exists.")).toBeInTheDocument();
 	});
 
-	it("renders accent-aware actions", () => {
+	it("renders destructive action on danger tone", () => {
 		render(
 			<Banner
-				variant="error"
+				tone="danger"
 				title="Save failed"
 				description="Try again."
 				action={
@@ -52,18 +66,27 @@ describe("Banner", () => {
 				}
 			/>,
 		);
-		expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Retry" })).toHaveClass("bg-basalt-danger-solid");
 		expect(screen.getByRole("button", { name: "Dismiss" })).toBeInTheDocument();
 	});
 
-	it("falls back to default info tint and base padding for null variant and size", () => {
+	it("falls back to neutral surface and base padding for null tone and size", () => {
 		render(
-			<Banner variant={null} size={null} title="Restored" role="status" aria-label="Notice" />,
+			<Banner
+				tone={null}
+				size={null}
+				title="Restored"
+				description="Details stay neutral."
+				role="status"
+				aria-label="Notice"
+			/>,
 		);
 		const root = screen.getByRole("status", { name: "Notice" });
 		expect(screen.getByText("Restored")).toBeInTheDocument();
-		expect(root).toHaveClass("basalt-banner", "bg-basalt-info-tint");
-		expect(root).toHaveClass("text-basalt-info");
+		expect(root).toHaveAttribute("data-basalt-surface");
+		expect(root).toHaveClass("basalt-banner", "text-basalt-foreground");
+		expect(root.className).not.toContain("bg-basalt-info-tint");
+		expect(screen.getByText("Details stay neutral.")).toHaveClass("text-basalt-muted-foreground");
 	});
 
 	it("keeps a compact plain action inline when description is omitted", () => {

@@ -177,7 +177,10 @@ export function FileDropzone({
 				</span>
 			</button>
 			{rejections.length > 0 && (
-				<ul role="alert" className="space-y-basalt-space-sm text-basalt-sm text-basalt-destructive">
+				<ul
+					role="alert"
+					className="space-y-basalt-space-sm text-basalt-sm text-basalt-danger-solid"
+				>
 					{rejections.map((item, index) => (
 						<li key={`${item.file.name}-${index}`} className="break-words">
 							{formatRejection ? formatRejection(item) : `${item.file.name}: ${REASONS[item.code]}`}

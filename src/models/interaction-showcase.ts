@@ -1,23 +1,17 @@
 // Pure business logic for the Interaction Showcase page.
 // No React dependency — fully testable with plain unit tests.
 
-import type { ToastVariant } from "@/models/types";
+import type { ToastTone } from "@/models/types";
 
-export function toastVariantLabel(variant: ToastVariant): string {
-	const labels: Record<ToastVariant, string> = {
-		default: "Default",
+export function toastToneLabel(tone: ToastTone): string {
+	const labels: Record<ToastTone, string> = {
+		neutral: "Neutral",
 		success: "Success",
-		error: "Error",
+		danger: "Danger",
 		warning: "Warning",
 		info: "Info",
 	};
-	return labels[variant];
+	return labels[tone];
 }
 
-export const ALL_TOAST_VARIANTS: ToastVariant[] = [
-	"default",
-	"success",
-	"error",
-	"warning",
-	"info",
-];
+export const ALL_TOAST_TONES: ToastTone[] = ["neutral", "success", "danger", "warning", "info"];

@@ -482,7 +482,7 @@ export default function TypefacePage() {
 								<h3 className="text-basalt-lg font-semibold text-basalt-foreground">
 									{t("pages.typeface.doTitle")}
 								</h3>
-								<Badge variant="success">{t("pages.typeface.doBadge")}</Badge>
+								<Badge tone="success">{t("pages.typeface.doBadge")}</Badge>
 							</LayerCard.Header>
 							<LayerCard.Body>
 								<ul className="space-y-basalt-card-sm">
@@ -508,7 +508,9 @@ export default function TypefacePage() {
 								<h3 className="text-basalt-lg font-semibold text-basalt-foreground">
 									{t("pages.typeface.dontTitle")}
 								</h3>
-								<Badge variant="destructive">{t("pages.typeface.dontBadge")}</Badge>
+								<Badge tone="danger" variant="solid">
+									{t("pages.typeface.dontBadge")}
+								</Badge>
 							</LayerCard.Header>
 							<LayerCard.Body>
 								<ul className="space-y-basalt-card-sm">
@@ -518,7 +520,7 @@ export default function TypefacePage() {
 											className="flex items-start gap-basalt-row-gap text-basalt-md leading-basalt-body text-basalt-foreground"
 										>
 											<X
-												className="mt-basalt-space-xs size-basalt-icon shrink-0 text-basalt-destructive"
+												className="mt-basalt-space-xs size-basalt-icon shrink-0 text-basalt-danger-solid"
 												strokeWidth={1.75}
 												aria-hidden="true"
 											/>

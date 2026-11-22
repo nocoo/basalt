@@ -130,7 +130,7 @@ export const API = [
 				name: "icons",
 				type: "ToasterIcons",
 				required: false,
-				description: "Custom icon overrides for toast status variants. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status variant dispatches (`toast.success`, `error`, `warning`, `info`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`.",
+				description: "Custom icon overrides for toast status tones. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status tone dispatches (`toast.success`, `danger`, `warning`, `info`, `loading`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`.",
 			},
 			{
 				name: "containerAriaLabel",
@@ -162,7 +162,7 @@ export const API = [
 					name: "options",
 					type: "ToastCallOptions",
 					required: false,
-					description: "Notification customization options including optional variant.",
+					description: "Notification customization options including optional tone.",
 				},
 		],
 		returns: {
@@ -211,11 +211,11 @@ export const API = [
 					description: "Optional action button configuration with label and onClick handler.",
 				},
 				{
-					name: "variant",
-					type: "\"default\" | \"error\" | \"info\" | \"success\" | \"warning\"",
+					name: "tone",
+					type: "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\"",
 					required: false,
-					default: "\"default\"",
-					description: "Visual status variant style for this toast.",
+					default: "\"neutral\"",
+					description: "Visual status tone for this toast.",
 				},
 			],
 		},
@@ -289,9 +289,9 @@ export const API = [
 		props: [],
 	},
 	{
-		name: "toast.error",
-		callSignature: "toast.error(message: React.ReactNode, options?: ToastOptions): number | string",
-		description: "Dispatches an error status toast notification.",
+		name: "toast.danger",
+		callSignature: "toast.danger(message: React.ReactNode, options?: ToastOptions): number | string",
+		description: "Dispatches a danger status toast notification.",
 		parameters: [
 				{
 					name: "message",
@@ -486,6 +486,97 @@ export const API = [
 					description: "Optional action button configuration with label and onClick handler.",
 				},
 			],
+		},
+		props: [],
+	},
+	{
+		name: "toast.loading",
+		callSignature: "toast.loading(message: React.ReactNode, options?: ToastOptions): number | string",
+		description: "Dispatches a persistent loading toast notification.",
+		parameters: [
+				{
+					name: "message",
+					type: "React.ReactNode",
+					required: true,
+					description: "Main notification content or React node.",
+				},
+				{
+					name: "options",
+					type: "ToastOptions",
+					required: false,
+					description: "Notification customization options.",
+				},
+		],
+		returns: {
+			type: "number | string",
+			description: "The unique toast identifier (string or number).",
+		},
+		options: {
+			name: "ToastOptions",
+			props: [
+				{
+					name: "description",
+					type: "React.ReactNode",
+					required: false,
+					description: "Secondary supporting text or node displayed below the main message.",
+				},
+				{
+					name: "icon",
+					type: "React.ReactNode",
+					required: false,
+					description: "Custom icon override. When set to `false`, suppresses default status or notification icons.",
+				},
+				{
+					name: "close",
+					type: "boolean",
+					required: false,
+					default: "true",
+					description: "Whether a close button is displayed on this individual toast notification.",
+				},
+				{
+					name: "duration",
+					type: "number",
+					required: false,
+					default: "\"inherited from container, finally 4000ms\"",
+					description: "Visibility duration in milliseconds before auto-dismissal. Resolved as `toast.duration || (Toaster.toastOptions.duration ?? Toaster.duration) || 4000`. Infinity disables auto-closing. Setting to 0 treats it as falsy and falls back through container duration before defaulting to 4000ms.",
+				},
+				{
+					name: "id",
+					type: "number | string",
+					required: false,
+					description: "Unique identifier for this toast notification. Can be used with `toast.dismiss(id)` to manually dismiss this specific toast.",
+				},
+				{
+					name: "action",
+					type: "{ label: string; onClick: () => void; }",
+					required: false,
+					description: "Optional action button configuration with label and onClick handler.",
+				},
+			],
+		},
+		props: [],
+	},
+	{
+		name: "toast.promise",
+		callSignature: "toast.promise(promise: (() => Promise<ToastData>) | Promise<ToastData>, data: Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }): { unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+		description: "Binds an async task or promise to automatic loading, success, and danger toast transitions.",
+		parameters: [
+				{
+					name: "promise",
+					type: "(() => Promise<ToastData>) | Promise<ToastData>",
+					required: true,
+					description: "Promise or promise-returning callback to track.",
+				},
+				{
+					name: "data",
+					type: "Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }",
+					required: true,
+					description: "Loading, success, and error message handlers plus optional toast options.",
+				},
+		],
+		returns: {
+			type: "{ unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+			description: "The sonner promise toast handle with `unwrap()`.",
 		},
 		props: [],
 	},

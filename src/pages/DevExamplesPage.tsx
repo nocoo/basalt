@@ -69,7 +69,7 @@ function Controls() {
 				<Button>Primary</Button>
 				<Button variant="outline">Secondary</Button>
 				<Badge variant="outline">Pending</Badge>
-				<Badge variant="success">Complete</Badge>
+				<Badge tone="success">Complete</Badge>
 			</LayerCard.Body>
 		</LayerCard>
 	);
@@ -95,7 +95,9 @@ function Data() {
 						<TableRow>
 							<TableCell>Publish</TableCell>
 							<TableCell>
-								<Badge variant="success">Complete</Badge>
+								<Badge dot tone="success">
+									Complete
+								</Badge>
 							</TableCell>
 						</TableRow>
 					</TableBody>

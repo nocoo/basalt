@@ -1,8 +1,8 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Toaster as Sonner, toast as sonnerToast } from "sonner";
-import { Check, CircleAlert, Info, TriangleAlert, X } from "../utils/internal-icons";
+import { Check, CircleAlert, Info, Loader2, TriangleAlert, X } from "../utils/internal-icons";
 
-export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
+export type ToastTone = "neutral" | "info" | "success" | "warning" | "danger";
 
 export type ToastOptions = {
 	/**
@@ -37,76 +37,73 @@ export type ToastOptions = {
 };
 
 /**
- * Options accepted by the root `toast(message, options)` dispatch function, extending `ToastOptions` with an optional `variant`.
+ * Options accepted by the root `toast(message, options)` dispatch function, extending `ToastOptions` with an optional `tone`.
  */
 export type ToastCallOptions = ToastOptions & {
 	/**
-	 * Visual status variant style for this toast.
-	 * @default "default"
+	 * Visual status tone for this toast.
+	 * @default "neutral"
 	 */
-	variant?: ToastVariant;
+	tone?: ToastTone;
 };
 
-const VARIANT_CLASS: Record<ToastVariant, string> = {
-	default: "bg-basalt-popover",
-	success:
-		"bg-basalt-heatmap-green-1 [&_[data-icon]]:text-basalt-heatmap-green-4 [&_[data-title]]:text-basalt-heatmap-green-4",
-	error:
-		"bg-basalt-danger-tint [&_[data-icon]]:text-basalt-danger [&_[data-title]]:text-basalt-danger",
-	warning:
-		"bg-basalt-warning-tint [&_[data-icon]]:text-basalt-warning [&_[data-title]]:text-basalt-warning",
-	info: "bg-basalt-info-tint [&_[data-icon]]:text-basalt-info [&_[data-title]]:text-basalt-info",
+const TONE_CLASS: Record<ToastTone, string> = {
+	neutral: "bg-basalt-popover",
+	info: "bg-basalt-popover [&_[data-icon]]:text-basalt-info",
+	success: "bg-basalt-popover [&_[data-icon]]:text-basalt-success",
+	warning: "bg-basalt-popover [&_[data-icon]]:text-basalt-warning",
+	danger: "bg-basalt-popover [&_[data-icon]]:text-basalt-danger",
 };
 
-const VARIANT_ICON: Record<ToastVariant, ReactNode> = {
-	default: null,
-	success: <Check className="size-basalt-icon-lg" />,
-	error: <CircleAlert className="size-basalt-icon-lg" />,
-	warning: <TriangleAlert className="size-basalt-icon-lg" />,
+const TONE_ICON: Record<ToastTone, ReactNode> = {
+	neutral: null,
 	info: <Info className="size-basalt-icon-lg" />,
+	success: <Check className="size-basalt-icon-lg" />,
+	warning: <TriangleAlert className="size-basalt-icon-lg" />,
+	danger: <CircleAlert className="size-basalt-icon-lg" />,
 };
 
-function resolveIcon(variant: ToastVariant, icon: ToastOptions["icon"]) {
+function resolveIcon(tone: ToastTone, icon: ToastOptions["icon"]) {
 	if (icon === false) {
 		return null;
 	}
 	if (icon != null) {
 		return icon;
 	}
-	return VARIANT_ICON[variant] ?? undefined;
+	return TONE_ICON[tone] ?? undefined;
 }
 
 /**
  * Dispatches a toast notification with the given message and options.
  * @param message Main notification content or React node.
- * @param options Notification customization options including optional variant.
+ * @param options Notification customization options including optional tone.
  * @returns The unique toast identifier (string or number).
  */
 function show(message: ReactNode, options: ToastCallOptions = {}) {
-	const { variant = "default", icon, close = true, ...rest } = options;
+	const { tone = "neutral", icon, close = true, ...rest } = options;
 	const payload = {
 		...rest,
 		closeButton: close,
-		className: VARIANT_CLASS[variant],
-		icon: resolveIcon(variant, icon),
+		className: TONE_CLASS[tone],
+		icon: resolveIcon(tone, icon),
 	};
-	if (variant === "success") {
+	if (tone === "success") {
 		return sonnerToast.success(message, payload);
 	}
-	if (variant === "error") {
+	if (tone === "danger") {
 		return sonnerToast.error(message, payload);
 	}
-	if (variant === "warning") {
+	if (tone === "warning") {
 		return sonnerToast.warning(message, payload);
 	}
-	if (variant === "info") {
+	if (tone === "info") {
 		return sonnerToast.info(message, payload);
 	}
 	return sonnerToast(message, payload);
 }
 
 /**
- * Imperative notification dispatcher. Directly callable as `toast(message, options)` to display a default notification, with helper methods for status variants (`success`, `error`, `warning`, `info`) and dismissal (`dismiss`).
+ * Imperative notification dispatcher. Directly callable as `toast(message, options)` to display a neutral notification, with helper methods for status tones (`success`, `danger`, `warning`, `info`), `loading`, `promise`, and dismissal (`dismiss`).
  */
 export const toast = Object.assign(show, {
 	/**
@@ -116,15 +113,15 @@ export const toast = Object.assign(show, {
 	 * @returns The unique toast identifier (string or number).
 	 */
 	success: (message: ReactNode, options?: ToastOptions) =>
-		show(message, { ...options, variant: "success" }),
+		show(message, { ...options, tone: "success" }),
 	/**
-	 * Dispatches an error status toast notification.
+	 * Dispatches a danger status toast notification.
 	 * @param message Main notification content or React node.
 	 * @param options Notification customization options.
 	 * @returns The unique toast identifier (string or number).
 	 */
-	error: (message: ReactNode, options?: ToastOptions) =>
-		show(message, { ...options, variant: "error" }),
+	danger: (message: ReactNode, options?: ToastOptions) =>
+		show(message, { ...options, tone: "danger" }),
 	/**
 	 * Dispatches a warning status toast notification.
 	 * @param message Main notification content or React node.
@@ -132,15 +129,57 @@ export const toast = Object.assign(show, {
 	 * @returns The unique toast identifier (string or number).
 	 */
 	warning: (message: ReactNode, options?: ToastOptions) =>
-		show(message, { ...options, variant: "warning" }),
+		show(message, { ...options, tone: "warning" }),
 	/**
 	 * Dispatches an info status toast notification.
 	 * @param message Main notification content or React node.
 	 * @param options Notification customization options.
 	 * @returns The unique toast identifier (string or number).
 	 */
-	info: (message: ReactNode, options?: ToastOptions) =>
-		show(message, { ...options, variant: "info" }),
+	info: (message: ReactNode, options?: ToastOptions) => show(message, { ...options, tone: "info" }),
+	/**
+	 * Dispatches a persistent loading toast notification.
+	 * @param message Main notification content or React node.
+	 * @param options Notification customization options.
+	 * @returns The unique toast identifier (string or number).
+	 */
+	loading: (message: ReactNode, options: ToastOptions = {}) => {
+		const { icon, close = true, ...rest } = options;
+		return sonnerToast.loading(message, {
+			...rest,
+			closeButton: close,
+			className: TONE_CLASS.neutral,
+			icon:
+				icon === false ? null : icon != null ? (
+					icon
+				) : (
+					<Loader2 className="size-basalt-icon-lg animate-spin" />
+				),
+		});
+	},
+	/**
+	 * Binds an async task or promise to automatic loading, success, and danger toast transitions.
+	 * @param promise Promise or promise-returning callback to track.
+	 * @param data Loading, success, and error message handlers plus optional toast options.
+	 * @returns The sonner promise toast handle with `unwrap()`.
+	 */
+	promise: <ToastData,>(
+		promise: Promise<ToastData> | (() => Promise<ToastData>),
+		data: Omit<ToastOptions, "description" | "icon"> & {
+			loading: ReactNode;
+			success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>);
+			error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>);
+			description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>);
+			finally?: () => void | Promise<void>;
+		},
+	) => {
+		const { close = true, ...rest } = data;
+		return sonnerToast.promise(promise, {
+			...rest,
+			closeButton: close,
+			className: TONE_CLASS.neutral,
+		});
+	},
 	/**
 	 * Dismisses an active toast by its identifier, or dismisses all toasts when called without arguments. Note: Calling without arguments returns `undefined` at runtime; calling with `id` returns the dismissed `id`.
 	 * @param id Optional identifier of the toast to dismiss. When omitted, all toasts are dismissed.
@@ -266,7 +305,7 @@ export interface ToasterProps
 	 */
 	swipeDirections?: ToasterSwipeDirection[];
 	/**
-	 * Custom icon overrides for toast status variants. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status variant dispatches (`toast.success`, `error`, `warning`, `info`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`.
+	 * Custom icon overrides for toast status tones. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status tone dispatches (`toast.success`, `danger`, `warning`, `info`, `loading`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`.
 	 */
 	icons?: ToasterIcons;
 	/**
@@ -289,27 +328,28 @@ export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 				error: <CircleAlert className="size-basalt-icon-lg" />,
 				warning: <TriangleAlert className="size-basalt-icon-lg" />,
 				info: <Info className="size-basalt-icon-lg" />,
+				loading: <Loader2 className="size-basalt-icon-lg animate-spin" />,
 				close: <X className="size-basalt-icon" />,
 			}}
 			toastOptions={{
 				unstyled: true,
 				classNames: {
 					toast:
-						"basalt-ui basalt-toast flex w-full items-center gap-basalt-space-lg rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-card-lg py-basalt-card text-basalt-base leading-[var(--basalt-leading-banner)] text-basalt-foreground shadow-basalt-floating [&_[data-content]]:min-w-0 [&_[data-content]]:flex-1",
+						"basalt-ui basalt-toast flex w-full items-center gap-basalt-space-lg rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-card py-basalt-card-sm text-basalt-base leading-[var(--basalt-leading-banner)] text-basalt-foreground shadow-basalt-floating [&_[data-content]]:min-w-0 [&_[data-content]]:flex-1",
 					title: "font-medium",
 					description:
-						"text-basalt-sm leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
+						"text-basalt-base leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
 					closeButton:
 						"basalt-action basalt-action-icon order-last inline-flex shrink-0 cursor-pointer items-center justify-center rounded-basalt-sm text-basalt-muted-foreground hover:bg-basalt-hover hover:text-basalt-foreground",
 					actionButton:
-						"basalt-action shrink-0 cursor-pointer rounded-basalt-sm bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary-hover",
+						"basalt-action shrink-0 cursor-pointer rounded-basalt-md bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary-hover",
 					cancelButton:
-						"basalt-action shrink-0 cursor-pointer rounded-basalt-sm bg-basalt-control hover:bg-basalt-hover",
+						"basalt-action shrink-0 cursor-pointer rounded-basalt-md bg-basalt-control hover:bg-basalt-hover",
 					icon: "flex size-basalt-icon-lg shrink-0 items-center justify-center",
-					success: VARIANT_CLASS.success,
-					error: VARIANT_CLASS.error,
-					warning: VARIANT_CLASS.warning,
-					info: VARIANT_CLASS.info,
+					success: TONE_CLASS.success,
+					error: TONE_CLASS.danger,
+					warning: TONE_CLASS.warning,
+					info: TONE_CLASS.info,
 				},
 			}}
 			{...props}

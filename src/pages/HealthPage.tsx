@@ -72,7 +72,7 @@ const heartRateSlots = Array.from({ length: 24 }).map((_, i) => ({
 				? "bg-basalt-warning/60"
 				: i < 20
 					? "bg-basalt-warning"
-					: "bg-basalt-destructive",
+					: "bg-basalt-danger-solid",
 }));
 
 const heatmapData = Array.from({ length: 365 }).map((_, i) => {

@@ -135,7 +135,7 @@ describe("ConfirmDialog", () => {
 	it("uses the destructive confirm button variant", () => {
 		render(<ControlledExample variant="destructive" />);
 		expect(screen.getByRole("button", { name: "Delete" }).className).toContain(
-			"bg-basalt-destructive",
+			"bg-basalt-danger-solid",
 		);
 	});
 

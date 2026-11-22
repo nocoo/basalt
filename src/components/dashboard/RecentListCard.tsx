@@ -54,12 +54,15 @@ export function RecentListCard() {
 					{transactions.map((tx, i) => (
 						<div key={i} className="flex items-center gap-basalt-space-lg">
 							<div
-								className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${tx.type === "income" ? "bg-basalt-success/10" : "bg-basalt-destructive/10"}`}
+								className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${tx.type === "income" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 							>
 								{tx.type === "income" ? (
 									<ArrowDownLeft className="h-3.5 w-3.5 text-basalt-success" strokeWidth={1.5} />
 								) : (
-									<ArrowUpRight className="h-3.5 w-3.5 text-basalt-destructive" strokeWidth={1.5} />
+									<ArrowUpRight
+										className="h-3.5 w-3.5 text-basalt-danger-solid"
+										strokeWidth={1.5}
+									/>
 								)}
 							</div>
 							<div className="flex-1 min-w-0">

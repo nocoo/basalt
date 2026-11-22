@@ -25,23 +25,10 @@ declare global {
 }
 
 const TEXT_MIN_RATIO = 4.5;
-const COLOR_BADGE_MIN_RATIO = 1.6;
-const COLOR_BADGE_SAMPLES = new Set([
-	"badge-success",
-	"badge-red",
-	"badge-orange",
-	"badge-teal",
-	"badge-blue",
-	"badge-purple",
-]);
-
-function minRatioFor(sample: string): number {
-	return COLOR_BADGE_SAMPLES.has(sample) ? COLOR_BADGE_MIN_RATIO : TEXT_MIN_RATIO;
-}
 
 /**
- * Validates WCAG 4.5:1 text/control contrast across representative surfaces and themes.
- * Solid color badges keep white labels on candy fills, so those samples use 1.6:1.
+ * Validates WCAG 4.5:1 text/control contrast across representative surfaces and themes,
+ * including every unified tone and variant badge combination.
  * Uses real computed styles and RGBA alpha-compositing to measure painted contrast.
  */
 export async function assertConsumerContrast(page: Page): Promise<ContrastGateResult> {
@@ -156,24 +143,23 @@ export async function assertConsumerContrast(page: Page): Promise<ContrastGateRe
 			await page.evaluate(() => window.waitForTransitionsSettled());
 			await page.waitForTimeout(50);
 
-			// Measure default state text pairs (84 samples across 4 surfaces)
+			// Measure default state text pairs (92 samples across 4 surfaces)
 			const regularSamples = await page.evaluate((): SampleMeasurement[] =>
 				window.measureSamples(),
 			);
 			assert.equal(
 				regularSamples.length,
-				84,
-				`Expected exactly 84 regular contrast samples for ${theme}/${accent}`,
+				92,
+				`Expected exactly 92 regular contrast samples for ${theme}/${accent}`,
 			);
 
 			for (const s of regularSamples) {
 				totalPairs++;
-				const minimum = minRatioFor(s.sample);
-				if (s.ratio >= minimum) {
+				if (s.ratio >= TEXT_MIN_RATIO) {
 					passedPairs++;
 				} else {
 					assert.fail(
-						`Contrast failure: theme=${theme} accent=${accent} surface=${s.surface} sample=${s.sample} ratio=${s.ratio.toFixed(2)} required=${minimum.toFixed(1)} (color=${s.color})`,
+						`Contrast failure: theme=${theme} accent=${accent} surface=${s.surface} sample=${s.sample} ratio=${s.ratio.toFixed(2)} required=${TEXT_MIN_RATIO.toFixed(1)} (color=${s.color})`,
 					);
 				}
 			}
@@ -244,10 +230,10 @@ export async function assertConsumerContrast(page: Page): Promise<ContrastGateRe
 
 	assert.equal(
 		totalPairs,
-		2288,
-		"Must measure exactly 2,288 contrast pairs (88 × 2 themes × 13 accents)",
+		2496,
+		"Must measure exactly 2,496 contrast pairs (96 × 2 themes × 13 accents)",
 	);
-	assert.equal(passedPairs, 2288, "All 2,288 contrast pairs must meet their sample thresholds");
+	assert.equal(passedPairs, 2496, "All 2,496 contrast pairs must meet their sample thresholds");
 	assert.equal(
 		focusCases,
 		52,

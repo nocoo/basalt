@@ -57,7 +57,7 @@ describe("Meter", () => {
 		const { container, rerender } = render(<Meter value={50} label="Health" tone="success" />);
 		expect(screen.getByRole("meter")).toHaveAttribute("data-tone", "success");
 		expect(container.querySelector('[data-slot="meter-indicator"]')).toHaveClass(
-			"bg-basalt-badge-green",
+			"bg-basalt-success-solid",
 		);
 
 		rerender(<Meter value={69} label="Memory" tone="auto" />);
@@ -69,13 +69,13 @@ describe("Meter", () => {
 		rerender(<Meter value={70} label="Memory" tone="auto" />);
 		expect(screen.getByRole("meter")).toHaveAttribute("data-tone", "warning");
 		expect(container.querySelector('[data-slot="meter-indicator"]')).toHaveClass(
-			"bg-basalt-warning",
+			"bg-basalt-warning-solid",
 		);
 
 		rerender(<Meter value={90} label="Memory" tone="auto" />);
 		expect(screen.getByRole("meter")).toHaveAttribute("data-tone", "danger");
 		expect(container.querySelector('[data-slot="meter-indicator"]')).toHaveClass(
-			"bg-basalt-danger",
+			"bg-basalt-danger-solid",
 		);
 	});
 
@@ -106,7 +106,7 @@ describe("Meter", () => {
 		const filled = container.querySelectorAll('[data-filled="true"]');
 		expect(filled).toHaveLength(16);
 		for (const cell of filled) {
-			expect(cell).toHaveClass("basalt-meter-cell", "bg-basalt-warning");
+			expect(cell).toHaveClass("basalt-meter-cell", "bg-basalt-warning-solid");
 		}
 		expect(cells[16]).toHaveAttribute("data-filled", "false");
 		expect(cells[16]?.className).not.toContain("bg-basalt-warning");

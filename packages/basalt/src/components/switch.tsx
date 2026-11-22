@@ -141,7 +141,7 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 				>
 					{children}
 					{group.invalid ? (
-						<p id={group.errorId} className="text-basalt-sm text-basalt-destructive" role="alert">
+						<p id={group.errorId} className="text-basalt-sm text-basalt-danger-solid" role="alert">
 							{error}
 						</p>
 					) : null}

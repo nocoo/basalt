@@ -2686,7 +2686,7 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { level: 1, name: "Banner" })).toBeInTheDocument();
 		expect(document.getElementById("api-Banner")?.tagName).toBe("H3");
 		for (const title of [
-			"Variants",
+			"Tones",
 			"With icon",
 			"With action",
 			"With multiple actions",
@@ -2702,15 +2702,7 @@ describe("ui catalog", () => {
 	it.each([
 		[
 			"badge",
-			[
-				"Primary Badges",
-				"Other color variants",
-				"Color tokens",
-				"Dot badges",
-				"In a sentence",
-				"With an icon",
-				"Linked badge",
-			],
+			["Tone and variant matrix", "Dot badges", "In a sentence", "With an icon", "Linked badge"],
 		],
 		[
 			"checkbox",
@@ -2736,8 +2728,10 @@ describe("ui catalog", () => {
 			"toast",
 			[
 				"Title Only",
-				"Success Variant",
-				"Error Variant",
+				"Success tone",
+				"Danger tone",
+				"Loading",
+				"Promise",
 				"Close button",
 				"Hidden close",
 				"Custom icon",
@@ -3310,7 +3304,7 @@ describe("ui catalog", () => {
 		const alert = within(error as HTMLElement).getByRole("alert");
 		expect(alert).toHaveTextContent("Required");
 		expect(alert).toHaveAttribute("id", `${errorInput?.id}-error`);
-		expect(alert).toHaveClass("text-basalt-sm", "text-basalt-destructive");
+		expect(alert).toHaveClass("text-basalt-sm", "text-basalt-danger-solid");
 		expect(rich).toHaveTextContent("Care team name");
 		expect(rich).toHaveTextContent("(optional)");
 		expect(rich).toHaveTextContent("Shown on care summaries");
@@ -3573,12 +3567,12 @@ describe("ui catalog", () => {
 			"atlas",
 		);
 		expect(hero).toHaveTextContent(".example.com");
-		expect(hero.querySelector(".text-basalt-heatmap-green-3")).toBeTruthy();
+		expect(hero.querySelector(".text-basalt-success")).toBeTruthy();
 		expect(within(suffix as HTMLElement).getByRole("textbox", { name: "Subdomain" })).toHaveValue(
 			"atlas",
 		);
 		expect(suffix).toHaveTextContent(".example.com");
-		expect(suffix.querySelector(".text-basalt-heatmap-green-3")).toBeTruthy();
+		expect(suffix.querySelector(".text-basalt-success")).toBeTruthy();
 		expect(within(icon as HTMLElement).getByRole("textbox", { name: "Search" })).toHaveAttribute(
 			"placeholder",
 			"Search",
@@ -3616,7 +3610,7 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES["input-group"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).toContain('className="text-basalt-heatmap-green-3"');
+		expect(markdown).toContain('className="text-basalt-success"');
 		expect(markdown).toContain("<Loader size={16} showLabel={false} showElapsed={false} />");
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 		expect(CATALOG_DOCS["input-group"]?.api).toEqual(CATALOG_API["input-group"]);

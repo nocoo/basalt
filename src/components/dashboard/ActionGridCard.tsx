@@ -20,7 +20,7 @@ export function ActionGridCard({ demo = false }: { demo?: boolean }) {
 		{
 			icon: CreditCard,
 			label: t("dashboard.payBill"),
-			color: "bg-basalt-destructive/10 text-basalt-destructive",
+			color: "bg-basalt-danger-solid/10 text-basalt-danger-solid",
 		},
 		{
 			icon: PiggyBank,

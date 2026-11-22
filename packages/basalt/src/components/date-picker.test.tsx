@@ -979,33 +979,33 @@ describe("DatePicker", () => {
 			<DatePicker aria-label="Valid Date" aria-invalid={false} aria-describedby="desc" />,
 		);
 		let trigger = screen.getByRole("button", { name: "Valid Date" });
-		expect(trigger).not.toHaveClass("border-basalt-destructive");
+		expect(trigger).not.toHaveClass("border-basalt-danger-solid");
 		expect(trigger).toHaveAttribute("aria-describedby", "desc");
 		expect(trigger).toHaveAttribute("aria-invalid", "false");
 
 		rerender(<DatePicker aria-label="Valid Date String" aria-invalid="false" />);
 		trigger = screen.getByRole("button", { name: "Valid Date String" });
-		expect(trigger).not.toHaveClass("border-basalt-destructive");
+		expect(trigger).not.toHaveClass("border-basalt-danger-solid");
 		expect(trigger).toHaveAttribute("aria-invalid", "false");
 
 		rerender(<DatePicker aria-label="Invalid Date Bool" aria-invalid={true} />);
 		trigger = screen.getByRole("button", { name: "Invalid Date Bool" });
-		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveClass("border-basalt-danger-solid");
 		expect(trigger).toHaveAttribute("aria-invalid", "true");
 
 		rerender(<DatePicker aria-label="Invalid Date Str" aria-invalid="true" />);
 		trigger = screen.getByRole("button", { name: "Invalid Date Str" });
-		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveClass("border-basalt-danger-solid");
 		expect(trigger).toHaveAttribute("aria-invalid", "true");
 
 		rerender(<DatePicker aria-label="Grammar Date" aria-invalid="grammar" />);
 		trigger = screen.getByRole("button", { name: "Grammar Date" });
-		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveClass("border-basalt-danger-solid");
 		expect(trigger).toHaveAttribute("aria-invalid", "grammar");
 
 		rerender(<DatePicker aria-label="Spelling Date" aria-invalid="spelling" />);
 		trigger = screen.getByRole("button", { name: "Spelling Date" });
-		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveClass("border-basalt-danger-solid");
 		expect(trigger).toHaveAttribute("aria-invalid", "spelling");
 	});
 

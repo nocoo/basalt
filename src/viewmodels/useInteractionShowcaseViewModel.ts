@@ -3,11 +3,11 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { showcaseDialogs, showcaseToasts } from "@/data/mock";
-import { ALL_TOAST_VARIANTS, toastVariantLabel } from "@/models/interaction-showcase";
+import { ALL_TOAST_TONES, toastToneLabel } from "@/models/interaction-showcase";
 import type { ShowcaseDialog, ShowcaseToast } from "@/models/types";
 
 export interface ToastDemo extends ShowcaseToast {
-	variantLabel: string;
+	toneLabel: string;
 }
 
 export type DialogDemo = ShowcaseDialog;
@@ -19,17 +19,17 @@ export function useInteractionShowcaseViewModel() {
 		() =>
 			showcaseToasts.map((t) => ({
 				...t,
-				variantLabel: toastVariantLabel(t.variant),
+				toneLabel: toastToneLabel(t.tone),
 			})),
 		[],
 	);
 
 	const dialogs: DialogDemo[] = useMemo(() => showcaseDialogs, []);
 
-	const toastVariants = useMemo(() => ALL_TOAST_VARIANTS, []);
+	const toastTones = useMemo(() => ALL_TOAST_TONES, []);
 
-	const variantLabels = useMemo(
-		() => ALL_TOAST_VARIANTS.map((v) => ({ variant: v, label: toastVariantLabel(v) })),
+	const toneLabels = useMemo(
+		() => ALL_TOAST_TONES.map((v) => ({ tone: v, label: toastToneLabel(v) })),
 		[],
 	);
 
@@ -44,8 +44,8 @@ export function useInteractionShowcaseViewModel() {
 	return {
 		toasts,
 		dialogs,
-		toastVariants,
-		variantLabels,
+		toastTones,
+		toneLabels,
 		activeDialog,
 		openDialog,
 		closeDialog,

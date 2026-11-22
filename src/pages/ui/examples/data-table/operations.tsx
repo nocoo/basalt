@@ -225,12 +225,8 @@ export default function OperationsTable() {
 				accessor: (row) => (
 					<Badge
 						dot
-						variant={
-							row.status === "Online"
-								? "success"
-								: row.status === "Warning"
-									? "warning"
-									: "secondary"
+						tone={
+							row.status === "Online" ? "success" : row.status === "Warning" ? "warning" : "neutral"
 						}
 					>
 						{row.status}
@@ -364,7 +360,7 @@ export default function OperationsTable() {
 				}
 				bulkActions={
 					selected.length > 0 ? (
-						<Banner variant="secondary" className="flex-wrap items-center">
+						<Banner className="flex-wrap items-center">
 							<span>{selected.length} devices selected across pages</span>
 							<Button
 								size="sm"

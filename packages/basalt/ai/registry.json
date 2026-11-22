@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.5.2",
 	"totalModules": 105,
-	"totalSymbols": 655,
+	"totalSymbols": 657,
 	"totalValues": 363,
-	"totalTypes": 292,
+	"totalTypes": 294,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 77,
 	"modules": [
@@ -2404,7 +2404,7 @@
 			"importPath": "@nocoo/basalt/components/badge",
 			"subpath": "./components/badge",
 			"sourceFile": "packages/basalt/src/components/badge.tsx",
-			"sourceHash": "1b0a584d4b7e768f",
+			"sourceHash": "63f31be994f8ab67",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2418,6 +2418,22 @@
 					"name": "Badge",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/badge",
+					"packageDoc": "ai/registry.json#badge",
+					"originModule": "@nocoo/basalt/components/badge"
+				},
+				{
+					"name": "BadgeTone",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/badge",
+					"packageDoc": "ai/registry.json#badge",
+					"originModule": "@nocoo/basalt/components/badge"
+				},
+				{
+					"name": "BadgeVariant",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/badge",
 					"packageDoc": "ai/registry.json#badge",
 					"originModule": "@nocoo/basalt/components/badge"
@@ -2444,11 +2460,18 @@
 							"name": "Badge",
 							"props": [
 								{
-									"name": "variant",
-									"type": "\"blue\" | \"default\" | \"destructive\" | \"error\" | \"info\" | \"orange\" | \"outline\" | \"purple\" | \"red\" | \"secondary\" | \"success\" | \"teal\" | \"warning\" | null",
+									"name": "tone",
+									"type": "BadgeTone",
 									"required": false,
-									"default": "\"default\"",
-									"description": "Visual style variant for the badge.\n\nNote: Supports standard semantic tones and decorative color tokens.\nPass null to omit variant styling."
+									"default": "\"neutral\"",
+									"description": "Semantic status tone of the badge."
+								},
+								{
+									"name": "variant",
+									"type": "BadgeVariant",
+									"required": false,
+									"default": "\"soft\"",
+									"description": "Surface emphasis style for the badge."
 								},
 								{
 									"name": "dot",
@@ -2467,11 +2490,18 @@
 					"name": "Badge",
 					"props": [
 						{
-							"name": "variant",
-							"type": "\"blue\" | \"default\" | \"destructive\" | \"error\" | \"info\" | \"orange\" | \"outline\" | \"purple\" | \"red\" | \"secondary\" | \"success\" | \"teal\" | \"warning\" | null",
+							"name": "tone",
+							"type": "BadgeTone",
 							"required": false,
-							"default": "\"default\"",
-							"description": "Visual style variant for the badge.\n\nNote: Supports standard semantic tones and decorative color tokens.\nPass null to omit variant styling."
+							"default": "\"neutral\"",
+							"description": "Semantic status tone of the badge."
+						},
+						{
+							"name": "variant",
+							"type": "BadgeVariant",
+							"required": false,
+							"default": "\"soft\"",
+							"description": "Surface emphasis style for the badge."
 						},
 						{
 							"name": "dot",
@@ -2490,7 +2520,7 @@
 			"importPath": "@nocoo/basalt/components/banner",
 			"subpath": "./components/banner",
 			"sourceFile": "packages/basalt/src/components/banner.tsx",
-			"sourceHash": "6a90b6e37618de57",
+			"sourceHash": "c52739c40c9b492f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2546,11 +2576,11 @@
 							"name": "Banner",
 							"props": [
 								{
-									"name": "variant",
-									"type": "\"alert\" | \"default\" | \"error\" | \"secondary\" | null",
+									"name": "tone",
+									"type": "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\" | null",
 									"required": false,
-									"default": "\"default\"",
-									"description": "Visual tone variant of the banner.\n\nNote: Defaults to \"default\" (informational). Passing null falls back to \"default\"."
+									"default": "\"neutral\"",
+									"description": "Semantic tone of the banner.\n\nNote: Defaults to \"neutral\" (surface card with foreground text). Passing null falls back to \"neutral\"."
 								},
 								{
 									"name": "size",
@@ -2599,7 +2629,7 @@
 									"type": "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
 									"required": false,
 									"default": "\"default\"",
-									"description": "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner variant is \"error\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref."
+									"description": "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner tone is \"danger\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref."
 								},
 								{
 									"name": "size",
@@ -2650,11 +2680,11 @@
 					"name": "Banner",
 					"props": [
 						{
-							"name": "variant",
-							"type": "\"alert\" | \"default\" | \"error\" | \"secondary\" | null",
+							"name": "tone",
+							"type": "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\" | null",
 							"required": false,
-							"default": "\"default\"",
-							"description": "Visual tone variant of the banner.\n\nNote: Defaults to \"default\" (informational). Passing null falls back to \"default\"."
+							"default": "\"neutral\"",
+							"description": "Semantic tone of the banner.\n\nNote: Defaults to \"neutral\" (surface card with foreground text). Passing null falls back to \"neutral\"."
 						},
 						{
 							"name": "size",
@@ -2703,7 +2733,7 @@
 							"type": "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
 							"required": false,
 							"default": "\"default\"",
-							"description": "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner variant is \"error\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref."
+							"description": "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner tone is \"danger\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref."
 						},
 						{
 							"name": "size",
@@ -2858,7 +2888,7 @@
 			"importPath": "@nocoo/basalt/components/button",
 			"subpath": "./components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "874a3c7189dbc43b",
+			"sourceHash": "c90ec29ff0b7e766",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3715,7 +3745,7 @@
 			"importPath": "@nocoo/basalt/components/checkbox",
 			"subpath": "./components/checkbox",
 			"sourceFile": "packages/basalt/src/components/checkbox.tsx",
-			"sourceHash": "3a42145d3b94773c",
+			"sourceHash": "4f97f0551905a03a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -6703,7 +6733,7 @@
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"subpath": "./components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "53ad1addb18970a9",
+			"sourceHash": "52846b25fc478c2f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9473,7 +9503,7 @@
 			"importPath": "@nocoo/basalt/components/field",
 			"subpath": "./components/field",
 			"sourceFile": "packages/basalt/src/components/field.tsx",
-			"sourceHash": "283c13cc0db7b87d",
+			"sourceHash": "fca110be8637e75e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9635,7 +9665,7 @@
 			"importPath": "@nocoo/basalt/components/file-dropzone",
 			"subpath": "./components/file-dropzone",
 			"sourceFile": "packages/basalt/src/components/file-dropzone.tsx",
-			"sourceHash": "2f67fc9f6a535e37",
+			"sourceHash": "f61d80e9cac91954",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10881,7 +10911,7 @@
 			"importPath": "@nocoo/basalt/components/inline-editable",
 			"subpath": "./components/inline-editable",
 			"sourceFile": "packages/basalt/src/components/inline-editable.tsx",
-			"sourceHash": "4d1b8144b497d2f2",
+			"sourceHash": "ccce9295532b8dd5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11225,7 +11255,7 @@
 			"importPath": "@nocoo/basalt/components/input",
 			"subpath": "./components/input",
 			"sourceFile": "packages/basalt/src/components/input.tsx",
-			"sourceHash": "fe0834084ccd936c",
+			"sourceHash": "adc872a1435f74a6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11331,7 +11361,7 @@
 			"importPath": "@nocoo/basalt/components/input-area",
 			"subpath": "./components/input-area",
 			"sourceFile": "packages/basalt/src/components/input-area.tsx",
-			"sourceHash": "bc893579cc5da93d",
+			"sourceHash": "0dda757c96eec650",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11437,7 +11467,7 @@
 			"importPath": "@nocoo/basalt/components/input-group",
 			"subpath": "./components/input-group",
 			"sourceFile": "packages/basalt/src/components/input-group.tsx",
-			"sourceHash": "e6dd48a93c4415cc",
+			"sourceHash": "8e7e6d0b6a0050c3",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -12375,7 +12405,7 @@
 			"importPath": "@nocoo/basalt/components/meter",
 			"subpath": "./components/meter",
 			"sourceFile": "packages/basalt/src/components/meter.tsx",
-			"sourceHash": "4264dac82de9936f",
+			"sourceHash": "d8c99f46017ab522",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13723,7 +13753,7 @@
 			"importPath": "@nocoo/basalt/components/radio",
 			"subpath": "./components/radio",
 			"sourceFile": "packages/basalt/src/components/radio.tsx",
-			"sourceHash": "2276fcc531370a38",
+			"sourceHash": "599e7512caf7df5b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -14717,7 +14747,7 @@
 			"importPath": "@nocoo/basalt/components/select",
 			"subpath": "./components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "a002c0097ce8167d",
+			"sourceHash": "19f9214f5824cb47",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15097,7 +15127,7 @@
 			"importPath": "@nocoo/basalt/components/sensitive-input",
 			"subpath": "./components/sensitive-input",
 			"sourceFile": "packages/basalt/src/components/sensitive-input.tsx",
-			"sourceHash": "c57c02ab6a1c0bfc",
+			"sourceHash": "9c1067c10628d546",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15757,7 +15787,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "f44e28ad7085facc",
+			"sourceHash": "cd19b229043d54e6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17313,7 +17343,7 @@
 			"importPath": "@nocoo/basalt/components/stat-card",
 			"subpath": "./components/stat-card",
 			"sourceFile": "packages/basalt/src/components/stat-card.tsx",
-			"sourceHash": "43a01f70e45fc835",
+			"sourceHash": "133533b8ceb0c742",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17689,7 +17719,7 @@
 			"importPath": "@nocoo/basalt/components/switch",
 			"subpath": "./components/switch",
 			"sourceFile": "packages/basalt/src/components/switch.tsx",
-			"sourceHash": "b2feb4e94c5bb2ce",
+			"sourceHash": "79facf49a7916e28",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -19537,7 +19567,7 @@
 			"importPath": "@nocoo/basalt/components/toast",
 			"subpath": "./components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
-			"sourceHash": "df3239f3e39cfaf4",
+			"sourceHash": "0b7a9b2dae891b3e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -19556,7 +19586,7 @@
 					"originModule": "@nocoo/basalt/components/toast"
 				},
 				{
-					"name": "ToastVariant",
+					"name": "ToastTone",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/toast",
@@ -19765,7 +19795,7 @@
 									"name": "icons",
 									"type": "ToasterIcons",
 									"required": false,
-									"description": "Custom icon overrides for toast status variants. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status variant dispatches (`toast.success`, `error`, `warning`, `info`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`."
+									"description": "Custom icon overrides for toast status tones. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status tone dispatches (`toast.success`, `danger`, `warning`, `info`, `loading`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`."
 								},
 								{
 									"name": "containerAriaLabel",
@@ -19797,7 +19827,7 @@
 									"name": "options",
 									"type": "ToastCallOptions",
 									"required": false,
-									"description": "Notification customization options including optional variant."
+									"description": "Notification customization options including optional tone."
 								}
 							],
 							"returns": {
@@ -19846,11 +19876,11 @@
 										"description": "Optional action button configuration with label and onClick handler."
 									},
 									{
-										"name": "variant",
-										"type": "\"default\" | \"error\" | \"info\" | \"success\" | \"warning\"",
+										"name": "tone",
+										"type": "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\"",
 										"required": false,
-										"default": "\"default\"",
-										"description": "Visual status variant style for this toast."
+										"default": "\"neutral\"",
+										"description": "Visual status tone for this toast."
 									}
 								]
 							},
@@ -19924,9 +19954,9 @@
 							"props": []
 						},
 						{
-							"name": "toast.error",
-							"callSignature": "toast.error(message: React.ReactNode, options?: ToastOptions): number | string",
-							"description": "Dispatches an error status toast notification.",
+							"name": "toast.danger",
+							"callSignature": "toast.danger(message: React.ReactNode, options?: ToastOptions): number | string",
+							"description": "Dispatches a danger status toast notification.",
 							"parameters": [
 								{
 									"name": "message",
@@ -20125,6 +20155,97 @@
 							"props": []
 						},
 						{
+							"name": "toast.loading",
+							"callSignature": "toast.loading(message: React.ReactNode, options?: ToastOptions): number | string",
+							"description": "Dispatches a persistent loading toast notification.",
+							"parameters": [
+								{
+									"name": "message",
+									"type": "React.ReactNode",
+									"required": true,
+									"description": "Main notification content or React node."
+								},
+								{
+									"name": "options",
+									"type": "ToastOptions",
+									"required": false,
+									"description": "Notification customization options."
+								}
+							],
+							"returns": {
+								"type": "number | string",
+								"description": "The unique toast identifier (string or number)."
+							},
+							"options": {
+								"name": "ToastOptions",
+								"props": [
+									{
+										"name": "description",
+										"type": "React.ReactNode",
+										"required": false,
+										"description": "Secondary supporting text or node displayed below the main message."
+									},
+									{
+										"name": "icon",
+										"type": "React.ReactNode",
+										"required": false,
+										"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
+									},
+									{
+										"name": "close",
+										"type": "boolean",
+										"required": false,
+										"default": "true",
+										"description": "Whether a close button is displayed on this individual toast notification."
+									},
+									{
+										"name": "duration",
+										"type": "number",
+										"required": false,
+										"default": "\"inherited from container, finally 4000ms\"",
+										"description": "Visibility duration in milliseconds before auto-dismissal. Resolved as `toast.duration || (Toaster.toastOptions.duration ?? Toaster.duration) || 4000`. Infinity disables auto-closing. Setting to 0 treats it as falsy and falls back through container duration before defaulting to 4000ms."
+									},
+									{
+										"name": "id",
+										"type": "number | string",
+										"required": false,
+										"description": "Unique identifier for this toast notification. Can be used with `toast.dismiss(id)` to manually dismiss this specific toast."
+									},
+									{
+										"name": "action",
+										"type": "{ label: string; onClick: () => void; }",
+										"required": false,
+										"description": "Optional action button configuration with label and onClick handler."
+									}
+								]
+							},
+							"props": []
+						},
+						{
+							"name": "toast.promise",
+							"callSignature": "toast.promise(promise: (() => Promise<ToastData>) | Promise<ToastData>, data: Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }): { unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+							"description": "Binds an async task or promise to automatic loading, success, and danger toast transitions.",
+							"parameters": [
+								{
+									"name": "promise",
+									"type": "(() => Promise<ToastData>) | Promise<ToastData>",
+									"required": true,
+									"description": "Promise or promise-returning callback to track."
+								},
+								{
+									"name": "data",
+									"type": "Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }",
+									"required": true,
+									"description": "Loading, success, and error message handlers plus optional toast options."
+								}
+							],
+							"returns": {
+								"type": "{ unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+								"description": "The sonner promise toast handle with `unwrap()`."
+							},
+							"props": []
+						},
+						{
 							"name": "toast.dismiss",
 							"callSignature": "toast.dismiss(id?: number | string): number | string",
 							"description": "Dismisses an active toast by its identifier, or dismisses all toasts when called without arguments. Note: Calling without arguments returns `undefined` at runtime; calling with `id` returns the dismissed `id`.",
@@ -20274,7 +20395,7 @@
 							"name": "icons",
 							"type": "ToasterIcons",
 							"required": false,
-							"description": "Custom icon overrides for toast status variants. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status variant dispatches (`toast.success`, `error`, `warning`, `info`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`."
+							"description": "Custom icon overrides for toast status tones. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status tone dispatches (`toast.success`, `danger`, `warning`, `info`, `loading`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`."
 						},
 						{
 							"name": "containerAriaLabel",
@@ -20306,7 +20427,7 @@
 							"name": "options",
 							"type": "ToastCallOptions",
 							"required": false,
-							"description": "Notification customization options including optional variant."
+							"description": "Notification customization options including optional tone."
 						}
 					],
 					"returns": {
@@ -20355,11 +20476,11 @@
 								"description": "Optional action button configuration with label and onClick handler."
 							},
 							{
-								"name": "variant",
-								"type": "\"default\" | \"error\" | \"info\" | \"success\" | \"warning\"",
+								"name": "tone",
+								"type": "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\"",
 								"required": false,
-								"default": "\"default\"",
-								"description": "Visual status variant style for this toast."
+								"default": "\"neutral\"",
+								"description": "Visual status tone for this toast."
 							}
 						]
 					},
@@ -20433,9 +20554,9 @@
 					"props": []
 				},
 				{
-					"name": "toast.error",
-					"callSignature": "toast.error(message: React.ReactNode, options?: ToastOptions): number | string",
-					"description": "Dispatches an error status toast notification.",
+					"name": "toast.danger",
+					"callSignature": "toast.danger(message: React.ReactNode, options?: ToastOptions): number | string",
+					"description": "Dispatches a danger status toast notification.",
 					"parameters": [
 						{
 							"name": "message",
@@ -20630,6 +20751,97 @@
 								"description": "Optional action button configuration with label and onClick handler."
 							}
 						]
+					},
+					"props": []
+				},
+				{
+					"name": "toast.loading",
+					"callSignature": "toast.loading(message: React.ReactNode, options?: ToastOptions): number | string",
+					"description": "Dispatches a persistent loading toast notification.",
+					"parameters": [
+						{
+							"name": "message",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Main notification content or React node."
+						},
+						{
+							"name": "options",
+							"type": "ToastOptions",
+							"required": false,
+							"description": "Notification customization options."
+						}
+					],
+					"returns": {
+						"type": "number | string",
+						"description": "The unique toast identifier (string or number)."
+					},
+					"options": {
+						"name": "ToastOptions",
+						"props": [
+							{
+								"name": "description",
+								"type": "React.ReactNode",
+								"required": false,
+								"description": "Secondary supporting text or node displayed below the main message."
+							},
+							{
+								"name": "icon",
+								"type": "React.ReactNode",
+								"required": false,
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
+							},
+							{
+								"name": "close",
+								"type": "boolean",
+								"required": false,
+								"default": "true",
+								"description": "Whether a close button is displayed on this individual toast notification."
+							},
+							{
+								"name": "duration",
+								"type": "number",
+								"required": false,
+								"default": "\"inherited from container, finally 4000ms\"",
+								"description": "Visibility duration in milliseconds before auto-dismissal. Resolved as `toast.duration || (Toaster.toastOptions.duration ?? Toaster.duration) || 4000`. Infinity disables auto-closing. Setting to 0 treats it as falsy and falls back through container duration before defaulting to 4000ms."
+							},
+							{
+								"name": "id",
+								"type": "number | string",
+								"required": false,
+								"description": "Unique identifier for this toast notification. Can be used with `toast.dismiss(id)` to manually dismiss this specific toast."
+							},
+							{
+								"name": "action",
+								"type": "{ label: string; onClick: () => void; }",
+								"required": false,
+								"description": "Optional action button configuration with label and onClick handler."
+							}
+						]
+					},
+					"props": []
+				},
+				{
+					"name": "toast.promise",
+					"callSignature": "toast.promise(promise: (() => Promise<ToastData>) | Promise<ToastData>, data: Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }): { unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+					"description": "Binds an async task or promise to automatic loading, success, and danger toast transitions.",
+					"parameters": [
+						{
+							"name": "promise",
+							"type": "(() => Promise<ToastData>) | Promise<ToastData>",
+							"required": true,
+							"description": "Promise or promise-returning callback to track."
+						},
+						{
+							"name": "data",
+							"type": "Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }",
+							"required": true,
+							"description": "Loading, success, and error message handlers plus optional toast options."
+						}
+					],
+					"returns": {
+						"type": "{ unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+						"description": "The sonner promise toast handle with `unwrap()`."
 					},
 					"props": []
 				},
@@ -21757,7 +21969,7 @@
 			"importPath": "@nocoo/basalt/components/upload-queue",
 			"subpath": "./components/upload-queue",
 			"sourceFile": "packages/basalt/src/components/upload-queue.tsx",
-			"sourceHash": "1222bc11ec5a1c86",
+			"sourceHash": "24e3b8c5afc5cf23",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -22807,7 +23019,7 @@
 			"exportName": "Button",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "874a3c7189dbc43b",
+			"sourceHash": "c90ec29ff0b7e766",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#button",
@@ -22866,7 +23078,7 @@
 			"exportName": "LinkButton",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "874a3c7189dbc43b",
+			"sourceHash": "c90ec29ff0b7e766",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-button",
@@ -23519,7 +23731,7 @@
 			"exportName": "Field",
 			"importPath": "@nocoo/basalt/components/field",
 			"sourceFile": "packages/basalt/src/components/field.tsx",
-			"sourceHash": "283c13cc0db7b87d",
+			"sourceHash": "fca110be8637e75e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#field",
@@ -23585,7 +23797,7 @@
 			"exportName": "Input",
 			"importPath": "@nocoo/basalt/components/input",
 			"sourceFile": "packages/basalt/src/components/input.tsx",
-			"sourceHash": "fe0834084ccd936c",
+			"sourceHash": "adc872a1435f74a6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input",
@@ -23623,7 +23835,7 @@
 			"exportName": "InputArea",
 			"importPath": "@nocoo/basalt/components/input-area",
 			"sourceFile": "packages/basalt/src/components/input-area.tsx",
-			"sourceHash": "bc893579cc5da93d",
+			"sourceHash": "0dda757c96eec650",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input-area",
@@ -23661,7 +23873,7 @@
 			"exportName": "InputGroup",
 			"importPath": "@nocoo/basalt/components/input-group",
 			"sourceFile": "packages/basalt/src/components/input-group.tsx",
-			"sourceHash": "e6dd48a93c4415cc",
+			"sourceHash": "8e7e6d0b6a0050c3",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input-group",
@@ -23752,7 +23964,7 @@
 			"exportName": "SensitiveInput",
 			"importPath": "@nocoo/basalt/components/sensitive-input",
 			"sourceFile": "packages/basalt/src/components/sensitive-input.tsx",
-			"sourceHash": "c57c02ab6a1c0bfc",
+			"sourceHash": "9c1067c10628d546",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sensitive-input",
@@ -23796,7 +24008,7 @@
 			"exportName": "Checkbox",
 			"importPath": "@nocoo/basalt/components/checkbox",
 			"sourceFile": "packages/basalt/src/components/checkbox.tsx",
-			"sourceHash": "3a42145d3b94773c",
+			"sourceHash": "4f97f0551905a03a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#checkbox",
@@ -23885,7 +24097,7 @@
 			"exportName": "Radio",
 			"importPath": "@nocoo/basalt/components/radio",
 			"sourceFile": "packages/basalt/src/components/radio.tsx",
-			"sourceHash": "2276fcc531370a38",
+			"sourceHash": "599e7512caf7df5b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#radio",
@@ -23956,7 +24168,7 @@
 			"exportName": "Switch",
 			"importPath": "@nocoo/basalt/components/switch",
 			"sourceFile": "packages/basalt/src/components/switch.tsx",
-			"sourceHash": "b2feb4e94c5bb2ce",
+			"sourceHash": "79facf49a7916e28",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#switch",
@@ -24045,7 +24257,7 @@
 			"exportName": "Select",
 			"importPath": "@nocoo/basalt/components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "a002c0097ce8167d",
+			"sourceHash": "19f9214f5824cb47",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#select",
@@ -24235,7 +24447,7 @@
 			"exportName": "DatePicker",
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "53ad1addb18970a9",
+			"sourceHash": "52846b25fc478c2f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#date-picker",
@@ -24722,7 +24934,7 @@
 			"exportName": "Badge",
 			"importPath": "@nocoo/basalt/components/badge",
 			"sourceFile": "packages/basalt/src/components/badge.tsx",
-			"sourceHash": "1b0a584d4b7e768f",
+			"sourceHash": "63f31be994f8ab67",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#badge",
@@ -24731,11 +24943,18 @@
 					"name": "Badge",
 					"props": [
 						{
-							"name": "variant",
-							"type": "\"blue\" | \"default\" | \"destructive\" | \"error\" | \"info\" | \"orange\" | \"outline\" | \"purple\" | \"red\" | \"secondary\" | \"success\" | \"teal\" | \"warning\" | null",
+							"name": "tone",
+							"type": "BadgeTone",
 							"required": false,
-							"default": "\"default\"",
-							"description": "Visual style variant for the badge.\n\nNote: Supports standard semantic tones and decorative color tokens.\nPass null to omit variant styling."
+							"default": "\"neutral\"",
+							"description": "Semantic status tone of the badge."
+						},
+						{
+							"name": "variant",
+							"type": "BadgeVariant",
+							"required": false,
+							"default": "\"soft\"",
+							"description": "Surface emphasis style for the badge."
 						},
 						{
 							"name": "dot",
@@ -24754,7 +24973,7 @@
 			"exportName": "Banner",
 			"importPath": "@nocoo/basalt/components/banner",
 			"sourceFile": "packages/basalt/src/components/banner.tsx",
-			"sourceHash": "6a90b6e37618de57",
+			"sourceHash": "c52739c40c9b492f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#banner",
@@ -24763,11 +24982,11 @@
 					"name": "Banner",
 					"props": [
 						{
-							"name": "variant",
-							"type": "\"alert\" | \"default\" | \"error\" | \"secondary\" | null",
+							"name": "tone",
+							"type": "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\" | null",
 							"required": false,
-							"default": "\"default\"",
-							"description": "Visual tone variant of the banner.\n\nNote: Defaults to \"default\" (informational). Passing null falls back to \"default\"."
+							"default": "\"neutral\"",
+							"description": "Semantic tone of the banner.\n\nNote: Defaults to \"neutral\" (surface card with foreground text). Passing null falls back to \"neutral\"."
 						},
 						{
 							"name": "size",
@@ -24816,7 +25035,7 @@
 							"type": "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
 							"required": false,
 							"default": "\"default\"",
-							"description": "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner variant is \"error\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref."
+							"description": "Visual style variant. Preserves \"ghost\" and \"secondary\"; all other values\nare mapped contextually to \"destructive\" (when parent Banner tone is \"danger\")\nor \"default\".\n\nNote: Ordinary function component without forwarded ref."
 						},
 						{
 							"name": "size",
@@ -25021,7 +25240,7 @@
 			"exportName": "Meter",
 			"importPath": "@nocoo/basalt/components/meter",
 			"sourceFile": "packages/basalt/src/components/meter.tsx",
-			"sourceHash": "4264dac82de9936f",
+			"sourceHash": "d8c99f46017ab522",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#meter",
@@ -25098,7 +25317,7 @@
 			"exportName": "Toast",
 			"importPath": "@nocoo/basalt/components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
-			"sourceHash": "df3239f3e39cfaf4",
+			"sourceHash": "0b7a9b2dae891b3e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toast",
@@ -25231,7 +25450,7 @@
 							"name": "icons",
 							"type": "ToasterIcons",
 							"required": false,
-							"description": "Custom icon overrides for toast status variants. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status variant dispatches (`toast.success`, `error`, `warning`, `info`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`."
+							"description": "Custom icon overrides for toast status tones. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status tone dispatches (`toast.success`, `danger`, `warning`, `info`, `loading`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`."
 						},
 						{
 							"name": "containerAriaLabel",
@@ -25263,7 +25482,7 @@
 							"name": "options",
 							"type": "ToastCallOptions",
 							"required": false,
-							"description": "Notification customization options including optional variant."
+							"description": "Notification customization options including optional tone."
 						}
 					],
 					"returns": {
@@ -25312,11 +25531,11 @@
 								"description": "Optional action button configuration with label and onClick handler."
 							},
 							{
-								"name": "variant",
-								"type": "\"default\" | \"error\" | \"info\" | \"success\" | \"warning\"",
+								"name": "tone",
+								"type": "\"danger\" | \"info\" | \"neutral\" | \"success\" | \"warning\"",
 								"required": false,
-								"default": "\"default\"",
-								"description": "Visual status variant style for this toast."
+								"default": "\"neutral\"",
+								"description": "Visual status tone for this toast."
 							}
 						]
 					},
@@ -25390,9 +25609,9 @@
 					"props": []
 				},
 				{
-					"name": "toast.error",
-					"callSignature": "toast.error(message: React.ReactNode, options?: ToastOptions): number | string",
-					"description": "Dispatches an error status toast notification.",
+					"name": "toast.danger",
+					"callSignature": "toast.danger(message: React.ReactNode, options?: ToastOptions): number | string",
+					"description": "Dispatches a danger status toast notification.",
 					"parameters": [
 						{
 							"name": "message",
@@ -25587,6 +25806,97 @@
 								"description": "Optional action button configuration with label and onClick handler."
 							}
 						]
+					},
+					"props": []
+				},
+				{
+					"name": "toast.loading",
+					"callSignature": "toast.loading(message: React.ReactNode, options?: ToastOptions): number | string",
+					"description": "Dispatches a persistent loading toast notification.",
+					"parameters": [
+						{
+							"name": "message",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Main notification content or React node."
+						},
+						{
+							"name": "options",
+							"type": "ToastOptions",
+							"required": false,
+							"description": "Notification customization options."
+						}
+					],
+					"returns": {
+						"type": "number | string",
+						"description": "The unique toast identifier (string or number)."
+					},
+					"options": {
+						"name": "ToastOptions",
+						"props": [
+							{
+								"name": "description",
+								"type": "React.ReactNode",
+								"required": false,
+								"description": "Secondary supporting text or node displayed below the main message."
+							},
+							{
+								"name": "icon",
+								"type": "React.ReactNode",
+								"required": false,
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
+							},
+							{
+								"name": "close",
+								"type": "boolean",
+								"required": false,
+								"default": "true",
+								"description": "Whether a close button is displayed on this individual toast notification."
+							},
+							{
+								"name": "duration",
+								"type": "number",
+								"required": false,
+								"default": "\"inherited from container, finally 4000ms\"",
+								"description": "Visibility duration in milliseconds before auto-dismissal. Resolved as `toast.duration || (Toaster.toastOptions.duration ?? Toaster.duration) || 4000`. Infinity disables auto-closing. Setting to 0 treats it as falsy and falls back through container duration before defaulting to 4000ms."
+							},
+							{
+								"name": "id",
+								"type": "number | string",
+								"required": false,
+								"description": "Unique identifier for this toast notification. Can be used with `toast.dismiss(id)` to manually dismiss this specific toast."
+							},
+							{
+								"name": "action",
+								"type": "{ label: string; onClick: () => void; }",
+								"required": false,
+								"description": "Optional action button configuration with label and onClick handler."
+							}
+						]
+					},
+					"props": []
+				},
+				{
+					"name": "toast.promise",
+					"callSignature": "toast.promise(promise: (() => Promise<ToastData>) | Promise<ToastData>, data: Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }): { unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+					"description": "Binds an async task or promise to automatic loading, success, and danger toast transitions.",
+					"parameters": [
+						{
+							"name": "promise",
+							"type": "(() => Promise<ToastData>) | Promise<ToastData>",
+							"required": true,
+							"description": "Promise or promise-returning callback to track."
+						},
+						{
+							"name": "data",
+							"type": "Omit<ToastOptions, \"description\" | \"icon\"> & { loading: ReactNode; success: ReactNode | ((value: ToastData) => ReactNode | Promise<ReactNode>); error: ReactNode | ((reason: unknown) => ReactNode | Promise<ReactNode>); description?: ReactNode | ((value: unknown) => ReactNode | Promise<ReactNode>); finally?: () => void | Promise<void>; }",
+							"required": true,
+							"description": "Loading, success, and error message handlers plus optional toast options."
+						}
+					],
+					"returns": {
+						"type": "{ unwrap: () => Promise<ToastData>; } | number & { unwrap: () => Promise<ToastData>; } | string & { unwrap: () => Promise<ToastData>; }",
+						"description": "The sonner promise toast handle with `unwrap()`."
 					},
 					"props": []
 				},
@@ -28784,7 +29094,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "f44e28ad7085facc",
+			"sourceHash": "cd19b229043d54e6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -29883,7 +30193,7 @@
 			"exportName": "FileDropzone",
 			"importPath": "@nocoo/basalt/components/file-dropzone",
 			"sourceFile": "packages/basalt/src/components/file-dropzone.tsx",
-			"sourceHash": "2f67fc9f6a535e37",
+			"sourceHash": "f61d80e9cac91954",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#file-dropzone",
@@ -29992,7 +30302,7 @@
 			"exportName": "UploadQueue",
 			"importPath": "@nocoo/basalt/components/upload-queue",
 			"sourceFile": "packages/basalt/src/components/upload-queue.tsx",
-			"sourceHash": "1222bc11ec5a1c86",
+			"sourceHash": "24e3b8c5afc5cf23",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#upload-queue",
@@ -30100,7 +30410,7 @@
 			"exportName": "InlineEditable",
 			"importPath": "@nocoo/basalt/components/inline-editable",
 			"sourceFile": "packages/basalt/src/components/inline-editable.tsx",
-			"sourceHash": "4d1b8144b497d2f2",
+			"sourceHash": "ccce9295532b8dd5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#inline-editable",
@@ -30876,7 +31186,7 @@
 			"exportName": "StatCard",
 			"importPath": "@nocoo/basalt/components/stat-card",
 			"sourceFile": "packages/basalt/src/components/stat-card.tsx",
-			"sourceHash": "43a01f70e45fc835",
+			"sourceHash": "133533b8ceb0c742",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stat-card",

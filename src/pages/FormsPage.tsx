@@ -166,7 +166,7 @@ export default function FormsPage() {
 								{t("pages.forms.updateSecurity")}
 							</Button>
 							{vm.passwordError && (
-								<p role="alert" className="text-basalt-base text-basalt-destructive">
+								<p role="alert" className="text-basalt-base text-basalt-danger-solid">
 									{t("demo.passwordMismatch")}
 								</p>
 							)}

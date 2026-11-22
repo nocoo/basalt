@@ -94,7 +94,7 @@ export const SelectTrigger = React.forwardRef<
 				"group/select flex w-full items-center justify-between gap-basalt-control-gap",
 				SELECT_SIZE_CLASS[size],
 				FOCUS_BORDER,
-				"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",
+				"aria-invalid:border-basalt-danger-solid aria-invalid:focus-visible:border-basalt-danger-solid",
 				className,
 			),
 		)}

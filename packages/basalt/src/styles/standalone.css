@@ -13,6 +13,7 @@
     --tracking-wide: 0.025em;
     --tracking-wider: 0.05em;
     --tracking-widest: 0.1em;
+    --animate-spin: spin 1s linear infinite;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -177,17 +178,22 @@
   --basalt-muted-foreground: 0 0% 40%;
   --basalt-accent: 0 0% 94.5%;
   --basalt-accent-foreground: 0 0% 10%;
-  --basalt-destructive: 0 72% 49%;
-  --basalt-destructive-foreground: 0 0% 100%;
+  --basalt-success: 150 64% 27%;
+  --basalt-success-tint: 145 60% 94%;
+  --basalt-success-solid: 150 64% 30%;
+  --basalt-success-solid-foreground: 0 0% 100%;
   --basalt-info: 221 72% 38%;
-  --basalt-info-foreground: 0 0% 100%;
   --basalt-info-tint: 217 80% 95%;
+  --basalt-info-solid: 221 72% 44%;
+  --basalt-info-solid-foreground: 0 0% 100%;
   --basalt-warning: 28 72% 36%;
-  --basalt-warning-foreground: 0 0% 100%;
-  --basalt-warning-tint: 40 86% 95%;
+  --basalt-warning-tint: 40 86% 94%;
+  --basalt-warning-solid: 26 80% 38%;
+  --basalt-warning-solid-foreground: 0 0% 100%;
   --basalt-danger: 0 70% 40%;
-  --basalt-danger-foreground: 0 0% 100%;
   --basalt-danger-tint: 0 78% 96%;
+  --basalt-danger-solid: 0 72% 49%;
+  --basalt-danger-solid-foreground: 0 0% 100%;
   --basalt-border: 0 0% 89%;
   --basalt-input: 0 0% 86%;
   --basalt-ring: var(--basalt-primary);
@@ -209,11 +215,11 @@
 		hsl(var(--basalt-background))
 	);
   }
-  --basalt-destructive-hover: hsl(var(--basalt-destructive));
+  --basalt-danger-solid-hover: hsl(var(--basalt-danger-solid));
   @supports (color: color-mix(in lab, red, red)) {
-    --basalt-destructive-hover: color-mix(
+    --basalt-danger-solid-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-destructive)) 90%,
+		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
   }
@@ -281,13 +287,6 @@
   --basalt-accent-10: 280 53% 71%;
   --basalt-accent-11: 237 66% 69%;
   --basalt-accent-12: 210 20% 87%;
-  --basalt-success: var(--basalt-tag-success-foreground);
-  --basalt-badge-green: 113 60% 30%;
-  --basalt-badge-green-foreground: 0 0% 100%;
-  --basalt-badge-teal: 182 62% 30%;
-  --basalt-badge-purple: 280 53% 40%;
-  --basalt-badge-teal-foreground: 0 0% 100%;
-  --basalt-badge-purple-foreground: 0 0% 100%;
   --basalt-chart-axis: 0 0% 40%;
   --basalt-chart-muted: 0 0% 89%;
   --basalt-heatmap-green-1: 113 50% 85%;
@@ -325,24 +324,22 @@
   --basalt-muted-foreground: 0 0% 63%;
   --basalt-accent: 0 0% 15.5%;
   --basalt-accent-foreground: 0 0% 93%;
-  --basalt-destructive: 0 72% 51%;
-  --basalt-destructive-foreground: 0 0% 100%;
+  --basalt-success: 150 55% 62%;
+  --basalt-success-tint: 150 30% 15%;
+  --basalt-success-solid: 150 64% 30%;
+  --basalt-success-solid-foreground: 0 0% 100%;
   --basalt-info: 217 80% 72%;
   --basalt-info-tint: 217 40% 16%;
+  --basalt-info-solid: 221 72% 46%;
+  --basalt-info-solid-foreground: 0 0% 100%;
   --basalt-warning: 32 80% 68%;
   --basalt-warning-tint: 32 35% 16%;
+  --basalt-warning-solid: 26 80% 38%;
+  --basalt-warning-solid-foreground: 0 0% 100%;
   --basalt-danger: 0 75% 70%;
-  --basalt-danger-foreground: 0 0% 10%;
   --basalt-danger-tint: 0 40% 16%;
-  --basalt-info-foreground: 0 0% 10%;
-  --basalt-warning-foreground: 0 0% 10%;
-  --basalt-success: var(--basalt-tag-success-foreground);
-  --basalt-badge-green: 113 55% 62%;
-  --basalt-badge-green-foreground: 0 0% 10%;
-  --basalt-badge-teal: var(--basalt-accent-3);
-  --basalt-badge-purple: var(--basalt-accent-10);
-  --basalt-badge-teal-foreground: 0 0% 10%;
-  --basalt-badge-purple-foreground: 0 0% 10%;
+  --basalt-danger-solid: 0 72% 51%;
+  --basalt-danger-solid-foreground: 0 0% 100%;
   --basalt-border: 0 0% 19%;
   --basalt-input: 0 0% 22%;
   --basalt-ring: var(--basalt-link);
@@ -373,11 +370,11 @@
 		hsl(var(--basalt-background))
 	);
   }
-  --basalt-destructive-hover: hsl(var(--basalt-destructive));
+  --basalt-danger-solid-hover: hsl(var(--basalt-danger-solid));
   @supports (color: color-mix(in lab, red, red)) {
-    --basalt-destructive-hover: color-mix(
+    --basalt-danger-solid-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-destructive)) 90%,
+		hsl(var(--basalt-danger-solid)) 90%,
 		hsl(var(--basalt-background))
 	);
   }
@@ -1983,6 +1980,9 @@
   .animate-basalt-spin {
     animation: basalt-spin 1s linear infinite;
   }
+  .animate-spin {
+    animation: var(--animate-spin);
+  }
   .cursor-col-resize {
     cursor: col-resize;
   }
@@ -2384,11 +2384,29 @@
       border-color: color-mix(in oklab, hsl(var(--basalt-border)) 80%, transparent);
     }
   }
-  .border-basalt-destructive {
-    border-color: hsl(var(--basalt-destructive));
+  .border-basalt-danger-solid {
+    border-color: hsl(var(--basalt-danger-solid));
+  }
+  .border-basalt-danger\/40 {
+    border-color: hsl(var(--basalt-danger));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-danger)) 40%, transparent);
+    }
+  }
+  .border-basalt-info\/40 {
+    border-color: hsl(var(--basalt-info));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-info)) 40%, transparent);
+    }
   }
   .border-basalt-primary {
     border-color: hsl(var(--basalt-primary));
+  }
+  .border-basalt-success\/40 {
+    border-color: hsl(var(--basalt-success));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-success)) 40%, transparent);
+    }
   }
   .border-basalt-tag-amber-border {
     border-color: var(--basalt-tag-amber-border);
@@ -2420,6 +2438,12 @@
   .border-basalt-tag-warning-border {
     border-color: var(--basalt-tag-warning-border);
   }
+  .border-basalt-warning\/40 {
+    border-color: hsl(var(--basalt-warning));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-warning)) 40%, transparent);
+    }
+  }
   .border-transparent {
     border-color: transparent;
   }
@@ -2435,15 +2459,6 @@
   .bg-basalt-background {
     background-color: hsl(var(--basalt-background));
   }
-  .bg-basalt-badge-green {
-    background-color: hsl(var(--basalt-badge-green));
-  }
-  .bg-basalt-badge-purple {
-    background-color: hsl(var(--basalt-badge-purple));
-  }
-  .bg-basalt-badge-teal {
-    background-color: hsl(var(--basalt-badge-teal));
-  }
   .bg-basalt-border {
     background-color: hsl(var(--basalt-border));
   }
@@ -2453,20 +2468,23 @@
   .bg-basalt-control {
     background-color: var(--basalt-control-fill);
   }
-  .bg-basalt-danger {
-    background-color: hsl(var(--basalt-danger));
+  .bg-basalt-danger-solid {
+    background-color: hsl(var(--basalt-danger-solid));
   }
   .bg-basalt-danger-tint {
     background-color: hsl(var(--basalt-danger-tint));
   }
-  .bg-basalt-destructive {
-    background-color: hsl(var(--basalt-destructive));
+  .bg-basalt-foreground {
+    background-color: hsl(var(--basalt-foreground));
   }
-  .bg-basalt-heatmap-green-1 {
-    background-color: hsl(var(--basalt-heatmap-green-1));
+  .bg-basalt-foreground\/6 {
+    background-color: hsl(var(--basalt-foreground));
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, hsl(var(--basalt-foreground)) 6%, transparent);
+    }
   }
-  .bg-basalt-info {
-    background-color: hsl(var(--basalt-info));
+  .bg-basalt-info-solid {
+    background-color: hsl(var(--basalt-info-solid));
   }
   .bg-basalt-info-tint {
     background-color: hsl(var(--basalt-info-tint));
@@ -2491,6 +2509,12 @@
   }
   .bg-basalt-selected {
     background-color: hsl(var(--basalt-selected));
+  }
+  .bg-basalt-success-solid {
+    background-color: hsl(var(--basalt-success-solid));
+  }
+  .bg-basalt-success-tint {
+    background-color: hsl(var(--basalt-success-tint));
   }
   .bg-basalt-tag-amber {
     background-color: var(--basalt-tag-amber);
@@ -2522,8 +2546,8 @@
   .bg-basalt-tag-warning {
     background-color: var(--basalt-tag-warning);
   }
-  .bg-basalt-warning {
-    background-color: hsl(var(--basalt-warning));
+  .bg-basalt-warning-solid {
+    background-color: hsl(var(--basalt-warning-solid));
   }
   .bg-basalt-warning-tint {
     background-color: hsl(var(--basalt-warning-tint));
@@ -2894,14 +2918,8 @@
   .whitespace-pre {
     white-space: pre;
   }
-  .text-basalt-badge-green-foreground {
-    color: hsl(var(--basalt-badge-green-foreground));
-  }
-  .text-basalt-badge-purple-foreground {
-    color: hsl(var(--basalt-badge-purple-foreground));
-  }
-  .text-basalt-badge-teal-foreground {
-    color: hsl(var(--basalt-badge-teal-foreground));
+  .text-basalt-background {
+    color: hsl(var(--basalt-background));
   }
   .text-basalt-card-foreground {
     color: hsl(var(--basalt-card-foreground));
@@ -2915,14 +2933,11 @@
   .text-basalt-danger {
     color: hsl(var(--basalt-danger));
   }
-  .text-basalt-danger-foreground {
-    color: hsl(var(--basalt-danger-foreground));
+  .text-basalt-danger-solid {
+    color: hsl(var(--basalt-danger-solid));
   }
-  .text-basalt-destructive {
-    color: hsl(var(--basalt-destructive));
-  }
-  .text-basalt-destructive-foreground {
-    color: hsl(var(--basalt-destructive-foreground));
+  .text-basalt-danger-solid-foreground {
+    color: hsl(var(--basalt-danger-solid-foreground));
   }
   .text-basalt-foreground {
     color: hsl(var(--basalt-foreground));
@@ -2930,8 +2945,8 @@
   .text-basalt-info {
     color: hsl(var(--basalt-info));
   }
-  .text-basalt-info-foreground {
-    color: hsl(var(--basalt-info-foreground));
+  .text-basalt-info-solid-foreground {
+    color: hsl(var(--basalt-info-solid-foreground));
   }
   .text-basalt-link {
     color: hsl(var(--basalt-link));
@@ -2955,7 +2970,10 @@
     }
   }
   .text-basalt-success {
-    color: var(--basalt-success);
+    color: hsl(var(--basalt-success));
+  }
+  .text-basalt-success-solid-foreground {
+    color: hsl(var(--basalt-success-solid-foreground));
   }
   .text-basalt-tag-amber-foreground {
     color: var(--basalt-tag-amber-foreground);
@@ -2990,8 +3008,8 @@
   .text-basalt-warning {
     color: hsl(var(--basalt-warning));
   }
-  .text-basalt-warning-foreground {
-    color: hsl(var(--basalt-warning-foreground));
+  .text-basalt-warning-solid-foreground {
+    color: hsl(var(--basalt-warning-solid-foreground));
   }
   .text-current {
     color: currentcolor;
@@ -3229,8 +3247,8 @@
     .hover\:border-transparent:hover {
       border-color: transparent;
     }
-    .hover\:bg-basalt-destructive-hover:hover {
-      background-color: var(--basalt-destructive-hover);
+    .hover\:bg-basalt-danger-solid-hover:hover {
+      background-color: var(--basalt-danger-solid-hover);
     }
     .hover\:bg-basalt-hover:hover {
       background-color: var(--basalt-hover);
@@ -3357,8 +3375,8 @@
   .disabled\:opacity-100:disabled {
     opacity: 100%;
   }
-  .has-\[input\[aria-invalid\=true\]\]\:border-basalt-destructive:has(:is(input[aria-invalid=true])) {
-    border-color: hsl(var(--basalt-destructive));
+  .has-\[input\[aria-invalid\=true\]\]\:border-basalt-danger-solid:has(:is(input[aria-invalid=true])) {
+    border-color: hsl(var(--basalt-danger-solid));
   }
   .aria-checked\:text-basalt-primary-foreground[aria-checked="true"] {
     color: hsl(var(--basalt-primary-foreground));
@@ -3369,11 +3387,11 @@
   .aria-disabled\:opacity-50[aria-disabled="true"] {
     opacity: 50%;
   }
-  .aria-invalid\:border-basalt-destructive[aria-invalid="true"] {
-    border-color: hsl(var(--basalt-destructive));
+  .aria-invalid\:border-basalt-danger-solid[aria-invalid="true"] {
+    border-color: hsl(var(--basalt-danger-solid));
   }
-  .aria-invalid\:focus-visible\:border-basalt-destructive[aria-invalid="true"]:focus-visible {
-    border-color: hsl(var(--basalt-destructive));
+  .aria-invalid\:focus-visible\:border-basalt-danger-solid[aria-invalid="true"]:focus-visible {
+    border-color: hsl(var(--basalt-danger-solid));
   }
   .aria-pressed\:bg-basalt-primary[aria-pressed="true"] {
     background-color: hsl(var(--basalt-primary));
@@ -3639,25 +3657,13 @@
   .\[\&_\[data-icon\]\]\:text-basalt-danger [data-icon] {
     color: hsl(var(--basalt-danger));
   }
-  .\[\&_\[data-icon\]\]\:text-basalt-heatmap-green-4 [data-icon] {
-    color: hsl(var(--basalt-heatmap-green-4));
-  }
   .\[\&_\[data-icon\]\]\:text-basalt-info [data-icon] {
     color: hsl(var(--basalt-info));
   }
+  .\[\&_\[data-icon\]\]\:text-basalt-success [data-icon] {
+    color: hsl(var(--basalt-success));
+  }
   .\[\&_\[data-icon\]\]\:text-basalt-warning [data-icon] {
-    color: hsl(var(--basalt-warning));
-  }
-  .\[\&_\[data-title\]\]\:text-basalt-danger [data-title] {
-    color: hsl(var(--basalt-danger));
-  }
-  .\[\&_\[data-title\]\]\:text-basalt-heatmap-green-4 [data-title] {
-    color: hsl(var(--basalt-heatmap-green-4));
-  }
-  .\[\&_\[data-title\]\]\:text-basalt-info [data-title] {
-    color: hsl(var(--basalt-info));
-  }
-  .\[\&_\[data-title\]\]\:text-basalt-warning [data-title] {
     color: hsl(var(--basalt-warning));
   }
   .\[\&_img\]\:object-contain img {
@@ -4059,6 +4065,11 @@
   syntax: "*";
   initial-value: "";
   inherits: false;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: block))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {

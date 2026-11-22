@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { isValidElement, type ReactElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { Check, CircleAlert, Info, TriangleAlert } from "../utils/internal-icons";
+import { Check, CircleAlert, Info, Loader2, TriangleAlert } from "../utils/internal-icons";
 import { Toast, Toaster, toast } from "./toast";
 
 vi.mock("sonner", async (importOriginal) => {
@@ -10,8 +10,10 @@ vi.mock("sonner", async (importOriginal) => {
 	const error = vi.fn();
 	const warning = vi.fn();
 	const info = vi.fn();
+	const loading = vi.fn();
+	const promise = vi.fn((_p, _d) => ({ unwrap: () => Promise.resolve(undefined) }));
 	const dismiss = vi.fn();
-	const fn = Object.assign(vi.fn(), { success, error, warning, info, dismiss });
+	const fn = Object.assign(vi.fn(), { success, error, warning, info, loading, promise, dismiss });
 	const Sonner = vi.fn(() => null);
 	return { ...actual, toast: fn, Toaster: Sonner };
 });
@@ -24,6 +26,8 @@ async function mockedSonner() {
 		error: vi.mocked(sonnerToast.error),
 		warning: vi.mocked(sonnerToast.warning),
 		info: vi.mocked(sonnerToast.info),
+		loading: vi.mocked(sonnerToast.loading),
+		promise: vi.mocked(sonnerToast.promise),
 		dismiss: vi.mocked(sonnerToast.dismiss),
 	};
 }
@@ -48,9 +52,11 @@ describe("toast", () => {
 	it("exports a callable toast function", () => {
 		expect(typeof toast).toBe("function");
 		expect(toast.success).toBeTypeOf("function");
-		expect(toast.error).toBeTypeOf("function");
+		expect(toast.danger).toBeTypeOf("function");
 		expect(toast.warning).toBeTypeOf("function");
 		expect(toast.info).toBeTypeOf("function");
+		expect(toast.loading).toBeTypeOf("function");
+		expect(toast.promise).toBeTypeOf("function");
 		expect(toast.dismiss).toBeTypeOf("function");
 	});
 
@@ -59,7 +65,7 @@ describe("toast", () => {
 		render(<Toaster />);
 	});
 
-	it("passes close, icon, and variant into sonner", async () => {
+	it("passes close, icon, and tone into sonner", async () => {
 		const { toast: sonnerToast } = await import("sonner");
 		toast.success("Deployed", { close: false, icon: false, description: "Shipped." });
 		expect(sonnerToast.success).toHaveBeenCalledWith(
@@ -80,7 +86,7 @@ describe("toast", () => {
 			"Saved",
 			expect.objectContaining({
 				closeButton: true,
-				className: expect.stringContaining("bg-basalt-popover"),
+				className: "bg-basalt-popover",
 			}),
 		);
 		expect(payloadOf(sonner.base).icon).toBeUndefined();
@@ -90,68 +96,100 @@ describe("toast", () => {
 		expect(sonner.info).not.toHaveBeenCalled();
 	});
 
-	it("dispatches success to sonner.success with the default success icon", async () => {
+	it("dispatches success to sonner.success with popover surface and success icon tint", async () => {
 		const sonner = await mockedSonner();
 		toast.success("Ready");
 		expect(sonner.success).toHaveBeenCalledTimes(1);
-		expect(sonner.success).toHaveBeenCalledWith(
-			"Ready",
-			expect.objectContaining({
-				closeButton: true,
-				className: expect.stringContaining("bg-basalt-heatmap-green-1"),
-			}),
-		);
-		expectIconType(payloadOf(sonner.success).icon, Check);
+		const payload = payloadOf(sonner.success);
+		expect(payload.closeButton).toBe(true);
+		expect(payload.className).toContain("bg-basalt-popover");
+		expect(payload.className).toContain("[&_[data-icon]]:text-basalt-success");
+		expect(payload.className).not.toContain("heatmap");
+		expect(payload.className).not.toContain("-tint");
+		expectIconType(payload.icon, Check);
 		expect(sonner.base).not.toHaveBeenCalled();
 		expect(sonner.error).not.toHaveBeenCalled();
 	});
 
-	it("dispatches error to sonner.error with the default error icon", async () => {
+	it("dispatches danger to sonner.error with popover surface and danger icon tint", async () => {
 		const sonner = await mockedSonner();
-		toast.error("Failed");
+		toast.danger("Failed");
 		expect(sonner.error).toHaveBeenCalledTimes(1);
-		expect(sonner.error).toHaveBeenCalledWith(
-			"Failed",
-			expect.objectContaining({
-				closeButton: true,
-				className: expect.stringContaining("bg-basalt-danger-tint"),
-			}),
-		);
-		expectIconType(payloadOf(sonner.error).icon, CircleAlert);
+		const payload = payloadOf(sonner.error);
+		expect(payload.closeButton).toBe(true);
+		expect(payload.className).toContain("bg-basalt-popover");
+		expect(payload.className).toContain("[&_[data-icon]]:text-basalt-danger");
+		expect(payload.className).not.toContain("-tint");
+		expectIconType(payload.icon, CircleAlert);
 		expect(sonner.base).not.toHaveBeenCalled();
 		expect(sonner.success).not.toHaveBeenCalled();
 	});
 
-	it("dispatches warning to sonner.warning with the default warning icon", async () => {
+	it("dispatches warning to sonner.warning with popover surface and warning icon tint", async () => {
 		const sonner = await mockedSonner();
 		toast.warning("Careful");
 		expect(sonner.warning).toHaveBeenCalledTimes(1);
-		expect(sonner.warning).toHaveBeenCalledWith(
-			"Careful",
-			expect.objectContaining({
-				closeButton: true,
-				className: expect.stringContaining("bg-basalt-warning-tint"),
-			}),
-		);
-		expectIconType(payloadOf(sonner.warning).icon, TriangleAlert);
+		const payload = payloadOf(sonner.warning);
+		expect(payload.closeButton).toBe(true);
+		expect(payload.className).toContain("bg-basalt-popover");
+		expect(payload.className).toContain("[&_[data-icon]]:text-basalt-warning");
+		expect(payload.className).not.toContain("-tint");
+		expectIconType(payload.icon, TriangleAlert);
 		expect(sonner.base).not.toHaveBeenCalled();
 		expect(sonner.info).not.toHaveBeenCalled();
 	});
 
-	it("dispatches info to sonner.info with the default info icon", async () => {
+	it("dispatches info to sonner.info with popover surface and info icon tint", async () => {
 		const sonner = await mockedSonner();
 		toast.info("Note");
 		expect(sonner.info).toHaveBeenCalledTimes(1);
-		expect(sonner.info).toHaveBeenCalledWith(
-			"Note",
-			expect.objectContaining({
-				closeButton: true,
-				className: expect.stringContaining("bg-basalt-info-tint"),
-			}),
-		);
-		expectIconType(payloadOf(sonner.info).icon, Info);
+		const payload = payloadOf(sonner.info);
+		expect(payload.closeButton).toBe(true);
+		expect(payload.className).toContain("bg-basalt-popover");
+		expect(payload.className).toContain("[&_[data-icon]]:text-basalt-info");
+		expect(payload.className).not.toContain("-tint");
+		expectIconType(payload.icon, Info);
 		expect(sonner.base).not.toHaveBeenCalled();
 		expect(sonner.warning).not.toHaveBeenCalled();
+	});
+
+	it("dispatches loading with spinner icon and respects close/icon overrides", async () => {
+		const sonner = await mockedSonner();
+		toast.loading("Saving");
+		expect(sonner.loading).toHaveBeenCalledTimes(1);
+		const payload = payloadOf(sonner.loading);
+		expect(payload.closeButton).toBe(true);
+		expect(payload.className).toBe("bg-basalt-popover");
+		expectIconType(payload.icon, Loader2);
+
+		sonner.loading.mockClear();
+		toast.loading("Quiet", { close: false, icon: false });
+		expect(sonner.loading).toHaveBeenCalledWith(
+			"Quiet",
+			expect.objectContaining({ closeButton: false, icon: null }),
+		);
+	});
+
+	it("forwards promise handler, closeButton, and popover class to sonner.promise", async () => {
+		const sonner = await mockedSonner();
+		const pending = Promise.resolve("ok");
+		const result = toast.promise(pending, {
+			loading: "Working...",
+			success: "Done",
+			error: "Failed",
+		});
+		expect(sonner.promise).toHaveBeenCalledTimes(1);
+		expect(sonner.promise).toHaveBeenCalledWith(
+			pending,
+			expect.objectContaining({
+				loading: "Working...",
+				success: "Done",
+				error: "Failed",
+				closeButton: true,
+				className: "bg-basalt-popover",
+			}),
+		);
+		expect(result).toHaveProperty("unwrap");
 	});
 
 	it("defaults closeButton to true and honors explicit false", async () => {
@@ -174,7 +212,7 @@ describe("toast", () => {
 		expect(sonner.info).toHaveBeenCalledWith("Custom", expect.objectContaining({ icon: custom }));
 		expect(payloadOf(sonner.info).icon).toBe(custom);
 		sonner.info.mockClear();
-		toast.error("Quiet", { icon: false });
+		toast.danger("Quiet", { icon: false });
 		expect(sonner.error).toHaveBeenCalledWith("Quiet", expect.objectContaining({ icon: null }));
 	});
 
@@ -220,9 +258,10 @@ describe("toast", () => {
 				toastOptions: expect.objectContaining({
 					unstyled: true,
 					classNames: expect.objectContaining({
-						toast: expect.stringMatching(/px-basalt-card-lg.*basalt-leading-banner/),
-						description: expect.stringContaining("basalt-line-relaxed"),
-						actionButton: expect.stringContaining("basalt-action"),
+						toast: expect.stringMatching(/px-basalt-card\b.*basalt-leading-banner/),
+						description: expect.stringContaining("text-basalt-base"),
+						actionButton: expect.stringMatching(/basalt-action.*rounded-basalt-md/),
+						error: "bg-basalt-popover [&_[data-icon]]:text-basalt-danger",
 					}),
 				}),
 			}),

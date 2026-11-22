@@ -49,7 +49,7 @@ export default function StatCardMetricInfo() {
 					icon={<Users strokeWidth={1.5} />}
 					iconColor="text-basalt-tag-teal-foreground"
 					trendContent={
-						<Badge variant="teal">
+						<Badge tone="info">
 							<ArrowUpRight className="h-3 w-3" />
 							+8.2% this quarter
 						</Badge>

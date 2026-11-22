@@ -57,7 +57,9 @@ const COLUMNS: DataTableColumn<Account>[] = [
 		id: "status",
 		header: "Status",
 		accessor: (row) => (
-			<Badge variant={row.status === "At risk" ? "warning" : "outline"}>{row.status}</Badge>
+			<Badge dot tone={row.status === "At risk" ? "warning" : "success"}>
+				{row.status}
+			</Badge>
 		),
 		sortValue: (row) => row.status,
 		filterValue: (row) => row.status,

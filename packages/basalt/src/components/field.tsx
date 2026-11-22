@@ -103,7 +103,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 					</p>
 				) : null}
 				{hasError ? (
-					<p id={errorId} className="text-basalt-sm text-basalt-destructive" role="alert">
+					<p id={errorId} className="text-basalt-sm text-basalt-danger-solid" role="alert">
 						{errorMessage}
 					</p>
 				) : null}
