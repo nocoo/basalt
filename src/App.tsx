@@ -43,7 +43,7 @@ const StaticPage = lazy(() => import("./pages/StaticPage"));
 const TypefacePage = lazy(() => import("./pages/TypefacePage"));
 const UiIndexPage = lazy(() => import("./pages/ui/UiIndexPage"));
 const UiCategoryOverviewPage = lazy(() => import("./pages/ui/UiCategoryOverviewPage"));
-const UiPlaceholderPage = lazy(() => import("./pages/ui/UiPlaceholderPage"));
+const ComponentDocPage = lazy(() => import("./pages/ui/ComponentDocPage"));
 const UiSourceViewerPage = lazy(() => import("./pages/ui/UiSourceViewerPage"));
 
 function AppLink({
@@ -136,7 +136,7 @@ function AppProviders() {
 									path="/ui/overview/:category"
 									element={routeElement(UiCategoryOverviewPage)}
 								/>
-								<Route path="/ui/:slug" element={routeElement(UiPlaceholderPage)} />
+								<Route path="/ui/:slug" element={routeElement(ComponentDocPage)} />
 								<Route path="/ui/:slug/source" element={routeElement(UiSourceViewerPage)} />
 							</Route>
 							{/* Standalone pages (no sidebar) */}

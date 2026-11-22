@@ -730,7 +730,7 @@ export function LandingContent({
 						<nav aria-label="Product">
 							<h2>Explore</h2>
 							<Link href="/ui">Components</Link>
-							<a href="#templates">Templates</a>
+							<Link href="/templates">Templates</Link>
 							<Link href="/palette">Color palette</Link>
 						</nav>
 						<nav aria-label="Resources">

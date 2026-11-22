@@ -4,12 +4,15 @@ import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
+import { Kbd } from "@nocoo/basalt/components/kbd";
 import { Label } from "@nocoo/basalt/components/label";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link as BasaltLink } from "@nocoo/basalt/components/link";
+import { Progress } from "@nocoo/basalt/components/progress";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
 import { Separator } from "@nocoo/basalt/components/separator";
+import { Spinner } from "@nocoo/basalt/components/spinner";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
 import { Textarea } from "@nocoo/basalt/components/textarea";
@@ -200,6 +203,60 @@ function HomeThemeToggle() {
 	);
 }
 
+function HomeBadge() {
+	return (
+		<div className="flex flex-wrap items-center justify-center gap-basalt-space-lg">
+			<Badge>Neutral</Badge>
+			<Badge tone="info" dot>
+				Syncing
+			</Badge>
+			<Badge tone="success" variant="outline">
+				Active
+			</Badge>
+			<Badge tone="warning" variant="solid">
+				Review
+			</Badge>
+		</div>
+	);
+}
+
+function HomeKbd() {
+	return (
+		<div className="flex flex-wrap items-center justify-center gap-basalt-space-lg">
+			<div className="flex items-center gap-basalt-space-xs">
+				<Kbd>⌘</Kbd>
+				<Kbd>K</Kbd>
+			</div>
+			<div className="flex items-center gap-basalt-space-xs">
+				<Kbd>⌘</Kbd>
+				<Kbd>⇧</Kbd>
+				<Kbd>P</Kbd>
+			</div>
+			<Kbd size="md">Esc</Kbd>
+		</div>
+	);
+}
+
+function HomeProgress() {
+	return (
+		<div className="grid w-[12.5rem] gap-basalt-layout-sm">
+			<Progress aria-label="Initial upload progress" value={25} size="sm" />
+			<Progress aria-label="Verification progress" value={68} tone="warning" />
+			<Progress aria-label="Release readiness" value={100} size="lg" tone="success" />
+		</div>
+	);
+}
+
+function HomeSpinner() {
+	return (
+		<div className="flex items-center gap-basalt-layout text-basalt-muted-foreground">
+			<Spinner size="sm" label="Small loading spinner" />
+			<Spinner size="md" label="Medium loading spinner" />
+			<Spinner size="lg" label="Large loading spinner" className="text-basalt-foreground" />
+		</div>
+	);
+}
+
 const HOME_DEMOS: Record<string, ComponentType> = {
 	button: HomeButton,
 	input: HomeInput,
@@ -217,6 +274,10 @@ const HOME_DEMOS: Record<string, ComponentType> = {
 	textarea: HomeTextarea,
 	separator: HomeSeparator,
 	"theme-toggle": HomeThemeToggle,
+	badge: HomeBadge,
+	kbd: HomeKbd,
+	progress: HomeProgress,
+	spinner: HomeSpinner,
 };
 
 function itemDemo(item: CatalogIndexItem): ComponentType | undefined {

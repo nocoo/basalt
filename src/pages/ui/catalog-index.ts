@@ -1,10 +1,5 @@
-import {
-	CATALOG_CATEGORIES,
-	type CatalogCategory,
-	type CatalogEntry,
-	type CatalogKind,
-} from "./catalog";
-import type { CatalogPageStatus } from "./catalog-page-status";
+import type { CatalogCategory, CatalogEntry, CatalogKind } from "./catalog";
+import { CATALOG_CATEGORIES } from "./catalog";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
 
@@ -12,23 +7,20 @@ export type CatalogReleaseStatus = "stable" | "catalog";
 export type { CatalogPageStatus } from "./catalog-page-status";
 export type CatalogIndexCategory = "all" | CatalogCategory;
 export type CatalogIndexRelease = "all" | CatalogReleaseStatus;
-export type CatalogIndexStatus = "all" | CatalogPageStatus;
 
 export interface CatalogIndexQuery {
 	q: string;
 	category: CatalogIndexCategory;
 	release: CatalogIndexRelease;
-	status: CatalogIndexStatus;
 }
 
 export const DEFAULT_CATALOG_INDEX_QUERY: CatalogIndexQuery = {
 	q: "",
 	category: "all",
 	release: "all",
-	status: "all",
 };
 
-export const CATALOG_INDEX_QUERY_KEYS = ["q", "category", "release", "status"] as const;
+export const CATALOG_INDEX_QUERY_KEYS = ["q", "category", "release"] as const;
 
 export type CatalogPageState =
 	| {
@@ -68,7 +60,6 @@ const CATEGORY_FILTERS = new Set<CatalogIndexCategory>([
 	...CATALOG_CATEGORIES.map((category) => category.id),
 ]);
 const RELEASE_FILTERS = new Set<CatalogIndexRelease>(["all", "stable", "catalog"]);
-const STATUS_FILTERS = new Set<CatalogIndexStatus>(["all", "ready", "planned"]);
 const OWNED_QUERY_KEYS = new Set<string>(CATALOG_INDEX_QUERY_KEYS);
 
 function normalizedEnumValue<T extends string>(
@@ -105,7 +96,6 @@ export function normalizeCatalogIndexQuery(query: Partial<CatalogIndexQuery>): C
 			RELEASE_FILTERS,
 			DEFAULT_CATALOG_INDEX_QUERY.release,
 		),
-		status: normalizedEnumValue(query.status, STATUS_FILTERS, DEFAULT_CATALOG_INDEX_QUERY.status),
 	};
 }
 
@@ -118,7 +108,6 @@ export function parseCatalogIndexQuery(searchParams: URLSearchParams): CatalogIn
 		q: uniqueValue("q"),
 		category: uniqueValue("category") as CatalogIndexCategory | undefined,
 		release: uniqueValue("release") as CatalogIndexRelease | undefined,
-		status: uniqueValue("status") as CatalogIndexStatus | undefined,
 	});
 }
 
@@ -142,9 +131,6 @@ export function serializeCatalogIndexQuery(
 	if (normalized.release !== "all") {
 		result.set("release", normalized.release);
 	}
-	if (normalized.status !== "all") {
-		result.set("status", normalized.status);
-	}
 	return result;
 }
 
@@ -161,9 +147,6 @@ export function filterCatalogIndexGroups(
 		}
 		const items = group.items.filter((item) => {
 			if (normalized.release !== "all" && item.releaseStatus !== normalized.release) {
-				return false;
-			}
-			if (normalized.status !== "all" && item.pageStatus !== normalized.status) {
 				return false;
 			}
 			const searchableText = normalizeCatalogSearchText(

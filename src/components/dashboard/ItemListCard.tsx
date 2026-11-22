@@ -31,9 +31,7 @@ export function ItemListCard() {
 							</div>
 						</div>
 					))}
-					<p className="text-basalt-sm text-basalt-muted-foreground">
-						Changes: comparison period not specified
-					</p>
+					<p className="text-basalt-sm text-basalt-muted-foreground">Changes: vs. prior 30 days</p>
 				</div>
 			</LayerCard.Body>
 		</LayerCard>

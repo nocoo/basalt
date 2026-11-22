@@ -71,7 +71,7 @@ describe("Code", () => {
 			expect(screen.getByText("example.ts")).toHaveClass(
 				"text-basalt-md",
 				"font-medium",
-				"font-basalt-mono",
+				"font-basalt-sans",
 				"leading-[var(--basalt-line-body)]",
 			);
 			expect(screen.getByText("example.ts").closest('[data-slot="code-header"]')).toHaveClass(
@@ -116,6 +116,15 @@ describe("Code", () => {
 			expect(gutter.parentElement).toHaveAttribute("aria-hidden", "true");
 			expect(gutter.textContent).toBe("");
 		}
+	});
+	it("renders a right-aligned copy bar without fake Code label when title is omitted", () => {
+		const { container } = render(<CodeBlock>{"plain"}</CodeBlock>);
+		const header = container.querySelector('[data-slot="code-header"]');
+		expect(header).toHaveClass("justify-end");
+		expect(header).not.toHaveClass("justify-between");
+		expect(header).toHaveTextContent("Copy code");
+		expect(header).not.toHaveTextContent("Code");
+		expect(screen.getByRole("region", { name: "Code" })).toHaveTextContent("plain");
 	});
 	it("omits header, icon and numbering when disabled", () => {
 		const { container, rerender } = render(

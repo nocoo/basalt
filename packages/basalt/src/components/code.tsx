@@ -26,7 +26,7 @@ export interface CodeBlockProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "title" | "className"> {
 	/** Exact source text. Copy preserves whitespace and original line endings. */
 	children: string;
-	/** Filename or label shown in the header. Defaults to "Code" when copyable. */
+	/** Filename or label shown in the header. When omitted on a copyable block, only a right-aligned copy bar renders. */
 	title?: string;
 	/** Decorative header icon. Defaults to a file-code glyph; pass null to hide. */
 	icon?: ReactNode;
@@ -70,8 +70,8 @@ function CodePanel({
 }: CodeBlockProps & { highlighted?: boolean }) {
 	const vm = useCodeBlock(code, highlighted);
 	const id = useId();
-	const heading = title || "Code";
-	const header = Boolean(title) || copyable;
+	const hasTitle = Boolean(title);
+	const header = hasTitle || copyable;
 	const copyLabel =
 		vm.status === "copied" ? "Copied" : vm.status === "error" ? "Copy failed" : "Copy code";
 	return (
@@ -92,25 +92,30 @@ function CodePanel({
 			{header && (
 				<div
 					data-slot="code-header"
-					className="flex shrink-0 flex-wrap items-center justify-between gap-basalt-space-lg border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y"
+					className={cn(
+						"flex shrink-0 flex-wrap items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y",
+						hasTitle ? "justify-between" : "justify-end",
+					)}
 				>
-					<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap">
-						{icon && (
+					{hasTitle ? (
+						<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap">
+							{icon && (
+								<span
+									aria-hidden="true"
+									className="flex size-basalt-icon shrink-0 items-center justify-center text-basalt-muted-foreground [&_svg]:size-basalt-icon"
+								>
+									{icon}
+								</span>
+							)}
 							<span
-								aria-hidden="true"
-								className="flex size-basalt-icon shrink-0 items-center justify-center text-basalt-muted-foreground [&_svg]:size-basalt-icon"
+								id={id}
+								title={title}
+								className="min-w-0 break-words font-basalt-sans text-basalt-md font-medium leading-[var(--basalt-line-body)] [overflow-wrap:anywhere]"
 							>
-								{icon}
+								{title}
 							</span>
-						)}
-						<span
-							id={id}
-							title={heading}
-							className="min-w-0 break-words font-basalt-mono text-basalt-md font-medium leading-[var(--basalt-line-body)] [overflow-wrap:anywhere]"
-						>
-							{heading}
-						</span>
-					</div>
+						</div>
+					) : null}
 					{copyable && (
 						<Button
 							variant="ghost"
@@ -128,8 +133,8 @@ function CodePanel({
 			)}
 			<pre
 				role="region"
-				aria-labelledby={header ? id : undefined}
-				aria-label={header ? undefined : "Code"}
+				aria-labelledby={hasTitle ? id : undefined}
+				aria-label={hasTitle ? undefined : "Code"}
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named code overflow region must support keyboard scrolling.
 				tabIndex={0}
 				onKeyDown={(event) => {

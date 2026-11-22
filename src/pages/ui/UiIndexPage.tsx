@@ -18,7 +18,6 @@ import {
 	type CatalogIndexCategory,
 	type CatalogIndexQuery,
 	type CatalogIndexRelease,
-	type CatalogIndexStatus,
 	DEFAULT_CATALOG_INDEX_QUERY,
 	filterCatalogIndexGroups,
 	parseCatalogIndexQuery,
@@ -32,23 +31,13 @@ const RELEASE_OPTIONS: ReadonlyArray<{ value: CatalogIndexRelease; label: string
 	{ value: "catalog", label: "Catalog" },
 ];
 
-const STATUS_OPTIONS: ReadonlyArray<{ value: CatalogIndexStatus; label: string }> = [
-	{ value: "ready", label: "Ready" },
-	{ value: "planned", label: "Planned" },
-];
-
 function queryIsDefault(query: CatalogIndexQuery): boolean {
-	return (
-		query.q === "" && query.category === "all" && query.release === "all" && query.status === "all"
-	);
+	return query.q === "" && query.category === "all" && query.release === "all";
 }
 
 function activeFilterCount(query: CatalogIndexQuery): number {
 	return (
-		Number(query.q !== "") +
-		Number(query.category !== "all") +
-		Number(query.release !== "all") +
-		Number(query.status !== "all")
+		Number(query.q !== "") + Number(query.category !== "all") + Number(query.release !== "all")
 	);
 }
 
@@ -176,13 +165,6 @@ export default function UiIndexPage() {
 							options={RELEASE_OPTIONS}
 							allOption={{ value: "all" }}
 							onValueChange={(release) => updateQuery({ release: release as CatalogIndexRelease })}
-						/>
-						<SegmentControl
-							legend="Page status"
-							value={query.status}
-							options={STATUS_OPTIONS}
-							allOption={{ value: "all" }}
-							onValueChange={(status) => updateQuery({ status: status as CatalogIndexStatus })}
 						/>
 					</div>
 					<div className="flex min-h-8 flex-wrap items-center justify-between gap-basalt-space-lg">

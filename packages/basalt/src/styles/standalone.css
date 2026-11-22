@@ -3277,6 +3277,9 @@
   .font-basalt-mono {
     font-family: var(--basalt-font-mono);
   }
+  .font-basalt-sans {
+    font-family: var(--basalt-font-sans);
+  }
   .text-basalt-3xl {
     font-size: var(--basalt-text-3xl);
     line-height: var(--tw-leading, var(--basalt-leading-tight));

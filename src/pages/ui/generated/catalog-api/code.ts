@@ -20,7 +20,7 @@ export const API = [
 				name: "title",
 				type: "string",
 				required: false,
-				description: "Filename or label shown in the header. Defaults to \"Code\" when copyable.",
+				description: "Filename or label shown in the header. When omitted on a copyable block, only a right-aligned copy bar renders.",
 			},
 			{
 				name: "icon",

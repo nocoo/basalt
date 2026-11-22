@@ -1,4 +1,5 @@
 import { Badge } from "@nocoo/basalt/components/badge";
+import { LinkButton } from "@nocoo/basalt/components/button";
 import { Grid } from "@nocoo/basalt/components/grid";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
@@ -17,7 +18,6 @@ import { SITE } from "@/lib/site";
 import { catalogNavName, libraryNavEntries } from "./catalog";
 import { catalogCategory } from "./catalog-categories";
 import { CATEGORY_GUIDES } from "./catalog-category-guides";
-import { catalogPageStatus } from "./catalog-page-status";
 
 function SpacingPreview({ category }: { category: "card" | "layout" }) {
 	const [size, setSize] = useState<"sm" | "md" | "lg" | "xl">("md");
@@ -73,6 +73,17 @@ export default function UiCategoryOverviewPage() {
 			data-category-overview={category.id}
 			title={`${category.label} overview`}
 			description={category.description}
+			actions={
+				<LinkButton
+					href={`${SITE.github}/blob/main/DESIGN.md`}
+					target="_blank"
+					rel="noopener noreferrer"
+					variant="outline"
+					size="sm"
+				>
+					Design contract
+				</LinkButton>
+			}
 		>
 			<SectionRule variant="heading" title="Design thinking" className="space-y-basalt-card">
 				<LayerCard>
@@ -122,45 +133,12 @@ export default function UiCategoryOverviewPage() {
 								key={entry.slug}
 								className="flex items-center gap-basalt-space-lg text-basalt-base"
 							>
-								{catalogPageStatus(entry.slug) === "ready" ? (
-									<Link href={`/ui/${entry.slug}`}>{catalogNavName(entry)}</Link>
-								) : (
-									<>
-										<span>{catalogNavName(entry)}</span>
-										<Badge variant="outline">Planned</Badge>
-									</>
-								)}
+								<Link href={`/ui/${entry.slug}`}>{catalogNavName(entry)}</Link>
 							</li>
 						))}
 					</ul>
 				</LayerCard>
 			</SectionRule>
-			<LayerCard className="space-y-basalt-card-sm text-basalt-base">
-				<h2 className="text-basalt-base font-medium">One shared contract</h2>
-				<p className="text-basalt-muted-foreground">
-					Control spacing uses .125rem, .25rem, .375rem and .5rem. Cards and layouts use .75rem,
-					1rem, 1.5rem and 2rem; cards and grids default to 1rem, page sections to 1.5rem. Shared
-					tokens own typography, radii, color and motion. Reference sizes assume a 16px root, never
-					a forced root font size or a fixed-height limit. Verify wrapping, text zoom, both themes,
-					keyboard use and reduced motion.
-				</p>
-				<div className="flex flex-wrap gap-basalt-space-lg">
-					<Link
-						href={`${SITE.github}/blob/main/DESIGN.md`}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Design contract
-					</Link>
-					<Link
-						href={`${SITE.github}/blob/main/INTEGRATION.md`}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Integration guide
-					</Link>
-				</div>
-			</LayerCard>
 		</ShowcasePage>
 	);
 }

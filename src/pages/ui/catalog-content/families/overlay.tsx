@@ -131,8 +131,7 @@ const EXTRA_PROVENANCE = provenanceFromLegacy({
 	file: "packages/web/src/components",
 });
 
-const DIALOG_LOREM =
-	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+const DIALOG_LOREM = "Review pending permission changes before applying them across the workspace.";
 
 const DIALOG_ACTIONS_HELPER = `function DialogActions({
 	cancel = "Cancel",
@@ -416,7 +415,7 @@ export default function Example() {
 			<DialogContent>
 				<DialogTitle>Delete Resource?</DialogTitle>
 				<DialogDescription>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+					This removes the selected workspace resource and its active schedule.
 				</DialogDescription>
 				<DialogFooter>
 					<DialogClose asChild>
@@ -449,7 +448,7 @@ export default function Example() {
 	</DialogTrigger>
 	<DialogContent>
 		<DialogHeader>
-			<DialogTitle>Modal Title</DialogTitle>
+			<DialogTitle>Review changes</DialogTitle>
 			<DialogDescription>${DIALOG_LOREM}</DialogDescription>
 		</DialogHeader>
 	</DialogContent>
@@ -466,7 +465,7 @@ export default function Example() {
 						</DialogTrigger>
 						<DialogContent>
 							<DialogHeader>
-								<DialogTitle>Modal Title</DialogTitle>
+								<DialogTitle>Review changes</DialogTitle>
 								<DialogDescription>{DIALOG_LOREM}</DialogDescription>
 							</DialogHeader>
 						</DialogContent>

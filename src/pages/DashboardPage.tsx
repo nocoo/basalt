@@ -41,7 +41,7 @@ export default function DashboardPage() {
 									{s.change}
 								</span>
 								{(s.change.startsWith("+") || s.change.startsWith("-")) && (
-									<span className="text-basalt-muted-foreground">period not specified</span>
+									<span className="text-basalt-muted-foreground">vs. prior 30 days</span>
 								)}
 							</>
 						}

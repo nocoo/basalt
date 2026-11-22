@@ -19,7 +19,7 @@ describe("overlay dialog action footer", () => {
 		expect(family).toContain("function DialogActions(");
 		expect(family).toContain("DialogFooter,");
 		expect(family).toContain("<DialogHeader>");
-		expect(family).toContain("<DialogTitle>Modal Title</DialogTitle>");
+		expect(family).toContain("<DialogTitle>Review changes</DialogTitle>");
 	});
 
 	it("renders Sizes and confirmation action rows with the shared 16px footer", () => {
@@ -86,7 +86,7 @@ describe("overlay dialog action footer", () => {
 			(item) => item.id === "dialog-with-actions",
 		);
 		expect(basic?.code).toContain("<DialogHeader>");
-		expect(basic?.code).toContain("<DialogTitle>Modal Title</DialogTitle>");
+		expect(basic?.code).toContain("<DialogTitle>Review changes</DialogTitle>");
 		expect(sizes?.code).toContain("<DialogHeader>");
 		expect(sizes?.code).toContain("<DialogTitle>");
 		expect(actions?.code).toContain("<DialogHeader>");

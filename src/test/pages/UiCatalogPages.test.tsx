@@ -44,13 +44,13 @@ function catalogHeroScenario(slug: string) {
 	return UI_EXAMPLES[slug]?.[0];
 }
 
+import ComponentDocPage, {
+	CatalogApiReference,
+	catalogApiSurfaceId,
+} from "@/pages/ui/ComponentDocPage";
 import { CATALOG_SOURCE_FILES } from "@/pages/ui/generated/catalog-source-files";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
-import UiPlaceholderPage, {
-	CatalogApiReference,
-	catalogApiSurfaceId,
-} from "@/pages/ui/UiPlaceholderPage";
 import { UiSourceViewerPage } from "@/pages/ui/UiSourceViewerPage";
 
 await Promise.all(CATALOG.map((entry) => loadCatalogPageContent(entry.slug)));
@@ -73,7 +73,7 @@ function renderCatalog(path: string) {
 			<RouterProbe />
 			<Routes>
 				<Route path="/ui" element={<UiIndexPage />} />
-				<Route path="/ui/:slug" element={<UiPlaceholderPage />} />
+				<Route path="/ui/:slug" element={<ComponentDocPage />} />
 				<Route path="/ui/:slug/source" element={<UiSourceViewerPage />} />
 			</Routes>
 		</MemoryRouter>,
@@ -168,14 +168,13 @@ describe("ui catalog", () => {
 	}, 15_000);
 
 	it("filters the catalog from URL-backed search and toggle controls", () => {
-		renderCatalog("/ui?q=input&release=catalog&status=ready");
+		renderCatalog("/ui?q=input&release=catalog");
 		const searchInput = screen.getByRole("searchbox", { name: "Search" });
 		expect(searchInput).toHaveValue("input");
 		expect(screen.getByRole("combobox", { name: "Category" })).toBeInTheDocument();
 		expect(screen.getByRole("radiogroup", { name: "Release" })).toBeInTheDocument();
-		expect(screen.getByRole("radiogroup", { name: "Page status" })).toBeInTheDocument();
+		expect(screen.queryByRole("radiogroup", { name: "Page status" })).toBeNull();
 		expect(screen.getByRole("radio", { name: "Catalog" })).toHaveAttribute("aria-checked", "true");
-		expect(screen.getByRole("radio", { name: "Ready" })).toHaveAttribute("aria-checked", "true");
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("2 results");
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(2);
 		expect(
@@ -195,7 +194,7 @@ describe("ui catalog", () => {
 		expect(document.querySelector('[data-catalog-card="input-group"]')).toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
-			"/ui?q=input+group&release=catalog&status=ready",
+			"/ui?q=input+group&release=catalog",
 		);
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-navigation-type",
@@ -203,8 +202,8 @@ describe("ui catalog", () => {
 		);
 	});
 
-	it("shows an empty planned state", () => {
-		renderCatalog("/ui?category=layout&status=planned");
+	it("shows an empty state when no components match", () => {
+		renderCatalog("/ui?q=nonexistent-component");
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^0 results$/);
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(0);
 	});
@@ -228,13 +227,13 @@ describe("ui catalog", () => {
 	});
 
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
-		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
+		renderCatalog("/ui?release=catalog&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("81 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("42 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
-				"/ui?foreign=one&foreign=two&status=ready",
+				"/ui?foreign=one&foreign=two&release=catalog",
 			);
 		});
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
@@ -421,7 +420,7 @@ describe("ui catalog", () => {
 
 	it("does not infer github owner from a repo name", () => {
 		const page = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
+			path.join(process.cwd(), "src/pages/ui/ComponentDocPage.tsx"),
 			"utf8",
 		);
 		const model = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-source.ts"), "utf8");
@@ -2824,7 +2823,7 @@ describe("ui catalog", () => {
 
 	it("does not use example index anchors", () => {
 		const page = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
+			path.join(process.cwd(), "src/pages/ui/ComponentDocPage.tsx"),
 			"utf8",
 		);
 		expect(page).not.toMatch(/example-\$\{index\}/);
@@ -3642,7 +3641,7 @@ describe("ui catalog", () => {
 	it("does not special-case InputGroup or vendor names in the API page", () => {
 		const generator = readFileSync(path.join(process.cwd(), "scripts/catalog-api.ts"), "utf8");
 		const page = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
+			path.join(process.cwd(), "src/pages/ui/ComponentDocPage.tsx"),
 			"utf8",
 		);
 		expect(generator).not.toMatch(/Cloudflare|Kumo|Workers?\b/);

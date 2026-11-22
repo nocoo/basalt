@@ -191,7 +191,6 @@ describe("catalog index model", () => {
 		const catalogInputResults = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, {
 			q: "input",
 			release: "catalog",
-			status: "ready",
 		});
 		expect(catalogInputResults.flatMap((group) => group.items)).toHaveLength(2);
 
@@ -232,35 +231,32 @@ describe("catalog index model", () => {
 		expect(parseCatalogIndexQuery(new URLSearchParams())).toEqual(DEFAULT_CATALOG_INDEX_QUERY);
 		expect(
 			parseCatalogIndexQuery(
-				new URLSearchParams(
-					"q=%20input%20%20group%20&category=layout&release=catalog&status=ready",
-				),
+				new URLSearchParams("q=%20input%20%20group%20&category=layout&release=catalog"),
 			),
-		).toEqual({ q: "input group", category: "layout", release: "catalog", status: "ready" });
+		).toEqual({ q: "input group", category: "layout", release: "catalog" });
 		expect(
 			normalizeCatalogIndexQuery({
 				category: "other" as never,
 				release: "preview" as never,
-				status: "missing" as never,
 			}),
 		).toEqual(DEFAULT_CATALOG_INDEX_QUERY);
 		expect(
 			parseCatalogIndexQuery(
-				new URLSearchParams("q=input&q=button&category=layout&category=layout&status=ready"),
+				new URLSearchParams("q=input&q=button&category=layout&category=layout"),
 			),
-		).toEqual({ ...DEFAULT_CATALOG_INDEX_QUERY, status: "ready" });
+		).toEqual(DEFAULT_CATALOG_INDEX_QUERY);
 	});
 
 	it("serializes canonical owned keys while preserving foreign parameters", () => {
 		const current = new URLSearchParams(
-			"status=ready&foreign=one&q=old&q=duplicate&category=unknown&foreign=two",
+			"foreign=one&q=old&q=duplicate&category=unknown&foreign=two",
 		);
 		expect(
 			serializeCatalogIndexQuery(
-				{ q: "  input   group ", category: "action", release: "catalog", status: "ready" },
+				{ q: "  input   group ", category: "action", release: "catalog" },
 				current,
 			).toString(),
-		).toBe("foreign=one&foreign=two&q=input+group&category=action&release=catalog&status=ready");
+		).toBe("foreign=one&foreign=two&q=input+group&category=action&release=catalog");
 		expect(serializeCatalogIndexQuery(DEFAULT_CATALOG_INDEX_QUERY, current).toString()).toBe(
 			"foreign=one&foreign=two",
 		);

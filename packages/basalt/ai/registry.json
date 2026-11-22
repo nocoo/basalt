@@ -4287,7 +4287,7 @@
 			"importPath": "@nocoo/basalt/components/code",
 			"subpath": "./components/code",
 			"sourceFile": "packages/basalt/src/components/code.tsx",
-			"sourceHash": "d2ec2d7accb9d8cd",
+			"sourceHash": "4e76ddac60d9e063",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4373,7 +4373,7 @@
 									"name": "title",
 									"type": "string",
 									"required": false,
-									"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+									"description": "Filename or label shown in the header. When omitted on a copyable block, only a right-aligned copy bar renders."
 								},
 								{
 									"name": "icon",
@@ -4439,7 +4439,7 @@
 									"name": "title",
 									"type": "string",
 									"required": false,
-									"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+									"description": "Filename or label shown in the header. When omitted on a copyable block, only a right-aligned copy bar renders."
 								},
 								{
 									"name": "icon",
@@ -4498,7 +4498,7 @@
 							"name": "title",
 							"type": "string",
 							"required": false,
-							"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+							"description": "Filename or label shown in the header. When omitted on a copyable block, only a right-aligned copy bar renders."
 						},
 						{
 							"name": "icon",
@@ -27985,7 +27985,7 @@
 			"exportName": "Code",
 			"importPath": "@nocoo/basalt/components/code",
 			"sourceFile": "packages/basalt/src/components/code.tsx",
-			"sourceHash": "d2ec2d7accb9d8cd",
+			"sourceHash": "4e76ddac60d9e063",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#code",
@@ -28008,7 +28008,7 @@
 							"name": "title",
 							"type": "string",
 							"required": false,
-							"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+							"description": "Filename or label shown in the header. When omitted on a copyable block, only a right-aligned copy bar renders."
 						},
 						{
 							"name": "icon",
@@ -28059,7 +28059,7 @@
 			"exportName": "CodeBlock",
 			"importPath": "@nocoo/basalt/components/code",
 			"sourceFile": "packages/basalt/src/components/code.tsx",
-			"sourceHash": "d2ec2d7accb9d8cd",
+			"sourceHash": "4e76ddac60d9e063",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#code-block",
@@ -28077,7 +28077,7 @@
 							"name": "title",
 							"type": "string",
 							"required": false,
-							"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+							"description": "Filename or label shown in the header. When omitted on a copyable block, only a right-aligned copy bar renders."
 						},
 						{
 							"name": "icon",

@@ -145,7 +145,7 @@ async function assertDocumentInsets(page: Page, baseUrl: string, dark: boolean) 
 			assert.equal(await disclosure.getAttribute("aria-expanded"), "false");
 			await disclosure.focus();
 			await page.keyboard.press("Enter");
-			await hero.getByRole("region", { name: "Code example" }).waitFor();
+			await hero.getByRole("region", { name: "Code" }).waitFor();
 		}
 		for (const rootSize of [16, 20]) {
 			await page.evaluate(
@@ -213,7 +213,7 @@ async function assertDocumentInsets(page: Page, baseUrl: string, dark: boolean) 
 		if (slug === "tag-badge") {
 			await disclosure.focus();
 			await page.keyboard.press("Space");
-			await hero.getByRole("region", { name: "Code example" }).waitFor({ state: "hidden" });
+			await hero.getByRole("region", { name: "Code" }).waitFor({ state: "hidden" });
 			assert.equal(await disclosure.getAttribute("aria-expanded"), "false");
 		}
 	}

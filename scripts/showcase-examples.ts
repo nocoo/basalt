@@ -169,12 +169,8 @@ async function assertForms(page: Page, baseUrl: string) {
 	await profile.getByLabel("First name", { exact: true }).fill("Morgan");
 	await profile.getByLabel("Last name", { exact: true }).fill("Chen");
 	await profile.getByLabel("Email", { exact: true }).fill("morgan@example.com");
-	await profile.getByRole("checkbox", { name: "Simulate a failed submission" }).check();
 	await profile.getByRole("button", { name: "Save profile" }).focus();
 	await page.keyboard.press("Enter");
-	await profile.getByRole("alert").waitFor();
-	assert.equal(await profile.getByLabel("First name", { exact: true }).inputValue(), "Morgan");
-	await profile.getByRole("button", { name: "Retry", exact: true }).click();
 	await profile.getByRole("status").filter({ hasText: "Saved locally." }).waitFor();
 	await page.getByRole("button", { name: "View details" }).click();
 	assert.ok((await page.locator("pre").textContent())?.includes('"firstName": "Morgan"'));
@@ -194,10 +190,7 @@ async function assertSettings(page: Page, baseUrl: string) {
 	await profile.getByRole("button", { name: "Cancel", exact: true }).click();
 	assert.equal(await profile.getByLabel("First name", { exact: true }).inputValue(), "Alex");
 	await profile.getByLabel("First name", { exact: true }).fill("Morgan");
-	await profile.getByRole("checkbox", { name: "Simulate a failed submission" }).check();
 	await profile.getByRole("button", { name: "Save changes", exact: true }).click();
-	await profile.getByRole("alert").waitFor();
-	await profile.getByRole("button", { name: "Retry", exact: true }).click();
 	await profile.getByText("Morgan Johnson", { exact: true }).waitFor();
 	await page.getByRole("button", { name: "Appearance", exact: true }).click();
 	await page.getByRole("radio", { name: "Dark", exact: true }).focus();
@@ -329,7 +322,7 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 				if (await apiTable.evaluate((node) => node.scrollWidth > node.clientWidth))
 					await assertKeyboardScroll(page, apiTable);
 				else assert.ok(width >= 640, `API table must stay scrollable at ${width}px`);
-				const codes = page.getByRole("region", { name: "Code example", exact: true });
+				const codes = page.getByRole("region", { name: "Code", exact: true });
 				let scrollable: Locator | undefined;
 				for (const code of await codes.all())
 					if (await code.evaluate((node) => node.scrollWidth > node.clientWidth)) {

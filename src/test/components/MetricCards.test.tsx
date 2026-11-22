@@ -26,7 +26,7 @@ describe("dashboard metric compositions", () => {
 		expect(screen.getByText("$8,800")).toBeInTheDocument();
 		expect(screen.getByText("$4,500")).toBeInTheDocument();
 		expect(screen.getByText("$4,300")).toBeInTheDocument();
-		expect(screen.getByText("period not specified")).toBeInTheDocument();
+		expect(screen.getByText("vs. prior 30 days")).toBeInTheDocument();
 		expect(screen.getByText("Today, every 2 hours · $8k–$9k care-fund scale")).toBeInTheDocument();
 		expect(screen.getByText("Jan–Dec · monthly reimbursements")).toBeInTheDocument();
 		expect(

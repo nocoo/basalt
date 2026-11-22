@@ -9,7 +9,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export function DocCode({ code, attached = false }: { code: string; attached?: boolean }) {
-	return <CodeHighlighted code={code} title="Code example" attached={attached} />;
+	return <CodeHighlighted code={code} attached={attached} />;
 }
 
 export function DocExample({

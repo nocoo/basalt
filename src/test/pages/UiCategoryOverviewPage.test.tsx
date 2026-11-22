@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 import { catalogNavName, libraryNavEntries } from "@/pages/ui/catalog";
 import { CATALOG_CATEGORIES, catalogCategoryPath } from "@/pages/ui/catalog-categories";
 import { CATEGORY_GUIDES } from "@/pages/ui/catalog-category-guides";
-import { catalogPageStatus } from "@/pages/ui/catalog-page-status";
 import UiCategoryOverviewPage from "@/pages/ui/UiCategoryOverviewPage";
 
 function renderOverview(path: string) {
@@ -28,7 +27,7 @@ describe("category overview pages", () => {
 			const cards = Array.from(container.querySelectorAll("[data-basalt-surface]")).filter(
 				(card) => !card.parentElement?.closest("[data-basalt-surface]"),
 			);
-			expect(cards).toHaveLength(6);
+			expect(cards).toHaveLength(5);
 			for (const card of cards) {
 				expect(card).toHaveClass("p-basalt-card");
 				expect(card).not.toHaveAttribute("data-card-structured");
@@ -49,9 +48,6 @@ describe("category overview pages", () => {
 			expect(cards[3].querySelector("ul")).not.toBeNull();
 			expect(cards[4].querySelector("ul")).not.toBeNull();
 			expect(
-				within(cards[5] as HTMLElement).getByRole("heading", { name: "One shared contract" }),
-			).toBeInTheDocument();
-			expect(
 				screen.getByRole("heading", { name: `${category.label} overview` }),
 			).toBeInTheDocument();
 			for (const title of [
@@ -60,25 +56,18 @@ describe("category overview pages", () => {
 				"Interaction and motion",
 				"Best practices",
 				"In this group",
-				"One shared contract",
 			]) {
 				expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
 			}
+			expect(screen.queryByRole("heading", { name: "One shared contract" })).toBeNull();
 			for (const practice of CATEGORY_GUIDES[category.id].practices)
 				expect(screen.getByText(practice)).toBeInTheDocument();
 			expect(screen.getByText(category.size)).toBeInTheDocument();
 			for (const entry of libraryNavEntries(category.id)) {
-				if (catalogPageStatus(entry.slug) === "ready") {
-					expect(screen.getByRole("link", { name: catalogNavName(entry) })).toHaveAttribute(
-						"href",
-						`/ui/${entry.slug}`,
-					);
-				} else {
-					expect(
-						screen.queryByRole("link", { name: catalogNavName(entry) }),
-					).not.toBeInTheDocument();
-					expect(screen.getByText("Planned")).toBeInTheDocument();
-				}
+				expect(screen.getByRole("link", { name: catalogNavName(entry) })).toHaveAttribute(
+					"href",
+					`/ui/${entry.slug}`,
+				);
 			}
 			expect(screen.getByRole("link", { name: "Design contract" })).toHaveAttribute(
 				"href",

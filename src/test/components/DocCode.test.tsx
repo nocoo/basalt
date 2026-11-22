@@ -15,9 +15,9 @@ describe("documentation container ownership", () => {
 		const trigger = screen.getByRole("button", { name: "View example code" });
 		expect(trigger).toHaveClass("px-basalt-card", "py-basalt-card-sm");
 		expect(trigger).toHaveAttribute("aria-expanded", "false");
-		expect(screen.queryByRole("region", { name: "Code example" })).toBeNull();
+		expect(screen.queryByRole("region", { name: "Code" })).toBeNull();
 		fireEvent.click(trigger);
-		expect(screen.getByRole("region", { name: "Code example" })).toBeVisible();
+		expect(screen.getByRole("region", { name: "Code" })).toBeVisible();
 		const code = container.querySelector("[data-basalt-code]");
 		expect(code).toHaveAttribute("data-code-attached", "true");
 		expect(code?.parentElement).not.toHaveClass("p-basalt-card");
@@ -29,7 +29,7 @@ describe("documentation container ownership", () => {
 	it("keeps ordinary examples attached and immediately visible", () => {
 		const { container } = render(<DocExample code="const n = 1;">Preview</DocExample>);
 		expect(screen.queryByRole("button", { name: "View example code" })).toBeNull();
-		expect(screen.getByRole("region", { name: "Code example" })).toBeVisible();
+		expect(screen.getByRole("region", { name: "Code" })).toBeVisible();
 		expect(container.querySelector("[data-code-attached]")?.parentElement).toHaveAttribute(
 			"data-card-structured",
 		);

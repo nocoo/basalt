@@ -212,13 +212,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "d2ec2d7accb9d8cd",
+		"hash": "4e76ddac60d9e063",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "d2ec2d7accb9d8cd",
+		"hash": "4e76ddac60d9e063",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},

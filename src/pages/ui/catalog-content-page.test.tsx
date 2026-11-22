@@ -2,9 +2,9 @@ import { act, render, screen } from "@testing-library/react";
 import { Suspense } from "react";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import ComponentDocPage from "./ComponentDocPage";
 import type { CatalogPageContent } from "./catalog-content";
 import { loadCatalogContentRecord } from "./catalog-content-registry";
-import UiPlaceholderPage from "./UiPlaceholderPage";
 
 const loadContent = vi.hoisted(() => vi.fn());
 const catalogContent = await loadCatalogContentRecord();
@@ -40,7 +40,7 @@ function renderPage(path: string) {
 			<NavigationProbe />
 			<Suspense fallback={<p data-catalog-loading>Loading catalog page…</p>}>
 				<Routes>
-					<Route path="/ui/:slug" element={<UiPlaceholderPage />} />
+					<Route path="/ui/:slug" element={<ComponentDocPage />} />
 				</Routes>
 			</Suspense>
 		</MemoryRouter>,

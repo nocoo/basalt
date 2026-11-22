@@ -54,7 +54,7 @@ describe("table example library controls", () => {
 	});
 	it("marks framed catalog API table rails", () => {
 		const page = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
+			path.join(process.cwd(), "src/pages/ui/ComponentDocPage.tsx"),
 			"utf8",
 		);
 		expect(page).toContain('<TableHead className="ps-basalt-table-edge">Option</TableHead>');

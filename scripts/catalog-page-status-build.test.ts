@@ -36,7 +36,7 @@ const PAGE_MODULES = [
 	"TypefacePage.tsx",
 	"ui/UiIndexPage.tsx",
 	"ui/UiCategoryOverviewPage.tsx",
-	"ui/UiPlaceholderPage.tsx",
+	"ui/ComponentDocPage.tsx",
 ] as const;
 
 describe("application route build boundary", () => {
@@ -140,7 +140,7 @@ describe("application route build boundary", () => {
 		expect(entry?.dynamicImports.length).toBeGreaterThanOrEqual(PAGE_MODULES.length);
 
 		const catalogPage = chunks.find((chunk) =>
-			chunk.facadeModuleId?.endsWith("/src/pages/ui/UiPlaceholderPage.tsx"),
+			chunk.facadeModuleId?.endsWith("/src/pages/ui/ComponentDocPage.tsx"),
 		);
 		expect(catalogPage?.isDynamicEntry).toBe(true);
 		const catalogPageFiles = new Set<string>();

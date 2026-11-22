@@ -17,7 +17,7 @@ import {
 } from "@nocoo/basalt/components/table";
 import { Check, ChevronDown, Copy } from "lucide-react";
 import { use, useState } from "react";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Github } from "@/components/icons/github";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import {
@@ -33,7 +33,6 @@ import {
 	formatNativeSurfaceStrategy,
 	isDocumentedNativeSurface,
 } from "./catalog-native-surfaces";
-import { catalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import {
 	type CatalogApiSurface,
@@ -416,14 +415,10 @@ function ReadyDoc({
 				</>
 			}
 		>
-			<div data-doc-toc-bar="" className={`sticky top-0 z-10 ${widePreview ? "" : "xl:hidden"}`}>
-				<DocToc headings={headings} compact={widePreview} />
+			<div data-doc-toc-bar="" className="sticky top-0 z-10 xl:hidden">
+				<DocToc headings={headings} />
 			</div>
-			<div
-				className={
-					widePreview ? "" : "xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-basalt-layout-xl"
-				}
-			>
+			<div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-basalt-layout-xl">
 				<article
 					data-status="ready"
 					data-slug={entry.slug}
@@ -508,7 +503,7 @@ function ReadyDoc({
 						) : null}
 					</LayerCard>
 				</article>
-				<aside className={widePreview ? "hidden" : "hidden min-w-0 xl:block"}>
+				<aside className="hidden min-w-0 xl:block">
 					<div className="sticky top-4">
 						<DocToc headings={headings} />
 					</div>
@@ -526,7 +521,7 @@ function ReadyCatalogPage({ entry }: { entry: CatalogEntry }) {
 	return <ReadyDoc entry={entry} docs={content.docs} examples={content.examples} />;
 }
 
-export default function UiPlaceholderPage() {
+export default function ComponentDocPage() {
 	const { slug } = useParams<{ slug: string }>();
 	const entry = slug ? CATALOG_BY_SLUG.get(slug) : undefined;
 
@@ -541,23 +536,5 @@ export default function UiPlaceholderPage() {
 		);
 	}
 
-	if (catalogPageStatus(entry.slug) === "ready") {
-		return <ReadyCatalogPage entry={entry} />;
-	}
-
-	return (
-		<ShowcasePage
-			variant="document"
-			data-status="placeholder"
-			data-slug={entry.slug}
-			title={catalogNavName(entry)}
-			description="未实现. This catalog page is a placeholder until the control ships."
-		>
-			<LayerCard className="text-basalt-base text-basalt-muted-foreground">
-				<Link className="text-basalt-foreground underline underline-offset-4" to="/ui">
-					Library index
-				</Link>
-			</LayerCard>
-		</ShowcasePage>
-	);
+	return <ReadyCatalogPage entry={entry} />;
 }

@@ -20,7 +20,7 @@ export function TrendLineCard() {
 			title="Care spending trend"
 			value={latest}
 			icon={<Activity />}
-			trend={{ value: -1.8, label: "period not specified" }}
+			trend={{ value: -1.8, label: "vs. prior 30 days" }}
 		>
 			<div className="space-y-basalt-card-sm">
 				<LineChart
