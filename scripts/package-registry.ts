@@ -73,7 +73,7 @@ export interface PackageRegistry {
 		ownerDoc: string;
 		packageDoc: string;
 		summary: string;
-		contract: "tailwind" | "standalone";
+		contract: "tailwind" | "standalone" | "fonts";
 	}>;
 }
 
@@ -458,9 +458,11 @@ export function generatePackageRegistry(
 		ownerDoc: css.ownerDoc,
 		packageDoc: mapToPackageDoc(css.ownerDoc),
 		summary: css.summary,
-		contract: (css.subpath.includes("standalone") ? "standalone" : "tailwind") as
-			| "tailwind"
-			| "standalone",
+		contract: (css.subpath.includes("standalone")
+			? "standalone"
+			: css.subpath.includes("fonts")
+				? "fonts"
+				: "tailwind") as "tailwind" | "standalone" | "fonts",
 	}));
 
 	return {

@@ -21,7 +21,7 @@ export function TrendLineCard() {
 		<StatCard
 			title={t("dashboard.spendingTrend")}
 			value={latest}
-			icon={<Activity strokeWidth={1.5} />}
+			icon={<Activity />}
 			trend={{ value: -1.8, label: t("dashboard.comparisonPeriodUnknown") }}
 		>
 			<div className="space-y-basalt-card-sm">

@@ -26,7 +26,7 @@ function Stepper({ steps, current }: { steps: string[]; current: number }) {
 										: "border border-border text-muted-foreground"
 							}`}
 						>
-							{i < current ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
+							{i < current ? <CheckCircle2 className="size-basalt-icon-lg" /> : i + 1}
 						</div>
 						<div className="hidden sm:block">
 							<p
@@ -106,19 +106,19 @@ export default function NavigationPage() {
 							items={[
 								{
 									label: t("pages.navigation.home"),
-									icon: <Home className="h-3.5 w-3.5" strokeWidth={1.5} />,
+									icon: <Home className="size-basalt-icon" />,
 								},
 								{
 									label: t("pages.navigation.documents"),
-									icon: <FolderOpen className="h-3.5 w-3.5" strokeWidth={1.5} />,
+									icon: <FolderOpen className="size-basalt-icon" />,
 								},
 								{
 									label: t("pages.navigation.reports"),
-									icon: <FolderOpen className="h-3.5 w-3.5" strokeWidth={1.5} />,
+									icon: <FolderOpen className="size-basalt-icon" />,
 								},
 								{
 									label: t("pages.navigation.q4Summary"),
-									icon: <FileText className="h-3.5 w-3.5" strokeWidth={1.5} />,
+									icon: <FileText className="size-basalt-icon" />,
 								},
 							]}
 						/>
@@ -239,7 +239,7 @@ export default function NavigationPage() {
 														: "border border-border text-muted-foreground"
 											}`}
 										>
-											{i < stepperIndex ? <CheckCircle2 className="h-3.5 w-3.5" /> : i + 1}
+											{i < stepperIndex ? <CheckCircle2 className="size-basalt-icon" /> : i + 1}
 										</div>
 										{i < stepperSteps.length - 1 && (
 											<div

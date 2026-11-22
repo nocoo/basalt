@@ -21,6 +21,7 @@
 }
 
 .landing {
+	--basalt-font-display: "DM Sans", var(--basalt-font-sans);
 	--landing-gutter: clamp(1.25rem, 4.5vw, 4rem);
 	--landing-radius: 1.25rem;
 	--landing-radius-lg: 1.75rem;

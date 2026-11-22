@@ -13,7 +13,7 @@ export default function SavedViewNavigation() {
 			<SidebarNav aria-label="Saved views">
 				<EditableNavItem
 					label={name}
-					icon={<ChartNoAxesCombined className="size-4" />}
+					icon={<ChartNoAxesCombined className="size-basalt-icon-lg" />}
 					selected={selected === "usage"}
 					onSelect={() => setSelected("usage")}
 					onRename={(next) => {
@@ -24,7 +24,7 @@ export default function SavedViewNavigation() {
 				/>
 				<EditableNavItem
 					label="Search all records"
-					icon={<Search className="size-4" />}
+					icon={<Search className="size-basalt-icon-lg" />}
 					selected={selected === "search"}
 					onSelect={() => setSelected("search")}
 				/>

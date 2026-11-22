@@ -79,12 +79,7 @@ describe("LayerCard", () => {
 		);
 		const header = screen.getByText("Next Steps");
 		const body = screen.getByText("Hello");
-		expect(header).toHaveClass(
-			"text-basalt-lg",
-			"font-semibold",
-			"tracking-tight",
-			"text-basalt-foreground",
-		);
+		expect(header).toHaveClass("text-basalt-lg", "font-semibold", "text-basalt-foreground");
 		expect(header.className).not.toContain("bg-basalt-muted");
 		expect(body).toHaveAttribute("data-basalt-surface");
 		expect(body.className).toContain("p-basalt-card");

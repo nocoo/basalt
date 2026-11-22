@@ -25,9 +25,7 @@ describe("dimension token contract", () => {
 				base: "0.875rem",
 				lg: "0.9375rem",
 				xl: "1.125rem",
-				"2xl": "1.25rem",
 				"3xl": "1.5rem",
-				"4xl": "1.5rem",
 			})) {
 				expect(css).toContain(`--basalt-text-${name}: ${value};`);
 			}
@@ -245,5 +243,15 @@ describe("dimension token contract", () => {
 		expect(standalone).toContain(".mb-basalt-field-gap");
 		const example = readFileSync("src/pages/ui/examples/loader/options.tsx", "utf8");
 		expect(example).not.toMatch(/<Switch.Group[^>]*className/);
+	});
+	it("uses integer line boxes, Inter display, CJK fallbacks, and unified typography tokens", () => {
+		for (const css of [tokens, standalone]) {
+			expect(css).toContain("--basalt-leading-tight: 1.25;");
+			expect(css).toContain('"PingFang SC"');
+			expect(css).toContain("--basalt-font-display: var(--basalt-font-sans);");
+		}
+		expect(tailwind).toContain("--text-basalt-sm--line-height: calc(16 / 12);");
+		expect(tailwind).toContain("--text-basalt-md--line-height: calc(20 / 13);");
+		expect(tailwind).not.toContain("--text-basalt-md--letter-spacing");
 	});
 });

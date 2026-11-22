@@ -85,7 +85,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 		header: "Categories",
 		headerContent: (
 			<>
-				<ListFilter className="size-basalt-icon-sm" strokeWidth={1.5} aria-hidden="true" />
+				<ListFilter className="size-basalt-icon-sm" aria-hidden="true" />
 				Categories
 			</>
 		),
@@ -104,7 +104,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 		header: "Last interaction",
 		headerContent: (
 			<>
-				<CalendarDays className="size-basalt-icon-sm" strokeWidth={1.5} aria-hidden="true" />
+				<CalendarDays className="size-basalt-icon-sm" aria-hidden="true" />
 				Last interaction
 			</>
 		),
@@ -116,7 +116,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 		header: "Connection strength",
 		headerContent: (
 			<>
-				<Signal className="size-basalt-icon-sm" strokeWidth={1.5} aria-hidden="true" />
+				<Signal className="size-basalt-icon-sm" aria-hidden="true" />
 				Connection strength
 			</>
 		),
@@ -128,7 +128,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 		header: "Links",
 		headerContent: (
 			<>
-				<Link2 className="size-basalt-icon-sm" strokeWidth={1.5} aria-hidden="true" />
+				<Link2 className="size-basalt-icon-sm" aria-hidden="true" />
 				Links
 			</>
 		),
@@ -143,11 +143,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 					className="inline-flex max-w-[10.625rem] items-center gap-basalt-space-sm text-basalt-muted-foreground hover:text-basalt-foreground"
 				>
 					<span className="truncate">{row.website}</span>
-					<ExternalLink
-						className="size-basalt-icon-sm shrink-0"
-						strokeWidth={1.5}
-						aria-hidden="true"
-					/>
+					<ExternalLink className="size-basalt-icon-sm shrink-0" aria-hidden="true" />
 				</a>
 			) : (
 				<span className="text-basalt-muted-foreground">—</span>

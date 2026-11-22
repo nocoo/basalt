@@ -14,16 +14,9 @@
 	--basalt-text-base: 0.875rem;
 	--basalt-text-lg: 0.9375rem;
 	--basalt-text-xl: 1.125rem;
-	--basalt-text-2xl: 1.25rem;
 	--basalt-text-3xl: 1.5rem;
-	--basalt-text-4xl: 1.5rem;
-	--basalt-text-5xl: 2.25rem;
-	--basalt-text-6xl: 3rem;
-	--basalt-text-7xl: 3.75rem;
-	--basalt-text-8xl: 4.5rem;
-	--basalt-text-9xl: 6rem;
 	--basalt-text-10xl: 8rem;
-	--basalt-leading-tight: 1.2;
+	--basalt-leading-tight: 1.25;
 	--basalt-leading-body: 1.4285714286;
 	--basalt-leading-relaxed: 1.5;
 	--basalt-leading-inline: calc(16 / 12);
@@ -212,11 +205,14 @@
 	--basalt-scrim: 0 0% 0% / 0.28;
 	--basalt-floating-duration-enter: 200ms;
 	--basalt-floating-duration-exit: 150ms;
-	--basalt-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-	--basalt-font-display: "DM Sans", "Inter", system-ui, sans-serif;
+	--basalt-font-sans:
+		"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+		"Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+	--basalt-font-display: var(--basalt-font-sans);
 	--basalt-font-mono:
 		"JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
 	--basalt-font-features: "cv02", "cv03", "cv04", "cv11";
+	--basalt-icon-stroke: 1.5;
 	--basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 	--basalt-shadow-solid:
 		inset 0 1px 0 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 0 rgb(0 0 0 / 0.12),

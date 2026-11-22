@@ -37,10 +37,7 @@ export function RecentListCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header>
 				<div className="flex items-center gap-basalt-space-lg">
-					<ArrowLeftRight
-						className="size-basalt-icon text-basalt-muted-foreground"
-						strokeWidth={1.5}
-					/>
+					<ArrowLeftRight className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.recentTransactions")}
 					</h2>
@@ -57,12 +54,9 @@ export function RecentListCard() {
 								className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${tx.type === "income" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 							>
 								{tx.type === "income" ? (
-									<ArrowDownLeft className="h-3.5 w-3.5 text-basalt-success" strokeWidth={1.5} />
+									<ArrowDownLeft className="size-basalt-icon text-basalt-success" />
 								) : (
-									<ArrowUpRight
-										className="h-3.5 w-3.5 text-basalt-danger-solid"
-										strokeWidth={1.5}
-									/>
+									<ArrowUpRight className="size-basalt-icon text-basalt-danger-solid" />
 								)}
 							</div>
 							<div className="flex-1 min-w-0">

@@ -970,16 +970,15 @@
 		},
 		"typeface": {
 			"title": "字体排版",
-			"description": "面向高密度界面的位置化排版规范：三套内置字体族、七级标准字号、固定行盒节奏、OpenType 字形区分与等宽数字对齐。",
+			"description": "面向高密度界面的位置化排版规范：两套应用字体族（Inter 与 JetBrains Mono）、七级标准字号、整数行盒节奏、OpenType 字形区分与等宽数字对齐。",
 			"families": "字体族体系",
-			"familiesHint": "三套自托管字体明确分离展示型数字、界面正文与等宽代码遥测。",
+			"familiesHint": "两套自托管应用字体以 Inter 统一界面正文与标题指标，以 JetBrains Mono 承载等宽代码与遥测。",
 			"familyToken": "CSS Token",
 			"familyFeatures": "OpenType 特性",
 			"familyStack": "回退字体栈",
 			"familyWeights": "字重样本",
 			"familyRoles": {
-				"display": "页面标题与主指标",
-				"sans": "默认界面与正文",
+				"sans": "标题、主指标、默认界面与正文",
 				"mono": "代码、标识与读数"
 			},
 			"scale": "七级位置化字号体系",
@@ -1053,7 +1052,7 @@
 				"banner": "Banner 横幅表面"
 			},
 			"proseTitle": "行距与正文行宽",
-			"proseLeadTight": "Tight · 1.2（展示标题与指标）",
+			"proseLeadTight": "Tight · 1.25（24px 标题与指标 30px 整数行盒）",
 			"proseLeadBody": "Body · 1.43（14px 界面文案 20px 行盒）",
 			"proseLeadRelaxed": "Relaxed · 1.5（65ch 长文本段落）",
 			"proseMonoLabel": "Mono · 13px（--basalt-font-mono）",

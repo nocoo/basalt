@@ -120,7 +120,9 @@ function LoadingButton() {
 	};
 	return (
 		<Button onClick={handleClick} disabled={loading}>
-			{loading && <Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none" />}
+			{loading && (
+				<Loader2 className="size-basalt-icon-lg animate-spin motion-reduce:animate-none" />
+			)}
 			{loading ? t("pages.interactive.processing") : t("common.submit")}
 		</Button>
 	);
@@ -135,7 +137,7 @@ function CopyButton() {
 	};
 	return (
 		<Button variant="outline" size="sm" onClick={handleCopy}>
-			{copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+			{copied ? <Check className="size-basalt-icon" /> : <Copy className="size-basalt-icon" />}
 			{copied ? t("common.copied") : t("common.copy")}
 		</Button>
 	);
@@ -199,7 +201,7 @@ export default function InteractivePage() {
 						<Button size="default">{t("pages.interactive.default")}</Button>
 						<Button size="lg">{t("pages.interactive.large")}</Button>
 						<Button size="icon" aria-label="Add">
-							<Plus className="h-4 w-4" />
+							<Plus className="size-basalt-icon-lg" />
 						</Button>
 					</div>
 				</LayerCard>
@@ -221,28 +223,28 @@ export default function InteractivePage() {
 				<LayerCard>
 					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Button size="sm" onClick={() => toast.success(t("pages.interactive.toastSuccess"))}>
-							<CheckCircle2 className="h-3.5 w-3.5" /> {t("pages.interactive.success")}
+							<CheckCircle2 className="size-basalt-icon" /> {t("pages.interactive.success")}
 						</Button>
 						<Button
 							size="sm"
 							variant="destructive"
 							onClick={() => toast.danger(t("pages.interactive.toastError"))}
 						>
-							<XCircle className="h-3.5 w-3.5" /> {t("pages.interactive.error")}
+							<XCircle className="size-basalt-icon" /> {t("pages.interactive.error")}
 						</Button>
 						<Button
 							size="sm"
 							variant="outline"
 							onClick={() => toast.warning(t("pages.interactive.toastWarning"))}
 						>
-							<AlertTriangle className="h-3.5 w-3.5" /> {t("pages.interactive.warning")}
+							<AlertTriangle className="size-basalt-icon" /> {t("pages.interactive.warning")}
 						</Button>
 						<Button
 							size="sm"
 							variant="secondary"
 							onClick={() => toast.info(t("pages.interactive.toastInfo"))}
 						>
-							<Info className="h-3.5 w-3.5" /> {t("pages.interactive.info")}
+							<Info className="size-basalt-icon" /> {t("pages.interactive.info")}
 						</Button>
 					</div>
 				</LayerCard>
@@ -275,7 +277,7 @@ export default function InteractivePage() {
 						<Meter value={60} label={t("pages.interactive.uploading")} />
 						<div className="flex items-center gap-basalt-space-lg">
 							<div className="flex items-center gap-basalt-space-lg">
-								<Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none text-muted-foreground" />
+								<Loader2 className="size-basalt-icon-lg animate-spin motion-reduce:animate-none text-muted-foreground" />
 								<span className="text-basalt-sm text-muted-foreground">
 									{t("pages.interactive.loading")}
 								</span>
@@ -333,7 +335,7 @@ export default function InteractivePage() {
 							{t("pages.interactive.pleaseTryAgain")}
 						</p>
 						<Button size="sm" variant="outline">
-							<RefreshCw className="h-3.5 w-3.5" /> {t("common.retry")}
+							<RefreshCw className="size-basalt-icon" /> {t("common.retry")}
 						</Button>
 					</LayerCard>
 				</div>
@@ -345,7 +347,7 @@ export default function InteractivePage() {
 						<Sheet>
 							<SheetTrigger asChild>
 								<Button variant="outline">
-									<PanelRight className="h-3.5 w-3.5" /> {t("pages.interactive.sheetRight")}
+									<PanelRight className="size-basalt-icon" /> {t("pages.interactive.sheetRight")}
 								</Button>
 							</SheetTrigger>
 							<SheetContent side="right">
@@ -373,7 +375,7 @@ export default function InteractivePage() {
 						<Sheet>
 							<SheetTrigger asChild>
 								<Button variant="outline">
-									<PanelLeft className="h-3.5 w-3.5" /> {t("pages.interactive.sheetLeft")}
+									<PanelLeft className="size-basalt-icon" /> {t("pages.interactive.sheetLeft")}
 								</Button>
 							</SheetTrigger>
 							<SheetContent side="left">
@@ -391,7 +393,7 @@ export default function InteractivePage() {
 						<Sheet>
 							<SheetTrigger asChild>
 								<Button variant="outline">
-									<PanelBottom className="h-3.5 w-3.5" /> {t("pages.interactive.sheetBottom")}
+									<PanelBottom className="size-basalt-icon" /> {t("pages.interactive.sheetBottom")}
 								</Button>
 							</SheetTrigger>
 							<SheetContent side="bottom">
@@ -463,7 +465,7 @@ export default function InteractivePage() {
 						<Popover>
 							<PopoverTrigger asChild>
 								<Button variant="outline">
-									<Filter className="h-3.5 w-3.5" /> {t("common.filter")}
+									<Filter className="size-basalt-icon" /> {t("common.filter")}
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent className="w-64">
@@ -483,7 +485,7 @@ export default function InteractivePage() {
 						<Popover>
 							<PopoverTrigger asChild>
 								<Button variant="outline">
-									<User className="h-3.5 w-3.5" /> {t("pages.interactive.profileLabel")}
+									<User className="size-basalt-icon" /> {t("pages.interactive.profileLabel")}
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent

@@ -354,11 +354,11 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 	const isPlanned = item.pageStatus === "planned";
 	const content = (
 		<>
-			<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+			<item.icon className="size-basalt-icon-lg shrink-0" />
 			<span className="flex-1 truncate text-left">{itemTitle(item, t)}</span>
 			{item.external ? (
 				<span className="flex size-basalt-icon-lg shrink-0 items-center justify-center">
-					<ExternalLink className="h-3 w-3 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<ExternalLink className="size-basalt-icon-sm text-basalt-muted-foreground" />
 				</span>
 			) : null}
 			{item.badge ? (
@@ -434,7 +434,7 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 					target={item.external ? "_blank" : undefined}
 					rel={item.external ? "noopener noreferrer" : undefined}
 				>
-					<item.icon className="h-4 w-4" strokeWidth={1.5} />
+					<item.icon className="size-basalt-icon-lg" />
 					{item.badge ? (
 						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-sm text-basalt-xs font-medium text-badge-red-foreground">
 							{item.badge}
@@ -594,7 +594,7 @@ export function AppSidebar({
 										onSelect={() => handleSelect(item.path)}
 										className="cursor-pointer gap-basalt-space-lg"
 									>
-										<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+										<item.icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
 										<span>{itemTitle(item, t)}</span>
 									</CommandItem>
 								))}
@@ -609,10 +609,7 @@ export function AppSidebar({
 										onSelect={() => handleSelect(`/view/${entry.slug}`)}
 										className="cursor-pointer gap-basalt-space-lg"
 									>
-										<LayoutTemplate
-											className="h-4 w-4 text-basalt-muted-foreground"
-											strokeWidth={1.5}
-										/>
+										<LayoutTemplate className="size-basalt-icon-lg text-basalt-muted-foreground" />
 										<span>{t(entry.titleKey)}</span>
 									</CommandItem>
 								))}
@@ -627,7 +624,7 @@ export function AppSidebar({
 										onSelect={() => handleSelect(item.path)}
 										className="cursor-pointer gap-basalt-space-lg"
 									>
-										<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+										<item.icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
 										<span>{item.accessibleTitle ?? itemTitle(item, t)}</span>
 									</CommandItem>
 								))}

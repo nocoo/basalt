@@ -347,11 +347,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 								className="basalt-focus -my-basalt-space-xs inline-flex items-center gap-basalt-space-xs rounded-basalt-sm px-basalt-space-sm py-basalt-space-xs text-basalt-md font-medium tracking-normal text-basalt-muted-foreground no-underline transition-colors basalt-motion hover:bg-basalt-hover hover:text-basalt-foreground"
 							>
 								<span>Overview</span>
-								<ChevronRight
-									className="size-basalt-icon-sm shrink-0"
-									strokeWidth={1.5}
-									aria-hidden="true"
-								/>
+								<ChevronRight className="size-basalt-icon-sm shrink-0" aria-hidden="true" />
 							</Link>
 						</LayerCard.Header>
 						<ul className="grid min-w-0 grid-cols-1 @[44rem]/island:grid-cols-2 @[60rem]/island:grid-cols-3 @[84rem]/island:grid-cols-4">

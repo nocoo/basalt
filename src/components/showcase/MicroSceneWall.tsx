@@ -163,7 +163,7 @@ export function MicroSceneWall({ className }: { className?: string }) {
 								active={active === item.id}
 								onClick={() => setActive((current) => selectWorkspaceItem(current, item.id))}
 							>
-								<Icon strokeWidth={1.5} />
+								<Icon />
 								<span className="flex-1">{t(`${prefix}.workspace.${item.id}`)}</span>
 								{"count" in item && <Badge variant="outline">{item.count}</Badge>}
 							</SidebarItem>

@@ -122,7 +122,7 @@ export default function StatCardStateTransition() {
 				subtitle={
 					state === "error" || state === "empty" ? undefined : "Measured over the last 60 minutes"
 				}
-				icon={<Database strokeWidth={1.5} />}
+				icon={<Database />}
 				trend={
 					state === "idle" || state === "success"
 						? { value: 12.4, label: "vs baseline" }
@@ -135,12 +135,12 @@ export default function StatCardStateTransition() {
 						</span>
 					) : state === "error" ? (
 						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-danger-solid">
-							<AlertCircle className="h-4 w-4" />
+							<AlertCircle className="size-basalt-icon-lg" />
 							Wearable sync offline
 						</span>
 					) : state === "empty" ? (
 						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-muted-foreground">
-							<Inbox className="h-4 w-4" />
+							<Inbox className="size-basalt-icon-lg" />
 							No active ingestion events
 						</span>
 					) : undefined
@@ -160,12 +160,12 @@ export default function StatCardStateTransition() {
 					>
 						{state === "empty" ? (
 							<>
-								<Plus className="h-3.5 w-3.5" />
+								<Plus className="size-basalt-icon" />
 								Configure
 							</>
 						) : (
 							<>
-								<RefreshCw className="h-3.5 w-3.5" />
+								<RefreshCw className="size-basalt-icon" />
 								{state === "error" ? "Retry" : "Refresh"}
 							</>
 						)}
@@ -220,7 +220,7 @@ export default function StatCardStateTransition() {
 									className="gap-basalt-space-lg"
 									onClick={() => simulateFetch("success")}
 								>
-									<RefreshCw className="h-3.5 w-3.5" />
+									<RefreshCw className="size-basalt-icon" />
 									Retry Query
 								</Button>
 							</div>
@@ -238,7 +238,7 @@ export default function StatCardStateTransition() {
 										className="gap-basalt-space-lg"
 										onClick={() => simulateFetch("success")}
 									>
-										<RefreshCw className="h-3.5 w-3.5" />
+										<RefreshCw className="size-basalt-icon" />
 										Refresh Telemetry
 									</Button>
 								}

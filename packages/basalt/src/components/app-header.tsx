@@ -138,7 +138,7 @@ export const AppHeaderMenuButton = forwardRef<HTMLButtonElement, AppHeaderMenuBu
 	function AppHeaderMenuButton({ label = "Open navigation", children, ...props }, ref) {
 		return (
 			<HeaderAction {...props} ref={ref} label={label} data-app-header-menu="">
-				{children ?? <Menu aria-hidden="true" strokeWidth={1.5} />}
+				{children ?? <Menu aria-hidden="true" />}
 			</HeaderAction>
 		);
 	},
@@ -150,7 +150,8 @@ function GitHubGlyph() {
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"
-			strokeWidth={1.5}
+			strokeWidth={2}
+			className="lucide"
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			aria-hidden="true"
@@ -167,7 +168,8 @@ function HexlyGlyph() {
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"
-			strokeWidth={1.5}
+			strokeWidth={2}
+			className="lucide"
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			aria-hidden="true"

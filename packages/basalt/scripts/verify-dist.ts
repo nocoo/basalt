@@ -81,11 +81,19 @@ for (const file of componentJs) {
 	fail(`${relative(distRoot, file)} must start with "use client"`);
 }
 
-const expectedCss = ["base.css", "standalone.css", "tailwind.css", "tokens.css"];
+const expectedCss = ["base.css", "fonts.css", "standalone.css", "tailwind.css", "tokens.css"];
+const expectedFonts = [
+	"Inter-OFL.txt",
+	"JetBrains-Mono-OFL.txt",
+	"inter-latin-ext.woff2",
+	"inter-latin.woff2",
+	"jetbrains-mono-latin.woff2",
+];
 const stylesDir = join(distRoot, "styles");
 const actualCss = existsSync(stylesDir)
-	? readdirSync(stylesDir)
-			.filter((name) => !name.startsWith("."))
+	? readdirSync(stylesDir, { withFileTypes: true })
+			.filter((entry) => !entry.isDirectory() && !entry.name.startsWith("."))
+			.map((entry) => entry.name)
 			.sort()
 	: [];
 if (actualCss.join(",") !== expectedCss.join(",")) {
@@ -97,6 +105,25 @@ if (actualCss.join(",") !== expectedCss.join(",")) {
 	if (!tailwind.includes("./tokens.css")) {
 		fail("dist/styles/tailwind.css must reference ./tokens.css");
 	}
+	const fontsCss = readFileSync(join(stylesDir, "fonts.css"), "utf8");
+	for (const match of fontsCss.matchAll(/url\("\.\/fonts\/([^"]+)"\)/g)) {
+		const target = join(stylesDir, "fonts", match[1]);
+		if (!existsSync(target)) {
+			fail(`dist/styles/fonts.css references missing font file ./fonts/${match[1]}`);
+		}
+	}
+}
+
+const fontsDir = join(stylesDir, "fonts");
+const actualFonts = existsSync(fontsDir)
+	? readdirSync(fontsDir)
+			.filter((name) => !name.startsWith("."))
+			.sort()
+	: [];
+if (actualFonts.join(",") !== [...expectedFonts].sort().join(",")) {
+	fail(
+		`dist/styles/fonts must contain exactly ${[...expectedFonts].sort().join(", ")}; got ${actualFonts.join(", ") || "(missing)"}`,
+	);
 }
 
 const distFiles = walk(distRoot);

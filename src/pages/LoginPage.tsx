@@ -69,7 +69,7 @@ export default function LoginPage() {
 								}}
 							/>
 							<div className="flex items-center gap-2">
-								<Wallet className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
+								<Wallet className="h-4 w-4 stroke-[1.5] text-primary-foreground" />
 								<span className="text-sm font-semibold text-primary-foreground">basalt.</span>
 							</div>
 							<span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">

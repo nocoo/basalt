@@ -985,16 +985,15 @@
 		},
 		"typeface": {
 			"title": "Typeface",
-			"description": "Positional typography rules for dense interfaces: three typefaces, seven canonical scale tiers, fixed line boxes, OpenType disambiguation, and tabular numerals.",
+			"description": "Positional typography rules for dense interfaces: two app typefaces (Inter and JetBrains Mono), seven canonical scale tiers, integer line boxes, OpenType disambiguation, and tabular numerals.",
 			"families": "Typeface families",
-			"familiesHint": "Three self-hosted fonts separate display numerals, UI copy, and fixed-width telemetry.",
+			"familiesHint": "Two self-hosted app fonts pair unified Inter UI/display copy with JetBrains Mono fixed-width telemetry.",
 			"familyToken": "Token",
 			"familyFeatures": "OpenType",
 			"familyStack": "Fallback stack",
 			"familyWeights": "Weights",
 			"familyRoles": {
-				"display": "Titles & primary KPIs",
-				"sans": "Default UI & prose",
+				"sans": "Headings, KPIs, default UI & prose",
 				"mono": "Code, IDs & telemetry"
 			},
 			"scale": "Seven-tier positional scale",
@@ -1068,7 +1067,7 @@
 				"banner": "Banner surface"
 			},
 			"proseTitle": "Leading & reading measure",
-			"proseLeadTight": "Tight · 1.2 (Display & KPIs)",
+			"proseLeadTight": "Tight · 1.25 (30px on 24px headings & KPIs)",
 			"proseLeadBody": "Body · 1.43 (20px on 14px UI copy)",
 			"proseLeadRelaxed": "Relaxed · 1.5 (65ch reading prose)",
 			"proseMonoLabel": "Mono · 13px (--basalt-font-mono)",

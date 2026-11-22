@@ -101,7 +101,7 @@ export default function SettingsPage() {
 									aria-label={t(labelKey)}
 									active={activeSection === id}
 								>
-									<Icon strokeWidth={1.5} />
+									<Icon />
 									<span>{t(labelKey)}</span>
 								</SidebarItem>
 							))}
@@ -143,7 +143,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 		<LayerCard className="flex flex-col" padding="none">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<User className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<User className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.settings.profileInfo")}
 					</h2>
@@ -171,7 +171,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 					<div className="flex items-center gap-basalt-card">
 						<div className="relative">
 							<div className="flex h-16 w-16 items-center justify-center rounded-basalt-full bg-basalt-primary/10 text-basalt-link">
-								<User className="h-7 w-7" strokeWidth={1.5} />
+								<User className="h-7 w-7" />
 							</div>
 							<Button
 								variant="secondary"
@@ -181,7 +181,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 								aria-label={t("pages.settings.changePhoto")}
 								onClick={() => photoInput.current?.click()}
 							>
-								<Camera className="h-3 w-3" aria-hidden="true" strokeWidth={1.5} />
+								<Camera className="size-basalt-icon-sm" aria-hidden="true" />
 							</Button>
 						</div>
 						<div>
@@ -294,7 +294,7 @@ function NotificationsSection({ vm }: { vm: SettingsVM }) {
 		<LayerCard className="flex flex-col" padding="none">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Bell className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<Bell className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.settings.notificationPrefs")}
 					</h2>
@@ -340,7 +340,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Shield className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+						<Shield className="size-basalt-icon text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.passwordTitle")}
 						</h2>
@@ -429,10 +429,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Smartphone
-							className="size-basalt-icon text-basalt-muted-foreground"
-							strokeWidth={1.5}
-						/>
+						<Smartphone className="size-basalt-icon text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.twoFactor")}
 						</h2>
@@ -483,7 +480,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Globe className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+						<Globe className="size-basalt-icon text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.activeSessions")}
 						</h2>
@@ -536,7 +533,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<Palette className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+						<Palette className="size-basalt-icon text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.themeTitle")}
 						</h2>
@@ -592,10 +589,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
-						<CreditCard
-							className="size-basalt-icon text-basalt-muted-foreground"
-							strokeWidth={1.5}
-						/>
+						<CreditCard className="size-basalt-icon text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.settings.preferences")}
 						</h2>

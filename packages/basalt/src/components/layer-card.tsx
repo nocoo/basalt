@@ -149,7 +149,7 @@ function LayerCardHeader({
 			data-slot="card-header"
 			data-divided={divided || undefined}
 			className={cn(
-				"flex min-w-0 justify-between gap-basalt-space-lg tracking-tight text-basalt-foreground",
+				"flex min-w-0 justify-between gap-basalt-space-lg text-basalt-foreground",
 				asChild ? "text-basalt-base font-medium" : "text-basalt-lg font-semibold",
 				asChild
 					? "w-full items-center rounded-none rounded-t-basalt-card last:rounded-b-basalt-card data-[state=closed]:rounded-b-basalt-card px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"

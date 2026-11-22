@@ -36,7 +36,7 @@ describe("package registry generator and AI package assets", () => {
 		expect(registry.totalSymbols).toBe(657);
 		expect(registry.totalValues).toBe(363);
 		expect(registry.totalTypes).toBe(294);
-		expect(registry.totalCssExports).toBe(3);
+		expect(registry.totalCssExports).toBe(4);
 		expect(registry.totalCatalogEntries).toBe(77);
 
 		// Catalog entries completeness
@@ -54,11 +54,12 @@ describe("package registry generator and AI package assets", () => {
 		}
 
 		// CSS exports
-		expect(registry.cssExports).toHaveLength(3);
+		expect(registry.cssExports).toHaveLength(4);
 		expect(registry.cssExports.map((c) => c.contract)).toEqual([
 			"tailwind",
 			"tailwind",
 			"standalone",
+			"fonts",
 		]);
 	});
 

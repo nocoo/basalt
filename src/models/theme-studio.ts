@@ -143,7 +143,7 @@ const RADIUS = {
 	soft: ["0.375rem", "0.625rem", "1rem"],
 } as const;
 const FONT = {
-	sans: '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+	sans: '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif',
 	technical: '"JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace',
 } as const;
 

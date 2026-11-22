@@ -28,7 +28,7 @@ const PAGE_DESCRIPTIONS: Readonly<Record<string, string>> = {
 	"/palette":
 		"Explore the Basalt design system color palette. Customize accent colors, chart palettes, and matte surfaces across light and dark themes.",
 	"/typeface":
-		"Explore the Basalt typography system: DM Sans, Inter, and JetBrains Mono across the 7-tier positional type scale, line boxes, OpenType features, and tabular numerals.",
+		"Explore the Basalt typography system: Inter and JetBrains Mono across the 7-tier positional type scale, integer line boxes, OpenType features, and tabular numerals.",
 };
 
 export function pageMetadata(pathname: string, pageName?: string): PageMetadata {

@@ -50,28 +50,28 @@ export default function NetworkOpsDashboardPage() {
 			title: t("pages.networkOps.uptime"),
 			value: "99.98%",
 			subtitle: t("pages.networkOps.days30"),
-			icon: <Server strokeWidth={1.5} />,
+			icon: <Server />,
 			trend: { value: 0.02, label: t("common.vsLastMonth") },
 		},
 		{
 			title: t("pages.networkOps.latency"),
 			value: "18 ms",
 			subtitle: t("pages.networkOps.avgRtt"),
-			icon: <Wifi strokeWidth={1.5} />,
+			icon: <Wifi />,
 			trend: { value: -4.2, label: t("common.vsLastWeek") },
 		},
 		{
 			title: t("pages.networkOps.packetLoss"),
 			value: "0.12%",
 			subtitle: t("pages.networkOps.regionAvg"),
-			icon: <AlertTriangle strokeWidth={1.5} />,
+			icon: <AlertTriangle />,
 			trend: { value: -0.04, label: t("common.vsLastWeek") },
 		},
 		{
 			title: t("pages.networkOps.throughput"),
 			value: "4.8 Gbps",
 			subtitle: t("pages.networkOps.peakToday"),
-			icon: <Router strokeWidth={1.5} />,
+			icon: <Router />,
 			trend: { value: 6.4, label: t("common.vsLastWeek") },
 		},
 	];
@@ -90,7 +90,7 @@ export default function NetworkOpsDashboardPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Wifi className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<Wifi className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.networkOps.latencyTrend")}
 						</h2>
@@ -118,7 +118,7 @@ export default function NetworkOpsDashboardPage() {
 				<HeatmapCard />
 				<LayerCard className="lg:col-span-2">
 					<LayerCard.Header className="items-center justify-start">
-						<Clock className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<Clock className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.networkOps.incidentTimeline")}
 						</h2>

@@ -83,7 +83,7 @@ export default function FormsPage() {
 								</Label>
 								<InputGroup>
 									<InputGroup.Addon>
-										<MapPin strokeWidth={1.5} />
+										<MapPin />
 									</InputGroup.Addon>
 									<InputGroup.Input
 										id="profile-location"

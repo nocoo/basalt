@@ -133,7 +133,7 @@ export default function ComponentsPage() {
 							<LayerCard key={goal.name}>
 								<LayerCard.Header className="items-center justify-start">
 									<div className="flex h-10 w-10 items-center justify-center rounded-basalt-md bg-basalt-primary/10">
-										<Icon className="h-5 w-5 text-basalt-link" strokeWidth={1.5} />
+										<Icon className="h-5 w-5 text-basalt-link" />
 									</div>
 									<div className="flex-1">
 										<p className="text-basalt-base font-medium text-basalt-foreground">
@@ -161,7 +161,7 @@ export default function ComponentsPage() {
 										</span>
 										{goal.onTrack && (
 											<span className="flex items-center gap-basalt-space-sm text-basalt-sm text-basalt-success">
-												<Check className="h-3 w-3" strokeWidth={2} />{" "}
+												<Check className="size-basalt-icon-sm stroke-2" />{" "}
 												{t("pages.components.onTrack")}
 											</span>
 										)}

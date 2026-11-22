@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "684451cffd43e834",
+		"hash": "6fe801690960b41c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -212,13 +212,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "4cce9783a02df178",
+		"hash": "d2ec2d7accb9d8cd",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "4cce9783a02df178",
+		"hash": "d2ec2d7accb9d8cd",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
@@ -236,13 +236,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"dialog": {
 		"file": "packages/basalt/src/components/dialog.tsx",
-		"hash": "48c9a57f5e3795c3",
+		"hash": "71386b3a029b3f6d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dialog.js.map (sourcesContent[0])"
 	},
 	"alert-dialog": {
 		"file": "packages/basalt/src/components/alert-dialog.tsx",
-		"hash": "ce84dd53017f3049",
+		"hash": "3bfde9d3d331b091",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/alert-dialog.js.map (sourcesContent[0])"
 	},
@@ -278,7 +278,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sheet": {
 		"file": "packages/basalt/src/components/sheet.tsx",
-		"hash": "7d1b10ceb878ab8c",
+		"hash": "e2447053f1ac76e5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sheet.js.map (sourcesContent[0])"
 	},
@@ -296,7 +296,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table": {
 		"file": "packages/basalt/src/components/table.tsx",
-		"hash": "3d5fedd6f076e78c",
+		"hash": "9cf76fe61e18b782",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table.js.map (sourcesContent[0])"
 	},
@@ -326,7 +326,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table-of-contents": {
 		"file": "packages/basalt/src/components/table-of-contents.tsx",
-		"hash": "f8c58c6c42d89b35",
+		"hash": "dfbe7b72e469c019",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table-of-contents.js.map (sourcesContent[0])"
 	},
@@ -338,19 +338,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"section-rule": {
 		"file": "packages/basalt/src/components/section-rule.tsx",
-		"hash": "9e6b7d1c7766f68d",
+		"hash": "b96d2ccee21064fa",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/section-rule.js.map (sourcesContent[0])"
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "cd19b229043d54e6",
+		"hash": "f41ac4c2964dbdea",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
 	"stat-strip": {
 		"file": "packages/basalt/src/components/stat-strip.tsx",
-		"hash": "0cb3e92679e875d8",
+		"hash": "cd36dd15a13309c6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/stat-strip.js.map (sourcesContent[0])"
 	},
@@ -452,13 +452,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"stat-card": {
 		"file": "packages/basalt/src/components/stat-card.tsx",
-		"hash": "133533b8ceb0c742",
+		"hash": "5b345cbc64cb621c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/stat-card.js.map (sourcesContent[0])"
 	},
 	"page-header": {
 		"file": "packages/basalt/src/components/page-header.tsx",
-		"hash": "c7e8249b4839bd29",
+		"hash": "19a89e68850c606b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/page-header.js.map (sourcesContent[0])"
 	},

@@ -5,10 +5,10 @@ import { DEFAULT_CUSTOM_SPECIMEN, TYPE_SCALE_TIERS } from "@/models/typeface";
 import TypefacePage from "@/pages/TypefacePage";
 
 describe("TypefacePage", () => {
-	it("renders all three font families, seven scale tiers, OpenType/numeric sections, and clean surfaces", () => {
+	it("renders both app font families, seven scale tiers, OpenType/numeric sections, and clean surfaces", () => {
 		const { container } = render(<TypefacePage />);
 		expect(screen.getByRole("heading", { level: 1, name: "Typeface" })).toBeInTheDocument();
-		expect(screen.getByRole("heading", { level: 3, name: "DM Sans" })).toBeInTheDocument();
+		expect(screen.queryByRole("heading", { level: 3, name: "DM Sans" })).not.toBeInTheDocument();
 		expect(screen.getByRole("heading", { level: 3, name: "Inter" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { level: 3, name: "JetBrains Mono" })).toBeInTheDocument();
 

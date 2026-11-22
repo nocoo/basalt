@@ -44,8 +44,8 @@ export default function AccountsPage() {
 			description={t("pages.accounts.description")}
 			actions={
 				<>
-					<Button icon={<Plus strokeWidth={1.5} />}>{t("pages.accounts.addMoney")}</Button>
-					<Button variant="secondary" icon={<ArrowUpRight strokeWidth={1.5} />}>
+					<Button icon={<Plus />}>{t("pages.accounts.addMoney")}</Button>
+					<Button variant="secondary" icon={<ArrowUpRight />}>
 						{t("pages.accounts.send")}
 					</Button>
 				</>
@@ -58,7 +58,7 @@ export default function AccountsPage() {
 						key={acc.name}
 						title={acc.name}
 						value={`$${acc.balance.toLocaleString()}`}
-						icon={<WalletIcon strokeWidth={1.5} />}
+						icon={<WalletIcon />}
 						trendContent={<span className="font-medium text-basalt-success">{acc.change}</span>}
 					/>
 				))}
@@ -76,9 +76,9 @@ export default function AccountsPage() {
 						className="flex items-center gap-basalt-space-lg text-muted-foreground"
 					>
 						{showBalance ? (
-							<Eye className="h-4 w-4" strokeWidth={1.5} />
+							<Eye className="size-basalt-icon-lg" />
 						) : (
-							<EyeOff className="h-4 w-4" strokeWidth={1.5} />
+							<EyeOff className="size-basalt-icon-lg" />
 						)}
 						{showBalance ? t("pages.accounts.hide") : t("pages.accounts.show")}{" "}
 						{t("pages.accounts.balances")}
@@ -168,7 +168,7 @@ export default function AccountsPage() {
 			{/* Card security */}
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<Lock className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<Lock className="size-basalt-icon-lg text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.accounts.cardSecurity")}
 					</h2>
@@ -195,7 +195,7 @@ export default function AccountsPage() {
 			{/* Recent activity */}
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<Activity className="size-basalt-icon-lg text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.accounts.recentActivity")}
 					</h2>
@@ -211,12 +211,9 @@ export default function AccountsPage() {
 									className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 								>
 									{item.direction === "positive" ? (
-										<ArrowDownLeft className="h-3.5 w-3.5 text-basalt-success" strokeWidth={1.5} />
+										<ArrowDownLeft className="size-basalt-icon text-basalt-success" />
 									) : (
-										<ArrowUpRight
-											className="h-3.5 w-3.5 text-basalt-danger-solid"
-											strokeWidth={1.5}
-										/>
+										<ArrowUpRight className="size-basalt-icon text-basalt-danger-solid" />
 									)}
 								</div>
 								<div>
@@ -244,7 +241,7 @@ export default function AccountsPage() {
 						type="button"
 						className="flex items-center gap-basalt-space-lg text-muted-foreground"
 					>
-						<Filter className="h-3.5 w-3.5" strokeWidth={1.5} /> {t("pages.accounts.filterLabel")}
+						<Filter className="size-basalt-icon" /> {t("pages.accounts.filterLabel")}
 					</Button>
 				}
 			>
@@ -252,8 +249,7 @@ export default function AccountsPage() {
 				<LayerCard padding="none" className="overflow-hidden hidden md:block">
 					<LayerCard.Header className="items-center justify-start">
 						<ArrowLeftRight
-							className="h-4 w-4 text-basalt-muted-foreground"
-							strokeWidth={1.5}
+							className="size-basalt-icon-lg text-basalt-muted-foreground"
 							aria-hidden="true"
 						/>
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
@@ -281,14 +277,12 @@ export default function AccountsPage() {
 												>
 													{tx.direction === "positive" ? (
 														<ArrowDownLeft
-															className="h-3 w-3 text-basalt-success"
-															strokeWidth={1.5}
+															className="size-basalt-icon-sm text-basalt-success"
 															aria-hidden="true"
 														/>
 													) : (
 														<ArrowUpRight
-															className="h-3 w-3 text-basalt-danger-solid"
-															strokeWidth={1.5}
+															className="size-basalt-icon-sm text-basalt-danger-solid"
 															aria-hidden="true"
 														/>
 													)}
@@ -324,12 +318,9 @@ export default function AccountsPage() {
 									className={`flex h-8 w-8 items-center justify-center rounded-basalt-md shrink-0 ${tx.direction === "positive" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 								>
 									{tx.direction === "positive" ? (
-										<ArrowDownLeft className="h-3.5 w-3.5 text-basalt-success" strokeWidth={1.5} />
+										<ArrowDownLeft className="size-basalt-icon text-basalt-success" />
 									) : (
-										<ArrowUpRight
-											className="h-3.5 w-3.5 text-basalt-danger-solid"
-											strokeWidth={1.5}
-										/>
+										<ArrowUpRight className="size-basalt-icon text-basalt-danger-solid" />
 									)}
 								</div>
 								<div className="flex-1 min-w-0">

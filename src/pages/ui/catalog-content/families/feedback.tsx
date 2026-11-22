@@ -269,19 +269,19 @@ export default catalogContentFamily({
 				code: scenarioModule(
 					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Badge>
-		<Check className="size-3" /> Verified
+		<Check className="size-basalt-icon-sm" /> Verified
 	</Badge>
 	<Badge tone="success">
-		<Check className="size-3" /> Healthy
+		<Check className="size-basalt-icon-sm" /> Healthy
 	</Badge>
 	<Badge tone="warning">
-		<AlertTriangle className="size-3" /> Warning
+		<AlertTriangle className="size-basalt-icon-sm" /> Warning
 	</Badge>
 	<Badge tone="danger">
-		<CircleAlert className="size-3" /> Danger
+		<CircleAlert className="size-basalt-icon-sm" /> Danger
 	</Badge>
 	<Badge tone="info">
-		<Info className="size-3" /> Info
+		<Info className="size-basalt-icon-sm" /> Info
 	</Badge>
 </div>`,
 					[
@@ -292,19 +292,19 @@ export default catalogContentFamily({
 				render: () => (
 					<Preview>
 						<Badge>
-							<Check className="size-3" /> Verified
+							<Check className="size-basalt-icon-sm" /> Verified
 						</Badge>
 						<Badge tone="success">
-							<Check className="size-3" /> Healthy
+							<Check className="size-basalt-icon-sm" /> Healthy
 						</Badge>
 						<Badge tone="warning">
-							<AlertTriangle className="size-3" /> Warning
+							<AlertTriangle className="size-basalt-icon-sm" /> Warning
 						</Badge>
 						<Badge tone="danger">
-							<CircleAlert className="size-3" /> Danger
+							<CircleAlert className="size-basalt-icon-sm" /> Danger
 						</Badge>
 						<Badge tone="info">
-							<Info className="size-3" /> Info
+							<Info className="size-basalt-icon-sm" /> Info
 						</Badge>
 					</Preview>
 				),
@@ -1090,7 +1090,7 @@ export function App() {
 					`<Button
 	onClick={() =>
 		toast.success("Verified", {
-			icon: <Check className="size-4" />,
+			icon: <Check className="size-basalt-icon-lg" />,
 			description: "Custom icon passed as a parameter.",
 		})
 	}
@@ -1103,7 +1103,7 @@ export function App() {
 					<Button
 						onClick={() =>
 							toast.success("Verified", {
-								icon: <Check className="size-4" />,
+								icon: <Check className="size-basalt-icon-lg" />,
 								description: "Custom icon passed as a parameter.",
 							})
 						}

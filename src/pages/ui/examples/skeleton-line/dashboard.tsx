@@ -95,7 +95,7 @@ export default function DashboardSkeleton() {
 		<div className="w-full space-y-basalt-space-lg">
 			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<div>
-					<p className="text-basalt-sm uppercase tracking-widest text-basalt-muted-foreground">
+					<p className="text-basalt-sm uppercase tracking-wider text-basalt-muted-foreground">
 						Care team overview
 					</p>
 					<h3 className="mt-basalt-space-sm text-basalt-xl font-semibold">

@@ -94,5 +94,10 @@ describe("standalone css", () => {
 		expect(css).toContain("box-sizing: border-box;");
 		expect(css).not.toMatch(/(?:^|\})\s*\*\s*\{[^}]*box-sizing:\s*border-box/);
 		expect(css).not.toMatch(/(?:^|\})\s*button\s*\{[^}]*appearance:\s*button/);
+		for (const sheet of [baseCss, css]) {
+			expect(sheet).toContain(':where(.basalt-ui) svg.lucide[stroke-width="2"]');
+			expect(sheet).toContain("var(--basalt-icon-stroke, 1.5)");
+			expect(sheet).toContain("font-variant-ligatures: none");
+		}
 	});
 });

@@ -6,7 +6,7 @@ export const PUBLIC_SURFACE_MANIFEST = {
 	"totalSymbols": 657,
 	"totalValues": 363,
 	"totalTypes": 294,
-	"totalCssExports": 3,
+	"totalCssExports": 4,
 	"modules": [
 		{
 			"subpath": ".",
@@ -6315,6 +6315,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"ownerDoc": "README.md#css-setup",
 			"ownerKind": "stylesheet",
 			"summary": "Zero-dependency precompiled CSS tokens, control utilities, and animations"
+		},
+		{
+			"subpath": "./fonts.css",
+			"importPath": "@nocoo/basalt/fonts.css",
+			"target": "./dist/styles/fonts.css",
+			"ownerDoc": "README.md#css-setup",
+			"ownerKind": "stylesheet",
+			"summary": "Self-hosted Inter and JetBrains Mono @font-face declarations"
 		}
 	]
 } as const;

@@ -333,6 +333,10 @@ export const CSS_EXPORT_OWNERS: Record<string, { ownerDoc: string; summary: stri
 		ownerDoc: "README.md#css-setup",
 		summary: "Zero-dependency precompiled CSS tokens, control utilities, and animations",
 	},
+	"./fonts.css": {
+		ownerDoc: "README.md#css-setup",
+		summary: "Self-hosted Inter and JetBrains Mono @font-face declarations",
+	},
 };
 
 /**

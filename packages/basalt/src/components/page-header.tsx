@@ -48,7 +48,7 @@ export function PageHeader({
 				<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 					<h1
 						id={titleId}
-						className="font-basalt-display text-basalt-3xl font-semibold leading-basalt-tight tracking-tight text-basalt-foreground [overflow-wrap:anywhere]"
+						className="font-basalt-display text-basalt-3xl font-semibold leading-basalt-tight text-basalt-foreground [overflow-wrap:anywhere]"
 					>
 						{title}
 					</h1>

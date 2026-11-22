@@ -154,9 +154,11 @@ export default function DataPage() {
 								{kpi.value}
 							</p>
 							<div className="flex items-center gap-basalt-space-sm mt-basalt-card-sm">
-								{kpi.trend === "up" && <TrendingUp className="h-3.5 w-3.5 text-basalt-success" />}
+								{kpi.trend === "up" && (
+									<TrendingUp className="size-basalt-icon text-basalt-success" />
+								)}
 								{kpi.trend === "down" && (
-									<TrendingDown className="h-3.5 w-3.5 text-basalt-danger-solid" />
+									<TrendingDown className="size-basalt-icon text-basalt-danger-solid" />
 								)}
 								{kpi.trend === "flat" && (
 									<Minus className="size-basalt-icon-sm text-basalt-muted-foreground" />
@@ -180,7 +182,7 @@ export default function DataPage() {
 					<div className="flex flex-wrap items-center gap-basalt-space-lg border-b border-basalt-border/60 px-basalt-card py-basalt-card-sm">
 						<InputGroup className="min-w-0 flex-1 basis-48">
 							<InputGroup.Addon>
-								<Search strokeWidth={1.5} />
+								<Search />
 							</InputGroup.Addon>
 							<InputGroup.Input
 								aria-label={t("pages.data.searchPlaceholder")}
@@ -467,7 +469,7 @@ export default function DataPage() {
 											key={pill.label}
 											className={`inline-flex items-center gap-basalt-space-lg rounded-basalt-full px-basalt-space-lg py-basalt-space-sm text-basalt-sm font-medium ${pill.className}`}
 										>
-											<pill.icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+											<pill.icon className="size-basalt-icon" />
 											{pill.label}
 										</span>
 									))}
@@ -504,7 +506,7 @@ export default function DataPage() {
 										<div
 											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-basalt-full border border-basalt-border ${item.color}`}
 										>
-											<item.icon className="h-4 w-4" strokeWidth={1.5} />
+											<item.icon className="size-basalt-icon-lg" />
 										</div>
 										{i < TIMELINE.length - 1 && <div className="w-px flex-1 bg-basalt-border" />}
 									</div>

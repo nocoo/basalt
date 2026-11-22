@@ -61,7 +61,7 @@ export default function PortfolioPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<TrendingUp className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<TrendingUp className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.portfolio.portfolioPerformance")}
 						</h2>
@@ -86,7 +86,7 @@ export default function PortfolioPage() {
 
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<PieChartIcon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<PieChartIcon className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.portfolio.assetAllocation")}
 						</h2>
@@ -121,8 +121,7 @@ export default function PortfolioPage() {
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
 					<Briefcase
-						className="h-4 w-4 text-basalt-muted-foreground"
-						strokeWidth={1.5}
+						className="size-basalt-icon-lg text-basalt-muted-foreground"
 						aria-hidden="true"
 					/>
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
@@ -156,16 +155,14 @@ export default function PortfolioPage() {
 												>
 													{item.up ? (
 														<TrendingUp
-															className="h-3.5 w-3.5"
+															className="size-basalt-icon"
 															style={{ color: CHART_COLORS[i] }}
-															strokeWidth={1.5}
 															aria-hidden="true"
 														/>
 													) : (
 														<TrendingDown
-															className="h-3.5 w-3.5"
+															className="size-basalt-icon"
 															style={{ color: CHART_COLORS[i] }}
-															strokeWidth={1.5}
 															aria-hidden="true"
 														/>
 													)}

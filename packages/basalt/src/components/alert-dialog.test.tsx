@@ -45,7 +45,7 @@ describe("AlertDialog", () => {
 			"min-w-0",
 			"wrap-anywhere",
 			"text-basalt-xl",
-			"leading-basalt-tight",
+			"font-semibold",
 		);
 		expect(screen.getByText("This cannot be undone.")).toHaveClass(
 			"text-basalt-base",

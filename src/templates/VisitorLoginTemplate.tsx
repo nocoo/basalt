@@ -22,7 +22,7 @@ export default function VisitorLoginTemplate() {
 		>
 			<LayerCard padding="none" className="w-full overflow-hidden" style={{ maxWidth: "18rem" }}>
 				<div className="flex items-center gap-basalt-space-lg bg-basalt-primary px-basalt-card py-basalt-card-sm text-basalt-primary-foreground">
-					<Mountain className="size-basalt-icon-lg" strokeWidth={1.5} />
+					<Mountain className="size-basalt-icon-lg" />
 					<span className="font-semibold">Northstar</span>
 				</div>
 				<LayerCard.Body className="space-y-basalt-card">

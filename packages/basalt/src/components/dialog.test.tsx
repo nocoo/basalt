@@ -47,7 +47,7 @@ describe("Dialog", () => {
 			"min-w-0",
 			"wrap-anywhere",
 			"text-basalt-xl",
-			"leading-basalt-tight",
+			"font-semibold",
 		);
 	});
 

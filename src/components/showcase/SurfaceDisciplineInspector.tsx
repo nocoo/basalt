@@ -48,11 +48,7 @@ export function SurfaceDisciplineInspector() {
 						<LayerCard.Well className="space-y-basalt-card-sm">
 							<p className="text-basalt-md font-medium">{t(`${prefix}.releaseChecks`)}</p>
 							<p className="flex items-center gap-basalt-space-lg text-basalt-md">
-								<Check
-									aria-hidden="true"
-									className="size-basalt-icon text-basalt-success"
-									strokeWidth={1.5}
-								/>
+								<Check aria-hidden="true" className="size-basalt-icon text-basalt-success" />
 								{t(`${prefix}.complete`)}
 							</p>
 							<Loader

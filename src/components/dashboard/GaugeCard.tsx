@@ -22,7 +22,7 @@ export function GaugeCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Shield className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<Shield className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.creditScore")}
 					</h2>

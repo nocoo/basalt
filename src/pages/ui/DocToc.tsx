@@ -136,7 +136,7 @@ export function DocToc({
 						</Select>
 					</div>
 					<div className={compact ? "hidden" : "hidden xl:block"}>
-						<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wide text-muted-foreground uppercase">
+						<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wider text-muted-foreground uppercase">
 							On this page
 						</p>
 						<ul

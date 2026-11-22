@@ -60,7 +60,7 @@ export function CodeHighlighted({ code, ...props }: CodeHighlightedProps) {
 function CodePanel({
 	children: code,
 	title,
-	icon = <FileCode2 strokeWidth={1.5} />,
+	icon = <FileCode2 />,
 	copyable = true,
 	lineNumbers = false,
 	attached = false,
@@ -120,11 +120,7 @@ function CodePanel({
 							disabled={vm.status === "pending"}
 							onClick={() => void vm.copy((text) => navigator.clipboard.writeText(text))}
 						>
-							{vm.status === "copied" ? (
-								<Check aria-hidden="true" strokeWidth={1.5} />
-							) : (
-								<Copy aria-hidden="true" strokeWidth={1.5} />
-							)}
+							{vm.status === "copied" ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
 							<span>{copyLabel}</span>
 						</Button>
 					)}

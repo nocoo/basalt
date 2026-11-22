@@ -96,7 +96,7 @@ describe("public surface documentation ownership and freshness", () => {
 		expect(manifest.totalSymbols).toBe(657);
 		expect(manifest.totalValues).toBe(363);
 		expect(manifest.totalTypes).toBe(294);
-		expect(manifest.totalCssExports).toBe(3);
+		expect(manifest.totalCssExports).toBe(4);
 
 		// Every module must have valid documentation ownership
 		for (const mod of manifest.modules) {
@@ -113,7 +113,7 @@ describe("public surface documentation ownership and freshness", () => {
 		}
 
 		// CSS exports verification
-		expect(manifest.cssExports).toHaveLength(3);
+		expect(manifest.cssExports).toHaveLength(4);
 		for (const css of manifest.cssExports) {
 			expect(css.ownerDoc).toBe("README.md#css-setup");
 			expect(css.ownerKind).toBe("stylesheet");

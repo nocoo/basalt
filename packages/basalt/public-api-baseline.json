@@ -2854,6 +2854,7 @@
 	"cssExports": [
 		"@nocoo/basalt/styles",
 		"@nocoo/basalt/styles/tailwind",
-		"@nocoo/basalt/styles/standalone"
+		"@nocoo/basalt/styles/standalone",
+		"@nocoo/basalt/fonts.css"
 	]
 }

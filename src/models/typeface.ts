@@ -1,4 +1,4 @@
-export type TypefaceFamilyId = "display" | "sans" | "mono";
+export type TypefaceFamilyId = "sans" | "mono";
 
 export type TypeTierId = "3xl" | "xl" | "lg" | "base" | "md" | "sm" | "xs";
 
@@ -66,48 +66,24 @@ export const DEFAULT_CUSTOM_SPECIMEN = "Clear hierarchy across dense interfaces 
 
 export const TYPEFACE_FAMILIES: readonly TypefaceFamilySpec[] = [
 	{
-		id: "display",
-		name: "DM Sans",
-		token: "--basalt-font-display",
-		utility: "font-basalt-display",
-		sampleClass:
-			"font-basalt-display text-basalt-3xl font-semibold leading-basalt-tight tracking-tight tabular-nums text-basalt-foreground",
-		bodyClass:
-			"font-basalt-display text-basalt-base leading-basalt-body text-basalt-muted-foreground",
-		heroSample: "Aa Bb Cc · $128,490",
-		pangram: "Geometric display proportions for page titles and primary KPI numerals.",
-		features: "Variable 500–700 · optical size axis",
-		stack: '"DM Sans", "Inter", system-ui, sans-serif',
-		weights: [
-			{
-				weight: "500",
-				label: "Medium",
-				className: "font-basalt-display text-basalt-base font-medium",
-			},
-			{
-				weight: "600",
-				label: "Semibold",
-				className: "font-basalt-display text-basalt-base font-semibold",
-			},
-			{ weight: "700", label: "Bold", className: "font-basalt-display text-basalt-base font-bold" },
-		],
-	},
-	{
 		id: "sans",
 		name: "Inter",
 		token: "--basalt-font-sans",
 		utility: "font-basalt-sans",
 		sampleClass:
-			"text-basalt-3xl font-semibold leading-basalt-tight tracking-tight text-basalt-foreground",
+			"text-basalt-3xl font-semibold leading-basalt-tight tabular-nums text-basalt-foreground",
 		bodyClass: "text-basalt-base leading-basalt-body text-basalt-muted-foreground",
-		heroSample: "Aa Bb Cc · Il1 O0",
-		pangram: "Default interface workhorse tuned with disambiguated character variants.",
+		heroSample: "Aa Bb Cc · $128,490 · Il1 O0",
+		pangram:
+			"Unified interface typeface for headings, primary KPI numerals, and dense prose with CJK fallback.",
 		features: '"cv02", "cv03", "cv04", "cv11"',
-		stack: '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+		stack:
+			'"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif',
 		weights: [
 			{ weight: "400", label: "Regular", className: "text-basalt-base font-normal" },
 			{ weight: "500", label: "Medium", className: "text-basalt-base font-medium" },
 			{ weight: "600", label: "Semibold", className: "text-basalt-base font-semibold" },
+			{ weight: "700", label: "Bold", className: "text-basalt-base font-bold" },
 		],
 	},
 	{
@@ -116,11 +92,11 @@ export const TYPEFACE_FAMILIES: readonly TypefaceFamilySpec[] = [
 		token: "--basalt-font-mono",
 		utility: "font-basalt-mono",
 		sampleClass:
-			"font-basalt-mono text-basalt-xl font-medium leading-basalt-body tracking-tight text-basalt-foreground",
+			"font-basalt-mono text-basalt-xl font-medium leading-basalt-body text-basalt-foreground",
 		bodyClass: "font-basalt-mono text-basalt-md leading-basalt-body text-basalt-muted-foreground",
 		heroSample: "0123456789 => {}",
 		pangram: "const key = 'basalt_live_01IlO9'; // fixed-width box",
-		features: "normal (zero ligature surprises)",
+		features: "font-variant-ligatures: none",
 		stack: '"JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace',
 		weights: [
 			{
@@ -144,11 +120,11 @@ export const TYPE_SCALE_TIERS: readonly TypeScaleTier[] = [
 		rem: "1.5rem",
 		token: "--basalt-text-3xl",
 		utility: "text-basalt-3xl",
-		lineBox: "1.2 (28.8px)",
+		lineBox: "1.25 (30px)",
 		tracking: "-0.025em",
 		weight: "600",
 		specimenClass:
-			"font-basalt-display text-basalt-3xl font-semibold leading-basalt-tight tracking-tight tabular-nums text-basalt-foreground",
+			"font-basalt-display text-basalt-3xl font-semibold leading-basalt-tight tabular-nums text-basalt-foreground",
 		roleSpecimen: "Page title & $428,910",
 		bilingualSpecimen: "账户净值 · Total Balance $428,910",
 	},
@@ -161,8 +137,7 @@ export const TYPE_SCALE_TIERS: readonly TypeScaleTier[] = [
 		lineBox: "calc(24 / 18) (24px)",
 		tracking: "-0.018em",
 		weight: "600",
-		specimenClass:
-			"font-basalt-display text-basalt-xl font-semibold tracking-tight text-basalt-foreground",
+		specimenClass: "font-basalt-display text-basalt-xl font-semibold text-basalt-foreground",
 		roleSpecimen: "Section & modal heading",
 		bilingualSpecimen: "结算与风险概览 · Settlement overview",
 	},
@@ -175,7 +150,7 @@ export const TYPE_SCALE_TIERS: readonly TypeScaleTier[] = [
 		lineBox: "calc(20 / 15) (20px)",
 		tracking: "-0.014em",
 		weight: "600",
-		specimenClass: "text-basalt-lg font-semibold tracking-tight text-basalt-foreground",
+		specimenClass: "text-basalt-lg font-semibold text-basalt-foreground",
 		roleSpecimen: "Structured LayerCard.Header",
 		bilingualSpecimen: "季度持仓分布 · Portfolio allocation",
 	},
@@ -198,12 +173,12 @@ export const TYPE_SCALE_TIERS: readonly TypeScaleTier[] = [
 		rem: "0.8125rem",
 		token: "--basalt-text-md",
 		utility: "text-basalt-md",
-		lineBox: "18.57px body / 20px code",
-		tracking: "-0.003em",
+		lineBox: "calc(20 / 13) (20px)",
+		tracking: "0 (normal)",
 		weight: "400 / 500",
 		specimenClass: "text-basalt-md leading-basalt-body text-basalt-foreground",
 		roleSpecimen: "Table cells, sm controls, segmented items, and code panels.",
-		bilingualSpecimen: "表格单元格、紧凑控件与代码块统一使用 13px 档位。",
+		bilingualSpecimen: "表格单元格、紧凑控件与代码块统一使用 13px / 20px 行盒。",
 	},
 	{
 		id: "sm",
@@ -211,7 +186,7 @@ export const TYPE_SCALE_TIERS: readonly TypeScaleTier[] = [
 		rem: "0.75rem",
 		token: "--basalt-text-sm",
 		utility: "text-basalt-sm",
-		lineBox: "17.14px / 16px inline",
+		lineBox: "calc(16 / 12) (16px)",
 		tracking: "0 (normal)",
 		weight: "400 / 500",
 		specimenClass: "text-basalt-sm text-basalt-muted-foreground",
@@ -292,9 +267,12 @@ export const NUMERIC_LEDGER_SAMPLES: readonly string[] = [
 	"$9,888,204.92",
 ];
 
-export const TYPEFACE_CODE_SNIPPET = `:root {
-  --basalt-font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --basalt-font-display: "DM Sans", "Inter", system-ui, sans-serif;
+export const TYPEFACE_CODE_SNIPPET = `@import "@nocoo/basalt/fonts.css";
+
+:root {
+  --basalt-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --basalt-font-display: var(--basalt-font-sans);
   --basalt-font-mono: "JetBrains Mono", ui-monospace, monospace;
   --basalt-font-features: "cv02", "cv03", "cv04", "cv11";
 

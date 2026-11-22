@@ -29,6 +29,10 @@
 		font-variant-ligatures: none;
 	}
 
+	:where(.basalt-ui) svg.lucide[stroke-width="2"] {
+		stroke-width: var(--basalt-icon-stroke, 1.5);
+	}
+
 	.basalt-ui::selection,
 	.basalt-ui ::selection {
 		background-color: hsl(var(--basalt-primary) / 0.22);

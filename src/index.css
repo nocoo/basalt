@@ -314,6 +314,12 @@
 		font-family: var(--basalt-font-sans);
 		font-feature-settings: var(--basalt-font-features);
 	}
+	code,
+	kbd,
+	samp,
+	pre {
+		font-variant-ligatures: none;
+	}
 	::selection {
 		background-color: hsl(var(--basalt-primary) / 0.22);
 		color: hsl(var(--basalt-foreground));

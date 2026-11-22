@@ -640,7 +640,7 @@ export function SidebarSearch({
 			{...props}
 			ref={buttonRef}
 		>
-			<Search className="text-basalt-foreground" strokeWidth={1.5} aria-hidden="true" />
+			<Search className="text-basalt-foreground" aria-hidden="true" />
 			<span
 				className={
 					collapsed
@@ -702,7 +702,7 @@ export function SidebarPartition({ className, ...props }: SidebarPartitionProps)
 		<p
 			data-slot="sidebar-partition"
 			className={cn(
-				"shrink-0 px-basalt-row-x pt-basalt-layout pb-basalt-space-lg text-basalt-xs font-semibold tracking-wide text-basalt-foreground uppercase",
+				"shrink-0 px-basalt-row-x pt-basalt-layout pb-basalt-space-lg text-basalt-xs font-semibold tracking-wider text-basalt-foreground uppercase",
 				className,
 			)}
 			{...props}
@@ -914,7 +914,7 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 					type="button"
 					data-slot="sidebar-group-label"
 					className={cn(
-						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-row-y text-left text-basalt-xs font-semibold leading-basalt-row tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
+						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-row-y text-left text-basalt-xs font-semibold leading-basalt-row tracking-wider text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
 						FOCUS_INSET,
 					)}
 				>
@@ -925,7 +925,6 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 							OVERLAY_MOTION,
 							!open && "rotate-180",
 						)}
-						strokeWidth={1.5}
 					/>
 				</button>
 			</CollapsibleTrigger>
@@ -1003,7 +1002,7 @@ function SidebarUserSignOut({
 	onSignOut: (() => void) | undefined;
 	label: string;
 }) {
-	const glyph = <LogOut aria-hidden="true" strokeWidth={1.5} />;
+	const glyph = <LogOut aria-hidden="true" />;
 	const control =
 		href !== undefined ? (
 			<LinkButton

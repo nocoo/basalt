@@ -29,7 +29,7 @@ export function TableOfContents({
 			className={cn(BASALT_UI_CLASS, "text-basalt-base", className)}
 		>
 			{title ? (
-				<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wide text-basalt-muted-foreground uppercase">
+				<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wider text-basalt-muted-foreground uppercase">
 					{title}
 				</p>
 			) : null}

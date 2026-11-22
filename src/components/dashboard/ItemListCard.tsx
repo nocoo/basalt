@@ -14,7 +14,7 @@ export function ItemListCard() {
 		<LayerCard className="flex flex-col h-full">
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
-					<Wallet className="size-basalt-icon text-basalt-muted-foreground" strokeWidth={1.5} />
+					<Wallet className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("dashboard.accountsTitle")}
 					</h2>

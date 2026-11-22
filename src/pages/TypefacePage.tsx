@@ -54,7 +54,7 @@ export default function TypefacePage() {
 	return (
 		<ShowcasePage title={t("pages.typeface.title")} description={t("pages.typeface.description")}>
 			<SectionRule title={t("pages.typeface.families")} hint={t("pages.typeface.familiesHint")}>
-				<div className="grid grid-cols-1 gap-basalt-layout @[60rem]/island:grid-cols-3">
+				<div className="grid grid-cols-1 gap-basalt-layout @[48rem]/island:grid-cols-2">
 					{TYPEFACE_FAMILIES.map((family) => (
 						<LayerCard key={family.id}>
 							<LayerCard.Header className="items-center">
@@ -280,7 +280,7 @@ export default function TypefacePage() {
 								<p className="font-basalt-mono text-basalt-sm text-basalt-muted-foreground">
 									{t("pages.typeface.proseLeadTight")}
 								</p>
-								<p className="font-basalt-display text-basalt-xl leading-basalt-tight font-semibold tracking-tight text-basalt-foreground">
+								<p className="font-basalt-display text-basalt-xl leading-basalt-tight font-semibold text-basalt-foreground">
 									{t("pages.typeface.proseSampleTight")}
 								</p>
 							</div>

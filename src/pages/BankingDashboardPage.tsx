@@ -33,28 +33,28 @@ export default function BankingDashboardPage() {
 			title: t("pages.banking.assets"),
 			value: "$4.82M",
 			subtitle: t("pages.banking.managedTotal"),
-			icon: <Wallet strokeWidth={1.5} />,
+			icon: <Wallet />,
 			trend: { value: 4.8, label: t("pages.banking.qoq") },
 		},
 		{
 			title: t("pages.banking.liquidity"),
 			value: "$620k",
 			subtitle: t("pages.banking.onHandCash"),
-			icon: <CreditCard strokeWidth={1.5} />,
+			icon: <CreditCard />,
 			trend: { value: 2.1, label: t("pages.banking.qoq") },
 		},
 		{
 			title: t("pages.banking.netWorth"),
 			value: "$3.12M",
 			subtitle: t("pages.banking.household"),
-			icon: <TrendingUp strokeWidth={1.5} />,
+			icon: <TrendingUp />,
 			trend: { value: 6.7, label: t("pages.banking.yoy") },
 		},
 		{
 			title: t("pages.banking.risk"),
 			value: t("pages.banking.low"),
 			subtitle: t("pages.banking.portfolioTilt"),
-			icon: <ShieldCheck strokeWidth={1.5} />,
+			icon: <ShieldCheck />,
 			trend: { value: -3.2, label: t("pages.banking.yoy") },
 		},
 	];
@@ -87,7 +87,7 @@ export default function BankingDashboardPage() {
 				<RecentListCard />
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<CreditCard className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+						<CreditCard className="size-basalt-icon-lg text-basalt-muted-foreground" />
 						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 							{t("pages.banking.recentTransfers")}
 						</h2>
@@ -103,15 +103,9 @@ export default function BankingDashboardPage() {
 										className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "in" ? "bg-basalt-success/10" : "bg-basalt-danger-solid/10"}`}
 									>
 										{item.direction === "in" ? (
-											<ArrowDownLeft
-												className="h-3.5 w-3.5 text-basalt-success"
-												strokeWidth={1.5}
-											/>
+											<ArrowDownLeft className="size-basalt-icon text-basalt-success" />
 										) : (
-											<ArrowUpRight
-												className="h-3.5 w-3.5 text-basalt-danger-solid"
-												strokeWidth={1.5}
-											/>
+											<ArrowUpRight className="size-basalt-icon text-basalt-danger-solid" />
 										)}
 									</div>
 									<span className="text-basalt-base text-foreground">{t(item.nameKey)}</span>

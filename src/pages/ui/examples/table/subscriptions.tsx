@@ -188,7 +188,7 @@ export default function SubscriptionTable() {
 		<div className="w-full space-y-basalt-space-lg" data-demo="subscription-table">
 			<div className="flex flex-wrap items-start justify-between gap-basalt-space-lg">
 				<div>
-					<p className="text-basalt-sm uppercase tracking-widest text-basalt-muted-foreground">
+					<p className="text-basalt-sm uppercase tracking-wider text-basalt-muted-foreground">
 						Spend management
 					</p>
 					<h3 className="mt-basalt-space-sm text-basalt-xl font-semibold">

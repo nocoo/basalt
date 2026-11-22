@@ -35,7 +35,7 @@ async function assertCardGeometry(card: Locator, rootFont: number) {
 	assert.equal(geometry.padding, rootFont);
 	assert.equal(geometry.border, "0px");
 	assert.equal(geometry.overflow, false, JSON.stringify(geometry));
-	assert.match(geometry.font, /DM Sans/);
+	assert.match(geometry.font, /Inter/);
 	assert.ok(Math.abs(geometry.heading.x - geometry.x - rootFont) < 1);
 	assert.ok(Math.abs(geometry.content.x - geometry.metric.x) < 1);
 	assert.ok(geometry.metric.y - geometry.heading.bottom >= rootFont * 0.75 - 1);

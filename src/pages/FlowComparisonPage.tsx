@@ -34,7 +34,7 @@ export default function FlowComparisonPage() {
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<Activity className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<Activity className="size-basalt-icon-lg text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.flowComparison.cashFlowOverTime")}
 					</h2>
@@ -61,7 +61,7 @@ export default function FlowComparisonPage() {
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
-					<BarChart3 className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+					<BarChart3 className="size-basalt-icon-lg text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
 						{t("pages.flowComparison.netCashFlowByMonth")}
 					</h2>

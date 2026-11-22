@@ -86,8 +86,7 @@ function ToastSection() {
 									className="h-full items-start justify-start text-left"
 								>
 									<Icon
-										className={`h-4 w-4 mt-basalt-space-xs shrink-0 ${colorClass}`}
-										strokeWidth={1.5}
+										className={`size-basalt-icon-lg mt-basalt-space-xs shrink-0 ${colorClass}`}
 									/>
 									<div className="min-w-0">
 										<p className="text-basalt-base font-medium text-foreground">{t.title}</p>

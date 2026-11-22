@@ -180,7 +180,6 @@ function SortIcon({ sorted }: { sorted?: TableSortDirection }) {
 				!sorted &&
 					"opacity-0 transition-opacity basalt-motion group-hover:opacity-60 group-focus-visible:opacity-60 motion-reduce:transition-none",
 			)}
-			strokeWidth={1.5}
 		/>
 	);
 }

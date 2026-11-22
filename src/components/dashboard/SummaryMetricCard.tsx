@@ -27,7 +27,7 @@ export function SummaryMetricCard() {
 		<StatCard
 			title={t("dashboard.totalBalance")}
 			value="$8,800"
-			icon={<Globe strokeWidth={1.5} />}
+			icon={<Globe />}
 			trend={{ value: 3.1, label: t("common.vsLastMonth") }}
 		>
 			<div className="space-y-basalt-card-sm">

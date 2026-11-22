@@ -9,8 +9,6 @@
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
-    --tracking-tight: -0.025em;
-    --tracking-wide: 0.025em;
     --tracking-wider: 0.05em;
     --tracking-widest: 0.1em;
     --animate-spin: spin 1s linear infinite;
@@ -35,16 +33,9 @@
   --basalt-text-base: 0.875rem;
   --basalt-text-lg: 0.9375rem;
   --basalt-text-xl: 1.125rem;
-  --basalt-text-2xl: 1.25rem;
   --basalt-text-3xl: 1.5rem;
-  --basalt-text-4xl: 1.5rem;
-  --basalt-text-5xl: 2.25rem;
-  --basalt-text-6xl: 3rem;
-  --basalt-text-7xl: 3.75rem;
-  --basalt-text-8xl: 4.5rem;
-  --basalt-text-9xl: 6rem;
   --basalt-text-10xl: 8rem;
-  --basalt-leading-tight: 1.2;
+  --basalt-leading-tight: 1.25;
   --basalt-leading-body: 1.4285714286;
   --basalt-leading-relaxed: 1.5;
   --basalt-leading-inline: calc(16 / 12);
@@ -234,10 +225,12 @@
   --basalt-scrim: 0 0% 0% / 0.28;
   --basalt-floating-duration-enter: 200ms;
   --basalt-floating-duration-exit: 150ms;
-  --basalt-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --basalt-font-display: "DM Sans", "Inter", system-ui, sans-serif;
+  --basalt-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+		"Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --basalt-font-display: var(--basalt-font-sans);
   --basalt-font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
   --basalt-font-features: "cv02", "cv03", "cv04", "cv11";
+  --basalt-icon-stroke: 1.5;
   --basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --basalt-shadow-solid: inset 0 1px 0 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 0 rgb(0 0 0 / 0.12),
 		0 1px 2px 0 rgb(0 0 0 / 0.12);
@@ -1143,6 +1136,9 @@
     font-family: var(--basalt-font-mono);
     font-feature-settings: normal;
     font-variant-ligatures: none;
+  }
+  :where(.basalt-ui) svg.lucide[stroke-width="2"] {
+    stroke-width: var(--basalt-icon-stroke, 1.5);
   }
   .basalt-ui::selection,	.basalt-ui ::selection {
     background-color: hsl(var(--basalt-primary) / 0.22);
@@ -2818,11 +2814,6 @@
     line-height: var(--tw-leading, calc(20 / 15));
     letter-spacing: var(--tw-tracking, -0.014em);
   }
-  .text-basalt-md {
-    font-size: var(--basalt-text-md);
-    line-height: var(--tw-leading, var(--basalt-leading-body));
-    letter-spacing: var(--tw-tracking, -0.003em);
-  }
   .text-basalt-xl {
     font-size: var(--basalt-text-xl);
     line-height: var(--tw-leading, calc(24 / 18));
@@ -2833,9 +2824,13 @@
     line-height: var(--tw-leading, calc(16 / 11));
     letter-spacing: var(--tw-tracking, 0.02em);
   }
+  .text-basalt-md {
+    font-size: var(--basalt-text-md);
+    line-height: var(--tw-leading, calc(20 / 13));
+  }
   .text-basalt-sm {
     font-size: var(--basalt-text-sm);
-    line-height: var(--tw-leading, var(--basalt-leading-body));
+    line-height: var(--tw-leading, calc(16 / 12));
   }
   .leading-\[var\(--basalt-leading-banner\)\] {
     --tw-leading: var(--basalt-leading-banner);
@@ -2880,14 +2875,6 @@
   .font-semibold {
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
-  }
-  .tracking-tight {
-    --tw-tracking: var(--tracking-tight);
-    letter-spacing: var(--tracking-tight);
-  }
-  .tracking-wide {
-    --tw-tracking: var(--tracking-wide);
-    letter-spacing: var(--tracking-wide);
   }
   .tracking-wider {
     --tw-tracking: var(--tracking-wider);
@@ -3630,7 +3617,7 @@
   }
   .\[\&_\[cmdk-group-heading\]\]\:text-basalt-sm [cmdk-group-heading] {
     font-size: var(--basalt-text-sm);
-    line-height: var(--tw-leading, var(--basalt-leading-body));
+    line-height: var(--tw-leading, calc(16 / 12));
   }
   .\[\&_\[cmdk-group-heading\]\]\:font-medium [cmdk-group-heading] {
     --tw-font-weight: var(--font-weight-medium);

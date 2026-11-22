@@ -18,7 +18,7 @@ export default function StatCardMetricInfo() {
 					title="Monthly care reimbursements"
 					value="$48,250"
 					subtitle="vs. $42,100 last month"
-					icon={<TrendingUp strokeWidth={1.5} />}
+					icon={<TrendingUp />}
 					iconColor="text-basalt-link"
 					trend={{ value: 14.6, label: "MoM" }}
 					action={
@@ -29,7 +29,7 @@ export default function StatCardMetricInfo() {
 									size="icon"
 									aria-label="Care reimbursement calculation methodology"
 								>
-									<HelpCircle className="h-4 w-4" />
+									<HelpCircle className="size-basalt-icon-lg" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>
@@ -46,11 +46,11 @@ export default function StatCardMetricInfo() {
 					title="Active care plans"
 					value="1,420"
 					subtitle="Total plans with active follow-up"
-					icon={<Users strokeWidth={1.5} />}
+					icon={<Users />}
 					iconColor="text-basalt-tag-teal-foreground"
 					trendContent={
 						<Badge tone="info">
-							<ArrowUpRight className="h-3 w-3" />
+							<ArrowUpRight className="size-basalt-icon-sm" />
 							+8.2% this quarter
 						</Badge>
 					}
@@ -58,7 +58,7 @@ export default function StatCardMetricInfo() {
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Button variant="ghost" size="icon" aria-label="Care plan count details">
-									<HelpCircle className="h-4 w-4" />
+									<HelpCircle className="size-basalt-icon-lg" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>

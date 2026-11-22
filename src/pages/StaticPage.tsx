@@ -72,7 +72,7 @@ export default function StaticPage() {
 					aria-label={t("common.back")}
 					className="basalt-focus inline-flex items-center gap-basalt-space-md rounded-basalt-sm text-basalt-md text-basalt-muted-foreground no-underline transition-colors basalt-motion hover:text-basalt-foreground"
 				>
-					<ArrowLeft className="size-basalt-icon" strokeWidth={1.5} aria-hidden="true" />
+					<ArrowLeft className="size-basalt-icon" aria-hidden="true" />
 					<span>{t("common.back")}</span>
 				</Link>
 
