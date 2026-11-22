@@ -25,7 +25,7 @@ This document defines the stability contracts, export architecture, and semantic
 
 ## 1. Compatibility Baseline
 
-The historical **`2.0.3`** release (commit `e61efc1`) exposed 110 entrypoints and 572 symbols. The live public contract is captured separately in `packages/basalt/public-api-baseline.json` and currently verifies **98 entrypoints / 545 symbols** (`ai/registry.json` catalogs 108 modules, 717 symbols, 4 CSS exports, and 81 ready catalog entries). The package manifest remains `3.5.2` until final release versioning is selected.
+The historical **`2.0.3`** release (commit `e61efc1`) exposed 110 entrypoints and 572 symbols. The live public contract is captured separately in `packages/basalt/public-api-baseline.json` and currently verifies **98 entrypoints / 545 symbols** (`ai/registry.json` catalogs 108 modules, 717 symbols, 4 CSS exports, and 81 ready catalog entries). The current release manifest is `3.6.0`.
 
 - **CSS Export Contracts:** 4 CSS export paths:
   - `@nocoo/basalt/styles` (Tailwind contract alias)

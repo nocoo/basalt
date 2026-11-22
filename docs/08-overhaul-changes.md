@@ -1,6 +1,6 @@
 # 08 · Overhaul Changes & Migration Guide (Phases 0–4)
 
-This guide summarizes all visual, structural, library API, and showcase changes applied since `v3.5.2` (`98d8308b` through `655947c2`). Package manifests remain at `3.5.2` pending explicit release versioning.
+This guide summarizes all visual, structural, library API, and showcase changes applied since `v3.5.2` (`98d8308b` through `655947c2`). Released in `v3.6.0`.
 
 ---
 
