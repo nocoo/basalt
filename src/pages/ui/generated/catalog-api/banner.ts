@@ -14,10 +14,10 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"base\" | \"sm\" | null",
+				type: "\"md\" | \"sm\" | null",
 				required: false,
-				default: "\"base\"",
-				description: "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"base\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"base\".",
+				default: "\"md\"",
+				description: "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"md\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"md\".",
 			},
 			{
 				name: "title",
@@ -63,9 +63,9 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+				type: "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 				required: false,
-				description: "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size.",
+				description: "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"md\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size.",
 			},
 			{
 				name: "asChild",

@@ -21,11 +21,16 @@ export interface SegmentControlAllOption {
 }
 
 export interface SegmentControlProps
-	extends Omit<React.HTMLAttributes<HTMLFieldSetElement>, "children" | "onChange"> {
+	extends Omit<
+		React.HTMLAttributes<HTMLFieldSetElement>,
+		"children" | "onChange" | "defaultValue"
+	> {
 	/** The currently selected value. */
-	value: string;
+	value?: string;
+	/** Uncontrolled initial selected value. */
+	defaultValue?: string;
 	/** Called when the user selects a different segment. */
-	onValueChange: (value: string) => void;
+	onValueChange?: (value: string) => void;
 	/** Optional visible legend that names the control. Hidden when omitted. */
 	legend?: React.ReactNode;
 	/** The selectable segments shown after the optional All segment. */
@@ -46,6 +51,7 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 			"aria-label": ariaLabel,
 			"aria-labelledby": ariaLabelledBy,
 			className,
+			defaultValue,
 			disabled = false,
 			legend,
 			onValueChange,
@@ -60,10 +66,15 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 		const items: readonly SegmentControlOption[] = allOption
 			? [{ ...allOption, label: allOption.label ?? "All" }, ...options]
 			: options;
+		const [internalValue, setInternalValue] = React.useState(
+			defaultValue ?? allOption?.value ?? options[0]?.value ?? "",
+		);
+		const currentValue = value ?? internalValue;
 
 		return (
 			<fieldset
 				ref={ref}
+				data-slot="segment-control"
 				disabled={disabled}
 				aria-label={hasLegend ? undefined : ariaLabel}
 				aria-labelledby={hasLegend ? legendId : ariaLabelledBy}
@@ -84,11 +95,14 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 				>
 					<ToggleGroup
 						type="single"
-						value={value}
+						value={currentValue}
 						disabled={disabled}
 						onValueChange={(nextValue) => {
 							if (nextValue) {
-								onValueChange(nextValue);
+								if (value === undefined) {
+									setInternalValue(nextValue);
+								}
+								onValueChange?.(nextValue);
 							}
 						}}
 						aria-label={hasLegend ? undefined : ariaLabel}

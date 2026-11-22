@@ -8,7 +8,7 @@ function acceptInputProps(_props: InputProps) {}
 
 const SIZE_CLASS = {
 	sm: ["basalt-action", "basalt-action-sm"],
-	default: ["basalt-action"],
+	md: ["basalt-action"],
 	lg: ["basalt-action", "basalt-action-lg"],
 } as const;
 
@@ -35,11 +35,11 @@ describe("Input", () => {
 	it("applies named sizes and keeps the default class", () => {
 		const { rerender } = render(<Input aria-label="Name" />);
 		expect(screen.getByRole("textbox", { name: "Name" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining([...SIZE_CLASS.default]),
+			expect.arrayContaining([...SIZE_CLASS.md]),
 		);
-		rerender(<Input aria-label="Name" size="default" />);
+		rerender(<Input aria-label="Name" size="md" />);
 		expect(screen.getByRole("textbox", { name: "Name" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining([...SIZE_CLASS.default]),
+			expect.arrayContaining([...SIZE_CLASS.md]),
 		);
 		rerender(<Input aria-label="Name" size="sm" />);
 		expect(screen.getByRole("textbox", { name: "Name" }).className.split(/\s+/)).toEqual(
@@ -114,7 +114,7 @@ describe("Input", () => {
 		acceptInputProps({ type: "email" });
 		acceptInputProps({ type: "search" });
 		acceptInputProps({ size: "sm" });
-		acceptInputProps({ size: "default" });
+		acceptInputProps({ size: "md" });
 		acceptInputProps({ size: "lg" });
 		acceptInputProps({ passwordManagerIgnore: true });
 		acceptInputProps({

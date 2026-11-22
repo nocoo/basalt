@@ -97,7 +97,7 @@ import {
 	ThemeProvider,
 	ThemeToggle,
 	Tooltip,
-	Toast,
+	Toaster,
 	Sidebar,
 } from "@nocoo/basalt";
 ```

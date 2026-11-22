@@ -45,7 +45,7 @@ const DIALOG_SECTION_CLASS = "mt-basalt-layout space-y-basalt-layout-lg";
 
 const DIALOG_SIZES: { size: DialogSize; width: string }[] = [
 	{ size: "sm", width: "288px" },
-	{ size: "base", width: "384px" },
+	{ size: "md", width: "384px" },
 	{ size: "lg", width: "512px" },
 	{ size: "xl", width: "768px" },
 ];
@@ -101,7 +101,7 @@ export default function DialogsPage() {
 						<DialogTrigger asChild>
 							<Button>{t("pages.dialogs.openStandard")}</Button>
 						</DialogTrigger>
-						<DialogContent size="base" closeLabel={t("common.close")}>
+						<DialogContent size="md" closeLabel={t("common.close")}>
 							<DialogHeading
 								title={t("pages.dialogs.standardTitle")}
 								description={t("pages.dialogs.standardBody")}
@@ -168,7 +168,7 @@ export default function DialogsPage() {
 							<DialogTrigger asChild>
 								<Button variant="outline">{t("pages.dialogs.openLog")}</Button>
 							</DialogTrigger>
-							<DialogContent size="base" closeLabel={t("common.close")}>
+							<DialogContent size="md" closeLabel={t("common.close")}>
 								<DialogHeading
 									title={t("pages.dialogs.logTitle")}
 									description={t("pages.dialogs.logBody")}
@@ -419,7 +419,7 @@ export default function DialogsPage() {
 						<DialogTrigger asChild>
 							<Button variant="outline">{t("pages.dialogs.openForm")}</Button>
 						</DialogTrigger>
-						<DialogContent size="base" closeLabel={t("common.close")}>
+						<DialogContent size="md" closeLabel={t("common.close")}>
 							<DialogHeading
 								title={t("pages.dialogs.formTitle")}
 								description={t("pages.dialogs.formBody")}
@@ -470,7 +470,7 @@ export default function DialogsPage() {
 							<AlertDialogTrigger asChild>
 								<Button variant="destructive">{t("pages.dialogs.openAlert")}</Button>
 							</AlertDialogTrigger>
-							<AlertDialogContent size="base">
+							<AlertDialogContent size="md">
 								<AlertDialogHeader>
 									<AlertDialogTitle>{t("pages.dialogs.alertTitle")}</AlertDialogTitle>
 									<AlertDialogDescription>{t("pages.dialogs.alertBody")}</AlertDialogDescription>

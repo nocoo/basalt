@@ -71,11 +71,11 @@ const FEEDBACK_SCENARIOS = {
 
 const FEEDBACK_DESCRIPTIONS = {
 	badge:
-		"Compact status labels. Inherits standard span element attributes and forwards children; does not expose a public ref.",
+		"Compact status labels. Inherits standard span element attributes and forwards refs and children.",
 	banner:
 		"Displays contextual inline messages for neutral, informational, success, warning, or danger states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping tone and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
 	empty:
-		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
+		"Empty-state copy. Inherits standard div element attributes and forwards refs; supports structured icon, title, description, custom children content, and interactive action controls.",
 	loader:
 		"Eight-cell perimeter loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
 	skeleton:
@@ -83,9 +83,9 @@ const FEEDBACK_DESCRIPTIONS = {
 	meter:
 		"Matte capacity and utilization meter with continuous capsule and twenty-cell precision segmented variants, semantic tones, and tabular readings. Clamps to 0..100%; non-finite readings display as Unavailable.",
 	toast:
-		"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
+		"Transient notification stack. Mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
 	"clipboard-text":
-		"Copyable text. Inline code snippet paired with an icon copy button; does not forward native HTML attributes or expose a public ref.",
+		"Copyable text. Inline code snippet paired with an icon copy button and forwarded ref.",
 	code: "Syntax-highlighted source with a file header, icon, copy feedback and optional line numbers.",
 	"code-block":
 		"A compact code panel with optional title, icon, exact-source copy and line numbers.",
@@ -112,7 +112,7 @@ describe("feedback catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "overlay"),
 		).toHaveLength(11);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(82);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(81);
 	});
 
 	it("keeps the final feedback scenarios in their audited order", () => {

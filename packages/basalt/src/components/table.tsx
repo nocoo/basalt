@@ -24,6 +24,7 @@ export const Table = React.forwardRef<
 >(({ className, striped = false, density = "default", ...props }, ref) => (
 	<table
 		ref={ref}
+		data-slot="table"
 		data-basalt-table=""
 		data-striped={striped ? "true" : undefined}
 		data-density={density === "compact" ? "compact" : undefined}
@@ -39,15 +40,24 @@ Table.displayName = "Table";
 
 export interface TableHeaderProps extends React.HTMLAttributes<HTMLTableSectionElement> {}
 
-export const TableHeader = (props: TableHeaderProps) => <thead {...props} />;
+export const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
+	(props, ref) => <thead ref={ref} data-slot="table-header" {...props} />,
+);
+TableHeader.displayName = "TableHeader";
 
 export interface TableBodyProps extends React.HTMLAttributes<HTMLTableSectionElement> {}
 
-export const TableBody = (props: TableBodyProps) => <tbody {...props} />;
+export const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>((props, ref) => (
+	<tbody ref={ref} data-slot="table-body" {...props} />
+));
+TableBody.displayName = "TableBody";
 
 export interface TableFooterProps extends React.HTMLAttributes<HTMLTableSectionElement> {}
 
-export const TableFooter = (props: TableFooterProps) => <tfoot {...props} />;
+export const TableFooter = React.forwardRef<HTMLTableSectionElement, TableFooterProps>(
+	(props, ref) => <tfoot ref={ref} data-slot="table-footer" {...props} />,
+);
+TableFooter.displayName = "TableFooter";
 
 export type TableRowVariant = "default" | "selected";
 
@@ -63,17 +73,19 @@ export type TableRowProps = {
 	className?: string;
 };
 
-export const TableRow = ({
-	className,
-	variant = "default",
-	...props
-}: TableRowProps & React.HTMLAttributes<HTMLTableRowElement>) => (
+export const TableRow = React.forwardRef<
+	HTMLTableRowElement,
+	TableRowProps & React.HTMLAttributes<HTMLTableRowElement>
+>(({ className, variant = "default", ...props }, ref) => (
 	<tr
+		ref={ref}
+		data-slot="table-row"
 		{...props}
 		aria-selected={variant === "selected" ? true : props["aria-selected"]}
 		className={className}
 	/>
-);
+));
+TableRow.displayName = "TableRow";
 
 function textAlignClass(textAlign?: TableTextAlign) {
 	if (textAlign === "end") return "text-end tabular-nums";
@@ -91,13 +103,13 @@ export type TableHeadProps = {
 	textAlign?: TableTextAlign;
 };
 
-export const TableHead = ({
-	className,
-	textAlign,
-	align,
-	...props
-}: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
+export const TableHead = React.forwardRef<
+	HTMLTableCellElement,
+	TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>
+>(({ className, textAlign, align, ...props }, ref) => (
 	<th
+		ref={ref}
+		data-slot="table-head"
 		className={cn(
 			"relative h-basalt-table-row whitespace-nowrap border-b border-basalt-border ps-basalt-table-x pe-basalt-table-x py-basalt-table-y align-middle text-basalt-sm font-medium text-basalt-muted-foreground",
 			textAlignClass(textAlign) ?? (align == null ? "text-start" : undefined),
@@ -106,7 +118,8 @@ export const TableHead = ({
 		align={align}
 		{...props}
 	/>
-);
+));
+TableHead.displayName = "TableHead";
 
 export type TableCellProps = {
 	/**
@@ -119,12 +132,13 @@ export type TableCellProps = {
 	textAlign?: TableTextAlign;
 };
 
-export const TableCell = ({
-	className,
-	textAlign,
-	...props
-}: TableCellProps & React.TdHTMLAttributes<HTMLTableCellElement>) => (
+export const TableCell = React.forwardRef<
+	HTMLTableCellElement,
+	TableCellProps & React.TdHTMLAttributes<HTMLTableCellElement>
+>(({ className, textAlign, ...props }, ref) => (
 	<td
+		ref={ref}
+		data-slot="table-cell"
 		className={cn(
 			"relative h-basalt-table-row ps-basalt-table-x pe-basalt-table-x py-basalt-table-y align-middle",
 			textAlignClass(textAlign),
@@ -132,7 +146,8 @@ export const TableCell = ({
 		)}
 		{...props}
 	/>
-);
+));
+TableCell.displayName = "TableCell";
 
 export type TableCaptionProps = {
 	/**
@@ -141,20 +156,21 @@ export type TableCaptionProps = {
 	className?: string;
 };
 
-export function TableCaption({
-	className,
-	...props
-}: TableCaptionProps & React.HTMLAttributes<HTMLTableCaptionElement>) {
-	return (
-		<caption
-			className={cn(
-				"px-basalt-panel-x py-basalt-panel-y text-basalt-md text-basalt-muted-foreground",
-				className,
-			)}
-			{...props}
-		/>
-	);
-}
+export const TableCaption = React.forwardRef<
+	HTMLTableCaptionElement,
+	TableCaptionProps & React.HTMLAttributes<HTMLTableCaptionElement>
+>(({ className, ...props }, ref) => (
+	<caption
+		ref={ref}
+		data-slot="table-caption"
+		className={cn(
+			"px-basalt-panel-x py-basalt-panel-y text-basalt-md text-basalt-muted-foreground",
+			className,
+		)}
+		{...props}
+	/>
+));
+TableCaption.displayName = "TableCaption";
 
 export type TableSortableHeaderProps = {
 	children: React.ReactNode;
@@ -194,6 +210,7 @@ export const TableSortableHeader = React.forwardRef<HTMLButtonElement, TableSort
 			<button
 				type="button"
 				ref={ref}
+				data-slot="table-sortable-header"
 				className={cn(
 					"basalt-focus group flex w-full cursor-pointer items-center gap-basalt-space-sm rounded-basalt-sm border-0 bg-transparent p-0 font-inherit text-inherit font-medium",
 					textAlign === "end" ? "justify-end text-end" : "text-start",

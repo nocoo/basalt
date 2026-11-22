@@ -65,7 +65,6 @@ export const CATALOG_CONTENT_FAMILY = {
 	slider: "forms",
 	spinner: "feedback",
 	"stat-card": "data-layout",
-	"stat-strip": "data-layout",
 	switch: "forms",
 	table: "data-layout",
 	"table-of-contents": "navigation",

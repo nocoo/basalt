@@ -46,7 +46,7 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+				type: "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 				required: false,
 				default: "\"lg\"",
 				description: "Width preset of the command palette dialog panel.",

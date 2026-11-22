@@ -21,7 +21,7 @@ export const API = [
 				name: "size",
 				type: "InputSize",
 				required: false,
-				default: "default",
+				default: "\"md\"",
 				description: "The visual size of the field.",
 			},
 			{

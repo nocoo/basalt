@@ -15,7 +15,7 @@ export const API = [
 				name: "size",
 				type: "RadioSize",
 				required: false,
-				default: "default",
+				default: "\"md\"",
 				description: "The visual size of the radio.",
 			},
 		],

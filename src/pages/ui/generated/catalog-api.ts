@@ -64,7 +64,6 @@ import { API as skeletonApi } from "./catalog-api/skeleton";
 import { API as sliderApi } from "./catalog-api/slider";
 import { API as spinnerApi } from "./catalog-api/spinner";
 import { API as statCardApi } from "./catalog-api/stat-card";
-import { API as statStripApi } from "./catalog-api/stat-strip";
 import { API as switchApi } from "./catalog-api/switch";
 import { API as tableApi } from "./catalog-api/table";
 import { API as tableOfContentsApi } from "./catalog-api/table-of-contents";
@@ -148,7 +147,6 @@ export const CATALOG_API = {
 	slider: sliderApi,
 	spinner: spinnerApi,
 	"stat-card": statCardApi,
-	"stat-strip": statStripApi,
 	switch: switchApi,
 	table: tableApi,
 	"table-of-contents": tableOfContentsApi,

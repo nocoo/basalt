@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.5.2",
-	"totalModules": 109,
-	"totalSymbols": 723,
-	"totalValues": 394,
-	"totalTypes": 329,
+	"totalModules": 108,
+	"totalSymbols": 717,
+	"totalValues": 391,
+	"totalTypes": 326,
 	"totalCssExports": 4,
 	"modules": [
 		{
@@ -809,12 +809,20 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/spinner"
 				},
 				{
-					"name": "StatStrip",
+					"name": "StatCard",
 					"isValue": true,
 					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-strip",
+					"ownerDoc": "src/pages/ui/stat-card",
 					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/stat-strip"
+					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatGrid",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/stat-card"
 				},
 				{
 					"name": "Switch",
@@ -887,14 +895,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/theme-toggle",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/theme-toggle"
-				},
-				{
-					"name": "Toast",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/toast",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/toast"
 				},
 				{
 					"name": "Toaster",
@@ -1495,14 +1495,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Badge component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "Badge",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/badge",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/badge"
-				},
-				{
 					"name": "BadgeTone",
 					"isValue": false,
 					"isType": true,
@@ -1522,6 +1514,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "BadgeProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/badge"
+				},
+				{
+					"name": "Badge",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/badge",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/badge"
@@ -2203,17 +2203,17 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "ClipboardText component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "ClipboardText",
-					"isValue": true,
-					"isType": false,
+					"name": "ClipboardTextProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/clipboard-text",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/clipboard-text"
 				},
 				{
-					"name": "ClipboardTextProps",
-					"isValue": false,
-					"isType": true,
+					"name": "ClipboardText",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/clipboard-text",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/clipboard-text"
@@ -3525,23 +3525,7 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/editable-nav-item"
 				},
 				{
-					"name": "FolderNavItem",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/editable-nav-item",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/editable-nav-item"
-				},
-				{
 					"name": "EditableNavItemProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/editable-nav-item",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/editable-nav-item"
-				},
-				{
-					"name": "FolderNavItemProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/editable-nav-item",
@@ -3559,17 +3543,17 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Empty component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "Empty",
-					"isValue": true,
-					"isType": false,
+					"name": "EmptyProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/empty",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/empty"
 				},
 				{
-					"name": "EmptyProps",
-					"isValue": false,
-					"isType": true,
+					"name": "Empty",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/empty",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/empty"
@@ -4301,14 +4285,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Page Header component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "PageHeader",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/page-header",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/page-header"
-				},
-				{
 					"name": "PageHeaderBreadcrumb",
 					"isValue": false,
 					"isType": true,
@@ -4320,6 +4296,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "PageHeaderProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/page-header",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/page-header"
+				},
+				{
+					"name": "PageHeader",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/page-header",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/page-header"
@@ -4583,14 +4567,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Resource List component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "ResourceList",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/resource-list",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/resource-list"
-				},
-				{
 					"name": "ResourceListRow",
 					"isValue": false,
 					"isType": true,
@@ -4602,6 +4578,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "ResourceListProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/resource-list",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/resource-list"
+				},
+				{
+					"name": "ResourceList",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/resource-list",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/resource-list"
@@ -5449,25 +5433,17 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "StatCard component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "StatCard",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/stat-card"
-				},
-				{
-					"name": "StatGrid",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/stat-card"
-				},
-				{
 					"name": "StatCardProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatCard",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/stat-card",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/stat-card"
@@ -5479,40 +5455,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/stat-card",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/stat-card"
-				}
-			]
-		},
-		{
-			"subpath": "./components/stat-strip",
-			"importPath": "@nocoo/basalt/components/stat-strip",
-			"sourceFile": "packages/basalt/src/components/stat-strip.tsx",
-			"ownerDoc": "src/pages/ui/stat-strip",
-			"ownerKind": "catalog-component",
-			"summary": "StatStrip component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "StatStripItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/stat-strip",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/stat-strip"
 				},
 				{
-					"name": "StatStripProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/stat-strip",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/stat-strip"
-				},
-				{
-					"name": "StatStrip",
+					"name": "StatGrid",
 					"isValue": true,
 					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-strip",
+					"ownerDoc": "src/pages/ui/stat-card",
 					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/stat-strip"
+					"originModule": "@nocoo/basalt/components/stat-card"
 				}
 			]
 		},
@@ -5574,14 +5524,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"ownerKind": "catalog-component",
 			"summary": "Table component documentation and catalog playground",
 			"symbols": [
-				{
-					"name": "TableCaption",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/table",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/table"
-				},
 				{
 					"name": "TableTextAlign",
 					"isValue": false,
@@ -5727,6 +5669,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/table"
 				},
 				{
+					"name": "TableCaption",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
 					"name": "TableSortableHeaderProps",
 					"isValue": false,
 					"isType": true,
@@ -5795,14 +5745,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "TablePager component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "TablePager",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/table-pager",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/table-pager"
-				},
-				{
 					"name": "TablePagerRange",
 					"isValue": false,
 					"isType": true,
@@ -5814,6 +5756,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "TablePagerProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/table-pager",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table-pager"
+				},
+				{
+					"name": "TablePager",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/table-pager",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/table-pager"
@@ -6172,14 +6122,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "ToasterProps",
 					"isValue": false,
 					"isType": true,
-					"ownerDoc": "src/pages/ui/toast",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/toast"
-				},
-				{
-					"name": "Toast",
-					"isValue": true,
-					"isType": false,
 					"ownerDoc": "src/pages/ui/toast",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/toast"

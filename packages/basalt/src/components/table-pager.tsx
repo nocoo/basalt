@@ -1,4 +1,4 @@
-import type * as React from "react";
+import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Pagination } from "./pagination";
@@ -11,13 +11,18 @@ export interface TablePagerRange {
 
 export interface TablePagerProps {
 	/** 1-based current page. */
-	page: number;
+	page?: number;
+	/**
+	 * Uncontrolled 1-based initial page.
+	 * @default 1
+	 */
+	defaultPage?: number;
 	/** Number of rows on each page. */
 	pageSize: number;
 	/** Total number of rows. */
 	totalCount: number;
 	/** Called with the next 1-based page. */
-	onPageChange: (page: number) => void;
+	onPageChange?: (page: number) => void;
 	/**
 	 * Disable every pagination control while keeping the range visible.
 	 * @default false
@@ -36,43 +41,58 @@ function defaultRangeText({ start, end, totalCount }: TablePagerRange) {
 	return `Showing ${start}–${end} of ${totalCount}`;
 }
 
-export function TablePager({
-	className,
-	disabled = false,
-	formatRange,
-	onPageChange,
-	page,
-	pageSize,
-	totalCount,
-}: TablePagerProps) {
-	const pageCount = Math.max(1, Math.ceil(totalCount / pageSize));
-	const current = Math.min(pageCount, Math.max(1, page));
-	const range: TablePagerRange =
-		totalCount === 0
-			? { start: 0, end: 0, totalCount }
-			: {
-					start: (current - 1) * pageSize + 1,
-					end: Math.min(current * pageSize, totalCount),
-					totalCount,
-				};
+export const TablePager = React.forwardRef<HTMLDivElement, TablePagerProps>(
+	(
+		{
+			className,
+			defaultPage = 1,
+			disabled = false,
+			formatRange,
+			onPageChange,
+			page,
+			pageSize,
+			totalCount,
+		},
+		ref,
+	) => {
+		const [internalPage, setInternalPage] = React.useState(defaultPage);
+		const pageCount = Math.max(1, Math.ceil(totalCount / pageSize));
+		const current = Math.min(pageCount, Math.max(1, page ?? internalPage));
+		const range: TablePagerRange =
+			totalCount === 0
+				? { start: 0, end: 0, totalCount }
+				: {
+						start: (current - 1) * pageSize + 1,
+						end: Math.min(current * pageSize, totalCount),
+						totalCount,
+					};
 
-	return (
-		<div
-			className={cn(
-				BASALT_UI_CLASS,
-				"flex flex-col gap-basalt-space-lg md:flex-row md:items-center md:justify-between",
-				className,
-			)}
-		>
-			<p className="text-basalt-sm tabular-nums text-basalt-muted-foreground">
-				{formatRange ? formatRange(range) : defaultRangeText(range)}
-			</p>
-			<Pagination
-				page={page}
-				pageCount={pageCount}
-				disabled={disabled}
-				onPageChange={onPageChange}
-			/>
-		</div>
-	);
-}
+		return (
+			<div
+				ref={ref}
+				data-slot="table-pager"
+				className={cn(
+					BASALT_UI_CLASS,
+					"flex flex-col gap-basalt-space-lg md:flex-row md:items-center md:justify-between",
+					className,
+				)}
+			>
+				<p className="text-basalt-sm tabular-nums text-basalt-muted-foreground">
+					{formatRange ? formatRange(range) : defaultRangeText(range)}
+				</p>
+				<Pagination
+					page={current}
+					pageCount={pageCount}
+					disabled={disabled}
+					onPageChange={(next) => {
+						if (page === undefined) {
+							setInternalPage(next);
+						}
+						onPageChange?.(next);
+					}}
+				/>
+			</div>
+		);
+	},
+);
+TablePager.displayName = "TablePager";

@@ -779,7 +779,7 @@
 			"anatomy": "结构",
 			"anatomyHint": "按这个结构写，产品里的对话框才会统一。",
 			"width": "宽度",
-			"widthValue": "默认 size 是 base（384px）。sm 288px，lg 512px，xl 768px。面板内边距手机 16px、桌面 24px，内容超出时在面板内滚动。",
+			"widthValue": "默认 size 是 md（384px）。sm 288px，lg 512px，xl 768px。面板内边距手机 16px、桌面 24px，内容超出时在面板内滚动。",
 			"titleRow": "标题和关闭",
 			"titleRowValue": "标题在左上。可选关闭是右上角绝对定位的 ghost 图标 Button，无障碍名称 Close。确认和警告对话框不加叉。",
 			"subtitle": "副标题",
@@ -795,13 +795,13 @@
 			"sizesHint": "在这四档里选。内容能放下就不要自定义 max-width。",
 			"size": {
 				"sm": "小",
-				"base": "默认",
+				"md": "中",
 				"lg": "大",
 				"xl": "特大"
 			},
 			"sizeBody": "size=\"{{size}}\" 在桌面宽度为 {{width}}。",
 			"form": "表单",
-			"formHint": "短表单用 base。控件用 Field 和 Input，然后取消和保存。",
+			"formHint": "短表单用 md。控件用 Field 和 Input，然后取消和保存。",
 			"openForm": "打开表单",
 			"formTitle": "创建护理团队",
 			"formBody": "护理团队协调患者、预约与共享记录。",
@@ -1001,7 +1001,7 @@
 			"tiers": {
 				"3xl": {
 					"name": "页面 / 指标",
-					"roles": "PageHeader 主标题与核心 KPI 数值（StatCard、StatStrip）"
+					"roles": "PageHeader 主标题与核心 KPI 数值（StatCard）"
 				},
 				"xl": {
 					"name": "分区标题",

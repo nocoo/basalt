@@ -11,16 +11,16 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Circle } from "../utils/internal-icons";
 import { FOCUS_RING } from "../utils/overlay";
 
-export type RadioSize = "sm" | "default";
+export type RadioSize = "sm" | "md";
 
 const RADIO_SIZE_CLASS: Record<RadioSize, string> = {
 	sm: "h-basalt-check-sm w-basalt-check-sm",
-	default: "h-basalt-check w-basalt-check",
+	md: "h-basalt-check w-basalt-check",
 };
 
 const RADIO_INDICATOR_CLASS: Record<RadioSize, string> = {
 	sm: "h-basalt-1 w-basalt-1 fill-current text-current",
-	default: "h-basalt-1_5 w-basalt-1_5 fill-current text-current",
+	md: "h-basalt-1_5 w-basalt-1_5 fill-current text-current",
 };
 
 export type RadioGroupProps = Omit<
@@ -62,7 +62,7 @@ export type RadioProps = Omit<
 	value: string;
 	/**
 	 * The visual size of the radio.
-	 * @default default
+	 * @default "md"
 	 */
 	size?: RadioSize;
 };
@@ -138,7 +138,7 @@ export const RadioGroup = React.forwardRef<
 RadioGroup.displayName = "Radio.Group";
 
 const RadioRoot = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, RadioProps>(
-	({ className, size = "default", ...props }, ref) => (
+	({ className, size = "md", ...props }, ref) => (
 		<RadioGroupPrimitive.Item
 			ref={ref}
 			className={cn(

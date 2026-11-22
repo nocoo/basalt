@@ -13,7 +13,6 @@ import { RESOURCE_LIST_EXAMPLES } from "../../examples/resource-list";
 import { RESPONSIVE_MASTER_DETAIL_EXAMPLES } from "../../examples/responsive-master-detail";
 import { SECTION_RULE_EXAMPLES } from "../../examples/section-rule";
 import { STAT_CARD_EXAMPLES } from "../../examples/stat-card";
-import { STAT_STRIP_EXAMPLES } from "../../examples/stat-strip";
 import { TABLE_EXAMPLES } from "../../examples/table";
 import { TABLE_PAGER_EXAMPLES } from "../../examples/table-pager";
 import { API as chartApi } from "../../generated/catalog-api/chart";
@@ -25,7 +24,6 @@ import { API as resourceListApi } from "../../generated/catalog-api/resource-lis
 import { API as responsiveMasterDetailApi } from "../../generated/catalog-api/responsive-master-detail";
 import { API as sectionRuleApi } from "../../generated/catalog-api/section-rule";
 import { API as statCardApi } from "../../generated/catalog-api/stat-card";
-import { API as statStripApi } from "../../generated/catalog-api/stat-strip";
 import { API as tableApi } from "../../generated/catalog-api/table";
 import { API as tablePagerApi } from "../../generated/catalog-api/table-pager";
 
@@ -234,25 +232,6 @@ export default function Example() {
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: PAGE_HEADER_EXAMPLES,
-	},
-	"stat-strip": {
-		docs: {
-			description:
-				"A responsive definition list of labelled values for page or dashboard overviews.",
-			usage: `import { StatStrip } from "@nocoo/basalt/components/stat-strip";
-
-export default function Example() {
-	return <StatStrip items={[{ label: "Care plans", value: "24" }]} />;
-}`,
-			variants: [],
-			api: statStripApi,
-			provenance: provenanceFromLegacy({
-				repo: "ai-arsenal",
-				sha: "78114d43df59",
-				file: "src/components/ui/page-header.tsx",
-			}),
-		},
-		examples: STAT_STRIP_EXAMPLES,
 	},
 	"table-pager": {
 		docs: {

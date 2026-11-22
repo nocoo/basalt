@@ -198,7 +198,7 @@ export default function InteractivePage() {
 				<LayerCard>
 					<div className="flex flex-wrap items-end gap-basalt-space-lg">
 						<Button size="sm">{t("pages.interactive.small")}</Button>
-						<Button size="default">{t("pages.interactive.default")}</Button>
+						<Button size="md">{t("pages.interactive.default")}</Button>
 						<Button size="lg">{t("pages.interactive.large")}</Button>
 						<Button size="icon" aria-label="Add">
 							<Plus className="size-basalt-icon-lg" />

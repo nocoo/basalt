@@ -1,4 +1,4 @@
-import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toaster } from "@nocoo/basalt";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -14,7 +14,7 @@ createRoot(root).render(
 			<LinkProvider>
 				<ThemeToggle aria-label="Toggle theme" />
 				<Button>Save</Button>
-				<Toast />
+				<Toaster />
 			</LinkProvider>
 		</ThemeProvider>
 	</StrictMode>,

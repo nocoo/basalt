@@ -78,7 +78,7 @@ export const API = [
 		props: [
 			{
 				name: "size",
-				type: "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+				type: "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 				required: false,
 				default: "\"base\"",
 				description: "Fixed desktop width preset, shared with Dialog. Content scrolls vertically when overflowing available height.",
@@ -145,9 +145,9 @@ export const API = [
 		props: [
 			{
 				name: "size",
-				type: "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+				type: "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 				required: false,
-				default: "\"default\"",
+				default: "\"md\"",
 				description: "Button size preset for the cancel button.",
 			},
 			{
@@ -171,9 +171,9 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+				type: "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 				required: false,
-				default: "\"default\"",
+				default: "\"md\"",
 				description: "Button size preset for the primary confirmation action.",
 			},
 			{

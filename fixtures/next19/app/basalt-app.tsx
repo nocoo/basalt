@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast, toast } from "@nocoo/basalt";
+import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toaster, toast } from "@nocoo/basalt";
 import { useEffect, useState } from "react";
 
 export function BasaltApp() {
@@ -22,7 +22,7 @@ export function BasaltApp() {
 					</Button>
 				</div>
 				<div data-basalt-toast-host="">
-					<Toast />
+					<Toaster />
 				</div>
 			</LinkProvider>
 		</ThemeProvider>

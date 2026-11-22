@@ -247,7 +247,6 @@ export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
 	],
 	"@nocoo/basalt/components/grid": ["ResponsiveGridColumns", "ResponsiveGridSpan"],
 	"@nocoo/basalt/components/stat-card": ["StatGrid", "StatGridProps"],
-	"@nocoo/basalt/components/editable-nav-item": ["FolderNavItem", "FolderNavItemProps"],
 	"@nocoo/basalt/components/tag-badge": ["TagColor", "tagColorFor", "TAG_COLORS"],
 	"@nocoo/basalt/components/file-dropzone": ["FileRejection"],
 	"@nocoo/basalt/components/filter-bar": ["FilterChip", "FilterChipProps"],
@@ -301,7 +300,7 @@ export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
 		"SidebarUserProps",
 		"useSidebar",
 	],
-	"@nocoo/basalt/components/toast": ["toast"],
+	"@nocoo/basalt/components/toast": ["toast", "ToastCallOptions", "ToastOptions", "ToastTone"],
 	"@nocoo/basalt/providers/link": ["LinkComponent", "useLinkComponent"],
 	"@nocoo/basalt/providers/theme": ["BasaltTheme", "useTheme"],
 };

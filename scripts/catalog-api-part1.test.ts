@@ -44,12 +44,6 @@ describe("catalog API generator contract 1/4", () => {
 				surface: "EditableNavItem",
 			},
 			{
-				slug: "editable-nav-item",
-				sourceFile: "packages/basalt/src/components/editable-nav-item.tsx",
-				propsType: "FolderNavItemProps",
-				surface: "FolderNavItem",
-			},
-			{
 				slug: "icon-picker",
 				sourceFile: "packages/basalt/src/components/icon-picker.tsx",
 				propsType: "IconPickerProps",
@@ -480,12 +474,6 @@ describe("catalog API generator contract 1/4", () => {
 				sourceFile: "packages/basalt/src/components/section-rule.tsx",
 				propsType: "SectionRuleProps",
 				surface: "SectionRule",
-			},
-			{
-				slug: "stat-strip",
-				sourceFile: "packages/basalt/src/components/stat-strip.tsx",
-				propsType: "StatStripProps",
-				surface: "StatStrip",
 			},
 			{
 				slug: "confirm-dialog",
@@ -1469,7 +1457,7 @@ describe("catalog API generator contract 1/4", () => {
 				surface: "Combobox",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(233);
+		expect(CATALOG_API_TARGETS).toHaveLength(231);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1514,7 +1502,6 @@ describe("catalog API generator contract 1/4", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*ScrollArea|\bswitch\s*\([^)]*scroll-area/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*SegmentControl|\bswitch\s*\([^)]*segment-control/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*PageHeader|\bswitch\s*\([^)]*page-header/);
-		expect(source).not.toMatch(/\bif\s*\([^)]*StatStrip|\bswitch\s*\([^)]*stat-strip/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*ConfirmDialog|\bswitch\s*\([^)]*confirm-dialog/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*TablePager|\bswitch\s*\([^)]*table-pager/);
 	});
@@ -1558,7 +1545,6 @@ describe("catalog API generator contract 1/4", () => {
 			"segment-control",
 			"page-header",
 			"section-rule",
-			"stat-strip",
 			"confirm-dialog",
 			"table-pager",
 			"fab",
@@ -1621,9 +1607,9 @@ describe("catalog API generator contract 1/4", () => {
 			},
 			{
 				name: "size",
-				type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | "tile" | null',
+				type: '"icon-sm" | "icon" | "lg" | "md" | "sm" | "tile" | null',
 				required: false,
-				default: '"default"',
+				default: '"md"',
 				description: "Sizing preset.",
 			},
 			{
@@ -1710,9 +1696,9 @@ describe("catalog API generator contract 1/4", () => {
 			},
 			{
 				name: "size",
-				type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | "tile" | null',
+				type: '"icon-sm" | "icon" | "lg" | "md" | "sm" | "tile" | null',
 				required: false,
-				default: '"default"',
+				default: '"md"',
 				description: "Sizing preset.",
 			},
 			{
@@ -2244,7 +2230,7 @@ describe("catalog API generator contract 1/4", () => {
 				name: "size",
 				type: "InputSize",
 				required: false,
-				default: "default",
+				default: '"md"',
 				description: "The visual size of the input.",
 			},
 			{

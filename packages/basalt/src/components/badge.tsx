@@ -1,4 +1,4 @@
-import type * as React from "react";
+import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 
@@ -56,16 +56,11 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 	dot?: boolean;
 }
 
-export function Badge({
-	className,
-	tone = "neutral",
-	variant = "soft",
-	dot,
-	children,
-	...props
-}: BadgeProps) {
-	return (
+export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+	({ className, tone = "neutral", variant = "soft", dot, children, ...props }, ref) => (
 		<span
+			ref={ref}
+			data-slot="badge"
 			className={cn(
 				BASALT_UI_CLASS,
 				"inline-flex items-center gap-basalt-space-md rounded-basalt-full border basalt-inline font-medium",
@@ -79,5 +74,6 @@ export function Badge({
 			) : null}
 			{children}
 		</span>
-	);
-}
+	),
+);
+Badge.displayName = "Badge";

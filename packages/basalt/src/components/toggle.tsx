@@ -14,12 +14,12 @@ const toggleVariants = cva(
 				outline: "border border-basalt-border bg-basalt-control",
 			},
 			size: {
-				default: "basalt-action",
+				md: "basalt-action",
 				sm: "basalt-action basalt-action-sm",
 				lg: "basalt-action basalt-action-lg",
 			},
 		},
-		defaultVariants: { variant: "default", size: "default" },
+		defaultVariants: { variant: "default", size: "md" },
 	},
 );
 
@@ -35,7 +35,7 @@ export interface ToggleProps
 	variant?: VariantProps<typeof toggleVariants>["variant"];
 	/**
 	 * Sizing preset.
-	 * @default "default"
+	 * @default "md"
 	 */
 	size?: VariantProps<typeof toggleVariants>["size"];
 	/**

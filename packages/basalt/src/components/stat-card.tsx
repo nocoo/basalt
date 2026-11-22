@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { forwardRef, type ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { LayerCard } from "./layer-card";
+import { Skeleton } from "./skeleton";
 
 export type StatCardProps = {
 	/**
@@ -13,9 +14,14 @@ export type StatCardProps = {
 	title?: string;
 	/**
 	 * Metric value, formatted via toLocaleString() if a number is provided.
-	 * Overridden by the status slot if provided.
+	 * Overridden by the status slot or loading state if provided.
 	 */
-	value: string | number;
+	value?: string | number;
+	/**
+	 * Render a skeleton placeholder instead of the metric value and mark the card busy.
+	 * @default false
+	 */
+	loading?: boolean;
 	/**
 	 * Supporting descriptive subtitle text rendered below value.
 	 */
@@ -68,132 +74,143 @@ function hasSlotContent(slot: ReactNode | undefined): boolean {
 	return slot !== undefined && slot !== null && slot !== false;
 }
 
-export function StatCard({
-	label,
-	title,
-	value,
-	subtitle,
-	icon,
-	iconColor = "text-basalt-muted-foreground",
-	trend,
-	action,
-	status,
-	trendContent,
-	children,
-	ariaLabel,
-	className,
-}: StatCardProps) {
-	const heading = title ?? label;
-	const hasStatus = hasSlotContent(status);
-	const hasTrendContent = hasSlotContent(trendContent);
-	const hasAction = hasSlotContent(action);
-	const hasChildren = hasSlotContent(children);
-	const isInteractive = hasAction || hasStatus || hasTrendContent || hasChildren;
-
-	const display = typeof value === "number" ? value.toLocaleString() : value;
-	const isPositiveTrend = trend && trend.value > 0;
-	const isNegativeTrend = trend && trend.value < 0;
-
-	// Accessible name: If custom status or custom trendContent is provided, do not report
-	// the overridden hidden default value or default trend to assistive technology.
-	const named =
-		ariaLabel ??
-		[
-			heading,
-			!hasStatus ? display : null,
+export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
+	(
+		{
+			label,
+			title,
+			value,
+			loading = false,
 			subtitle,
-			!hasTrendContent && trend
-				? `${isPositiveTrend ? "+" : ""}${trend.value}% ${trend.label ?? ""}`
-				: null,
-		]
-			.filter(Boolean)
-			.join(" ")
-			.trim();
+			icon,
+			iconColor = "text-basalt-muted-foreground",
+			trend,
+			action,
+			status,
+			trendContent,
+			children,
+			ariaLabel,
+			className,
+		},
+		ref,
+	) => {
+		const heading = title ?? label;
+		const hasStatus = hasSlotContent(status);
+		const hasTrendContent = hasSlotContent(trendContent);
+		const hasAction = hasSlotContent(action);
+		const hasChildren = hasSlotContent(children);
+		const isInteractive = hasAction || hasStatus || hasTrendContent || hasChildren;
 
-	return (
-		<LayerCard
-			data-slot="stat-card"
-			className={cn(
-				"flex min-w-0 flex-col gap-basalt-card-sm overflow-visible [overflow-wrap:anywhere]",
-				className,
-			)}
-			role={isInteractive ? "group" : "img"}
-			aria-label={named}
-		>
-			{heading || hasSlotContent(icon) || hasAction ? (
-				<div
-					data-slot="stat-card-heading"
-					className="flex items-center justify-between gap-basalt-space-lg"
-				>
-					<div className="flex min-w-0 items-start gap-basalt-space-lg">
-						{hasSlotContent(icon) ? (
+		const display = typeof value === "number" ? value.toLocaleString() : value;
+		const isPositiveTrend = trend && trend.value > 0;
+		const isNegativeTrend = trend && trend.value < 0;
+
+		// Accessible name: If custom status, loading state, or custom trendContent is provided, do not report
+		// the hidden default value or default trend to assistive technology.
+		const named =
+			ariaLabel ??
+			[
+				heading,
+				!hasStatus && !loading ? display : null,
+				subtitle,
+				!hasTrendContent && trend
+					? `${isPositiveTrend ? "+" : ""}${trend.value}% ${trend.label ?? ""}`
+					: null,
+			]
+				.filter(Boolean)
+				.join(" ")
+				.trim();
+
+		return (
+			<LayerCard
+				ref={ref}
+				data-slot="stat-card"
+				aria-busy={loading || undefined}
+				className={cn(
+					"flex min-w-0 flex-col gap-basalt-card-sm overflow-visible [overflow-wrap:anywhere]",
+					className,
+				)}
+				role={isInteractive ? "group" : "img"}
+				aria-label={named}
+			>
+				{heading || hasSlotContent(icon) || hasAction ? (
+					<div
+						data-slot="stat-card-heading"
+						className="flex items-center justify-between gap-basalt-space-lg"
+					>
+						<div className="flex min-w-0 items-start gap-basalt-space-lg">
+							{hasSlotContent(icon) ? (
+								<span
+									aria-hidden="true"
+									className={cn(
+										"mt-basalt-space-xs inline-flex size-basalt-icon-lg shrink-0 [&>svg]:size-full",
+										iconColor,
+									)}
+								>
+									{icon}
+								</span>
+							) : null}
+							<p className="min-w-0 text-basalt-base font-medium text-basalt-muted-foreground">
+								{heading}
+							</p>
+						</div>
+						{hasAction ? <div className="flex shrink-0 items-center">{action}</div> : null}
+					</div>
+				) : null}
+				<div data-slot="stat-card-metric" className="min-w-0 space-y-basalt-space-sm">
+					{hasStatus ? (
+						<div>{status}</div>
+					) : loading ? (
+						<Skeleton width="50%" height={24} />
+					) : (
+						<p
+							data-slot="stat-card-value"
+							className="font-basalt-display text-basalt-3xl leading-basalt-tight font-semibold tabular-nums text-basalt-foreground"
+						>
+							{display}
+						</p>
+					)}
+					{subtitle ? (
+						<p className="text-basalt-sm text-basalt-muted-foreground">{subtitle}</p>
+					) : null}
+					{hasTrendContent ? (
+						<div
+							data-slot="stat-card-trend"
+							className="flex flex-wrap items-baseline gap-x-basalt-space-md gap-y-basalt-space-xs text-basalt-sm"
+						>
+							{trendContent}
+						</div>
+					) : trend ? (
+						<div
+							data-slot="stat-card-trend"
+							className="flex flex-wrap items-baseline gap-x-basalt-space-md gap-y-basalt-space-xs text-basalt-sm"
+						>
 							<span
-								aria-hidden="true"
 								className={cn(
-									"mt-basalt-space-xs inline-flex size-basalt-icon-lg shrink-0 [&>svg]:size-full",
-									iconColor,
+									"font-medium tabular-nums",
+									isPositiveTrend && "text-basalt-success",
+									isNegativeTrend && "text-basalt-danger-solid",
+									!isPositiveTrend && !isNegativeTrend && "text-basalt-muted-foreground",
 								)}
 							>
-								{icon}
+								{`${isPositiveTrend ? "+" : ""}${trend.value}%`}
 							</span>
-						) : null}
-						<p className="min-w-0 text-basalt-base font-medium text-basalt-muted-foreground">
-							{heading}
-						</p>
-					</div>
-					{hasAction ? <div className="flex shrink-0 items-center">{action}</div> : null}
+							{trend.label ? (
+								<span className="text-basalt-muted-foreground">{trend.label}</span>
+							) : null}
+						</div>
+					) : null}
 				</div>
-			) : null}
-			<div data-slot="stat-card-metric" className="min-w-0 space-y-basalt-space-sm">
-				{hasStatus ? (
-					<div>{status}</div>
-				) : (
-					<p
-						data-slot="stat-card-value"
-						className="font-basalt-display text-basalt-3xl leading-basalt-tight font-semibold tabular-nums text-basalt-foreground"
-					>
-						{display}
-					</p>
-				)}
-				{subtitle ? (
-					<p className="text-basalt-sm text-basalt-muted-foreground">{subtitle}</p>
-				) : null}
-				{hasTrendContent ? (
-					<div
-						data-slot="stat-card-trend"
-						className="flex flex-wrap items-baseline gap-x-basalt-space-md gap-y-basalt-space-xs text-basalt-sm"
-					>
-						{trendContent}
-					</div>
-				) : trend ? (
-					<div
-						data-slot="stat-card-trend"
-						className="flex flex-wrap items-baseline gap-x-basalt-space-md gap-y-basalt-space-xs text-basalt-sm"
-					>
-						<span
-							className={cn(
-								"font-medium tabular-nums",
-								isPositiveTrend && "text-basalt-success",
-								isNegativeTrend && "text-basalt-danger-solid",
-								!isPositiveTrend && !isNegativeTrend && "text-basalt-muted-foreground",
-							)}
-						>
-							{`${isPositiveTrend ? "+" : ""}${trend.value}%`}
-						</span>
-						{trend.label ? (
-							<span className="text-basalt-muted-foreground">{trend.label}</span>
-						) : null}
+				{hasChildren ? (
+					<div data-slot="stat-card-content" className="mt-auto min-w-0">
+						{children}
 					</div>
 				) : null}
-			</div>
-			{hasChildren ? (
-				<div data-slot="stat-card-content" className="mt-auto min-w-0">
-					{children}
-				</div>
-			) : null}
-		</LayerCard>
-	);
-}
+			</LayerCard>
+		);
+	},
+);
+StatCard.displayName = "StatCard";
 
 export type StatGridProps = {
 	children: ReactNode;
@@ -201,13 +218,18 @@ export type StatGridProps = {
 	className?: string;
 };
 
-export function StatGrid({ children, columns = 4, className }: StatGridProps) {
-	return (
-		<div
-			data-columns={columns}
-			className={cn("basalt-stat-grid grid gap-basalt-layout", className)}
-		>
-			{children}
-		</div>
-	);
-}
+export const StatGrid = forwardRef<HTMLDivElement, StatGridProps>(
+	({ children, columns = 4, className }, ref) => {
+		return (
+			<div
+				ref={ref}
+				data-slot="stat-grid"
+				data-columns={columns}
+				className={cn("basalt-stat-grid grid gap-basalt-layout", className)}
+			>
+				{children}
+			</div>
+		);
+	},
+);
+StatGrid.displayName = "StatGrid";

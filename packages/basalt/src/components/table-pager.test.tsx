@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { TablePager } from "./table-pager";
 
@@ -85,5 +86,24 @@ describe("TablePager", () => {
 		expect(screen.getByRole("button", { name: "Last page" })).toBeDisabled();
 		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
 		expect(onPageChange).not.toHaveBeenCalled();
+	});
+
+	it("supports uncontrolled pagination, defaultPage, ref forwarding, and data-slot", () => {
+		const ref = createRef<HTMLDivElement>();
+		const onPageChange = vi.fn();
+		render(
+			<TablePager
+				ref={ref}
+				defaultPage={2}
+				pageSize={10}
+				totalCount={50}
+				onPageChange={onPageChange}
+			/>,
+		);
+		expect(ref.current).toHaveAttribute("data-slot", "table-pager");
+		expect(screen.getByText("Showing 11–20 of 50")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
+		expect(screen.getByText("Showing 21–30 of 50")).toBeInTheDocument();
+		expect(onPageChange).toHaveBeenCalledWith(3);
 	});
 });

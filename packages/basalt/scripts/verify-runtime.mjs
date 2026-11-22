@@ -16,7 +16,7 @@ if (!existsSync(baselinePath)) {
 
 const baseline = JSON.parse(readFileSync(baselinePath, "utf8"));
 const forbidden = ["AppHeader", "AppMain", "AppShell", "AppSkipLink", "LoadingScreen"];
-const required = ["Button", "ThemeProvider", "ThemeToggle", "Toast", "LinkProvider"];
+const required = ["Button", "ThemeProvider", "ThemeToggle", "Toaster", "LinkProvider"];
 
 function assertDist(url, suffix) {
 	const path = url.pathname;

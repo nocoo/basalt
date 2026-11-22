@@ -26,7 +26,7 @@ describe("Button", () => {
 			expect(screen.getByRole("button")).not.toHaveClass("basalt-choice");
 		},
 	);
-	it.each(["default", "sm", "icon", "icon-sm", "lg", "tile"] as const)(
+	it.each(["md", "sm", "icon", "icon-sm", "lg", "tile"] as const)(
 		"sizes icons proportionally for %s buttons",
 		(size) => {
 			render(<Button size={size}>Action</Button>);

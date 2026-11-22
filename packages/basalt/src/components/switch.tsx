@@ -37,9 +37,9 @@ export type SwitchProps = Omit<
 	checked?: boolean;
 	/**
 	 * The visual size of the switch.
-	 * @default default
+	 * @default "md"
 	 */
-	size?: "default" | "sm";
+	size?: "sm" | "md";
 };
 
 export type SwitchGroupProps = Omit<
@@ -82,7 +82,7 @@ export type SwitchItemProps = Omit<
 };
 
 const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, SwitchProps>(
-	({ className, size = "default", ...props }, ref) => (
+	({ className, size = "md", ...props }, ref) => (
 		<SwitchPrimitives.Root
 			className={cn(
 				BASALT_UI_CLASS,

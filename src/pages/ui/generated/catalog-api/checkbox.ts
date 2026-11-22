@@ -15,7 +15,7 @@ export const API = [
 				name: "size",
 				type: "CheckboxSize",
 				required: false,
-				default: "default",
+				default: "\"md\"",
 				description: "The visual size of the checkbox.",
 			},
 		],
@@ -65,9 +65,9 @@ export const API = [
 		props: [
 			{
 				name: "size",
-				type: "\"default\" | \"sm\"",
+				type: "\"md\" | \"sm\"",
 				required: false,
-				default: "default",
+				default: "\"md\"",
 				description: "The visual size of the checkbox.",
 			},
 			{

@@ -33,7 +33,7 @@ function acceptLabelProps(_props: SelectLabelProps) {}
 
 const SIZE_CLASS = {
 	sm: ["basalt-action", "basalt-action-sm"],
-	default: ["basalt-action"],
+	md: ["basalt-action"],
 	lg: ["basalt-action", "basalt-action-lg"],
 } as const;
 
@@ -124,7 +124,7 @@ describe("Select", () => {
 		});
 		acceptTriggerProps({ className: "extra", id: "trigger", "aria-label": "Version" });
 		acceptTriggerProps({ size: "sm", loading: true, disabled: true });
-		acceptTriggerProps({ size: "default" });
+		acceptTriggerProps({ size: "md" });
 		acceptTriggerProps({ size: "lg" });
 		acceptLabelProps({ className: "label", id: "group-label" });
 		acceptValueProps({ placeholder: "Select version" });
@@ -169,7 +169,7 @@ describe("Select", () => {
 		acceptItemProps({ value: 1 });
 		// @ts-expect-error value must be a string
 		acceptItemProps({ value: {} });
-		// @ts-expect-error size must be sm, default, or lg
+		// @ts-expect-error size must be sm, md, or lg
 		acceptTriggerProps({ size: "xl" });
 		// @ts-expect-error loading must be a boolean
 		acceptTriggerProps({ loading: "yes" });
@@ -285,17 +285,17 @@ describe("Select", () => {
 			</Select>,
 		);
 		expect(screen.getByRole("combobox", { name: "Version" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining([...SIZE_CLASS.default]),
+			expect.arrayContaining([...SIZE_CLASS.md]),
 		);
 		rerender(
 			<Select>
-				<SelectTrigger aria-label="Version" size="default">
+				<SelectTrigger aria-label="Version" size="md">
 					<SelectValue placeholder="Choose…" />
 				</SelectTrigger>
 			</Select>,
 		);
 		expect(screen.getByRole("combobox", { name: "Version" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining([...SIZE_CLASS.default]),
+			expect.arrayContaining([...SIZE_CLASS.md]),
 		);
 		rerender(
 			<Select>

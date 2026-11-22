@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { isValidElement, type ReactElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Check, CircleAlert, Info, Loader2, TriangleAlert } from "../utils/internal-icons";
-import { Toast, Toaster, toast } from "./toast";
+import { Toaster, toast } from "./toast";
 
 vi.mock("sonner", async (importOriginal) => {
 	const actual = await importOriginal<typeof import("sonner")>();
@@ -60,8 +60,7 @@ describe("toast", () => {
 		expect(toast.dismiss).toBeTypeOf("function");
 	});
 
-	it("exposes Toast and Toaster", () => {
-		expect(Toast).toBe(Toaster);
+	it("renders Toaster", () => {
 		render(<Toaster />);
 	});
 

@@ -201,7 +201,7 @@ export default catalogContentFamily({
 				"@nocoo/basalt/components/input",
 				'<Input aria-label="Name" placeholder="Jane Doe" />',
 			),
-			variants: ["sm", "default", "lg"],
+			variants: ["sm", "md", "lg"],
 			api: inputApi,
 			provenance: provenanceFromLegacy({
 				repo: "kumo",
@@ -259,7 +259,7 @@ export default catalogContentFamily({
 				"@nocoo/basalt/components/sensitive-input",
 				'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 			),
-			variants: ["sm", "default", "lg"],
+			variants: ["sm", "md", "lg"],
 			api: sensitiveInputApi,
 			provenance: provenanceFromLegacy({
 				repo: "basalt",
@@ -277,7 +277,7 @@ export default catalogContentFamily({
 				"@nocoo/basalt/components/checkbox",
 				'<Checkbox aria-label="Subscribe" />',
 			),
-			variants: ["checked", "unchecked", "indeterminate", "sm", "default"],
+			variants: ["checked", "unchecked", "indeterminate", "sm", "md"],
 			api: checkboxApi,
 			provenance: provenanceFromLegacy({
 				repo: "kumo",
@@ -299,7 +299,7 @@ export default catalogContentFamily({
 	<Radio value="b" aria-label="Beta" />
 </Radio.Group>`,
 			),
-			variants: ["sm", "default"],
+			variants: ["sm", "md"],
 			api: radioApi,
 			provenance: provenanceFromLegacy({
 				repo: "kumo",
@@ -317,7 +317,7 @@ export default catalogContentFamily({
 				"@nocoo/basalt/components/switch",
 				'<Switch aria-label="Notifications" />',
 			),
-			variants: ["checked", "unchecked", "sm", "default"],
+			variants: ["checked", "unchecked", "sm", "md"],
 			api: switchApi,
 			provenance: provenanceFromLegacy({
 				repo: "kumo",
@@ -350,7 +350,7 @@ export default function Example() {
 		</Select>
 	);
 }`,
-			variants: ["sm", "default", "lg"],
+			variants: ["sm", "md", "lg"],
 			api: selectApi,
 			provenance: provenanceFromLegacy({
 				repo: "pew",
@@ -376,7 +376,7 @@ export default function Example() {
 		/>
 	);
 }`,
-			variants: ["sm", "default", "lg"],
+			variants: ["sm", "md", "lg"],
 			api: autocompleteApi,
 			provenance: EXTRA_PROVENANCE,
 		},
@@ -546,7 +546,7 @@ export default function Example() {
 	"segment-control": {
 		docs: {
 			description:
-				"A controlled, labelled segmented filter with an optional All choice and horizontal overflow.",
+				"A controlled or uncontrolled, labelled segmented filter with an optional All choice and horizontal overflow.",
 			usage: `import { SegmentControl } from "@nocoo/basalt/components/segment-control";
 import { useState } from "react";
 

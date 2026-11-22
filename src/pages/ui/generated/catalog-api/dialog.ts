@@ -85,9 +85,9 @@ export const API = [
 		props: [
 			{
 				name: "size",
-				type: "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+				type: "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 				required: false,
-				default: "\"base\"",
+				default: "\"md\"",
 				description: "Fixed desktop width preset. Dialog panel scrolls vertically when content overflows available viewport height.",
 			},
 			{

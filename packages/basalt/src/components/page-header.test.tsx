@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it } from "vitest";
 import { PageHeader } from "./page-header";
 
@@ -109,5 +110,19 @@ describe("PageHeader", () => {
 		expect(
 			within(banner).getByRole("button", { name: "Create report" }).parentElement?.className,
 		).toContain("flex-wrap");
+	});
+
+	it("forwards ref, stamps data-slot, and switches between md and lg title scales", () => {
+		const ref = createRef<HTMLElement>();
+		const { rerender } = render(<PageHeader ref={ref} title="Overview" />);
+		const banner = screen.getByRole("banner", { name: "Overview" });
+		expect(ref.current).toBe(banner);
+		expect(banner).toHaveAttribute("data-slot", "page-header");
+		expect(banner).toHaveAttribute("data-size", "lg");
+		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-3xl");
+
+		rerender(<PageHeader ref={ref} title="Overview" size="md" />);
+		expect(banner).toHaveAttribute("data-size", "md");
+		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-xl");
 	});
 });

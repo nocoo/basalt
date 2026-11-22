@@ -69,12 +69,6 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "EditableNavItem",
 	},
 	{
-		slug: "editable-nav-item",
-		sourceFile: "packages/basalt/src/components/editable-nav-item.tsx",
-		propsType: "FolderNavItemProps",
-		surface: "FolderNavItem",
-	},
-	{
 		slug: "icon-picker",
 		sourceFile: "packages/basalt/src/components/icon-picker.tsx",
 		propsType: "IconPickerProps",
@@ -503,12 +497,6 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/section-rule.tsx",
 		propsType: "SectionRuleProps",
 		surface: "SectionRule",
-	},
-	{
-		slug: "stat-strip",
-		sourceFile: "packages/basalt/src/components/stat-strip.tsx",
-		propsType: "StatStripProps",
-		surface: "StatStrip",
 	},
 	{
 		slug: "confirm-dialog",

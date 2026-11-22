@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { forwardRef, type ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { DataTable, type DataTableColumn } from "./data-table";
 import { PageHeader } from "./page-header";
@@ -43,41 +43,51 @@ const COLUMNS: DataTableColumn<ResourceListRow>[] = [
 	{ id: "status", header: "Status", accessor: (row) => row.status },
 ];
 
-export function ResourceList({
-	title,
-	description,
-	data,
-	header,
-	toolbar,
-	filters,
-	bulkActions,
-	state,
-	children,
-	footer,
-	className,
-	loading,
-	empty,
-	error,
-	onRetry,
-}: ResourceListProps) {
-	return (
-		<div className={cn("min-w-0 space-y-basalt-layout-lg", className)}>
-			{header ?? <PageHeader title={title} description={description} />}
-			{toolbar != null ? <div>{toolbar}</div> : null}
-			{filters != null ? <div>{filters}</div> : null}
-			{bulkActions != null ? <div>{bulkActions}</div> : null}
-			{state ?? children ?? (
-				<DataTable
-					data={data}
-					columns={COLUMNS}
-					loading={loading}
-					empty={empty}
-					error={error}
-					onRetry={onRetry}
-					aria-label={title}
-				/>
-			)}
-			{footer != null ? <div>{footer}</div> : null}
-		</div>
-	);
-}
+export const ResourceList = forwardRef<HTMLDivElement, ResourceListProps>(
+	(
+		{
+			title,
+			description,
+			data,
+			header,
+			toolbar,
+			filters,
+			bulkActions,
+			state,
+			children,
+			footer,
+			className,
+			loading,
+			empty,
+			error,
+			onRetry,
+		},
+		ref,
+	) => {
+		return (
+			<div
+				ref={ref}
+				data-slot="resource-list"
+				className={cn("min-w-0 space-y-basalt-layout-lg", className)}
+			>
+				{header ?? <PageHeader title={title} description={description} />}
+				{toolbar != null ? <div>{toolbar}</div> : null}
+				{filters != null ? <div>{filters}</div> : null}
+				{bulkActions != null ? <div>{bulkActions}</div> : null}
+				{state ?? children ?? (
+					<DataTable
+						data={data}
+						columns={COLUMNS}
+						loading={loading}
+						empty={empty}
+						error={error}
+						onRetry={onRetry}
+						aria-label={title}
+					/>
+				)}
+				{footer != null ? <div>{footer}</div> : null}
+			</div>
+		);
+	},
+);
+ResourceList.displayName = "ResourceList";

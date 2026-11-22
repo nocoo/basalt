@@ -179,7 +179,7 @@ function DialogActions({
 function DialogSizesExample() {
 	const sizes: { size: DialogSize; label: string; width: string }[] = [
 		{ size: "sm", label: "Small", width: "288px" },
-		{ size: "base", label: "Base", width: "384px" },
+		{ size: "md", label: "Medium", width: "384px" },
 		{ size: "lg", label: "Large", width: "512px" },
 		{ size: "xl", label: "Extra Large", width: "768px" },
 	];
@@ -500,7 +500,7 @@ import {
 export default function Example() {
 	const sizes: { size: DialogSize; label: string; width: string }[] = [
 		{ size: "sm", label: "Small", width: "288px" },
-		{ size: "base", label: "Base", width: "384px" },
+		{ size: "md", label: "Medium", width: "384px" },
 		{ size: "lg", label: "Large", width: "512px" },
 		{ size: "xl", label: "Extra Large", width: "768px" },
 	];

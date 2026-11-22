@@ -14,9 +14,9 @@ describe("pending 4.0 public API baseline", () => {
 			readFileSync("packages/basalt/public-api-baseline.json", "utf8"),
 		) as BaselineDoc;
 		expect(baseline.packageVersion).toBe("4.0.0-pending");
-		expect(baseline.sourceBaseline).toContain("99 paths / 549 symbols");
-		expect(baseline.entries).toHaveLength(99);
-		expect(baseline.entries.reduce((total, entry) => total + entry.symbols.length, 0)).toBe(549);
+		expect(baseline.sourceBaseline).toContain("98 paths / 545 symbols");
+		expect(baseline.entries).toHaveLength(98);
+		expect(baseline.entries.reduce((total, entry) => total + entry.symbols.length, 0)).toBe(545);
 	});
 });
 

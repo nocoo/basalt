@@ -8,13 +8,19 @@ export const API = [
 			{
 				name: "value",
 				type: "string",
-				required: true,
+				required: false,
 				description: "The currently selected value.",
+			},
+			{
+				name: "defaultValue",
+				type: "string",
+				required: false,
+				description: "Uncontrolled initial selected value.",
 			},
 			{
 				name: "onValueChange",
 				type: "(value: string) => void",
-				required: true,
+				required: false,
 				description: "Called when the user selects a different segment.",
 			},
 			{

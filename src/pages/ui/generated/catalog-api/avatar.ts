@@ -85,9 +85,9 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"default\" | \"sm\"",
+				type: "\"md\" | \"sm\"",
 				required: false,
-				default: "\"default\"",
+				default: "\"md\"",
 				description: "Avatar diameter.",
 			},
 			{

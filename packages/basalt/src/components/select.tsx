@@ -51,7 +51,7 @@ export const SelectGroup: React.ForwardRefExoticComponent<
 	SelectGroupProps & React.RefAttributes<React.ElementRef<typeof SelectPrimitive.Group>>
 > = SelectPrimitive.Group;
 
-export type SelectSize = "sm" | "default" | "lg";
+export type SelectSize = "sm" | "md" | "lg";
 
 export type SelectTriggerProps = Omit<
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
@@ -59,7 +59,7 @@ export type SelectTriggerProps = Omit<
 > & {
 	/**
 	 * The visual size of the trigger.
-	 * @default default
+	 * @default "md"
 	 */
 	size?: SelectSize;
 	/**
@@ -77,7 +77,7 @@ export type SelectTriggerProps = Omit<
 export const SelectTrigger = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Trigger>,
 	SelectTriggerProps
->(({ className, children, size = "default", loading = false, disabled = false, ...props }, ref) => (
+>(({ className, children, size = "md", loading = false, disabled = false, ...props }, ref) => (
 	<SelectPrimitive.Trigger
 		ref={ref}
 		{...props}

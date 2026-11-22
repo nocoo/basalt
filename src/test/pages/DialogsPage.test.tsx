@@ -6,7 +6,7 @@ describe("DialogsPage", () => {
 	it("teaches dialog chrome with package controls", () => {
 		render(<DialogsPage />);
 		expect(screen.getByRole("heading", { name: "Dialogs" })).toBeInTheDocument();
-		expect(screen.getByText(/Default size is base \(384px\)/)).toBeInTheDocument();
+		expect(screen.getByText(/Default size is md \(384px\)/)).toBeInTheDocument();
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 	});
 
@@ -24,7 +24,7 @@ describe("DialogsPage", () => {
 
 	it("opens a sized dialog at the documented width", () => {
 		render(<DialogsPage />);
-		fireEvent.click(screen.getByRole("button", { name: "Base (384px)" }));
+		fireEvent.click(screen.getByRole("button", { name: "Medium (384px)" }));
 		expect(screen.getByRole("dialog")).toHaveClass("sm:w-basalt-96");
 	});
 

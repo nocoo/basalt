@@ -87,8 +87,8 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(82);
-		expect(new Set(slugs).size).toBe(82);
+		expect(slugs).toHaveLength(81);
+		expect(new Set(slugs).size).toBe(81);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
@@ -128,7 +128,7 @@ describe("ui catalog", () => {
 		expect(tablesGrid).toHaveClass("@[44rem]/island:grid-cols-2");
 		expect(tablesGrid).not.toHaveClass("@[60rem]/island:grid-cols-3");
 		expect(tablesGrid).not.toHaveClass("@[84rem]/island:grid-cols-4");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(82);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(81);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -230,7 +230,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("82 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("81 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -255,8 +255,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(filters.getByRole("button", { name: "Reset filters" }));
 		expect(filters.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("82 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(82);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("81 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(81);
 		expect(filters.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -908,11 +908,12 @@ describe("ui catalog", () => {
 		expect(docs?.api).toBe(CATALOG_API["segment-control"]);
 		expect(docs).toMatchObject({
 			description:
-				"A controlled, labelled segmented filter with an optional All choice and horizontal overflow.",
+				"A controlled or uncontrolled, labelled segmented filter with an optional All choice and horizontal overflow.",
 			variants: ["all", "overflow", "disabled"],
 		});
 		expect(CATALOG_API["segment-control"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"value",
+			"defaultValue",
 			"onValueChange",
 			"legend",
 			"options",
@@ -927,7 +928,7 @@ describe("ui catalog", () => {
 
 		renderCatalog("/ui/segment-control");
 		const api = document.getElementById("api-reference");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(7);
 		const statusHero = document.querySelector(
 			'[data-hero-scenario="segment-control-controlled-status"]',
 		);
@@ -961,13 +962,15 @@ describe("ui catalog", () => {
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain("### SegmentControl");
 		expect(markdown).toContain(
-			"- value (string, required, default —): The currently selected value.",
+			"- value (string, optional, default —): The currently selected value.",
+		);
+		expect(markdown).toContain(
+			"- defaultValue (string, optional, default —): Uncontrolled initial selected value.",
 		);
 		expect(markdown).toContain("- allOption (SegmentControlAllOption, optional, default —)");
 		for (const scenario of UI_EXAMPLES["segment-control"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).not.toContain("- defaultValue (");
 		expect(markdown).not.toContain("- children (");
 	});
 
@@ -987,6 +990,7 @@ describe("ui catalog", () => {
 			"breadcrumbs",
 			"actions",
 			"filters",
+			"size",
 			"className",
 		]);
 		expect(UI_EXAMPLES["page-header"]?.map(({ id, title }) => ({ id, title }))).toEqual([
@@ -997,7 +1001,7 @@ describe("ui catalog", () => {
 
 		renderCatalog("/ui/page-header");
 		const api = document.getElementById("api-reference");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(7);
 		const hero = document.querySelector('[data-hero-scenario="page-header-default"]');
 		expect(hero).toBeTruthy();
 		if (!hero) {
@@ -1043,8 +1047,8 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES["page-header"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
+		expect(markdown).toContain('- size ("lg" | "md", optional, default "lg")');
 		expect(markdown).toContain("- className (string, optional, default —)");
-		expect(markdown).not.toContain("- size (");
 		expect(markdown).not.toContain("- children (");
 	});
 
@@ -1121,62 +1125,6 @@ describe("ui catalog", () => {
 		expect(markdown).not.toContain("- children (");
 	});
 
-	it("keeps StatStrip docs, generated API, source examples, and Copy page aligned", async () => {
-		const writeText = vi.fn().mockResolvedValue(undefined);
-		Object.assign(navigator, { clipboard: { writeText } });
-		const docs = CATALOG_DOCS["stat-strip"];
-		expect(docs?.api).toBe(CATALOG_API["stat-strip"]);
-		expect(docs).toMatchObject({
-			description:
-				"A responsive definition list of labelled values for page or dashboard overviews.",
-			variants: [],
-		});
-		expect(CATALOG_API["stat-strip"]?.[0]?.props.map((prop) => prop.name)).toEqual([
-			"className",
-			"items",
-			"loading",
-		]);
-		expect(UI_EXAMPLES["stat-strip"]?.map(({ id, title }) => ({ id, title }))).toEqual([
-			{ id: "stat-strip-overview", title: "Overview" },
-			{ id: "stat-strip-loading-values", title: "Loading values" },
-		]);
-
-		renderCatalog("/ui/stat-strip");
-		const api = document.getElementById("api-reference");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
-		const hero = document.querySelector('[data-hero-scenario="stat-strip-overview"]');
-		expect(hero).toBeTruthy();
-		if (!hero) {
-			throw new Error("missing StatStrip hero");
-		}
-		expect(within(hero as HTMLElement).getByText("Care plans")).toBeInTheDocument();
-		expect(within(hero as HTMLElement).getByText("24")).toBeInTheDocument();
-		const loading = document.querySelector('[data-scenario="stat-strip-loading-values"]');
-		expect(loading).toBeTruthy();
-		if (!loading) {
-			throw new Error("missing StatStrip loading example");
-		}
-		expect(loading.querySelector("dl")).toHaveAttribute("aria-busy", "true");
-		expect(within(loading as HTMLElement).queryByText("24")).toBeNull();
-		for (const scenario of UI_EXAMPLES["stat-strip"] ?? []) {
-			expect(scenario.code).toContain("@nocoo/basalt/components/stat-strip");
-			expect(scenario.code).toContain("export default function");
-			expect(document.querySelector(`[data-scenario="${scenario.id}"]`)).toBeTruthy();
-		}
-
-		await act(async () => {
-			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
-		});
-		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(markdown).toContain("### StatStrip");
-		expect(markdown).toContain("- items (readonly StatStripItem[], required, default —)");
-		expect(markdown).toContain("- loading (boolean, optional, default false)");
-		for (const scenario of UI_EXAMPLES["stat-strip"] ?? []) {
-			expect(markdown).toContain(scenario.code);
-		}
-		expect(markdown).not.toContain("- children (");
-	});
-
 	it("keeps ConfirmDialog docs, generated API, source examples, and Copy page aligned", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -1250,6 +1198,7 @@ describe("ui catalog", () => {
 		});
 		expect(CATALOG_API["table-pager"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"page",
+			"defaultPage",
 			"pageSize",
 			"totalCount",
 			"onPageChange",
@@ -1265,7 +1214,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/table-pager");
 		const api = document.getElementById("api-reference");
 		expect(api?.querySelectorAll("h3").length).toBe(1);
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(7);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(8);
 		const hero = document.querySelector('[data-hero-scenario="table-pager-range-navigation"]');
 		expect(hero).toBeTruthy();
 		if (!hero) {
@@ -1296,7 +1245,8 @@ describe("ui catalog", () => {
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain("### TablePager");
-		expect(markdown).toContain("- page (number, required, default —)");
+		expect(markdown).toContain("- page (number, optional, default —)");
+		expect(markdown).toContain("- defaultPage (number, optional, default 1)");
 		expect(markdown).toContain(
 			"- formatRange ((range: TablePagerRange) => React.ReactNode, optional, default —)",
 		);
@@ -1765,7 +1715,7 @@ describe("ui catalog", () => {
 						name: "size",
 						type: "InputSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the input.",
 					},
 					{
@@ -1808,7 +1758,7 @@ describe("ui catalog", () => {
 			"- type (React.HTMLInputTypeAttribute, optional, default —): The type of input control to render.",
 		);
 		expect(markdown).toContain(
-			"- size (InputSize, optional, default default): The visual size of the input.",
+			'- size (InputSize, optional, default "md"): The visual size of the input.',
 		);
 		expect(markdown).toContain(
 			"- passwordManagerIgnore (boolean, optional, default false): Ignore password managers on this field.",
@@ -1835,7 +1785,7 @@ describe("ui catalog", () => {
 			'description: "A sized native single-line control on the L3 surface."',
 		);
 		expect(family).toContain('<Input aria-label="Name" placeholder="Jane Doe" />');
-		expect(family).toContain('variants: ["sm", "default", "lg"]');
+		expect(family).toContain('variants: ["sm", "md", "lg"]');
 		expect(family).toContain('repo: "kumo"');
 		expect(family).toContain('sha: "1159868dfe32"');
 		expect(family).toContain('file: "packages/kumo/src/components/input/input.tsx"');
@@ -1999,7 +1949,7 @@ describe("ui catalog", () => {
 						name: "size",
 						type: "InputSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the field.",
 					},
 					{
@@ -2080,7 +2030,7 @@ describe("ui catalog", () => {
 		expect(family).toContain(
 			'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 		);
-		expect(family).toContain('variants: ["sm", "default", "lg"]');
+		expect(family).toContain('variants: ["sm", "md", "lg"]');
 		expect(family).toContain('repo: "basalt"');
 		expect(family).toContain('sha: "2727ae6a8d3f"');
 		expect(family).toContain('file: "src/pages/FormsPage.tsx"');
@@ -2104,7 +2054,7 @@ describe("ui catalog", () => {
 						name: "size",
 						type: "CheckboxSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the checkbox.",
 					},
 				],
@@ -2154,9 +2104,9 @@ describe("ui catalog", () => {
 				props: [
 					{
 						name: "size",
-						type: '"default" | "sm"',
+						type: '"md" | "sm"',
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the checkbox.",
 					},
 					{
@@ -2223,9 +2173,7 @@ describe("ui catalog", () => {
 		expect(family).not.toContain('boolean | "indeterminate"');
 		expect(family).toContain('description: "A check control with group, legend, size, and error."');
 		expect(family).toContain('<Checkbox aria-label="Subscribe" />');
-		expect(family).toContain(
-			'variants: ["checked", "unchecked", "indeterminate", "sm", "default"]',
-		);
+		expect(family).toContain('variants: ["checked", "unchecked", "indeterminate", "sm", "md"]');
 		expect(family).toContain('repo: "kumo"');
 		expect(family).toContain('sha: "1159868dfe32"');
 		expect(family).toContain('file: "packages/kumo/src/components/checkbox/checkbox.tsx"');
@@ -2249,7 +2197,7 @@ describe("ui catalog", () => {
 						name: "size",
 						type: "RadioSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the radio.",
 					},
 				],
@@ -2362,7 +2310,7 @@ describe("ui catalog", () => {
 	<Radio value="b" aria-label="Beta" />
 </Radio.Group>`,
 		);
-		expect(block).toContain('variants: ["sm", "default"]');
+		expect(block).toContain('variants: ["sm", "md"]');
 		expect(block).toContain('repo: "kumo"');
 		expect(block).toContain('sha: "1159868dfe32"');
 		expect(block).toContain('file: "packages/kumo/src/components/radio/radio.tsx"');
@@ -2389,7 +2337,7 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("checked?");
 		expect(api).toHaveTextContent("size?");
 		expect(api).toHaveTextContent("boolean");
-		expect(api).toHaveTextContent('"default" | "sm"');
+		expect(api).toHaveTextContent('"md" | "sm"');
 		expect(api).toHaveTextContent("The controlled checked state of the switch.");
 		expect(api).toHaveTextContent("The visual size of the switch.");
 		expect(api).toHaveTextContent("Switch.Group");
@@ -2414,7 +2362,7 @@ describe("ui catalog", () => {
 			"- checked (boolean, optional, default —): The controlled checked state of the switch.",
 		);
 		expect(markdown).toContain(
-			'- size ("default" | "sm", optional, default default): The visual size of the switch.',
+			'- size ("md" | "sm", optional, default "md"): The visual size of the switch.',
 		);
 		expect(markdown).not.toContain("- defaultChecked (");
 		expect(markdown).not.toContain("- className (");
@@ -2436,7 +2384,7 @@ describe("ui catalog", () => {
 		expect(family).not.toContain('name: "size"');
 		expect(family).toContain('description: "A binary toggle with group, legend, size, and error."');
 		expect(family).toContain('<Switch aria-label="Notifications" />');
-		expect(family).toContain('variants: ["checked", "unchecked", "sm", "default"]');
+		expect(family).toContain('variants: ["checked", "unchecked", "sm", "md"]');
 		expect(family).toContain('repo: "kumo"');
 		expect(family).toContain('sha: "1159868dfe32"');
 		expect(family).toContain('file: "packages/kumo/src/components/switch/switch.tsx"');
@@ -2477,7 +2425,7 @@ describe("ui catalog", () => {
 						name: "size",
 						type: "SelectSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the trigger.",
 					},
 					{
@@ -4026,7 +3974,7 @@ describe("ui catalog", () => {
 			"- checked (boolean, optional, default —): The controlled checked state of the switch.",
 		);
 		expect(markdown).toContain(
-			'- size ("default" | "sm", optional, default default): The visual size of the switch.',
+			'- size ("md" | "sm", optional, default "md"): The visual size of the switch.',
 		);
 		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
 		expect(markdown).not.toContain("github.com/nocoo/kumo");

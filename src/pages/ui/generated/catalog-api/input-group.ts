@@ -49,7 +49,7 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+				type: "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 				required: false,
 				default: "icon",
 				description: "Size for the nested action.",

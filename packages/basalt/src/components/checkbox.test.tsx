@@ -60,7 +60,7 @@ describe("Checkbox", () => {
 		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
 			expect.arrayContaining(["h-basalt-check", "w-basalt-check"]),
 		);
-		rerender(<Checkbox aria-label="Accept" size="default" />);
+		rerender(<Checkbox aria-label="Accept" size="md" />);
 		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
 			expect.arrayContaining(["h-basalt-check", "w-basalt-check"]),
 		);
@@ -75,7 +75,7 @@ describe("Checkbox", () => {
 		acceptCheckboxProps({ checked: true });
 		acceptCheckboxProps({ checked: "indeterminate" });
 		acceptCheckboxProps({ size: "sm" });
-		acceptCheckboxProps({ size: "default" });
+		acceptCheckboxProps({ size: "md" });
 		acceptCheckboxProps({
 			defaultChecked: true,
 			onCheckedChange: () => undefined,
@@ -92,7 +92,7 @@ describe("Checkbox", () => {
 		acceptCheckboxProps({ checked: "mixed" });
 		// @ts-expect-error checked must be boolean or indeterminate
 		acceptCheckboxProps({ checked: 1 });
-		// @ts-expect-error size must be sm or default
+		// @ts-expect-error size must be sm or md
 		acceptCheckboxProps({ size: "lg" });
 	});
 

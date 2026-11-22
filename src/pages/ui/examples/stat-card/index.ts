@@ -6,6 +6,7 @@ export const STAT_CARD_EXAMPLES = loadModuleScenarios({
 		{ key: "default", title: "Default" },
 		{ key: "metric-info", title: "Metric Info & Custom Trend" },
 		{ key: "state-transition", title: "State Transitions & Retry" },
+		{ key: "loading", title: "Loading Values" },
 	],
 	renderModules: import.meta.glob("./*.tsx", { eager: true }),
 	sourceModules: import.meta.glob("./*.tsx", {

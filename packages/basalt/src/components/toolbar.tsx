@@ -123,7 +123,7 @@ export type ToolbarButtonProps = Omit<ButtonProps, "variant" | "disabled" | "asC
 
 export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
 	({ className, size, icon, children, ...props }, ref) => {
-		const resolvedSize = size ?? (icon && children == null ? "icon" : "default");
+		const resolvedSize = size ?? (icon && children == null ? "icon" : "md");
 		return (
 			<Button
 				ref={ref}

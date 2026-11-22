@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 
@@ -32,24 +32,21 @@ export interface EmptyProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"
 	/**
 	 * Vertical density and visual hierarchy scale.
 	 *
-	 * @default "default"
+	 * @default "md"
 	 */
-	size?: "default" | "sm";
+	size?: "sm" | "md";
 }
 
-export function Empty({
-	title = "No results",
-	description,
-	icon,
-	action,
-	children,
-	size = "default",
-	className,
-	...props
-}: EmptyProps) {
+export const Empty = forwardRef<HTMLDivElement, EmptyProps>(function Empty(
+	{ title = "No results", description, icon, action, children, size = "md", className, ...props },
+	ref,
+) {
 	const isSm = size === "sm";
 	return (
 		<div
+			ref={ref}
+			data-slot="empty"
+			data-size={size}
 			className={cn(
 				BASALT_UI_CLASS,
 				"flex flex-col items-center text-center",
@@ -100,4 +97,6 @@ export function Empty({
 			) : null}
 		</div>
 	);
-}
+});
+
+Empty.displayName = "Empty";

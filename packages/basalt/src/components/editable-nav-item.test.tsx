@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { EditableNavItem, FolderNavItem } from "./editable-nav-item";
+import { EditableNavItem } from "./editable-nav-item";
 
 describe("editable navigation", () => {
 	it("separates navigation and trailing actions and retains native link semantics", () => {
@@ -42,7 +42,7 @@ describe("editable navigation", () => {
 		function Example() {
 			const [name, setName] = useState("Docs");
 			return (
-				<FolderNavItem
+				<EditableNavItem
 					label={name}
 					onRename={(next) => {
 						if (next === "Bad") throw new Error("Already exists");
@@ -73,7 +73,7 @@ describe("editable navigation", () => {
 		const rename = vi.fn();
 		render(
 			<>
-				<FolderNavItem label="Docs" icon={<span>Custom icon</span>} onRename={rename} />
+				<EditableNavItem label="Docs" icon={<span>Custom icon</span>} onRename={rename} />
 				<button type="button">Next item</button>
 			</>,
 		);

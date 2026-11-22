@@ -74,7 +74,6 @@ Each URL below is a public documentation surface.
 - [Section Rule](https://basaltui.com/ui/section-rule)
 - [Separator](https://basaltui.com/ui/separator)
 - [Sidebar](https://basaltui.com/ui/sidebar)
-- [Stat Strip](https://basaltui.com/ui/stat-strip)
 - [Table](https://basaltui.com/ui/table)
 - [Table of Contents](https://basaltui.com/ui/table-of-contents)
 - [Tabs](https://basaltui.com/ui/tabs)

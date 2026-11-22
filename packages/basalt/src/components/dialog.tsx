@@ -15,7 +15,7 @@ import { OVERLAY_LAYER, OVERLAY_MOTION } from "../utils/overlay";
 
 export const DIALOG_SIZES = {
 	sm: "sm:w-basalt-72",
-	base: "sm:w-basalt-96",
+	md: "sm:w-basalt-96",
 	lg: "sm:w-[32rem]",
 	xl: "sm:w-[48rem]",
 } as const;
@@ -33,7 +33,7 @@ export function dialogOverlayClass(className?: string) {
 }
 
 export function dialogPanelClass({
-	size = "base",
+	size = "md",
 	className,
 }: {
 	size?: DialogSize;
@@ -154,7 +154,7 @@ export interface DialogContentProps
 	> {
 	/**
 	 * Fixed desktop width preset. Dialog panel scrolls vertically when content overflows available viewport height.
-	 * @default "base"
+	 * @default "md"
 	 */
 	size?: DialogSize;
 	/**
@@ -201,7 +201,7 @@ export const DialogContent = React.forwardRef<
 		{
 			className,
 			children,
-			size = "base",
+			size = "md",
 			disablePointerDismissal = false,
 			showCloseButton = true,
 			closeLabel = "Close",

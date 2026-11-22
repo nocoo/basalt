@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.5.2",
-	"totalModules": 109,
-	"totalSymbols": 723,
-	"totalValues": 394,
-	"totalTypes": 329,
+	"totalModules": 108,
+	"totalSymbols": 717,
+	"totalValues": 391,
+	"totalTypes": 326,
 	"totalCssExports": 4,
-	"totalCatalogEntries": 82,
+	"totalCatalogEntries": 81,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -14,7 +14,7 @@
 			"importPath": "@nocoo/basalt",
 			"subpath": ".",
 			"sourceFile": "packages/basalt/src/index.ts",
-			"sourceHash": "55902707917acbaf",
+			"sourceHash": "80b20450f557ad48",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -817,12 +817,20 @@
 					"originModule": "@nocoo/basalt/components/spinner"
 				},
 				{
-					"name": "StatStrip",
+					"name": "StatCard",
 					"isValue": true,
 					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-strip",
-					"packageDoc": "ai/registry.json#stat-strip",
-					"originModule": "@nocoo/basalt/components/stat-strip"
+					"ownerDoc": "src/pages/ui/stat-card",
+					"packageDoc": "ai/registry.json#stat-card",
+					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatGrid",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"packageDoc": "ai/registry.json#stat-card",
+					"originModule": "@nocoo/basalt/components/stat-card"
 				},
 				{
 					"name": "Switch",
@@ -895,14 +903,6 @@
 					"ownerDoc": "src/pages/ui/theme-toggle",
 					"packageDoc": "ai/registry.json#theme-toggle",
 					"originModule": "@nocoo/basalt/components/theme-toggle"
-				},
-				{
-					"name": "Toast",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/toast",
-					"packageDoc": "ai/registry.json#toast",
-					"originModule": "@nocoo/basalt/components/toast"
 				},
 				{
 					"name": "Toaster",
@@ -1410,7 +1410,7 @@
 			"importPath": "@nocoo/basalt/components/alert-dialog",
 			"subpath": "./components/alert-dialog",
 			"sourceFile": "packages/basalt/src/components/alert-dialog.tsx",
-			"sourceHash": "783ce2980ccb1b36",
+			"sourceHash": "8fdacaed8c509d88",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1682,7 +1682,7 @@
 							"props": [
 								{
 									"name": "size",
-									"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+									"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 									"required": false,
 									"default": "\"base\"",
 									"description": "Fixed desktop width preset, shared with Dialog. Content scrolls vertically when overflowing available height."
@@ -1749,9 +1749,9 @@
 							"props": [
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 									"required": false,
-									"default": "\"default\"",
+									"default": "\"md\"",
 									"description": "Button size preset for the cancel button."
 								},
 								{
@@ -1775,9 +1775,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 									"required": false,
-									"default": "\"default\"",
+									"default": "\"md\"",
 									"description": "Button size preset for the primary confirmation action."
 								},
 								{
@@ -1877,7 +1877,7 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 							"required": false,
 							"default": "\"base\"",
 							"description": "Fixed desktop width preset, shared with Dialog. Content scrolls vertically when overflowing available height."
@@ -1944,9 +1944,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Button size preset for the cancel button."
 						},
 						{
@@ -1970,9 +1970,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Button size preset for the primary confirmation action."
 						},
 						{
@@ -2000,7 +2000,7 @@
 			"importPath": "@nocoo/basalt/components/app-header",
 			"subpath": "./components/app-header",
 			"sourceFile": "packages/basalt/src/components/app-header.tsx",
-			"sourceHash": "f55c97faefdb1625",
+			"sourceHash": "ee0e40db545e9610",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -2148,7 +2148,7 @@
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"subpath": "./components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "2d75925fa8c1d732",
+			"sourceHash": "c5533a30e66d77c9",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2304,7 +2304,7 @@
 			"importPath": "@nocoo/basalt/components/avatar",
 			"subpath": "./components/avatar",
 			"sourceFile": "packages/basalt/src/components/avatar.tsx",
-			"sourceHash": "1450f91da99f03f9",
+			"sourceHash": "ff4ad708ae506085",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2471,9 +2471,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"sm\"",
+									"type": "\"md\" | \"sm\"",
 									"required": false,
-									"default": "\"default\"",
+									"default": "\"md\"",
 									"description": "Avatar diameter."
 								},
 								{
@@ -2570,9 +2570,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Avatar diameter."
 						},
 						{
@@ -2590,7 +2590,7 @@
 			"importPath": "@nocoo/basalt/components/badge",
 			"subpath": "./components/badge",
 			"sourceFile": "packages/basalt/src/components/badge.tsx",
-			"sourceHash": "63f31be994f8ab67",
+			"sourceHash": "5b48171e88846355",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2600,14 +2600,6 @@
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
-				{
-					"name": "Badge",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/badge",
-					"packageDoc": "ai/registry.json#badge",
-					"originModule": "@nocoo/basalt/components/badge"
-				},
 				{
 					"name": "BadgeTone",
 					"isValue": false,
@@ -2628,6 +2620,14 @@
 					"name": "BadgeProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/badge",
+					"packageDoc": "ai/registry.json#badge",
+					"originModule": "@nocoo/basalt/components/badge"
+				},
+				{
+					"name": "Badge",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/badge",
 					"packageDoc": "ai/registry.json#badge",
 					"originModule": "@nocoo/basalt/components/badge"
@@ -2706,7 +2706,7 @@
 			"importPath": "@nocoo/basalt/components/banner",
 			"subpath": "./components/banner",
 			"sourceFile": "packages/basalt/src/components/banner.tsx",
-			"sourceHash": "c52739c40c9b492f",
+			"sourceHash": "c77d0ca75510919e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2770,10 +2770,10 @@
 								},
 								{
 									"name": "size",
-									"type": "\"base\" | \"sm\" | null",
+									"type": "\"md\" | \"sm\" | null",
 									"required": false,
-									"default": "\"base\"",
-									"description": "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"base\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"base\"."
+									"default": "\"md\"",
+									"description": "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"md\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"md\"."
 								},
 								{
 									"name": "title",
@@ -2819,9 +2819,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 									"required": false,
-									"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
+									"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"md\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
 								},
 								{
 									"name": "asChild",
@@ -2874,10 +2874,10 @@
 						},
 						{
 							"name": "size",
-							"type": "\"base\" | \"sm\" | null",
+							"type": "\"md\" | \"sm\" | null",
 							"required": false,
-							"default": "\"base\"",
-							"description": "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"base\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"base\"."
+							"default": "\"md\"",
+							"description": "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"md\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"md\"."
 						},
 						{
 							"name": "title",
@@ -2923,9 +2923,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
+							"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"md\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
 						},
 						{
 							"name": "asChild",
@@ -3074,7 +3074,7 @@
 			"importPath": "@nocoo/basalt/components/button",
 			"subpath": "./components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "17f1a8ca12911e52",
+			"sourceHash": "8c9fc6e8be8444fe",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3146,9 +3146,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 									"required": false,
-									"default": "\"default\"",
+									"default": "\"md\"",
 									"description": "Sizing preset."
 								},
 								{
@@ -3202,9 +3202,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 									"required": false,
-									"default": "\"default\"",
+									"default": "\"md\"",
 									"description": "Sizing preset."
 								},
 								{
@@ -3231,9 +3231,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Sizing preset."
 						},
 						{
@@ -3959,7 +3959,7 @@
 			"importPath": "@nocoo/basalt/components/checkbox",
 			"subpath": "./components/checkbox",
 			"sourceFile": "packages/basalt/src/components/checkbox.tsx",
-			"sourceHash": "ec39ea1aa2332676",
+			"sourceHash": "ef5823e9065de214",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4040,7 +4040,7 @@
 									"name": "size",
 									"type": "CheckboxSize",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the checkbox."
 								}
 							]
@@ -4090,9 +4090,9 @@
 							"props": [
 								{
 									"name": "size",
-									"type": "\"default\" | \"sm\"",
+									"type": "\"md\" | \"sm\"",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the checkbox."
 								},
 								{
@@ -4120,7 +4120,7 @@
 							"name": "size",
 							"type": "CheckboxSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the checkbox."
 						}
 					]
@@ -4170,9 +4170,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the checkbox."
 						},
 						{
@@ -4191,7 +4191,7 @@
 			"importPath": "@nocoo/basalt/components/clipboard-text",
 			"subpath": "./components/clipboard-text",
 			"sourceFile": "packages/basalt/src/components/clipboard-text.tsx",
-			"sourceHash": "41dafd3c29346b25",
+			"sourceHash": "0482fc32237a92cf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4202,17 +4202,17 @@
 			"optionalPeers": [],
 			"symbols": [
 				{
-					"name": "ClipboardText",
-					"isValue": true,
-					"isType": false,
+					"name": "ClipboardTextProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/clipboard-text",
 					"packageDoc": "ai/registry.json#clipboard-text",
 					"originModule": "@nocoo/basalt/components/clipboard-text"
 				},
 				{
-					"name": "ClipboardTextProps",
-					"isValue": false,
-					"isType": true,
+					"name": "ClipboardText",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/clipboard-text",
 					"packageDoc": "ai/registry.json#clipboard-text",
 					"originModule": "@nocoo/basalt/components/clipboard-text"
@@ -5433,7 +5433,7 @@
 								},
 								{
 									"name": "size",
-									"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+									"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 									"required": false,
 									"default": "\"lg\"",
 									"description": "Width preset of the command palette dialog panel."
@@ -5668,7 +5668,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 							"required": false,
 							"default": "\"lg\"",
 							"description": "Width preset of the command palette dialog panel."
@@ -8337,7 +8337,7 @@
 			"importPath": "@nocoo/basalt/components/dialog",
 			"subpath": "./components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "989ee41564b36535",
+			"sourceHash": "c7e3c4616b3e953b",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -8632,9 +8632,9 @@
 							"props": [
 								{
 									"name": "size",
-									"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+									"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 									"required": false,
-									"default": "\"base\"",
+									"default": "\"md\"",
 									"description": "Fixed desktop width preset. Dialog panel scrolls vertically when content overflows available viewport height."
 								},
 								{
@@ -8840,9 +8840,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 							"required": false,
-							"default": "\"base\"",
+							"default": "\"md\"",
 							"description": "Fixed desktop width preset. Dialog panel scrolls vertically when content overflows available viewport height."
 						},
 						{
@@ -10461,7 +10461,7 @@
 			"importPath": "@nocoo/basalt/components/editable-nav-item",
 			"subpath": "./components/editable-nav-item",
 			"sourceFile": "packages/basalt/src/components/editable-nav-item.tsx",
-			"sourceHash": "ad43afc3126750ff",
+			"sourceHash": "079b4f5fb8cc2bd9",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10480,23 +10480,7 @@
 					"originModule": "@nocoo/basalt/components/editable-nav-item"
 				},
 				{
-					"name": "FolderNavItem",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/editable-nav-item",
-					"packageDoc": "ai/registry.json#editable-nav-item",
-					"originModule": "@nocoo/basalt/components/editable-nav-item"
-				},
-				{
 					"name": "EditableNavItemProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/editable-nav-item",
-					"packageDoc": "ai/registry.json#editable-nav-item",
-					"originModule": "@nocoo/basalt/components/editable-nav-item"
-				},
-				{
-					"name": "FolderNavItemProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/editable-nav-item",
@@ -10600,94 +10584,6 @@
 									"description": "Additional root classes."
 								}
 							]
-						},
-						{
-							"name": "FolderNavItem",
-							"props": [
-								{
-									"name": "label",
-									"type": "string",
-									"required": true,
-									"description": "Current display name."
-								},
-								{
-									"name": "href",
-									"type": "string",
-									"required": false,
-									"description": "Application route, interpreted by LinkProvider."
-								},
-								{
-									"name": "onSelect",
-									"type": "() => void",
-									"required": false,
-									"description": "Navigation/selection request."
-								},
-								{
-									"name": "selected",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Selected location."
-								},
-								{
-									"name": "icon",
-									"type": "React.ReactNode",
-									"required": false,
-									"description": "Caller-owned leading icon."
-								},
-								{
-									"name": "count",
-									"type": "React.ReactNode",
-									"required": false,
-									"description": "Caller-formatted count or status."
-								},
-								{
-									"name": "actions",
-									"type": "React.ReactNode",
-									"required": false,
-									"description": "Separate row actions, never nested inside the navigation button/link."
-								},
-								{
-									"name": "onRename",
-									"type": "(name: string) => void | Promise<void>",
-									"required": false,
-									"description": "Enable renaming; rejected promises keep the editor and draft available."
-								},
-								{
-									"name": "disabled",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Disable navigation and renaming. Application action slots retain their own permissions."
-								},
-								{
-									"name": "renameLabel",
-									"type": "string",
-									"required": false,
-									"default": "\"Rename\"",
-									"description": "Rename action prefix."
-								},
-								{
-									"name": "saveLabel",
-									"type": "string",
-									"required": false,
-									"default": "\"Save\"",
-									"description": "Accessible save action."
-								},
-								{
-									"name": "cancelLabel",
-									"type": "string",
-									"required": false,
-									"default": "\"Cancel\"",
-									"description": "Accessible cancel action."
-								},
-								{
-									"name": "className",
-									"type": "string",
-									"required": false,
-									"description": "Additional root classes."
-								}
-							]
 						}
 					]
 				}
@@ -10695,94 +10591,6 @@
 			"api": [
 				{
 					"name": "EditableNavItem",
-					"props": [
-						{
-							"name": "label",
-							"type": "string",
-							"required": true,
-							"description": "Current display name."
-						},
-						{
-							"name": "href",
-							"type": "string",
-							"required": false,
-							"description": "Application route, interpreted by LinkProvider."
-						},
-						{
-							"name": "onSelect",
-							"type": "() => void",
-							"required": false,
-							"description": "Navigation/selection request."
-						},
-						{
-							"name": "selected",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Selected location."
-						},
-						{
-							"name": "icon",
-							"type": "React.ReactNode",
-							"required": false,
-							"description": "Caller-owned leading icon."
-						},
-						{
-							"name": "count",
-							"type": "React.ReactNode",
-							"required": false,
-							"description": "Caller-formatted count or status."
-						},
-						{
-							"name": "actions",
-							"type": "React.ReactNode",
-							"required": false,
-							"description": "Separate row actions, never nested inside the navigation button/link."
-						},
-						{
-							"name": "onRename",
-							"type": "(name: string) => void | Promise<void>",
-							"required": false,
-							"description": "Enable renaming; rejected promises keep the editor and draft available."
-						},
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable navigation and renaming. Application action slots retain their own permissions."
-						},
-						{
-							"name": "renameLabel",
-							"type": "string",
-							"required": false,
-							"default": "\"Rename\"",
-							"description": "Rename action prefix."
-						},
-						{
-							"name": "saveLabel",
-							"type": "string",
-							"required": false,
-							"default": "\"Save\"",
-							"description": "Accessible save action."
-						},
-						{
-							"name": "cancelLabel",
-							"type": "string",
-							"required": false,
-							"default": "\"Cancel\"",
-							"description": "Accessible cancel action."
-						},
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional root classes."
-						}
-					]
-				},
-				{
-					"name": "FolderNavItem",
 					"props": [
 						{
 							"name": "label",
@@ -10877,7 +10685,7 @@
 			"importPath": "@nocoo/basalt/components/empty",
 			"subpath": "./components/empty",
 			"sourceFile": "packages/basalt/src/components/empty.tsx",
-			"sourceHash": "cc34ac5c696ae715",
+			"sourceHash": "e62fdec18c3f9006",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10888,17 +10696,17 @@
 			"optionalPeers": [],
 			"symbols": [
 				{
-					"name": "Empty",
-					"isValue": true,
-					"isType": false,
+					"name": "EmptyProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/empty",
 					"packageDoc": "ai/registry.json#empty",
 					"originModule": "@nocoo/basalt/components/empty"
 				},
 				{
-					"name": "EmptyProps",
-					"isValue": false,
-					"isType": true,
+					"name": "Empty",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/empty",
 					"packageDoc": "ai/registry.json#empty",
 					"originModule": "@nocoo/basalt/components/empty"
@@ -10949,9 +10757,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"sm\"",
+									"type": "\"md\" | \"sm\"",
 									"required": false,
-									"default": "\"default\"",
+									"default": "\"md\"",
 									"description": "Vertical density and visual hierarchy scale."
 								}
 							]
@@ -10996,9 +10804,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Vertical density and visual hierarchy scale."
 						}
 					]
@@ -13005,7 +12813,7 @@
 			"importPath": "@nocoo/basalt/components/input",
 			"subpath": "./components/input",
 			"sourceFile": "packages/basalt/src/components/input.tsx",
-			"sourceHash": "d6b810879a6c3b98",
+			"sourceHash": "2ed39c531d3369cb",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13062,7 +12870,7 @@
 									"name": "size",
 									"type": "InputSize",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the input."
 								},
 								{
@@ -13091,7 +12899,7 @@
 							"name": "size",
 							"type": "InputSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the input."
 						},
 						{
@@ -13226,7 +13034,7 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 									"required": false,
 									"default": "icon",
 									"description": "Size for the nested action."
@@ -13308,7 +13116,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"default": "icon",
 							"description": "Size for the nested action."
@@ -14711,7 +14519,7 @@
 			"importPath": "@nocoo/basalt/components/page-header",
 			"subpath": "./components/page-header",
 			"sourceFile": "packages/basalt/src/components/page-header.tsx",
-			"sourceHash": "19a89e68850c606b",
+			"sourceHash": "3558578fd34fa14a",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -14721,14 +14529,6 @@
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
-				{
-					"name": "PageHeader",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/page-header",
-					"packageDoc": "ai/registry.json#page-header",
-					"originModule": "@nocoo/basalt/components/page-header"
-				},
 				{
 					"name": "PageHeaderBreadcrumb",
 					"isValue": false,
@@ -14741,6 +14541,14 @@
 					"name": "PageHeaderProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/page-header",
+					"packageDoc": "ai/registry.json#page-header",
+					"originModule": "@nocoo/basalt/components/page-header"
+				},
+				{
+					"name": "PageHeader",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/page-header",
 					"packageDoc": "ai/registry.json#page-header",
 					"originModule": "@nocoo/basalt/components/page-header"
@@ -14789,6 +14597,13 @@
 									"description": "Own-row filters. Keep short filters in actions."
 								},
 								{
+									"name": "size",
+									"type": "\"lg\" | \"md\"",
+									"required": false,
+									"default": "\"lg\"",
+									"description": "Heading visual scale."
+								},
+								{
 									"name": "className",
 									"type": "string",
 									"required": false,
@@ -14832,6 +14647,13 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Own-row filters. Keep short filters in actions."
+						},
+						{
+							"name": "size",
+							"type": "\"lg\" | \"md\"",
+							"required": false,
+							"default": "\"lg\"",
+							"description": "Heading visual scale."
 						},
 						{
 							"name": "className",
@@ -15701,7 +15523,7 @@
 			"importPath": "@nocoo/basalt/components/radio",
 			"subpath": "./components/radio",
 			"sourceFile": "packages/basalt/src/components/radio.tsx",
-			"sourceHash": "f105669983d85453",
+			"sourceHash": "58e2b06e6ddecb58",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15782,7 +15604,7 @@
 									"name": "size",
 									"type": "RadioSize",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the radio."
 								}
 							]
@@ -15844,7 +15666,7 @@
 							"name": "size",
 							"type": "RadioSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the radio."
 						}
 					]
@@ -15897,7 +15719,7 @@
 			"importPath": "@nocoo/basalt/components/resource-list",
 			"subpath": "./components/resource-list",
 			"sourceFile": "packages/basalt/src/components/resource-list.tsx",
-			"sourceHash": "c7e505f394b39699",
+			"sourceHash": "c6e4042d0ee45a24",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15907,14 +15729,6 @@
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
-				{
-					"name": "ResourceList",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/resource-list",
-					"packageDoc": "ai/registry.json#resource-list",
-					"originModule": "@nocoo/basalt/components/resource-list"
-				},
 				{
 					"name": "ResourceListRow",
 					"isValue": false,
@@ -15927,6 +15741,14 @@
 					"name": "ResourceListProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/resource-list",
+					"packageDoc": "ai/registry.json#resource-list",
+					"originModule": "@nocoo/basalt/components/resource-list"
+				},
+				{
+					"name": "ResourceList",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/resource-list",
 					"packageDoc": "ai/registry.json#resource-list",
 					"originModule": "@nocoo/basalt/components/resource-list"
@@ -16547,7 +16369,7 @@
 			"importPath": "@nocoo/basalt/components/segment-control",
 			"subpath": "./components/segment-control",
 			"sourceFile": "packages/basalt/src/components/segment-control.tsx",
-			"sourceHash": "cd513b1a67e48873",
+			"sourceHash": "4ad892f1cf7868b6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -16605,13 +16427,19 @@
 								{
 									"name": "value",
 									"type": "string",
-									"required": true,
+									"required": false,
 									"description": "The currently selected value."
+								},
+								{
+									"name": "defaultValue",
+									"type": "string",
+									"required": false,
+									"description": "Uncontrolled initial selected value."
 								},
 								{
 									"name": "onValueChange",
 									"type": "(value: string) => void",
-									"required": true,
+									"required": false,
 									"description": "Called when the user selects a different segment."
 								},
 								{
@@ -16651,13 +16479,19 @@
 						{
 							"name": "value",
 							"type": "string",
-							"required": true,
+							"required": false,
 							"description": "The currently selected value."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string",
+							"required": false,
+							"description": "Uncontrolled initial selected value."
 						},
 						{
 							"name": "onValueChange",
 							"type": "(value: string) => void",
-							"required": true,
+							"required": false,
 							"description": "Called when the user selects a different segment."
 						},
 						{
@@ -16695,7 +16529,7 @@
 			"importPath": "@nocoo/basalt/components/select",
 			"subpath": "./components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "7b8e33edbcb9d449",
+			"sourceHash": "6a0254c1f00f5314",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -16865,7 +16699,7 @@
 									"name": "size",
 									"type": "SelectSize",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the trigger."
 								},
 								{
@@ -16983,7 +16817,7 @@
 							"name": "size",
 							"type": "SelectSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the trigger."
 						},
 						{
@@ -17075,7 +16909,7 @@
 			"importPath": "@nocoo/basalt/components/sensitive-input",
 			"subpath": "./components/sensitive-input",
 			"sourceFile": "packages/basalt/src/components/sensitive-input.tsx",
-			"sourceHash": "9c1067c10628d546",
+			"sourceHash": "21d0e2ee6b70256c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17130,7 +16964,7 @@
 									"name": "size",
 									"type": "InputSize",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the field."
 								},
 								{
@@ -17165,7 +16999,7 @@
 							"name": "size",
 							"type": "InputSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the field."
 						},
 						{
@@ -19433,8 +19267,8 @@
 			"importPath": "@nocoo/basalt/components/stat-card",
 			"subpath": "./components/stat-card",
 			"sourceFile": "packages/basalt/src/components/stat-card.tsx",
-			"sourceHash": "5b345cbc64cb621c",
-			"rootAvailable": false,
+			"sourceHash": "70f353c394943826",
+			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
 			"ownerDoc": "src/pages/ui/stat-card",
@@ -19444,25 +19278,17 @@
 			"optionalPeers": [],
 			"symbols": [
 				{
-					"name": "StatCard",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"packageDoc": "ai/registry.json#stat-card",
-					"originModule": "@nocoo/basalt/components/stat-card"
-				},
-				{
-					"name": "StatGrid",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-card",
-					"packageDoc": "ai/registry.json#stat-card",
-					"originModule": "@nocoo/basalt/components/stat-card"
-				},
-				{
 					"name": "StatCardProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"packageDoc": "ai/registry.json#stat-card",
+					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatCard",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/stat-card",
 					"packageDoc": "ai/registry.json#stat-card",
 					"originModule": "@nocoo/basalt/components/stat-card"
@@ -19474,6 +19300,14 @@
 					"ownerDoc": "src/pages/ui/stat-card",
 					"packageDoc": "ai/registry.json#stat-card",
 					"originModule": "@nocoo/basalt/components/stat-card"
+				},
+				{
+					"name": "StatGrid",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/stat-card",
+					"packageDoc": "ai/registry.json#stat-card",
+					"originModule": "@nocoo/basalt/components/stat-card"
 				}
 			],
 			"catalogEntries": [
@@ -19481,7 +19315,7 @@
 					"slug": "stat-card",
 					"name": "StatCard",
 					"exportName": "StatCard",
-					"rootAvailable": false,
+					"rootAvailable": true,
 					"maturity": "ready",
 					"packageDoc": "ai/registry.json#stat-card",
 					"api": [
@@ -19503,8 +19337,15 @@
 								{
 									"name": "value",
 									"type": "number | string",
-									"required": true,
-									"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot if provided."
+									"required": false,
+									"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot or loading state if provided."
+								},
+								{
+									"name": "loading",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Render a skeleton placeholder instead of the metric value and mark the card busy."
 								},
 								{
 									"name": "subtitle",
@@ -19611,8 +19452,15 @@
 						{
 							"name": "value",
 							"type": "number | string",
-							"required": true,
-							"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot if provided."
+							"required": false,
+							"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot or loading state if provided."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Render a skeleton placeholder instead of the metric value and mark the card busy."
 						},
 						{
 							"name": "subtitle",
@@ -19700,116 +19548,12 @@
 			]
 		},
 		{
-			"displayName": "StatStrip",
-			"exportName": "StatStrip",
-			"importPath": "@nocoo/basalt/components/stat-strip",
-			"subpath": "./components/stat-strip",
-			"sourceFile": "packages/basalt/src/components/stat-strip.tsx",
-			"sourceHash": "e6afaaa03586a835",
-			"rootAvailable": true,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/stat-strip",
-			"packageDoc": "ai/registry.json#stat-strip",
-			"summary": "StatStrip component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "StatStripItem",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/stat-strip",
-					"packageDoc": "ai/registry.json#stat-strip",
-					"originModule": "@nocoo/basalt/components/stat-strip"
-				},
-				{
-					"name": "StatStripProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/stat-strip",
-					"packageDoc": "ai/registry.json#stat-strip",
-					"originModule": "@nocoo/basalt/components/stat-strip"
-				},
-				{
-					"name": "StatStrip",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/stat-strip",
-					"packageDoc": "ai/registry.json#stat-strip",
-					"originModule": "@nocoo/basalt/components/stat-strip"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "stat-strip",
-					"name": "StatStrip",
-					"exportName": "StatStrip",
-					"rootAvailable": true,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#stat-strip",
-					"api": [
-						{
-							"name": "StatStrip",
-							"props": [
-								{
-									"name": "className",
-									"type": "string",
-									"required": false,
-									"description": "Additional classes for the definition list."
-								},
-								{
-									"name": "items",
-									"type": "readonly StatStripItem[]",
-									"required": true,
-									"description": "The labelled values shown in the strip."
-								},
-								{
-									"name": "loading",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Replace each value with a skeleton while keeping labels visible."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "StatStrip",
-					"props": [
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the definition list."
-						},
-						{
-							"name": "items",
-							"type": "readonly StatStripItem[]",
-							"required": true,
-							"description": "The labelled values shown in the strip."
-						},
-						{
-							"name": "loading",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Replace each value with a skeleton while keeping labels visible."
-						}
-					]
-				}
-			]
-		},
-		{
 			"displayName": "Switch",
 			"exportName": "Switch",
 			"importPath": "@nocoo/basalt/components/switch",
 			"subpath": "./components/switch",
 			"sourceFile": "packages/basalt/src/components/switch.tsx",
-			"sourceHash": "8d3dc5b6f785e20b",
+			"sourceHash": "40c609678c081f18",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -19880,9 +19624,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"sm\"",
+									"type": "\"md\" | \"sm\"",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the switch."
 								}
 							]
@@ -19932,9 +19676,9 @@
 							"props": [
 								{
 									"name": "size",
-									"type": "\"default\" | \"sm\"",
+									"type": "\"md\" | \"sm\"",
 									"required": false,
-									"default": "default",
+									"default": "\"md\"",
 									"description": "The visual size of the switch."
 								},
 								{
@@ -19960,9 +19704,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the switch."
 						}
 					]
@@ -20012,9 +19756,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the switch."
 						},
 						{
@@ -20033,7 +19777,7 @@
 			"importPath": "@nocoo/basalt/components/table",
 			"subpath": "./components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "9cf76fe61e18b782",
+			"sourceHash": "cc665de6ac780550",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -20043,14 +19787,6 @@
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
-				{
-					"name": "TableCaption",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/table",
-					"packageDoc": "ai/registry.json#table",
-					"originModule": "@nocoo/basalt/components/table"
-				},
 				{
 					"name": "TableTextAlign",
 					"isValue": false,
@@ -20191,6 +19927,14 @@
 					"name": "TableCaptionProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"packageDoc": "ai/registry.json#table",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableCaption",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/table",
 					"packageDoc": "ai/registry.json#table",
 					"originModule": "@nocoo/basalt/components/table"
@@ -20649,7 +20393,7 @@
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"subpath": "./components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "946b08db67d8864e",
+			"sourceHash": "ebf5db2c67a0ca44",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -20659,14 +20403,6 @@
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
-				{
-					"name": "TablePager",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/table-pager",
-					"packageDoc": "ai/registry.json#table-pager",
-					"originModule": "@nocoo/basalt/components/table-pager"
-				},
 				{
 					"name": "TablePagerRange",
 					"isValue": false,
@@ -20679,6 +20415,14 @@
 					"name": "TablePagerProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/table-pager",
+					"packageDoc": "ai/registry.json#table-pager",
+					"originModule": "@nocoo/basalt/components/table-pager"
+				},
+				{
+					"name": "TablePager",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/table-pager",
 					"packageDoc": "ai/registry.json#table-pager",
 					"originModule": "@nocoo/basalt/components/table-pager"
@@ -20699,8 +20443,15 @@
 								{
 									"name": "page",
 									"type": "number",
-									"required": true,
+									"required": false,
 									"description": "1-based current page."
+								},
+								{
+									"name": "defaultPage",
+									"type": "number",
+									"required": false,
+									"default": "1",
+									"description": "Uncontrolled 1-based initial page."
 								},
 								{
 									"name": "pageSize",
@@ -20717,7 +20468,7 @@
 								{
 									"name": "onPageChange",
 									"type": "(page: number) => void",
-									"required": true,
+									"required": false,
 									"description": "Called with the next 1-based page."
 								},
 								{
@@ -20751,8 +20502,15 @@
 						{
 							"name": "page",
 							"type": "number",
-							"required": true,
+							"required": false,
 							"description": "1-based current page."
+						},
+						{
+							"name": "defaultPage",
+							"type": "number",
+							"required": false,
+							"default": "1",
+							"description": "Uncontrolled 1-based initial page."
 						},
 						{
 							"name": "pageSize",
@@ -20769,7 +20527,7 @@
 						{
 							"name": "onPageChange",
 							"type": "(page: number) => void",
-							"required": true,
+							"required": false,
 							"description": "Called with the next 1-based page."
 						},
 						{
@@ -21785,11 +21543,11 @@
 		},
 		{
 			"displayName": "Toast",
-			"exportName": "Toast",
+			"exportName": "Toaster",
 			"importPath": "@nocoo/basalt/components/toast",
 			"subpath": "./components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
-			"sourceHash": "0b7a9b2dae891b3e",
+			"sourceHash": "5618f6607b394523",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -21870,21 +21628,13 @@
 					"ownerDoc": "src/pages/ui/toast",
 					"packageDoc": "ai/registry.json#toast",
 					"originModule": "@nocoo/basalt/components/toast"
-				},
-				{
-					"name": "Toast",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/toast",
-					"packageDoc": "ai/registry.json#toast",
-					"originModule": "@nocoo/basalt/components/toast"
 				}
 			],
 			"catalogEntries": [
 				{
 					"slug": "toast",
 					"name": "Toast",
-					"exportName": "Toast",
+					"exportName": "Toaster",
 					"rootAvailable": true,
 					"maturity": "ready",
 					"packageDoc": "ai/registry.json#toast",
@@ -23093,7 +22843,7 @@
 			"importPath": "@nocoo/basalt/components/toggle",
 			"subpath": "./components/toggle",
 			"sourceFile": "packages/basalt/src/components/toggle.tsx",
-			"sourceHash": "5f3f164235a97a9d",
+			"sourceHash": "1b64af0f077d01aa",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23141,9 +22891,9 @@
 								},
 								{
 									"name": "size",
-									"type": "\"default\" | \"lg\" | \"sm\" | null",
+									"type": "\"lg\" | \"md\" | \"sm\" | null",
 									"required": false,
-									"default": "\"default\"",
+									"default": "\"md\"",
 									"description": "Sizing preset."
 								},
 								{
@@ -23190,9 +22940,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"lg\" | \"sm\" | null",
+							"type": "\"lg\" | \"md\" | \"sm\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Sizing preset."
 						},
 						{
@@ -23547,7 +23297,7 @@
 			"importPath": "@nocoo/basalt/components/toolbar",
 			"subpath": "./components/toolbar",
 			"sourceFile": "packages/basalt/src/components/toolbar.tsx",
-			"sourceHash": "1f3084d21c646d3f",
+			"sourceHash": "455f8eb736f8b885",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -25241,7 +24991,7 @@
 			"exportName": "Button",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "17f1a8ca12911e52",
+			"sourceHash": "8c9fc6e8be8444fe",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#button",
@@ -25258,9 +25008,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Sizing preset."
 						},
 						{
@@ -25300,7 +25050,7 @@
 			"exportName": "LinkButton",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "17f1a8ca12911e52",
+			"sourceHash": "8c9fc6e8be8444fe",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-button",
@@ -25317,9 +25067,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Sizing preset."
 						},
 						{
@@ -26025,7 +25775,7 @@
 			"exportName": "Input",
 			"importPath": "@nocoo/basalt/components/input",
 			"sourceFile": "packages/basalt/src/components/input.tsx",
-			"sourceHash": "d6b810879a6c3b98",
+			"sourceHash": "2ed39c531d3369cb",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input",
@@ -26043,7 +25793,7 @@
 							"name": "size",
 							"type": "InputSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the input."
 						},
 						{
@@ -26166,7 +25916,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
 							"default": "icon",
 							"description": "Size for the nested action."
@@ -26205,7 +25955,7 @@
 			"exportName": "SensitiveInput",
 			"importPath": "@nocoo/basalt/components/sensitive-input",
 			"sourceFile": "packages/basalt/src/components/sensitive-input.tsx",
-			"sourceHash": "9c1067c10628d546",
+			"sourceHash": "21d0e2ee6b70256c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sensitive-input",
@@ -26229,7 +25979,7 @@
 							"name": "size",
 							"type": "InputSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the field."
 						},
 						{
@@ -26249,7 +25999,7 @@
 			"exportName": "Checkbox",
 			"importPath": "@nocoo/basalt/components/checkbox",
 			"sourceFile": "packages/basalt/src/components/checkbox.tsx",
-			"sourceHash": "ec39ea1aa2332676",
+			"sourceHash": "ef5823e9065de214",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#checkbox",
@@ -26267,7 +26017,7 @@
 							"name": "size",
 							"type": "CheckboxSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the checkbox."
 						}
 					]
@@ -26317,9 +26067,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the checkbox."
 						},
 						{
@@ -26338,7 +26088,7 @@
 			"exportName": "Radio",
 			"importPath": "@nocoo/basalt/components/radio",
 			"sourceFile": "packages/basalt/src/components/radio.tsx",
-			"sourceHash": "f105669983d85453",
+			"sourceHash": "58e2b06e6ddecb58",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#radio",
@@ -26356,7 +26106,7 @@
 							"name": "size",
 							"type": "RadioSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the radio."
 						}
 					]
@@ -26409,7 +26159,7 @@
 			"exportName": "Switch",
 			"importPath": "@nocoo/basalt/components/switch",
 			"sourceFile": "packages/basalt/src/components/switch.tsx",
-			"sourceHash": "8d3dc5b6f785e20b",
+			"sourceHash": "40c609678c081f18",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#switch",
@@ -26425,9 +26175,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the switch."
 						}
 					]
@@ -26477,9 +26227,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the switch."
 						},
 						{
@@ -26498,7 +26248,7 @@
 			"exportName": "Select",
 			"importPath": "@nocoo/basalt/components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "7b8e33edbcb9d449",
+			"sourceHash": "6a0254c1f00f5314",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#select",
@@ -26533,7 +26283,7 @@
 							"name": "size",
 							"type": "SelectSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the trigger."
 						},
 						{
@@ -26625,7 +26375,7 @@
 			"exportName": "Autocomplete",
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "2d75925fa8c1d732",
+			"sourceHash": "c5533a30e66d77c9",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#autocomplete",
@@ -26931,7 +26681,7 @@
 			"exportName": "Toggle",
 			"importPath": "@nocoo/basalt/components/toggle",
 			"sourceFile": "packages/basalt/src/components/toggle.tsx",
-			"sourceHash": "5f3f164235a97a9d",
+			"sourceHash": "1b64af0f077d01aa",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toggle",
@@ -26948,9 +26698,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"lg\" | \"sm\" | null",
+							"type": "\"lg\" | \"md\" | \"sm\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Sizing preset."
 						},
 						{
@@ -27120,7 +26870,7 @@
 			"exportName": "SegmentControl",
 			"importPath": "@nocoo/basalt/components/segment-control",
 			"sourceFile": "packages/basalt/src/components/segment-control.tsx",
-			"sourceHash": "cd513b1a67e48873",
+			"sourceHash": "4ad892f1cf7868b6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#segment-control",
@@ -27131,13 +26881,19 @@
 						{
 							"name": "value",
 							"type": "string",
-							"required": true,
+							"required": false,
 							"description": "The currently selected value."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string",
+							"required": false,
+							"description": "Uncontrolled initial selected value."
 						},
 						{
 							"name": "onValueChange",
 							"type": "(value: string) => void",
-							"required": true,
+							"required": false,
 							"description": "Called when the user selects a different segment."
 						},
 						{
@@ -27175,7 +26931,7 @@
 			"exportName": "Badge",
 			"importPath": "@nocoo/basalt/components/badge",
 			"sourceFile": "packages/basalt/src/components/badge.tsx",
-			"sourceHash": "63f31be994f8ab67",
+			"sourceHash": "5b48171e88846355",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#badge",
@@ -27214,7 +26970,7 @@
 			"exportName": "Banner",
 			"importPath": "@nocoo/basalt/components/banner",
 			"sourceFile": "packages/basalt/src/components/banner.tsx",
-			"sourceHash": "c52739c40c9b492f",
+			"sourceHash": "c77d0ca75510919e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#banner",
@@ -27231,10 +26987,10 @@
 						},
 						{
 							"name": "size",
-							"type": "\"base\" | \"sm\" | null",
+							"type": "\"md\" | \"sm\" | null",
 							"required": false,
-							"default": "\"base\"",
-							"description": "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"base\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"base\"."
+							"default": "\"md\"",
+							"description": "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"md\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"md\"."
 						},
 						{
 							"name": "title",
@@ -27280,9 +27036,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
+							"description": "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"md\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size."
 						},
 						{
 							"name": "asChild",
@@ -27327,7 +27083,7 @@
 			"exportName": "Empty",
 			"importPath": "@nocoo/basalt/components/empty",
 			"sourceFile": "packages/basalt/src/components/empty.tsx",
-			"sourceHash": "cc34ac5c696ae715",
+			"sourceHash": "e62fdec18c3f9006",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#empty",
@@ -27368,9 +27124,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Vertical density and visual hierarchy scale."
 						}
 					]
@@ -27568,10 +27324,10 @@
 		{
 			"slug": "toast",
 			"name": "Toast",
-			"exportName": "Toast",
+			"exportName": "Toaster",
 			"importPath": "@nocoo/basalt/components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
-			"sourceHash": "0b7a9b2dae891b3e",
+			"sourceHash": "5618f6607b394523",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toast",
@@ -28180,7 +27936,7 @@
 			"exportName": "ClipboardText",
 			"importPath": "@nocoo/basalt/components/clipboard-text",
 			"sourceFile": "packages/basalt/src/components/clipboard-text.tsx",
-			"sourceHash": "41dafd3c29346b25",
+			"sourceHash": "0482fc32237a92cf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#clipboard-text",
@@ -28354,7 +28110,7 @@
 			"exportName": "Avatar",
 			"importPath": "@nocoo/basalt/components/avatar",
 			"sourceFile": "packages/basalt/src/components/avatar.tsx",
-			"sourceHash": "1450f91da99f03f9",
+			"sourceHash": "ff4ad708ae506085",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#avatar",
@@ -28442,9 +28198,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"sm\"",
+							"type": "\"md\" | \"sm\"",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Avatar diameter."
 						},
 						{
@@ -28632,7 +28388,7 @@
 			"exportName": "Dialog",
 			"importPath": "@nocoo/basalt/components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "989ee41564b36535",
+			"sourceHash": "c7e3c4616b3e953b",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dialog",
@@ -28720,9 +28476,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 							"required": false,
-							"default": "\"base\"",
+							"default": "\"md\"",
 							"description": "Fixed desktop width preset. Dialog panel scrolls vertically when content overflows available viewport height."
 						},
 						{
@@ -28849,7 +28605,7 @@
 			"exportName": "AlertDialog",
 			"importPath": "@nocoo/basalt/components/alert-dialog",
 			"sourceFile": "packages/basalt/src/components/alert-dialog.tsx",
-			"sourceHash": "783ce2980ccb1b36",
+			"sourceHash": "8fdacaed8c509d88",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#alert-dialog",
@@ -28930,7 +28686,7 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 							"required": false,
 							"default": "\"base\"",
 							"description": "Fixed desktop width preset, shared with Dialog. Content scrolls vertically when overflowing available height."
@@ -28997,9 +28753,9 @@
 					"props": [
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Button size preset for the cancel button."
 						},
 						{
@@ -29023,9 +28779,9 @@
 						},
 						{
 							"name": "size",
-							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"type": "\"icon-sm\" | \"icon\" | \"lg\" | \"md\" | \"sm\" | \"tile\" | null",
 							"required": false,
-							"default": "\"default\"",
+							"default": "\"md\"",
 							"description": "Button size preset for the primary confirmation action."
 						},
 						{
@@ -30797,7 +30553,7 @@
 						},
 						{
 							"name": "size",
-							"type": "\"base\" | \"lg\" | \"sm\" | \"xl\"",
+							"type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
 							"required": false,
 							"default": "\"lg\"",
 							"description": "Width preset of the command palette dialog panel."
@@ -31069,7 +30825,7 @@
 			"exportName": "Table",
 			"importPath": "@nocoo/basalt/components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "9cf76fe61e18b782",
+			"sourceHash": "cc665de6ac780550",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table",
@@ -31566,7 +31322,7 @@
 			"exportName": "Toolbar",
 			"importPath": "@nocoo/basalt/components/toolbar",
 			"sourceFile": "packages/basalt/src/components/toolbar.tsx",
-			"sourceHash": "1f3084d21c646d3f",
+			"sourceHash": "455f8eb736f8b885",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toolbar",
@@ -32281,49 +32037,12 @@
 			]
 		},
 		{
-			"slug": "stat-strip",
-			"name": "StatStrip",
-			"exportName": "StatStrip",
-			"importPath": "@nocoo/basalt/components/stat-strip",
-			"sourceFile": "packages/basalt/src/components/stat-strip.tsx",
-			"sourceHash": "e6afaaa03586a835",
-			"rootAvailable": true,
-			"maturity": "ready",
-			"packageDoc": "ai/registry.json#stat-strip",
-			"api": [
-				{
-					"name": "StatStrip",
-					"props": [
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional classes for the definition list."
-						},
-						{
-							"name": "items",
-							"type": "readonly StatStripItem[]",
-							"required": true,
-							"description": "The labelled values shown in the strip."
-						},
-						{
-							"name": "loading",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Replace each value with a skeleton while keeping labels visible."
-						}
-					]
-				}
-			]
-		},
-		{
 			"slug": "table-pager",
 			"name": "TablePager",
 			"exportName": "TablePager",
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "946b08db67d8864e",
+			"sourceHash": "ebf5db2c67a0ca44",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table-pager",
@@ -32334,8 +32053,15 @@
 						{
 							"name": "page",
 							"type": "number",
-							"required": true,
+							"required": false,
 							"description": "1-based current page."
+						},
+						{
+							"name": "defaultPage",
+							"type": "number",
+							"required": false,
+							"default": "1",
+							"description": "Uncontrolled 1-based initial page."
 						},
 						{
 							"name": "pageSize",
@@ -32352,7 +32078,7 @@
 						{
 							"name": "onPageChange",
 							"type": "(page: number) => void",
-							"required": true,
+							"required": false,
 							"description": "Called with the next 1-based page."
 						},
 						{
@@ -33270,101 +32996,13 @@
 			"exportName": "EditableNavItem",
 			"importPath": "@nocoo/basalt/components/editable-nav-item",
 			"sourceFile": "packages/basalt/src/components/editable-nav-item.tsx",
-			"sourceHash": "ad43afc3126750ff",
+			"sourceHash": "079b4f5fb8cc2bd9",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#editable-nav-item",
 			"api": [
 				{
 					"name": "EditableNavItem",
-					"props": [
-						{
-							"name": "label",
-							"type": "string",
-							"required": true,
-							"description": "Current display name."
-						},
-						{
-							"name": "href",
-							"type": "string",
-							"required": false,
-							"description": "Application route, interpreted by LinkProvider."
-						},
-						{
-							"name": "onSelect",
-							"type": "() => void",
-							"required": false,
-							"description": "Navigation/selection request."
-						},
-						{
-							"name": "selected",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Selected location."
-						},
-						{
-							"name": "icon",
-							"type": "React.ReactNode",
-							"required": false,
-							"description": "Caller-owned leading icon."
-						},
-						{
-							"name": "count",
-							"type": "React.ReactNode",
-							"required": false,
-							"description": "Caller-formatted count or status."
-						},
-						{
-							"name": "actions",
-							"type": "React.ReactNode",
-							"required": false,
-							"description": "Separate row actions, never nested inside the navigation button/link."
-						},
-						{
-							"name": "onRename",
-							"type": "(name: string) => void | Promise<void>",
-							"required": false,
-							"description": "Enable renaming; rejected promises keep the editor and draft available."
-						},
-						{
-							"name": "disabled",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Disable navigation and renaming. Application action slots retain their own permissions."
-						},
-						{
-							"name": "renameLabel",
-							"type": "string",
-							"required": false,
-							"default": "\"Rename\"",
-							"description": "Rename action prefix."
-						},
-						{
-							"name": "saveLabel",
-							"type": "string",
-							"required": false,
-							"default": "\"Save\"",
-							"description": "Accessible save action."
-						},
-						{
-							"name": "cancelLabel",
-							"type": "string",
-							"required": false,
-							"default": "\"Cancel\"",
-							"description": "Accessible cancel action."
-						},
-						{
-							"name": "className",
-							"type": "string",
-							"required": false,
-							"description": "Additional root classes."
-						}
-					]
-				},
-				{
-					"name": "FolderNavItem",
 					"props": [
 						{
 							"name": "label",
@@ -33895,8 +33533,8 @@
 			"exportName": "StatCard",
 			"importPath": "@nocoo/basalt/components/stat-card",
 			"sourceFile": "packages/basalt/src/components/stat-card.tsx",
-			"sourceHash": "5b345cbc64cb621c",
-			"rootAvailable": false,
+			"sourceHash": "70f353c394943826",
+			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stat-card",
 			"api": [
@@ -33918,8 +33556,15 @@
 						{
 							"name": "value",
 							"type": "number | string",
-							"required": true,
-							"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot if provided."
+							"required": false,
+							"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot or loading state if provided."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Render a skeleton placeholder instead of the metric value and mark the card busy."
 						},
 						{
 							"name": "subtitle",
@@ -34012,7 +33657,7 @@
 			"exportName": "PageHeader",
 			"importPath": "@nocoo/basalt/components/page-header",
 			"sourceFile": "packages/basalt/src/components/page-header.tsx",
-			"sourceHash": "19a89e68850c606b",
+			"sourceHash": "3558578fd34fa14a",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#page-header",
@@ -34051,6 +33696,13 @@
 							"description": "Own-row filters. Keep short filters in actions."
 						},
 						{
+							"name": "size",
+							"type": "\"lg\" | \"md\"",
+							"required": false,
+							"default": "\"lg\"",
+							"description": "Heading visual scale."
+						},
+						{
 							"name": "className",
 							"type": "string",
 							"required": false,
@@ -34066,7 +33718,7 @@
 			"exportName": "ResourceList",
 			"importPath": "@nocoo/basalt/components/resource-list",
 			"sourceFile": "packages/basalt/src/components/resource-list.tsx",
-			"sourceHash": "c7e505f394b39699",
+			"sourceHash": "c6e4042d0ee45a24",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#resource-list",

@@ -42,7 +42,7 @@ All 95 current entrypoints, their export targets, 3 CSS paths, and all 477 curre
 
 The root barrel is reserved for lightweight, frequently-used leaves, standard inputs, core surfaces, and global providers.
 
-- **Included on root:** `Button`, `Input`, `Checkbox`, `Switch`, `Badge`, `Text`, `Label`, `Separator`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarBrand`, `SidebarToggle`, `Dialog`, `Sheet`, `Popover`, `Tooltip`, `Toast`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`.
+- **Included on root:** `Button`, `Input`, `Checkbox`, `Switch`, `Badge`, `Text`, `Label`, `Separator`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarBrand`, `SidebarToggle`, `Dialog`, `Sheet`, `Popover`, `Tooltip`, `Toaster`, `toast`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`.
 - **Excluded from root:**
   - Radio inputs (`@nocoo/basalt/components/radio`)
   - Engine-agnostic chart chrome (`@nocoo/basalt/components/chart`)
@@ -147,7 +147,7 @@ Other retained IDs keep their identity with the new palette values. Unknown IDs 
 | Resource screens       | Additive DataTable sorting, manual processing/pagination, header and retry options; ResourceList state/toolbar/bulk/footer slots; granular Meter               | Queries, authorization, selection policy, total counts and backend requests                                              |
 | Filtering              | MultiSelect, FilterBar and FilterChip, including controlled search and native form/reset support                                                               | Search results and business filter state                                                                                 |
 | Uploads                | FileDropzone plus UploadQueue/UploadItem, validation, progress and action callbacks                                                                            | Transport, retry/cancel, object URL lifetime and server validation                                                       |
-| Editing and navigation | InlineEditable, EditableNavItem/FolderNavItem, IconPicker, TagBadge/TagColorPicker, ResponsiveMasterDetail                                                     | Persistence, routing, allowed icons, stable item IDs and tree policy                                                     |
+| Editing and navigation | InlineEditable, EditableNavItem, IconPicker, TagBadge/TagColorPicker, ResponsiveMasterDetail                                                                   | Persistence, routing, allowed icons, stable item IDs and tree policy                                                     |
 | App templates          | Complete AppFrame, Login and Resources modules in `ai/RECIPES.md`, compiled from the installed package                                                         | Router adapters, authentication, permissions, API calls and real data                                                    |
 | Chart details          | Values heatmap and Timeline rails use fixed chart tokens; optional `TimelineEvent.textColor` pairs custom event backgrounds with readable titles and subtitles | Choose text color for custom backgrounds; omitted `textColor` keeps the legacy white treatment for explicit event colors |
 | Documentation          | Generated props retain generics, callback/constructor union precedence, readonly arrays and tuples                                                             | Use the declared type parameters; generated text no longer substitutes `unknown` for caller data types                   |

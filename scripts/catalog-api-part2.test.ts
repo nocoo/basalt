@@ -52,7 +52,7 @@ describe("catalog API generator contract 2/4", () => {
 		const surfaces = Object.fromEntries(
 			Object.entries(generated).map(([slug, values]) => [slug, values.map((value) => value.name)]),
 		);
-		expect(Object.keys(surfaces)).toHaveLength(82);
+		expect(Object.keys(surfaces)).toHaveLength(81);
 		expect(surfaces.chart).toEqual([
 			"ChartFrame",
 			"ChartTooltip",
@@ -78,7 +78,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts five InputGroup surfaces with wrapper defaults and an empty Suffix", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(81);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -127,7 +127,7 @@ describe("catalog API generator contract 2/4", () => {
 					},
 					{
 						name: "size",
-						type: '"default" | "icon-sm" | "icon" | "lg" | "sm" | "tile" | null',
+						type: '"icon-sm" | "icon" | "lg" | "md" | "sm" | "tile" | null',
 						required: false,
 						default: "icon",
 						description: "Size for the nested action.",
@@ -175,7 +175,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts SensitiveInput props from SensitiveInputProps as required reveal and hide labels", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(81);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -196,7 +196,7 @@ describe("catalog API generator contract 2/4", () => {
 						name: "size",
 						type: "InputSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the field.",
 					},
 					{
@@ -295,7 +295,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Checkbox props from CheckboxProps as an optional checked union", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(81);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -314,7 +314,7 @@ describe("catalog API generator contract 2/4", () => {
 				name: "size",
 				type: "CheckboxSize",
 				required: false,
-				default: "default",
+				default: '"md"',
 				description: "The visual size of the checkbox.",
 			},
 		]);
@@ -362,7 +362,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Radio props from RadioProps as a required string value", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(81);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -401,7 +401,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Switch props from SwitchProps as optional checked and size", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(81);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -449,7 +449,7 @@ describe("catalog API generator contract 2/4", () => {
 
 	it("extracts Select props from seven named types as twelve local rows", () => {
 		const generated = generateProductionApi();
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(81);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -481,7 +481,7 @@ describe("catalog API generator contract 2/4", () => {
 						name: "size",
 						type: "SelectSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the trigger.",
 					},
 					{
@@ -664,7 +664,7 @@ describe("catalog API generator contract 2/4", () => {
 		]);
 	}, 60_000);
 
-	it("extracts the controlled SegmentControl surface without inherited fieldset props", () => {
+	it("extracts the SegmentControl surface without inherited fieldset props", () => {
 		const generated = generateProductionApi();
 		expect(generated["segment-control"]).toEqual([
 			{
@@ -673,13 +673,19 @@ describe("catalog API generator contract 2/4", () => {
 					{
 						name: "value",
 						type: "string",
-						required: true,
+						required: false,
 						description: "The currently selected value.",
+					},
+					{
+						name: "defaultValue",
+						type: "string",
+						required: false,
+						description: "Uncontrolled initial selected value.",
 					},
 					{
 						name: "onValueChange",
 						type: "(value: string) => void",
-						required: true,
+						required: false,
 						description: "Called when the user selects a different segment.",
 					},
 					{
@@ -710,9 +716,6 @@ describe("catalog API generator contract 2/4", () => {
 				],
 			},
 		]);
-		expect(generated["segment-control"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
-			"defaultValue",
-		);
 		expect(generated["segment-control"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
 			"children",
 		);
@@ -755,6 +758,13 @@ describe("catalog API generator contract 2/4", () => {
 						description: "Own-row filters. Keep short filters in actions.",
 					},
 					{
+						name: "size",
+						type: '"lg" | "md"',
+						required: false,
+						default: '"lg"',
+						description: "Heading visual scale.",
+					},
+					{
 						name: "className",
 						type: "string",
 						required: false,
@@ -763,7 +773,6 @@ describe("catalog API generator contract 2/4", () => {
 				],
 			},
 		]);
-		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("size");
 		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("id");
 		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
 	}, 60_000);
@@ -808,38 +817,6 @@ describe("catalog API generator contract 2/4", () => {
 		expect(generated["section-rule"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
 			"children",
 		);
-	}, 60_000);
-
-	it("extracts the StatStrip surface without inherited dl props", () => {
-		const generated = generateProductionApi();
-		expect(generated["stat-strip"]).toEqual([
-			{
-				name: "StatStrip",
-				props: [
-					{
-						name: "className",
-						type: "string",
-						required: false,
-						description: "Additional classes for the definition list.",
-					},
-					{
-						name: "items",
-						type: "readonly StatStripItem[]",
-						required: true,
-						description: "The labelled values shown in the strip.",
-					},
-					{
-						name: "loading",
-						type: "boolean",
-						required: false,
-						default: "false",
-						description: "Replace each value with a skeleton while keeping labels visible.",
-					},
-				],
-			},
-		]);
-		expect(generated["stat-strip"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
-		expect(generated["stat-strip"]?.[0]?.props.map((prop) => prop.name)).not.toContain("id");
 	}, 60_000);
 
 	it("extracts ConfirmDialog and useConfirm surfaces without Radix or DOM inventory", () => {
@@ -910,8 +887,15 @@ describe("catalog API generator contract 2/4", () => {
 					{
 						name: "page",
 						type: "number",
-						required: true,
+						required: false,
 						description: "1-based current page.",
+					},
+					{
+						name: "defaultPage",
+						type: "number",
+						required: false,
+						default: "1",
+						description: "Uncontrolled 1-based initial page.",
 					},
 					{
 						name: "pageSize",
@@ -928,7 +912,7 @@ describe("catalog API generator contract 2/4", () => {
 					{
 						name: "onPageChange",
 						type: "(page: number) => void",
-						required: true,
+						required: false,
 						description: "Called with the next 1-based page.",
 					},
 					{

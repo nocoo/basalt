@@ -1,15 +1,23 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { createRef } from "react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import { ClipboardText } from "./clipboard-text";
 
 describe("ClipboardText", () => {
-	it("renders the value and a copy control", () => {
+	afterEach(() => {
+		vi.useRealTimers();
+		vi.unstubAllGlobals();
+	});
+
+	it("renders the value, forwards ref, and styles the copy control", () => {
+		const ref = createRef<HTMLDivElement>();
 		vi.stubGlobal("navigator", { clipboard: { writeText: vi.fn() } });
-		render(<ClipboardText text="bun add @nocoo/basalt" />);
+		render(<ClipboardText ref={ref} text="bun add @nocoo/basalt" />);
 		expect(screen.getByText("bun add @nocoo/basalt")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Copy" })).toBeInTheDocument();
 		const root = screen.getByText("bun add @nocoo/basalt").closest("[data-slot=clipboard-text]");
+		expect(ref.current).toBe(root);
 		expect(root?.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
@@ -24,19 +32,31 @@ describe("ClipboardText", () => {
 		expect(screen.getByRole("button", { name: "Copy" }).className).toContain("rounded-r-basalt-md");
 	});
 
-	it("copies text when clicked", async () => {
+	it("copies text and resets copied indicator after timeout", async () => {
+		vi.useFakeTimers();
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		vi.stubGlobal("navigator", { clipboard: { writeText } });
 		render(<ClipboardText text="secret" />);
-		fireEvent.click(screen.getByRole("button", { name: "Copy" }));
-		await waitFor(() => expect(writeText).toHaveBeenCalledWith("secret"));
+		const button = screen.getByRole("button", { name: "Copy" });
+		await act(async () => {
+			fireEvent.click(button);
+		});
+		expect(writeText).toHaveBeenCalledWith("secret");
+		expect(button.querySelector(".lucide-check")).toBeTruthy();
+
+		act(() => {
+			vi.advanceTimersByTime(2000);
+		});
+		expect(button.querySelector(".lucide-copy")).toBeTruthy();
 	});
 
 	it("copies alternate text", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		vi.stubGlobal("navigator", { clipboard: { writeText } });
 		render(<ClipboardText text="sk-••••" copyText="sk-live" />);
-		fireEvent.click(screen.getByRole("button", { name: "Copy" }));
-		await waitFor(() => expect(writeText).toHaveBeenCalledWith("sk-live"));
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy" }));
+		});
+		expect(writeText).toHaveBeenCalledWith("sk-live");
 	});
 });

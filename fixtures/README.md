@@ -9,7 +9,7 @@ Same shared consumer kernel as Gate B: clean package build, `npm pack` into an O
 Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
-- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root. `main.tsx` only imports local `./index.css`; `@nocoo/basalt/styles/tailwind` appears once, in that stylesheet.
+- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toaster`, and `LinkProvider` from `@nocoo/basalt` root. `main.tsx` only imports local `./index.css`; `@nocoo/basalt/styles/tailwind` appears once, in that stylesheet.
 - The consumer uses the package-embedded source scan through `@import "@nocoo/basalt/styles"; @import "tailwindcss";`, with zero manual `@source` directives and zero app `lucide-react` dependency.
 - After install, root and `styles/tailwind` resolve inside that consumer's tarball copy.
 - `tailwindcss` and `@tailwindcss/vite` 4.3.3 are installed; `recharts`, `react-day-picker`, and `@tanstack/react-table` are not.
@@ -25,7 +25,7 @@ The command starts from a clean `@nocoo/basalt` package build, writes `npm pack`
 Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
-- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root and only `@nocoo/basalt/styles/standalone`.
+- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toaster`, and `LinkProvider` from `@nocoo/basalt` root and only `@nocoo/basalt/styles/standalone`.
 - After install, the consumer typechecks those root and CSS export specifiers with the tarball declarations; this is not the in-repo `packages/basalt` `types:check`.
 - Resolved `@nocoo/basalt` is the extracted tarball under that consumer's `node_modules`, not this workspace.
 - `tailwindcss`, `recharts`, `react-day-picker`, and `@tanstack/react-table` are not installed.
@@ -44,7 +44,7 @@ Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, Playwright, or this repository's path.
 - Server `app/layout.tsx` only provides the HTML skeleton and `@nocoo/basalt/styles/standalone`.
-- An explicit `"use client"` module imports `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, `toast`, and `LinkProvider` from the package root.
+- An explicit `"use client"` module imports `Button`, `ThemeProvider`, `ThemeToggle`, `Toaster`, `toast`, and `LinkProvider` from the package root.
 - Root and standalone CSS resolve inside that consumer's tarball copy.
 - `tailwindcss`, `recharts`, `react-day-picker`, and `@tanstack/react-table` are not installed.
 - Success and failure close the Playwright page/context/browser, delete the unique Chromium profile, stop the Next process, free the port, and delete the temp tree. Cleanup steps are nested so a profile assertion failure still stops the server and removes temp; proof and cleanup errors are aggregated rather than swallowed.

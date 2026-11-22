@@ -16,7 +16,7 @@ export type SensitiveInputProps = Omit<React.ComponentProps<"input">, "type" | "
 	hideLabel: string;
 	/**
 	 * The visual size of the field.
-	 * @default default
+	 * @default "md"
 	 */
 	size?: InputSize;
 	/**
@@ -33,7 +33,7 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 			revealLabel,
 			hideLabel,
 			disabled,
-			size = "default",
+			size = "md",
 			passwordManagerIgnore = false,
 			...props
 		},
@@ -58,7 +58,7 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 				<Button
 					type="button"
 					variant="ghost"
-					size={size === "default" ? "icon" : size}
+					size={size === "md" ? "icon" : size}
 					className="basalt-action-icon basalt-action-inset shrink-0"
 					aria-label={revealed ? hideLabel : revealLabel}
 					disabled={disabled}

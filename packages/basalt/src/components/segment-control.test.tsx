@@ -136,5 +136,25 @@ describe("SegmentControl", () => {
 		for (const item of screen.getAllByRole("radio")) {
 			expect(item).toHaveClass("basalt-action-sm");
 		}
+		expect(ref.current).toHaveAttribute("data-slot", "segment-control");
+	});
+
+	it("supports uncontrolled state via defaultValue or leading fallback and notifies onValueChange", () => {
+		const onValueChange = vi.fn();
+		render(
+			<SegmentControl
+				aria-label="Period"
+				defaultValue="planned"
+				onValueChange={onValueChange}
+				options={OPTIONS}
+			/>,
+		);
+		expect(screen.getByRole("radio", { name: "Planned" })).toHaveAttribute("aria-checked", "true");
+		fireEvent.click(screen.getByRole("radio", { name: "Ready" }));
+		expect(screen.getByRole("radio", { name: "Ready" })).toHaveAttribute("aria-checked", "true");
+		expect(onValueChange).toHaveBeenCalledWith("ready");
+
+		render(<SegmentControl aria-label="Fallback" allOption={{ value: "all" }} options={OPTIONS} />);
+		expect(screen.getByRole("radio", { name: "All" })).toHaveAttribute("aria-checked", "true");
 	});
 });

@@ -109,7 +109,7 @@ export default catalogContentFamily({
 			...extraDocs(
 				"Badge",
 				"badge",
-				"Compact status labels. Inherits standard span element attributes and forwards children; does not expose a public ref.",
+				"Compact status labels. Inherits standard span element attributes and forwards refs and children.",
 				"<Badge>Stable</Badge>",
 			),
 			api: badgeApi,
@@ -653,7 +653,7 @@ export default function Example() {
 			...extraDocs(
 				"Empty",
 				"empty",
-				"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
+				"Empty-state copy. Inherits standard div element attributes and forwards refs; supports structured icon, title, description, custom children content, and interactive action controls.",
 				'<Empty title="No results" description="Try another query." />',
 				undefined,
 				`import { Empty } from "@nocoo/basalt/components/empty";
@@ -966,7 +966,7 @@ export default function Example() {
 			...extraDocs(
 				"Toast",
 				"toast",
-				"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
+				"Transient notification stack. Mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
 				"<Button onClick={() => toast('Saved')}>Toast</Button>",
 				undefined,
 				`import { Button } from "@nocoo/basalt/components/button";
@@ -1140,7 +1140,7 @@ export function App() {
 			...extraDocs(
 				"ClipboardText",
 				"clipboard-text",
-				"Copyable text. Inline code snippet paired with an icon copy button; does not forward native HTML attributes or expose a public ref.",
+				"Copyable text. Inline code snippet paired with an icon copy button and forwarded ref.",
 				'<ClipboardText text="bun add @nocoo/basalt" />',
 				undefined,
 				`import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";

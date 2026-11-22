@@ -404,8 +404,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(82);
-		expect(Object.keys(first)).toHaveLength(83);
+		expect(slugs).toHaveLength(81);
+		expect(Object.keys(first)).toHaveLength(82);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -421,7 +421,6 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "SegmentControl"');
 		expect(joined).toContain('name: "PageHeader"');
 		expect(joined).toContain('name: "SectionRule"');
-		expect(joined).toContain('name: "StatStrip"');
 		expect(joined).toContain('name: "ConfirmDialog"');
 		expect(joined).toContain('name: "useConfirm"');
 		expect(joined).toContain('name: "TablePager"');
@@ -478,7 +477,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"c15c9027afc57de9ba6ff8ed011680cdf940f3f9771ac03562b54b8a41e8985b",
+			"23720ead61f948a0f840366fa610f807874cb917c196324b3b63daa0d126e929",
 		);
 	}, 60_000);
 

@@ -178,7 +178,7 @@ const _invalidUpload = <UploadItem file={{ id: "a", name: "a.pdf", status: "proc
 // @ts-expect-error Accessible labeling is required for the file chooser.
 const _unlabelledDropzone = <FileDropzone onFilesAccepted={() => {}} />;
 
-import { EditableNavItem, FolderNavItem } from "@nocoo/basalt/components/editable-nav-item";
+import { EditableNavItem } from "@nocoo/basalt/components/editable-nav-item";
 import { IconPicker, type IconPickerOption } from "@nocoo/basalt/components/icon-picker";
 import {
 	InlineEditable,
@@ -225,7 +225,6 @@ const _editableNav = (
 		actions={<button type="button">Pin</button>}
 	/>
 );
-const _folderNav = <FolderNavItem label="Research" onSelect={() => {}} count={3} />;
 const semanticColor: TagColor = tagColorFor("resource-id");
 const _tag = (
 	<TagBadge

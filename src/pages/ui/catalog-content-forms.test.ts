@@ -79,7 +79,7 @@ describe("forms catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
 		).toHaveLength(13);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(82);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(81);
 	});
 
 	it("keeps source-backed example owners and generated API shards by reference", () => {
@@ -164,7 +164,7 @@ describe("forms catalog content family", () => {
 		expect(forms.input?.docs.description).toBe(
 			"A sized native single-line control on the L3 surface.",
 		);
-		expect(forms.input?.docs.variants).toEqual(["sm", "default", "lg"]);
+		expect(forms.input?.docs.variants).toEqual(["sm", "md", "lg"]);
 		expect(forms.input?.docs.provenance).toEqual({
 			owner: "cloudflare",
 			repo: "kumo",
@@ -207,7 +207,7 @@ describe("forms catalog content family", () => {
 			"unchecked",
 			"indeterminate",
 			"sm",
-			"default",
+			"md",
 		]);
 		expect(forms.checkbox?.docs.provenance).toEqual({
 			owner: "cloudflare",
@@ -225,7 +225,7 @@ describe("forms catalog content family", () => {
 		expect(forms.radio?.docs.description).toBe(
 			"A radio control with group, legend, size, and error. RadioGroup is an alias of Radio.Group and shares the same component implementation and props interface.",
 		);
-		expect(forms.radio?.docs.variants).toEqual(["sm", "default"]);
+		expect(forms.radio?.docs.variants).toEqual(["sm", "md"]);
 		expect(forms.radio?.docs.provenance).toEqual({
 			owner: "cloudflare",
 			repo: "kumo",
@@ -243,7 +243,7 @@ describe("forms catalog content family", () => {
 		expect(forms.switch?.docs.description).toBe(
 			"A binary toggle with group, legend, size, and error.",
 		);
-		expect(forms.switch?.docs.variants).toEqual(["checked", "unchecked", "sm", "default"]);
+		expect(forms.switch?.docs.variants).toEqual(["checked", "unchecked", "sm", "md"]);
 		expect(forms.switch?.docs.provenance).toEqual({
 			owner: "cloudflare",
 			repo: "kumo",
@@ -288,7 +288,7 @@ describe("forms catalog content family", () => {
 		);
 		expect(forms["segment-control"]?.docs).toMatchObject({
 			description:
-				"A controlled, labelled segmented filter with an optional All choice and horizontal overflow.",
+				"A controlled or uncontrolled, labelled segmented filter with an optional All choice and horizontal overflow.",
 			variants: ["all", "overflow", "disabled"],
 			provenance: {
 				owner: "nocoo",

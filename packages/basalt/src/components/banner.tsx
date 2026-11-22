@@ -23,11 +23,11 @@ const bannerVariants = cva(
 				danger: "bg-basalt-danger-tint text-basalt-danger",
 			},
 			size: {
-				base: "",
+				md: "",
 				sm: "",
 			},
 		},
-		defaultVariants: { tone: "neutral", size: "base" },
+		defaultVariants: { tone: "neutral", size: "md" },
 	},
 );
 
@@ -36,7 +36,7 @@ type BannerSize = NonNullable<VariantProps<typeof bannerVariants>["size"]>;
 
 const BannerContext = createContext<{ tone: BannerTone; size: BannerSize }>({
 	tone: "neutral",
-	size: "base",
+	size: "md",
 });
 
 export interface BannerProps
@@ -54,11 +54,11 @@ export interface BannerProps
 	/**
 	 * Sizing preset controlling action placement; shared banner padding stays consistent.
 	 *
-	 * Note: Defaults to "base". In compact mode ("sm"), only direct `<Banner.Action>` elements
+	 * Note: Defaults to "md". In compact mode ("sm"), only direct `<Banner.Action>` elements
 	 * are placed in the trailing slot, while other action content renders inline next to the description.
-	 * Passing null falls back to "base".
+	 * Passing null falls back to "md".
 	 *
-	 * @default "base"
+	 * @default "md"
 	 */
 	size?: VariantProps<typeof bannerVariants>["size"];
 
@@ -114,7 +114,7 @@ export interface BannerActionProps
 
 	/**
 	 * Sizing preset. When unspecified or null, resolves to "icon" if children are omitted,
-	 * null, or an empty string, "sm" when parent Banner is compact ("sm"), or "default" otherwise.
+	 * null, or an empty string, "sm" when parent Banner is compact ("sm"), or "md" otherwise.
 	 * Icon-only mode uses the shared intrinsic icon action size.
 	 */
 	size?: ButtonProps["size"];
@@ -158,7 +158,7 @@ function isBannerAction(node: ReactNode): boolean {
 function BannerRoot({
 	className,
 	tone = "neutral",
-	size = "base",
+	size = "md",
 	title,
 	description,
 	icon,
@@ -167,7 +167,7 @@ function BannerRoot({
 	...props
 }: BannerProps) {
 	const resolvedTone = tone ?? "neutral";
-	const resolvedSize = size ?? "base";
+	const resolvedSize = size ?? "md";
 	const structured = title != null || description != null;
 	const nodes = Children.toArray(action);
 	const ctas = nodes.filter(isBannerAction);
@@ -236,7 +236,7 @@ export function BannerAction({
 	return (
 		<Button
 			variant={mapped}
-			size={size ?? (iconOnly ? "icon" : banner.size === "sm" ? "sm" : "default")}
+			size={size ?? (iconOnly ? "icon" : banner.size === "sm" ? "sm" : "md")}
 			icon={icon}
 			className={cn(iconOnly && "basalt-action-icon", className)}
 			{...props}

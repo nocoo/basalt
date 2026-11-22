@@ -1,6 +1,6 @@
 {
 	"packageVersion": "4.0.0-pending",
-	"sourceBaseline": "4.0-overhaul (99 paths / 549 symbols)",
+	"sourceBaseline": "4.0-overhaul (98 paths / 545 symbols)",
 	"capturedAfter": "P1.1-P1.6 plus round-1 review fixes; package manifests remain 3.4.2 until release",
 	"entries": [
 		{
@@ -422,7 +422,12 @@
 					"type": false
 				},
 				{
-					"name": "StatStrip",
+					"name": "StatCard",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "StatGrid",
 					"value": true,
 					"type": false
 				},
@@ -478,11 +483,6 @@
 				},
 				{
 					"name": "toast",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "Toast",
 					"value": true,
 					"type": false
 				},
@@ -2214,26 +2214,6 @@
 			]
 		},
 		{
-			"path": "@nocoo/basalt/components/stat-strip",
-			"symbols": [
-				{
-					"name": "StatStrip",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "StatStripItem",
-					"value": false,
-					"type": true
-				},
-				{
-					"name": "StatStripProps",
-					"value": false,
-					"type": true
-				}
-			]
-		},
-		{
 			"path": "@nocoo/basalt/components/switch",
 			"symbols": [
 				{
@@ -2503,11 +2483,6 @@
 			"symbols": [
 				{
 					"name": "toast",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "Toast",
 					"value": true,
 					"type": false
 				},

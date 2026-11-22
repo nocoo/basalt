@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
 	Table,
@@ -346,5 +347,50 @@ describe("Table", () => {
 		expect(button.firstElementChild?.tagName).toBe("svg");
 		expect(button.querySelector("svg")).not.toHaveClass("ml-auto");
 		expect(screen.getByRole("columnheader", { name: "Amount" })).toHaveClass("text-end");
+	});
+
+	it("forwards refs and sets data-slot across every table subcomponent", () => {
+		const tableRef = createRef<HTMLTableElement>();
+		const headerRef = createRef<HTMLTableSectionElement>();
+		const bodyRef = createRef<HTMLTableSectionElement>();
+		const footerRef = createRef<HTMLTableSectionElement>();
+		const rowRef = createRef<HTMLTableRowElement>();
+		const headRef = createRef<HTMLTableCellElement>();
+		const cellRef = createRef<HTMLTableCellElement>();
+		const captionRef = createRef<HTMLTableCaptionElement>();
+		const sortRef = createRef<HTMLButtonElement>();
+
+		render(
+			<Table ref={tableRef}>
+				<TableCaption ref={captionRef}>Summary</TableCaption>
+				<TableHeader ref={headerRef}>
+					<TableRow ref={rowRef}>
+						<TableHead ref={headRef}>
+							<TableSortableHeader ref={sortRef}>Column</TableSortableHeader>
+						</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody ref={bodyRef}>
+					<TableRow>
+						<TableCell ref={cellRef}>Row</TableCell>
+					</TableRow>
+				</TableBody>
+				<TableFooter ref={footerRef}>
+					<TableRow>
+						<TableCell>Total</TableCell>
+					</TableRow>
+				</TableFooter>
+			</Table>,
+		);
+
+		expect(tableRef.current).toHaveAttribute("data-slot", "table");
+		expect(captionRef.current).toHaveAttribute("data-slot", "table-caption");
+		expect(headerRef.current).toHaveAttribute("data-slot", "table-header");
+		expect(rowRef.current).toHaveAttribute("data-slot", "table-row");
+		expect(headRef.current).toHaveAttribute("data-slot", "table-head");
+		expect(sortRef.current).toHaveAttribute("data-slot", "table-sortable-header");
+		expect(bodyRef.current).toHaveAttribute("data-slot", "table-body");
+		expect(cellRef.current).toHaveAttribute("data-slot", "table-cell");
+		expect(footerRef.current).toHaveAttribute("data-slot", "table-footer");
 	});
 });

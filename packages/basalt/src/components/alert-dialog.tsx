@@ -127,7 +127,7 @@ export interface AlertDialogContentProps
 export const AlertDialogContent = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Content>,
 	AlertDialogContentProps
->(({ className, size = "base", ...props }, ref) => (
+>(({ className, size = "md", ...props }, ref) => (
 	<AlertDialogPortal forceMount={props.forceMount}>
 		<AlertDialogOverlay forceMount={props.forceMount} />
 		<AlertDialogPrimitive.Content
@@ -188,7 +188,7 @@ AlertDialogDescription.displayName = "AlertDialogDescription";
 export interface AlertDialogCancelProps extends Omit<RadixAlertDialogCancelProps, "asChild"> {
 	/**
 	 * Button size preset for the cancel button.
-	 * @default "default"
+	 * @default "md"
 	 */
 	size?: ButtonProps["size"];
 	/**
@@ -201,7 +201,7 @@ export interface AlertDialogCancelProps extends Omit<RadixAlertDialogCancelProps
 export const AlertDialogCancel = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
 	AlertDialogCancelProps
->(({ className, size = "default", ...props }, ref) => (
+>(({ className, size = "md", ...props }, ref) => (
 	<AlertDialogPrimitive.Cancel
 		ref={ref}
 		data-slot="alert-dialog-cancel"
@@ -219,7 +219,7 @@ export interface AlertDialogActionProps extends Omit<RadixAlertDialogActionProps
 	variant?: ButtonProps["variant"];
 	/**
 	 * Button size preset for the primary confirmation action.
-	 * @default "default"
+	 * @default "md"
 	 */
 	size?: ButtonProps["size"];
 	/**
@@ -232,7 +232,7 @@ export interface AlertDialogActionProps extends Omit<RadixAlertDialogActionProps
 export const AlertDialogAction = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Action>,
 	AlertDialogActionProps
->(({ className, variant = "destructive", size = "default", ...props }, ref) => (
+>(({ className, variant = "destructive", size = "md", ...props }, ref) => (
 	<AlertDialogPrimitive.Action
 		ref={ref}
 		data-slot="alert-dialog-action"

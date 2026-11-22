@@ -3,11 +3,11 @@ import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
 import { FOCUS_RING } from "../utils/overlay";
 
-export type InputSize = "sm" | "default" | "lg";
+export type InputSize = "sm" | "md" | "lg";
 
 const INPUT_SIZE_CLASS: Record<InputSize, string> = {
 	sm: "basalt-action basalt-action-sm",
-	default: "basalt-action",
+	md: "basalt-action",
 	lg: "basalt-action basalt-action-lg",
 };
 
@@ -25,7 +25,7 @@ export type InputProps = Omit<React.ComponentProps<"input">, "type" | "size"> & 
 	type?: React.HTMLInputTypeAttribute;
 	/**
 	 * The visual size of the input.
-	 * @default default
+	 * @default "md"
 	 */
 	size?: InputSize;
 	/**
@@ -36,7 +36,7 @@ export type InputProps = Omit<React.ComponentProps<"input">, "type" | "size"> & 
 };
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-	({ className, type, size = "default", passwordManagerIgnore = false, ...props }, ref) => (
+	({ className, type, size = "md", passwordManagerIgnore = false, ...props }, ref) => (
 		<input
 			type={type}
 			className={controlSurfaceClass(

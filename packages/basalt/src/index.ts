@@ -106,14 +106,14 @@ export {
 } from "./components/sidebar";
 export { Skeleton } from "./components/skeleton";
 export { Spinner } from "./components/spinner";
-export { StatStrip } from "./components/stat-strip";
+export { StatCard, StatGrid } from "./components/stat-card";
 export { Switch } from "./components/switch";
 export { TablePager } from "./components/table-pager";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
 export { Text } from "./components/text";
 export { Textarea } from "./components/textarea";
 export { ThemeToggle } from "./components/theme-toggle";
-export { Toast, Toaster, toast } from "./components/toast";
+export { Toaster, toast } from "./components/toast";
 export { Toolbar } from "./components/toolbar";
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./components/tooltip";
 export { LinkProvider } from "./providers/link";

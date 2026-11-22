@@ -20,8 +20,15 @@ export const API = [
 			{
 				name: "value",
 				type: "number | string",
-				required: true,
-				description: "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot if provided.",
+				required: false,
+				description: "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot or loading state if provided.",
+			},
+			{
+				name: "loading",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Render a skeleton placeholder instead of the metric value and mark the card busy.",
 			},
 			{
 				name: "subtitle",

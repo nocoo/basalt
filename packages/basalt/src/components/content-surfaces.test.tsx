@@ -5,14 +5,12 @@ import { Banner } from "./banner";
 import { GridItem } from "./grid";
 import { LayerCard } from "./layer-card";
 import { StatCard } from "./stat-card";
-import { StatStrip } from "./stat-strip";
 import { UploadItem } from "./upload-queue";
 
 describe("content surface ownership", () => {
 	it.each<[string, ComponentType]>([
 		["neutral banner", () => <Banner>Content</Banner>],
 		["grid item", () => <GridItem>Content</GridItem>],
-		["stat item", () => <StatStrip items={[{ label: "Content", value: 1 }]} />],
 		["metric card", () => <StatCard label="Content" value="1" />],
 		["upload item", () => <UploadItem file={{ id: "file", name: "Content", status: "queued" }} />],
 	])("lets the shared surface stack paint a nested %s", (_, Example) => {

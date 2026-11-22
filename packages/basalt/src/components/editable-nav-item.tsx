@@ -1,7 +1,7 @@
 import { type ReactNode, useId, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
-import { Folder, Pencil } from "../utils/internal-icons";
+import { Pencil } from "../utils/internal-icons";
 import { NAV_ROW_CLASS } from "../utils/navigation";
 import { FOCUS_INSET } from "../utils/overlay";
 import { Button } from "./button";
@@ -152,13 +152,4 @@ export function EditableNavItem({
 			)}
 		</div>
 	);
-}
-
-export type FolderNavItemProps = EditableNavItemProps;
-/** Folder presentation with an overridable icon; no tree, router or permission model. */
-export function FolderNavItem({
-	icon = <Folder className="size-basalt-icon-lg" />,
-	...props
-}: FolderNavItemProps) {
-	return <EditableNavItem icon={icon} {...props} />;
 }

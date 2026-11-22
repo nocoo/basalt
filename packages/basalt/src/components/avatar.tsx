@@ -113,8 +113,8 @@ export interface AvatarInitialsProps {
 	colorKey?: string;
 	/** Two-letter override for application-specific abbreviations. */
 	initials?: string;
-	/** Avatar diameter. @default "default" */
-	size?: "sm" | "default";
+	/** Avatar diameter. @default "md" */
+	size?: "sm" | "md";
 	className?: string;
 }
 
@@ -122,7 +122,7 @@ export function AvatarInitials({
 	name,
 	colorKey,
 	initials,
-	size = "default",
+	size = "md",
 	className,
 }: AvatarInitialsProps) {
 	return (

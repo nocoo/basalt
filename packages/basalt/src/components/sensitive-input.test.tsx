@@ -36,7 +36,7 @@ describe("SensitiveInput", () => {
 			className: "extra",
 			ref: createRef<HTMLInputElement>(),
 		});
-		// @ts-expect-error size must be sm, default, or lg
+		// @ts-expect-error size must be sm, md, or lg
 		acceptSensitiveInputProps({ revealLabel: "Show", hideLabel: "Hide", size: "xl" });
 		// @ts-expect-error revealLabel is required
 		acceptSensitiveInputProps({ hideLabel: "Hide" });

@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it } from "vitest";
 import { StatCard, StatGrid } from "./stat-card";
 
@@ -206,16 +207,32 @@ describe("StatCard", () => {
 		expect(container.querySelector('[data-slot="stat-card-heading"]')).toBeNull();
 		expect(screen.getByRole("img", { name: "0" })).toBeInTheDocument();
 	});
+
+	it("renders a loading skeleton placeholder, marks aria-busy, and forwards ref", () => {
+		const ref = createRef<HTMLDivElement>();
+		const { container } = render(<StatCard ref={ref} title="Latency" value="14ms" loading />);
+		const card = screen.getByRole("img", { name: "Latency" });
+		expect(ref.current).toBe(card);
+		expect(card).toHaveAttribute("aria-busy", "true");
+		expect(screen.queryByText("14ms")).toBeNull();
+		expect(container.querySelector('[data-slot="stat-card-value"]')).toBeNull();
+		expect(
+			container.querySelector('[data-slot="stat-card-metric"] [aria-hidden="true"]'),
+		).toBeTruthy();
+	});
 });
 
 describe("StatGrid", () => {
 	it("defaults to four columns and maps explicit 2, 3, and 4 column layouts", () => {
+		const ref = createRef<HTMLDivElement>();
 		const { container, rerender } = render(
-			<StatGrid className="grid-shell">
+			<StatGrid ref={ref} className="grid-shell">
 				<span>child-a</span>
 			</StatGrid>,
 		);
 		const grid = container.firstElementChild;
+		expect(ref.current).toBe(grid);
+		expect(grid).toHaveAttribute("data-slot", "stat-grid");
 		expect(grid).toHaveClass("basalt-stat-grid", "grid", "gap-basalt-layout", "grid-shell");
 		expect(grid).toHaveAttribute("data-columns", "4");
 		expect(grid).toHaveTextContent("child-a");

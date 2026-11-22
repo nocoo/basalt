@@ -59,7 +59,7 @@ export const ROOT_EXPORTS = [
 	"Button",
 	"ThemeProvider",
 	"ThemeToggle",
-	"Toast",
+	"Toaster",
 	"LinkProvider",
 ] as const;
 

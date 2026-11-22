@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import * as root from "./index";
-import { Badge, Button, Meter, Toast, Toaster, toast } from "./index";
+import { Badge, Button, Meter, Toaster, toast } from "./index";
 
 const unapprovedRootNames = [
 	"AppHeader",
@@ -16,19 +16,18 @@ const unapprovedRootNames = [
 	"DonutChart",
 	"Sparkline",
 	"Gauge",
-	"StatCard",
 	"ChartPalette",
 	"DataTable",
 	"ResourceList",
 ] as const;
 
 describe("root barrel", () => {
-	it("exports stable controls including Toast", () => {
+	it("exports stable controls including Toaster", () => {
 		expect(Button).toBeTruthy();
 		expect(Badge).toBeTruthy();
 		expect(Meter).toBeTruthy();
 		expect(toast).toBeTypeOf("function");
-		expect(Toast).toBe(Toaster);
+		expect(Toaster).toBeTruthy();
 		expect(root.ThemeProvider).toBeTruthy();
 		expect(root.ThemeToggle).toBeTruthy();
 		expect(root.SidebarBrand).toBeTruthy();
@@ -37,7 +36,8 @@ describe("root barrel", () => {
 		expect(root.LinkProvider).toBeTruthy();
 		expect(root.ScrollArea).toBeTruthy();
 		expect(root.SegmentControl).toBeTruthy();
-		expect(root.StatStrip).toBeTruthy();
+		expect(root.StatCard).toBeTruthy();
+		expect(root.StatGrid).toBeTruthy();
 		expect(root.ConfirmDialog).toBeTruthy();
 		expect(root.useConfirm).toBeTypeOf("function");
 		expect(root.TablePager).toBeTruthy();

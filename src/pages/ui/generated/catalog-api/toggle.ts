@@ -14,9 +14,9 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "\"default\" | \"lg\" | \"sm\" | null",
+				type: "\"lg\" | \"md\" | \"sm\" | null",
 				required: false,
-				default: "\"default\"",
+				default: "\"md\"",
 				description: "Sizing preset.",
 			},
 			{

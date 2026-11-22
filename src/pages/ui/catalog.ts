@@ -316,7 +316,7 @@ export const CATALOG: CatalogEntry[] = [
 	{
 		slug: "toast",
 		name: "Toast",
-		exportName: "Toast",
+		exportName: "Toaster",
 		importPath: "@nocoo/basalt/components/toast",
 		hasRootBarrel: true,
 		kind: "stable",
@@ -549,16 +549,6 @@ export const CATALOG: CatalogEntry[] = [
 	},
 
 	{
-		slug: "stat-strip",
-		name: "StatStrip",
-		exportName: "StatStrip",
-		importPath: "@nocoo/basalt/components/stat-strip",
-		hasRootBarrel: true,
-		kind: "stable",
-		category: "layout",
-		navName: "Stat Strip",
-	},
-	{
 		slug: "table-pager",
 		name: "TablePager",
 		exportName: "TablePager",
@@ -720,8 +710,8 @@ export const CATALOG: CatalogEntry[] = [
 		name: "StatCard",
 		exportName: "StatCard",
 		importPath: "@nocoo/basalt/components/stat-card",
-		hasRootBarrel: false,
-		kind: "catalog",
+		hasRootBarrel: true,
+		kind: "stable",
 		category: "card",
 	},
 	{

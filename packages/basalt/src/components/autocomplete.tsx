@@ -35,7 +35,7 @@ export function Autocomplete({
 	placeholder = "Search…",
 	disabled = false,
 	loading = false,
-	size = "default",
+	size = "md",
 	className,
 	id,
 	"aria-label": ariaLabel,

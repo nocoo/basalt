@@ -8,8 +8,15 @@ export const API = [
 			{
 				name: "page",
 				type: "number",
-				required: true,
+				required: false,
 				description: "1-based current page.",
+			},
+			{
+				name: "defaultPage",
+				type: "number",
+				required: false,
+				default: "1",
+				description: "Uncontrolled 1-based initial page.",
 			},
 			{
 				name: "pageSize",
@@ -26,7 +33,7 @@ export const API = [
 			{
 				name: "onPageChange",
 				type: "(page: number) => void",
-				required: true,
+				required: false,
 				description: "Called with the next 1-based page.",
 			},
 			{

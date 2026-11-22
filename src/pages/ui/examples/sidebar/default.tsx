@@ -97,7 +97,7 @@ export default function SidebarDefault() {
 					)}
 				</SidebarNav>
 				<SidebarFooter>
-					<Button variant="outline" size={collapsed ? "icon-sm" : "default"} aria-label="Upgrade">
+					<Button variant="outline" size={collapsed ? "icon-sm" : "md"} aria-label="Upgrade">
 						{collapsed ? <ArrowUp aria-hidden="true" /> : "Upgrade"}
 					</Button>
 				</SidebarFooter>

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Empty } from "./empty";
 
@@ -49,9 +50,17 @@ describe("Empty", () => {
 	});
 
 	it("supports default and compact sm visual scales", () => {
+		const ref = createRef<HTMLDivElement>();
 		const { rerender } = render(
-			<Empty title="Empty title" description="Details" icon={<span data-testid="empty-icon" />} />,
+			<Empty
+				ref={ref}
+				title="Empty title"
+				description="Details"
+				icon={<span data-testid="empty-icon" />}
+			/>,
 		);
+		expect(ref.current).toHaveAttribute("data-slot", "empty");
+		expect(ref.current).toHaveAttribute("data-size", "md");
 		expect(screen.getByTestId("empty-icon").parentElement).toHaveClass(
 			"size-basalt-10",
 			"bg-basalt-well",
@@ -62,12 +71,14 @@ describe("Empty", () => {
 
 		rerender(
 			<Empty
+				ref={ref}
 				size="sm"
 				title="Empty title"
 				description="Details"
 				icon={<span data-testid="empty-icon" />}
 			/>,
 		);
+		expect(ref.current).toHaveAttribute("data-size", "sm");
 		expect(screen.getByTestId("empty-icon").parentElement).toHaveClass("size-basalt-8");
 		expect(screen.getByText("Empty title")).toHaveClass("text-basalt-base", "font-medium");
 		expect(screen.getByText("Details")).toHaveClass("text-basalt-sm");

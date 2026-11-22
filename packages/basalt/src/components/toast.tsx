@@ -356,5 +356,3 @@ export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 		/>
 	);
 }
-
-export const Toast = Toaster;

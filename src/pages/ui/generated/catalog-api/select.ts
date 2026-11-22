@@ -32,7 +32,7 @@ export const API = [
 				name: "size",
 				type: "SelectSize",
 				required: false,
-				default: "default",
+				default: "\"md\"",
 				description: "The visual size of the trigger.",
 			},
 			{

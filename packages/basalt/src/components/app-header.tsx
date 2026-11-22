@@ -303,7 +303,7 @@ export function AppHeader({
 	title,
 	actions,
 	sticky = false,
-	density = "comfortable",
+	density = "default",
 	className,
 	...props
 }: HTMLAttributes<HTMLElement> & {
@@ -315,8 +315,8 @@ export function AppHeader({
 	actions?: ReactNode;
 	/** Keep this row visible in its current scroll owner, including the shell safe area. */
 	sticky?: boolean;
-	/** Compact is a 52px row; comfortable is 56px. */
-	density?: "comfortable" | "compact";
+	/** Compact is a 52px row; default is 56px. @default "default" */
+	density?: "default" | "compact";
 }) {
 	return (
 		<header

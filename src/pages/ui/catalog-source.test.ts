@@ -167,16 +167,15 @@ describe("catalog source contract", () => {
 			"breadcrumbs",
 			"actions",
 			"filters",
+			"size",
 			"className",
 		]);
-		expect(implementationFileFor(entry("stat-strip"))).toBe(
-			"packages/basalt/src/components/stat-strip.tsx",
+		expect(implementationFileFor(entry("stat-card"))).toBe(
+			"packages/basalt/src/components/stat-card.tsx",
 		);
-		expect(CATALOG_API["stat-strip"]?.[0]?.props.map((prop) => prop.name)).toEqual([
-			"className",
-			"items",
-			"loading",
-		]);
+		expect(CATALOG_API["stat-card"]?.[0]?.props.map((prop) => prop.name)).toEqual(
+			expect.arrayContaining(["title", "value", "loading"]),
+		);
 		expect(implementationFileFor(entry("confirm-dialog"))).toBe(
 			"packages/basalt/src/components/confirm-dialog.tsx",
 		);
@@ -189,6 +188,7 @@ describe("catalog source contract", () => {
 		);
 		expect(CATALOG_API["table-pager"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"page",
+			"defaultPage",
 			"pageSize",
 			"totalCount",
 			"onPageChange",

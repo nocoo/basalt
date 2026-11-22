@@ -59,7 +59,7 @@ describe("catalog entries", () => {
 	});
 
 	it("does not carry a maturity field on catalog entries", () => {
-		expect(CATALOG.filter((entry) => entry.category !== "block")).toHaveLength(80);
+		expect(CATALOG.filter((entry) => entry.category !== "block")).toHaveLength(79);
 		expect(CATALOG.every((entry) => !("maturity" in entry))).toBe(true);
 	});
 

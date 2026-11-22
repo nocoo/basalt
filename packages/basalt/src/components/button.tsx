@@ -24,7 +24,7 @@ const buttonVariants = cva(
 				link: "text-basalt-link underline-offset-4 hover:underline",
 			},
 			size: {
-				default: "basalt-action [&_svg]:size-basalt-icon",
+				md: "basalt-action [&_svg]:size-basalt-icon",
 				sm: "basalt-action basalt-action-sm [&_svg]:size-basalt-icon",
 				lg: "basalt-action basalt-action-lg [&_svg]:size-basalt-icon-lg",
 				tile: "basalt-action-tile flex-col gap-basalt-space-lg shadow-basalt-card [&_svg]:size-basalt-icon-lg",
@@ -34,7 +34,7 @@ const buttonVariants = cva(
 		},
 		defaultVariants: {
 			variant: "default",
-			size: "default",
+			size: "md",
 		},
 	},
 );
@@ -49,7 +49,7 @@ export interface ButtonProps
 	variant?: VariantProps<typeof buttonVariants>["variant"];
 	/**
 	 * Sizing preset.
-	 * @default "default"
+	 * @default "md"
 	 */
 	size?: VariantProps<typeof buttonVariants>["size"];
 	/**
@@ -215,7 +215,7 @@ export interface LinkButtonProps
 	variant?: VariantProps<typeof buttonVariants>["variant"];
 	/**
 	 * Sizing preset.
-	 * @default "default"
+	 * @default "md"
 	 */
 	size?: VariantProps<typeof buttonVariants>["size"];
 	/**

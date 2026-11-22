@@ -9,7 +9,7 @@ import { Loader } from "@nocoo/basalt/components/loader";
 import { LoadingScreen } from "@nocoo/basalt/components/loading-screen";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Skeleton } from "@nocoo/basalt/components/skeleton";
-import { StatStrip } from "@nocoo/basalt/components/stat-strip";
+import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { useTranslation } from "react-i18next";
 import { BasaltMark } from "@/components/BasaltMark";
 import { ShowcasePage } from "@/components/ShowcasePage";
@@ -100,13 +100,16 @@ export default function LoadingStatesPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.loadingStates.metrics")}>
-				<StatStrip
-					loading={busy}
-					items={METRICS.map((metric) => ({
-						label: t(metric.labelKey),
-						value: metric.value,
-					}))}
-				/>
+				<StatGrid>
+					{METRICS.map((metric) => (
+						<StatCard
+							key={metric.labelKey}
+							title={t(metric.labelKey)}
+							value={metric.value}
+							loading={busy}
+						/>
+					))}
+				</StatGrid>
 			</SectionRule>
 
 			<SectionRule

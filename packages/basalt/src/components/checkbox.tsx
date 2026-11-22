@@ -12,21 +12,21 @@ import { Check, Minus } from "../utils/internal-icons";
 import { FOCUS_RING } from "../utils/overlay";
 import { useCheckableGroup } from "../utils/use-checkable-group";
 
-export type CheckboxSize = "sm" | "default";
+export type CheckboxSize = "sm" | "md";
 
 const CHECKBOX_SIZE_CLASS: Record<CheckboxSize, string> = {
 	sm: "h-basalt-check-sm w-basalt-check-sm",
-	default: "h-basalt-check w-basalt-check",
+	md: "h-basalt-check w-basalt-check",
 };
 
 const CHECK_ICON_CLASS: Record<CheckboxSize, string> = {
 	sm: "hidden h-basalt-2_5 w-basalt-2_5 group-data-[state=checked]:block",
-	default: "hidden h-basalt-3 w-basalt-3 group-data-[state=checked]:block",
+	md: "hidden h-basalt-3 w-basalt-3 group-data-[state=checked]:block",
 };
 
 const MINUS_ICON_CLASS: Record<CheckboxSize, string> = {
 	sm: "hidden h-basalt-2_5 w-basalt-2_5 group-data-[state=indeterminate]:block",
-	default: "hidden h-basalt-3 w-basalt-3 group-data-[state=indeterminate]:block",
+	md: "hidden h-basalt-3 w-basalt-3 group-data-[state=indeterminate]:block",
 };
 
 type CheckboxGroupContextValue = {
@@ -55,7 +55,7 @@ export type CheckboxProps = Omit<
 	checked?: boolean | "indeterminate";
 	/**
 	 * The visual size of the checkbox.
-	 * @default default
+	 * @default "md"
 	 */
 	size?: CheckboxSize;
 };
@@ -102,7 +102,7 @@ export type CheckboxItemProps = Omit<
 const CheckboxRoot = React.forwardRef<
 	React.ElementRef<typeof CheckboxPrimitive.Root>,
 	CheckboxProps
->(({ className, size = "default", ...props }, ref) => (
+>(({ className, size = "md", ...props }, ref) => (
 	<CheckboxPrimitive.Root
 		ref={ref}
 		className={cn(

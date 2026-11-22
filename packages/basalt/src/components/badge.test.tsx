@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it } from "vitest";
 import { Badge, type BadgeTone, type BadgeVariant } from "./badge";
 
@@ -59,5 +60,13 @@ describe("Badge", () => {
 	it("renders a status dot", () => {
 		render(<Badge dot>Live</Badge>);
 		expect(screen.getByText("Live").querySelector("span")).toBeTruthy();
+	});
+
+	it("forwards ref and stamps data-slot", () => {
+		const ref = createRef<HTMLSpanElement>();
+		render(<Badge ref={ref}>Queued</Badge>);
+		const badge = screen.getByText("Queued");
+		expect(ref.current).toBe(badge);
+		expect(badge).toHaveAttribute("data-slot", "badge");
 	});
 });

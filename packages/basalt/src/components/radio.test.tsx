@@ -83,10 +83,14 @@ describe("Radio", () => {
 		render(
 			<RadioGroup defaultValue="a">
 				<Radio value="a" aria-label="Default size" />
+				<Radio value="c" size="md" aria-label="Medium" />
 				<Radio value="b" size="sm" aria-label="Small" />
 			</RadioGroup>,
 		);
 		expect(screen.getByRole("radio", { name: "Default size" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-basalt-check", "w-basalt-check"]),
+		);
+		expect(screen.getByRole("radio", { name: "Medium" }).className.split(/\s+/)).toEqual(
 			expect.arrayContaining(["h-basalt-check", "w-basalt-check"]),
 		);
 		expect(screen.getByRole("radio", { name: "Small" }).className.split(/\s+/)).toEqual(
@@ -119,7 +123,7 @@ describe("Radio", () => {
 		acceptRadioProps({ value: "a", size: "sm" });
 		acceptRadioGroupProps({ value: "a", error: "Required", disabled: true });
 		acceptRadioLegendProps({ children: "Plan" });
-		// @ts-expect-error size must be sm or default
+		// @ts-expect-error size must be sm or md
 		acceptRadioProps({ value: "a", size: "lg" });
 	});
 

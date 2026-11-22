@@ -33,10 +33,10 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 82 ready status truth", () => {
+	it("uses the generated 81 ready status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(82);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(82);
+		expect(statuses).toHaveLength(81);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(81);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(0);
 	});
 
@@ -142,17 +142,6 @@ describe("catalog page content loader", () => {
 		expect(content?.docs.description).toBe("Tabbed navigation.");
 		expect(content?.examples[0]?.id).toBe("tabs-variants");
 		expect(loadFamily).toHaveBeenCalledWith("navigation");
-	});
-
-	it("loads the StatStrip owner from data-layout", async () => {
-		const { loadCatalogPageContent } = await importLoader();
-		const content = await loadCatalogPageContent("stat-strip");
-		expect(content?.docs.api[0]?.name).toBe("StatStrip");
-		expect(content?.examples.map((example) => example.id)).toEqual([
-			"stat-strip-overview",
-			"stat-strip-loading-values",
-		]);
-		expect(loadFamily).toHaveBeenCalledWith("data-layout");
 	});
 
 	it("loads the TablePager owner from data-layout", async () => {

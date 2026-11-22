@@ -138,7 +138,7 @@ describe("standalone consumer gate helpers", () => {
 	});
 
 	it("rejects granular or tailwind consumer source", () => {
-		const valid = `import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+		const valid = `import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toaster } from "@nocoo/basalt";
 import "@nocoo/basalt/styles/standalone";
 `;
 		expect(() => assertRootConsumerSource(valid)).not.toThrow();
@@ -322,7 +322,7 @@ describe("tailwind consumer gate helpers", () => {
 	it("rejects a package-style import in main and a duplicate CSS import", () => {
 		expect(() =>
 			assertRootConsumerSource(
-				`import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+				`import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toaster } from "@nocoo/basalt";
 import "@nocoo/basalt/styles/tailwind";
 import "./index.css";
 `,
@@ -431,7 +431,7 @@ describe("next consumer gate helpers", () => {
 		expect(app).toContain("data-basalt-toast");
 		expect(app).toContain("data-basalt-toast-host");
 		expect(app.indexOf("data-basalt-toast-host")).toBeGreaterThan(app.indexOf("data-basalt-root"));
-		expect(app.lastIndexOf("<Toast")).toBeGreaterThan(app.indexOf("data-basalt-toast-host"));
+		expect(app.lastIndexOf("<Toaster")).toBeGreaterThan(app.indexOf("data-basalt-toast-host"));
 		expect(manifest).not.toContain("playwright");
 		const rootManifest = readFileSync("package.json", "utf8");
 		expect(rootManifest).toContain('"playwright": "1.65.1"');
@@ -455,14 +455,14 @@ describe("next consumer gate helpers", () => {
 
 	it("rejects a next client module that never imports toast or marks the root", () => {
 		const source = `"use client";
-import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toaster } from "@nocoo/basalt";
 export function BasaltApp() { return <Button>Save</Button>; }
 `;
 		expect(() => assertRootConsumerSource(source, "next")).toThrow(/toast/);
 		expect(() =>
 			assertRootConsumerSource(
 				`"use client";
-import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast, toast } from "@nocoo/basalt";
+import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toaster, toast } from "@nocoo/basalt";
 export function BasaltApp() { return <Button onClick={() => toast("x")}>Save</Button>; }
 `,
 				"next",
@@ -535,7 +535,7 @@ export default function RootLayout() { return <html><body /></html>; }
 		).toThrow(/server/);
 		expect(() =>
 			assertRootConsumerSource(
-				`import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+				`import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toaster } from "@nocoo/basalt";
 `,
 				"next",
 			),

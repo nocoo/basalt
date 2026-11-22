@@ -36,6 +36,13 @@ export const API = [
 				description: "Own-row filters. Keep short filters in actions.",
 			},
 			{
+				name: "size",
+				type: "\"lg\" | \"md\"",
+				required: false,
+				default: "\"lg\"",
+				description: "Heading visual scale.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

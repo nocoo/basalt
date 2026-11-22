@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@nocoo/basalt/components/button";
-import { EditableNavItem, FolderNavItem } from "@nocoo/basalt/components/editable-nav-item";
+import { EditableNavItem } from "@nocoo/basalt/components/editable-nav-item";
 import { IconPicker } from "@nocoo/basalt/components/icon-picker";
 import { InlineEditable } from "@nocoo/basalt/components/inline-editable";
 import { Input } from "@nocoo/basalt/components/input";
@@ -76,8 +76,9 @@ export default function EditingApp() {
 			</div>
 			<p data-testid="saved-name">{name}</p>
 			<nav aria-label="Editable folders">
-				<FolderNavItem
+				<EditableNavItem
 					label={folder}
+					icon={<Folder className="size-basalt-icon-lg" />}
 					count={24}
 					selected={selected}
 					onSelect={() => setSelected(true)}

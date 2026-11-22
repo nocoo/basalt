@@ -40,7 +40,7 @@ describe("Switch", () => {
 	it("accepts checked and size states and inherited attributes, and rejects illegal values", () => {
 		acceptSwitchProps({ checked: false });
 		acceptSwitchProps({ checked: true });
-		acceptSwitchProps({ size: "default" });
+		acceptSwitchProps({ size: "md" });
 		acceptSwitchProps({ size: "sm" });
 		acceptSwitchProps({
 			checked: true,
@@ -60,11 +60,11 @@ describe("Switch", () => {
 		acceptSwitchProps({ checked: "indeterminate" });
 		// @ts-expect-error checked must be a boolean
 		acceptSwitchProps({ checked: 1 });
-		// @ts-expect-error size must be default or sm
+		// @ts-expect-error size must be md or sm
 		acceptSwitchProps({ size: "base" });
-		// @ts-expect-error size must be default or sm
+		// @ts-expect-error size must be md or sm
 		acceptSwitchProps({ size: "lg" });
-		// @ts-expect-error size must be default or sm
+		// @ts-expect-error size must be md or sm
 		acceptSwitchProps({ size: "xl" });
 	});
 

@@ -794,7 +794,7 @@
 			"anatomy": "Anatomy",
 			"anatomyHint": "Copy this structure so every product dialog matches.",
 			"width": "Width",
-			"widthValue": "Default size is base (384px). sm 288px, lg 512px, xl 768px. The panel pads 16px on mobile and 24px on desktop and scrolls if content overflows.",
+			"widthValue": "Default size is md (384px). sm 288px, lg 512px, xl 768px. The panel pads 16px on mobile and 24px on desktop and scrolls if content overflows.",
 			"titleRow": "Title and close",
 			"titleRowValue": "Title is top-left. Optional close is a ghost icon Button, absolute top-right, labeled Close. Confirm and alert dialogs omit it.",
 			"subtitle": "Subtitle",
@@ -810,13 +810,13 @@
 			"sizesHint": "Pick a size. Do not set a custom max-width unless the content cannot fit these four.",
 			"size": {
 				"sm": "Small",
-				"base": "Base",
+				"md": "Medium",
 				"lg": "Large",
 				"xl": "Extra large"
 			},
 			"sizeBody": "size=\"{{size}}\" stays {{width}} wide on desktop.",
 			"form": "Form",
-			"formHint": "Short forms stay on base. Use Field and Input, then cancel and save.",
+			"formHint": "Short forms stay on md. Use Field and Input, then cancel and save.",
 			"openForm": "Open form",
 			"formTitle": "Create care team",
 			"formBody": "A care team coordinates patients, appointments, and shared records.",
@@ -1016,7 +1016,7 @@
 			"tiers": {
 				"3xl": {
 					"name": "Page / metric",
-					"roles": "PageHeader h1 and primary KPI numerals (StatCard, StatStrip)"
+					"roles": "PageHeader h1 and primary KPI numerals (StatCard)"
 				},
 				"xl": {
 					"name": "Section",

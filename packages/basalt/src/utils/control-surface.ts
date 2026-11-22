@@ -11,13 +11,12 @@ export function controlSurfaceClass(className?: string) {
 	return cn(CONTROL_SURFACE_CLASS, className);
 }
 
-export type SelectTriggerSize = "sm" | "md" | "lg" | "default";
+export type SelectTriggerSize = "sm" | "md" | "lg";
 
 const SELECT_TRIGGER_SIZE_CLASS: Record<SelectTriggerSize, string> = {
 	sm: "basalt-action basalt-action-sm",
 	md: "basalt-action",
 	lg: "basalt-action basalt-action-lg",
-	default: "basalt-action",
 };
 
 export const SELECT_TRIGGER_CHEVRON_CLASS =

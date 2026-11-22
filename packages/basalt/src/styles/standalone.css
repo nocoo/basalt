@@ -2020,6 +2020,15 @@
   .table {
     display: table;
   }
+  .table-caption {
+    display: table-caption;
+  }
+  .table-cell {
+    display: table-cell;
+  }
+  .table-row {
+    display: table-row;
+  }
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
@@ -4110,9 +4119,6 @@
   @media (width >= 48rem) {
     .md\:block {
       display: block;
-    }
-    .md\:grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     .md\:grid-cols-\[minmax\(12rem\,20rem\)_minmax\(0\,1fr\)\] {
       grid-template-columns: minmax(12rem,20rem) minmax(0,1fr);
