@@ -211,6 +211,16 @@ interaction contracts; do not change their containment as a global workaround.
   (`src/styles/landing.css`), LoginPage (`src/pages/LoginPage.tsx`) and the 404
   display in NotFound (`src/pages/NotFound.tsx`, `text-basalt-10xl` only). Every
   other `src/` font-size class must use one of the seven canonical utilities.
+- **Typefaces, line boxes, and icons.** All in-app copy and headings share `Inter`
+  (`--basalt-font-display: var(--basalt-font-sans)` with CJK fallbacks `"PingFang SC"`,
+  `"Hiragino Sans GB"`, `"Microsoft YaHei"`), paired with `JetBrains Mono`
+  (`font-variant-ligatures: none`); `DM Sans` and `Instrument Serif` are isolated to the
+  Landing route, and packages optionally self-host Inter + JetBrains Mono via
+  `@nocoo/basalt/fonts.css`. Every canonical scale tier resolves to an integer line box
+  (`16px` xs/sm, `20px` md/base/lg, `24px` xl, `30px` 3xl via `--basalt-leading-tight: 1.25`),
+  and uppercase auxiliary labels share `tracking-wider`. `.basalt-ui` defaults Lucide icons to
+  `--basalt-icon-stroke` (`1.5`) without per-call `strokeWidth={1.5}` props, sized with
+  `size-basalt-icon-*`.
 - Surfaces preserve the L0/L1/L2/L3 island hierarchy (`95%` / `98%` / `100%`
   light matte island ladder with `#fff` control fills and `98%` recessed `LayerCard.Well`;
   `7.5%` / `10%` / `12.5%` / `15.5%` dark depth ladder with `10%` recessed `LayerCard.Well`

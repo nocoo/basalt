@@ -66,6 +66,8 @@ import "@nocoo/basalt/styles/standalone";
 
 Standalone CSS 包含 tokens、控件样式和动画，不注入全局 reset；应用负责页面容器的高度与基础布局。
 
+如需随包加载自托管 `Inter` + `JetBrains Mono` 字体，额外引入 `@nocoo/basalt/fonts.css`（CSS 中 `@import "@nocoo/basalt/fonts.css";` 或 JS 中 `import "@nocoo/basalt/fonts.css";`）。
+
 <a id="component-usage"></a>
 
 ### 使用组件

@@ -99,9 +99,10 @@ export default defineConfig({
 });
 ```
 
-In the app stylesheet (e.g. `src/index.css`), import Basalt before Tailwind. Basalt embeds its own package source scan:
+In the app stylesheet (e.g. `src/index.css`), import the optional self-hosted Inter + JetBrains Mono font faces (`@nocoo/basalt/fonts.css`), Basalt styles, and Tailwind. Basalt embeds its own package source scan and includes CJK system fallbacks (`"PingFang SC"`, `"Hiragino Sans GB"`, `"Microsoft YaHei"`):
 
 ```css
+@import "@nocoo/basalt/fonts.css";
 @import "@nocoo/basalt/styles";
 @import "tailwindcss";
 
@@ -121,9 +122,10 @@ Basalt registers `--basalt-*` tokens and `--color-basalt-*` utilities before Tai
 
 ### Option B: Standalone CSS (No Tailwind)
 
-Without Tailwind, import `@nocoo/basalt/styles/standalone` in your application entrypoint instead:
+Without Tailwind, import `@nocoo/basalt/styles/standalone` (and optionally `@nocoo/basalt/fonts.css`) in your application entrypoint instead:
 
 ```ts
+import "@nocoo/basalt/fonts.css";
 import "@nocoo/basalt/styles/standalone";
 ```
 
@@ -350,7 +352,7 @@ Every chrome class uses the `basalt-` prefix:
 - text: `text-basalt-foreground`, `text-basalt-muted-foreground`, `text-basalt-primary-foreground`
 - line: `ring-basalt-border`, `border-basalt-border`
 
-Icons: import from `@nocoo/basalt/icons`, use `strokeWidth={1.5}`, nav size `h-4 w-4 shrink-0`.
+Icons: import from `@nocoo/basalt/icons`; `.basalt-ui` applies default Lucide `stroke-width: 1.5` globally via `--basalt-icon-stroke` (omit inline `strokeWidth={1.5}`), and use `size-basalt-icon-*` tokens (nav default `size-basalt-icon-lg shrink-0`).
 
 ---
 
@@ -445,7 +447,7 @@ Place `SidebarBrand` in `SidebarHeader` with a 24px mark and `SidebarToggle` in 
 					<div className="flex flex-col gap-basalt-nav-gap">
 						{group.items.map((item) => (
 							<SidebarItem key={item.href} active={active(item.href)} href={item.href}>
-								<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+								<item.icon className="size-basalt-icon-lg shrink-0" />
 								<span className="flex-1 truncate text-left">{item.label}</span>
 							</SidebarItem>
 						))}
@@ -485,7 +487,7 @@ The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationar
 				<Tooltip key={item.href} delayDuration={0}>
 					<TooltipTrigger asChild>
 						<SidebarIconItem active={active(item.href)} aria-label={item.label} href={item.href}>
-							<item.icon className="h-4 w-4" strokeWidth={1.5} />
+							<item.icon className="size-basalt-icon-lg" />
 						</SidebarIconItem>
 					</TooltipTrigger>
 					<TooltipContent side="right" sideOffset={8}>{item.label}</TooltipContent>
@@ -667,7 +669,7 @@ Every top-right icon control in `AppHeader.actions` is a `HeaderAction` (`@nocoo
 	actions={
 		<>
 			<HeaderAction label="Notifications" onClick={openInbox}>
-				<Bell aria-hidden="true" strokeWidth={1.5} />
+				<Bell aria-hidden="true" />
 			</HeaderAction>
 			<ThemeToggle />
 		</>

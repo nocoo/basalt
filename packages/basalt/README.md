@@ -73,6 +73,12 @@ import "@nocoo/basalt/styles/standalone";
 
 Standalone CSS contains compiled design tokens, scoped control classes, keyframes, and base surface properties. It does not inject global CSS resets or Preflight. Ensure your container sets `height: 100%`.
 
+### Optional: Self-hosted Fonts (`@nocoo/basalt/fonts.css`)
+
+```css
+@import "@nocoo/basalt/fonts.css";
+```
+
 ---
 
 <a id="component-usage"></a>
