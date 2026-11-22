@@ -427,7 +427,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 		assert.equal(select.height, 34);
 	}
 	assert.equal(tablesTypography.head.fontSize, "12px");
-	assert.equal(tablesTypography.head.letterSpacing, "-0.039px");
+	assert.equal(tablesTypography.head.letterSpacing, "0px");
 	assert.equal(tablesTypography.cell.fontSize, "13px");
 	assert.equal(tablesTypography.ownerAvatarText.fontSize, "11px");
 

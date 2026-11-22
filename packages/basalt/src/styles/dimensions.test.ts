@@ -252,6 +252,8 @@ describe("dimension token contract", () => {
 		}
 		expect(tailwind).toContain("--text-basalt-sm--line-height: calc(16 / 12);");
 		expect(tailwind).toContain("--text-basalt-md--line-height: calc(20 / 13);");
-		expect(tailwind).not.toContain("--text-basalt-md--letter-spacing");
+		expect(tailwind).not.toContain("-0.003em");
+		expect(tailwind).toContain("--text-basalt-sm--letter-spacing: 0em;");
+		expect(tailwind).toContain("--text-basalt-md--letter-spacing: 0em;");
 	});
 });

@@ -50,8 +50,10 @@
 	--text-basalt-xs--letter-spacing: 0.02em;
 	--text-basalt-sm: var(--basalt-text-sm);
 	--text-basalt-sm--line-height: calc(16 / 12);
+	--text-basalt-sm--letter-spacing: 0em;
 	--text-basalt-md: var(--basalt-text-md);
 	--text-basalt-md--line-height: calc(20 / 13);
+	--text-basalt-md--letter-spacing: 0em;
 	--text-basalt-base: var(--basalt-text-base);
 	--text-basalt-base--line-height: var(--basalt-leading-body);
 	--text-basalt-base--letter-spacing: -0.006em;

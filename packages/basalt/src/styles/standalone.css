@@ -2814,6 +2814,16 @@
     line-height: var(--tw-leading, calc(20 / 15));
     letter-spacing: var(--tw-tracking, -0.014em);
   }
+  .text-basalt-md {
+    font-size: var(--basalt-text-md);
+    line-height: var(--tw-leading, calc(20 / 13));
+    letter-spacing: var(--tw-tracking, 0em);
+  }
+  .text-basalt-sm {
+    font-size: var(--basalt-text-sm);
+    line-height: var(--tw-leading, calc(16 / 12));
+    letter-spacing: var(--tw-tracking, 0em);
+  }
   .text-basalt-xl {
     font-size: var(--basalt-text-xl);
     line-height: var(--tw-leading, calc(24 / 18));
@@ -2823,14 +2833,6 @@
     font-size: var(--basalt-text-xs);
     line-height: var(--tw-leading, calc(16 / 11));
     letter-spacing: var(--tw-tracking, 0.02em);
-  }
-  .text-basalt-md {
-    font-size: var(--basalt-text-md);
-    line-height: var(--tw-leading, calc(20 / 13));
-  }
-  .text-basalt-sm {
-    font-size: var(--basalt-text-sm);
-    line-height: var(--tw-leading, calc(16 / 12));
   }
   .leading-\[var\(--basalt-leading-banner\)\] {
     --tw-leading: var(--basalt-leading-banner);
@@ -3618,6 +3620,7 @@
   .\[\&_\[cmdk-group-heading\]\]\:text-basalt-sm [cmdk-group-heading] {
     font-size: var(--basalt-text-sm);
     line-height: var(--tw-leading, calc(16 / 12));
+    letter-spacing: var(--tw-tracking, 0em);
   }
   .\[\&_\[cmdk-group-heading\]\]\:font-medium [cmdk-group-heading] {
     --tw-font-weight: var(--font-weight-medium);
