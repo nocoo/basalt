@@ -69,6 +69,7 @@ describe("Sheet", () => {
 			</Sheet>,
 		);
 		const panel = screen.getByRole("dialog");
+		expect(panel).toHaveAttribute("data-basalt-floating");
 		expect(panel.className).toContain("p-basalt-card sm:p-basalt-card-lg");
 		expect(screen.getByRole("heading", { name: "Panel" }).className).toContain("text-basalt-xl");
 		expect(screen.getByText("Panel details").className).toContain("text-basalt-base");

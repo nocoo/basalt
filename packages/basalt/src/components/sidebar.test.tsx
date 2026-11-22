@@ -1129,7 +1129,7 @@ describe("ContentIsland", () => {
 	it("floats the panel with a corner shadow", () => {
 		render(<ContentIsland>Body</ContentIsland>);
 		const island = screen.getByText("Body");
-		expect(island.className).toContain("shadow-sm");
+		expect(island.className).toContain("shadow-basalt-card");
 		expect(island.className).toContain("ring-1");
 		expect(island.className).toContain("ring-basalt-border/40");
 		expect(island.className).toContain("rounded-basalt-lg");

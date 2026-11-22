@@ -1198,8 +1198,8 @@ export function ContentIsland({
 			className={cn(
 				"min-h-0 min-w-0 flex-1 bg-basalt-card text-basalt-card-foreground md:rounded-basalt-island md:p-basalt-layout-lg lg:px-basalt-layout-xl",
 				mobileSurface === "inset"
-					? "rounded-basalt-lg p-basalt-layout shadow-sm ring-1 ring-basalt-border/40"
-					: "md:shadow-sm md:ring-1 md:ring-basalt-border/40",
+					? "rounded-basalt-lg p-basalt-layout shadow-basalt-card ring-1 ring-basalt-border/40"
+					: "md:shadow-basalt-card md:ring-1 md:ring-basalt-border/40",
 				className,
 			)}
 			{...props}

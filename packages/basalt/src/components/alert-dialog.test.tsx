@@ -75,6 +75,7 @@ describe("AlertDialog", () => {
 		);
 		expect(screen.getByRole("alertdialog").className).toContain(DIALOG_SIZES.lg);
 		expect(screen.getByRole("alertdialog")).toHaveAttribute("data-basalt-surface-root");
+		expect(screen.getByRole("alertdialog")).toHaveAttribute("data-basalt-floating");
 	});
 
 	it("keeps default Cancel and Action styles when composed with asChild", () => {

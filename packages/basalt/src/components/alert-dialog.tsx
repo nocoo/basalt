@@ -146,6 +146,7 @@ export const AlertDialogContent = React.forwardRef<
 		<AlertDialogPrimitive.Content
 			ref={ref}
 			data-basalt-surface-root=""
+			data-basalt-floating=""
 			className={dialogPanelClass({ size, className })}
 			{...props}
 		/>

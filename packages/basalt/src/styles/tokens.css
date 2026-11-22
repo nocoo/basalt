@@ -145,11 +145,11 @@
 .light,
 [data-mode="light"] {
 	color-scheme: light;
-	--basalt-background: 0 0% 95.7%;
+	--basalt-background: 0 0% 95%;
 	--basalt-foreground: 0 0% 10%;
-	--basalt-card: 0 0% 97%;
+	--basalt-card: 0 0% 98%;
 	--basalt-card-foreground: 0 0% 10%;
-	--basalt-secondary: 0 0% 99%;
+	--basalt-secondary: 0 0% 100%;
 	--basalt-secondary-foreground: 0 0% 10%;
 	--basalt-popover: 0 0% 100%;
 	--basalt-popover-foreground: 0 0% 10%;
@@ -297,20 +297,20 @@
 .dark,
 [data-mode="dark"] {
 	color-scheme: dark;
-	--basalt-background: 0 0% 9%;
+	--basalt-background: 0 0% 7.5%;
 	--basalt-foreground: 0 0% 93%;
-	--basalt-card: 0 0% 10.6%;
+	--basalt-card: 0 0% 10%;
 	--basalt-card-foreground: 0 0% 93%;
-	--basalt-secondary: 0 0% 12.2%;
+	--basalt-secondary: 0 0% 12.5%;
 	--basalt-secondary-foreground: 0 0% 93%;
-	--basalt-popover: 0 0% 10.6%;
+	--basalt-popover: 0 0% 16.5%;
 	--basalt-popover-foreground: 0 0% 93%;
-	--basalt-bright: 0 0% 14%;
+	--basalt-bright: 0 0% 15.5%;
 	--basalt-primary: 204 90% 70%;
 	--basalt-primary-foreground: 0 0% 10%;
-	--basalt-muted: 0 0% 12.2%;
+	--basalt-muted: 0 0% 12.5%;
 	--basalt-muted-foreground: 0 0% 63%;
-	--basalt-accent: 0 0% 14%;
+	--basalt-accent: 0 0% 15.5%;
 	--basalt-accent-foreground: 0 0% 93%;
 	--basalt-destructive: 0 72% 51%;
 	--basalt-destructive-foreground: 0 0% 100%;
@@ -330,8 +330,8 @@
 	--basalt-badge-purple: var(--basalt-accent-10);
 	--basalt-badge-teal-foreground: 0 0% 10%;
 	--basalt-badge-purple-foreground: 0 0% 10%;
-	--basalt-border: 0 0% 16%;
-	--basalt-input: 0 0% 18%;
+	--basalt-border: 0 0% 19%;
+	--basalt-input: 0 0% 22%;
 	--basalt-ring: var(--basalt-primary);
 	--basalt-shadow-card:
 		inset 0 1px 0 0 rgb(255 255 255 / 0.085),
@@ -437,6 +437,12 @@
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 }
 
+[data-basalt-surface-root][data-basalt-floating] {
+	background: hsl(var(--basalt-popover));
+	--basalt-surface-current: var(--basalt-popover);
+	--basalt-control-fill: hsl(var(--basalt-bright));
+}
+
 [data-basalt-surface-root] [data-basalt-surface] {
 	background: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-secondary);
@@ -462,6 +468,12 @@
 [data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] {
 	background: hsl(var(--basalt-bright));
 	--basalt-surface-current: var(--basalt-bright);
+	--basalt-control-fill: hsl(var(--basalt-bright));
+}
+
+[data-basalt-surface-root] [data-basalt-surface] [data-slot="card-well"][data-basalt-surface] {
+	background: hsl(var(--basalt-card));
+	--basalt-surface-current: var(--basalt-card);
 	--basalt-control-fill: hsl(var(--basalt-bright));
 }
 
@@ -516,6 +528,14 @@
 	[data-basalt-surface] {
 	background: hsl(var(--basalt-bright));
 	--basalt-surface-current: var(--basalt-bright);
+	--basalt-control-fill: hsl(var(--basalt-bright));
+}
+
+[data-basalt-surface]:not([data-basalt-surface-root] *)
+	[data-basalt-surface]
+	[data-slot="card-well"][data-basalt-surface] {
+	background: hsl(var(--basalt-card));
+	--basalt-surface-current: var(--basalt-card);
 	--basalt-control-fill: hsl(var(--basalt-bright));
 }
 

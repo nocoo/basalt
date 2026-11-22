@@ -538,8 +538,10 @@ async function assertNestedSurfaces(page: Page, baseUrl: string) {
 		const l1Lum = rgbLuminance(layout.l1Bg);
 		const l2Lum = rgbLuminance(layout.l2Bg);
 		const l3Lum = rgbLuminance(layout.l3Bg);
-		assert.ok(l0Lum < l1Lum && l1Lum < l2Lum && l2Lum < l3Lum, JSON.stringify({ dark, layout }));
-		if (!dark) assert.equal(layout.l3Bg, "rgb(255, 255, 255)");
+		assert.ok(l0Lum < l1Lum && l1Lum < l2Lum, JSON.stringify({ dark, layout }));
+		assert.ok(l3Lum < l2Lum, JSON.stringify({ dark, layout }));
+		assert.equal(layout.l3Bg, layout.l1Bg, JSON.stringify({ dark, layout }));
+		if (!dark) assert.equal(layout.l2Bg, "rgb(255, 255, 255)");
 		assert.equal(layout.l2HeaderPadBottom, "12px");
 		assert.equal(layout.l3WellBorderTop, "1px");
 		assert.equal(layout.l3PlusBg, "rgba(0, 0, 0, 0)");

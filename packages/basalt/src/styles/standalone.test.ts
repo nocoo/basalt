@@ -71,7 +71,8 @@ describe("standalone css", () => {
 		);
 		const defaultIcon = css.indexOf(".\\[\\&\\>svg\\]\\:size-basalt-icon-lg > svg");
 		expect(sidebarIcon).toBeGreaterThan(defaultIcon);
-		expect(css).toContain(".shadow-sm");
+		expect(css).toContain(".shadow-basalt-card");
+		expect(css).toContain("[data-basalt-floating]");
 		expect(css).toContain(".sticky");
 		expect(css).toContain(".w-\\[4\\.25rem\\]");
 		expect(css).toContain(".cursor-col-resize");

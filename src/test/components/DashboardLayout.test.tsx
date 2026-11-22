@@ -167,7 +167,7 @@ describe("DashboardLayout", () => {
 	it("floats the content island with a corner shadow", () => {
 		renderLayout("/");
 		const island = screen.getByTestId("dashboard-outlet").parentElement;
-		expect(island).toHaveClass("shadow-sm");
+		expect(island).toHaveClass("shadow-basalt-card");
 		expect(island).toHaveClass("ring-1");
 		expect(island).toHaveClass("ring-basalt-border/40");
 	});

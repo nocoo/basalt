@@ -236,13 +236,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"dialog": {
 		"file": "packages/basalt/src/components/dialog.tsx",
-		"hash": "14c49832ea235b3e",
+		"hash": "2aea24266a3c3488",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dialog.js.map (sourcesContent[0])"
 	},
 	"alert-dialog": {
 		"file": "packages/basalt/src/components/alert-dialog.tsx",
-		"hash": "ebbec9792099cb42",
+		"hash": "ce84dd53017f3049",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/alert-dialog.js.map (sourcesContent[0])"
 	},
@@ -278,7 +278,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sheet": {
 		"file": "packages/basalt/src/components/sheet.tsx",
-		"hash": "678ae3988dd74292",
+		"hash": "ce4a75d58f41ba5f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sheet.js.map (sourcesContent[0])"
 	},
@@ -344,7 +344,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "fd5adc597436e283",
+		"hash": "cd47b555ab5adb78",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},

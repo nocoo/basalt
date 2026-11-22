@@ -72,9 +72,9 @@ describe("theme studio model", () => {
 				];
 				for (let index = 1; index < surfaces.length; index += 1)
 					expect(luminance(surfaces[index])).toBeGreaterThan(luminance(surfaces[index - 1]));
-				const secondary = rgb(vars["--basalt-secondary"]);
-				expect(surfaceTint === "warm" ? secondary[0] : secondary[2]).toBeGreaterThan(
-					surfaceTint === "warm" ? secondary[2] : secondary[0],
+				const card = rgb(vars["--basalt-card"]);
+				expect(surfaceTint === "warm" ? card[0] : card[2]).toBeGreaterThan(
+					surfaceTint === "warm" ? card[2] : card[0],
 				);
 				for (const surface of surfaces)
 					expect(

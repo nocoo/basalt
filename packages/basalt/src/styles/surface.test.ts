@@ -12,7 +12,7 @@ const themeSelectors = ['[data-mode="light"]', '[data-mode="dark"]'];
 function tokenValues(selector: string) {
 	const values = new Map<string, string>();
 	postcss.parse(tokens).walkRules((rule) => {
-		if (rule.selectors.includes(selector))
+		if (rule.selectors.map((entry) => entry.replace(/\s+/g, " ")).includes(selector))
 			rule.walkDecls((declaration) => {
 				values.set(declaration.prop, declaration.value);
 			});
@@ -140,16 +140,43 @@ describe("nested surface CSS", () => {
 		).toBe("var(--basalt-secondary)");
 	});
 
-	it("preserves strictly ascending surface luminance in both themes", () => {
-		for (const selector of themeSelectors) {
-			const values = tokenValues(selector);
-			const l0 = luminance(values, "background");
-			const l1 = luminance(values, "card");
-			const l2 = luminance(values, "secondary");
-			const l3 = luminance(values, "bright");
-			expect(l0, `${selector} L0 < L1`).toBeLessThan(l1);
-			expect(l1, `${selector} L1 < L2`).toBeLessThan(l2);
-			expect(l2, `${selector} L2 < L3`).toBeLessThan(l3);
+	it("preserves ascending surface luminance and floating/well surface roles in both themes", () => {
+		const lightValues = tokenValues('[data-mode="light"]');
+		const lightL0 = luminance(lightValues, "background");
+		const lightL1 = luminance(lightValues, "card");
+		const lightL2 = luminance(lightValues, "secondary");
+		const lightBright = luminance(lightValues, "bright");
+		const lightPopover = luminance(lightValues, "popover");
+		expect(lightL0, '[data-mode="light"] L0 < L1').toBeLessThan(lightL1);
+		expect(lightL1, '[data-mode="light"] L1 < L2').toBeLessThan(lightL2);
+		expect(lightL2).toBe(lightBright);
+		expect(lightL2).toBe(lightPopover);
+		expect(lightValues.get("--basalt-secondary")).toBe("0 0% 100%");
+
+		const darkValues = tokenValues('[data-mode="dark"]');
+		const darkL0 = luminance(darkValues, "background");
+		const darkL1 = luminance(darkValues, "card");
+		const darkL2 = luminance(darkValues, "secondary");
+		const darkL3 = luminance(darkValues, "bright");
+		const darkPopover = luminance(darkValues, "popover");
+		expect(darkL0, '[data-mode="dark"] L0 < L1').toBeLessThan(darkL1);
+		expect(darkL1, '[data-mode="dark"] L1 < L2').toBeLessThan(darkL2);
+		expect(darkL2, '[data-mode="dark"] L2 < L3').toBeLessThan(darkL3);
+		expect(darkL3, '[data-mode="dark"] L3 < Popover').toBeLessThan(darkPopover);
+
+		const floatingRoot = tokenValues("[data-basalt-surface-root][data-basalt-floating]");
+		expect(floatingRoot.get("background")).toBe("hsl(var(--basalt-popover))");
+		expect(floatingRoot.get("--basalt-surface-current")).toBe("var(--basalt-popover)");
+		expect(floatingRoot.get("--basalt-control-fill")).toBe("hsl(var(--basalt-bright))");
+
+		for (const selector of [
+			'[data-basalt-surface-root] [data-basalt-surface] [data-slot="card-well"][data-basalt-surface]',
+			'[data-basalt-surface]:not([data-basalt-surface-root] *) [data-basalt-surface] [data-slot="card-well"][data-basalt-surface]',
+		]) {
+			const wellRule = tokenValues(selector);
+			expect(wellRule.get("background")).toBe("hsl(var(--basalt-card))");
+			expect(wellRule.get("--basalt-surface-current")).toBe("var(--basalt-card)");
+			expect(wellRule.get("--basalt-control-fill")).toBe("hsl(var(--basalt-bright))");
 		}
 		expect(tokens).not.toContain("--basalt-well");
 	});

@@ -219,6 +219,7 @@ export const DialogContent = React.forwardRef<
 			<DialogPrimitive.Content
 				ref={ref}
 				data-basalt-surface-root=""
+				data-basalt-floating=""
 				className={dialogPanelClass({ size, className })}
 				onPointerDownOutside={(event) => {
 					if (disablePointerDismissal) {

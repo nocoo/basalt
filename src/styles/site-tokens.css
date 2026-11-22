@@ -33,3 +33,8 @@
 	--basalt-scene-brand-green: #9cd878;
 	--basalt-scene-brand-yellow: #e9c873;
 }
+
+[data-example-preview] {
+	background: hsl(var(--basalt-card));
+	--basalt-surface-current: var(--basalt-card);
+}

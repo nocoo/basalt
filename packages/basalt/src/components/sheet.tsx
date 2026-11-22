@@ -189,6 +189,7 @@ export const SheetContent = React.forwardRef<
 			data-basalt-sheet=""
 			data-side={side}
 			data-basalt-surface-root=""
+			data-basalt-floating=""
 			className={cn(OVERLAY_LAYER, OVERLAY_MOTION, "max-h-dvh max-w-full", SIDE[side], className)}
 			{...props}
 			style={{ boxSizing: "border-box", ...props.style }}

@@ -87,6 +87,7 @@ describe("Dialog", () => {
 			</Dialog>,
 		);
 		expect(screen.getByRole("dialog").className).toContain(DIALOG_SIZES.xl);
+		expect(screen.getByRole("dialog")).toHaveAttribute("data-basalt-floating");
 	});
 
 	it("closes from an explicit close control", () => {
