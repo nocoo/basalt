@@ -244,10 +244,19 @@ interaction contracts; do not change their containment as a global workaround.
   white text).
 - Elevation uses shared shadow tokens only (`--basalt-shadow-control`, `--basalt-shadow-solid`,
   `--basalt-shadow-card`, `--basalt-shadow-card-foot`, `--basalt-shadow-floating`,
-  `--basalt-shadow-modal`, `--basalt-shadow-well`); do not use raw Tailwind
+  `--basalt-shadow-modal`, `--basalt-shadow-well`, `--basalt-shadow-knob`); do not use raw Tailwind
   `shadow-sm`/`shadow-md`/`shadow-lg`/`shadow-xl` utilities or `backdrop-filter`.
   `Popover` sets `arrow={false}` by default; opt in with `arrow` only when directional
   anchor attribution is needed.
+- Recessed control tracks and placeholders use `--basalt-well` (`hsl(var(--basalt-foreground) / 0.065)`
+  light, `0.1` dark) paired with `--basalt-shadow-well` (`Switch` unchecked tracks, `Slider` and
+  `Meter` tracks, `SkeletonLine`, and `Empty` icon wells), keeping `LayerCard.Well` distinct on
+  `L1` (`--basalt-card`). `Checkbox` and `Radio` rest in neutral matte wells
+  (`border-basalt-border` + `bg-basalt-control` + `shadow-basalt-well`) and promote to solid
+  `--basalt-primary` + `--basalt-shadow-solid` with `animate-basalt-check-in` when active. `Switch`
+  defaults to compact `18×32px` (`sm` `16×28px`) with a `shadow-basalt-knob` thumb; `Slider`
+  thumbs share `shadow-basalt-knob`; `Accordion` pairs `--basalt-border` item dividers with
+  `basalt-accordion-down`/`up` height-and-opacity disclosure motion.
 - **Status tones.** Status feedback across `Badge`, `Banner`, and `Toast` uses five
   unified tones (`neutral`, `info`, `success`, `warning`, `danger`). Neutral uses the
   shared foreground/background/border tokens; each semantic tone defines four tokens
@@ -457,6 +466,9 @@ mark actual edge cells explicitly for rowSpan or nested tables. Row fills and
 header rules remain full width. An already inset table retains the default cell spacing.
 TableCaption owns its 16px horizontal and 12px vertical panel insets, without an
 outside margin. Its text must not touch an enclosing table frame's bottom edge.
+`DataTable` pairs staggered `SkeletonLine` widths (`84%` / `60%` / `72%`) while
+loading, a `CircleAlert` `text-basalt-danger` icon in error states, and `<Empty size="sm" />`
+for string empty states.
 
 Purposeful nesting, such as a preview's focus clearance around a self-contained
 surface, remains valid. Increase the separation between groups before increasing
