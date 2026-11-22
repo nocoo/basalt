@@ -45,7 +45,7 @@ describe("standalone css", () => {
 		expect(css).not.toMatch(/body\s*\{[^}]*margin:\s*0/);
 		expect(css).toContain("@keyframes basalt-pulse");
 		expect(css).toContain("@keyframes basalt-dialog-in");
-		expect(css).toContain("scale: 0.92");
+		expect(css).toContain("scale: 0.96");
 		expect(css).toContain("@keyframes basalt-overlay-in");
 		expect(css).toContain("@keyframes basalt-collapsible-down");
 		expect(css).toContain("@keyframes basalt-shimmer");
@@ -56,7 +56,7 @@ describe("standalone css", () => {
 			expect(css).toContain(`@keyframes basalt-${motion}-in`);
 			expect(css).toContain(`@keyframes basalt-${motion}-out`);
 		}
-		expect(css).toContain("--basalt-sheet-backdrop-blur: 6px");
+		expect(css).not.toContain("--basalt-sheet-backdrop-blur");
 		expect(css).toContain("--radix-popper-transform-origin");
 		expect(css).toContain(".basalt-command-list::before");
 		expect(css).toContain("--basalt-command-top");
@@ -84,7 +84,7 @@ describe("standalone css", () => {
 		expect(css).toContain("data-\\[selected\\=true\\]\\:text-basalt-accent-foreground");
 		expect(css).toContain(".ml-auto");
 		expect(css).toContain(".tracking-widest");
-		expect(css).toContain("backdrop-filter");
+		expect(css).not.toContain("backdrop-filter");
 		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
 	});
 

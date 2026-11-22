@@ -63,15 +63,18 @@ describe("Dialog", () => {
 		expect(classes).toContain("overflow-y-auto");
 		expect(classes).toContain("p-basalt-card");
 		expect(classes).toContain("sm:p-basalt-card-lg");
+		expect(classes).toContain("shadow-basalt-modal");
+		expect(classes).not.toContain("shadow-lg");
 		expect(classes).not.toContain("p-basalt-space-lg");
 		expect(classes).not.toContain("overflow-hidden");
 		expect(classes).not.toContain("top-8");
 	});
 
-	it("frosts the overlay and fades it with the panel", () => {
+	it("dims the overlay with a blur-free scrim and fades it with the panel", () => {
 		const classes = dialogOverlayClass().split(" ");
-		expect(classes).toContain("backdrop-blur-md");
-		expect(classes).toContain("bg-basalt-backdrop/40");
+		expect(classes).toContain("bg-basalt-scrim");
+		expect(classes).not.toContain("backdrop-blur-md");
+		expect(classes).not.toContain("bg-basalt-backdrop/40");
 		expect(classes).toContain("data-[state=open]:animate-basalt-overlay-in");
 		expect(classes).toContain("data-[state=closed]:animate-basalt-overlay-out");
 		expect(classes).toContain("motion-reduce:animate-none");

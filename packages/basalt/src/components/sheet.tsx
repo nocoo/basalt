@@ -179,7 +179,7 @@ export const SheetContent = React.forwardRef<
 		<DialogPrimitive.Overlay
 			forceMount={props.forceMount}
 			className={cn(
-				"basalt-sheet-overlay fixed inset-0 bg-basalt-backdrop/50",
+				"basalt-sheet-overlay fixed inset-0 bg-basalt-scrim",
 				OVERLAY_LAYER,
 				OVERLAY_MOTION,
 			)}

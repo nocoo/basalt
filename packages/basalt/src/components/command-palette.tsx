@@ -100,7 +100,7 @@ export function CommandPalette({
 				size={size}
 				aria-describedby={undefined}
 				className={cn(
-					"top-[min(14vh,7rem)] flex max-h-[calc(100dvh-min(14vh,7rem)-var(--basalt-space-layout))] translate-y-0 flex-col overflow-hidden bg-basalt-muted p-basalt-space-sm sm:p-basalt-space-sm shadow-lg",
+					"top-[min(14vh,7rem)] flex max-h-[calc(100dvh-min(14vh,7rem)-var(--basalt-space-layout))] translate-y-0 flex-col overflow-hidden p-0 sm:p-0",
 					className,
 				)}
 			>
@@ -108,7 +108,7 @@ export function CommandPalette({
 				<Command
 					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
-					className="rounded-basalt-md bg-basalt-popover ring-1 ring-basalt-border/60 [&_[cmdk-group-heading]]:px-basalt-space-lg [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md"
+					className="[&_[cmdk-group-heading]]:px-basalt-space-lg [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-item]]:px-basalt-space-lg [&_[cmdk-item]]:py-basalt-space-md"
 				>
 					{content}
 				</Command>

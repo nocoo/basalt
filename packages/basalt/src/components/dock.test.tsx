@@ -53,8 +53,9 @@ describe("Dock", () => {
 		expect(dock).toHaveClass("absolute");
 		expect(dock).toHaveStyle({ width: "384px" });
 		const scrim = screen.getByRole("button", { name: "Dismiss" });
-		expect(scrim.className).toContain("backdrop-blur-md");
-		expect(scrim.className).toContain("bg-basalt-backdrop/40");
+		expect(scrim.className).toContain("bg-basalt-scrim");
+		expect(scrim.className).not.toContain("backdrop-blur-md");
+		expect(scrim.className).not.toContain("bg-basalt-backdrop/40");
 		fireEvent.click(scrim);
 		expect(onDismiss).toHaveBeenCalled();
 	});

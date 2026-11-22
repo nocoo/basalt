@@ -203,7 +203,7 @@
 	--basalt-motion-ease-exit: cubic-bezier(0.5, 0, 0.75, 0);
 	--basalt-sheet-duration-enter: 350ms;
 	--basalt-sheet-duration-exit: 250ms;
-	--basalt-sheet-backdrop-blur: 6px;
+	--basalt-scrim: 0 0% 0% / 0.28;
 	--basalt-floating-duration-enter: 200ms;
 	--basalt-floating-duration-exit: 150ms;
 	--basalt-font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -220,6 +220,7 @@
 	--basalt-shadow-card-foot:
 		inset 0 -1px 0 0 rgb(0 0 0 / 0.038), inset 0 0 0 1px rgb(255 255 255 / 0.45);
 	--basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+	--basalt-shadow-modal: 0 8px 24px -6px rgb(0 0 0 / 0.1), 0 24px 60px -18px rgb(0 0 0 / 0.26);
 	/* Match the classic candy swatches; gray and preference ownership stay independent. */
 	--basalt-chart-blue: 204 88% 62%;
 	--basalt-chart-pink: 345 88% 72%;
@@ -338,6 +339,9 @@
 	--basalt-shadow-card-foot:
 		inset 0 -1px 0 0 rgb(0 0 0 / 0.32), inset 0 0 0 1px rgb(255 255 255 / 0.028);
 	--basalt-shadow-control: 0 0 #0000;
+	--basalt-shadow-modal:
+		inset 0 1px 0 0 rgb(255 255 255 / 0.07), 0 24px 60px -18px rgb(0 0 0 / 0.7);
+	--basalt-scrim: 0 0% 0% / 0.6;
 	--basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.1);
 	--basalt-meter-track-shadow:
 		inset 0 1px 2px 0 hsl(var(--basalt-backdrop) / 0.35),
@@ -925,10 +929,6 @@
 			forwards;
 	}
 
-	.basalt-sheet-overlay {
-		backdrop-filter: blur(var(--basalt-sheet-backdrop-blur));
-	}
-
 	.basalt-sheet-overlay[data-state="open"] {
 		animation: basalt-sheet-backdrop-in var(--basalt-sheet-duration-enter)
 			var(--basalt-motion-ease-enter);
@@ -1032,22 +1032,18 @@
 @keyframes basalt-sheet-backdrop-in {
 	from {
 		opacity: 0;
-		backdrop-filter: blur(0);
 	}
 	to {
 		opacity: 1;
-		backdrop-filter: blur(var(--basalt-sheet-backdrop-blur));
 	}
 }
 
 @keyframes basalt-sheet-backdrop-out {
 	from {
 		opacity: 1;
-		backdrop-filter: blur(var(--basalt-sheet-backdrop-blur));
 	}
 	to {
 		opacity: 0;
-		backdrop-filter: blur(0);
 	}
 }
 
@@ -1125,7 +1121,7 @@
 @keyframes basalt-dialog-in {
 	from {
 		opacity: 0;
-		scale: 0.92;
+		scale: 0.96;
 	}
 	to {
 		opacity: 1;
@@ -1140,7 +1136,7 @@
 	}
 	to {
 		opacity: 0;
-		scale: 0.92;
+		scale: 0.96;
 	}
 }
 

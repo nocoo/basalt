@@ -249,10 +249,11 @@ describe("CommandPalette", () => {
 			"translate-y-0",
 			"max-h-[calc(100dvh-min(14vh,7rem)-var(--basalt-space-layout))]",
 			"sm:w-[48rem]",
-			"p-basalt-space-sm",
-			"sm:p-basalt-space-sm",
+			"p-0",
+			"sm:p-0",
 			"custom-panel",
 		);
+		expect(dialog).not.toHaveClass("bg-basalt-muted", "shadow-lg");
 		const input = screen.getByRole("combobox");
 		expect(input).not.toHaveClass("basalt-action");
 		expect(input).toHaveClass("outline-none", "focus-visible:outline-none");

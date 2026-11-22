@@ -9,6 +9,7 @@
 @theme inline {
 	--color-basalt-on-solid: hsl(var(--basalt-on-solid));
 	--color-basalt-backdrop: hsl(var(--basalt-backdrop));
+	--color-basalt-scrim: hsl(var(--basalt-scrim));
 	--color-basalt-tag-slate: var(--basalt-tag-slate);
 	--color-basalt-tag-slate-foreground: var(--basalt-tag-slate-foreground);
 	--color-basalt-tag-slate-border: var(--basalt-tag-slate-border);
@@ -258,6 +259,7 @@
 	--radius-basalt-widget: var(--basalt-radius-widget);
 	--shadow-basalt-card: var(--basalt-shadow-card);
 	--shadow-basalt-control: var(--basalt-shadow-control);
+	--shadow-basalt-modal: var(--basalt-shadow-modal);
 	--font-basalt-sans: var(--basalt-font-sans);
 	--font-basalt-display: var(--basalt-font-display);
 	--font-basalt-mono: var(--basalt-font-mono);

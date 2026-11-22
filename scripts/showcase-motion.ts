@@ -42,7 +42,7 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 				assert.notEqual(entrance.transform, "matrix(1, 0, 0, 1, 0, 0)");
 				const haze = await sampleAnimation(backdrop, "basalt-sheet-backdrop-in");
 				assert.ok(haze.opacity > 0 && haze.opacity < 1);
-				assert.match(haze.blur, /^blur\(/);
+				assert.equal(haze.blur, "none");
 				const box = await panel.boundingBox();
 				assert.ok(box && box.width <= width && box.height <= 1000);
 				assert.equal(await panel.evaluate((node) => node.contains(document.activeElement)), true);

@@ -236,7 +236,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"dialog": {
 		"file": "packages/basalt/src/components/dialog.tsx",
-		"hash": "2aea24266a3c3488",
+		"hash": "48c9a57f5e3795c3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dialog.js.map (sourcesContent[0])"
 	},
@@ -278,13 +278,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sheet": {
 		"file": "packages/basalt/src/components/sheet.tsx",
-		"hash": "ce4a75d58f41ba5f",
+		"hash": "5fc86275299625d8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sheet.js.map (sourcesContent[0])"
 	},
 	"command-palette": {
 		"file": "packages/basalt/src/components/command-palette.tsx",
-		"hash": "d4e4dee0f9c01c13",
+		"hash": "b0f5d6b6107a97cb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/command-palette.js.map (sourcesContent[0])"
 	},
