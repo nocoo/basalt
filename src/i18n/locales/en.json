@@ -1204,7 +1204,7 @@
 			"statusLoading": "Loading showcase",
 			"statusLoaded": "Showcase loaded",
 			"primitives": "Bones",
-			"primitivesHint": "SkeletonLine is the only painted bone. Circles, bars and blocks are the same line with height and radius.",
+			"primitivesHint": "Skeleton provides shimmer line, block, and circle placeholder bones.",
 			"cardLoadingLabel": "Loading card",
 			"spinners": "Spinners",
 			"spinnersHint": "Loader is the library mark. Button loading and InputGroup use the same motion.",

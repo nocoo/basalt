@@ -1,7 +1,7 @@
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { type ReactNode, useState } from "react";
 
 function AreaChart({
@@ -115,9 +115,9 @@ export default function DashboardSkeleton() {
 						<LayerCard key={metric.title} outlined className="h-32 space-y-basalt-space-lg">
 							{loading ? (
 								<>
-									<SkeletonLine minWidth={metric.width} maxWidth={metric.width} height={10} />
-									<SkeletonLine minWidth={50} maxWidth={50} height={27} />
-									<SkeletonLine minWidth={38} maxWidth={38} height={9} />
+									<Skeleton width={`${metric.width}%`} height={10} />
+									<Skeleton width="50%" height={27} />
+									<Skeleton width="38%" height={9} />
 								</>
 							) : (
 								<>
@@ -133,7 +133,7 @@ export default function DashboardSkeleton() {
 					<LayerCard outlined className="min-w-0">
 						<div className="mb-basalt-space-lg flex h-6 items-center justify-between gap-basalt-space-lg">
 							{loading ? (
-								<SkeletonLine minWidth={36} maxWidth={36} height={13} />
+								<Skeleton width="36%" height={13} />
 							) : (
 								<h4 className="text-basalt-base font-medium">Request volume</h4>
 							)}
@@ -146,12 +146,12 @@ export default function DashboardSkeleton() {
 									className="flex h-full items-end gap-basalt-space-lg border-b border-basalt-border pb-basalt-space-lg"
 								>
 									{[32, 48, 40, 67, 55, 84, 69, 78, 64, 92, 80, 96].map((height, index) => (
-										<SkeletonLine
+										<Skeleton
 											key={`${index}-${height}`}
-											minWidth={100}
-											maxWidth={100}
-											className="flex-1 rounded-t-basalt-md"
-											style={{ height: `${height}%` }}
+											variant="block"
+											width="100%"
+											height={`${height}%`}
+											className="flex-1 rounded-b-none rounded-t-basalt-md"
 										/>
 									))}
 								</div>
@@ -177,11 +177,7 @@ export default function DashboardSkeleton() {
 							)}
 						</div>
 						<div className="mt-basalt-space-lg flex h-5 items-center gap-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
-							{loading ? (
-								<SkeletonLine minWidth={55} maxWidth={55} />
-							) : (
-								"Traffic is up 18.6% compared with last week."
-							)}
+							{loading ? <Skeleton width="55%" /> : "Traffic is up 18.6% compared with last week."}
 						</div>
 					</LayerCard>
 					<LayerCard
@@ -192,12 +188,7 @@ export default function DashboardSkeleton() {
 						<div className="flex h-40 w-40 items-center justify-center">
 							{loading ? (
 								<div aria-hidden="true" className="relative h-32 w-32">
-									<SkeletonLine
-										minWidth={100}
-										maxWidth={100}
-										height={128}
-										className="rounded-basalt-full"
-									/>
+									<Skeleton variant="circle" width={128} height={128} />
 									<div className="absolute inset-7 rounded-basalt-full bg-basalt-background" />
 								</div>
 							) : (
@@ -216,7 +207,7 @@ export default function DashboardSkeleton() {
 						<div className="w-full space-y-basalt-space-lg">
 							{["Clinic · 64%", "Video · 28%", "Home visits · 8%"].map((label, i) => (
 								<div key={label} className="h-4 text-basalt-sm text-basalt-muted-foreground">
-									{loading ? <SkeletonLine minWidth={85 - i * 13} maxWidth={85 - i * 13} /> : label}
+									{loading ? <Skeleton width={`${85 - i * 13}%`} /> : label}
 								</div>
 							))}
 						</div>

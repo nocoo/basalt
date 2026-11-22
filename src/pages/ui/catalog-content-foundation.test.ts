@@ -117,7 +117,7 @@ describe("foundation catalog content family", () => {
 			BUTTON_EXAMPLES.map((example) => example.render),
 		);
 		expect(foundation["layer-card"]?.docs.description).toBe(
-			"A nestable painted surface. Inside an island it is L2; LayerCard.Well raises L3. Primary aliases Well; Secondary aliases Header.",
+			"A nestable painted surface. Inside an island it is L2; LayerCard.Well raises L3; LayerCard.Header/Title/Description/Body/Footer compose structured sections.",
 		);
 		expect(foundation["layer-card"]?.docs.variants).toEqual(["none", "sm", "md", "lg", "xl"]);
 		expect(foundation["layer-card"]?.docs.api).toBe(layerCardApi);

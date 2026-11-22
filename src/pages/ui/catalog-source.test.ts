@@ -259,9 +259,9 @@ describe("catalog source contract", () => {
 		expect(foundation["layer-card"]?.docs.api).toEqual(CATALOG_API["layer-card"]);
 		expect(CATALOG_API["layer-card"]?.map((surface) => surface.name)).toEqual([
 			"LayerCard",
-			"LayerCard.Primary",
-			"LayerCard.Secondary",
 			"LayerCard.Header",
+			"LayerCard.Title",
+			"LayerCard.Description",
 			"LayerCard.Body",
 			"LayerCard.Well",
 			"LayerCard.Footer",
@@ -293,13 +293,15 @@ describe("catalog source contract", () => {
 			"size",
 			"passwordManagerIgnore",
 		]);
-		expect(implementationFileFor(entry("input-area"))).toBe(
-			"packages/basalt/src/components/input-area.tsx",
+		expect(implementationFileFor(entry("textarea"))).toBe(
+			"packages/basalt/src/components/textarea.tsx",
 		);
-		expect(forms["input-area"]?.docs.api).toEqual(CATALOG_API["input-area"]);
-		expect(CATALOG_API["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+		expect(forms.textarea?.docs.api).toEqual(CATALOG_API.textarea);
+		expect(CATALOG_API.textarea?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"rows",
 			"size",
+			"autoResize",
+			"maxRows",
 			"passwordManagerIgnore",
 		]);
 		expect(implementationFileFor(entry("sensitive-input"))).toBe(
@@ -434,7 +436,7 @@ describe("catalog source contract", () => {
 		for (const slug of [
 			"field",
 			"input",
-			"input-area",
+			"textarea",
 			"input-group",
 			"sensitive-input",
 			"checkbox",

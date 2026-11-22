@@ -176,13 +176,13 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("radiogroup", { name: "Page status" })).toBeInTheDocument();
 		expect(screen.getByRole("radio", { name: "Catalog" })).toHaveAttribute("aria-checked", "true");
 		expect(screen.getByRole("radio", { name: "Ready" })).toHaveAttribute("aria-checked", "true");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("3 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(3);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("2 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(2);
 		expect(
 			Array.from(document.querySelectorAll<HTMLElement>("[data-catalog-card]")).map(
 				(card) => card.dataset.catalogCard,
 			),
-		).toEqual(["input-area", "input-group", "sensitive-input"]);
+		).toEqual(["input-group", "sensitive-input"]);
 		expect(screen.queryByRole("region", { name: "Charts" })).not.toBeInTheDocument();
 
 		searchInput.focus();
@@ -1554,9 +1554,9 @@ describe("ui catalog", () => {
 		expect(CATALOG_DOCS["layer-card"]?.api).toEqual(CATALOG_API["layer-card"]);
 		expect(CATALOG_API["layer-card"]?.map((surface) => surface.name)).toEqual([
 			"LayerCard",
-			"LayerCard.Primary",
-			"LayerCard.Secondary",
 			"LayerCard.Header",
+			"LayerCard.Title",
+			"LayerCard.Description",
 			"LayerCard.Body",
 			"LayerCard.Well",
 			"LayerCard.Footer",
@@ -1567,9 +1567,9 @@ describe("ui catalog", () => {
 			CATALOG_API["layer-card"]?.map((surface) => surface.props.map((prop) => prop.name)),
 		).toEqual([
 			["asChild", "className", "outlined", "padding"],
-			["outlined"],
-			[],
 			["asChild", "divided"],
+			["asChild", "className"],
+			[],
 			[],
 			["outlined"],
 			[],
@@ -1579,7 +1579,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/layer-card");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(14);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(15);
 		expect(api).toHaveTextContent("asChild?");
 		expect(api).toHaveTextContent("className?");
 		expect(api).toHaveTextContent("outlined?");
@@ -1591,7 +1591,7 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the card root.");
 		expect(api).toHaveTextContent("—");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(14);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(15);
 		expect(api).toHaveTextContent("asChild?");
 		expect(within(api as HTMLElement).queryByRole("cell", { name: /^id\??$/ })).toBeNull();
 		expect(within(api as HTMLElement).queryByRole("cell", { name: /^style\??$/ })).toBeNull();
@@ -1841,13 +1841,13 @@ describe("ui catalog", () => {
 		expect(family).toContain('file: "packages/kumo/src/components/input/input.tsx"');
 	});
 
-	it("sources input-area API rows from generated catalog data", async () => {
+	it("sources textarea API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS["input-area"]?.api).toEqual(CATALOG_API["input-area"]);
-		expect(CATALOG_API["input-area"]).toEqual([
+		expect(CATALOG_DOCS.textarea?.api).toEqual(CATALOG_API.textarea);
+		expect(CATALOG_API.textarea).toEqual([
 			{
-				name: "InputArea",
+				name: "Textarea",
 				props: [
 					{
 						name: "rows",
@@ -1857,10 +1857,25 @@ describe("ui catalog", () => {
 					},
 					{
 						name: "size",
-						type: "InputAreaSize",
+						type: "TextareaSize",
 						required: false,
-						default: "default",
+						default: '"md"',
 						description: "The visual size of the text area.",
+					},
+					{
+						name: "autoResize",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description:
+							"Grow vertically with typed content instead of showing an internal scrollbar until clamped by `maxRows`.",
+					},
+					{
+						name: "maxRows",
+						type: "number",
+						required: false,
+						description:
+							"Maximum line count when `autoResize` is enabled before scrolling internally.",
 					},
 					{
 						name: "passwordManagerIgnore",
@@ -1872,61 +1887,67 @@ describe("ui catalog", () => {
 				],
 			},
 		]);
-		renderCatalog("/ui/input-area");
+		renderCatalog("/ui/textarea");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
 		expect(api).toHaveTextContent("rows?");
 		expect(api).toHaveTextContent("number");
 		expect(api).toHaveTextContent("The visible text row count.");
 		expect(api).toHaveTextContent("size?");
-		expect(api).toHaveTextContent("InputAreaSize");
+		expect(api).toHaveTextContent("TextareaSize");
+		expect(api).toHaveTextContent("autoResize?");
+		expect(api).toHaveTextContent("maxRows?");
 		expect(api).toHaveTextContent("passwordManagerIgnore?");
 		expect(api).not.toHaveTextContent("className");
 		expect(api).not.toHaveTextContent("placeholder");
 		expect(api).not.toHaveTextContent("onChange");
 		expect(screen.getByRole("heading", { name: "With Label" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Auto Resize" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Controlled and reset" })).toBeInTheDocument();
-		expect(document.querySelector('[data-hero-scenario="input-area-with-label"]')).toBeTruthy();
-		expect(document.querySelector('[data-scenario="input-area-custom-row-count"]')).toBeTruthy();
-		expect(document.querySelector('[data-scenario="input-area-error-state-string"]')).toBeTruthy();
-		expect(document.querySelector('[data-scenario="input-area-disabled"]')).toBeTruthy();
-		expect(document.querySelector('[data-scenario="input-area-sizes"]')).toBeTruthy();
-		expect(
-			document.querySelector('[data-scenario="input-area-controlled-and-reset"]'),
-		).toBeTruthy();
+		expect(document.querySelector('[data-hero-scenario="textarea-with-label"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="textarea-custom-row-count"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="textarea-auto-resize"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="textarea-error-state-string"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="textarea-disabled"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="textarea-sizes"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="textarea-controlled-and-reset"]')).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain("- rows (number, optional, default —): The visible text row count.");
 		expect(markdown).toContain(
-			"- size (InputAreaSize, optional, default default): The visual size of the text area.",
+			'- size (TextareaSize, optional, default "md"): The visual size of the text area.',
 		);
+		expect(markdown).toContain("- autoResize (boolean, optional, default false):");
+		expect(markdown).toContain("- maxRows (number, optional, default —):");
 		expect(markdown).toContain(
 			"- passwordManagerIgnore (boolean, optional, default false): Ignore password managers on this field.",
 		);
 		expect(markdown).not.toContain("- className (");
 		expect(markdown).not.toContain("- placeholder (");
-		expect(markdown).toContain(UI_EXAMPLES["input-area"]?.[0]?.code ?? "");
-		expect(markdown).toContain(UI_EXAMPLES["input-area"]?.[1]?.code ?? "");
+		expect(markdown).toContain(UI_EXAMPLES.textarea?.[0]?.code ?? "");
+		expect(markdown).toContain(UI_EXAMPLES.textarea?.[1]?.code ?? "");
 		expect(markdown).toContain("rows={6}");
 		expect(markdown).toContain("htmlFor={id}");
 		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
-	it("does not keep a handwritten input-area prop inventory", () => {
+	it("does not keep a handwritten textarea prop inventory", () => {
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(family).toContain("api: inputAreaApi");
+		expect(family).toContain("api: textareaApi");
 		expect(family).not.toContain('name: "rows"');
-		expect(family).toContain('description: "A sized native multi-line control on the L3 surface."');
-		expect(family).toContain('<InputArea aria-label="Notes" placeholder="Write a note" />');
-		expect(family).toContain('variants: ["sm", "default", "lg"]');
+		expect(family).toContain(
+			'description:\n\t\t\t\t"A sized native multi-line control on the L3 surface with optional content-driven auto-resize."',
+		);
+		expect(family).toContain('<Textarea aria-label="Notes" placeholder="Write a note" />');
+		expect(family).toContain('variants: ["sm", "md", "lg"]');
 		expect(family).toContain('repo: "kumo"');
 		expect(family).toContain('sha: "1159868dfe32"');
 		expect(family).toContain('file: "packages/kumo/src/components/input-area/input-area.tsx"');
@@ -3448,32 +3469,35 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("htmlFor={id}");
 	});
 
-	it("keeps input-area hero, field associations, rows, and copy modules", async () => {
+	it("keeps textarea hero, field associations, rows, autoResize, and copy modules", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		renderCatalog("/ui/input-area");
+		renderCatalog("/ui/textarea");
 		expect(screen.getByRole("heading", { name: "With Label" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Custom Row Count" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Auto Resize" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Error State (String)" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Controlled and reset" })).toBeInTheDocument();
-		const hero = document.querySelector('[data-hero-scenario="input-area-with-label"]');
-		const labeled = document.querySelector('[data-scenario="input-area-with-label"]');
-		const rows = document.querySelector('[data-scenario="input-area-custom-row-count"]');
-		const error = document.querySelector('[data-scenario="input-area-error-state-string"]');
-		const disabled = document.querySelector('[data-scenario="input-area-disabled"]');
-		const sizes = document.querySelector('[data-scenario="input-area-sizes"]');
-		const controlled = document.querySelector('[data-scenario="input-area-controlled-and-reset"]');
+		const hero = document.querySelector('[data-hero-scenario="textarea-with-label"]');
+		const labeled = document.querySelector('[data-scenario="textarea-with-label"]');
+		const rows = document.querySelector('[data-scenario="textarea-custom-row-count"]');
+		const autoResize = document.querySelector('[data-scenario="textarea-auto-resize"]');
+		const error = document.querySelector('[data-scenario="textarea-error-state-string"]');
+		const disabled = document.querySelector('[data-scenario="textarea-disabled"]');
+		const sizes = document.querySelector('[data-scenario="textarea-sizes"]');
+		const controlled = document.querySelector('[data-scenario="textarea-controlled-and-reset"]');
 		expect(hero).toBeTruthy();
 		expect(labeled).toBeTruthy();
 		expect(rows).toBeTruthy();
+		expect(autoResize).toBeTruthy();
 		expect(error).toBeTruthy();
 		expect(disabled).toBeTruthy();
 		expect(sizes).toBeTruthy();
 		expect(controlled).toBeTruthy();
-		if (!hero || !labeled || !rows || !error || !disabled || !sizes || !controlled) {
-			throw new Error("missing input-area scenario surfaces");
+		if (!hero || !labeled || !rows || !autoResize || !error || !disabled || !sizes || !controlled) {
+			throw new Error("missing textarea scenario surfaces");
 		}
 		const heroLabel = hero.querySelector("label");
 		const heroArea = hero.querySelector("textarea");
@@ -3504,7 +3528,7 @@ describe("ui catalog", () => {
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Small notes" }).className,
 		).toContain("min-h-basalt-textarea-sm");
 		expect(
-			within(sizes as HTMLElement).getByRole("textbox", { name: "Default notes" }).className,
+			within(sizes as HTMLElement).getByRole("textbox", { name: "Medium notes" }).className,
 		).toContain("min-h-basalt-textarea");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Large notes" }).className,
@@ -3513,9 +3537,9 @@ describe("ui catalog", () => {
 			"Ada",
 		);
 		expect(within(controlled as HTMLElement).getByRole("button", { name: "Reset" })).toBeEnabled();
-		for (const scenario of UI_EXAMPLES["input-area"] ?? []) {
+		for (const scenario of UI_EXAMPLES.textarea ?? []) {
 			expect(scenario.code).toContain("export default");
-			expect(scenario.code).toContain("@nocoo/basalt/components/input-area");
+			expect(scenario.code).toContain("@nocoo/basalt/components/textarea");
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
 			expect(node).toBeTruthy();
@@ -3525,8 +3549,8 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES["input-area"]).toHaveLength(6);
-		for (const scenario of UI_EXAMPLES["input-area"] ?? []) {
+		expect(UI_EXAMPLES.textarea).toHaveLength(7);
+		for (const scenario of UI_EXAMPLES.textarea ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).toContain("htmlFor={id}");

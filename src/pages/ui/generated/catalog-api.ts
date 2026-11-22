@@ -34,7 +34,6 @@ import { API as hoverCardApi } from "./catalog-api/hover-card";
 import { API as iconPickerApi } from "./catalog-api/icon-picker";
 import { API as inlineEditableApi } from "./catalog-api/inline-editable";
 import { API as inputApi } from "./catalog-api/input";
-import { API as inputAreaApi } from "./catalog-api/input-area";
 import { API as inputGroupApi } from "./catalog-api/input-group";
 import { API as labelApi } from "./catalog-api/label";
 import { API as layerCardApi } from "./catalog-api/layer-card";
@@ -57,7 +56,7 @@ import { API as sensitiveInputApi } from "./catalog-api/sensitive-input";
 import { API as separatorApi } from "./catalog-api/separator";
 import { API as sheetApi } from "./catalog-api/sheet";
 import { API as sidebarApi } from "./catalog-api/sidebar";
-import { API as skeletonLineApi } from "./catalog-api/skeleton-line";
+import { API as skeletonApi } from "./catalog-api/skeleton";
 import { API as sliderApi } from "./catalog-api/slider";
 import { API as statCardApi } from "./catalog-api/stat-card";
 import { API as statStripApi } from "./catalog-api/stat-strip";
@@ -69,6 +68,7 @@ import { API as tabsApi } from "./catalog-api/tabs";
 import { API as tagBadgeApi } from "./catalog-api/tag-badge";
 import { API as tagColorPickerApi } from "./catalog-api/tag-color-picker";
 import { API as textApi } from "./catalog-api/text";
+import { API as textareaApi } from "./catalog-api/textarea";
 import { API as themeProviderApi } from "./catalog-api/theme-provider";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
 import { API as toastApi } from "./catalog-api/toast";
@@ -113,7 +113,6 @@ export const CATALOG_API = {
 	"icon-picker": iconPickerApi,
 	"inline-editable": inlineEditableApi,
 	input: inputApi,
-	"input-area": inputAreaApi,
 	"input-group": inputGroupApi,
 	label: labelApi,
 	"layer-card": layerCardApi,
@@ -136,7 +135,7 @@ export const CATALOG_API = {
 	separator: separatorApi,
 	sheet: sheetApi,
 	sidebar: sidebarApi,
-	"skeleton-line": skeletonLineApi,
+	skeleton: skeletonApi,
 	slider: sliderApi,
 	"stat-card": statCardApi,
 	"stat-strip": statStripApi,
@@ -148,6 +147,7 @@ export const CATALOG_API = {
 	"tag-badge": tagBadgeApi,
 	"tag-color-picker": tagColorPickerApi,
 	text: textApi,
+	textarea: textareaApi,
 	"theme-provider": themeProviderApi,
 	"theme-toggle": themeToggleApi,
 	toast: toastApi,

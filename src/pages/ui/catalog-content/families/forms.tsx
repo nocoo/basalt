@@ -14,7 +14,6 @@ import { FILTER_BAR_EXAMPLES } from "../../examples/filter-bar";
 import { ICON_PICKER_EXAMPLES } from "../../examples/icon-picker";
 import { INLINE_EDITABLE_EXAMPLES } from "../../examples/inline-editable";
 import { INPUT_EXAMPLES } from "../../examples/input";
-import { INPUT_AREA_EXAMPLES } from "../../examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "../../examples/input-group";
 import { MULTI_SELECT_EXAMPLES } from "../../examples/multi-select";
 import { RADIO_EXAMPLES } from "../../examples/radio";
@@ -23,6 +22,7 @@ import { SELECT_EXAMPLES } from "../../examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "../../examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "../../examples/switch";
 import { TAG_COLOR_PICKER_EXAMPLES } from "../../examples/tag-color-picker";
+import { TEXTAREA_EXAMPLES } from "../../examples/textarea";
 import { UPLOAD_QUEUE_EXAMPLES } from "../../examples/upload-queue";
 import { API as autocompleteApi } from "../../generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "../../generated/catalog-api/checkbox";
@@ -33,7 +33,6 @@ import { API as filterBarApi } from "../../generated/catalog-api/filter-bar";
 import { API as iconPickerApi } from "../../generated/catalog-api/icon-picker";
 import { API as inlineEditableApi } from "../../generated/catalog-api/inline-editable";
 import { API as inputApi } from "../../generated/catalog-api/input";
-import { API as inputAreaApi } from "../../generated/catalog-api/input-area";
 import { API as inputGroupApi } from "../../generated/catalog-api/input-group";
 import { API as multiSelectApi } from "../../generated/catalog-api/multi-select";
 import { API as radioApi } from "../../generated/catalog-api/radio";
@@ -43,6 +42,7 @@ import { API as sensitiveInputApi } from "../../generated/catalog-api/sensitive-
 import { API as sliderApi } from "../../generated/catalog-api/slider";
 import { API as switchApi } from "../../generated/catalog-api/switch";
 import { API as tagColorPickerApi } from "../../generated/catalog-api/tag-color-picker";
+import { API as textareaApi } from "../../generated/catalog-api/textarea";
 import { API as toggleApi } from "../../generated/catalog-api/toggle";
 import { API as toggleGroupApi } from "../../generated/catalog-api/toggle-group";
 import { API as uploadQueueApi } from "../../generated/catalog-api/upload-queue";
@@ -202,23 +202,24 @@ export default catalogContentFamily({
 		},
 		examples: INPUT_EXAMPLES,
 	},
-	"input-area": {
+	textarea: {
 		docs: {
-			description: "A sized native multi-line control on the L3 surface.",
+			description:
+				"A sized native multi-line control on the L3 surface with optional content-driven auto-resize.",
 			usage: usage(
-				"InputArea",
-				"@nocoo/basalt/components/input-area",
-				'<InputArea aria-label="Notes" placeholder="Write a note" />',
+				"Textarea",
+				"@nocoo/basalt/components/textarea",
+				'<Textarea aria-label="Notes" placeholder="Write a note" />',
 			),
-			variants: ["sm", "default", "lg"],
-			api: inputAreaApi,
+			variants: ["sm", "md", "lg"],
+			api: textareaApi,
 			provenance: provenanceFromLegacy({
 				repo: "kumo",
 				sha: "1159868dfe32",
 				file: "packages/kumo/src/components/input-area/input-area.tsx",
 			}),
 		},
-		examples: INPUT_AREA_EXAMPLES,
+		examples: TEXTAREA_EXAMPLES,
 	},
 	"input-group": {
 		docs: {

@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "a15d4171b25f458a",
+		"hash": "5eeb93adf449b4a8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -84,11 +84,11 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input.js.map (sourcesContent[0])"
 	},
-	"input-area": {
-		"file": "packages/basalt/src/components/input-area.tsx",
-		"hash": "4ffae2d6a39b1b4f",
+	"textarea": {
+		"file": "packages/basalt/src/components/textarea.tsx",
+		"hash": "d708e36a9c92f459",
 		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input-area.js.map (sourcesContent[0])"
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/textarea.js.map (sourcesContent[0])"
 	},
 	"input-group": {
 		"file": "packages/basalt/src/components/input-group.tsx",
@@ -122,7 +122,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"select": {
 		"file": "packages/basalt/src/components/select.tsx",
-		"hash": "87eafc20ec1af3bb",
+		"hash": "7b8e33edbcb9d449",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/select.js.map (sourcesContent[0])"
 	},
@@ -134,7 +134,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"date-picker": {
 		"file": "packages/basalt/src/components/date-picker.tsx",
-		"hash": "52846b25fc478c2f",
+		"hash": "485e730fc269e479",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/date-picker.js.map (sourcesContent[0])"
 	},
@@ -186,11 +186,11 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/loader.js.map (sourcesContent[0])"
 	},
-	"skeleton-line": {
-		"file": "packages/basalt/src/components/skeleton-line.tsx",
-		"hash": "58dcff8d76519884",
+	"skeleton": {
+		"file": "packages/basalt/src/components/skeleton.tsx",
+		"hash": "87c53cf1bf7ff74d",
 		"kind": "sourcemap",
-		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/skeleton-line.js.map (sourcesContent[0])"
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/skeleton.js.map (sourcesContent[0])"
 	},
 	"meter": {
 		"file": "packages/basalt/src/components/meter.tsx",
@@ -284,7 +284,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"command-palette": {
 		"file": "packages/basalt/src/components/command-palette.tsx",
-		"hash": "b0f5d6b6107a97cb",
+		"hash": "8ce0e8ab9ae2bd46",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/command-palette.js.map (sourcesContent[0])"
 	},
@@ -302,7 +302,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "e9223a60298e6386",
+		"hash": "ee8b301d3034848f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},
@@ -344,13 +344,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "3e18eaabad0afabc",
+		"hash": "a58dd0c797d49199",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
 	"stat-strip": {
 		"file": "packages/basalt/src/components/stat-strip.tsx",
-		"hash": "cd36dd15a13309c6",
+		"hash": "e6afaaa03586a835",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/stat-strip.js.map (sourcesContent[0])"
 	},
@@ -386,7 +386,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"multi-select": {
 		"file": "packages/basalt/src/components/multi-select.tsx",
-		"hash": "5d9dca66b9522a4a",
+		"hash": "d46ee082f48ae047",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/multi-select.js.map (sourcesContent[0])"
 	},
@@ -422,7 +422,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"icon-picker": {
 		"file": "packages/basalt/src/components/icon-picker.tsx",
-		"hash": "61381b591de119a5",
+		"hash": "1a2ab4bb85e3a765",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/icon-picker.js.map (sourcesContent[0])"
 	},

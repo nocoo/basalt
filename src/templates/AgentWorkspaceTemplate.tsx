@@ -11,7 +11,6 @@ import {
 	CollapsibleTrigger,
 } from "@nocoo/basalt/components/collapsible";
 import { Input } from "@nocoo/basalt/components/input";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { Meter } from "@nocoo/basalt/components/meter";
@@ -35,6 +34,7 @@ import {
 	SidebarProvider,
 	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import {
 	Tooltip,
 	TooltipContent,
@@ -294,7 +294,7 @@ export default function AgentWorkspaceTemplate() {
 								))}
 								<LayerCard padding="none">
 									<LayerCard.Body className="space-y-basalt-card-sm">
-										<InputArea
+										<Textarea
 											aria-label="Message"
 											placeholder="Ask a follow-up question…"
 											value={draft}

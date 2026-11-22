@@ -17,7 +17,6 @@ import { BUTTON_EXAMPLES } from "./examples/button";
 import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
-import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "./examples/input-group";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
@@ -29,6 +28,7 @@ import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { SWITCH_EXAMPLES } from "./examples/switch";
 import { TEXT_EXAMPLES } from "./examples/text";
+import { TEXTAREA_EXAMPLES } from "./examples/textarea";
 import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 
@@ -207,25 +207,27 @@ const inputSources = import.meta.glob("./examples/input/*.tsx", {
 	eager: true,
 });
 
-const INPUT_AREA_IDS = [
-	"input-area-with-label",
-	"input-area-custom-row-count",
-	"input-area-error-state-string",
-	"input-area-disabled",
-	"input-area-sizes",
-	"input-area-controlled-and-reset",
+const TEXTAREA_IDS = [
+	"textarea-with-label",
+	"textarea-custom-row-count",
+	"textarea-auto-resize",
+	"textarea-error-state-string",
+	"textarea-disabled",
+	"textarea-sizes",
+	"textarea-controlled-and-reset",
 ] as const;
-const INPUT_AREA_TITLES = [
+const TEXTAREA_TITLES = [
 	"With Label",
 	"Custom Row Count",
+	"Auto Resize",
 	"Error State (String)",
 	"Disabled",
 	"Sizes",
 	"Controlled and reset",
 ] as const;
 
-const inputAreaRenders = import.meta.glob("./examples/input-area/*.tsx", { eager: true });
-const inputAreaSources = import.meta.glob("./examples/input-area/*.tsx", {
+const textareaRenders = import.meta.glob("./examples/textarea/*.tsx", { eager: true });
+const textareaSources = import.meta.glob("./examples/textarea/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -885,9 +887,10 @@ describe("source-backed layer-card scenarios", () => {
 		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain('className="w-[15.625rem]"');
 		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain("Next Steps");
 		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain("Hello");
-		expect(LAYER_CARD_EXAMPLES[0]?.code).not.toBe(
-			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain(
+			"<LayerCard.Header>Next Steps</LayerCard.Header>",
 		);
+		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain("<LayerCard.Well>Hello</LayerCard.Well>");
 		expect(LAYER_CARD_EXAMPLES[1]?.code).toContain('className="w-[15.625rem]"');
 		expect(LAYER_CARD_EXAMPLES[1]?.code).toContain("Quick start guide");
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('className="flex w-full gap-basalt-space-lg"');
@@ -1105,24 +1108,24 @@ describe("source-backed input scenarios", () => {
 	});
 });
 
-describe("source-backed input-area scenarios", () => {
-	it("loads six input-area scenarios from the same glob modules", () => {
-		expect(Object.keys(inputAreaRenders)).toHaveLength(6);
-		expect(Object.keys(inputAreaSources)).toHaveLength(6);
+describe("source-backed textarea scenarios", () => {
+	it("loads seven textarea scenarios from the same glob modules", () => {
+		expect(Object.keys(textareaRenders)).toHaveLength(7);
+		expect(Object.keys(textareaSources)).toHaveLength(7);
 		const loaded = loadModuleScenarios({
-			slug: "input-area",
-			metas: INPUT_AREA_TITLES.map((title, index) => ({
-				key: INPUT_AREA_IDS[index].slice("input-area-".length),
+			slug: "textarea",
+			metas: TEXTAREA_TITLES.map((title, index) => ({
+				key: TEXTAREA_IDS[index].slice("textarea-".length),
 				title,
 			})),
-			renderModules: inputAreaRenders,
-			sourceModules: inputAreaSources as Record<string, string>,
+			renderModules: textareaRenders,
+			sourceModules: textareaSources as Record<string, string>,
 		});
-		expect(loaded.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
-		expect(loaded.map((item) => item.title)).toEqual([...INPUT_AREA_TITLES]);
-		expect(INPUT_AREA_EXAMPLES.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
-		expect(INPUT_AREA_EXAMPLES.map((item) => item.title)).toEqual([...INPUT_AREA_TITLES]);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(loaded.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...TEXTAREA_TITLES]);
+		expect(TEXTAREA_EXAMPLES.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
+		expect(TEXTAREA_EXAMPLES.map((item) => item.title)).toEqual([...TEXTAREA_TITLES]);
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
 		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
 		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
 		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
@@ -1146,55 +1149,58 @@ describe("source-backed input-area scenarios", () => {
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
 		const fileKeys = new Set(
-			Object.keys(inputAreaRenders).map((modulePath) => moduleFileKey(modulePath)),
+			Object.keys(textareaRenders).map((modulePath) => moduleFileKey(modulePath)),
 		);
-		expect(fileKeys).toEqual(new Set(INPUT_AREA_IDS.map((id) => id.slice("input-area-".length))));
+		expect(fileKeys).toEqual(new Set(TEXTAREA_IDS.map((id) => id.slice("textarea-".length))));
 		for (const scenario of loaded) {
-			const key = scenario.id.slice("input-area-".length);
-			const modulePath = Object.keys(inputAreaSources).find((path) => path.endsWith(`/${key}.tsx`));
+			const key = scenario.id.slice("textarea-".length);
+			const modulePath = Object.keys(textareaSources).find((path) => path.endsWith(`/${key}.tsx`));
 			expect(modulePath, key).toBeTruthy();
 			if (!modulePath) {
 				continue;
 			}
-			const raw = inputAreaSources[modulePath];
+			const raw = textareaSources[modulePath];
 			expect(typeof raw).toBe("string");
 			expect(scenario.code).toBe((raw as string).trim());
-			expect(scenario.code).toBe(INPUT_AREA_EXAMPLES.find((item) => item.id === scenario.id)?.code);
-			expect(scenario.render).toBe((inputAreaRenders[modulePath] as { default: unknown }).default);
+			expect(scenario.code).toBe(TEXTAREA_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((textareaRenders[modulePath] as { default: unknown }).default);
 			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
-				INPUT_AREA_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+				TEXTAREA_EXAMPLES.find((item) => item.id === scenario.id)?.render,
 			);
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 			expect(scenario.code).toContain("export default");
-			expect(scenario.code).toContain("@nocoo/basalt/components/input-area");
-			expect(scenario.code).toContain("import { InputArea }");
+			expect(scenario.code).toContain("@nocoo/basalt/components/textarea");
+			expect(scenario.code).toContain("import { Textarea }");
 		}
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/field");
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("import { Field }");
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("htmlFor={id}");
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("id={id}");
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("const id = useId()");
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain('label="Notes"');
-		expect(INPUT_AREA_EXAMPLES[1]?.code).toContain("rows={6}");
-		expect(INPUT_AREA_EXAMPLES[1]?.code).toContain('aria-label="Tall notes"');
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("@nocoo/basalt/components/field");
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("import { Field }");
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("htmlFor={id}");
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("id={id}");
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("const id = useId()");
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain('label="Bio"');
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain('error="Too short"');
-		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain("disabled");
-		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain('aria-label="Disabled notes"');
-		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain('value="Unavailable"');
-		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('size="sm"');
-		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('aria-label="Small notes"');
-		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('aria-label="Default notes"');
-		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('size="lg"');
-		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("useState");
-		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("@nocoo/basalt/components/field");
-		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("@nocoo/basalt/components/button");
-		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("Reset");
+		expect(TEXTAREA_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/field");
+		expect(TEXTAREA_EXAMPLES[0]?.code).toContain("import { Field }");
+		expect(TEXTAREA_EXAMPLES[0]?.code).toContain("htmlFor={id}");
+		expect(TEXTAREA_EXAMPLES[0]?.code).toContain("id={id}");
+		expect(TEXTAREA_EXAMPLES[0]?.code).toContain("const id = useId()");
+		expect(TEXTAREA_EXAMPLES[0]?.code).toContain('label="Notes"');
+		expect(TEXTAREA_EXAMPLES[1]?.code).toContain("rows={6}");
+		expect(TEXTAREA_EXAMPLES[1]?.code).toContain('aria-label="Tall notes"');
+		expect(TEXTAREA_EXAMPLES[2]?.code).toContain("autoResize");
+		expect(TEXTAREA_EXAMPLES[2]?.code).toContain("maxRows={5}");
+		expect(TEXTAREA_EXAMPLES[3]?.code).toContain("@nocoo/basalt/components/field");
+		expect(TEXTAREA_EXAMPLES[3]?.code).toContain("import { Field }");
+		expect(TEXTAREA_EXAMPLES[3]?.code).toContain("htmlFor={id}");
+		expect(TEXTAREA_EXAMPLES[3]?.code).toContain("id={id}");
+		expect(TEXTAREA_EXAMPLES[3]?.code).toContain("const id = useId()");
+		expect(TEXTAREA_EXAMPLES[3]?.code).toContain('label="Bio"');
+		expect(TEXTAREA_EXAMPLES[3]?.code).toContain('error="Too short"');
+		expect(TEXTAREA_EXAMPLES[4]?.code).toContain("disabled");
+		expect(TEXTAREA_EXAMPLES[4]?.code).toContain('aria-label="Disabled notes"');
+		expect(TEXTAREA_EXAMPLES[4]?.code).toContain('value="Unavailable"');
+		expect(TEXTAREA_EXAMPLES[5]?.code).toContain('size="sm"');
+		expect(TEXTAREA_EXAMPLES[5]?.code).toContain('aria-label="Small notes"');
+		expect(TEXTAREA_EXAMPLES[5]?.code).toContain('size="md"');
+		expect(TEXTAREA_EXAMPLES[5]?.code).toContain('aria-label="Medium notes"');
+		expect(TEXTAREA_EXAMPLES[5]?.code).toContain('size="lg"');
+		expect(TEXTAREA_EXAMPLES[6]?.code).toContain("useState");
+		expect(TEXTAREA_EXAMPLES[6]?.code).toContain("@nocoo/basalt/components/field");
+		expect(TEXTAREA_EXAMPLES[6]?.code).toContain("@nocoo/basalt/components/button");
+		expect(TEXTAREA_EXAMPLES[6]?.code).toContain("Reset");
 	});
 });
 
@@ -1227,7 +1233,7 @@ describe("source-backed input-group scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
 		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
 		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
 		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
@@ -1239,7 +1245,7 @@ describe("source-backed input-group scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
-		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES.textarea?.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
 		const fileKeys = new Set(
 			Object.keys(inputGroupRenders).map((modulePath) => moduleFileKey(modulePath)),
 		);
@@ -1334,7 +1340,7 @@ describe("source-backed sensitive-input scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
 		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
@@ -1347,7 +1353,7 @@ describe("source-backed sensitive-input scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
-		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES.textarea?.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
 		const fileKeys = new Set(
 			Object.keys(sensitiveInputRenders).map((modulePath) => moduleFileKey(modulePath)),
@@ -1420,7 +1426,7 @@ describe("source-backed checkbox scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
 		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
@@ -1434,7 +1440,7 @@ describe("source-backed checkbox scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
-		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES.textarea?.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
 		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
 			...SENSITIVE_INPUT_IDS,
@@ -1526,7 +1532,7 @@ describe("source-backed radio scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
 		expect(UI_EXAMPLES.checkbox).toBe(CHECKBOX_EXAMPLES);
@@ -1541,7 +1547,7 @@ describe("source-backed radio scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
-		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES.textarea?.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
 		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
 			...SENSITIVE_INPUT_IDS,
@@ -1636,7 +1642,7 @@ describe("source-backed switch scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
 		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
@@ -1650,7 +1656,7 @@ describe("source-backed switch scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
-		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES.textarea?.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
 		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
 			...SENSITIVE_INPUT_IDS,
@@ -1751,7 +1757,7 @@ describe("source-backed select scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
 		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
@@ -1765,7 +1771,7 @@ describe("source-backed select scenarios", () => {
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
-		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES.textarea?.map((item) => item.id)).toEqual([...TEXTAREA_IDS]);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
 		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
 			...SENSITIVE_INPUT_IDS,

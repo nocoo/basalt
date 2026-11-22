@@ -878,7 +878,7 @@ Pages render **inside** `ContentIsland`. That island is already L1. Paint is CSS
 
 `--basalt-muted` is not a content step. Isolated (no root): the outermost `LayerCard` paints as L1; its Well recesses to L0.
 
-`LayerCard.Primary` is `Well`. `LayerCard.Secondary` is `Header`. Keep the names; teach Header / Body / Well.
+Compose structured cards with `Header`, `Title`, `Description`, `Body`, `Well`, and `Footer`.
 
 ### Recipe
 
@@ -1020,7 +1020,7 @@ from preceding content, so callers do not need a repeated margin override.
 
 ### Working Native HTML Form & FormData Pattern
 
-Standard inputs (`Input`, `InputArea`, `Checkbox`, `Radio`, `Switch`) reliably supply their values via standard `FormData(event.currentTarget)`:
+Standard inputs (`Input`, `Textarea`, `Checkbox`, `Radio`, `Switch`) reliably supply their values via standard `FormData(event.currentTarget)`:
 
 ```tsx compile:integration-profile-form
 import type React from "react";
@@ -1620,7 +1620,7 @@ export function UserPreferencesForm() {
 
 ### Dense controls and moving list highlights
 
-Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 34px high. Explicit `sm`/`lg` sizes remain available; InputArea remains multiline. Compact application headers retain their 44px minimum touch targets.
+Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 34px high. Explicit `sm`/`lg` sizes remain available; Textarea remains multiline. Compact application headers retain their 44px minimum touch targets.
 
 Select, DropdownMenu, ContextMenuPanel, Autocomplete and MultiSelect use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
 

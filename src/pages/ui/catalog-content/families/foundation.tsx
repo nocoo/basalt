@@ -217,7 +217,7 @@ export default catalogContentFamily({
 	"layer-card": {
 		docs: {
 			description:
-				"A nestable painted surface. Inside an island it is L2; LayerCard.Well raises L3. Primary aliases Well; Secondary aliases Header.",
+				"A nestable painted surface. Inside an island it is L2; LayerCard.Well raises L3; LayerCard.Header/Title/Description/Body/Footer compose structured sections.",
 			usage: usage(
 				"LayerCard",
 				"@nocoo/basalt/components/layer-card",

@@ -216,21 +216,21 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "layer-card",
 		sourceFile: "packages/basalt/src/components/layer-card.tsx",
-		propsType: "LayerCardWellProps",
-		surface: "LayerCard.Primary",
-	},
-	{
-		slug: "layer-card",
-		sourceFile: "packages/basalt/src/components/layer-card.tsx",
-		propsType: "LayerCardSectionProps",
-		surface: "LayerCard.Secondary",
-		allowEmpty: true,
-	},
-	{
-		slug: "layer-card",
-		sourceFile: "packages/basalt/src/components/layer-card.tsx",
 		propsType: "LayerCardHeaderProps",
 		surface: "LayerCard.Header",
+	},
+	{
+		slug: "layer-card",
+		sourceFile: "packages/basalt/src/components/layer-card.tsx",
+		propsType: "LayerCardTitleProps",
+		surface: "LayerCard.Title",
+	},
+	{
+		slug: "layer-card",
+		sourceFile: "packages/basalt/src/components/layer-card.tsx",
+		propsType: "LayerCardDescriptionProps",
+		surface: "LayerCard.Description",
+		allowEmpty: true,
 	},
 	{
 		slug: "layer-card",
@@ -290,10 +290,10 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Input",
 	},
 	{
-		slug: "input-area",
-		sourceFile: "packages/basalt/src/components/input-area.tsx",
-		propsType: "InputAreaProps",
-		surface: "InputArea",
+		slug: "textarea",
+		sourceFile: "packages/basalt/src/components/textarea.tsx",
+		propsType: "TextareaProps",
+		surface: "Textarea",
 	},
 	{
 		slug: "input-group",
@@ -1079,10 +1079,10 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Loader",
 	},
 	{
-		slug: "skeleton-line",
-		sourceFile: "packages/basalt/src/components/skeleton-line.tsx",
-		propsType: "SkeletonLineProps",
-		surface: "SkeletonLine",
+		slug: "skeleton",
+		sourceFile: "packages/basalt/src/components/skeleton.tsx",
+		propsType: "SkeletonProps",
+		surface: "Skeleton",
 	},
 
 	{

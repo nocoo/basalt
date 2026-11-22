@@ -184,9 +184,6 @@
     <loc>https://basaltui.com/ui/input</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/input-area</loc>
-  </url>
-  <url>
     <loc>https://basaltui.com/ui/input-group</loc>
   </url>
   <url>
@@ -277,7 +274,7 @@
     <loc>https://basaltui.com/ui/sidebar</loc>
   </url>
   <url>
-    <loc>https://basaltui.com/ui/skeleton-line</loc>
+    <loc>https://basaltui.com/ui/skeleton</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/slider</loc>
@@ -311,6 +308,9 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/text</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/textarea</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/theme-provider</loc>

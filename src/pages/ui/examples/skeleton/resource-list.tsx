@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { useState } from "react";
 
 const RESOURCES = [
@@ -71,13 +71,7 @@ export default function ResourceListSkeleton() {
 							>
 								<div className="flex items-center gap-basalt-space-lg">
 									{loading ? (
-										<SkeletonLine
-											minWidth={100}
-											maxWidth={100}
-											height={36}
-											style={{ width: 36, flexShrink: 0 }}
-											className="rounded-basalt-full"
-										/>
+										<Skeleton variant="circle" width={36} height={36} className="shrink-0" />
 									) : (
 										<Avatar className="h-9 w-9">
 											<AvatarFallback>{row.initials}</AvatarFallback>
@@ -86,12 +80,8 @@ export default function ResourceListSkeleton() {
 									<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 										{loading ? (
 											<>
-												<SkeletonLine
-													minWidth={65 - index * 6}
-													maxWidth={65 - index * 6}
-													height={12}
-												/>
-												<SkeletonLine minWidth={82} maxWidth={82} height={8} />
+												<Skeleton width={`${65 - index * 6}%`} height={12} />
+												<Skeleton width="82%" height={8} />
 											</>
 										) : (
 											<>
@@ -102,22 +92,17 @@ export default function ResourceListSkeleton() {
 									</div>
 								</div>
 								{loading ? (
-									<SkeletonLine
-										minWidth={80}
-										maxWidth={80}
-										height={22}
-										className="rounded-basalt-full"
-									/>
+									<Skeleton width="80%" height={22} className="rounded-basalt-full" />
 								) : (
 									<Badge dot tone={row.status === "Active" ? "success" : "warning"}>
 										{row.status}
 									</Badge>
 								)}
 								<div className="flex justify-end text-basalt-base tabular-nums">
-									{loading ? <SkeletonLine minWidth={75} maxWidth={75} height={12} /> : row.usage}
+									{loading ? <Skeleton width="75%" height={12} /> : row.usage}
 								</div>
 								{loading ? (
-									<SkeletonLine minWidth={100} maxWidth={100} height={28} />
+									<Skeleton variant="block" width="100%" height={28} />
 								) : (
 									<Button
 										size="sm"

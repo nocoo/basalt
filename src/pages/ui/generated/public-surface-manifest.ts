@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.5.2",
 	"totalModules": 104,
-	"totalSymbols": 698,
-	"totalValues": 382,
-	"totalTypes": 316,
+	"totalSymbols": 703,
+	"totalValues": 384,
+	"totalTypes": 319,
 	"totalCssExports": 4,
 	"modules": [
 		{
@@ -761,6 +761,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sidebar"
 				},
 				{
+					"name": "Skeleton",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/skeleton",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
 					"name": "StatStrip",
 					"isValue": true,
 					"isType": false,
@@ -823,6 +831,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/text",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/text"
+				},
+				{
+					"name": "Textarea",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/textarea",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/textarea"
 				},
 				{
 					"name": "ThemeToggle",
@@ -3865,40 +3881,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/input-area",
-			"importPath": "@nocoo/basalt/components/input-area",
-			"sourceFile": "packages/basalt/src/components/input-area.tsx",
-			"ownerDoc": "src/pages/ui/input-area",
-			"ownerKind": "catalog-component",
-			"summary": "InputArea component documentation and catalog playground",
-			"symbols": [
-				{
-					"name": "InputAreaSize",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/input-area",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/input-area"
-				},
-				{
-					"name": "InputAreaProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/input-area",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/input-area"
-				},
-				{
-					"name": "InputArea",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/input-area",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/input-area"
-				}
-			]
-		},
-		{
 			"subpath": "./components/input-group",
 			"importPath": "@nocoo/basalt/components/input-group",
 			"sourceFile": "packages/basalt/src/components/input-group.tsx",
@@ -4016,6 +3998,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "LayerCardHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/layer-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/layer-card"
+				},
+				{
+					"name": "LayerCardTitleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/layer-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/layer-card"
+				},
+				{
+					"name": "LayerCardDescriptionProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/layer-card",
@@ -5173,28 +5171,36 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
-			"subpath": "./components/skeleton-line",
-			"importPath": "@nocoo/basalt/components/skeleton-line",
-			"sourceFile": "packages/basalt/src/components/skeleton-line.tsx",
-			"ownerDoc": "src/pages/ui/skeleton-line",
+			"subpath": "./components/skeleton",
+			"importPath": "@nocoo/basalt/components/skeleton",
+			"sourceFile": "packages/basalt/src/components/skeleton.tsx",
+			"ownerDoc": "src/pages/ui/skeleton",
 			"ownerKind": "catalog-component",
-			"summary": "SkeletonLine component documentation and catalog playground",
+			"summary": "Skeleton component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "SkeletonLine",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/skeleton-line",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/skeleton-line"
-				},
-				{
-					"name": "SkeletonLineProps",
+					"name": "SkeletonVariant",
 					"isValue": false,
 					"isType": true,
-					"ownerDoc": "src/pages/ui/skeleton-line",
+					"ownerDoc": "src/pages/ui/skeleton",
 					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/skeleton-line"
+					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
+					"name": "SkeletonProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/skeleton",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
+					"name": "Skeleton",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/skeleton",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/skeleton"
 				}
 			]
 		},
@@ -5809,6 +5815,40 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/text",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/text"
+				}
+			]
+		},
+		{
+			"subpath": "./components/textarea",
+			"importPath": "@nocoo/basalt/components/textarea",
+			"sourceFile": "packages/basalt/src/components/textarea.tsx",
+			"ownerDoc": "src/pages/ui/textarea",
+			"ownerKind": "catalog-component",
+			"summary": "Textarea component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "TextareaSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/textarea",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/textarea"
+				},
+				{
+					"name": "TextareaProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/textarea",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/textarea"
+				},
+				{
+					"name": "Textarea",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/textarea",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/textarea"
 				}
 			]
 		},

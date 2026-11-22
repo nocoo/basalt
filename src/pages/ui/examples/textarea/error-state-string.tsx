@@ -1,12 +1,12 @@
 import { Field } from "@nocoo/basalt/components/field";
-import { InputArea } from "@nocoo/basalt/components/input-area";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import { useId } from "react";
 
-export default function InputAreaErrorStateString() {
+export default function TextareaErrorStateString() {
 	const id = useId();
 	return (
 		<Field label="Bio" htmlFor={id} error="Too short">
-			<InputArea id={id} />
+			<Textarea id={id} />
 		</Field>
 	);
 }

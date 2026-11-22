@@ -44,7 +44,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@nocoo/basalt/components/sheet";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { toast } from "@nocoo/basalt/components/toast";
 import {
@@ -100,12 +100,12 @@ function InlineAlert({
 function SkeletonCard() {
 	return (
 		<LayerCard className="space-y-basalt-card-sm">
-			<SkeletonLine minWidth={66} maxWidth={66} />
-			<SkeletonLine minWidth={100} maxWidth={100} />
-			<SkeletonLine minWidth={80} maxWidth={80} />
+			<Skeleton width="66%" />
+			<Skeleton width="100%" />
+			<Skeleton width="80%" />
 			<div className="flex gap-basalt-space-lg pt-basalt-space-sm">
-				<SkeletonLine minWidth={40} maxWidth={40} height={32} />
-				<SkeletonLine minWidth={32} maxWidth={32} height={32} />
+				<Skeleton variant="block" width="40%" height={32} />
+				<Skeleton variant="block" width="32%" height={32} />
 			</div>
 		</LayerCard>
 	);

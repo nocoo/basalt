@@ -1,9 +1,9 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { chart } from "@nocoo/basalt/components/chart";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import {
 	Activity,
 	AlertTriangle,
@@ -477,7 +477,7 @@ export default function HealthPage() {
 							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.health.insightsDemo")}
 							</p>
-							<InputArea
+							<Textarea
 								rows={5}
 								placeholder={t("pages.health.promptPlaceholder")}
 								aria-label={t("pages.health.promptStudio")}

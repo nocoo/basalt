@@ -296,7 +296,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 			await assertDocumentInsets(page, baseUrl, dark);
 			if (width === 1280) await assertMeterShowcase(page, baseUrl, dark);
 			if (dark && width === 1280) await assertDarkCardRings(page, baseUrl);
-			await page.goto(`${baseUrl}/ui/skeleton-line`);
+			await page.goto(`${baseUrl}/ui/skeleton`);
 			await page.locator('[data-status="ready"]').waitFor();
 			await setShowcaseTheme(page, dark);
 			for (const [key, button] of [
@@ -304,7 +304,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 				["resource-list", "Show loaded list"],
 				["resource-detail", "Show loaded detail"],
 			]) {
-				const scenario = page.locator(`[data-scenario="skeleton-line-${key}"]`);
+				const scenario = page.locator(`[data-scenario="skeleton-${key}"]`);
 				const busy = scenario.locator("[aria-busy]");
 				const before = await busy.boundingBox();
 				assert.ok(before && before.width > 0 && before.height > 0);

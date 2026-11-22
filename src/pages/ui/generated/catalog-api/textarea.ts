@@ -3,7 +3,7 @@
 // biome-ignore format: generated deterministic pure-data API
 export const API = [
 	{
-		name: "InputArea",
+		name: "Textarea",
 		props: [
 			{
 				name: "rows",
@@ -13,10 +13,23 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "InputAreaSize",
+				type: "TextareaSize",
 				required: false,
-				default: "default",
+				default: "\"md\"",
 				description: "The visual size of the text area.",
+			},
+			{
+				name: "autoResize",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Grow vertically with typed content instead of showing an internal scrollbar until clamped by `maxRows`.",
+			},
+			{
+				name: "maxRows",
+				type: "number",
+				required: false,
+				description: "Maximum line count when `autoResize` is enabled before scrolling internally.",
 			},
 			{
 				name: "passwordManagerIgnore",

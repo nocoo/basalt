@@ -1,6 +1,6 @@
 {
 	"packageVersion": "4.0.0-pending",
-	"sourceBaseline": "4.0-overhaul (94 paths / 523 symbols)",
+	"sourceBaseline": "4.0-overhaul (94 paths / 529 symbols)",
 	"capturedAfter": "P1.1-P1.6 plus round-1 review fixes; package manifests remain 3.4.2 until release",
 	"entries": [
 		{
@@ -297,6 +297,11 @@
 					"type": false
 				},
 				{
+					"name": "Skeleton",
+					"value": true,
+					"type": false
+				},
+				{
 					"name": "Sheet",
 					"value": true,
 					"type": false
@@ -428,6 +433,11 @@
 				},
 				{
 					"name": "Text",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Textarea",
 					"value": true,
 					"type": false
 				},
@@ -1564,26 +1574,6 @@
 			]
 		},
 		{
-			"path": "@nocoo/basalt/components/input-area",
-			"symbols": [
-				{
-					"name": "InputArea",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "InputAreaProps",
-					"value": false,
-					"type": true
-				},
-				{
-					"name": "InputAreaSize",
-					"value": false,
-					"type": true
-				}
-			]
-		},
-		{
 			"path": "@nocoo/basalt/components/input-group",
 			"symbols": [
 				{
@@ -1642,6 +1632,11 @@
 					"type": false
 				},
 				{
+					"name": "LayerCardDescriptionProps",
+					"value": false,
+					"type": true
+				},
+				{
 					"name": "LayerCardEmptyProps",
 					"value": false,
 					"type": true
@@ -1663,6 +1658,11 @@
 				},
 				{
 					"name": "LayerCardSectionProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "LayerCardTitleProps",
 					"value": false,
 					"type": true
 				},
@@ -2159,12 +2159,22 @@
 			]
 		},
 		{
-			"path": "@nocoo/basalt/components/skeleton-line",
+			"path": "@nocoo/basalt/components/skeleton",
 			"symbols": [
 				{
-					"name": "SkeletonLine",
+					"name": "Skeleton",
 					"value": true,
 					"type": false
+				},
+				{
+					"name": "SkeletonProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SkeletonVariant",
+					"value": false,
+					"type": true
 				}
 			]
 		},
@@ -2423,6 +2433,26 @@
 				},
 				{
 					"name": "TextVariant",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/textarea",
+			"symbols": [
+				{
+					"name": "Textarea",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TextareaProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TextareaSize",
 					"value": false,
 					"type": true
 				}

@@ -1,12 +1,12 @@
 import { Field } from "@nocoo/basalt/components/field";
-import { InputArea } from "@nocoo/basalt/components/input-area";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import { useId } from "react";
 
-export default function InputAreaWithLabel() {
+export default function TextareaWithLabel() {
 	const id = useId();
 	return (
 		<Field label="Notes" htmlFor={id}>
-			<InputArea id={id} />
+			<Textarea id={id} />
 		</Field>
 	);
 }

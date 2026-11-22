@@ -1,9 +1,9 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { controlSurfaceClass } from "../utils/control-surface";
+import { SELECT_TRIGGER_CHEVRON_CLASS, selectTriggerClass } from "../utils/control-surface";
 import { Check, ChevronDown } from "../utils/internal-icons";
-import { FOCUS_RING, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "../utils/overlay";
+import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "../utils/overlay";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 
 export type SelectProps = Omit<
@@ -53,12 +53,6 @@ export const SelectGroup: React.ForwardRefExoticComponent<
 
 export type SelectSize = "sm" | "default" | "lg";
 
-const SELECT_SIZE_CLASS: Record<SelectSize, string> = {
-	sm: "basalt-action basalt-action-sm",
-	default: "basalt-action",
-	lg: "basalt-action basalt-action-lg",
-};
-
 export type SelectTriggerProps = Omit<
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
 	"disabled"
@@ -89,21 +83,10 @@ export const SelectTrigger = React.forwardRef<
 		{...props}
 		disabled={disabled || loading}
 		aria-busy={loading || undefined}
-		className={controlSurfaceClass(
-			cn(
-				"group/select flex w-full items-center justify-between gap-basalt-control-gap",
-				SELECT_SIZE_CLASS[size],
-				FOCUS_RING,
-				"aria-invalid:border-basalt-danger-solid aria-invalid:focus-visible:border-basalt-danger-solid",
-				className,
-			),
-		)}
+		className={selectTriggerClass({ size, className })}
 	>
 		{children}
-		<ChevronDown
-			aria-hidden="true"
-			className="h-basalt-4 w-basalt-4 opacity-50 transition-transform basalt-motion duration-basalt-normal group-data-[state=open]/select:rotate-180 motion-reduce:transition-none"
-		/>
+		<ChevronDown aria-hidden="true" className={SELECT_TRIGGER_CHEVRON_CLASS} />
 	</SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;

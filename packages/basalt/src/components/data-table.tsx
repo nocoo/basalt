@@ -14,7 +14,7 @@ import { Pagination } from "../utils/pagination-nav";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Empty } from "./empty";
-import { SkeletonLine } from "./skeleton-line";
+import { Skeleton } from "./skeleton";
 import {
 	Table,
 	TableBody,
@@ -635,9 +635,9 @@ export function DataTable<T>({
 											className="flex flex-col gap-basalt-space-lg py-basalt-space-lg"
 										>
 											<span className="sr-only">Loading</span>
-											<SkeletonLine minWidth={72} maxWidth={96} />
-											<SkeletonLine minWidth={48} maxWidth={72} />
-											<SkeletonLine minWidth={60} maxWidth={84} />
+											<Skeleton width="84%" />
+											<Skeleton width="60%" />
+											<Skeleton width="72%" />
 										</div>
 									</TableCell>
 								</TableRow>

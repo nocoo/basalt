@@ -12,7 +12,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_INSET } from "../utils/overlay";
 import { Empty } from "./empty";
-import { SkeletonLine } from "./skeleton-line";
+import { Skeleton } from "./skeleton";
 
 const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-card ring-1 ring-basalt-border/80 text-basalt-foreground shadow-basalt-card`;
 const PADDING_CLASSES = {
@@ -53,6 +53,13 @@ export type LayerCardHeaderProps = LayerCardSectionProps & {
 	/** Separate the header from its body with a divider. @default false */
 	divided?: boolean;
 };
+export type LayerCardTitleProps = Omit<HTMLAttributes<HTMLHeadingElement>, "className"> & {
+	/** Merge heading typography onto a child element. @default false */
+	asChild?: boolean;
+	/** Additional classes for the card title. */
+	className?: string;
+};
+export type LayerCardDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 export type LayerCardWellProps = LayerCardSectionProps & {
 	/**
 	 * Draw a hairline ring on a nested well.
@@ -172,6 +179,36 @@ function LayerCardBody({ className, ...props }: LayerCardSectionProps) {
 }
 LayerCardBody.displayName = "LayerCard.Body";
 
+const LayerCardTitle = forwardRef<HTMLHeadingElement, LayerCardTitleProps>(
+	({ className, asChild = false, ...props }, ref) => {
+		const Component = asChild ? Slot : "h3";
+		return (
+			<Component
+				ref={ref}
+				data-slot="card-title"
+				className={cn(
+					"min-w-0 text-basalt-lg font-semibold leading-[var(--basalt-line-snug)] text-basalt-foreground",
+					className,
+				)}
+				{...props}
+			/>
+		);
+	},
+);
+LayerCardTitle.displayName = "LayerCard.Title";
+
+const LayerCardDescription = forwardRef<HTMLParagraphElement, LayerCardDescriptionProps>(
+	({ className, ...props }, ref) => (
+		<p
+			ref={ref}
+			data-slot="card-description"
+			className={cn("min-w-0 text-basalt-sm text-basalt-muted-foreground", className)}
+			{...props}
+		/>
+	),
+);
+LayerCardDescription.displayName = "LayerCard.Description";
+
 function LayerCardWell({ className, outlined = false, ...props }: LayerCardWellProps) {
 	return (
 		<div
@@ -188,16 +225,6 @@ function LayerCardWell({ className, outlined = false, ...props }: LayerCardWellP
 	);
 }
 LayerCardWell.displayName = "LayerCard.Well";
-
-function LayerCardPrimary(props: LayerCardWellProps) {
-	return <LayerCardWell {...props} />;
-}
-LayerCardPrimary.displayName = "LayerCard.Primary";
-
-function LayerCardSecondary(props: LayerCardHeaderProps) {
-	return <LayerCardHeader {...props} />;
-}
-LayerCardSecondary.displayName = "LayerCard.Secondary";
 
 function LayerCardFooter({ className, ...props }: LayerCardSectionProps) {
 	return (
@@ -221,9 +248,9 @@ function LayerCardLoading({ label = "Loading", className, ...props }: LayerCardL
 			className={cn("space-y-basalt-space-lg p-basalt-card", className)}
 			{...props}
 		>
-			<SkeletonLine minWidth={100} maxWidth={100} />
-			<SkeletonLine minWidth={72} maxWidth={72} />
-			<SkeletonLine minWidth={88} maxWidth={88} />
+			<Skeleton width="100%" />
+			<Skeleton width="72%" />
+			<Skeleton width="88%" />
 		</div>
 	);
 }
@@ -241,13 +268,11 @@ const STRUCTURED_TYPES = new Set<unknown>([
 	LayerCardFooter,
 	LayerCardLoading,
 	LayerCardEmpty,
-	LayerCardPrimary,
-	LayerCardSecondary,
 ]);
 
 export const LayerCard = Object.assign(LayerCardRoot, {
-	Primary: LayerCardPrimary,
-	Secondary: LayerCardSecondary,
+	Title: LayerCardTitle,
+	Description: LayerCardDescription,
 	Header: LayerCardHeader,
 	Body: LayerCardBody,
 	Well: LayerCardWell,

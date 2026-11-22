@@ -36,11 +36,11 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
-	"LayerCard.Secondary": {
+	"LayerCard.Description": {
 		justification:
-			"Semantic subheader section for card containers; inherits HTMLDivElement attributes without component-specific props.",
-		inheritedElement: "HTMLDivElement",
-		forwardsRef: false,
+			"Supporting subtitle text inside card headers; forwards HTMLParagraphElement attributes and ref without component-specific props.",
+		inheritedElement: "HTMLParagraphElement",
+		forwardsRef: true,
 		forwardsRestProps: true,
 	},
 	"LayerCard.Body": {

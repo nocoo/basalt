@@ -1,7 +1,6 @@
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { Input } from "@nocoo/basalt/components/input";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { Label } from "@nocoo/basalt/components/label";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import {
@@ -14,6 +13,7 @@ import {
 import { Separator } from "@nocoo/basalt/components/separator";
 import { SidebarItem, SidebarNav } from "@nocoo/basalt/components/sidebar";
 import { Switch } from "@nocoo/basalt/components/switch";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Bell, Camera, CreditCard, Globe, Palette, Shield, Smartphone, User } from "lucide-react";
 import { useRef } from "react";
@@ -260,7 +260,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 						<Label htmlFor="settings-bio" className="text-basalt-foreground">
 							{t("pages.settings.bio")}
 						</Label>
-						<InputArea
+						<Textarea
 							id="settings-bio"
 							name="bio"
 							disabled={vm.profileSave.status === "pending"}

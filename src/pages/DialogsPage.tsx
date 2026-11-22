@@ -25,7 +25,6 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
@@ -36,6 +35,7 @@ import {
 	SelectValue,
 } from "@nocoo/basalt/components/select";
 import { Separator } from "@nocoo/basalt/components/separator";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
@@ -212,7 +212,7 @@ export default function DialogsPage() {
 										<Input defaultValue="80,000.00" inputMode="decimal" />
 									</Field>
 									<Field label={t("pages.dialogs.note")} required={false}>
-										<InputArea defaultValue={t("pages.dialogs.noteValue")} />
+										<Textarea defaultValue={t("pages.dialogs.noteValue")} />
 									</Field>
 								</div>
 								<DialogFooter>
@@ -331,7 +331,7 @@ export default function DialogsPage() {
 												<Input defaultValue="2024-11-01" />
 											</Field>
 											<Field label={t("pages.dialogs.unitNote")} required={false}>
-												<InputArea defaultValue={t("pages.dialogs.unitNoteValue")} />
+												<Textarea defaultValue={t("pages.dialogs.unitNoteValue")} />
 											</Field>
 										</div>
 										<div className="space-y-basalt-layout">

@@ -98,6 +98,7 @@ export function CommandPalette({
 			{triggers}
 			<DialogContent
 				size={size}
+				showCloseButton={false}
 				aria-describedby={undefined}
 				className={cn(
 					"top-[min(14vh,7rem)] flex max-h-[calc(100dvh-min(14vh,7rem)-var(--basalt-space-layout))] translate-y-0 flex-col overflow-hidden p-0 sm:p-0",

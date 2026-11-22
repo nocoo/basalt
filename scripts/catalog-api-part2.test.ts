@@ -277,9 +277,11 @@ describe("catalog API generator contract 2/4", () => {
 			"size",
 			"passwordManagerIgnore",
 		]);
-		expect(generated["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+		expect(generated.textarea?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"rows",
 			"size",
+			"autoResize",
+			"maxRows",
 			"passwordManagerIgnore",
 		]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([

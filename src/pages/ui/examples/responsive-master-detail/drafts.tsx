@@ -1,6 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { ResponsiveMasterDetail } from "@nocoo/basalt/components/responsive-master-detail";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import { useState } from "react";
 
 export default function DraftMasterDetail() {
@@ -40,7 +40,7 @@ export default function DraftMasterDetail() {
 		>
 			<div className="space-y-basalt-space-lg p-basalt-space-lg">
 				<h3 className="font-medium">{selected}</h3>
-				<InputArea
+				<Textarea
 					aria-label="Draft text"
 					className="min-h-40"
 					value={drafts[selected]}

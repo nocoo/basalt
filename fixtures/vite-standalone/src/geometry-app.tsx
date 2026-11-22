@@ -17,7 +17,6 @@ import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";
 import { Empty } from "@nocoo/basalt/components/empty";
 import { Input } from "@nocoo/basalt/components/input";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
@@ -30,6 +29,7 @@ import {
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@nocoo/basalt/components/table";
 import { Text } from "@nocoo/basalt/components/text";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import * as React from "react";
 
 function RefResetHarness({ kind }: { kind: "checkbox" | "switch" }) {
@@ -302,7 +302,7 @@ export function GeometryApp() {
 					</button>
 				</LayerCard>
 				<Input id="basalt-input" defaultValue="Basalt Input" />
-				<InputArea id="basalt-input-area" defaultValue="Basalt Input Area" />
+				<Textarea id="basalt-textarea" defaultValue="Basalt Textarea" />
 				<Button id="basalt-btn-default">Default Button</Button>
 				<Button id="basalt-btn-outline" variant="outline">
 					Outline Button

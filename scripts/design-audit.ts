@@ -129,7 +129,7 @@ export function auditDesignSource(
 				add("code-frame-owner", classes);
 			if (
 				application &&
-				/^(?:Button|LinkButton|Input|InputArea|SelectTrigger)$/.test(tag) &&
+				/^(?:Button|LinkButton|Input|Textarea|SelectTrigger)$/.test(tag) &&
 				/\bp[xytrbl]?-(?!0\b)/.test(classes)
 			)
 				add("control-spacing-owner", classes);

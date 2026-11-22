@@ -35,22 +35,6 @@ export const API = [
 		],
 	},
 	{
-		name: "LayerCard.Primary",
-		props: [
-			{
-				name: "outlined",
-				type: "boolean",
-				required: false,
-				default: "false",
-				description: "Draw a hairline ring on a nested well.",
-			},
-		],
-	},
-	{
-		name: "LayerCard.Secondary",
-		props: [],
-	},
-	{
 		name: "LayerCard.Header",
 		props: [
 			{
@@ -68,6 +52,28 @@ export const API = [
 				description: "Separate the header from its body with a divider.",
 			},
 		],
+	},
+	{
+		name: "LayerCard.Title",
+		props: [
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Merge heading typography onto a child element.",
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the card title.",
+			},
+		],
+	},
+	{
+		name: "LayerCard.Description",
+		props: [],
 	},
 	{
 		name: "LayerCard.Body",

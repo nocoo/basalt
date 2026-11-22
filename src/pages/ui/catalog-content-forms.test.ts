@@ -5,24 +5,24 @@ import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
 import { DATE_PICKER_EXAMPLES } from "./examples/date-picker";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
-import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "./examples/input-group";
 import { RADIO_EXAMPLES } from "./examples/radio";
 import { SEGMENT_CONTROL_EXAMPLES } from "./examples/segment-control";
 import { SELECT_EXAMPLES } from "./examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "./examples/switch";
+import { TEXTAREA_EXAMPLES } from "./examples/textarea";
 import { API as checkboxApi } from "./generated/catalog-api/checkbox";
 import { API as datePickerApi } from "./generated/catalog-api/date-picker";
 import { API as fieldApi } from "./generated/catalog-api/field";
 import { API as inputApi } from "./generated/catalog-api/input";
-import { API as inputAreaApi } from "./generated/catalog-api/input-area";
 import { API as inputGroupApi } from "./generated/catalog-api/input-group";
 import { API as radioApi } from "./generated/catalog-api/radio";
 import { API as segmentControlApi } from "./generated/catalog-api/segment-control";
 import { API as selectApi } from "./generated/catalog-api/select";
 import { API as sensitiveInputApi } from "./generated/catalog-api/sensitive-input";
 import { API as switchApi } from "./generated/catalog-api/switch";
+import { API as textareaApi } from "./generated/catalog-api/textarea";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
@@ -36,7 +36,7 @@ const FORMS_SLUGS = [
 	"upload-queue",
 	"field",
 	"input",
-	"input-area",
+	"textarea",
 	"input-group",
 	"sensitive-input",
 	"checkbox",
@@ -54,7 +54,7 @@ const FORMS_SLUGS = [
 const SOURCE_BACKED = {
 	field: FIELD_EXAMPLES,
 	input: INPUT_EXAMPLES,
-	"input-area": INPUT_AREA_EXAMPLES,
+	textarea: TEXTAREA_EXAMPLES,
 	"input-group": INPUT_GROUP_EXAMPLES,
 	"sensitive-input": SENSITIVE_INPUT_EXAMPLES,
 	checkbox: CHECKBOX_EXAMPLES,
@@ -84,7 +84,7 @@ describe("forms catalog content family", () => {
 	it("keeps source-backed example owners and generated API shards by reference", () => {
 		expect(forms.field?.examples).toBe(FIELD_EXAMPLES);
 		expect(forms.input?.examples).toBe(INPUT_EXAMPLES);
-		expect(forms["input-area"]?.examples).toBe(INPUT_AREA_EXAMPLES);
+		expect(forms.textarea?.examples).toBe(TEXTAREA_EXAMPLES);
 		expect(forms["input-group"]?.examples).toBe(INPUT_GROUP_EXAMPLES);
 		expect(forms["sensitive-input"]?.examples).toBe(SENSITIVE_INPUT_EXAMPLES);
 		expect(forms.checkbox?.examples).toBe(CHECKBOX_EXAMPLES);
@@ -94,7 +94,7 @@ describe("forms catalog content family", () => {
 		expect(forms["date-picker"]?.examples).toBe(DATE_PICKER_EXAMPLES);
 		expect(forms.field?.docs.api).toBe(fieldApi);
 		expect(forms.input?.docs.api).toBe(inputApi);
-		expect(forms["input-area"]?.docs.api).toBe(inputAreaApi);
+		expect(forms.textarea?.docs.api).toBe(textareaApi);
 		expect(forms["input-group"]?.docs.api).toBe(inputGroupApi);
 		expect(forms["sensitive-input"]?.docs.api).toBe(sensitiveInputApi);
 		expect(forms.checkbox?.docs.api).toBe(checkboxApi);
@@ -170,19 +170,20 @@ describe("forms catalog content family", () => {
 			ref: "1159868dfe32",
 			file: "packages/kumo/src/components/input/input.tsx",
 		});
-		expect(forms["input-area"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
-			{ id: "input-area-with-label", title: "With Label" },
-			{ id: "input-area-custom-row-count", title: "Custom Row Count" },
-			{ id: "input-area-error-state-string", title: "Error State (String)" },
-			{ id: "input-area-disabled", title: "Disabled" },
-			{ id: "input-area-sizes", title: "Sizes" },
-			{ id: "input-area-controlled-and-reset", title: "Controlled and reset" },
+		expect(forms.textarea?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "textarea-with-label", title: "With Label" },
+			{ id: "textarea-custom-row-count", title: "Custom Row Count" },
+			{ id: "textarea-auto-resize", title: "Auto Resize" },
+			{ id: "textarea-error-state-string", title: "Error State (String)" },
+			{ id: "textarea-disabled", title: "Disabled" },
+			{ id: "textarea-sizes", title: "Sizes" },
+			{ id: "textarea-controlled-and-reset", title: "Controlled and reset" },
 		]);
-		expect(forms["input-area"]?.docs.description).toBe(
-			"A sized native multi-line control on the L3 surface.",
+		expect(forms.textarea?.docs.description).toBe(
+			"A sized native multi-line control on the L3 surface with optional content-driven auto-resize.",
 		);
-		expect(forms["input-area"]?.docs.variants).toEqual(["sm", "default", "lg"]);
-		expect(forms["input-area"]?.docs.provenance).toEqual({
+		expect(forms.textarea?.docs.variants).toEqual(["sm", "md", "lg"]);
+		expect(forms.textarea?.docs.provenance).toEqual({
 			owner: "cloudflare",
 			repo: "kumo",
 			ref: "1159868dfe32",

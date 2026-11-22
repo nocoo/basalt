@@ -10,10 +10,10 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import { toast } from "@nocoo/basalt/components/toast";
 import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
 import { useState } from "react";
@@ -247,7 +247,7 @@ function FormDialogContent({
 						/>
 					</Field>
 					<Field label={t("pages.interactionShowcase.message")} htmlFor="feedback-message">
-						<InputArea
+						<Textarea
 							id="feedback-message"
 							rows={3}
 							placeholder={t("pages.interactionShowcase.messagePlaceholder")}

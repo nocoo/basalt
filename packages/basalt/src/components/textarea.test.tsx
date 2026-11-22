@@ -1,19 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
-import { InputArea, type InputAreaProps } from "./input-area";
+import { Textarea, type TextareaProps } from "./textarea";
 
-function acceptInputAreaProps(_props: InputAreaProps) {}
+function acceptTextareaProps(_props: TextareaProps) {}
 
 const SIZE_CLASS = {
 	sm: ["min-h-basalt-textarea-sm", "px-basalt-space-lg", "py-basalt-space-md", "text-basalt-md"],
-	default: [
-		"min-h-basalt-textarea",
-		"px-basalt-control-x",
-		"py-basalt-space-lg",
-		"text-basalt-base",
-	],
+	md: ["min-h-basalt-textarea", "px-basalt-control-x", "py-basalt-space-lg", "text-basalt-base"],
 	lg: [
 		"min-h-basalt-textarea-lg",
 		"px-basalt-control-x-lg",
@@ -22,11 +17,14 @@ const SIZE_CLASS = {
 	],
 } as const;
 
-describe("InputArea", () => {
-	it("renders a textarea", () => {
-		render(<InputArea aria-label="Notes" />);
+describe("Textarea", () => {
+	afterEach(() => vi.restoreAllMocks());
+
+	it("renders a textarea with control surface styling", () => {
+		render(<Textarea aria-label="Notes" />);
 		const area = screen.getByRole("textbox", { name: "Notes" });
 		expect(area).toBeEnabled();
+		expect(area).toHaveAttribute("data-slot", "textarea");
 		expect(area).not.toHaveAttribute("rows");
 		expect(area.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
@@ -42,31 +40,58 @@ describe("InputArea", () => {
 	});
 
 	it("can be disabled", () => {
-		render(<InputArea aria-label="Notes" disabled />);
+		render(<Textarea aria-label="Notes" disabled />);
 		expect(screen.getByRole("textbox", { name: "Notes" })).toBeDisabled();
 	});
 
-	it("applies named sizes and keeps the default class", () => {
-		const { rerender } = render(<InputArea aria-label="Notes" />);
+	it("applies named sizes and defaults to md", () => {
+		const { rerender } = render(<Textarea aria-label="Notes" />);
 		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining([...SIZE_CLASS.default]),
+			expect.arrayContaining([...SIZE_CLASS.md]),
 		);
-		rerender(<InputArea aria-label="Notes" size="default" />);
+		rerender(<Textarea aria-label="Notes" size="md" />);
 		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining([...SIZE_CLASS.default]),
+			expect.arrayContaining([...SIZE_CLASS.md]),
 		);
-		rerender(<InputArea aria-label="Notes" size="sm" />);
+		rerender(<Textarea aria-label="Notes" size="sm" />);
 		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
 			expect.arrayContaining([...SIZE_CLASS.sm]),
 		);
-		rerender(<InputArea aria-label="Notes" size="lg" />);
+		rerender(<Textarea aria-label="Notes" size="lg" />);
 		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
 			expect.arrayContaining([...SIZE_CLASS.lg]),
 		);
 	});
 
+	it("auto-resizes to scrollHeight and clamps at maxRows", () => {
+		let currentScrollHeight = 64;
+		vi.spyOn(HTMLTextAreaElement.prototype, "scrollHeight", "get").mockImplementation(
+			() => currentScrollHeight,
+		);
+		const { rerender } = render(<Textarea aria-label="Notes" autoResize defaultValue="Line 1" />);
+		const area = screen.getByRole("textbox", { name: "Notes" }) as HTMLTextAreaElement;
+		expect(area).toHaveClass("resize-none");
+		expect(area.style.height).toBe("64px");
+		expect(area.style.overflowY).toBe("hidden");
+
+		currentScrollHeight = 140;
+		fireEvent.change(area, { target: { value: "Line 1\nLine 2\nLine 3\nLine 4" } });
+		expect(area.style.height).toBe("140px");
+		expect(area.style.overflowY).toBe("hidden");
+
+		rerender(
+			<Textarea aria-label="Notes" autoResize maxRows={3} value="Tall" onChange={() => {}} />,
+		);
+		expect(area.style.height).toBe("60px");
+		expect(area.style.overflowY).toBe("auto");
+
+		rerender(<Textarea aria-label="Notes" autoResize={false} value="Plain" onChange={() => {}} />);
+		expect(area.style.height).toBe("");
+		expect(area.style.overflowY).toBe("");
+	});
+
 	it("keeps a destructive invalid border that focus-visible cannot replace", () => {
-		render(<InputArea aria-label="Notes" aria-invalid />);
+		render(<Textarea aria-label="Notes" aria-invalid />);
 		const area = screen.getByRole("textbox", { name: "Notes" });
 		expect(area.className).toContain("aria-invalid:border-basalt-danger-solid");
 		expect(area.className).toContain("aria-invalid:focus-visible:border-basalt-danger-solid");
@@ -74,7 +99,7 @@ describe("InputArea", () => {
 	});
 
 	it("adds password-manager markers only when requested and does not let callers override them", () => {
-		const { rerender } = render(<InputArea aria-label="Notes" />);
+		const { rerender } = render(<Textarea aria-label="Notes" />);
 		const unmarked = screen.getByRole("textbox", { name: "Notes" });
 		expect(unmarked.className).not.toContain("keeper-ignore");
 		expect(unmarked).not.toHaveAttribute("data-1p-ignore");
@@ -82,7 +107,7 @@ describe("InputArea", () => {
 		expect(unmarked).not.toHaveAttribute("data-form-type");
 		expect(unmarked).not.toHaveAttribute("data-lpignore");
 		rerender(
-			<InputArea
+			<Textarea
 				aria-label="Notes"
 				passwordManagerIgnore
 				data-1p-ignore="false"
@@ -101,7 +126,7 @@ describe("InputArea", () => {
 
 	it("keeps a controlled value and reports change", () => {
 		const onChange = vi.fn();
-		render(<InputArea aria-label="Notes" value="Ada" onChange={onChange} />);
+		render(<Textarea aria-label="Notes" value="Ada" onChange={onChange} />);
 		const area = screen.getByRole("textbox", { name: "Notes" });
 		expect(area).toHaveValue("Ada");
 		fireEvent.change(area, { target: { value: "Grace" } });
@@ -112,7 +137,7 @@ describe("InputArea", () => {
 	it("edits an uncontrolled value and restores it on native form reset", () => {
 		render(
 			<form>
-				<InputArea aria-label="Notes" name="notes" defaultValue="Ada" />
+				<Textarea aria-label="Notes" name="notes" defaultValue="Ada" />
 				<button type="reset">Reset</button>
 			</form>,
 		);
@@ -124,13 +149,14 @@ describe("InputArea", () => {
 		expect(area).toHaveValue("Ada");
 	});
 
-	it("accepts numeric rows, size, passwordManagerIgnore, native attributes, and ref, and rejects illegal values", () => {
-		acceptInputAreaProps({ rows: 6 });
-		acceptInputAreaProps({ size: "sm" });
-		acceptInputAreaProps({ size: "default" });
-		acceptInputAreaProps({ size: "lg" });
-		acceptInputAreaProps({ passwordManagerIgnore: true });
-		acceptInputAreaProps({
+	it("accepts numeric rows, size, autoResize, maxRows, passwordManagerIgnore, native attributes, and ref, and rejects illegal values", () => {
+		acceptTextareaProps({ rows: 6 });
+		acceptTextareaProps({ size: "sm" });
+		acceptTextareaProps({ size: "md" });
+		acceptTextareaProps({ size: "lg" });
+		acceptTextareaProps({ autoResize: true, maxRows: 6 });
+		acceptTextareaProps({ passwordManagerIgnore: true });
+		acceptTextareaProps({
 			className: "extra",
 			placeholder: "Write a note",
 			disabled: true,
@@ -139,18 +165,19 @@ describe("InputArea", () => {
 			onChange: () => undefined,
 			ref: createRef<HTMLTextAreaElement>(),
 		});
-		acceptInputAreaProps({ defaultValue: "y" });
+		acceptTextareaProps({ defaultValue: "y" });
 		// @ts-expect-error rows must be a number
-		acceptInputAreaProps({ rows: "6" });
-		// @ts-expect-error size must be sm, default, or lg
-		acceptInputAreaProps({ size: "xl" });
+		acceptTextareaProps({ rows: "6" });
+		// @ts-expect-error size must be sm, md, or lg
+		acceptTextareaProps({ size: "xl" });
 	});
 
-	it("forwards rows, native attributes, ref, className, and change", () => {
+	it("forwards rows, native attributes, function and object ref, className, and change", () => {
 		const ref = createRef<HTMLTextAreaElement>();
+		const fnRef = vi.fn();
 		const onChange = vi.fn();
-		render(
-			<InputArea
+		const { rerender } = render(
+			<Textarea
 				ref={ref}
 				rows={6}
 				className="extra"
@@ -173,5 +200,8 @@ describe("InputArea", () => {
 		expect(ref.current).toBe(area);
 		fireEvent.change(area, { target: { value: "updated" } });
 		expect(onChange).toHaveBeenCalled();
+
+		rerender(<Textarea ref={fnRef} aria-label="Notes" />);
+		expect(fnRef).toHaveBeenCalledWith(area);
 	});
 });

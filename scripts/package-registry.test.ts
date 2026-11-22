@@ -33,9 +33,9 @@ describe("package registry generator and AI package assets", () => {
 		expect(registry.packageName).toBe("@nocoo/basalt");
 		expect(registry.packageVersion).toBe(rootPkg.version);
 		expect(registry.totalModules).toBe(104);
-		expect(registry.totalSymbols).toBe(698);
-		expect(registry.totalValues).toBe(382);
-		expect(registry.totalTypes).toBe(316);
+		expect(registry.totalSymbols).toBe(703);
+		expect(registry.totalValues).toBe(384);
+		expect(registry.totalTypes).toBe(319);
 		expect(registry.totalCssExports).toBe(4);
 		expect(registry.totalCatalogEntries).toBe(77);
 

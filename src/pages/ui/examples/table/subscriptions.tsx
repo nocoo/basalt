@@ -11,7 +11,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@nocoo/basalt/components/select";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import {
 	Table,
 	TableBody,
@@ -307,7 +307,7 @@ export default function SubscriptionTable() {
 										className="space-y-basalt-space-lg py-basalt-space-lg"
 									>
 										{[90, 70, 82, 65].map((width) => (
-											<SkeletonLine key={width} height={22} minWidth={width} maxWidth={width} />
+											<Skeleton key={width} height={22} width={`${width}%`} />
 										))}
 									</div>
 								</TableCell>

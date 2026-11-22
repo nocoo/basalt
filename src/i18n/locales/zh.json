@@ -1189,7 +1189,7 @@
 			"statusLoading": "正在加载展示",
 			"statusLoaded": "展示已加载",
 			"primitives": "骨架",
-			"primitivesHint": "SkeletonLine 是唯一上色的骨头。圆、柱和块只是改高度和圆角。",
+			"primitivesHint": "Skeleton 提供行、块和圆三种变体的占位骨架。",
 			"cardLoadingLabel": "正在加载卡片",
 			"spinners": "转圈",
 			"spinnersHint": "Loader 是库的标记。按钮 loading 和 InputGroup 用同一套动效。",

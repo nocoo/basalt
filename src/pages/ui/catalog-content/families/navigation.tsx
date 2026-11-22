@@ -17,7 +17,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
 import {
@@ -518,14 +518,11 @@ export default function Example() {
 			{
 				id: catalogScenarioId("breadcrumbs", "loading"),
 				title: "Loading",
-				code: scenarioModule(
-					"<Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />",
-					[
-						'import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";',
-						'import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";',
-					],
-				),
-				render: () => <Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />,
+				code: scenarioModule("<Breadcrumbs items={[{ label: <Skeleton width={72} /> }]} />", [
+					'import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";',
+					'import { Skeleton } from "@nocoo/basalt/components/skeleton";',
+				]),
+				render: () => <Breadcrumbs items={[{ label: <Skeleton width={72} /> }]} />,
 			},
 		],
 	},

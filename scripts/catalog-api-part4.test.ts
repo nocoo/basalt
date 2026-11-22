@@ -412,7 +412,7 @@ export interface WidgetProps {
 		expect(joined).toContain('"variant"');
 		expect(joined).toContain("| null");
 		expect(joined).toContain('name: "Button"');
-		expect(joined).toContain('name: "InputArea"');
+		expect(joined).toContain('name: "Textarea"');
 		expect(joined).toContain('name: "InputGroup.Button"');
 		expect(joined).toContain('name: "InputGroup.Suffix"');
 		expect(joined).toContain('name: "LayerCard.Loading"');
@@ -478,7 +478,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"6ab1425020456c104c6a64c89e9424f49e0b3144b6b5a34f714417d6afad7e0e",
+			"0a95f64f6f4f17ac67f44ee220e89da836a1e075ba3002dc871bbd9f454a6ae1",
 		);
 	}, 60_000);
 
@@ -582,7 +582,7 @@ export interface WidgetProps {
 		expect(() => generateCatalogApiFiles(repoRoot, sampleEmptyData("Code"))).not.toThrow();
 		// Also verify a documented empty surface with false ref policy
 		expect(() =>
-			generateCatalogApiFiles(repoRoot, sampleEmptyData("LayerCard.Secondary")),
+			generateCatalogApiFiles(repoRoot, sampleEmptyData("LayerCard.Body")),
 		).not.toThrow();
 	});
 

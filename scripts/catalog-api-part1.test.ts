@@ -193,21 +193,21 @@ describe("catalog API generator contract 1/4", () => {
 			{
 				slug: "layer-card",
 				sourceFile: "packages/basalt/src/components/layer-card.tsx",
-				propsType: "LayerCardWellProps",
-				surface: "LayerCard.Primary",
-			},
-			{
-				slug: "layer-card",
-				sourceFile: "packages/basalt/src/components/layer-card.tsx",
-				propsType: "LayerCardSectionProps",
-				surface: "LayerCard.Secondary",
-				allowEmpty: true,
-			},
-			{
-				slug: "layer-card",
-				sourceFile: "packages/basalt/src/components/layer-card.tsx",
 				propsType: "LayerCardHeaderProps",
 				surface: "LayerCard.Header",
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardTitleProps",
+				surface: "LayerCard.Title",
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardDescriptionProps",
+				surface: "LayerCard.Description",
+				allowEmpty: true,
 			},
 			{
 				slug: "layer-card",
@@ -267,10 +267,10 @@ describe("catalog API generator contract 1/4", () => {
 				surface: "Input",
 			},
 			{
-				slug: "input-area",
-				sourceFile: "packages/basalt/src/components/input-area.tsx",
-				propsType: "InputAreaProps",
-				surface: "InputArea",
+				slug: "textarea",
+				sourceFile: "packages/basalt/src/components/textarea.tsx",
+				propsType: "TextareaProps",
+				surface: "Textarea",
 			},
 			{
 				slug: "input-group",
@@ -1056,10 +1056,10 @@ describe("catalog API generator contract 1/4", () => {
 				surface: "Loader",
 			},
 			{
-				slug: "skeleton-line",
-				sourceFile: "packages/basalt/src/components/skeleton-line.tsx",
-				propsType: "SkeletonLineProps",
-				surface: "SkeletonLine",
+				slug: "skeleton",
+				sourceFile: "packages/basalt/src/components/skeleton.tsx",
+				propsType: "SkeletonProps",
+				surface: "Skeleton",
 			},
 
 			{
@@ -1445,7 +1445,7 @@ describe("catalog API generator contract 1/4", () => {
 				(target) => target.surface,
 			),
 		).toEqual([
-			"LayerCard.Secondary",
+			"LayerCard.Description",
 			"LayerCard.Body",
 			"LayerCard.Footer",
 			"InputGroup.Suffix",
@@ -1515,7 +1515,7 @@ describe("catalog API generator contract 1/4", () => {
 			"description-list",
 			"field",
 			"input",
-			"input-area",
+			"textarea",
 			"sensitive-input",
 			"checkbox",
 			"radio",
@@ -1554,7 +1554,7 @@ describe("catalog API generator contract 1/4", () => {
 			"badge",
 			"empty",
 			"loader",
-			"skeleton-line",
+			"skeleton",
 			"meter",
 			"clipboard-text",
 			"avatar",
@@ -2284,14 +2284,16 @@ describe("catalog API generator contract 1/4", () => {
 		]);
 	}, 60_000);
 
-	it("extracts InputArea props from InputAreaProps as rows, size, and passwordManagerIgnore", () => {
+	it("extracts Textarea props from TextareaProps in source order", () => {
 		const generated = generateProductionProps();
-		expect(generated["input-area"]?.map((prop) => prop.name)).toEqual([
+		expect(generated.textarea?.map((prop) => prop.name)).toEqual([
 			"rows",
 			"size",
+			"autoResize",
+			"maxRows",
 			"passwordManagerIgnore",
 		]);
-		expect(generated["input-area"]).toEqual([
+		expect(generated.textarea).toEqual([
 			{
 				name: "rows",
 				type: "number",
@@ -2300,10 +2302,24 @@ describe("catalog API generator contract 1/4", () => {
 			},
 			{
 				name: "size",
-				type: "InputAreaSize",
+				type: "TextareaSize",
 				required: false,
-				default: "default",
+				default: '"md"',
 				description: "The visual size of the text area.",
+			},
+			{
+				name: "autoResize",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description:
+					"Grow vertically with typed content instead of showing an internal scrollbar until clamped by `maxRows`.",
+			},
+			{
+				name: "maxRows",
+				type: "number",
+				required: false,
+				description: "Maximum line count when `autoResize` is enabled before scrolling internally.",
 			},
 			{
 				name: "passwordManagerIgnore",
@@ -2313,19 +2329,19 @@ describe("catalog API generator contract 1/4", () => {
 				description: "Ignore password managers on this field.",
 			},
 		]);
-		expect(generated["input-area"]?.[0]).not.toHaveProperty("default");
-		expect(generated["input-area"]?.some((prop) => prop.name === "className")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "id")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "name")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "value")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "defaultValue")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "placeholder")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "disabled")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "required")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "aria-label")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "onChange")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "children")).toBe(false);
-		expect(generated["input-area"]?.some((prop) => prop.name === "ref")).toBe(false);
+		expect(generated.textarea?.[0]).not.toHaveProperty("default");
+		expect(generated.textarea?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "id")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "name")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "value")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "defaultValue")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "placeholder")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "disabled")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "required")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "aria-label")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "onChange")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.textarea?.some((prop) => prop.name === "ref")).toBe(false);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",

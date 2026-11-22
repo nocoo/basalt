@@ -350,7 +350,7 @@ function ReadyDoc({
 		"tag-color-picker",
 		"responsive-master-detail",
 
-		"skeleton-line",
+		"skeleton",
 		"table",
 		"data-table",
 		"multi-select",

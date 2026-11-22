@@ -1,9 +1,12 @@
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
-import { BASALT_UI_CLASS } from "../utils/control-surface";
+import {
+	BASALT_UI_CLASS,
+	SELECT_TRIGGER_CHEVRON_CLASS,
+	selectTriggerClass,
+} from "../utils/control-surface";
 import { Check, ChevronDown, X } from "../utils/internal-icons";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
-import { Button } from "./button";
 import { Input } from "./input";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
@@ -217,14 +220,15 @@ export function MultiSelect({
 				))}
 			<Popover open={expanded} onOpenChange={changeOpen}>
 				<PopoverTrigger asChild>
-					<Button
+					<button
+						type="button"
 						ref={trigger}
 						form={form}
-						variant="outline"
 						disabled={disabled}
+						data-state={expanded ? "open" : "closed"}
 						aria-label={label}
 						aria-describedby={`${id}-count`}
-						className="w-full justify-between"
+						className={selectTriggerClass()}
 						onKeyDown={(event) => {
 							if (event.nativeEvent.isComposing) return;
 							if (event.key === "ArrowDown" || event.key === "ArrowUp") {
@@ -237,9 +241,11 @@ export function MultiSelect({
 							}
 						}}
 					>
-						<span className="truncate">{selected.length ? countText : placeholder}</span>
-						<ChevronDown aria-hidden="true" />
-					</Button>
+						<span className={cn("truncate", !selected.length && "text-basalt-muted-foreground")}>
+							{selected.length ? countText : placeholder}
+						</span>
+						<ChevronDown aria-hidden="true" className={SELECT_TRIGGER_CHEVRON_CLASS} />
+					</button>
 				</PopoverTrigger>
 				<PopoverContent
 					align="start"

@@ -73,8 +73,8 @@ describe("LayerCard", () => {
 	it("raises a well without a muted tray", () => {
 		render(
 			<LayerCard>
-				<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
-				<LayerCard.Primary>Hello</LayerCard.Primary>
+				<LayerCard.Header>Next Steps</LayerCard.Header>
+				<LayerCard.Well>Hello</LayerCard.Well>
 			</LayerCard>,
 		);
 		const header = screen.getByText("Next Steps");
@@ -102,12 +102,12 @@ describe("LayerCard", () => {
 		expect(root?.className).not.toContain("flex-col");
 	});
 
-	it("recurses through a fragment to recognize a nested primary section", () => {
+	it("recurses through a fragment to recognize a nested well section", () => {
 		render(
 			<LayerCard>
 				<Fragment key="nested">
 					<span>Lead</span>
-					<LayerCard.Primary>Raised</LayerCard.Primary>
+					<LayerCard.Well>Raised</LayerCard.Well>
 				</Fragment>
 			</LayerCard>,
 		);
@@ -357,5 +357,35 @@ describe("LayerCard", () => {
 			"shadow-basalt-card",
 			"p-basalt-card",
 		);
+	});
+
+	it("renders Title and Description slots with ref and asChild, and drops Primary/Secondary aliases", () => {
+		const titleRef = createRef<HTMLHeadingElement>();
+		const descRef = createRef<HTMLParagraphElement>();
+		render(
+			<LayerCard>
+				<LayerCard.Header>
+					<div>
+						<LayerCard.Title ref={titleRef}>Overview</LayerCard.Title>
+						<LayerCard.Description ref={descRef}>Summary copy</LayerCard.Description>
+					</div>
+				</LayerCard.Header>
+				<LayerCard.Header>
+					<LayerCard.Title asChild>
+						<h2>Custom heading</h2>
+					</LayerCard.Title>
+				</LayerCard.Header>
+			</LayerCard>,
+		);
+		expect(titleRef.current?.tagName).toBe("H3");
+		expect(titleRef.current).toHaveAttribute("data-slot", "card-title");
+		expect(titleRef.current).toHaveClass("text-basalt-lg", "font-semibold");
+		expect(descRef.current?.tagName).toBe("P");
+		expect(descRef.current).toHaveAttribute("data-slot", "card-description");
+		expect(descRef.current).toHaveClass("text-basalt-sm", "text-basalt-muted-foreground");
+		const h2 = screen.getByRole("heading", { level: 2, name: "Custom heading" });
+		expect(h2).toHaveAttribute("data-slot", "card-title");
+		expect("Primary" in LayerCard).toBe(false);
+		expect("Secondary" in LayerCard).toBe(false);
 	});
 });

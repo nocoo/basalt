@@ -2,17 +2,28 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { CONTROL_SURFACE_CLASS, controlSurfaceClass } from "./control-surface";
+import {
+	CONTROL_SURFACE_CLASS,
+	controlSurfaceClass,
+	SELECT_TRIGGER_CHEVRON_CLASS,
+	selectTriggerClass,
+} from "./control-surface";
 
 const pkgRoot = "packages/basalt";
 const CONSUMERS = [
 	"src/components/input.tsx",
-	"src/components/input-area.tsx",
-	"src/components/select.tsx",
+	"src/components/textarea.tsx",
 	"src/components/input-group.tsx",
 	"src/components/clipboard-text.tsx",
 	"src/components/code.tsx",
 	"src/utils/pagination-nav.tsx",
+] as const;
+
+const PICKER_TRIGGERS = [
+	"src/components/select.tsx",
+	"src/components/multi-select.tsx",
+	"src/components/date-picker.tsx",
+	"src/components/icon-picker.tsx",
 ] as const;
 
 function sourceOf(file: string) {
@@ -27,6 +38,23 @@ describe("control surface", () => {
 		expect(controlSurfaceClass("h-9").split(/\s+/)).toEqual(
 			expect.arrayContaining([...CONTROL_SURFACE_CLASS.split(/\s+/), "h-9"]),
 		);
+		expect(selectTriggerClass({ size: "sm", className: "extra" }).split(/\s+/)).toEqual(
+			expect.arrayContaining([
+				...CONTROL_SURFACE_CLASS.split(/\s+/),
+				"basalt-action",
+				"basalt-action-sm",
+				"basalt-focus",
+				"extra",
+			]),
+		);
+		expect(SELECT_TRIGGER_CHEVRON_CLASS).toContain("group-data-[state=open]/select:rotate-180");
+	});
+
+	it.each(PICKER_TRIGGERS)("%s calls shared selectTriggerClass", (file) => {
+		const source = sourceOf(file);
+		expect(source).toContain('from "../utils/control-surface"');
+		expect(source).toContain("selectTriggerClass(");
+		expect(source).toContain("SELECT_TRIGGER_CHEVRON_CLASS");
 	});
 
 	it("lives in utils, outside the components export wildcard", () => {

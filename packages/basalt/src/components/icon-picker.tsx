@@ -1,10 +1,9 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import { type AriaAttributes, type ReactNode, useState } from "react";
 import { cn } from "../utils/cn";
-import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { SELECT_TRIGGER_CHEVRON_CLASS, selectTriggerClass } from "../utils/control-surface";
 import { Check, ChevronDown, Search } from "../utils/internal-icons";
 import { FOCUS_RING } from "../utils/overlay";
-import { Button } from "./button";
 import { Input } from "./input";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
@@ -78,21 +77,26 @@ export function IconPicker({
 			}}
 		>
 			<PopoverTrigger asChild>
-				<Button
-					variant="outline"
+				<button
+					type="button"
 					disabled={disabled}
+					data-state={open && !disabled ? "open" : "closed"}
 					id={id}
 					aria-invalid={ariaInvalid}
 					aria-describedby={describedBy}
 					aria-label={`${label}: ${option?.label ?? placeholder}`}
-					className={cn(BASALT_UI_CLASS, "max-w-full", className)}
+					className={selectTriggerClass({ className: cn("w-auto max-w-full", className) })}
 				>
-					<span aria-hidden="true" className="shrink-0">
-						{option?.icon}
+					{option ? (
+						<span aria-hidden="true" className="shrink-0">
+							{option.icon}
+						</span>
+					) : null}
+					<span className={cn("truncate", !option && "text-basalt-muted-foreground")}>
+						{option?.label ?? placeholder}
 					</span>
-					<span className="truncate">{option?.label ?? placeholder}</span>
-					<ChevronDown className="shrink-0" />
-				</Button>
+					<ChevronDown aria-hidden="true" className={SELECT_TRIGGER_CHEVRON_CLASS} />
+				</button>
 			</PopoverTrigger>
 			<PopoverContent
 				align="start"

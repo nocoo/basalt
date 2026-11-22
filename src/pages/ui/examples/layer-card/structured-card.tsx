@@ -6,10 +6,8 @@ export default function LayerCardStructuredCard() {
 		<LayerCard className="w-full max-w-sm">
 			<LayerCard.Header>
 				<div>
-					<h3 className="text-basalt-base font-semibold text-basalt-foreground">
-						Care plan review
-					</h3>
-					<p className="text-basalt-sm text-basalt-muted-foreground">Clinical Ops environment</p>
+					<LayerCard.Title>Care plan review</LayerCard.Title>
+					<LayerCard.Description>Clinical Ops environment</LayerCard.Description>
 				</div>
 				<span className="text-basalt-sm font-medium text-basalt-muted-foreground">Ready</span>
 			</LayerCard.Header>

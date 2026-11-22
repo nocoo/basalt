@@ -33,7 +33,7 @@ import {
 	type SheetProps,
 	SheetTitle,
 } from "./sheet";
-import { SkeletonLine } from "./skeleton-line";
+import { Skeleton } from "./skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 export type SidebarSide = "left" | "right";
@@ -310,9 +310,9 @@ export function Sidebar({
 			role="status"
 			aria-live="polite"
 		>
-			<SkeletonLine />
-			<SkeletonLine />
-			<SkeletonLine />
+			<Skeleton />
+			<Skeleton />
+			<Skeleton />
 		</div>
 	) : (
 		children

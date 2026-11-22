@@ -8,7 +8,7 @@ import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { LoadingScreen } from "@nocoo/basalt/components/loading-screen";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { StatStrip } from "@nocoo/basalt/components/stat-strip";
 import { useTranslation } from "react-i18next";
 import { BasaltMark } from "@/components/BasaltMark";
@@ -35,15 +35,7 @@ const TABLE_ROWS = [
 ];
 
 function BoneAvatar() {
-	return (
-		<SkeletonLine
-			minWidth={100}
-			maxWidth={100}
-			height={36}
-			className="rounded-basalt-full"
-			style={{ width: 36, flexShrink: 0 }}
-		/>
-	);
+	return <Skeleton variant="circle" width={36} height={36} className="shrink-0" />;
 }
 
 export default function LoadingStatesPage() {
@@ -70,14 +62,14 @@ export default function LoadingStatesPage() {
 			>
 				<div className="grid gap-basalt-layout lg:grid-cols-2">
 					<LayerCard className="space-y-basalt-card-sm">
-						<SkeletonLine minWidth={40} maxWidth={40} />
-						<SkeletonLine minWidth={88} maxWidth={88} />
-						<SkeletonLine minWidth={64} maxWidth={64} />
+						<Skeleton width="40%" />
+						<Skeleton width="88%" />
+						<Skeleton width="64%" />
 						<div className="flex items-center gap-basalt-card-sm pt-basalt-card-sm">
 							<BoneAvatar />
 							<div className="min-w-0 flex-1 space-y-basalt-space-lg">
-								<SkeletonLine minWidth={52} maxWidth={52} />
-								<SkeletonLine minWidth={70} maxWidth={70} height={8} />
+								<Skeleton width="52%" />
+								<Skeleton width="70%" height={8} />
 							</div>
 						</div>
 					</LayerCard>
@@ -127,9 +119,9 @@ export default function LoadingStatesPage() {
 							<LayerCard key={metric.labelKey} className="min-h-28 space-y-basalt-card-sm">
 								{busy ? (
 									<>
-										<SkeletonLine minWidth={metric.width} maxWidth={metric.width} height={10} />
-										<SkeletonLine minWidth={50} maxWidth={50} height={24} />
-										<SkeletonLine minWidth={38} maxWidth={38} height={9} />
+										<Skeleton width={`${metric.width}%`} height={10} />
+										<Skeleton width="50%" height={24} />
+										<Skeleton width="38%" height={9} />
 									</>
 								) : (
 									<>
@@ -149,12 +141,12 @@ export default function LoadingStatesPage() {
 								className="flex h-full items-end gap-basalt-space-lg border-b border-basalt-border pb-basalt-space-lg"
 							>
 								{[32, 48, 40, 67, 55, 84, 69, 78, 64, 92, 80, 96].map((height) => (
-									<SkeletonLine
+									<Skeleton
 										key={height}
-										minWidth={100}
-										maxWidth={100}
-										className="flex-1 rounded-t-basalt-md"
-										style={{ height: `${height}%` }}
+										variant="block"
+										width="100%"
+										height={`${height}%`}
+										className="flex-1 rounded-b-none rounded-t-basalt-md"
 									/>
 								))}
 							</div>
@@ -189,20 +181,16 @@ export default function LoadingStatesPage() {
 								)}
 								{busy ? (
 									<div className="min-w-0 flex-1 space-y-basalt-space-lg">
-										<SkeletonLine minWidth={44} maxWidth={44} />
-										<SkeletonLine minWidth={62 - index * 8} maxWidth={62 - index * 8} height={8} />
+										<Skeleton width="44%" />
+										<Skeleton width={`${62 - index * 8}%`} height={8} />
 									</div>
 								) : (
 									<span className="text-basalt-base font-medium">{row.name}</span>
 								)}
 							</div>
+							{busy ? <Skeleton width="70%" /> : <Badge variant="outline">{row.status}</Badge>}
 							{busy ? (
-								<SkeletonLine minWidth={70} maxWidth={70} />
-							) : (
-								<Badge variant="outline">{row.status}</Badge>
-							)}
-							{busy ? (
-								<SkeletonLine minWidth={55} maxWidth={55} className="ml-auto" />
+								<Skeleton width="55%" className="ml-auto" />
 							) : (
 								<span className="text-right text-basalt-base tabular-nums">{row.requests}</span>
 							)}
@@ -220,13 +208,13 @@ export default function LoadingStatesPage() {
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
 							<div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-basalt-lg bg-basalt-muted text-basalt-xl font-semibold">
-								{busy ? <SkeletonLine minWidth={100} maxWidth={100} height={56} /> : "A"}
+								{busy ? <Skeleton variant="block" height={56} /> : "A"}
 							</div>
 							<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 								{busy ? (
 									<>
-										<SkeletonLine minWidth={48} maxWidth={48} height={18} />
-										<SkeletonLine minWidth={72} maxWidth={72} />
+										<Skeleton width="48%" height={18} />
+										<Skeleton width="72%" />
 									</>
 								) : (
 									<>
@@ -243,9 +231,9 @@ export default function LoadingStatesPage() {
 						<LayerCard.Body>
 							{busy ? (
 								<div className="space-y-basalt-space-lg">
-									<SkeletonLine minWidth={100} maxWidth={100} />
-									<SkeletonLine minWidth={86} maxWidth={86} />
-									<SkeletonLine minWidth={64} maxWidth={64} />
+									<Skeleton width="100%" />
+									<Skeleton width="86%" />
+									<Skeleton width="64%" />
 								</div>
 							) : (
 								<p className="text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
@@ -257,10 +245,10 @@ export default function LoadingStatesPage() {
 					<LayerCard>
 						{busy ? (
 							<div className="space-y-basalt-space-lg">
-								<SkeletonLine minWidth={36} maxWidth={36} />
-								<SkeletonLine minWidth={58} maxWidth={58} />
-								<SkeletonLine minWidth={44} maxWidth={44} />
-								<SkeletonLine minWidth={70} maxWidth={70} />
+								<Skeleton width="36%" />
+								<Skeleton width="58%" />
+								<Skeleton width="44%" />
+								<Skeleton width="70%" />
 							</div>
 						) : (
 							<DescriptionList columns={1}>

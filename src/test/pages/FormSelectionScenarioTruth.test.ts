@@ -14,12 +14,12 @@ const CATALOG_DOCS = Object.fromEntries(
 import { CHECKBOX_EXAMPLES } from "@/pages/ui/examples/checkbox";
 import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
 import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
-import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "@/pages/ui/examples/input-group";
 import { RADIO_EXAMPLES } from "@/pages/ui/examples/radio";
 import { SELECT_EXAMPLES } from "@/pages/ui/examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "@/pages/ui/examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "@/pages/ui/examples/switch";
+import { TEXTAREA_EXAMPLES } from "@/pages/ui/examples/textarea";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -88,14 +88,15 @@ describe("form selection scenario truth", () => {
 			"input-sizes",
 			"input-controlled-and-reset",
 		]);
-		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
-		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([
-			"input-area-with-label",
-			"input-area-custom-row-count",
-			"input-area-error-state-string",
-			"input-area-disabled",
-			"input-area-sizes",
-			"input-area-controlled-and-reset",
+		expect(UI_EXAMPLES.textarea).toBe(TEXTAREA_EXAMPLES);
+		expect(UI_EXAMPLES.textarea?.map((item) => item.id)).toEqual([
+			"textarea-with-label",
+			"textarea-custom-row-count",
+			"textarea-auto-resize",
+			"textarea-error-state-string",
+			"textarea-disabled",
+			"textarea-sizes",
+			"textarea-controlled-and-reset",
 		]);
 		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([
@@ -427,36 +428,37 @@ describe("form selection scenario truth", () => {
 		expect(scenario("input", "input-sizes").code).toContain('size="lg"');
 		expect(scenario("input", "input-controlled-and-reset").code).toContain("useState");
 		expect(scenario("input", "input-controlled-and-reset").code).toContain("Reset");
-		const areaLabel = scenario("input-area", "input-area-with-label");
+		const areaLabel = scenario("textarea", "textarea-with-label");
 		expect(areaLabel.code).toContain("export default");
 		expect(areaLabel.code).toContain("@nocoo/basalt/components/field");
-		expect(areaLabel.code).toContain("@nocoo/basalt/components/input-area");
+		expect(areaLabel.code).toContain("@nocoo/basalt/components/textarea");
 		expect(areaLabel.code).toContain("<Field ");
 		expect(areaLabel.code).toContain("htmlFor={id}");
 		expect(areaLabel.code).toContain("id={id}");
 		expect(areaLabel.code).toContain('label="Notes"');
 		expect(areaLabel.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
-		expect(scenario("input-area", "input-area-custom-row-count").code).toContain("aria-label=");
-		expect(scenario("input-area", "input-area-custom-row-count").code).toContain("rows={6}");
-		expect(scenario("input-area", "input-area-custom-row-count").code).toContain(
+		expect(scenario("textarea", "textarea-custom-row-count").code).toContain("aria-label=");
+		expect(scenario("textarea", "textarea-custom-row-count").code).toContain("rows={6}");
+		expect(scenario("textarea", "textarea-custom-row-count").code).toContain(
 			'aria-label="Tall notes"',
 		);
-		const areaError = scenario("input-area", "input-area-error-state-string");
+		expect(scenario("textarea", "textarea-auto-resize").code).toContain("autoResize");
+		expect(scenario("textarea", "textarea-auto-resize").code).toContain("maxRows={5}");
+		const areaError = scenario("textarea", "textarea-error-state-string");
 		expect(areaError.code).toContain("htmlFor={id}");
 		expect(areaError.code).toContain("id={id}");
 		expect(areaError.code).toContain('error="Too short"');
 		expect(areaError.code).toContain("export default");
-		expect(scenario("input-area", "input-area-disabled").code).toContain("aria-label=");
-		expect(scenario("input-area", "input-area-disabled").code).toContain(
-			'aria-label="Disabled notes"',
-		);
-		expect(scenario("input-area", "input-area-disabled").code).toContain("disabled");
-		expect(scenario("input-area", "input-area-disabled").code).toContain('value="Unavailable"');
-		expect(scenario("input-area", "input-area-sizes").code).toContain('size="sm"');
-		expect(scenario("input-area", "input-area-sizes").code).toContain('aria-label="Default notes"');
-		expect(scenario("input-area", "input-area-sizes").code).toContain('size="lg"');
-		expect(scenario("input-area", "input-area-controlled-and-reset").code).toContain("useState");
-		expect(scenario("input-area", "input-area-controlled-and-reset").code).toContain("Reset");
+		expect(scenario("textarea", "textarea-disabled").code).toContain("aria-label=");
+		expect(scenario("textarea", "textarea-disabled").code).toContain('aria-label="Disabled notes"');
+		expect(scenario("textarea", "textarea-disabled").code).toContain("disabled");
+		expect(scenario("textarea", "textarea-disabled").code).toContain('value="Unavailable"');
+		expect(scenario("textarea", "textarea-sizes").code).toContain('size="sm"');
+		expect(scenario("textarea", "textarea-sizes").code).toContain('size="md"');
+		expect(scenario("textarea", "textarea-sizes").code).toContain('aria-label="Medium notes"');
+		expect(scenario("textarea", "textarea-sizes").code).toContain('size="lg"');
+		expect(scenario("textarea", "textarea-controlled-and-reset").code).toContain("useState");
+		expect(scenario("textarea", "textarea-controlled-and-reset").code).toContain("Reset");
 		const sensitiveDefault = scenario("sensitive-input", "sensitive-input-default");
 		expect(sensitiveDefault.code).toContain("export default");
 		expect(sensitiveDefault.code).toContain("@nocoo/basalt/components/sensitive-input");
@@ -582,8 +584,8 @@ describe("form selection scenario truth", () => {
 	it("imports jsx parts used by form docs usage", () => {
 		expectUsageImportsCover(CATALOG_DOCS.input?.usage ?? "", ["Input"]);
 		expect(hasAccessibleName(CATALOG_DOCS.input?.usage ?? "")).toBe(true);
-		expectUsageImportsCover(CATALOG_DOCS["input-area"]?.usage ?? "", ["InputArea"]);
-		expect(hasAccessibleName(CATALOG_DOCS["input-area"]?.usage ?? "")).toBe(true);
+		expectUsageImportsCover(CATALOG_DOCS.textarea?.usage ?? "", ["Textarea"]);
+		expect(hasAccessibleName(CATALOG_DOCS.textarea?.usage ?? "")).toBe(true);
 		expectUsageImportsCover(CATALOG_DOCS["sensitive-input"]?.usage ?? "", ["SensitiveInput"]);
 		expect(hasAccessibleName(CATALOG_DOCS["sensitive-input"]?.usage ?? "")).toBe(true);
 		expectUsageImportsCover(CATALOG_DOCS.checkbox?.usage ?? "", ["Checkbox"]);

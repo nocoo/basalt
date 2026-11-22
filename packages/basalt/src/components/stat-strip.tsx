@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
-import { SkeletonLine } from "./skeleton-line";
+import { Skeleton } from "./skeleton";
 
 export interface StatStripItem {
 	/** The visible label for this statistic. */
@@ -46,7 +46,7 @@ export const StatStrip = React.forwardRef<HTMLDListElement, StatStripProps>(
 							{item.label}
 						</dt>
 						<dd className="mt-basalt-space-sm text-basalt-3xl font-basalt-display font-semibold tabular-nums text-basalt-foreground">
-							{loading ? <SkeletonLine /> : item.value}
+							{loading ? <Skeleton /> : item.value}
 						</dd>
 					</div>
 				))}

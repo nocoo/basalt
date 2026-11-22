@@ -134,13 +134,13 @@ describe("foundation feedback scenario truth", () => {
 			"meter-full-meter",
 			"meter-low-value",
 		]);
-		expect(UI_EXAMPLES["skeleton-line"]?.map((item) => item.id)).toEqual([
-			"skeleton-line-dashboard",
-			"skeleton-line-resource-list",
-			"skeleton-line-resource-detail",
-			"skeleton-line-default",
-			"skeleton-line-width",
-			"skeleton-line-height",
+		expect(UI_EXAMPLES.skeleton?.map((item) => item.id)).toEqual([
+			"skeleton-dashboard",
+			"skeleton-resource-list",
+			"skeleton-resource-detail",
+			"skeleton-default",
+			"skeleton-variants",
+			"skeleton-height",
 		]);
 		expect(UI_EXAMPLES.toast?.map((item) => item.id)).toEqual([
 			"toast-title-only",
@@ -220,12 +220,12 @@ describe("foundation feedback scenario truth", () => {
 		expect(disabledLink).not.toContain("href=");
 	});
 
-	it("aligns skeleton line and loader codes with current sizes", () => {
-		expect(scenario("skeleton-line", "skeleton-line-default").code).toContain("minWidth={40}");
-		expect(scenario("skeleton-line", "skeleton-line-width").code).toContain("minWidth={80}");
-		expect(scenario("skeleton-line", "skeleton-line-width").code).toContain("minWidth={40}");
-		expect(scenario("skeleton-line", "skeleton-line-height").code).toContain('className="h-8"');
-		expectUsageImportsCover(CATALOG_DOCS["skeleton-line"]?.usage ?? "", ["SkeletonLine"]);
+	it("aligns skeleton and loader codes with current sizes", () => {
+		expect(scenario("skeleton", "skeleton-default").code).toContain('width="45%"');
+		expect(scenario("skeleton", "skeleton-variants").code).toContain('variant="circle"');
+		expect(scenario("skeleton", "skeleton-variants").code).toContain('variant="block"');
+		expect(scenario("skeleton", "skeleton-height").code).toContain("height={32}");
+		expectUsageImportsCover(CATALOG_DOCS.skeleton?.usage ?? "", ["Skeleton"]);
 		expect(scenario("loader", "loader-custom-size").code).toContain("size={16}");
 		expect(scenario("loader", "loader-custom-size").code).toContain("size={24}");
 		expect(scenario("loader", "loader-custom-size").code).toContain("size={32}");

@@ -1,7 +1,7 @@
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { useState } from "react";
 
 export default function ResourceDetailSkeleton() {
@@ -18,15 +18,15 @@ export default function ResourceDetailSkeleton() {
 				{loading ? "Loading resource detail" : "Resource detail loaded"}
 			</div>
 			<div aria-busy={loading} className="space-y-basalt-space-lg">
-				<LayerCard outlined className="flex h-44 items-center sm:h-28 gap-basalt-space-lg">
+				<LayerCard outlined className="flex h-44 items-center gap-basalt-space-lg sm:h-28">
 					<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-basalt-lg bg-basalt-muted text-basalt-xl font-semibold">
-						{loading ? <SkeletonLine minWidth={100} maxWidth={100} height={56} /> : "A"}
+						{loading ? <Skeleton variant="block" height={56} /> : "A"}
 					</div>
 					<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 						{loading ? (
 							<>
-								<SkeletonLine minWidth={48} maxWidth={48} height={20} />
-								<SkeletonLine minWidth={72} maxWidth={72} height={10} />
+								<Skeleton width="48%" height={20} />
+								<Skeleton width="72%" height={10} />
 							</>
 						) : (
 							<>
@@ -43,7 +43,7 @@ export default function ResourceDetailSkeleton() {
 						<div className="h-60 space-y-basalt-space-lg sm:h-28">
 							{loading ? (
 								[80, 100, 94, 62].map((width) => (
-									<SkeletonLine key={width} minWidth={width} maxWidth={width} height={12} />
+									<Skeleton key={width} width={`${width}%`} height={12} />
 								))
 							) : (
 								<>
@@ -57,7 +57,7 @@ export default function ResourceDetailSkeleton() {
 						</div>
 						<div className="flex h-44 items-center justify-center overflow-hidden rounded-basalt-md bg-basalt-muted/50">
 							{loading ? (
-								<SkeletonLine minWidth={100} maxWidth={100} height={176} />
+								<Skeleton variant="block" height={176} />
 							) : (
 								<div className="text-center">
 									<p className="text-basalt-3xl font-semibold tabular-nums">99.98%</p>
@@ -79,7 +79,7 @@ export default function ResourceDetailSkeleton() {
 							<div key={item.name} className="h-12 space-y-basalt-space-lg">
 								<p className="text-basalt-sm text-basalt-muted-foreground">{item.name}</p>
 								{loading ? (
-									<SkeletonLine minWidth={78} maxWidth={78} height={12} />
+									<Skeleton width="78%" height={12} />
 								) : item.name === "Status" ? (
 									<Badge tone="success" dot>
 										{item.value}

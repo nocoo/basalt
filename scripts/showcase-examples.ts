@@ -329,7 +329,7 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 			"command-palette",
 			"date-picker",
 			"input",
-			"input-area",
+			"textarea",
 			"field",
 		]) {
 			await page.goto(`${baseUrl}/ui/${slug}`);

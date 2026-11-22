@@ -1,7 +1,8 @@
 import * as React from "react";
 import { type ComponentProps, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
-import { ChevronLeft, ChevronRight } from "../utils/internal-icons";
+import { SELECT_TRIGGER_CHEVRON_CLASS, selectTriggerClass } from "../utils/control-surface";
+import { ChevronDown, ChevronLeft, ChevronRight } from "../utils/internal-icons";
 import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
@@ -687,6 +688,7 @@ export function DatePicker({
 	const followingMonth = shiftMonth(activeMonth, 1);
 	const rangeFrom = mode === "range" ? selectedRange.from : "";
 	const rangeTo = mode === "range" ? selectedRange.to : undefined;
+	const hasSelectedValue = mode === "range" ? Boolean(rangeFrom || rangeTo) : Boolean(selectedDate);
 	const label = formatTriggerLabel({
 		mode,
 		selectedDate,
@@ -885,12 +887,12 @@ export function DatePicker({
 				{...formRest}
 			/>
 			<PopoverTrigger asChild>
-				<Button
+				<button
 					type="button"
 					ref={triggerRef}
 					id={id}
-					variant="outline"
 					disabled={disabled}
+					data-state={open ? "open" : "closed"}
 					onFocus={onFocus as ComponentProps<"button">["onFocus"]}
 					onBlur={onBlur as ComponentProps<"button">["onBlur"]}
 					aria-labelledby={ariaLabelledBy}
@@ -899,14 +901,18 @@ export function DatePicker({
 					}
 					aria-describedby={describedBy}
 					aria-invalid={invalidState}
-					className={cn(
-						"justify-start font-normal",
-						hasDestructiveStyle && "border-basalt-danger-solid text-basalt-danger-solid",
-						className,
-					)}
+					className={selectTriggerClass({
+						className: cn(
+							"w-auto font-normal",
+							!hasSelectedValue && "text-basalt-muted-foreground",
+							hasDestructiveStyle && "border-basalt-danger-solid text-basalt-danger-solid",
+							className,
+						),
+					})}
 				>
-					{label}
-				</Button>
+					<span className="truncate">{label}</span>
+					<ChevronDown aria-hidden="true" className={SELECT_TRIGGER_CHEVRON_CLASS} />
+				</button>
 			</PopoverTrigger>
 			{isInvalid && validationMessage ? (
 				<span

@@ -36,7 +36,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@nocoo/basalt/components/sheet";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { toast } from "@nocoo/basalt/components/toast";
 import { useTranslation } from "react-i18next";
@@ -75,9 +75,9 @@ export default function AnimationPage() {
 							</p>
 						</LayerCard>
 						<LayerCard className="space-y-basalt-card-sm">
-							<SkeletonLine minWidth={88} maxWidth={88} />
-							<SkeletonLine minWidth={64} maxWidth={64} />
-							<SkeletonLine minWidth={72} maxWidth={72} />
+							<Skeleton width="88%" />
+							<Skeleton width="64%" />
+							<Skeleton width="72%" />
 							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.animation.shimmerLabel")}
 							</p>

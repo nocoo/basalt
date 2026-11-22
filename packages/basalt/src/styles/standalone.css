@@ -2409,6 +2409,9 @@
   .touch-none {
     touch-action: none;
   }
+  .resize-none {
+    resize: none;
+  }
   .scroll-p-basalt-space-sm {
     scroll-padding: var(--basalt-space-sm);
   }
@@ -3289,6 +3292,10 @@
   .leading-\[var\(--basalt-line-relaxed\)\] {
     --tw-leading: var(--basalt-line-relaxed);
     line-height: var(--basalt-line-relaxed);
+  }
+  .leading-\[var\(--basalt-line-snug\)\] {
+    --tw-leading: var(--basalt-line-snug);
+    line-height: var(--basalt-line-snug);
   }
   .leading-basalt-relaxed {
     --tw-leading: var(--basalt-leading-relaxed);

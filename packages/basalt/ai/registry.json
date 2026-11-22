@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.5.2",
 	"totalModules": 104,
-	"totalSymbols": 698,
-	"totalValues": 382,
-	"totalTypes": 316,
+	"totalSymbols": 703,
+	"totalValues": 384,
+	"totalTypes": 319,
 	"totalCssExports": 4,
 	"totalCatalogEntries": 77,
 	"modules": [
@@ -14,7 +14,7 @@
 			"importPath": "@nocoo/basalt",
 			"subpath": ".",
 			"sourceFile": "packages/basalt/src/index.ts",
-			"sourceHash": "46665ba33feab4d7",
+			"sourceHash": "9ebaa6f3d158a069",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -769,6 +769,14 @@
 					"originModule": "@nocoo/basalt/components/sidebar"
 				},
 				{
+					"name": "Skeleton",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/skeleton",
+					"packageDoc": "ai/registry.json#skeleton",
+					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
 					"name": "StatStrip",
 					"isValue": true,
 					"isType": false,
@@ -831,6 +839,14 @@
 					"ownerDoc": "src/pages/ui/text",
 					"packageDoc": "ai/registry.json#text",
 					"originModule": "@nocoo/basalt/components/text"
+				},
+				{
+					"name": "Textarea",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/textarea",
+					"packageDoc": "ai/registry.json#textarea",
+					"originModule": "@nocoo/basalt/components/textarea"
 				},
 				{
 					"name": "ThemeToggle",
@@ -4747,7 +4763,7 @@
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"subpath": "./components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "b0f5d6b6107a97cb",
+			"sourceHash": "8ce0e8ab9ae2bd46",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -6945,7 +6961,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "e9223a60298e6386",
+			"sourceHash": "ee8b301d3034848f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -7429,7 +7445,7 @@
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"subpath": "./components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "52846b25fc478c2f",
+			"sourceHash": "485e730fc269e479",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11985,7 +12001,7 @@
 			"importPath": "@nocoo/basalt/components/icon-picker",
 			"subpath": "./components/icon-picker",
 			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
-			"sourceHash": "61381b591de119a5",
+			"sourceHash": "1a2ab4bb85e3a765",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -12660,112 +12676,6 @@
 			]
 		},
 		{
-			"displayName": "InputArea",
-			"exportName": "InputArea",
-			"importPath": "@nocoo/basalt/components/input-area",
-			"subpath": "./components/input-area",
-			"sourceFile": "packages/basalt/src/components/input-area.tsx",
-			"sourceHash": "4ffae2d6a39b1b4f",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/input-area",
-			"packageDoc": "ai/registry.json#input-area",
-			"summary": "InputArea component documentation and catalog playground",
-			"peers": ["react"],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "InputAreaSize",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/input-area",
-					"packageDoc": "ai/registry.json#input-area",
-					"originModule": "@nocoo/basalt/components/input-area"
-				},
-				{
-					"name": "InputAreaProps",
-					"isValue": false,
-					"isType": true,
-					"ownerDoc": "src/pages/ui/input-area",
-					"packageDoc": "ai/registry.json#input-area",
-					"originModule": "@nocoo/basalt/components/input-area"
-				},
-				{
-					"name": "InputArea",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/input-area",
-					"packageDoc": "ai/registry.json#input-area",
-					"originModule": "@nocoo/basalt/components/input-area"
-				}
-			],
-			"catalogEntries": [
-				{
-					"slug": "input-area",
-					"name": "InputArea",
-					"exportName": "InputArea",
-					"rootAvailable": false,
-					"maturity": "ready",
-					"packageDoc": "ai/registry.json#input-area",
-					"api": [
-						{
-							"name": "InputArea",
-							"props": [
-								{
-									"name": "rows",
-									"type": "number",
-									"required": false,
-									"description": "The visible text row count."
-								},
-								{
-									"name": "size",
-									"type": "InputAreaSize",
-									"required": false,
-									"default": "default",
-									"description": "The visual size of the text area."
-								},
-								{
-									"name": "passwordManagerIgnore",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Ignore password managers on this field."
-								}
-							]
-						}
-					]
-				}
-			],
-			"api": [
-				{
-					"name": "InputArea",
-					"props": [
-						{
-							"name": "rows",
-							"type": "number",
-							"required": false,
-							"description": "The visible text row count."
-						},
-						{
-							"name": "size",
-							"type": "InputAreaSize",
-							"required": false,
-							"default": "default",
-							"description": "The visual size of the text area."
-						},
-						{
-							"name": "passwordManagerIgnore",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Ignore password managers on this field."
-						}
-					]
-				}
-			]
-		},
-		{
 			"displayName": "InputGroup",
 			"exportName": "InputGroup",
 			"importPath": "@nocoo/basalt/components/input-group",
@@ -13091,7 +13001,7 @@
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"subpath": "./components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "a15d4171b25f458a",
+			"sourceHash": "5eeb93adf449b4a8",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13127,6 +13037,22 @@
 				},
 				{
 					"name": "LayerCardHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/layer-card",
+					"packageDoc": "ai/registry.json#layer-card",
+					"originModule": "@nocoo/basalt/components/layer-card"
+				},
+				{
+					"name": "LayerCardTitleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/layer-card",
+					"packageDoc": "ai/registry.json#layer-card",
+					"originModule": "@nocoo/basalt/components/layer-card"
+				},
+				{
+					"name": "LayerCardDescriptionProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/layer-card",
@@ -13208,22 +13134,6 @@
 							]
 						},
 						{
-							"name": "LayerCard.Primary",
-							"props": [
-								{
-									"name": "outlined",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Draw a hairline ring on a nested well."
-								}
-							]
-						},
-						{
-							"name": "LayerCard.Secondary",
-							"props": []
-						},
-						{
 							"name": "LayerCard.Header",
 							"props": [
 								{
@@ -13241,6 +13151,28 @@
 									"description": "Separate the header from its body with a divider."
 								}
 							]
+						},
+						{
+							"name": "LayerCard.Title",
+							"props": [
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Merge heading typography onto a child element."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional classes for the card title."
+								}
+							]
+						},
+						{
+							"name": "LayerCard.Description",
+							"props": []
 						},
 						{
 							"name": "LayerCard.Body",
@@ -13347,22 +13279,6 @@
 					]
 				},
 				{
-					"name": "LayerCard.Primary",
-					"props": [
-						{
-							"name": "outlined",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Draw a hairline ring on a nested well."
-						}
-					]
-				},
-				{
-					"name": "LayerCard.Secondary",
-					"props": []
-				},
-				{
 					"name": "LayerCard.Header",
 					"props": [
 						{
@@ -13380,6 +13296,28 @@
 							"description": "Separate the header from its body with a divider."
 						}
 					]
+				},
+				{
+					"name": "LayerCard.Title",
+					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge heading typography onto a child element."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional classes for the card title."
+						}
+					]
+				},
+				{
+					"name": "LayerCard.Description",
+					"props": []
 				},
 				{
 					"name": "LayerCard.Body",
@@ -13885,7 +13823,7 @@
 			"importPath": "@nocoo/basalt/components/multi-select",
 			"subpath": "./components/multi-select",
 			"sourceFile": "packages/basalt/src/components/multi-select.tsx",
-			"sourceHash": "5d9dca66b9522a4a",
+			"sourceHash": "d46ee082f48ae047",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15953,7 +15891,7 @@
 			"importPath": "@nocoo/basalt/components/select",
 			"subpath": "./components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "87eafc20ec1af3bb",
+			"sourceHash": "7b8e33edbcb9d449",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17021,7 +16959,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "3e18eaabad0afabc",
+			"sourceHash": "a58dd0c797d49199",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18272,69 +18210,83 @@
 			]
 		},
 		{
-			"displayName": "SkeletonLine",
-			"exportName": "SkeletonLine",
-			"importPath": "@nocoo/basalt/components/skeleton-line",
-			"subpath": "./components/skeleton-line",
-			"sourceFile": "packages/basalt/src/components/skeleton-line.tsx",
-			"sourceHash": "58dcff8d76519884",
-			"rootAvailable": false,
+			"displayName": "Skeleton",
+			"exportName": "Skeleton",
+			"importPath": "@nocoo/basalt/components/skeleton",
+			"subpath": "./components/skeleton",
+			"sourceFile": "packages/basalt/src/components/skeleton.tsx",
+			"sourceHash": "87c53cf1bf7ff74d",
+			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
-			"ownerDoc": "src/pages/ui/skeleton-line",
-			"packageDoc": "ai/registry.json#skeleton-line",
-			"summary": "SkeletonLine component documentation and catalog playground",
+			"ownerDoc": "src/pages/ui/skeleton",
+			"packageDoc": "ai/registry.json#skeleton",
+			"summary": "Skeleton component documentation and catalog playground",
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
 				{
-					"name": "SkeletonLine",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "src/pages/ui/skeleton-line",
-					"packageDoc": "ai/registry.json#skeleton-line",
-					"originModule": "@nocoo/basalt/components/skeleton-line"
-				},
-				{
-					"name": "SkeletonLineProps",
+					"name": "SkeletonVariant",
 					"isValue": false,
 					"isType": true,
-					"ownerDoc": "src/pages/ui/skeleton-line",
-					"packageDoc": "ai/registry.json#skeleton-line",
-					"originModule": "@nocoo/basalt/components/skeleton-line"
+					"ownerDoc": "src/pages/ui/skeleton",
+					"packageDoc": "ai/registry.json#skeleton",
+					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
+					"name": "SkeletonProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/skeleton",
+					"packageDoc": "ai/registry.json#skeleton",
+					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
+					"name": "Skeleton",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/skeleton",
+					"packageDoc": "ai/registry.json#skeleton",
+					"originModule": "@nocoo/basalt/components/skeleton"
 				}
 			],
 			"catalogEntries": [
 				{
-					"slug": "skeleton-line",
-					"name": "SkeletonLine",
-					"exportName": "SkeletonLine",
-					"rootAvailable": false,
+					"slug": "skeleton",
+					"name": "Skeleton",
+					"exportName": "Skeleton",
+					"rootAvailable": true,
 					"maturity": "ready",
-					"packageDoc": "ai/registry.json#skeleton-line",
+					"packageDoc": "ai/registry.json#skeleton",
 					"api": [
 						{
-							"name": "SkeletonLine",
+							"name": "Skeleton",
 							"props": [
 								{
-									"name": "minWidth",
-									"type": "number",
+									"name": "variant",
+									"type": "SkeletonVariant",
 									"required": false,
-									"default": "30",
-									"description": "Minimum width percentage used for deterministic width computation.\n\nNote: Averaged with maxWidth to compute the midpoint width percentage."
+									"default": "\"line\"",
+									"description": "Geometric preset of the skeleton placeholder."
 								},
 								{
-									"name": "maxWidth",
-									"type": "number",
+									"name": "width",
+									"type": "number | string",
 									"required": false,
-									"default": "100",
-									"description": "Maximum width percentage used for deterministic width computation.\n\nNote: Averaged with minWidth to compute the midpoint width percentage."
+									"description": "Explicit width as pixel number or CSS length string. Defaults to \"100%\" for line/block variants."
 								},
 								{
 									"name": "height",
-									"type": "number",
+									"type": "number | string",
 									"required": false,
-									"description": "Explicit height of the skeleton line in pixels.\n\nNote: When omitted, default height is governed by CSS class tokens (h-basalt-2)."
+									"description": "Explicit height as pixel number or CSS length string."
+								},
+								{
+									"name": "animate",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Display the shimmer sweep animation."
 								}
 							]
 						}
@@ -18343,27 +18295,33 @@
 			],
 			"api": [
 				{
-					"name": "SkeletonLine",
+					"name": "Skeleton",
 					"props": [
 						{
-							"name": "minWidth",
-							"type": "number",
+							"name": "variant",
+							"type": "SkeletonVariant",
 							"required": false,
-							"default": "30",
-							"description": "Minimum width percentage used for deterministic width computation.\n\nNote: Averaged with maxWidth to compute the midpoint width percentage."
+							"default": "\"line\"",
+							"description": "Geometric preset of the skeleton placeholder."
 						},
 						{
-							"name": "maxWidth",
-							"type": "number",
+							"name": "width",
+							"type": "number | string",
 							"required": false,
-							"default": "100",
-							"description": "Maximum width percentage used for deterministic width computation.\n\nNote: Averaged with minWidth to compute the midpoint width percentage."
+							"description": "Explicit width as pixel number or CSS length string. Defaults to \"100%\" for line/block variants."
 						},
 						{
 							"name": "height",
-							"type": "number",
+							"type": "number | string",
 							"required": false,
-							"description": "Explicit height of the skeleton line in pixels.\n\nNote: When omitted, default height is governed by CSS class tokens (h-basalt-2)."
+							"description": "Explicit height as pixel number or CSS length string."
+						},
+						{
+							"name": "animate",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Display the shimmer sweep animation."
 						}
 					]
 				}
@@ -18849,7 +18807,7 @@
 			"importPath": "@nocoo/basalt/components/stat-strip",
 			"subpath": "./components/stat-strip",
 			"sourceFile": "packages/basalt/src/components/stat-strip.tsx",
-			"sourceHash": "cd36dd15a13309c6",
+			"sourceHash": "e6afaaa03586a835",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -20686,6 +20644,138 @@
 							"required": false,
 							"default": "false",
 							"description": "Ellipsize overflow on one line."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "Textarea",
+			"exportName": "Textarea",
+			"importPath": "@nocoo/basalt/components/textarea",
+			"subpath": "./components/textarea",
+			"sourceFile": "packages/basalt/src/components/textarea.tsx",
+			"sourceHash": "d708e36a9c92f459",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/textarea",
+			"packageDoc": "ai/registry.json#textarea",
+			"summary": "Textarea component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "TextareaSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/textarea",
+					"packageDoc": "ai/registry.json#textarea",
+					"originModule": "@nocoo/basalt/components/textarea"
+				},
+				{
+					"name": "TextareaProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/textarea",
+					"packageDoc": "ai/registry.json#textarea",
+					"originModule": "@nocoo/basalt/components/textarea"
+				},
+				{
+					"name": "Textarea",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/textarea",
+					"packageDoc": "ai/registry.json#textarea",
+					"originModule": "@nocoo/basalt/components/textarea"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "textarea",
+					"name": "Textarea",
+					"exportName": "Textarea",
+					"rootAvailable": true,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#textarea",
+					"api": [
+						{
+							"name": "Textarea",
+							"props": [
+								{
+									"name": "rows",
+									"type": "number",
+									"required": false,
+									"description": "The visible text row count."
+								},
+								{
+									"name": "size",
+									"type": "TextareaSize",
+									"required": false,
+									"default": "\"md\"",
+									"description": "The visual size of the text area."
+								},
+								{
+									"name": "autoResize",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Grow vertically with typed content instead of showing an internal scrollbar until clamped by `maxRows`."
+								},
+								{
+									"name": "maxRows",
+									"type": "number",
+									"required": false,
+									"description": "Maximum line count when `autoResize` is enabled before scrolling internally."
+								},
+								{
+									"name": "passwordManagerIgnore",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Ignore password managers on this field."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "Textarea",
+					"props": [
+						{
+							"name": "rows",
+							"type": "number",
+							"required": false,
+							"description": "The visible text row count."
+						},
+						{
+							"name": "size",
+							"type": "TextareaSize",
+							"required": false,
+							"default": "\"md\"",
+							"description": "The visual size of the text area."
+						},
+						{
+							"name": "autoResize",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Grow vertically with typed content instead of showing an internal scrollbar until clamped by `maxRows`."
+						},
+						{
+							"name": "maxRows",
+							"type": "number",
+							"required": false,
+							"description": "Maximum line count when `autoResize` is enabled before scrolling internally."
+						},
+						{
+							"name": "passwordManagerIgnore",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Ignore password managers on this field."
 						}
 					]
 				}
@@ -24781,7 +24871,7 @@
 			"exportName": "LayerCard",
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "a15d4171b25f458a",
+			"sourceHash": "5eeb93adf449b4a8",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#layer-card",
@@ -24819,22 +24909,6 @@
 					]
 				},
 				{
-					"name": "LayerCard.Primary",
-					"props": [
-						{
-							"name": "outlined",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Draw a hairline ring on a nested well."
-						}
-					]
-				},
-				{
-					"name": "LayerCard.Secondary",
-					"props": []
-				},
-				{
 					"name": "LayerCard.Header",
 					"props": [
 						{
@@ -24852,6 +24926,28 @@
 							"description": "Separate the header from its body with a divider."
 						}
 					]
+				},
+				{
+					"name": "LayerCard.Title",
+					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge heading typography onto a child element."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional classes for the card title."
+						}
+					]
+				},
+				{
+					"name": "LayerCard.Description",
+					"props": []
 				},
 				{
 					"name": "LayerCard.Body",
@@ -25064,18 +25160,18 @@
 			]
 		},
 		{
-			"slug": "input-area",
-			"name": "InputArea",
-			"exportName": "InputArea",
-			"importPath": "@nocoo/basalt/components/input-area",
-			"sourceFile": "packages/basalt/src/components/input-area.tsx",
-			"sourceHash": "4ffae2d6a39b1b4f",
-			"rootAvailable": false,
+			"slug": "textarea",
+			"name": "Textarea",
+			"exportName": "Textarea",
+			"importPath": "@nocoo/basalt/components/textarea",
+			"sourceFile": "packages/basalt/src/components/textarea.tsx",
+			"sourceHash": "d708e36a9c92f459",
+			"rootAvailable": true,
 			"maturity": "ready",
-			"packageDoc": "ai/registry.json#input-area",
+			"packageDoc": "ai/registry.json#textarea",
 			"api": [
 				{
-					"name": "InputArea",
+					"name": "Textarea",
 					"props": [
 						{
 							"name": "rows",
@@ -25085,10 +25181,23 @@
 						},
 						{
 							"name": "size",
-							"type": "InputAreaSize",
+							"type": "TextareaSize",
 							"required": false,
-							"default": "default",
+							"default": "\"md\"",
 							"description": "The visual size of the text area."
+						},
+						{
+							"name": "autoResize",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Grow vertically with typed content instead of showing an internal scrollbar until clamped by `maxRows`."
+						},
+						{
+							"name": "maxRows",
+							"type": "number",
+							"required": false,
+							"description": "Maximum line count when `autoResize` is enabled before scrolling internally."
 						},
 						{
 							"name": "passwordManagerIgnore",
@@ -25491,7 +25600,7 @@
 			"exportName": "Select",
 			"importPath": "@nocoo/basalt/components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "87eafc20ec1af3bb",
+			"sourceHash": "7b8e33edbcb9d449",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#select",
@@ -25681,7 +25790,7 @@
 			"exportName": "DatePicker",
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "52846b25fc478c2f",
+			"sourceHash": "485e730fc269e479",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#date-picker",
@@ -26438,38 +26547,44 @@
 			]
 		},
 		{
-			"slug": "skeleton-line",
-			"name": "SkeletonLine",
-			"exportName": "SkeletonLine",
-			"importPath": "@nocoo/basalt/components/skeleton-line",
-			"sourceFile": "packages/basalt/src/components/skeleton-line.tsx",
-			"sourceHash": "58dcff8d76519884",
-			"rootAvailable": false,
+			"slug": "skeleton",
+			"name": "Skeleton",
+			"exportName": "Skeleton",
+			"importPath": "@nocoo/basalt/components/skeleton",
+			"sourceFile": "packages/basalt/src/components/skeleton.tsx",
+			"sourceHash": "87c53cf1bf7ff74d",
+			"rootAvailable": true,
 			"maturity": "ready",
-			"packageDoc": "ai/registry.json#skeleton-line",
+			"packageDoc": "ai/registry.json#skeleton",
 			"api": [
 				{
-					"name": "SkeletonLine",
+					"name": "Skeleton",
 					"props": [
 						{
-							"name": "minWidth",
-							"type": "number",
+							"name": "variant",
+							"type": "SkeletonVariant",
 							"required": false,
-							"default": "30",
-							"description": "Minimum width percentage used for deterministic width computation.\n\nNote: Averaged with maxWidth to compute the midpoint width percentage."
+							"default": "\"line\"",
+							"description": "Geometric preset of the skeleton placeholder."
 						},
 						{
-							"name": "maxWidth",
-							"type": "number",
+							"name": "width",
+							"type": "number | string",
 							"required": false,
-							"default": "100",
-							"description": "Maximum width percentage used for deterministic width computation.\n\nNote: Averaged with minWidth to compute the midpoint width percentage."
+							"description": "Explicit width as pixel number or CSS length string. Defaults to \"100%\" for line/block variants."
 						},
 						{
 							"name": "height",
-							"type": "number",
+							"type": "number | string",
 							"required": false,
-							"description": "Explicit height of the skeleton line in pixels.\n\nNote: When omitted, default height is governed by CSS class tokens (h-basalt-2)."
+							"description": "Explicit height as pixel number or CSS length string."
+						},
+						{
+							"name": "animate",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Display the shimmer sweep animation."
 						}
 					]
 				}
@@ -29735,7 +29850,7 @@
 			"exportName": "CommandPalette",
 			"importPath": "@nocoo/basalt/components/command-palette",
 			"sourceFile": "packages/basalt/src/components/command-palette.tsx",
-			"sourceHash": "b0f5d6b6107a97cb",
+			"sourceHash": "8ce0e8ab9ae2bd46",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#command-palette",
@@ -30197,7 +30312,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "e9223a60298e6386",
+			"sourceHash": "ee8b301d3034848f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -30784,7 +30899,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "3e18eaabad0afabc",
+			"sourceHash": "a58dd0c797d49199",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -31273,7 +31388,7 @@
 			"exportName": "StatStrip",
 			"importPath": "@nocoo/basalt/components/stat-strip",
 			"sourceFile": "packages/basalt/src/components/stat-strip.tsx",
-			"sourceHash": "cd36dd15a13309c6",
+			"sourceHash": "e6afaaa03586a835",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stat-strip",
@@ -31605,7 +31720,7 @@
 			"exportName": "MultiSelect",
 			"importPath": "@nocoo/basalt/components/multi-select",
 			"sourceFile": "packages/basalt/src/components/multi-select.tsx",
-			"sourceHash": "5d9dca66b9522a4a",
+			"sourceHash": "d46ee082f48ae047",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#multi-select",
@@ -32446,7 +32561,7 @@
 			"exportName": "IconPicker",
 			"importPath": "@nocoo/basalt/components/icon-picker",
 			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
-			"sourceHash": "61381b591de119a5",
+			"sourceHash": "1a2ab4bb85e3a765",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#icon-picker",

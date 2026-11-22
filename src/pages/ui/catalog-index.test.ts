@@ -186,17 +186,17 @@ describe("catalog index model", () => {
 
 	it("filters text tokens and enum dimensions with AND semantics", () => {
 		const inputResults = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { q: "input" });
-		expect(inputResults.flatMap((group) => group.items)).toHaveLength(4);
+		expect(inputResults.flatMap((group) => group.items)).toHaveLength(3);
 
 		const catalogInputResults = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, {
 			q: "input",
 			release: "catalog",
 			status: "ready",
 		});
-		expect(catalogInputResults.flatMap((group) => group.items)).toHaveLength(3);
+		expect(catalogInputResults.flatMap((group) => group.items)).toHaveLength(2);
 
 		expect(
-			filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { q: "input area" })[0]?.items,
+			filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { q: "input group" })[0]?.items,
 		).toHaveLength(1);
 	});
 
@@ -221,10 +221,10 @@ describe("catalog index model", () => {
 			true,
 		);
 		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "stable")).toHaveLength(
-			32,
+			34,
 		);
 		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "catalog")).toHaveLength(
-			45,
+			43,
 		);
 	});
 

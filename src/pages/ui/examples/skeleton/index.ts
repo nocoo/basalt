@@ -1,7 +1,7 @@
 import { loadModuleScenarios } from "../../catalog-scenario";
 
 export const SKELETON_COMPOSITION_EXAMPLES = loadModuleScenarios({
-	slug: "skeleton-line",
+	slug: "skeleton",
 	metas: [
 		{ key: "dashboard", title: "Analytics Dashboard" },
 		{ key: "resource-list", title: "Resource List & Leaderboard" },

@@ -24,13 +24,13 @@ const FEEDBACK_SCENARIOS = {
 	],
 	empty: ["empty-basic", "empty-with-icon", "empty-action-states"],
 	loader: ["loader-options", "loader-default-size", "loader-custom-size"],
-	"skeleton-line": [
-		"skeleton-line-dashboard",
-		"skeleton-line-resource-list",
-		"skeleton-line-resource-detail",
-		"skeleton-line-default",
-		"skeleton-line-width",
-		"skeleton-line-height",
+	skeleton: [
+		"skeleton-dashboard",
+		"skeleton-resource-list",
+		"skeleton-resource-detail",
+		"skeleton-default",
+		"skeleton-variants",
+		"skeleton-height",
 	],
 	meter: [
 		"meter-basic-meter",
@@ -76,8 +76,8 @@ const FEEDBACK_DESCRIPTIONS = {
 		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
 	loader:
 		"Eight-cell perimeter loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
-	"skeleton-line":
-		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
+	skeleton:
+		"Placeholder shimmer shapes across line, block, and circle variants while content loads. Forwards div attributes and ref with aria-hidden='true' by default.",
 	meter:
 		"Matte capacity and utilization meter with continuous capsule and twenty-cell precision segmented variants, semantic tones, and tabular readings. Clamps to 0..100%; non-finite readings display as Unavailable.",
 	toast:
@@ -156,7 +156,7 @@ describe("feedback catalog content family", () => {
 			const docs = feedback[slug]?.docs;
 			expect(docs?.description, slug).toBe(description);
 			expect(docs?.usage.length, slug).toBeGreaterThan(0);
-			expect(docs?.variants, slug).toEqual([]);
+			expect(docs?.variants, slug).toEqual(slug === "skeleton" ? ["line", "block", "circle"] : []);
 			expect(docs?.api[0]?.props, slug).toBeDefined();
 			expect(docs?.provenance, slug).toEqual({
 				owner: "nocoo",

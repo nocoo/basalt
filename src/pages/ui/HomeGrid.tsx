@@ -3,7 +3,6 @@ import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Input } from "@nocoo/basalt/components/input";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Label } from "@nocoo/basalt/components/label";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
@@ -13,6 +12,7 @@ import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
+import { Textarea } from "@nocoo/basalt/components/textarea";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import {
 	Tooltip,
@@ -99,8 +99,8 @@ function HomeCheckbox() {
 function HomeLayerCard() {
 	return (
 		<LayerCard className="w-[12.5rem]">
-			<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
-			<LayerCard.Primary>Review care plan</LayerCard.Primary>
+			<LayerCard.Header>Next Steps</LayerCard.Header>
+			<LayerCard.Well>Review care plan</LayerCard.Well>
 		</LayerCard>
 	);
 }
@@ -178,8 +178,8 @@ function HomeSensitiveInput() {
 	);
 }
 
-function HomeInputArea() {
-	return <InputArea aria-label="Health notes" placeholder="Add a note for your care team" />;
+function HomeTextarea() {
+	return <Textarea aria-label="Health notes" placeholder="Add a note for your care team" />;
 }
 
 function HomeSeparator() {
@@ -214,7 +214,7 @@ const HOME_DEMOS: Record<string, ComponentType> = {
 	radio: HomeRadio,
 	text: HomeText,
 	"sensitive-input": HomeSensitiveInput,
-	"input-area": HomeInputArea,
+	textarea: HomeTextarea,
 	separator: HomeSeparator,
 	"theme-toggle": HomeThemeToggle,
 };

@@ -934,7 +934,7 @@ export async function assertConsumerGeometry(
 		const basaltFontCard = getEl("basalt-font-card");
 		const basaltInternalNativeButton = getEl("basalt-internal-native-button");
 		const basaltInput = getEl("basalt-input");
-		const basaltInputArea = getEl("basalt-input-area");
+		const basaltTextarea = getEl("basalt-textarea");
 		const basaltBtnDefault = getEl("basalt-btn-default");
 		const basaltBtnOutline = getEl("basalt-btn-outline");
 		const basaltBtnAnchor = getEl("basalt-btn-anchor");
@@ -988,7 +988,7 @@ export async function assertConsumerGeometry(
 		const basaltFontCardStyle = window.getComputedStyle(basaltFontCard);
 		const basaltInternalNativeButtonStyle = window.getComputedStyle(basaltInternalNativeButton);
 		const basaltInputStyle = window.getComputedStyle(basaltInput);
-		const basaltInputAreaStyle = window.getComputedStyle(basaltInputArea);
+		const basaltTextareaStyle = window.getComputedStyle(basaltTextarea);
 		const basaltBtnDefaultStyle = window.getComputedStyle(basaltBtnDefault);
 		const basaltBtnOutlineStyle = window.getComputedStyle(basaltBtnOutline);
 		const basaltBtnAnchorStyle = window.getComputedStyle(basaltBtnAnchor);
@@ -1051,9 +1051,9 @@ export async function assertConsumerGeometry(
 				inputWidth: basaltInput.getBoundingClientRect().width,
 				inputHeight: basaltInput.getBoundingClientRect().height,
 				inputBoxSizing: basaltInputStyle.boxSizing,
-				inputAreaWidth: basaltInputArea.getBoundingClientRect().width,
-				inputAreaHeight: basaltInputArea.getBoundingClientRect().height,
-				inputAreaBoxSizing: basaltInputAreaStyle.boxSizing,
+				textareaWidth: basaltTextarea.getBoundingClientRect().width,
+				textareaHeight: basaltTextarea.getBoundingClientRect().height,
+				textareaBoxSizing: basaltTextareaStyle.boxSizing,
 				btnDefaultHeight: basaltBtnDefault.getBoundingClientRect().height,
 				btnDefaultBoxSizing: basaltBtnDefaultStyle.boxSizing,
 				btnDefaultBorderStyle: basaltBtnDefaultStyle.borderTopStyle,
@@ -1192,15 +1192,15 @@ export async function assertConsumerGeometry(
 		throw new Error(`expected Input border-box, got ${data.basalt.inputBoxSizing}`);
 	}
 
-	// 3. Basalt InputArea: 320px wide, height >= 80px, border-box
-	if (Math.round(data.basalt.inputAreaWidth) !== 320) {
-		throw new Error(`expected InputArea width 320px, got ${data.basalt.inputAreaWidth}`);
+	// 3. Basalt Textarea: 320px wide, height >= 80px, border-box
+	if (Math.round(data.basalt.textareaWidth) !== 320) {
+		throw new Error(`expected Textarea width 320px, got ${data.basalt.textareaWidth}`);
 	}
-	if (data.basalt.inputAreaHeight < 80) {
-		throw new Error(`expected InputArea height >= 80px, got ${data.basalt.inputAreaHeight}`);
+	if (data.basalt.textareaHeight < 80) {
+		throw new Error(`expected Textarea height >= 80px, got ${data.basalt.textareaHeight}`);
 	}
-	if (data.basalt.inputAreaBoxSizing !== "border-box") {
-		throw new Error(`expected InputArea border-box, got ${data.basalt.inputAreaBoxSizing}`);
+	if (data.basalt.textareaBoxSizing !== "border-box") {
+		throw new Error(`expected Textarea border-box, got ${data.basalt.textareaBoxSizing}`);
 	}
 
 	// 4. Buttons (Default, Outline, asChild Anchor): height 34px, border-box, no UA outset border, no native anchor underline

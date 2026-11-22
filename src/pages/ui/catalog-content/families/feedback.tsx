@@ -7,7 +7,7 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { Meter } from "@nocoo/basalt/components/meter";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { Text } from "@nocoo/basalt/components/text";
 import { toast } from "@nocoo/basalt/components/toast";
 import {
@@ -32,7 +32,7 @@ import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
 import { EMPTY_ACTION_EXAMPLES } from "../../examples/empty";
 import LoaderOptions from "../../examples/loader/options";
 import loaderOptionsSource from "../../examples/loader/options?raw";
-import { SKELETON_COMPOSITION_EXAMPLES } from "../../examples/skeleton-line";
+import { SKELETON_COMPOSITION_EXAMPLES } from "../../examples/skeleton";
 import { API as avatarApi } from "../../generated/catalog-api/avatar";
 import { API as badgeApi } from "../../generated/catalog-api/badge";
 import { API as bannerApi } from "../../generated/catalog-api/banner";
@@ -42,7 +42,7 @@ import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
 import { API as emptyApi } from "../../generated/catalog-api/empty";
 import { API as loaderApi } from "../../generated/catalog-api/loader";
 import { API as meterApi } from "../../generated/catalog-api/meter";
-import { API as skeletonLineApi } from "../../generated/catalog-api/skeleton-line";
+import { API as skeletonApi } from "../../generated/catalog-api/skeleton";
 import { API as toastApi } from "../../generated/catalog-api/toast";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
@@ -732,80 +732,85 @@ export default function Example() {
 			},
 		],
 	},
-	"skeleton-line": {
+	skeleton: {
 		docs: {
 			...extraDocs(
-				"SkeletonLine",
-				"skeleton-line",
-				"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
-				"<SkeletonLine minWidth={40} maxWidth={55} />",
+				"Skeleton",
+				"skeleton",
+				"Placeholder shimmer shapes across line, block, and circle variants while content loads. Forwards div attributes and ref with aria-hidden='true' by default.",
+				'<Skeleton width="60%" />',
 				undefined,
-				`import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+				`import { Skeleton } from "@nocoo/basalt/components/skeleton";
 
 export default function Example() {
-	return <SkeletonLine minWidth={40} maxWidth={55} />;
+	return <Skeleton width="60%" />;
 }`,
 			),
-			api: skeletonLineApi,
+			variants: ["line", "block", "circle"],
+			api: skeletonApi,
 		},
 		examples: [
 			...SKELETON_COMPOSITION_EXAMPLES,
 			{
-				id: catalogScenarioId("skeleton-line", "default"),
+				id: catalogScenarioId("skeleton", "default"),
 				title: "Default",
 				code: scenarioModule(
 					`<div className="flex w-64 flex-col gap-basalt-space-lg">
-	<SkeletonLine minWidth={40} maxWidth={55} />
-	<SkeletonLine minWidth={75} maxWidth={90} />
-	<SkeletonLine minWidth={90} maxWidth={100} />
+	<Skeleton width="45%" />
+	<Skeleton width="80%" />
+	<Skeleton width="95%" />
 </div>`,
-					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
+					['import { Skeleton } from "@nocoo/basalt/components/skeleton";'],
 				),
 				render: () => (
 					<div className="flex w-64 flex-col gap-basalt-space-lg">
-						<SkeletonLine minWidth={40} maxWidth={55} />
-						<SkeletonLine minWidth={75} maxWidth={90} />
-						<SkeletonLine minWidth={90} maxWidth={100} />
+						<Skeleton width="45%" />
+						<Skeleton width="80%" />
+						<Skeleton width="95%" />
 					</div>
 				),
 			},
 			{
-				id: catalogScenarioId("skeleton-line", "width"),
-				title: "Width",
+				id: catalogScenarioId("skeleton", "variants"),
+				title: "Variants",
 				code: scenarioModule(
-					`<div className="flex w-64 flex-col gap-basalt-space-lg">
-	<SkeletonLine minWidth={80} maxWidth={100} />
-	<SkeletonLine minWidth={60} maxWidth={80} />
-	<SkeletonLine minWidth={40} maxWidth={60} />
+					`<div className="flex w-64 items-center gap-basalt-space-lg">
+	<Skeleton variant="circle" width={40} height={40} />
+	<div className="min-w-0 flex-1 space-y-basalt-space-lg">
+		<Skeleton variant="line" width="60%" />
+		<Skeleton variant="block" height={48} />
+	</div>
 </div>`,
-					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
+					['import { Skeleton } from "@nocoo/basalt/components/skeleton";'],
 				),
 				render: () => (
-					<div className="flex w-64 flex-col gap-basalt-space-lg">
-						<SkeletonLine minWidth={80} maxWidth={100} />
-						<SkeletonLine minWidth={60} maxWidth={80} />
-						<SkeletonLine minWidth={40} maxWidth={60} />
+					<div className="flex w-64 items-center gap-basalt-space-lg">
+						<Skeleton variant="circle" width={40} height={40} />
+						<div className="min-w-0 flex-1 space-y-basalt-space-lg">
+							<Skeleton variant="line" width="60%" />
+							<Skeleton variant="block" height={48} />
+						</div>
 					</div>
 				),
 			},
 			{
-				id: catalogScenarioId("skeleton-line", "height"),
+				id: catalogScenarioId("skeleton", "height"),
 				title: "Height",
 				code: scenarioModule(
 					`<div className="flex w-64 flex-col gap-basalt-space-lg">
-	<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
-	<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
-	<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
-	<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
+	<Skeleton height={8} width="95%" />
+	<Skeleton height={16} width="95%" />
+	<Skeleton height={24} width="95%" />
+	<Skeleton height={32} width="95%" />
 </div>`,
-					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
+					['import { Skeleton } from "@nocoo/basalt/components/skeleton";'],
 				),
 				render: () => (
 					<div className="flex w-64 flex-col gap-basalt-space-lg">
-						<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
-						<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
-						<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
-						<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
+						<Skeleton height={8} width="95%" />
+						<Skeleton height={16} width="95%" />
+						<Skeleton height={24} width="95%" />
+						<Skeleton height={32} width="95%" />
 					</div>
 				),
 			},
