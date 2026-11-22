@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
-import { FOCUS_RING } from "./overlay";
+import { FOCUS_RING } from "../utils/overlay";
 
 const toggleVariants = cva(
 	`${BASALT_UI_CLASS} basalt-choice relative inline-flex cursor-pointer items-center justify-center rounded-basalt-md font-medium transition-colors basalt-motion before:absolute before:-inset-basalt-border-width hover:bg-basalt-hover ${FOCUS_RING}`,

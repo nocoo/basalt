@@ -2,7 +2,6 @@ import { readFileSync } from "node:fs";
 import postcss from "postcss";
 import { describe, expect, it } from "vitest";
 import {
-	FOCUS_BORDER,
 	FOCUS_INSET,
 	FOCUS_RING,
 	floatingSurfaceClass,
@@ -69,7 +68,6 @@ describe("overlay", () => {
 	});
 
 	it("shares one native theme outline without replacing error borders", () => {
-		expect(FOCUS_BORDER).toBe(FOCUS_RING);
 		expect(FOCUS_RING).toBe("basalt-focus");
 		expect(focusDeclarations(":is(.basalt-focus, .basalt-action):focus-visible")).toEqual({
 			outline: "var(--basalt-focus-width) solid hsl(var(--basalt-ring))",

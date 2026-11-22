@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { OVERLAY_LAYER, OVERLAY_MOTION } from "../utils/overlay";
 import { Button } from "./button";
-import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 export type FabPlacement = "absolute" | "fixed";
 

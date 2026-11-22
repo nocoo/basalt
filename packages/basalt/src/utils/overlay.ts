@@ -1,5 +1,5 @@
 import { cn } from "../utils/cn";
-import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { BASALT_UI_CLASS } from "./control-surface";
 
 /** Gap between a field trigger and its list. Matches Kumo Select/Combobox. */
 export const OVERLAY_GAP = 4;
@@ -11,7 +11,6 @@ export const OVERLAY_LAYER = "z-50";
 export const OVERLAY_MOTION = "motion-reduce:animate-none motion-reduce:transition-none";
 
 export const FOCUS_RING = "basalt-focus";
-export const FOCUS_BORDER = FOCUS_RING;
 export const FOCUS_INSET = "basalt-focus basalt-focus-inset";
 
 export function floatingSurfaceClass(className?: string) {

@@ -51,7 +51,7 @@ describe("dimension token contract", () => {
 		expect(tailwind).toContain("--leading-basalt-row: var(--basalt-line-row)");
 		for (const file of [
 			"utils/navigation.ts",
-			"components/overlay.ts",
+			"utils/overlay.ts",
 			"components/command-palette.tsx",
 		]) {
 			expect(readFileSync(`packages/basalt/src/${file}`, "utf8"), file).toContain(

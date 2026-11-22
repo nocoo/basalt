@@ -337,4 +337,62 @@ describe("useConfirm", () => {
 			expect(opener).toHaveFocus();
 		});
 	});
+
+	it("supports uncontrolled open state with trigger and async useConfirm lifecycle", async () => {
+		const confirmedSpy = vi.fn();
+		render(
+			<ConfirmDialog
+				trigger={<button type="button">Launch</button>}
+				title="Uncontrolled"
+				description="Triggered directly"
+				onConfirm={confirmedSpy}
+			/>,
+		);
+		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Launch" }));
+		expect(screen.getByRole("alertdialog", { name: "Uncontrolled" })).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+
+		const apiRef: { current: ReturnType<typeof useConfirm> | null } = { current: null };
+		render(<HookHarness apiRef={apiRef} />);
+
+		let rejectRun!: (reason: Error) => void;
+		let settleRun!: () => void;
+		let firstAttempt = true;
+		let pending!: Promise<boolean>;
+		await act(async () => {
+			pending = requireApi(apiRef).confirm({
+				title: "Apply?",
+				description: "Runs async task",
+				onConfirm: () =>
+					new Promise<void>((resolve, reject) => {
+						if (firstAttempt) {
+							firstAttempt = false;
+							rejectRun = reject;
+						} else {
+							settleRun = resolve;
+						}
+					}),
+			});
+		});
+
+		fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
+		expect(screen.getByRole("button", { name: "Confirm" })).toBeDisabled();
+		expect(screen.getByRole("button", { name: "Confirm" })).toHaveAttribute("aria-busy", "true");
+		expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+		await act(async () => {
+			rejectRun(new Error("boom"));
+		});
+		expect(screen.getByRole("alertdialog", { name: "Apply?" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Confirm" })).toBeEnabled();
+
+		fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
+		expect(screen.getByRole("button", { name: "Confirm" })).toBeDisabled();
+		await act(async () => {
+			settleRun();
+		});
+		await expect(pending).resolves.toBe(true);
+		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+	});
 });

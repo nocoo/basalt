@@ -2,8 +2,8 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { OVERLAY_MOTION } from "../utils/overlay";
 import { useSelectionIndicator } from "../utils/selection-indicator";
-import { OVERLAY_MOTION } from "./overlay";
 
 function measureTabUnderline(item: HTMLElement): {
 	left: number;

@@ -53,9 +53,7 @@ The root barrel is reserved for lightweight, frequently-used leaves, standard in
 ### Wildcard Subpaths & Legacy Internal Helpers
 
 <a id="wildcard-subpaths"></a>
-In `v2.0.3`, wildcard exports (`./components/*` and `./providers/*`) exposed all non-test modules in the package, including internal building blocks:
-
-- **`@nocoo/basalt/components/overlay`**: Internal class generators and styling constants for overlay menus and select (`overlayPanelClass`, `overlayItemClass`, `FOCUS_RING`, `FOCUS_BORDER`, `MENU_GAP`, `OVERLAY_GAP`, `OVERLAY_LAYER`, `OVERLAY_MOTION`).
+In `v2.0.3`, wildcard exports (`./components/*` and `./providers/*`) exposed all non-test modules in the package, including internal building blocks. Overlay helpers moved internally to `utils/overlay.ts` so `@nocoo/basalt/components/overlay` is no longer part of the public export surface.
 
 **Policy:**
 

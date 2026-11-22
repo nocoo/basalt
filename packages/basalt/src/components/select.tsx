@@ -3,8 +3,8 @@ import * as React from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
 import { Check, ChevronDown } from "../utils/internal-icons";
+import { FOCUS_RING, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "../utils/overlay";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
-import { FOCUS_BORDER, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export type SelectProps = Omit<
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>,
@@ -93,7 +93,7 @@ export const SelectTrigger = React.forwardRef<
 			cn(
 				"group/select flex w-full items-center justify-between gap-basalt-control-gap",
 				SELECT_SIZE_CLASS[size],
-				FOCUS_BORDER,
+				FOCUS_RING,
 				"aria-invalid:border-basalt-danger-solid aria-invalid:focus-visible:border-basalt-danger-solid",
 				className,
 			),

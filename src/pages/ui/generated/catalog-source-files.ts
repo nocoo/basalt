@@ -8,13 +8,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 }> = {
 	"button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "c90ec29ff0b7e766",
+		"hash": "17f1a8ca12911e52",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
 	"link-button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "c90ec29ff0b7e766",
+		"hash": "17f1a8ca12911e52",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
@@ -50,7 +50,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tooltip": {
 		"file": "packages/basalt/src/components/tooltip.tsx",
-		"hash": "afb0e323d7a0c9d4",
+		"hash": "ca5a0580c73525a4",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tooltip.js.map (sourcesContent[0])"
 	},
@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "6fe801690960b41c",
+		"hash": "a15d4171b25f458a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -80,13 +80,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"input": {
 		"file": "packages/basalt/src/components/input.tsx",
-		"hash": "adc872a1435f74a6",
+		"hash": "d6b810879a6c3b98",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input.js.map (sourcesContent[0])"
 	},
 	"input-area": {
 		"file": "packages/basalt/src/components/input-area.tsx",
-		"hash": "0dda757c96eec650",
+		"hash": "4ffae2d6a39b1b4f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input-area.js.map (sourcesContent[0])"
 	},
@@ -104,31 +104,31 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"checkbox": {
 		"file": "packages/basalt/src/components/checkbox.tsx",
-		"hash": "f4617a0209293eb4",
+		"hash": "ec39ea1aa2332676",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/checkbox.js.map (sourcesContent[0])"
 	},
 	"radio": {
 		"file": "packages/basalt/src/components/radio.tsx",
-		"hash": "11873fb9c44cfa7b",
+		"hash": "f105669983d85453",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/radio.js.map (sourcesContent[0])"
 	},
 	"switch": {
 		"file": "packages/basalt/src/components/switch.tsx",
-		"hash": "49244c01fda2b33d",
+		"hash": "8d3dc5b6f785e20b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/switch.js.map (sourcesContent[0])"
 	},
 	"select": {
 		"file": "packages/basalt/src/components/select.tsx",
-		"hash": "19f9214f5824cb47",
+		"hash": "87eafc20ec1af3bb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/select.js.map (sourcesContent[0])"
 	},
 	"autocomplete": {
 		"file": "packages/basalt/src/components/autocomplete.tsx",
-		"hash": "c98621464e4aafa2",
+		"hash": "2d75925fa8c1d732",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/autocomplete.js.map (sourcesContent[0])"
 	},
@@ -140,19 +140,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"slider": {
 		"file": "packages/basalt/src/components/slider.tsx",
-		"hash": "20693a521963a38f",
+		"hash": "27fa1e9e99f3830c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/slider.js.map (sourcesContent[0])"
 	},
 	"toggle": {
 		"file": "packages/basalt/src/components/toggle.tsx",
-		"hash": "03206e6bf4b858d7",
+		"hash": "5f3f164235a97a9d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toggle.js.map (sourcesContent[0])"
 	},
 	"toggle-group": {
 		"file": "packages/basalt/src/components/toggle-group.tsx",
-		"hash": "d9418019ac28f035",
+		"hash": "a39b32bf1e8f81a2",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toggle-group.js.map (sourcesContent[0])"
 	},
@@ -230,55 +230,55 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"accordion": {
 		"file": "packages/basalt/src/components/accordion.tsx",
-		"hash": "ed1611c3d45dba9e",
+		"hash": "235f77d5a3953e82",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/accordion.js.map (sourcesContent[0])"
 	},
 	"dialog": {
 		"file": "packages/basalt/src/components/dialog.tsx",
-		"hash": "71386b3a029b3f6d",
+		"hash": "989ee41564b36535",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dialog.js.map (sourcesContent[0])"
 	},
 	"alert-dialog": {
 		"file": "packages/basalt/src/components/alert-dialog.tsx",
-		"hash": "3bfde9d3d331b091",
+		"hash": "783ce2980ccb1b36",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/alert-dialog.js.map (sourcesContent[0])"
 	},
 	"confirm-dialog": {
 		"file": "packages/basalt/src/components/confirm-dialog.tsx",
-		"hash": "cafdd27c6800d3cd",
+		"hash": "a392e43f27b42393",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/confirm-dialog.js.map (sourcesContent[0])"
 	},
 	"popover": {
 		"file": "packages/basalt/src/components/popover.tsx",
-		"hash": "97916267c06662c0",
+		"hash": "09b5809e3227f2d6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/popover.js.map (sourcesContent[0])"
 	},
 	"dropdown-menu": {
 		"file": "packages/basalt/src/components/dropdown-menu.tsx",
-		"hash": "d93c66c419833a66",
+		"hash": "235b809f21c108f6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dropdown-menu.js.map (sourcesContent[0])"
 	},
 	"context-menu": {
 		"file": "packages/basalt/src/components/context-menu.tsx",
-		"hash": "e879e388ca6f66b3",
+		"hash": "9e456bed31ecade4",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/context-menu.js.map (sourcesContent[0])"
 	},
 	"hover-card": {
 		"file": "packages/basalt/src/components/hover-card.tsx",
-		"hash": "cb2d23f084798656",
+		"hash": "f2574a4aa67eff16",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/hover-card.js.map (sourcesContent[0])"
 	},
 	"sheet": {
 		"file": "packages/basalt/src/components/sheet.tsx",
-		"hash": "e2447053f1ac76e5",
+		"hash": "7bfa5b4a67723031",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sheet.js.map (sourcesContent[0])"
 	},
@@ -290,7 +290,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tabs": {
 		"file": "packages/basalt/src/components/tabs.tsx",
-		"hash": "9a09426c9f576a3f",
+		"hash": "60d3604b32214b28",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tabs.js.map (sourcesContent[0])"
 	},
@@ -308,7 +308,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"collapsible": {
 		"file": "packages/basalt/src/components/collapsible.tsx",
-		"hash": "ede74fce06c35a5a",
+		"hash": "9da54f01e73b1ca2",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/collapsible.js.map (sourcesContent[0])"
 	},
@@ -320,7 +320,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"toolbar": {
 		"file": "packages/basalt/src/components/toolbar.tsx",
-		"hash": "4fcdbcc5cee68da3",
+		"hash": "1f3084d21c646d3f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toolbar.js.map (sourcesContent[0])"
 	},
@@ -332,7 +332,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"grid": {
 		"file": "packages/basalt/src/components/grid.tsx",
-		"hash": "e58f6bd6beb5446e",
+		"hash": "642090371e73c37c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/grid.js.map (sourcesContent[0])"
 	},
@@ -344,7 +344,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "f41ac4c2964dbdea",
+		"hash": "3e18eaabad0afabc",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -362,13 +362,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"fab": {
 		"file": "packages/basalt/src/components/fab.tsx",
-		"hash": "2b13e4b242e0b31e",
+		"hash": "e7f09b84c9bd2748",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/fab.js.map (sourcesContent[0])"
 	},
 	"dock": {
 		"file": "packages/basalt/src/components/dock.tsx",
-		"hash": "7d7535f231516419",
+		"hash": "fe750e629c96ee03",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dock.js.map (sourcesContent[0])"
 	},
@@ -416,13 +416,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"editable-nav-item": {
 		"file": "packages/basalt/src/components/editable-nav-item.tsx",
-		"hash": "5f86eb075d6d4a6d",
+		"hash": "ad43afc3126750ff",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/editable-nav-item.js.map (sourcesContent[0])"
 	},
 	"icon-picker": {
 		"file": "packages/basalt/src/components/icon-picker.tsx",
-		"hash": "fe5f7c8f46e81d26",
+		"hash": "61381b591de119a5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/icon-picker.js.map (sourcesContent[0])"
 	},
@@ -434,7 +434,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tag-color-picker": {
 		"file": "packages/basalt/src/components/tag-color-picker.tsx",
-		"hash": "01f5b181849d7e0f",
+		"hash": "96e0f534d42d403b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tag-color-picker.js.map (sourcesContent[0])"
 	},
@@ -446,7 +446,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chart": {
 		"file": "packages/basalt/src/components/chart.tsx",
-		"hash": "bf9046390676754c",
+		"hash": "58481cdcad308ab5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chart.js.map (sourcesContent[0])"
 	},

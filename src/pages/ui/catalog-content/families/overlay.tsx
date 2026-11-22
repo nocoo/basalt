@@ -22,8 +22,18 @@ import {
 } from "@nocoo/basalt/components/collapsible";
 import {
 	ContextMenu,
+	ContextMenuCheckboxItem,
+	ContextMenuContent,
+	ContextMenuGroup,
 	ContextMenuItem,
-	ContextMenuPanel,
+	ContextMenuLabel,
+	ContextMenuRadioGroup,
+	ContextMenuRadioItem,
+	ContextMenuSeparator,
+	ContextMenuShortcut,
+	ContextMenuSub,
+	ContextMenuSubContent,
+	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "@nocoo/basalt/components/context-menu";
 import {
@@ -32,14 +42,25 @@ import {
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
+	DialogHeader,
 	type DialogSize,
 	DialogTitle,
 	DialogTrigger,
 } from "@nocoo/basalt/components/dialog";
 import {
 	DropdownMenu,
+	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@nocoo/basalt/components/hover-card";
@@ -66,8 +87,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nocoo/basalt/components/table";
-import { AlertTriangle, X } from "@nocoo/basalt/icons";
-import type { ReactNode } from "react";
+import { AlertTriangle } from "@nocoo/basalt/icons";
+import { type ReactNode, useState } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
@@ -113,25 +134,6 @@ const EXTRA_PROVENANCE = provenanceFromLegacy({
 const DIALOG_LOREM =
 	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
-const DIALOG_HEADER_HELPERS = `function DialogCloseButton() {
-	return (
-		<DialogClose asChild>
-			<Button variant="outline" size="icon" aria-label="Close">
-				<X />
-			</Button>
-		</DialogClose>
-	);
-}
-
-function DialogHeaderRow({ title }: { title: string }) {
-	return (
-		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>
-			<DialogCloseButton />
-		</div>
-	);
-}`;
-
 const DIALOG_ACTIONS_HELPER = `function DialogActions({
 	cancel = "Cancel",
 	action = "Delete",
@@ -152,27 +154,6 @@ const DIALOG_ACTIONS_HELPER = `function DialogActions({
 		</>
 	);
 }`;
-
-const DIALOG_ALL_HELPERS = `${DIALOG_HEADER_HELPERS}\n\n${DIALOG_ACTIONS_HELPER}`;
-
-function DialogCloseButton() {
-	return (
-		<DialogClose asChild>
-			<Button variant="outline" size="icon" aria-label="Close">
-				<X />
-			</Button>
-		</DialogClose>
-	);
-}
-
-function DialogHeaderRow({ title }: { title: string }) {
-	return (
-		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>
-			<DialogCloseButton />
-		</div>
-	);
-}
 
 function DialogActions({
 	cancel = "Cancel",
@@ -212,10 +193,12 @@ function DialogSizesExample() {
 						</Button>
 					</DialogTrigger>
 					<DialogContent size={size}>
-						<DialogHeaderRow title={`${label} Dialog`} />
-						<DialogDescription>
-							This size="{size}" dialog stays {width} wide on desktop.
-						</DialogDescription>
+						<DialogHeader>
+							<DialogTitle>{`${label} Dialog`}</DialogTitle>
+							<DialogDescription>
+								This size="{size}" dialog stays {width} wide on desktop.
+							</DialogDescription>
+						</DialogHeader>
 						<div className="mt-basalt-layout overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
 							<Table>
 								<TableHeader>
@@ -238,13 +221,96 @@ function DialogSizesExample() {
 						</div>
 						<DialogFooter>
 							<DialogClose asChild>
-								<Button variant="outline">Close</Button>
+								<Button variant="outline">Done</Button>
 							</DialogClose>
 						</DialogFooter>
 					</DialogContent>
 				</Dialog>
 			))}
 		</Preview>
+	);
+}
+
+function DropdownMenuRichExample() {
+	const [pinned, setPinned] = useState(true);
+	const [density, setDensity] = useState("compact");
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuLabel inset>Actions</DropdownMenuLabel>
+				<DropdownMenuGroup>
+					<DropdownMenuItem inset>
+						Copy
+						<DropdownMenuShortcut>⌘C</DropdownMenuShortcut>
+					</DropdownMenuItem>
+					<DropdownMenuCheckboxItem checked={pinned} onCheckedChange={setPinned}>
+						Pin to sidebar
+					</DropdownMenuCheckboxItem>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuLabel inset>Density</DropdownMenuLabel>
+				<DropdownMenuRadioGroup value={density} onValueChange={setDensity}>
+					<DropdownMenuRadioItem value="compact">Compact</DropdownMenuRadioItem>
+					<DropdownMenuRadioItem value="default">Default</DropdownMenuRadioItem>
+				</DropdownMenuRadioGroup>
+				<DropdownMenuSub>
+					<DropdownMenuSubTrigger inset>Share</DropdownMenuSubTrigger>
+					<DropdownMenuSubContent>
+						<DropdownMenuItem>Copy link</DropdownMenuItem>
+						<DropdownMenuItem>Invite collaborator</DropdownMenuItem>
+					</DropdownMenuSubContent>
+				</DropdownMenuSub>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem variant="destructive" inset>
+					Delete
+					<DropdownMenuShortcut>⌫</DropdownMenuShortcut>
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
+}
+
+function ContextMenuRichExample() {
+	const [wordWrap, setWordWrap] = useState(true);
+	const [layout, setLayout] = useState("grid");
+	return (
+		<ContextMenu>
+			<ContextMenuTrigger asChild>
+				<Button variant="outline">Right click</Button>
+			</ContextMenuTrigger>
+			<ContextMenuContent>
+				<ContextMenuLabel inset>Selection</ContextMenuLabel>
+				<ContextMenuGroup>
+					<ContextMenuItem inset>
+						Copy
+						<ContextMenuShortcut>⌘C</ContextMenuShortcut>
+					</ContextMenuItem>
+					<ContextMenuCheckboxItem checked={wordWrap} onCheckedChange={setWordWrap}>
+						Wrap lines
+					</ContextMenuCheckboxItem>
+				</ContextMenuGroup>
+				<ContextMenuSeparator />
+				<ContextMenuRadioGroup value={layout} onValueChange={setLayout}>
+					<ContextMenuRadioItem value="grid">Grid view</ContextMenuRadioItem>
+					<ContextMenuRadioItem value="list">List view</ContextMenuRadioItem>
+				</ContextMenuRadioGroup>
+				<ContextMenuSub>
+					<ContextMenuSubTrigger inset>Export</ContextMenuSubTrigger>
+					<ContextMenuSubContent>
+						<ContextMenuItem>Download JSON</ContextMenuItem>
+						<ContextMenuItem>Download CSV</ContextMenuItem>
+					</ContextMenuSubContent>
+				</ContextMenuSub>
+				<ContextMenuSeparator />
+				<ContextMenuItem variant="destructive" inset>
+					Delete
+					<ContextMenuShortcut>⌫</ContextMenuShortcut>
+				</ContextMenuItem>
+			</ContextMenuContent>
+		</ContextMenu>
 	);
 }
 
@@ -382,21 +448,15 @@ export default function Example() {
 		<Button variant="outline">Click me</Button>
 	</DialogTrigger>
 	<DialogContent>
-		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle className="min-w-0 wrap-anywhere">Modal Title</DialogTitle>
-			<DialogClose asChild>
-				<Button variant="outline" size="icon" aria-label="Close">
-					<X />
-				</Button>
-			</DialogClose>
-		</div>
-		<DialogDescription>${DIALOG_LOREM}</DialogDescription>
+		<DialogHeader>
+			<DialogTitle>Modal Title</DialogTitle>
+			<DialogDescription>${DIALOG_LOREM}</DialogDescription>
+		</DialogHeader>
 	</DialogContent>
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "@nocoo/basalt/icons";',
+						'import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 					],
 				),
 				render: () => (
@@ -405,8 +465,10 @@ export default function Example() {
 							<Button variant="outline">Click me</Button>
 						</DialogTrigger>
 						<DialogContent>
-							<DialogHeaderRow title="Modal Title" />
-							<DialogDescription>{DIALOG_LOREM}</DialogDescription>
+							<DialogHeader>
+								<DialogTitle>Modal Title</DialogTitle>
+								<DialogDescription>{DIALOG_LOREM}</DialogDescription>
+							</DialogHeader>
 						</DialogContent>
 					</Dialog>
 				),
@@ -421,6 +483,7 @@ import {
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
+	DialogHeader,
 	type DialogSize,
 	DialogTitle,
 	DialogTrigger,
@@ -433,26 +496,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nocoo/basalt/components/table";
-import { X } from "@nocoo/basalt/icons";
-
-function DialogCloseButton() {
-	return (
-		<DialogClose asChild>
-			<Button variant="outline" size="icon" aria-label="Close">
-				<X />
-			</Button>
-		</DialogClose>
-	);
-}
-
-function DialogHeaderRow({ title }: { title: string }) {
-	return (
-		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>
-			<DialogCloseButton />
-		</div>
-	);
-}
 
 export default function Example() {
 	const sizes: { size: DialogSize; label: string; width: string }[] = [
@@ -471,10 +514,12 @@ export default function Example() {
 						</Button>
 					</DialogTrigger>
 					<DialogContent size={size}>
-						<DialogHeaderRow title={\`\${label} Dialog\`} />
-						<DialogDescription>
-							This size="{size}" dialog stays {width} wide on desktop.
-						</DialogDescription>
+						<DialogHeader>
+							<DialogTitle>{\`\${label} Dialog\`}</DialogTitle>
+							<DialogDescription>
+								This size="{size}" dialog stays {width} wide on desktop.
+							</DialogDescription>
+						</DialogHeader>
 						<div className="mt-basalt-layout overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
 							<Table>
 								<TableHeader>
@@ -497,7 +542,7 @@ export default function Example() {
 						</div>
 						<DialogFooter>
 							<DialogClose asChild>
-								<Button variant="outline">Close</Button>
+								<Button variant="outline">Done</Button>
 							</DialogClose>
 						</DialogFooter>
 					</DialogContent>
@@ -624,8 +669,10 @@ export default function Example() {
 		<Button variant="outline">Delete</Button>
 	</DialogTrigger>
 	<DialogContent>
-		<DialogHeaderRow title="Delete Resource?" />
-		<DialogDescription>${DIALOG_LOREM}</DialogDescription>
+		<DialogHeader>
+			<DialogTitle>Delete Resource?</DialogTitle>
+			<DialogDescription>${DIALOG_LOREM}</DialogDescription>
+		</DialogHeader>
 		<DialogFooter>
 			<DialogActions />
 		</DialogFooter>
@@ -633,10 +680,9 @@ export default function Example() {
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "@nocoo/basalt/icons";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 					],
-					DIALOG_ALL_HELPERS,
+					DIALOG_ACTIONS_HELPER,
 				),
 				render: () => (
 					<Dialog>
@@ -644,8 +690,10 @@ export default function Example() {
 							<Button variant="outline">Delete</Button>
 						</DialogTrigger>
 						<DialogContent>
-							<DialogHeaderRow title="Delete Resource?" />
-							<DialogDescription>{DIALOG_LOREM}</DialogDescription>
+							<DialogHeader>
+								<DialogTitle>Delete Resource?</DialogTitle>
+								<DialogDescription>{DIALOG_LOREM}</DialogDescription>
+							</DialogHeader>
 							<DialogFooter>
 								<DialogActions />
 							</DialogFooter>
@@ -662,10 +710,12 @@ export default function Example() {
 		<Button variant="outline">Open capped dialog</Button>
 	</DialogTrigger>
 	<DialogContent size="xl" className="max-w-lg">
-		<DialogHeaderRow title="Max width override" />
-		<DialogDescription>
-			This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
-		</DialogDescription>
+		<DialogHeader>
+			<DialogTitle>Max width override</DialogTitle>
+			<DialogDescription>
+				This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
+			</DialogDescription>
+		</DialogHeader>
 		<LayerCard className="mt-basalt-space-lg truncate font-mono text-basalt-base">
 			abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 		</LayerCard>
@@ -674,10 +724,8 @@ export default function Example() {
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { LayerCard } from "@nocoo/basalt/components/layer-card";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "@nocoo/basalt/icons";',
+						'import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 					],
-					DIALOG_HEADER_HELPERS,
 				),
 				render: () => (
 					<Dialog>
@@ -685,10 +733,12 @@ export default function Example() {
 							<Button variant="outline">Open capped dialog</Button>
 						</DialogTrigger>
 						<DialogContent size="xl" className="max-w-lg">
-							<DialogHeaderRow title="Max width override" />
-							<DialogDescription>
-								This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
-							</DialogDescription>
+							<DialogHeader>
+								<DialogTitle>Max width override</DialogTitle>
+								<DialogDescription>
+									This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
+								</DialogDescription>
+							</DialogHeader>
 							<LayerCard className="mt-basalt-space-lg truncate font-mono text-basalt-base">
 								abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 							</LayerCard>
@@ -705,10 +755,12 @@ export default function Example() {
 		<Button variant="outline">Open Form</Button>
 	</DialogTrigger>
 	<DialogContent>
-		<DialogHeaderRow title="Create Resource" />
-		<DialogDescription className="mb-basalt-space-lg">
-			Select a region for your new resource.
-		</DialogDescription>
+		<DialogHeader>
+			<DialogTitle>Create Resource</DialogTitle>
+			<DialogDescription className="mb-basalt-space-lg">
+				Select a region for your new resource.
+			</DialogDescription>
+		</DialogHeader>
 		<Select>
 			<SelectTrigger aria-label="Region">
 				<SelectValue placeholder="Select region..." />
@@ -729,11 +781,9 @@ export default function Example() {
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@nocoo/basalt/components/select";',
-						'import { X } from "@nocoo/basalt/icons";',
 					],
-					DIALOG_HEADER_HELPERS,
 				),
 				render: () => (
 					<Dialog>
@@ -741,10 +791,12 @@ export default function Example() {
 							<Button variant="outline">Open Form</Button>
 						</DialogTrigger>
 						<DialogContent>
-							<DialogHeaderRow title="Create Resource" />
-							<DialogDescription className="mb-basalt-space-lg">
-								Select a region for your new resource.
-							</DialogDescription>
+							<DialogHeader>
+								<DialogTitle>Create Resource</DialogTitle>
+								<DialogDescription className="mb-basalt-space-lg">
+									Select a region for your new resource.
+								</DialogDescription>
+							</DialogHeader>
 							<Select>
 								<SelectTrigger aria-label="Region">
 									<SelectValue placeholder="Select region..." />
@@ -774,10 +826,12 @@ export default function Example() {
 		<Button variant="outline">Open Form</Button>
 	</DialogTrigger>
 	<DialogContent>
-		<DialogHeaderRow title="Create Resource" />
-		<DialogDescription className="mb-basalt-space-lg">
-			Search and select a region for your new resource.
-		</DialogDescription>
+		<DialogHeader>
+			<DialogTitle>Create Resource</DialogTitle>
+			<DialogDescription className="mb-basalt-space-lg">
+				Search and select a region for your new resource.
+			</DialogDescription>
+		</DialogHeader>
 		<Autocomplete
 			items={[
 				{ value: "us-east", label: "US East" },
@@ -797,10 +851,8 @@ export default function Example() {
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Autocomplete } from "@nocoo/basalt/components/autocomplete";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
-						'import { X } from "@nocoo/basalt/icons";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 					],
-					DIALOG_HEADER_HELPERS,
 				),
 				render: () => (
 					<Dialog>
@@ -808,10 +860,12 @@ export default function Example() {
 							<Button variant="outline">Open Form</Button>
 						</DialogTrigger>
 						<DialogContent>
-							<DialogHeaderRow title="Create Resource" />
-							<DialogDescription className="mb-basalt-space-lg">
-								Search and select a region for your new resource.
-							</DialogDescription>
+							<DialogHeader>
+								<DialogTitle>Create Resource</DialogTitle>
+								<DialogDescription className="mb-basalt-space-lg">
+									Search and select a region for your new resource.
+								</DialogDescription>
+							</DialogHeader>
 							<Autocomplete
 								items={[
 									{ value: "us-east", label: "US East" },
@@ -839,10 +893,12 @@ export default function Example() {
 		<Button variant="outline">Open Form</Button>
 	</DialogTrigger>
 	<DialogContent>
-		<DialogHeaderRow title="Resource Actions" />
-		<DialogDescription className="mb-basalt-space-lg">
-			Choose an action for the selected resource.
-		</DialogDescription>
+		<DialogHeader>
+			<DialogTitle>Resource Actions</DialogTitle>
+			<DialogDescription className="mb-basalt-space-lg">
+				Choose an action for the selected resource.
+			</DialogDescription>
+		</DialogHeader>
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button>Actions</Button>
@@ -850,23 +906,21 @@ export default function Example() {
 			<DropdownMenuContent>
 				<DropdownMenuItem>Edit</DropdownMenuItem>
 				<DropdownMenuItem>Duplicate</DropdownMenuItem>
-				<DropdownMenuItem>Delete</DropdownMenuItem>
+				<DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 		<DialogFooter>
 			<DialogClose asChild>
-				<Button variant="outline">Close</Button>
+				<Button variant="outline">Done</Button>
 			</DialogClose>
 		</DialogFooter>
 	</DialogContent>
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@nocoo/basalt/components/dropdown-menu";',
-						'import { X } from "@nocoo/basalt/icons";',
 					],
-					DIALOG_HEADER_HELPERS,
 				),
 				render: () => (
 					<Dialog>
@@ -874,10 +928,12 @@ export default function Example() {
 							<Button variant="outline">Open Form</Button>
 						</DialogTrigger>
 						<DialogContent>
-							<DialogHeaderRow title="Resource Actions" />
-							<DialogDescription className="mb-basalt-space-lg">
-								Choose an action for the selected resource.
-							</DialogDescription>
+							<DialogHeader>
+								<DialogTitle>Resource Actions</DialogTitle>
+								<DialogDescription className="mb-basalt-space-lg">
+									Choose an action for the selected resource.
+								</DialogDescription>
+							</DialogHeader>
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button>Actions</Button>
@@ -885,12 +941,12 @@ export default function Example() {
 								<DropdownMenuContent>
 									<DropdownMenuItem>Edit</DropdownMenuItem>
 									<DropdownMenuItem>Duplicate</DropdownMenuItem>
-									<DropdownMenuItem>Delete</DropdownMenuItem>
+									<DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 							<DialogFooter>
 								<DialogClose asChild>
-									<Button variant="outline">Close</Button>
+									<Button variant="outline">Done</Button>
 								</DialogClose>
 							</DialogFooter>
 						</DialogContent>
@@ -1099,12 +1155,15 @@ export default function Example() {
 	},
 	"dropdown-menu": {
 		docs: {
-			description: "Action menu.",
+			description:
+				"Action menu with labels, separators, checkable items, radio groups, shortcuts, nested submenus, and destructive items.",
 			usage: `import { Button } from "@nocoo/basalt/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
 
@@ -1115,7 +1174,12 @@ export default function Example() {
 				<Button variant="outline">Open</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				<DropdownMenuItem>Copy</DropdownMenuItem>
+				<DropdownMenuItem>
+					Copy
+					<DropdownMenuShortcut>⌘C</DropdownMenuShortcut>
+				</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
@@ -1128,44 +1192,81 @@ export default function Example() {
 			{
 				id: catalogScenarioId("dropdown-menu", "basic-dropdown"),
 				title: "Basic Dropdown",
-				code: scenarioModule(
-					`<DropdownMenu>
-	<DropdownMenuTrigger asChild>
-		<Button variant="outline">Open</Button>
-	</DropdownMenuTrigger>
-	<DropdownMenuContent>
-		<DropdownMenuItem>Copy</DropdownMenuItem>
-		<DropdownMenuItem>Delete</DropdownMenuItem>
-	</DropdownMenuContent>
-</DropdownMenu>`,
-					[
-						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@nocoo/basalt/components/dropdown-menu";',
-					],
-				),
-				render: () => (
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline">Open</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent>
-							<DropdownMenuItem>Copy</DropdownMenuItem>
-							<DropdownMenuItem>Delete</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				),
+				code: `import { useState } from "react";
+import { Button } from "@nocoo/basalt/components/button";
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
+} from "@nocoo/basalt/components/dropdown-menu";
+
+export default function Example() {
+	const [pinned, setPinned] = useState(true);
+	const [density, setDensity] = useState("compact");
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuLabel inset>Actions</DropdownMenuLabel>
+				<DropdownMenuGroup>
+					<DropdownMenuItem inset>
+						Copy
+						<DropdownMenuShortcut>⌘C</DropdownMenuShortcut>
+					</DropdownMenuItem>
+					<DropdownMenuCheckboxItem checked={pinned} onCheckedChange={setPinned}>
+						Pin to sidebar
+					</DropdownMenuCheckboxItem>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuLabel inset>Density</DropdownMenuLabel>
+				<DropdownMenuRadioGroup value={density} onValueChange={setDensity}>
+					<DropdownMenuRadioItem value="compact">Compact</DropdownMenuRadioItem>
+					<DropdownMenuRadioItem value="default">Default</DropdownMenuRadioItem>
+				</DropdownMenuRadioGroup>
+				<DropdownMenuSub>
+					<DropdownMenuSubTrigger inset>Share</DropdownMenuSubTrigger>
+					<DropdownMenuSubContent>
+						<DropdownMenuItem>Copy link</DropdownMenuItem>
+						<DropdownMenuItem>Invite collaborator</DropdownMenuItem>
+					</DropdownMenuSubContent>
+				</DropdownMenuSub>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem variant="destructive" inset>
+					Delete
+					<DropdownMenuShortcut>⌫</DropdownMenuShortcut>
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
+}`,
+				render: () => <DropdownMenuRichExample />,
 			},
 		],
 	},
 	"context-menu": {
 		docs: {
 			description:
-				"Right-click context menu. Trigger opens a floating menu on secondary pointer click or long press, supporting item selection callbacks, full keyboard navigation, and custom panel styling.",
+				"Right-click context menu. Trigger opens a floating menu on secondary pointer click or long press, supporting grouped actions, checkables, submenus, shortcuts, and destructive items.",
 			usage: `import { Button } from "@nocoo/basalt/components/button";
 import {
 	ContextMenu,
+	ContextMenuContent,
 	ContextMenuItem,
-	ContextMenuPanel,
+	ContextMenuSeparator,
+	ContextMenuShortcut,
 	ContextMenuTrigger,
 } from "@nocoo/basalt/components/context-menu";
 
@@ -1175,10 +1276,16 @@ export default function Example() {
 			<ContextMenuTrigger asChild>
 				<Button variant="outline">Right click</Button>
 			</ContextMenuTrigger>
-			<ContextMenuPanel>
-				<ContextMenuItem onSelect={() => console.log("copy")}>Copy</ContextMenuItem>
-				<ContextMenuItem onSelect={() => console.log("delete")}>Delete</ContextMenuItem>
-			</ContextMenuPanel>
+			<ContextMenuContent>
+				<ContextMenuItem onSelect={() => console.log("copy")}>
+					Copy
+					<ContextMenuShortcut>⌘C</ContextMenuShortcut>
+				</ContextMenuItem>
+				<ContextMenuSeparator />
+				<ContextMenuItem variant="destructive" onSelect={() => console.log("delete")}>
+					Delete
+				</ContextMenuItem>
+			</ContextMenuContent>
 		</ContextMenu>
 	);
 }`,
@@ -1190,36 +1297,66 @@ export default function Example() {
 			{
 				id: catalogScenarioId("context-menu", "default"),
 				title: "Default",
-				code: `import { Button } from "@nocoo/basalt/components/button";
+				code: `import { useState } from "react";
+import { Button } from "@nocoo/basalt/components/button";
 import {
 	ContextMenu,
+	ContextMenuCheckboxItem,
+	ContextMenuContent,
+	ContextMenuGroup,
 	ContextMenuItem,
-	ContextMenuPanel,
+	ContextMenuLabel,
+	ContextMenuRadioGroup,
+	ContextMenuRadioItem,
+	ContextMenuSeparator,
+	ContextMenuShortcut,
+	ContextMenuSub,
+	ContextMenuSubContent,
+	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "@nocoo/basalt/components/context-menu";
 
 export default function Example() {
+	const [wordWrap, setWordWrap] = useState(true);
+	const [layout, setLayout] = useState("grid");
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger asChild>
 				<Button variant="outline">Right click</Button>
 			</ContextMenuTrigger>
-			<ContextMenuPanel>
-				<ContextMenuItem>Copy</ContextMenuItem>
-			</ContextMenuPanel>
+			<ContextMenuContent>
+				<ContextMenuLabel inset>Selection</ContextMenuLabel>
+				<ContextMenuGroup>
+					<ContextMenuItem inset>
+						Copy
+						<ContextMenuShortcut>⌘C</ContextMenuShortcut>
+					</ContextMenuItem>
+					<ContextMenuCheckboxItem checked={wordWrap} onCheckedChange={setWordWrap}>
+						Wrap lines
+					</ContextMenuCheckboxItem>
+				</ContextMenuGroup>
+				<ContextMenuSeparator />
+				<ContextMenuRadioGroup value={layout} onValueChange={setLayout}>
+					<ContextMenuRadioItem value="grid">Grid view</ContextMenuRadioItem>
+					<ContextMenuRadioItem value="list">List view</ContextMenuRadioItem>
+				</ContextMenuRadioGroup>
+				<ContextMenuSub>
+					<ContextMenuSubTrigger inset>Export</ContextMenuSubTrigger>
+					<ContextMenuSubContent>
+						<ContextMenuItem>Download JSON</ContextMenuItem>
+						<ContextMenuItem>Download CSV</ContextMenuItem>
+					</ContextMenuSubContent>
+				</ContextMenuSub>
+				<ContextMenuSeparator />
+				<ContextMenuItem variant="destructive" inset>
+					Delete
+					<ContextMenuShortcut>⌫</ContextMenuShortcut>
+				</ContextMenuItem>
+			</ContextMenuContent>
 		</ContextMenu>
 	);
 }`,
-				render: () => (
-					<ContextMenu>
-						<ContextMenuTrigger asChild>
-							<Button variant="outline">Right click</Button>
-						</ContextMenuTrigger>
-						<ContextMenuPanel>
-							<ContextMenuItem>Copy</ContextMenuItem>
-						</ContextMenuPanel>
-					</ContextMenu>
-				),
+				render: () => <ContextMenuRichExample />,
 			},
 		],
 	},

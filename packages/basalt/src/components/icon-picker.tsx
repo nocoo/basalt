@@ -3,9 +3,9 @@ import { type AriaAttributes, type ReactNode, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Check, ChevronDown, Search } from "../utils/internal-icons";
+import { FOCUS_RING } from "../utils/overlay";
 import { Button } from "./button";
 import { Input } from "./input";
-import { FOCUS_RING } from "./overlay";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 export interface IconPickerOption {

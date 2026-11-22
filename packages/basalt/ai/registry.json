@@ -1,10 +1,10 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.5.2",
-	"totalModules": 105,
-	"totalSymbols": 657,
-	"totalValues": 363,
-	"totalTypes": 294,
+	"totalModules": 104,
+	"totalSymbols": 698,
+	"totalValues": 382,
+	"totalTypes": 316,
 	"totalCssExports": 4,
 	"totalCatalogEntries": 77,
 	"modules": [
@@ -14,7 +14,7 @@
 			"importPath": "@nocoo/basalt",
 			"subpath": ".",
 			"sourceFile": "packages/basalt/src/index.ts",
-			"sourceHash": "803bc8bf67f66550",
+			"sourceHash": "46665ba33feab4d7",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -353,6 +353,14 @@
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				},
 				{
+					"name": "DropdownMenuCheckboxItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuContent",
 					"isValue": true,
 					"isType": false,
@@ -361,7 +369,87 @@
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				},
 				{
+					"name": "DropdownMenuGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuPortal",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuShortcut",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSub",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/dropdown-menu",
@@ -840,7 +928,7 @@
 			"importPath": "@nocoo/basalt/components/accordion",
 			"subpath": "./components/accordion",
 			"sourceFile": "packages/basalt/src/components/accordion.tsx",
-			"sourceHash": "ed1611c3d45dba9e",
+			"sourceHash": "235f77d5a3953e82",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1266,7 +1354,7 @@
 			"importPath": "@nocoo/basalt/components/alert-dialog",
 			"subpath": "./components/alert-dialog",
 			"sourceFile": "packages/basalt/src/components/alert-dialog.tsx",
-			"sourceHash": "3bfde9d3d331b091",
+			"sourceHash": "783ce2980ccb1b36",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1494,7 +1582,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -1523,7 +1611,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nOverlay forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								},
 								{
 									"name": "forceMount",
@@ -1548,31 +1636,31 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								},
 								{
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+									"description": "Force mounting content in DOM for external animation controls."
 								},
 								{
 									"name": "onOpenAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when auto-focusing on open. Defaults to focusing the cancel button. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when auto-focusing on open. Defaults to focusing the cancel button."
 								},
 								{
 									"name": "onCloseAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when restoring focus on close."
 								},
 								{
 									"name": "onEscapeKeyDown",
 									"type": "(event: KeyboardEvent) => void",
 									"required": false,
-									"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when the Escape key is pressed."
 								}
 							]
 						},
@@ -1584,7 +1672,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+									"description": "Change the default rendered heading element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -1596,7 +1684,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+									"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -1604,11 +1692,18 @@
 							"name": "AlertDialogCancel",
 							"props": [
 								{
+									"name": "size",
+									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Button size preset for the cancel button."
+								},
+								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nCancel forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -1616,11 +1711,25 @@
 							"name": "AlertDialogAction",
 							"props": [
 								{
+									"name": "variant",
+									"type": "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
+									"required": false,
+									"default": "\"destructive\"",
+									"description": "Visual button variant for the primary confirmation action."
+								},
+								{
+									"name": "size",
+									"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Button size preset for the primary confirmation action."
+								},
+								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nAction forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -1668,7 +1777,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -1697,7 +1806,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nOverlay forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
@@ -1722,31 +1831,31 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "onOpenAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when auto-focusing on open. Defaults to focusing the cancel button. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when auto-focusing on open. Defaults to focusing the cancel button."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when restoring focus on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when the Escape key is pressed."
 						}
 					]
 				},
@@ -1758,7 +1867,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+							"description": "Change the default rendered heading element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -1770,7 +1879,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+							"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -1778,11 +1887,18 @@
 					"name": "AlertDialogCancel",
 					"props": [
 						{
+							"name": "size",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Button size preset for the cancel button."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nCancel forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -1790,11 +1906,25 @@
 					"name": "AlertDialogAction",
 					"props": [
 						{
+							"name": "variant",
+							"type": "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
+							"required": false,
+							"default": "\"destructive\"",
+							"description": "Visual button variant for the primary confirmation action."
+						},
+						{
+							"name": "size",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Button size preset for the primary confirmation action."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nAction forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -1962,7 +2092,7 @@
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"subpath": "./components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "c98621464e4aafa2",
+			"sourceHash": "2d75925fa8c1d732",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2888,7 +3018,7 @@
 			"importPath": "@nocoo/basalt/components/button",
 			"subpath": "./components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "c90ec29ff0b7e766",
+			"sourceHash": "17f1a8ca12911e52",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3087,7 +3217,7 @@
 			"importPath": "@nocoo/basalt/components/chart",
 			"subpath": "./components/chart",
 			"sourceFile": "packages/basalt/src/components/chart.tsx",
-			"sourceHash": "bf9046390676754c",
+			"sourceHash": "58481cdcad308ab5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3131,6 +3261,14 @@
 				},
 				{
 					"name": "ChartTooltipSummary",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"packageDoc": "ai/registry.json#chart",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltip",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/chart",
@@ -3250,7 +3388,15 @@
 					"originModule": "@nocoo/basalt/components/chart"
 				},
 				{
-					"name": "ChartFrameProps",
+					"name": "CHART_FRAME_SIZES",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"packageDoc": "ai/registry.json#chart",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartFrameSize",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/chart",
@@ -3258,7 +3404,7 @@
 					"originModule": "@nocoo/basalt/components/chart"
 				},
 				{
-					"name": "ChartShellProps",
+					"name": "ChartFrameProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/chart",
@@ -3269,14 +3415,6 @@
 					"name": "ChartAccessibilityProps",
 					"isValue": false,
 					"isType": true,
-					"ownerDoc": "src/pages/ui/chart",
-					"packageDoc": "ai/registry.json#chart",
-					"originModule": "@nocoo/basalt/components/chart"
-				},
-				{
-					"name": "ChartShell",
-					"isValue": true,
-					"isType": false,
 					"ownerDoc": "src/pages/ui/chart",
 					"packageDoc": "ai/registry.json#chart",
 					"originModule": "@nocoo/basalt/components/chart"
@@ -3315,6 +3453,14 @@
 				},
 				{
 					"name": "ChartTooltipDividerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"packageDoc": "ai/registry.json#chart",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/chart",
@@ -3583,8 +3729,10 @@
 								},
 								{
 									"name": "size",
-									"type": "string",
-									"required": false
+									"type": "\"lg\" | \"md\" | \"sm\" | string & {}",
+									"required": false,
+									"default": "\"md\"",
+									"description": "Height preset (`\"sm\"` | `\"md\"` | `\"lg\"`) or custom Tailwind sizing classes."
 								},
 								{
 									"name": "summary",
@@ -3607,6 +3755,10 @@
 									"required": false
 								}
 							]
+						},
+						{
+							"name": "ChartTooltip",
+							"props": []
 						},
 						{
 							"name": "ChartTooltipContent",
@@ -3672,8 +3824,10 @@
 						},
 						{
 							"name": "size",
-							"type": "string",
-							"required": false
+							"type": "\"lg\" | \"md\" | \"sm\" | string & {}",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Height preset (`\"sm\"` | `\"md\"` | `\"lg\"`) or custom Tailwind sizing classes."
 						},
 						{
 							"name": "summary",
@@ -3696,6 +3850,10 @@
 							"required": false
 						}
 					]
+				},
+				{
+					"name": "ChartTooltip",
+					"props": []
 				},
 				{
 					"name": "ChartTooltipContent",
@@ -3745,7 +3903,7 @@
 			"importPath": "@nocoo/basalt/components/checkbox",
 			"subpath": "./components/checkbox",
 			"sourceFile": "packages/basalt/src/components/checkbox.tsx",
-			"sourceHash": "f4617a0209293eb4",
+			"sourceHash": "ec39ea1aa2332676",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4335,7 +4493,7 @@
 			"importPath": "@nocoo/basalt/components/collapsible",
 			"subpath": "./components/collapsible",
 			"sourceFile": "packages/basalt/src/components/collapsible.tsx",
-			"sourceHash": "ede74fce06c35a5a",
+			"sourceHash": "9da54f01e73b1ca2",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -5259,7 +5417,7 @@
 			"importPath": "@nocoo/basalt/components/confirm-dialog",
 			"subpath": "./components/confirm-dialog",
 			"sourceFile": "packages/basalt/src/components/confirm-dialog.tsx",
-			"sourceHash": "cafdd27c6800d3cd",
+			"sourceHash": "a392e43f27b42393",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -5333,13 +5491,20 @@
 								{
 									"name": "open",
 									"type": "boolean",
-									"required": true,
-									"description": "Whether the confirmation dialog is shown."
+									"required": false,
+									"description": "Whether the confirmation dialog is shown when controlled."
+								},
+								{
+									"name": "defaultOpen",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Uncontrolled initial open state when `open` is omitted."
 								},
 								{
 									"name": "onOpenChange",
 									"type": "(open: boolean) => void",
-									"required": true,
+									"required": false,
 									"description": "Called when the dialog requests to open or close."
 								},
 								{
@@ -5352,7 +5517,7 @@
 									"name": "onConfirm",
 									"type": "() => void | Promise<void>",
 									"required": true,
-									"description": "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors."
+									"description": "Called once when the user confirms. In controlled mode, caller manages loading and closing; uncontrolled dialogs close automatically unless a returned Promise rejects."
 								},
 								{
 									"name": "title",
@@ -5434,6 +5599,12 @@
 									"type": "ConfirmDialogVariant",
 									"required": false,
 									"description": "Appearance of the confirm button."
+								},
+								{
+									"name": "onConfirm",
+									"type": "() => void | Promise<void>",
+									"required": false,
+									"description": "Optional async handler awaited with loading state before closing and settling `true`."
 								}
 							]
 						}
@@ -5447,13 +5618,20 @@
 						{
 							"name": "open",
 							"type": "boolean",
-							"required": true,
-							"description": "Whether the confirmation dialog is shown."
+							"required": false,
+							"description": "Whether the confirmation dialog is shown when controlled."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Uncontrolled initial open state when `open` is omitted."
 						},
 						{
 							"name": "onOpenChange",
 							"type": "(open: boolean) => void",
-							"required": true,
+							"required": false,
 							"description": "Called when the dialog requests to open or close."
 						},
 						{
@@ -5466,7 +5644,7 @@
 							"name": "onConfirm",
 							"type": "() => void | Promise<void>",
 							"required": true,
-							"description": "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors."
+							"description": "Called once when the user confirms. In controlled mode, caller manages loading and closing; uncontrolled dialogs close automatically unless a returned Promise rejects."
 						},
 						{
 							"name": "title",
@@ -5548,6 +5726,12 @@
 							"type": "ConfirmDialogVariant",
 							"required": false,
 							"description": "Appearance of the confirm button."
+						},
+						{
+							"name": "onConfirm",
+							"type": "() => void | Promise<void>",
+							"required": false,
+							"description": "Optional async handler awaited with loading state before closing and settling `true`."
 						}
 					]
 				}
@@ -5559,7 +5743,7 @@
 			"importPath": "@nocoo/basalt/components/context-menu",
 			"subpath": "./components/context-menu",
 			"sourceFile": "packages/basalt/src/components/context-menu.tsx",
-			"sourceHash": "e879e388ca6f66b3",
+			"sourceHash": "9e456bed31ecade4",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -5570,7 +5754,7 @@
 			"optionalPeers": [],
 			"symbols": [
 				{
-					"name": "ContextMenuPanel",
+					"name": "ContextMenuShortcut",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/context-menu",
@@ -5610,6 +5794,70 @@
 					"originModule": "@nocoo/basalt/components/context-menu"
 				},
 				{
+					"name": "ContextMenuGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuPortalProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuPortal",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSub",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
 					"name": "ContextMenuContentProps",
 					"isValue": false,
 					"isType": true,
@@ -5642,7 +5890,103 @@
 					"originModule": "@nocoo/basalt/components/context-menu"
 				},
 				{
-					"name": "ContextMenuPanelProps",
+					"name": "ContextMenuCheckboxItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuCheckboxItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuLabelProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuLabel",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSeparatorProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSeparator",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubTrigger",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubContent",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"packageDoc": "ai/registry.json#context-menu",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuShortcutProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/context-menu",
@@ -5705,7 +6049,108 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered span element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLSpanElement and inherits native span attributes."
+									"description": "Change the default rendered span element to the child element, merging props and behavior."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuGroup",
+							"props": [
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Menu items or elements grouped together."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuPortal",
+							"props": [
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Content to render into the portal target."
+								},
+								{
+									"name": "container",
+									"type": "DocumentFragment | Element | null",
+									"required": false,
+									"description": "Specify a container element to portal the content into."
+								},
+								{
+									"name": "forceMount",
+									"type": "true",
+									"required": false,
+									"description": "Used to force mounting when more control is needed."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuSub",
+							"props": [
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Submenu trigger and content elements."
+								},
+								{
+									"name": "open",
+									"type": "boolean",
+									"required": false,
+									"description": "Controlled open state of the submenu."
+								},
+								{
+									"name": "defaultOpen",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Uncontrolled initial open state of the submenu."
+								},
+								{
+									"name": "onOpenChange",
+									"type": "(open: boolean) => void",
+									"required": false,
+									"description": "Callback invoked when the submenu open state changes."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuRadioGroup",
+							"props": [
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Radio item elements grouped together."
+								},
+								{
+									"name": "value",
+									"type": "string",
+									"required": false,
+									"description": "Value of the currently selected radio item."
+								},
+								{
+									"name": "onValueChange",
+									"type": "(value: string) => void",
+									"required": false,
+									"description": "Callback invoked when the selected value changes."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
 								}
 							]
 						},
@@ -5772,50 +6217,64 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: Bare ContextMenuContent mounts directly without a built-in Portal wrapper."
+									"description": "Force mounting content in DOM for external animation controls."
 								},
 								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								},
 								{
 									"name": "onCloseAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Callback fired when auto-focusing on close. Can be prevented."
+									"description": "Callback fired when auto-focusing on close."
 								},
 								{
 									"name": "onEscapeKeyDown",
 									"type": "(event: KeyboardEvent) => void",
 									"required": false,
-									"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
+									"description": "Callback fired when the Escape key is down on the dismissable layer."
 								},
 								{
 									"name": "onPointerDownOutside",
 									"type": "(event: PointerDownOutsideEvent) => void",
 									"required": false,
-									"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
+									"description": "Callback fired when a pointerdown event happens outside the content."
 								},
 								{
 									"name": "onFocusOutside",
 									"type": "(event: FocusOutsideEvent) => void",
 									"required": false,
-									"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
+									"description": "Callback fired when focus moves outside the content."
 								},
 								{
 									"name": "onInteractOutside",
 									"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 									"required": false,
-									"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
+									"description": "Callback fired when pointer or focus interaction happens outside the content."
 								}
 							]
 						},
 						{
 							"name": "ContextMenuItem",
 							"props": [
+								{
+									"name": "variant",
+									"type": "\"default\" | \"destructive\"",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Visual emphasis of the menu item."
+								},
+								{
+									"name": "inset",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Indent label to align with checkable items in the same menu."
+								},
 								{
 									"name": "disabled",
 									"type": "boolean",
@@ -5827,126 +6286,187 @@
 									"name": "onSelect",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when the context menu item is selected (via click or keyboard)."
+									"description": "Event handler called when the context menu item is selected."
 								},
 								{
 									"name": "textValue",
 									"type": "string",
 									"required": false,
-									"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
+									"description": "Optional text used for typeahead navigation."
 								},
 								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nItem forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element."
 								}
 							]
 						},
 						{
-							"name": "ContextMenuPanel",
+							"name": "ContextMenuCheckboxItem",
 							"props": [
 								{
-									"name": "loop",
+									"name": "checked",
+									"type": "\"indeterminate\" | false | true",
+									"required": false,
+									"description": "Checked state of the item."
+								},
+								{
+									"name": "onCheckedChange",
+									"type": "(checked: boolean) => void",
+									"required": false,
+									"description": "Callback invoked when the checked state changes."
+								},
+								{
+									"name": "disabled",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Whether keyboard navigation should loop around item boundaries."
+									"description": "Disable the checkbox item."
 								},
 								{
-									"name": "alignOffset",
-									"type": "number",
+									"name": "onSelect",
+									"type": "(event: Event) => void",
 									"required": false,
-									"default": "0",
-									"description": "Offset in pixels from the start or end alignment position."
+									"description": "Event handler called when the item is selected."
 								},
 								{
-									"name": "avoidCollisions",
-									"type": "boolean",
+									"name": "textValue",
+									"type": "string",
 									"required": false,
-									"default": "true",
-									"description": "Whether to reposition content to avoid viewport boundary collisions."
-								},
-								{
-									"name": "collisionBoundary",
-									"type": "Boundary[] | Element | null",
-									"required": false,
-									"default": "[]",
-									"description": "Element or elements bounding boundary collision calculations."
-								},
-								{
-									"name": "collisionPadding",
-									"type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>>",
-									"required": false,
-									"default": "0",
-									"description": "Virtual padding from collision boundaries in pixels."
-								},
-								{
-									"name": "arrowPadding",
-									"type": "number",
-									"required": false,
-									"default": "0",
-									"description": "Padding in pixels between popper arrow and floating panel edge."
-								},
-								{
-									"name": "sticky",
-									"type": "\"always\" | \"partial\"",
-									"required": false,
-									"default": "\"partial\"",
-									"description": "Sticky positioning behavior along the align axis when overflowing."
-								},
-								{
-									"name": "hideWhenDetached",
-									"type": "boolean",
-									"required": false,
-									"default": "false",
-									"description": "Whether to hide content completely when trigger is fully occluded."
+									"description": "Optional text used for typeahead navigation."
 								},
 								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuRadioItem",
+							"props": [
+								{
+									"name": "value",
+									"type": "string",
+									"required": true,
+									"description": "Unique value associated with this radio item."
 								},
 								{
-									"name": "onCloseAutoFocus",
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable the radio item."
+								},
+								{
+									"name": "onSelect",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Callback fired when auto-focusing on close. Can be prevented."
+									"description": "Event handler called when the radio item is selected."
 								},
 								{
-									"name": "onEscapeKeyDown",
-									"type": "(event: KeyboardEvent) => void",
+									"name": "textValue",
+									"type": "string",
 									"required": false,
-									"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
+									"description": "Optional text used for typeahead navigation."
 								},
 								{
-									"name": "onPointerDownOutside",
-									"type": "(event: PointerDownOutsideEvent) => void",
+									"name": "asChild",
+									"type": "boolean",
 									"required": false,
-									"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuLabel",
+							"props": [
+								{
+									"name": "inset",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Indent label to align with checkable menu items."
 								},
 								{
-									"name": "onFocusOutside",
-									"type": "(event: FocusOutsideEvent) => void",
+									"name": "asChild",
+									"type": "boolean",
 									"required": false,
-									"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuSeparator",
+							"props": [
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuSubTrigger",
+							"props": [
+								{
+									"name": "inset",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Indent label to align with checkable menu items."
 								},
 								{
-									"name": "onInteractOutside",
-									"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
+									"name": "disabled",
+									"type": "boolean",
 									"required": false,
-									"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
+									"default": "false",
+									"description": "Disable the submenu trigger."
 								},
+								{
+									"name": "textValue",
+									"type": "string",
+									"required": false,
+									"description": "Optional text used for typeahead navigation."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "ContextMenuSubContent",
+							"props": [
 								{
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+									"description": "Force mounting submenu content in DOM for external animation controls."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
 								}
 							]
+						},
+						{
+							"name": "ContextMenuShortcut",
+							"props": []
 						}
 					]
 				}
@@ -5998,7 +6518,108 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered span element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLSpanElement and inherits native span attributes."
+							"description": "Change the default rendered span element to the child element, merging props and behavior."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuGroup",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Menu items or elements grouped together."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuPortal",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Content to render into the portal target."
+						},
+						{
+							"name": "container",
+							"type": "DocumentFragment | Element | null",
+							"required": false,
+							"description": "Specify a container element to portal the content into."
+						},
+						{
+							"name": "forceMount",
+							"type": "true",
+							"required": false,
+							"description": "Used to force mounting when more control is needed."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSub",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Submenu trigger and content elements."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled open state of the submenu."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Uncontrolled initial open state of the submenu."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false,
+							"description": "Callback invoked when the submenu open state changes."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuRadioGroup",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Radio item elements grouped together."
+						},
+						{
+							"name": "value",
+							"type": "string",
+							"required": false,
+							"description": "Value of the currently selected radio item."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string) => void",
+							"required": false,
+							"description": "Callback invoked when the selected value changes."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
 						}
 					]
 				},
@@ -6065,50 +6686,64 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: Bare ContextMenuContent mounts directly without a built-in Portal wrapper."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
+							"description": "Callback fired when auto-focusing on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
+							"description": "Callback fired when the Escape key is down on the dismissable layer."
 						},
 						{
 							"name": "onPointerDownOutside",
 							"type": "(event: PointerDownOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
+							"description": "Callback fired when a pointerdown event happens outside the content."
 						},
 						{
 							"name": "onFocusOutside",
 							"type": "(event: FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
+							"description": "Callback fired when focus moves outside the content."
 						},
 						{
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
+							"description": "Callback fired when pointer or focus interaction happens outside the content."
 						}
 					]
 				},
 				{
 					"name": "ContextMenuItem",
 					"props": [
+						{
+							"name": "variant",
+							"type": "\"default\" | \"destructive\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Visual emphasis of the menu item."
+						},
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable items in the same menu."
+						},
 						{
 							"name": "disabled",
 							"type": "boolean",
@@ -6120,126 +6755,187 @@
 							"name": "onSelect",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when the context menu item is selected (via click or keyboard)."
+							"description": "Event handler called when the context menu item is selected."
 						},
 						{
 							"name": "textValue",
 							"type": "string",
 							"required": false,
-							"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nItem forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element."
 						}
 					]
 				},
 				{
-					"name": "ContextMenuPanel",
+					"name": "ContextMenuCheckboxItem",
 					"props": [
 						{
-							"name": "loop",
+							"name": "checked",
+							"type": "\"indeterminate\" | false | true",
+							"required": false,
+							"description": "Checked state of the item."
+						},
+						{
+							"name": "onCheckedChange",
+							"type": "(checked: boolean) => void",
+							"required": false,
+							"description": "Callback invoked when the checked state changes."
+						},
+						{
+							"name": "disabled",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Whether keyboard navigation should loop around item boundaries."
+							"description": "Disable the checkbox item."
 						},
 						{
-							"name": "alignOffset",
-							"type": "number",
+							"name": "onSelect",
+							"type": "(event: Event) => void",
 							"required": false,
-							"default": "0",
-							"description": "Offset in pixels from the start or end alignment position."
+							"description": "Event handler called when the item is selected."
 						},
 						{
-							"name": "avoidCollisions",
-							"type": "boolean",
+							"name": "textValue",
+							"type": "string",
 							"required": false,
-							"default": "true",
-							"description": "Whether to reposition content to avoid viewport boundary collisions."
-						},
-						{
-							"name": "collisionBoundary",
-							"type": "Boundary[] | Element | null",
-							"required": false,
-							"default": "[]",
-							"description": "Element or elements bounding boundary collision calculations."
-						},
-						{
-							"name": "collisionPadding",
-							"type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>>",
-							"required": false,
-							"default": "0",
-							"description": "Virtual padding from collision boundaries in pixels."
-						},
-						{
-							"name": "arrowPadding",
-							"type": "number",
-							"required": false,
-							"default": "0",
-							"description": "Padding in pixels between popper arrow and floating panel edge."
-						},
-						{
-							"name": "sticky",
-							"type": "\"always\" | \"partial\"",
-							"required": false,
-							"default": "\"partial\"",
-							"description": "Sticky positioning behavior along the align axis when overflowing."
-						},
-						{
-							"name": "hideWhenDetached",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether to hide content completely when trigger is fully occluded."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuRadioItem",
+					"props": [
+						{
+							"name": "value",
+							"type": "string",
+							"required": true,
+							"description": "Unique value associated with this radio item."
 						},
 						{
-							"name": "onCloseAutoFocus",
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the radio item."
+						},
+						{
+							"name": "onSelect",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
+							"description": "Event handler called when the radio item is selected."
 						},
 						{
-							"name": "onEscapeKeyDown",
-							"type": "(event: KeyboardEvent) => void",
+							"name": "textValue",
+							"type": "string",
 							"required": false,
-							"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
-							"name": "onPointerDownOutside",
-							"type": "(event: PointerDownOutsideEvent) => void",
+							"name": "asChild",
+							"type": "boolean",
 							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuLabel",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
 						},
 						{
-							"name": "onFocusOutside",
-							"type": "(event: FocusOutsideEvent) => void",
+							"name": "asChild",
+							"type": "boolean",
 							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSeparator",
+					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSubTrigger",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
 						},
 						{
-							"name": "onInteractOutside",
-							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
+							"name": "disabled",
+							"type": "boolean",
 							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
+							"default": "false",
+							"description": "Disable the submenu trigger."
 						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSubContent",
+					"props": [
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting submenu content in DOM for external animation controls."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
 						}
 					]
+				},
+				{
+					"name": "ContextMenuShortcut",
+					"props": []
 				}
 			]
 		},
@@ -7195,7 +7891,7 @@
 			"importPath": "@nocoo/basalt/components/dialog",
 			"subpath": "./components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "71386b3a029b3f6d",
+			"sourceHash": "989ee41564b36535",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -7446,7 +8142,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -7475,7 +8171,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nOverlay forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								},
 								{
 									"name": "forceMount",
@@ -7503,35 +8199,49 @@
 									"description": "When true, pointer interactions outside the dialog panel are prevented from dismissing the dialog."
 								},
 								{
+									"name": "showCloseButton",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show the built-in top-right dismiss icon button inside DialogContent."
+								},
+								{
+									"name": "closeLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Close\"",
+									"description": "Accessible label for the built-in close button."
+								},
+								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								},
 								{
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+									"description": "Force mounting content in DOM for external animation controls."
 								},
 								{
 									"name": "onOpenAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when auto-focusing the first element on open. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when auto-focusing the first element on open."
 								},
 								{
 									"name": "onCloseAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when restoring focus on close."
 								},
 								{
 									"name": "onEscapeKeyDown",
 									"type": "(event: KeyboardEvent) => void",
 									"required": false,
-									"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when the Escape key is pressed."
 								},
 								{
 									"name": "onPointerDownOutside",
@@ -7549,7 +8259,7 @@
 									"name": "onInteractOutside",
 									"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 									"required": false,
-									"description": "Event handler called when any interaction (pointer or focus) occurs outside the dialog bounds."
+									"description": "Event handler called when any interaction occurs outside the dialog bounds."
 								}
 							]
 						},
@@ -7561,7 +8271,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+									"description": "Change the default rendered heading element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -7573,7 +8283,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+									"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -7585,7 +8295,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nClose forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -7640,7 +8350,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -7669,7 +8379,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nOverlay forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
@@ -7697,35 +8407,49 @@
 							"description": "When true, pointer interactions outside the dialog panel are prevented from dismissing the dialog."
 						},
 						{
+							"name": "showCloseButton",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the built-in top-right dismiss icon button inside DialogContent."
+						},
+						{
+							"name": "closeLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Close\"",
+							"description": "Accessible label for the built-in close button."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "onOpenAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when auto-focusing the first element on open. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when auto-focusing the first element on open."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when restoring focus on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when the Escape key is pressed."
 						},
 						{
 							"name": "onPointerDownOutside",
@@ -7743,7 +8467,7 @@
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Event handler called when any interaction (pointer or focus) occurs outside the dialog bounds."
+							"description": "Event handler called when any interaction occurs outside the dialog bounds."
 						}
 					]
 				},
@@ -7755,7 +8479,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+							"description": "Change the default rendered heading element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -7767,7 +8491,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+							"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -7779,7 +8503,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nClose forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -7799,7 +8523,7 @@
 			"importPath": "@nocoo/basalt/components/dock",
 			"subpath": "./components/dock",
 			"sourceFile": "packages/basalt/src/components/dock.tsx",
-			"sourceHash": "7d7535f231516419",
+			"sourceHash": "fe750e629c96ee03",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -8009,7 +8733,7 @@
 			"importPath": "@nocoo/basalt/components/dropdown-menu",
 			"subpath": "./components/dropdown-menu",
 			"sourceFile": "packages/basalt/src/components/dropdown-menu.tsx",
-			"sourceHash": "d93c66c419833a66",
+			"sourceHash": "235b809f21c108f6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -8019,6 +8743,14 @@
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
+				{
+					"name": "DropdownMenuShortcut",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
 				{
 					"name": "DropdownMenuProps",
 					"isValue": false,
@@ -8146,6 +8878,110 @@
 					"ownerDoc": "src/pages/ui/dropdown-menu",
 					"packageDoc": "ai/registry.json#dropdown-menu",
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuCheckboxItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuCheckboxItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuLabelProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSeparatorProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuShortcutProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"packageDoc": "ai/registry.json#dropdown-menu",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				}
 			],
 			"catalogEntries": [
@@ -8190,14 +9026,14 @@
 									"type": "\"ltr\" | \"rtl\"",
 									"required": false,
 									"default": "\"ltr\"",
-									"description": "The reading direction of the dropdown menu. Inherited from DirectionProvider if present,\nor defaults to \"ltr\"."
+									"description": "The reading direction of the dropdown menu."
 								},
 								{
 									"name": "modal",
 									"type": "boolean",
 									"required": false,
 									"default": "true",
-									"description": "The modality of the dropdown menu. When set to true, interaction with outside elements\nwill be disabled and only menu content will be visible to screen readers."
+									"description": "The modality of the dropdown menu."
 								}
 							]
 						},
@@ -8215,7 +9051,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nDropdownMenuTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -8233,7 +9069,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuGroup forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -8250,13 +9086,13 @@
 									"name": "container",
 									"type": "DocumentFragment | Element | null",
 									"required": false,
-									"description": "Specify a container element to portal the content into.\nNote: Only controls direct portal children; does not override the destination\ncontainer of the built-in portal inside DropdownMenuContent."
+									"description": "Specify a container element to portal the content into."
 								},
 								{
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries."
+									"description": "Used to force mounting when more control is needed."
 								}
 							]
 						},
@@ -8267,7 +9103,7 @@
 									"name": "children",
 									"type": "React.ReactNode",
 									"required": false,
-									"description": "Submenu structure elements.\nNote: Basalt does not export styled DropdownMenuSubTrigger or DropdownMenuSubContent components;\ncompose with underlying Radix primitives when building nested submenus."
+									"description": "Submenu trigger and content elements."
 								},
 								{
 									"name": "open",
@@ -8297,7 +9133,7 @@
 									"name": "children",
 									"type": "React.ReactNode",
 									"required": false,
-									"description": "Radio item elements grouped together.\nNote: Basalt does not export styled DropdownMenuRadioItem or indicator components;\ncompose with underlying Radix primitives when building radio selection groups."
+									"description": "Radio item elements grouped together."
 								},
 								{
 									"name": "value",
@@ -8316,7 +9152,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuRadioGroup forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -8335,7 +9171,7 @@
 									"type": "number",
 									"required": false,
 									"default": "8",
-									"description": "Distance in pixels between trigger and floating content panel.\nIn Basalt, defaults to MENU_GAP (8)."
+									"description": "Distance in pixels between trigger and floating content panel."
 								},
 								{
 									"name": "align",
@@ -8411,50 +9247,64 @@
 									"name": "onCloseAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Callback fired when auto-focusing on close. Can be prevented."
+									"description": "Callback fired when auto-focusing on close."
 								},
 								{
 									"name": "onEscapeKeyDown",
 									"type": "(event: KeyboardEvent) => void",
 									"required": false,
-									"description": "Callback fired when the Escape key is down on the content layer. Can be prevented."
+									"description": "Callback fired when Escape is pressed on the content layer."
 								},
 								{
 									"name": "onPointerDownOutside",
 									"type": "(event: PointerDownOutsideEvent) => void",
 									"required": false,
-									"description": "Callback fired when a pointerdown event happens outside the bounds of the content. Can be prevented."
+									"description": "Callback fired when a pointerdown event happens outside the content."
 								},
 								{
 									"name": "onFocusOutside",
 									"type": "(event: FocusOutsideEvent) => void",
 									"required": false,
-									"description": "Callback fired when focus moves outside the bounds of the content. Can be prevented."
+									"description": "Callback fired when focus moves outside the content."
 								},
 								{
 									"name": "onInteractOutside",
 									"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 									"required": false,
-									"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the content. Can be prevented."
+									"description": "Callback fired when pointer or focus interaction happens outside the content."
 								},
 								{
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+									"description": "Force mounting content in DOM for external animation controls."
 								},
 								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuContent forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
 								}
 							]
 						},
 						{
 							"name": "DropdownMenuItem",
 							"props": [
+								{
+									"name": "variant",
+									"type": "\"default\" | \"destructive\"",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Visual emphasis of the menu item."
+								},
+								{
+									"name": "inset",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Indent label to align with checkable items in the same menu."
+								},
 								{
 									"name": "disabled",
 									"type": "boolean",
@@ -8466,22 +9316,187 @@
 									"name": "onSelect",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when the menu item is selected (via click or keyboard).\nNote that this is a Radix CustomEvent, not native DOM onSelect."
+									"description": "Event handler called when the menu item is selected."
 								},
 								{
 									"name": "textValue",
 									"type": "string",
 									"required": false,
-									"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
+									"description": "Optional text used for typeahead navigation."
 								},
 								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuItem forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element."
 								}
 							]
+						},
+						{
+							"name": "DropdownMenuCheckboxItem",
+							"props": [
+								{
+									"name": "checked",
+									"type": "\"indeterminate\" | false | true",
+									"required": false,
+									"description": "Checked state of the item."
+								},
+								{
+									"name": "onCheckedChange",
+									"type": "(checked: boolean) => void",
+									"required": false,
+									"description": "Event handler called when the checked state changes."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable the checkbox item."
+								},
+								{
+									"name": "onSelect",
+									"type": "(event: Event) => void",
+									"required": false,
+									"description": "Event handler called when the item is selected."
+								},
+								{
+									"name": "textValue",
+									"type": "string",
+									"required": false,
+									"description": "Optional text used for typeahead navigation."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "DropdownMenuRadioItem",
+							"props": [
+								{
+									"name": "value",
+									"type": "string",
+									"required": true,
+									"description": "Unique value associated with this radio item."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable the radio item."
+								},
+								{
+									"name": "onSelect",
+									"type": "(event: Event) => void",
+									"required": false,
+									"description": "Event handler called when the radio item is selected."
+								},
+								{
+									"name": "textValue",
+									"type": "string",
+									"required": false,
+									"description": "Optional text used for typeahead navigation."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "DropdownMenuLabel",
+							"props": [
+								{
+									"name": "inset",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Indent label to align with checkable menu items."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "DropdownMenuSeparator",
+							"props": [
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "DropdownMenuSubTrigger",
+							"props": [
+								{
+									"name": "inset",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Indent label to align with checkable menu items."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable the submenu trigger."
+								},
+								{
+									"name": "textValue",
+									"type": "string",
+									"required": false,
+									"description": "Optional text used for typeahead navigation."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Change the default rendered div element to the child element."
+								}
+							]
+						},
+						{
+							"name": "DropdownMenuSubContent",
+							"props": [
+								{
+									"name": "forceMount",
+									"type": "true",
+									"required": false,
+									"description": "Force mounting submenu content in DOM for external animation controls."
+								},
+								{
+									"name": "asChild",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
+								}
+							]
+						},
+						{
+							"name": "DropdownMenuShortcut",
+							"props": []
 						}
 					]
 				}
@@ -8520,14 +9535,14 @@
 							"type": "\"ltr\" | \"rtl\"",
 							"required": false,
 							"default": "\"ltr\"",
-							"description": "The reading direction of the dropdown menu. Inherited from DirectionProvider if present,\nor defaults to \"ltr\"."
+							"description": "The reading direction of the dropdown menu."
 						},
 						{
 							"name": "modal",
 							"type": "boolean",
 							"required": false,
 							"default": "true",
-							"description": "The modality of the dropdown menu. When set to true, interaction with outside elements\nwill be disabled and only menu content will be visible to screen readers."
+							"description": "The modality of the dropdown menu."
 						}
 					]
 				},
@@ -8545,7 +9560,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nDropdownMenuTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -8563,7 +9578,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuGroup forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -8580,13 +9595,13 @@
 							"name": "container",
 							"type": "DocumentFragment | Element | null",
 							"required": false,
-							"description": "Specify a container element to portal the content into.\nNote: Only controls direct portal children; does not override the destination\ncontainer of the built-in portal inside DropdownMenuContent."
+							"description": "Specify a container element to portal the content into."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries."
+							"description": "Used to force mounting when more control is needed."
 						}
 					]
 				},
@@ -8597,7 +9612,7 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Submenu structure elements.\nNote: Basalt does not export styled DropdownMenuSubTrigger or DropdownMenuSubContent components;\ncompose with underlying Radix primitives when building nested submenus."
+							"description": "Submenu trigger and content elements."
 						},
 						{
 							"name": "open",
@@ -8627,7 +9642,7 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Radio item elements grouped together.\nNote: Basalt does not export styled DropdownMenuRadioItem or indicator components;\ncompose with underlying Radix primitives when building radio selection groups."
+							"description": "Radio item elements grouped together."
 						},
 						{
 							"name": "value",
@@ -8646,7 +9661,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuRadioGroup forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -8665,7 +9680,7 @@
 							"type": "number",
 							"required": false,
 							"default": "8",
-							"description": "Distance in pixels between trigger and floating content panel.\nIn Basalt, defaults to MENU_GAP (8)."
+							"description": "Distance in pixels between trigger and floating content panel."
 						},
 						{
 							"name": "align",
@@ -8741,50 +9756,64 @@
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
+							"description": "Callback fired when auto-focusing on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Callback fired when the Escape key is down on the content layer. Can be prevented."
+							"description": "Callback fired when Escape is pressed on the content layer."
 						},
 						{
 							"name": "onPointerDownOutside",
 							"type": "(event: PointerDownOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the content. Can be prevented."
+							"description": "Callback fired when a pointerdown event happens outside the content."
 						},
 						{
 							"name": "onFocusOutside",
 							"type": "(event: FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the content. Can be prevented."
+							"description": "Callback fired when focus moves outside the content."
 						},
 						{
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the content. Can be prevented."
+							"description": "Callback fired when pointer or focus interaction happens outside the content."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
 						}
 					]
 				},
 				{
 					"name": "DropdownMenuItem",
 					"props": [
+						{
+							"name": "variant",
+							"type": "\"default\" | \"destructive\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Visual emphasis of the menu item."
+						},
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable items in the same menu."
+						},
 						{
 							"name": "disabled",
 							"type": "boolean",
@@ -8796,22 +9825,187 @@
 							"name": "onSelect",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when the menu item is selected (via click or keyboard).\nNote that this is a Radix CustomEvent, not native DOM onSelect."
+							"description": "Event handler called when the menu item is selected."
 						},
 						{
 							"name": "textValue",
 							"type": "string",
 							"required": false,
-							"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuItem forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element."
 						}
 					]
+				},
+				{
+					"name": "DropdownMenuCheckboxItem",
+					"props": [
+						{
+							"name": "checked",
+							"type": "\"indeterminate\" | false | true",
+							"required": false,
+							"description": "Checked state of the item."
+						},
+						{
+							"name": "onCheckedChange",
+							"type": "(checked: boolean) => void",
+							"required": false,
+							"description": "Event handler called when the checked state changes."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the checkbox item."
+						},
+						{
+							"name": "onSelect",
+							"type": "(event: Event) => void",
+							"required": false,
+							"description": "Event handler called when the item is selected."
+						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"props": [
+						{
+							"name": "value",
+							"type": "string",
+							"required": true,
+							"description": "Unique value associated with this radio item."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the radio item."
+						},
+						{
+							"name": "onSelect",
+							"type": "(event: Event) => void",
+							"required": false,
+							"description": "Event handler called when the radio item is selected."
+						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the submenu trigger."
+						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"props": [
+						{
+							"name": "forceMount",
+							"type": "true",
+							"required": false,
+							"description": "Force mounting submenu content in DOM for external animation controls."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuShortcut",
+					"props": []
 				}
 			]
 		},
@@ -8821,7 +10015,7 @@
 			"importPath": "@nocoo/basalt/components/editable-nav-item",
 			"subpath": "./components/editable-nav-item",
 			"sourceFile": "packages/basalt/src/components/editable-nav-item.tsx",
-			"sourceHash": "5f86eb075d6d4a6d",
+			"sourceHash": "ad43afc3126750ff",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9371,7 +10565,7 @@
 			"importPath": "@nocoo/basalt/components/fab",
 			"subpath": "./components/fab",
 			"sourceFile": "packages/basalt/src/components/fab.tsx",
-			"sourceHash": "2b13e4b242e0b31e",
+			"sourceHash": "e7f09b84c9bd2748",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10173,7 +11367,7 @@
 			"importPath": "@nocoo/basalt/components/grid",
 			"subpath": "./components/grid",
 			"sourceFile": "packages/basalt/src/components/grid.tsx",
-			"sourceHash": "e58f6bd6beb5446e",
+			"sourceHash": "642090371e73c37c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10195,6 +11389,38 @@
 					"name": "GridItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/grid",
+					"packageDoc": "ai/registry.json#grid",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "GridColumnCount",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/grid",
+					"packageDoc": "ai/registry.json#grid",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "ResponsiveGridColumns",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/grid",
+					"packageDoc": "ai/registry.json#grid",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "GridSpan",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/grid",
+					"packageDoc": "ai/registry.json#grid",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "ResponsiveGridSpan",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/grid",
 					"packageDoc": "ai/registry.json#grid",
 					"originModule": "@nocoo/basalt/components/grid"
@@ -10230,10 +11456,17 @@
 							"props": [
 								{
 									"name": "columns",
-									"type": "number",
+									"type": "number | ResponsiveGridColumns",
 									"required": false,
 									"default": "2",
-									"description": "Number of equal columns."
+									"description": "Number of equal columns or container-responsive column counts per breakpoint."
+								},
+								{
+									"name": "responsive",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "When true and `columns` is a preset count (`2`, `3`, `4`, `6`, `12`), adapt columns at island container breakpoints (or viewport fallback outside islands)."
 								},
 								{
 									"name": "gap",
@@ -10252,12 +11485,37 @@
 									"name": "children",
 									"type": "React.ReactNode",
 									"required": false
+								},
+								{
+									"name": "ref",
+									"type": "React.Ref<HTMLDivElement>",
+									"required": false,
+									"description": "Ref forwarded to the grid container element."
 								}
 							]
 						},
 						{
 							"name": "GridItem",
-							"props": []
+							"props": [
+								{
+									"name": "colSpan",
+									"type": "ResponsiveGridSpan",
+									"required": false,
+									"description": "Number of columns the grid item spans (`\"full\"` or responsive breakpoint map)."
+								},
+								{
+									"name": "rowSpan",
+									"type": "1 | 2 | 3 | 4",
+									"required": false,
+									"description": "Number of grid rows the item spans."
+								},
+								{
+									"name": "ref",
+									"type": "React.Ref<HTMLDivElement>",
+									"required": false,
+									"description": "Ref forwarded to the grid item surface element."
+								}
+							]
 						}
 					]
 				}
@@ -10268,10 +11526,17 @@
 					"props": [
 						{
 							"name": "columns",
-							"type": "number",
+							"type": "number | ResponsiveGridColumns",
 							"required": false,
 							"default": "2",
-							"description": "Number of equal columns."
+							"description": "Number of equal columns or container-responsive column counts per breakpoint."
+						},
+						{
+							"name": "responsive",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "When true and `columns` is a preset count (`2`, `3`, `4`, `6`, `12`), adapt columns at island container breakpoints (or viewport fallback outside islands)."
 						},
 						{
 							"name": "gap",
@@ -10290,12 +11555,37 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": false
+						},
+						{
+							"name": "ref",
+							"type": "React.Ref<HTMLDivElement>",
+							"required": false,
+							"description": "Ref forwarded to the grid container element."
 						}
 					]
 				},
 				{
 					"name": "GridItem",
-					"props": []
+					"props": [
+						{
+							"name": "colSpan",
+							"type": "ResponsiveGridSpan",
+							"required": false,
+							"description": "Number of columns the grid item spans (`\"full\"` or responsive breakpoint map)."
+						},
+						{
+							"name": "rowSpan",
+							"type": "1 | 2 | 3 | 4",
+							"required": false,
+							"description": "Number of grid rows the item spans."
+						},
+						{
+							"name": "ref",
+							"type": "React.Ref<HTMLDivElement>",
+							"required": false,
+							"description": "Ref forwarded to the grid item surface element."
+						}
+					]
 				}
 			]
 		},
@@ -10305,7 +11595,7 @@
 			"importPath": "@nocoo/basalt/components/hover-card",
 			"subpath": "./components/hover-card",
 			"sourceFile": "packages/basalt/src/components/hover-card.tsx",
-			"sourceHash": "cb2d23f084798656",
+			"sourceHash": "f2574a4aa67eff16",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10695,7 +11985,7 @@
 			"importPath": "@nocoo/basalt/components/icon-picker",
 			"subpath": "./components/icon-picker",
 			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
-			"sourceHash": "fe5f7c8f46e81d26",
+			"sourceHash": "61381b591de119a5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11269,7 +12559,7 @@
 			"importPath": "@nocoo/basalt/components/input",
 			"subpath": "./components/input",
 			"sourceFile": "packages/basalt/src/components/input.tsx",
-			"sourceHash": "adc872a1435f74a6",
+			"sourceHash": "d6b810879a6c3b98",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11375,7 +12665,7 @@
 			"importPath": "@nocoo/basalt/components/input-area",
 			"subpath": "./components/input-area",
 			"sourceFile": "packages/basalt/src/components/input-area.tsx",
-			"sourceHash": "0dda757c96eec650",
+			"sourceHash": "4ffae2d6a39b1b4f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11801,7 +13091,7 @@
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"subpath": "./components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "6fe801690960b41c",
+			"sourceHash": "a15d4171b25f458a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -12968,104 +14258,6 @@
 			]
 		},
 		{
-			"displayName": "floatingSurfaceClass",
-			"exportName": "floatingSurfaceClass",
-			"importPath": "@nocoo/basalt/components/overlay",
-			"subpath": "./components/overlay",
-			"sourceFile": "packages/basalt/src/components/overlay.ts",
-			"sourceHash": "82d663850178d007",
-			"rootAvailable": false,
-			"maturity": "ready",
-			"kind": "legacy-internal",
-			"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-			"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-			"summary": "Internal class generators and spacing constants for overlay menus and select",
-			"peers": [],
-			"optionalPeers": [],
-			"symbols": [
-				{
-					"name": "floatingSurfaceClass",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "overlayPanelClass",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "overlayItemClass",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "OVERLAY_GAP",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "MENU_GAP",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "OVERLAY_LAYER",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "OVERLAY_MOTION",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "FOCUS_RING",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "FOCUS_BORDER",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "FOCUS_INSET",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"packageDoc": "ai/COMPATIBILITY.md#wildcard-subpaths",
-					"originModule": "@nocoo/basalt/components/overlay"
-				}
-			]
-		},
-		{
 			"displayName": "Page Header",
 			"exportName": "PageHeader",
 			"importPath": "@nocoo/basalt/components/page-header",
@@ -13209,7 +14401,7 @@
 			"importPath": "@nocoo/basalt/components/popover",
 			"subpath": "./components/popover",
 			"sourceFile": "packages/basalt/src/components/popover.tsx",
-			"sourceHash": "97916267c06662c0",
+			"sourceHash": "09b5809e3227f2d6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13767,7 +14959,7 @@
 			"importPath": "@nocoo/basalt/components/radio",
 			"subpath": "./components/radio",
 			"sourceFile": "packages/basalt/src/components/radio.tsx",
-			"sourceHash": "11873fb9c44cfa7b",
+			"sourceHash": "f105669983d85453",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -14761,7 +15953,7 @@
 			"importPath": "@nocoo/basalt/components/select",
 			"subpath": "./components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "19f9214f5824cb47",
+			"sourceHash": "87eafc20ec1af3bb",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15337,7 +16529,7 @@
 			"importPath": "@nocoo/basalt/components/sheet",
 			"subpath": "./components/sheet",
 			"sourceFile": "packages/basalt/src/components/sheet.tsx",
-			"sourceHash": "e2447053f1ac76e5",
+			"sourceHash": "7bfa5b4a67723031",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15532,7 +16724,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -15544,7 +16736,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered button element to the child element, merging props and behavior.\nClose forwards ref to HTMLButtonElement and inherits native button attributes."
+									"description": "Change the default rendered button element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -15556,7 +16748,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+									"description": "Change the default rendered heading element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -15568,7 +16760,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+									"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 								}
 							]
 						},
@@ -15583,35 +16775,49 @@
 									"description": "Edge of the screen where the drawer panel is positioned and anchored."
 								},
 								{
+									"name": "showCloseButton",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show the built-in top-right dismiss icon button inside SheetContent."
+								},
+								{
+									"name": "closeLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Close\"",
+									"description": "Accessible label for the built-in close button."
+								},
+								{
 									"name": "asChild",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+									"description": "Change the default rendered div element to the child element, merging props and behavior."
 								},
 								{
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+									"description": "Force mounting content in DOM for external animation controls."
 								},
 								{
 									"name": "onOpenAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when auto-focusing the first element on open. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when auto-focusing the first element on open."
 								},
 								{
 									"name": "onCloseAutoFocus",
 									"type": "(event: Event) => void",
 									"required": false,
-									"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when restoring focus on close."
 								},
 								{
 									"name": "onEscapeKeyDown",
 									"type": "(event: KeyboardEvent) => void",
 									"required": false,
-									"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+									"description": "Event handler called when the Escape key is pressed."
 								},
 								{
 									"name": "onPointerDownOutside",
@@ -15629,7 +16835,7 @@
 									"name": "onInteractOutside",
 									"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 									"required": false,
-									"description": "Event handler called when any interaction (pointer or focus) occurs outside the sheet bounds."
+									"description": "Event handler called when any interaction occurs outside the sheet bounds."
 								}
 							]
 						},
@@ -15684,7 +16890,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -15696,7 +16902,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nClose forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -15708,7 +16914,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+							"description": "Change the default rendered heading element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -15720,7 +16926,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+							"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -15735,35 +16941,49 @@
 							"description": "Edge of the screen where the drawer panel is positioned and anchored."
 						},
 						{
+							"name": "showCloseButton",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the built-in top-right dismiss icon button inside SheetContent."
+						},
+						{
+							"name": "closeLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Close\"",
+							"description": "Accessible label for the built-in close button."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "onOpenAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when auto-focusing the first element on open. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when auto-focusing the first element on open."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when restoring focus on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when the Escape key is pressed."
 						},
 						{
 							"name": "onPointerDownOutside",
@@ -15781,7 +17001,7 @@
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Event handler called when any interaction (pointer or focus) occurs outside the sheet bounds."
+							"description": "Event handler called when any interaction occurs outside the sheet bounds."
 						}
 					]
 				},
@@ -15801,7 +17021,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "f41ac4c2964dbdea",
+			"sourceHash": "3e18eaabad0afabc",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17155,7 +18375,7 @@
 			"importPath": "@nocoo/basalt/components/slider",
 			"subpath": "./components/slider",
 			"sourceFile": "packages/basalt/src/components/slider.tsx",
-			"sourceHash": "20693a521963a38f",
+			"sourceHash": "27fa1e9e99f3830c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17733,7 +18953,7 @@
 			"importPath": "@nocoo/basalt/components/switch",
 			"subpath": "./components/switch",
 			"sourceFile": "packages/basalt/src/components/switch.tsx",
-			"sourceHash": "49244c01fda2b33d",
+			"sourceHash": "8d3dc5b6f785e20b",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18725,7 +19945,7 @@
 			"importPath": "@nocoo/basalt/components/tabs",
 			"subpath": "./components/tabs",
 			"sourceFile": "packages/basalt/src/components/tabs.tsx",
-			"sourceHash": "9a09426c9f576a3f",
+			"sourceHash": "60d3604b32214b28",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -19113,7 +20333,7 @@
 			"importPath": "@nocoo/basalt/components/tag-color-picker",
 			"subpath": "./components/tag-color-picker",
 			"sourceFile": "packages/basalt/src/components/tag-color-picker.tsx",
-			"sourceHash": "01f5b181849d7e0f",
+			"sourceHash": "96e0f534d42d403b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -20885,7 +22105,7 @@
 			"importPath": "@nocoo/basalt/components/toggle",
 			"subpath": "./components/toggle",
 			"sourceFile": "packages/basalt/src/components/toggle.tsx",
-			"sourceHash": "03206e6bf4b858d7",
+			"sourceHash": "5f3f164235a97a9d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -21023,7 +22243,7 @@
 			"importPath": "@nocoo/basalt/components/toggle-group",
 			"subpath": "./components/toggle-group",
 			"sourceFile": "packages/basalt/src/components/toggle-group.tsx",
-			"sourceHash": "d9418019ac28f035",
+			"sourceHash": "a39b32bf1e8f81a2",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -21339,7 +22559,7 @@
 			"importPath": "@nocoo/basalt/components/toolbar",
 			"subpath": "./components/toolbar",
 			"sourceFile": "packages/basalt/src/components/toolbar.tsx",
-			"sourceHash": "4fcdbcc5cee68da3",
+			"sourceHash": "1f3084d21c646d3f",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -21489,7 +22709,7 @@
 			"importPath": "@nocoo/basalt/components/tooltip",
 			"subpath": "./components/tooltip",
 			"sourceFile": "packages/basalt/src/components/tooltip.tsx",
-			"sourceHash": "afb0e323d7a0c9d4",
+			"sourceHash": "ca5a0580c73525a4",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23033,7 +24253,7 @@
 			"exportName": "Button",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "c90ec29ff0b7e766",
+			"sourceHash": "17f1a8ca12911e52",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#button",
@@ -23092,7 +24312,7 @@
 			"exportName": "LinkButton",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "c90ec29ff0b7e766",
+			"sourceHash": "17f1a8ca12911e52",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-button",
@@ -23312,7 +24532,7 @@
 			"exportName": "Tooltip",
 			"importPath": "@nocoo/basalt/components/tooltip",
 			"sourceFile": "packages/basalt/src/components/tooltip.tsx",
-			"sourceHash": "afb0e323d7a0c9d4",
+			"sourceHash": "ca5a0580c73525a4",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tooltip",
@@ -23561,7 +24781,7 @@
 			"exportName": "LayerCard",
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "6fe801690960b41c",
+			"sourceHash": "a15d4171b25f458a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#layer-card",
@@ -23811,7 +25031,7 @@
 			"exportName": "Input",
 			"importPath": "@nocoo/basalt/components/input",
 			"sourceFile": "packages/basalt/src/components/input.tsx",
-			"sourceHash": "adc872a1435f74a6",
+			"sourceHash": "d6b810879a6c3b98",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input",
@@ -23849,7 +25069,7 @@
 			"exportName": "InputArea",
 			"importPath": "@nocoo/basalt/components/input-area",
 			"sourceFile": "packages/basalt/src/components/input-area.tsx",
-			"sourceHash": "0dda757c96eec650",
+			"sourceHash": "4ffae2d6a39b1b4f",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input-area",
@@ -24022,7 +25242,7 @@
 			"exportName": "Checkbox",
 			"importPath": "@nocoo/basalt/components/checkbox",
 			"sourceFile": "packages/basalt/src/components/checkbox.tsx",
-			"sourceHash": "f4617a0209293eb4",
+			"sourceHash": "ec39ea1aa2332676",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#checkbox",
@@ -24111,7 +25331,7 @@
 			"exportName": "Radio",
 			"importPath": "@nocoo/basalt/components/radio",
 			"sourceFile": "packages/basalt/src/components/radio.tsx",
-			"sourceHash": "11873fb9c44cfa7b",
+			"sourceHash": "f105669983d85453",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#radio",
@@ -24182,7 +25402,7 @@
 			"exportName": "Switch",
 			"importPath": "@nocoo/basalt/components/switch",
 			"sourceFile": "packages/basalt/src/components/switch.tsx",
-			"sourceHash": "49244c01fda2b33d",
+			"sourceHash": "8d3dc5b6f785e20b",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#switch",
@@ -24271,7 +25491,7 @@
 			"exportName": "Select",
 			"importPath": "@nocoo/basalt/components/select",
 			"sourceFile": "packages/basalt/src/components/select.tsx",
-			"sourceHash": "19f9214f5824cb47",
+			"sourceHash": "87eafc20ec1af3bb",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#select",
@@ -24398,7 +25618,7 @@
 			"exportName": "Autocomplete",
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "c98621464e4aafa2",
+			"sourceHash": "2d75925fa8c1d732",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#autocomplete",
@@ -24614,7 +25834,7 @@
 			"exportName": "Slider",
 			"importPath": "@nocoo/basalt/components/slider",
 			"sourceFile": "packages/basalt/src/components/slider.tsx",
-			"sourceHash": "20693a521963a38f",
+			"sourceHash": "27fa1e9e99f3830c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#slider",
@@ -24704,7 +25924,7 @@
 			"exportName": "Toggle",
 			"importPath": "@nocoo/basalt/components/toggle",
 			"sourceFile": "packages/basalt/src/components/toggle.tsx",
-			"sourceHash": "03206e6bf4b858d7",
+			"sourceHash": "5f3f164235a97a9d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toggle",
@@ -24762,7 +25982,7 @@
 			"exportName": "ToggleGroup",
 			"importPath": "@nocoo/basalt/components/toggle-group",
 			"sourceFile": "packages/basalt/src/components/toggle-group.tsx",
-			"sourceHash": "d9418019ac28f035",
+			"sourceHash": "a39b32bf1e8f81a2",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toggle-group",
@@ -26229,7 +27449,7 @@
 			"exportName": "Accordion",
 			"importPath": "@nocoo/basalt/components/accordion",
 			"sourceFile": "packages/basalt/src/components/accordion.tsx",
-			"sourceHash": "ed1611c3d45dba9e",
+			"sourceHash": "235f77d5a3953e82",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#accordion",
@@ -26399,7 +27619,7 @@
 			"exportName": "Dialog",
 			"importPath": "@nocoo/basalt/components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "71386b3a029b3f6d",
+			"sourceHash": "989ee41564b36535",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dialog",
@@ -26443,7 +27663,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26472,7 +27692,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nOverlay forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
@@ -26500,35 +27720,49 @@
 							"description": "When true, pointer interactions outside the dialog panel are prevented from dismissing the dialog."
 						},
 						{
+							"name": "showCloseButton",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the built-in top-right dismiss icon button inside DialogContent."
+						},
+						{
+							"name": "closeLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Close\"",
+							"description": "Accessible label for the built-in close button."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "onOpenAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when auto-focusing the first element on open. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when auto-focusing the first element on open."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when restoring focus on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when the Escape key is pressed."
 						},
 						{
 							"name": "onPointerDownOutside",
@@ -26546,7 +27780,7 @@
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Event handler called when any interaction (pointer or focus) occurs outside the dialog bounds."
+							"description": "Event handler called when any interaction occurs outside the dialog bounds."
 						}
 					]
 				},
@@ -26558,7 +27792,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+							"description": "Change the default rendered heading element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26570,7 +27804,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+							"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26582,7 +27816,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nClose forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26602,7 +27836,7 @@
 			"exportName": "AlertDialog",
 			"importPath": "@nocoo/basalt/components/alert-dialog",
 			"sourceFile": "packages/basalt/src/components/alert-dialog.tsx",
-			"sourceHash": "3bfde9d3d331b091",
+			"sourceHash": "783ce2980ccb1b36",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#alert-dialog",
@@ -26639,7 +27873,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26668,7 +27902,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nOverlay forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
@@ -26693,31 +27927,31 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "onOpenAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when auto-focusing on open. Defaults to focusing the cancel button. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when auto-focusing on open. Defaults to focusing the cancel button."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when restoring focus on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when the Escape key is pressed."
 						}
 					]
 				},
@@ -26729,7 +27963,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+							"description": "Change the default rendered heading element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26741,7 +27975,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+							"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26749,11 +27983,18 @@
 					"name": "AlertDialogCancel",
 					"props": [
 						{
+							"name": "size",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Button size preset for the cancel button."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nCancel forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26761,11 +28002,25 @@
 					"name": "AlertDialogAction",
 					"props": [
 						{
+							"name": "variant",
+							"type": "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
+							"required": false,
+							"default": "\"destructive\"",
+							"description": "Visual button variant for the primary confirmation action."
+						},
+						{
+							"name": "size",
+							"type": "\"default\" | \"icon-sm\" | \"icon\" | \"lg\" | \"sm\" | \"tile\" | null",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Button size preset for the primary confirmation action."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nAction forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -26785,7 +28040,7 @@
 			"exportName": "ConfirmDialog",
 			"importPath": "@nocoo/basalt/components/confirm-dialog",
 			"sourceFile": "packages/basalt/src/components/confirm-dialog.tsx",
-			"sourceHash": "cafdd27c6800d3cd",
+			"sourceHash": "a392e43f27b42393",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#confirm-dialog",
@@ -26796,13 +28051,20 @@
 						{
 							"name": "open",
 							"type": "boolean",
-							"required": true,
-							"description": "Whether the confirmation dialog is shown."
+							"required": false,
+							"description": "Whether the confirmation dialog is shown when controlled."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Uncontrolled initial open state when `open` is omitted."
 						},
 						{
 							"name": "onOpenChange",
 							"type": "(open: boolean) => void",
-							"required": true,
+							"required": false,
 							"description": "Called when the dialog requests to open or close."
 						},
 						{
@@ -26815,7 +28077,7 @@
 							"name": "onConfirm",
 							"type": "() => void | Promise<void>",
 							"required": true,
-							"description": "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors."
+							"description": "Called once when the user confirms. In controlled mode, caller manages loading and closing; uncontrolled dialogs close automatically unless a returned Promise rejects."
 						},
 						{
 							"name": "title",
@@ -26897,6 +28159,12 @@
 							"type": "ConfirmDialogVariant",
 							"required": false,
 							"description": "Appearance of the confirm button."
+						},
+						{
+							"name": "onConfirm",
+							"type": "() => void | Promise<void>",
+							"required": false,
+							"description": "Optional async handler awaited with loading state before closing and settling `true`."
 						}
 					]
 				}
@@ -26908,7 +28176,7 @@
 			"exportName": "Popover",
 			"importPath": "@nocoo/basalt/components/popover",
 			"sourceFile": "packages/basalt/src/components/popover.tsx",
-			"sourceHash": "97916267c06662c0",
+			"sourceHash": "09b5809e3227f2d6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#popover",
@@ -27128,7 +28396,7 @@
 			"exportName": "DropdownMenu",
 			"importPath": "@nocoo/basalt/components/dropdown-menu",
 			"sourceFile": "packages/basalt/src/components/dropdown-menu.tsx",
-			"sourceHash": "d93c66c419833a66",
+			"sourceHash": "235b809f21c108f6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dropdown-menu",
@@ -27166,14 +28434,14 @@
 							"type": "\"ltr\" | \"rtl\"",
 							"required": false,
 							"default": "\"ltr\"",
-							"description": "The reading direction of the dropdown menu. Inherited from DirectionProvider if present,\nor defaults to \"ltr\"."
+							"description": "The reading direction of the dropdown menu."
 						},
 						{
 							"name": "modal",
 							"type": "boolean",
 							"required": false,
 							"default": "true",
-							"description": "The modality of the dropdown menu. When set to true, interaction with outside elements\nwill be disabled and only menu content will be visible to screen readers."
+							"description": "The modality of the dropdown menu."
 						}
 					]
 				},
@@ -27191,7 +28459,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nDropdownMenuTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -27209,7 +28477,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuGroup forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -27226,13 +28494,13 @@
 							"name": "container",
 							"type": "DocumentFragment | Element | null",
 							"required": false,
-							"description": "Specify a container element to portal the content into.\nNote: Only controls direct portal children; does not override the destination\ncontainer of the built-in portal inside DropdownMenuContent."
+							"description": "Specify a container element to portal the content into."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries."
+							"description": "Used to force mounting when more control is needed."
 						}
 					]
 				},
@@ -27243,7 +28511,7 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Submenu structure elements.\nNote: Basalt does not export styled DropdownMenuSubTrigger or DropdownMenuSubContent components;\ncompose with underlying Radix primitives when building nested submenus."
+							"description": "Submenu trigger and content elements."
 						},
 						{
 							"name": "open",
@@ -27273,7 +28541,7 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": false,
-							"description": "Radio item elements grouped together.\nNote: Basalt does not export styled DropdownMenuRadioItem or indicator components;\ncompose with underlying Radix primitives when building radio selection groups."
+							"description": "Radio item elements grouped together."
 						},
 						{
 							"name": "value",
@@ -27292,7 +28560,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuRadioGroup forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -27311,7 +28579,7 @@
 							"type": "number",
 							"required": false,
 							"default": "8",
-							"description": "Distance in pixels between trigger and floating content panel.\nIn Basalt, defaults to MENU_GAP (8)."
+							"description": "Distance in pixels between trigger and floating content panel."
 						},
 						{
 							"name": "align",
@@ -27387,50 +28655,64 @@
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
+							"description": "Callback fired when auto-focusing on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Callback fired when the Escape key is down on the content layer. Can be prevented."
+							"description": "Callback fired when Escape is pressed on the content layer."
 						},
 						{
 							"name": "onPointerDownOutside",
 							"type": "(event: PointerDownOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the content. Can be prevented."
+							"description": "Callback fired when a pointerdown event happens outside the content."
 						},
 						{
 							"name": "onFocusOutside",
 							"type": "(event: FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the content. Can be prevented."
+							"description": "Callback fired when focus moves outside the content."
 						},
 						{
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the content. Can be prevented."
+							"description": "Callback fired when pointer or focus interaction happens outside the content."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
 						}
 					]
 				},
 				{
 					"name": "DropdownMenuItem",
 					"props": [
+						{
+							"name": "variant",
+							"type": "\"default\" | \"destructive\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Visual emphasis of the menu item."
+						},
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable items in the same menu."
+						},
 						{
 							"name": "disabled",
 							"type": "boolean",
@@ -27442,22 +28724,187 @@
 							"name": "onSelect",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when the menu item is selected (via click or keyboard).\nNote that this is a Radix CustomEvent, not native DOM onSelect."
+							"description": "Event handler called when the menu item is selected."
 						},
 						{
 							"name": "textValue",
 							"type": "string",
 							"required": false,
-							"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nDropdownMenuItem forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element."
 						}
 					]
+				},
+				{
+					"name": "DropdownMenuCheckboxItem",
+					"props": [
+						{
+							"name": "checked",
+							"type": "\"indeterminate\" | false | true",
+							"required": false,
+							"description": "Checked state of the item."
+						},
+						{
+							"name": "onCheckedChange",
+							"type": "(checked: boolean) => void",
+							"required": false,
+							"description": "Event handler called when the checked state changes."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the checkbox item."
+						},
+						{
+							"name": "onSelect",
+							"type": "(event: Event) => void",
+							"required": false,
+							"description": "Event handler called when the item is selected."
+						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"props": [
+						{
+							"name": "value",
+							"type": "string",
+							"required": true,
+							"description": "Unique value associated with this radio item."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the radio item."
+						},
+						{
+							"name": "onSelect",
+							"type": "(event: Event) => void",
+							"required": false,
+							"description": "Event handler called when the radio item is selected."
+						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the submenu trigger."
+						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"props": [
+						{
+							"name": "forceMount",
+							"type": "true",
+							"required": false,
+							"description": "Force mounting submenu content in DOM for external animation controls."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
+						}
+					]
+				},
+				{
+					"name": "DropdownMenuShortcut",
+					"props": []
 				}
 			]
 		},
@@ -27467,7 +28914,7 @@
 			"exportName": "ContextMenu",
 			"importPath": "@nocoo/basalt/components/context-menu",
 			"sourceFile": "packages/basalt/src/components/context-menu.tsx",
-			"sourceHash": "e879e388ca6f66b3",
+			"sourceHash": "9e456bed31ecade4",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#context-menu",
@@ -27518,7 +28965,108 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered span element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLSpanElement and inherits native span attributes."
+							"description": "Change the default rendered span element to the child element, merging props and behavior."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuGroup",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Menu items or elements grouped together."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuPortal",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Content to render into the portal target."
+						},
+						{
+							"name": "container",
+							"type": "DocumentFragment | Element | null",
+							"required": false,
+							"description": "Specify a container element to portal the content into."
+						},
+						{
+							"name": "forceMount",
+							"type": "true",
+							"required": false,
+							"description": "Used to force mounting when more control is needed."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSub",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Submenu trigger and content elements."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled open state of the submenu."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Uncontrolled initial open state of the submenu."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false,
+							"description": "Callback invoked when the submenu open state changes."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuRadioGroup",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Radio item elements grouped together."
+						},
+						{
+							"name": "value",
+							"type": "string",
+							"required": false,
+							"description": "Value of the currently selected radio item."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string) => void",
+							"required": false,
+							"description": "Callback invoked when the selected value changes."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
 						}
 					]
 				},
@@ -27585,50 +29133,64 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: Bare ContextMenuContent mounts directly without a built-in Portal wrapper."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
+							"description": "Callback fired when auto-focusing on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
+							"description": "Callback fired when the Escape key is down on the dismissable layer."
 						},
 						{
 							"name": "onPointerDownOutside",
 							"type": "(event: PointerDownOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
+							"description": "Callback fired when a pointerdown event happens outside the content."
 						},
 						{
 							"name": "onFocusOutside",
 							"type": "(event: FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
+							"description": "Callback fired when focus moves outside the content."
 						},
 						{
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
+							"description": "Callback fired when pointer or focus interaction happens outside the content."
 						}
 					]
 				},
 				{
 					"name": "ContextMenuItem",
 					"props": [
+						{
+							"name": "variant",
+							"type": "\"default\" | \"destructive\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Visual emphasis of the menu item."
+						},
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable items in the same menu."
+						},
 						{
 							"name": "disabled",
 							"type": "boolean",
@@ -27640,126 +29202,187 @@
 							"name": "onSelect",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when the context menu item is selected (via click or keyboard)."
+							"description": "Event handler called when the context menu item is selected."
 						},
 						{
 							"name": "textValue",
 							"type": "string",
 							"required": false,
-							"description": "Optional text used for typeahead navigation. By default typeahead uses item text content."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nItem forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element."
 						}
 					]
 				},
 				{
-					"name": "ContextMenuPanel",
+					"name": "ContextMenuCheckboxItem",
 					"props": [
 						{
-							"name": "loop",
+							"name": "checked",
+							"type": "\"indeterminate\" | false | true",
+							"required": false,
+							"description": "Checked state of the item."
+						},
+						{
+							"name": "onCheckedChange",
+							"type": "(checked: boolean) => void",
+							"required": false,
+							"description": "Callback invoked when the checked state changes."
+						},
+						{
+							"name": "disabled",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Whether keyboard navigation should loop around item boundaries."
+							"description": "Disable the checkbox item."
 						},
 						{
-							"name": "alignOffset",
-							"type": "number",
+							"name": "onSelect",
+							"type": "(event: Event) => void",
 							"required": false,
-							"default": "0",
-							"description": "Offset in pixels from the start or end alignment position."
+							"description": "Event handler called when the item is selected."
 						},
 						{
-							"name": "avoidCollisions",
-							"type": "boolean",
+							"name": "textValue",
+							"type": "string",
 							"required": false,
-							"default": "true",
-							"description": "Whether to reposition content to avoid viewport boundary collisions."
-						},
-						{
-							"name": "collisionBoundary",
-							"type": "Boundary[] | Element | null",
-							"required": false,
-							"default": "[]",
-							"description": "Element or elements bounding boundary collision calculations."
-						},
-						{
-							"name": "collisionPadding",
-							"type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>>",
-							"required": false,
-							"default": "0",
-							"description": "Virtual padding from collision boundaries in pixels."
-						},
-						{
-							"name": "arrowPadding",
-							"type": "number",
-							"required": false,
-							"default": "0",
-							"description": "Padding in pixels between popper arrow and floating panel edge."
-						},
-						{
-							"name": "sticky",
-							"type": "\"always\" | \"partial\"",
-							"required": false,
-							"default": "\"partial\"",
-							"description": "Sticky positioning behavior along the align axis when overflowing."
-						},
-						{
-							"name": "hideWhenDetached",
-							"type": "boolean",
-							"required": false,
-							"default": "false",
-							"description": "Whether to hide content completely when trigger is fully occluded."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuRadioItem",
+					"props": [
+						{
+							"name": "value",
+							"type": "string",
+							"required": true,
+							"description": "Unique value associated with this radio item."
 						},
 						{
-							"name": "onCloseAutoFocus",
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the radio item."
+						},
+						{
+							"name": "onSelect",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Callback fired when auto-focusing on close. Can be prevented."
+							"description": "Event handler called when the radio item is selected."
 						},
 						{
-							"name": "onEscapeKeyDown",
-							"type": "(event: KeyboardEvent) => void",
+							"name": "textValue",
+							"type": "string",
 							"required": false,
-							"description": "Callback fired when the Escape key is down on the dismissable layer. Can be prevented."
+							"description": "Optional text used for typeahead navigation."
 						},
 						{
-							"name": "onPointerDownOutside",
-							"type": "(event: PointerDownOutsideEvent) => void",
+							"name": "asChild",
+							"type": "boolean",
 							"required": false,
-							"description": "Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented."
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuLabel",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
 						},
 						{
-							"name": "onFocusOutside",
-							"type": "(event: FocusOutsideEvent) => void",
+							"name": "asChild",
+							"type": "boolean",
 							"required": false,
-							"description": "Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented."
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSeparator",
+					"props": [
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSubTrigger",
+					"props": [
+						{
+							"name": "inset",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Indent label to align with checkable menu items."
 						},
 						{
-							"name": "onInteractOutside",
-							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
+							"name": "disabled",
+							"type": "boolean",
 							"required": false,
-							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
+							"default": "false",
+							"description": "Disable the submenu trigger."
 						},
+						{
+							"name": "textValue",
+							"type": "string",
+							"required": false,
+							"description": "Optional text used for typeahead navigation."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Change the default rendered div element to the child element."
+						}
+					]
+				},
+				{
+					"name": "ContextMenuSubContent",
+					"props": [
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting submenu content in DOM for external animation controls."
+						},
+						{
+							"name": "asChild",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Merge props and behavior onto the child element instead of rendering a wrapper div."
 						}
 					]
+				},
+				{
+					"name": "ContextMenuShortcut",
+					"props": []
 				}
 			]
 		},
@@ -27769,7 +29392,7 @@
 			"exportName": "HoverCard",
 			"importPath": "@nocoo/basalt/components/hover-card",
 			"sourceFile": "packages/basalt/src/components/hover-card.tsx",
-			"sourceHash": "cb2d23f084798656",
+			"sourceHash": "f2574a4aa67eff16",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#hover-card",
@@ -27937,7 +29560,7 @@
 			"exportName": "Sheet",
 			"importPath": "@nocoo/basalt/components/sheet",
 			"sourceFile": "packages/basalt/src/components/sheet.tsx",
-			"sourceHash": "e2447053f1ac76e5",
+			"sourceHash": "7bfa5b4a67723031",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sheet",
@@ -27981,7 +29604,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nTrigger forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -27993,7 +29616,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered button element to the child element, merging props and behavior.\nClose forwards ref to HTMLButtonElement and inherits native button attributes."
+							"description": "Change the default rendered button element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -28005,7 +29628,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered heading element to the child element, merging props and behavior.\nTitle forwards ref to HTMLHeadingElement and inherits native h2 attributes."
+							"description": "Change the default rendered heading element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -28017,7 +29640,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered paragraph element to the child element, merging props and behavior.\nDescription forwards ref to HTMLParagraphElement and inherits native p attributes."
+							"description": "Change the default rendered paragraph element to the child element, merging props and behavior."
 						}
 					]
 				},
@@ -28032,35 +29655,49 @@
 							"description": "Edge of the screen where the drawer panel is positioned and anchored."
 						},
 						{
+							"name": "showCloseButton",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the built-in top-right dismiss icon button inside SheetContent."
+						},
+						{
+							"name": "closeLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Close\"",
+							"description": "Accessible label for the built-in close button."
+						},
+						{
 							"name": "asChild",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nContent forwards ref to HTMLDivElement and inherits native div attributes."
+							"description": "Change the default rendered div element to the child element, merging props and behavior."
 						},
 						{
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
+							"description": "Force mounting content in DOM for external animation controls."
 						},
 						{
 							"name": "onOpenAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when auto-focusing the first element on open. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when auto-focusing the first element on open."
 						},
 						{
 							"name": "onCloseAutoFocus",
 							"type": "(event: Event) => void",
 							"required": false,
-							"description": "Event handler called when restoring focus on close. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when restoring focus on close."
 						},
 						{
 							"name": "onEscapeKeyDown",
 							"type": "(event: KeyboardEvent) => void",
 							"required": false,
-							"description": "Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault()."
+							"description": "Event handler called when the Escape key is pressed."
 						},
 						{
 							"name": "onPointerDownOutside",
@@ -28078,7 +29715,7 @@
 							"name": "onInteractOutside",
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
-							"description": "Event handler called when any interaction (pointer or focus) occurs outside the sheet bounds."
+							"description": "Event handler called when any interaction occurs outside the sheet bounds."
 						}
 					]
 				},
@@ -28342,7 +29979,7 @@
 			"exportName": "Tabs",
 			"importPath": "@nocoo/basalt/components/tabs",
 			"sourceFile": "packages/basalt/src/components/tabs.tsx",
-			"sourceHash": "9a09426c9f576a3f",
+			"sourceHash": "60d3604b32214b28",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tabs",
@@ -28779,7 +30416,7 @@
 			"exportName": "Collapsible",
 			"importPath": "@nocoo/basalt/components/collapsible",
 			"sourceFile": "packages/basalt/src/components/collapsible.tsx",
-			"sourceHash": "ede74fce06c35a5a",
+			"sourceHash": "9da54f01e73b1ca2",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#collapsible",
@@ -28916,7 +30553,7 @@
 			"exportName": "Toolbar",
 			"importPath": "@nocoo/basalt/components/toolbar",
 			"sourceFile": "packages/basalt/src/components/toolbar.tsx",
-			"sourceHash": "4fcdbcc5cee68da3",
+			"sourceHash": "1f3084d21c646d3f",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toolbar",
@@ -29025,7 +30662,7 @@
 			"exportName": "Grid",
 			"importPath": "@nocoo/basalt/components/grid",
 			"sourceFile": "packages/basalt/src/components/grid.tsx",
-			"sourceHash": "e58f6bd6beb5446e",
+			"sourceHash": "642090371e73c37c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#grid",
@@ -29035,10 +30672,17 @@
 					"props": [
 						{
 							"name": "columns",
-							"type": "number",
+							"type": "number | ResponsiveGridColumns",
 							"required": false,
 							"default": "2",
-							"description": "Number of equal columns."
+							"description": "Number of equal columns or container-responsive column counts per breakpoint."
+						},
+						{
+							"name": "responsive",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "When true and `columns` is a preset count (`2`, `3`, `4`, `6`, `12`), adapt columns at island container breakpoints (or viewport fallback outside islands)."
 						},
 						{
 							"name": "gap",
@@ -29057,12 +30701,37 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": false
+						},
+						{
+							"name": "ref",
+							"type": "React.Ref<HTMLDivElement>",
+							"required": false,
+							"description": "Ref forwarded to the grid container element."
 						}
 					]
 				},
 				{
 					"name": "GridItem",
-					"props": []
+					"props": [
+						{
+							"name": "colSpan",
+							"type": "ResponsiveGridSpan",
+							"required": false,
+							"description": "Number of columns the grid item spans (`\"full\"` or responsive breakpoint map)."
+						},
+						{
+							"name": "rowSpan",
+							"type": "1 | 2 | 3 | 4",
+							"required": false,
+							"description": "Number of grid rows the item spans."
+						},
+						{
+							"name": "ref",
+							"type": "React.Ref<HTMLDivElement>",
+							"required": false,
+							"description": "Ref forwarded to the grid item surface element."
+						}
+					]
 				}
 			]
 		},
@@ -29115,7 +30784,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "f41ac4c2964dbdea",
+			"sourceHash": "3e18eaabad0afabc",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -29702,7 +31371,7 @@
 			"exportName": "Fab",
 			"importPath": "@nocoo/basalt/components/fab",
 			"sourceFile": "packages/basalt/src/components/fab.tsx",
-			"sourceHash": "2b13e4b242e0b31e",
+			"sourceHash": "e7f09b84c9bd2748",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#fab",
@@ -29760,7 +31429,7 @@
 			"exportName": "Dock",
 			"importPath": "@nocoo/basalt/components/dock",
 			"sourceFile": "packages/basalt/src/components/dock.tsx",
-			"sourceHash": "7d7535f231516419",
+			"sourceHash": "fe750e629c96ee03",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dock",
@@ -30588,7 +32257,7 @@
 			"exportName": "EditableNavItem",
 			"importPath": "@nocoo/basalt/components/editable-nav-item",
 			"sourceFile": "packages/basalt/src/components/editable-nav-item.tsx",
-			"sourceHash": "5f86eb075d6d4a6d",
+			"sourceHash": "ad43afc3126750ff",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#editable-nav-item",
@@ -30777,7 +32446,7 @@
 			"exportName": "IconPicker",
 			"importPath": "@nocoo/basalt/components/icon-picker",
 			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
-			"sourceHash": "fe5f7c8f46e81d26",
+			"sourceHash": "61381b591de119a5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#icon-picker",
@@ -30936,7 +32605,7 @@
 			"exportName": "TagColorPicker",
 			"importPath": "@nocoo/basalt/components/tag-color-picker",
 			"sourceFile": "packages/basalt/src/components/tag-color-picker.tsx",
-			"sourceHash": "01f5b181849d7e0f",
+			"sourceHash": "96e0f534d42d403b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tag-color-picker",
@@ -31109,7 +32778,7 @@
 			"exportName": "ChartFrame",
 			"importPath": "@nocoo/basalt/components/chart",
 			"sourceFile": "packages/basalt/src/components/chart.tsx",
-			"sourceHash": "bf9046390676754c",
+			"sourceHash": "58481cdcad308ab5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#chart",
@@ -31134,8 +32803,10 @@
 						},
 						{
 							"name": "size",
-							"type": "string",
-							"required": false
+							"type": "\"lg\" | \"md\" | \"sm\" | string & {}",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Height preset (`\"sm\"` | `\"md\"` | `\"lg\"`) or custom Tailwind sizing classes."
 						},
 						{
 							"name": "summary",
@@ -31158,6 +32829,10 @@
 							"required": false
 						}
 					]
+				},
+				{
+					"name": "ChartTooltip",
+					"props": []
 				},
 				{
 					"name": "ChartTooltipContent",

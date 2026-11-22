@@ -52,6 +52,7 @@ export default function WorkspacePage() {
 							</SheetTrigger>
 							<SheetContent
 								side="left"
+								showCloseButton={false}
 								className="w-[var(--basalt-size-sidebar-width)] max-w-[var(--basalt-size-sidebar-width)] border-0 p-0"
 							>
 								<SheetTitle className="sr-only">Workspace navigation</SheetTitle>

@@ -3,7 +3,7 @@ import {
 	type ChartFrameProps as BasaltChartFrameProps,
 	RESPONSIVE_CONTAINER_PROPS,
 } from "@nocoo/basalt/components/chart";
-import { cloneElement, type ReactElement, type ReactNode } from "react";
+import { cloneElement, type ReactElement } from "react";
 import { ResponsiveContainer } from "recharts";
 
 export type ChartFrameProps = Omit<BasaltChartFrameProps, "children"> & {
@@ -14,7 +14,6 @@ export type ChartFrameProps = Omit<BasaltChartFrameProps, "children"> & {
 	accessibilityLayer?: boolean;
 };
 
-export type ChartShellProps = ChartFrameProps & { legend?: ReactNode };
 export type ChartAccessibilityProps = Pick<
 	ChartFrameProps,
 	"summary" | "dataAlternative" | "accessibilityLayer"
@@ -36,8 +35,4 @@ export function ChartFrame({
 			<ResponsiveContainer {...RESPONSIVE_CONTAINER_PROPS}>{child}</ResponsiveContainer>
 		</BasaltChartFrame>
 	);
-}
-
-export function ChartShell(props: ChartShellProps) {
-	return <ChartFrame {...props} />;
 }

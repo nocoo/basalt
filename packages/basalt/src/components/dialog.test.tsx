@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
 	DIALOG_SIZES,
@@ -93,15 +93,28 @@ describe("Dialog", () => {
 		expect(screen.getByRole("dialog")).toHaveAttribute("data-basalt-floating");
 	});
 
-	it("closes from an explicit close control", () => {
+	it("closes from the built-in close button and explicit close controls", () => {
 		render(
 			<Dialog defaultOpen>
-				<DialogContent>
+				<DialogContent closeLabel="Dismiss panel">
 					<DialogTitle>Stay</DialogTitle>
+				</DialogContent>
+			</Dialog>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Dismiss panel" }));
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+		cleanup();
+
+		render(
+			<Dialog defaultOpen>
+				<DialogContent showCloseButton={false}>
+					<DialogTitle>Manual</DialogTitle>
 					<DialogClose>Dismiss</DialogClose>
 				</DialogContent>
 			</Dialog>,
 		);
+		expect(screen.getByRole("dialog", { name: "Manual" })).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 	});
@@ -117,7 +130,8 @@ describe("Dialog", () => {
 				</DialogContent>
 			</Dialog>,
 		);
-		expect(screen.getByText("Edit").parentElement?.className).toContain("flex-col");
+		expect(screen.getByText("Edit").parentElement).toHaveClass("flex-col", "pe-basalt-card-xl");
+		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
 		expect(screen.getByText("Save").className).toContain("mt-basalt-layout");
 		expect(screen.getByText("Save").className).toContain("gap-basalt-space-lg");
 		expect(screen.getByText("Save").className).not.toContain("mt-basalt-space-lg");

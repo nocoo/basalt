@@ -22,8 +22,10 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: "string",
+				type: "\"lg\" | \"md\" | \"sm\" | string & {}",
 				required: false,
+				default: "\"md\"",
+				description: "Height preset (`\"sm\"` | `\"md\"` | `\"lg\"`) or custom Tailwind sizing classes.",
 			},
 			{
 				name: "summary",
@@ -46,6 +48,10 @@ export const API = [
 				required: false,
 			},
 		],
+	},
+	{
+		name: "ChartTooltip",
+		props: [],
 	},
 	{
 		name: "ChartTooltipContent",

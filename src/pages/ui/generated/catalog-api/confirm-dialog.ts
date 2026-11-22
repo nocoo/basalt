@@ -8,13 +8,20 @@ export const API = [
 			{
 				name: "open",
 				type: "boolean",
-				required: true,
-				description: "Whether the confirmation dialog is shown.",
+				required: false,
+				description: "Whether the confirmation dialog is shown when controlled.",
+			},
+			{
+				name: "defaultOpen",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Uncontrolled initial open state when `open` is omitted.",
 			},
 			{
 				name: "onOpenChange",
 				type: "(open: boolean) => void",
-				required: true,
+				required: false,
 				description: "Called when the dialog requests to open or close.",
 			},
 			{
@@ -27,7 +34,7 @@ export const API = [
 				name: "onConfirm",
 				type: "() => void | Promise<void>",
 				required: true,
-				description: "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors.",
+				description: "Called once when the user confirms. In controlled mode, caller manages loading and closing; uncontrolled dialogs close automatically unless a returned Promise rejects.",
 			},
 			{
 				name: "title",
@@ -109,6 +116,12 @@ export const API = [
 				type: "ConfirmDialogVariant",
 				required: false,
 				description: "Appearance of the confirm button.",
+			},
+			{
+				name: "onConfirm",
+				type: "() => void | Promise<void>",
+				required: false,
+				description: "Optional async handler awaited with loading state before closing and settling `true`.",
 			},
 		],
 	},

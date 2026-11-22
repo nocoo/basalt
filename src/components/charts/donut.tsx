@@ -8,7 +8,7 @@ import {
 } from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import { ChartShell } from "./frame";
+import { ChartFrame } from "./frame";
 
 export type DonutChartProps = {
 	data: NamedValue[];
@@ -55,7 +55,7 @@ export function DonutChart({
 		};
 	});
 	return (
-		<ChartShell
+		<ChartFrame
 			ariaLabel={ariaLabel}
 			className={className}
 			size="h-basalt-36 w-basalt-36"
@@ -81,6 +81,6 @@ export function DonutChart({
 				</Pie>
 				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: false })} />
 			</PieChart>
-		</ChartShell>
+		</ChartFrame>
 	);
 }

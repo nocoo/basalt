@@ -9,8 +9,8 @@ import {
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Check, Minus } from "../utils/internal-icons";
+import { FOCUS_RING } from "../utils/overlay";
 import { useCheckableGroup } from "../utils/use-checkable-group";
-import { FOCUS_RING } from "./overlay";
 
 export type CheckboxSize = "sm" | "default";
 

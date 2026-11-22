@@ -1,4 +1,4 @@
-import { FOCUS_INSET } from "../components/overlay";
+import { FOCUS_INSET } from "./overlay";
 
 export const NAV_LIST_CLASS = "basalt-ui basalt-hover-list basalt-nav-list flex gap-basalt-nav-gap";
 

@@ -14,7 +14,7 @@ import {
 } from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Bar, CartesianGrid, BarChart as RechartsBar, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartShell } from "./frame";
+import { ChartFrame } from "./frame";
 import type {
 	LineChartAxisDomain,
 	LineChartLegendRenderer,
@@ -116,7 +116,7 @@ export function StackedBarChart<
 		) : undefined;
 
 	return (
-		<ChartShell
+		<ChartFrame
 			ariaLabel={ariaLabel}
 			className={className}
 			legend={resolvedLegend}
@@ -155,6 +155,6 @@ export function StackedBarChart<
 					/>
 				))}
 			</RechartsBar>
-		</ChartShell>
+		</ChartFrame>
 	);
 }

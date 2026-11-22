@@ -1,7 +1,7 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { floatingSurfaceClass } from "./overlay";
+import { floatingSurfaceClass } from "../utils/overlay";
 
 type RadixTooltipProviderProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Provider>;
 type RadixTooltipProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>;

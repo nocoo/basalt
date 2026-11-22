@@ -2,7 +2,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
-import { FOCUS_RING } from "./overlay";
+import { FOCUS_RING } from "../utils/overlay";
 
 type RadixSliderRootProps = React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>;
 

@@ -116,6 +116,7 @@ export function DashboardLayout() {
 					<SheetContent
 						ref={mobileSheetRef}
 						side="left"
+						showCloseButton={false}
 						tabIndex={-1}
 						className="w-[var(--basalt-size-sidebar-width)] max-w-[var(--basalt-size-sidebar-width)] border-0 bg-basalt-background p-0"
 						onOpenAutoFocus={(event) => {

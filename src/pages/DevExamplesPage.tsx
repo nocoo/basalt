@@ -116,7 +116,7 @@ function Overlay() {
 					<DialogTrigger asChild>
 						<Button>Open dialog</Button>
 					</DialogTrigger>
-					<DialogContent>
+					<DialogContent showCloseButton={false}>
 						<DialogTitle>Example dialog</DialogTitle>
 						<DialogDescription>A standalone overlay example.</DialogDescription>
 						<DialogClose asChild>

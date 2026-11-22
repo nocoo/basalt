@@ -9,18 +9,26 @@ import {
 } from "react";
 import { cn } from "../utils/cn";
 
+export const CHART_FRAME_SIZES = {
+	sm: "h-basalt-36 w-full",
+	md: "h-basalt-56 w-full",
+	lg: "h-basalt-72 w-full",
+} as const;
+
+export type ChartFrameSize = keyof typeof CHART_FRAME_SIZES;
+
 export type ChartFrameProps = {
 	ariaLabel: string;
 	className?: string;
 	children: ReactNode;
-	size?: string;
+	/** Height preset (`"sm"` | `"md"` | `"lg"`) or custom Tailwind sizing classes. @default "md" */
+	size?: ChartFrameSize | (string & {});
 	summary?: ReactNode;
 	dataAlternative?: ReactNode;
 	legend?: ReactNode;
 	accessibilityLayer?: boolean;
 };
 
-export type ChartShellProps = ChartFrameProps;
 export type ChartAccessibilityProps = Pick<
 	ChartFrameProps,
 	"summary" | "dataAlternative" | "accessibilityLayer"
@@ -34,13 +42,14 @@ export function ChartFrame({
 	ariaLabel,
 	className,
 	children,
-	size = "h-basalt-36 w-basalt-56",
+	size = "md",
 	summary,
 	dataAlternative,
 	legend,
 	accessibilityLayer,
 }: ChartFrameProps) {
 	const summaryId = useId();
+	const resolvedSize = size in CHART_FRAME_SIZES ? CHART_FRAME_SIZES[size as ChartFrameSize] : size;
 	const hasSummary = hasSlotContent(summary);
 	const hasAlternative = hasSlotContent(dataAlternative);
 	const hasLegend = hasSlotContent(legend);
@@ -57,7 +66,7 @@ export function ChartFrame({
 	const plot = (
 		<div
 			className={cn(
-				hasLegend ? "w-full min-h-0 min-w-0 flex-1 basalt-chart" : size,
+				hasLegend ? "w-full min-h-0 min-w-0 flex-1 basalt-chart" : resolvedSize,
 				!hasLegend && className,
 				!hasLegend && "min-h-0 min-w-0 basalt-chart",
 			)}
@@ -66,7 +75,10 @@ export function ChartFrame({
 		</div>
 	);
 	const framed = hasLegend ? (
-		<div data-testid="chart-shell" className={cn("flex min-h-0 min-w-0 flex-col", size, className)}>
+		<div
+			data-testid="chart-shell"
+			className={cn("flex min-h-0 min-w-0 flex-col", resolvedSize, className)}
+		>
 			{plot}
 			{legend}
 		</div>
@@ -99,8 +111,7 @@ export function ChartFrame({
 		</figure>
 	);
 }
-
-export const ChartShell = ChartFrame;
+ChartFrame.displayName = "ChartFrame";
 
 const HIDDEN_SERIES_KEYS = new Set(["y", "y2", "y3", "value", "target"]);
 const TITLE_SIZE = "var(--basalt-text-sm)";
@@ -312,6 +323,29 @@ export function ChartTooltipSummary({
 	);
 }
 
+export interface ChartTooltipProps extends ComponentProps<"div"> {}
+
+export function ChartTooltip({ className, style, ...rest }: ChartTooltipProps) {
+	return (
+		<div
+			data-slot="chart-tooltip"
+			className={cn("shadow-basalt-floating", className)}
+			style={{
+				background: "hsl(var(--basalt-popover))",
+				border: "1px solid hsl(var(--basalt-border))",
+				borderRadius: "var(--basalt-radius-md)",
+				boxShadow: "var(--basalt-shadow-floating)",
+				color: "hsl(var(--basalt-popover-foreground))",
+				maxWidth: "13.75rem",
+				minWidth: "8rem",
+				padding: "var(--basalt-space-default)",
+				...style,
+			}}
+			{...rest}
+		/>
+	);
+}
+
 export function ChartTooltipContent({
 	active,
 	payload,
@@ -321,19 +355,7 @@ export function ChartTooltipContent({
 	if (!active || !payload?.length) return null;
 	const title = label == null || label === "" ? undefined : String(label);
 	return (
-		<div
-			data-testid="chart-tooltip"
-			style={{
-				background: "hsl(var(--basalt-popover))",
-				border: "1px solid hsl(var(--basalt-border) / 0.55)",
-				borderRadius: "var(--basalt-radius-md)",
-				boxShadow: "0 12px 28px -8px rgb(0 0 0 / 0.28), 0 4px 10px -4px rgb(0 0 0 / 0.16)",
-				color: "hsl(var(--basalt-popover-foreground))",
-				maxWidth: "13.75rem",
-				minWidth: "8rem",
-				padding: "var(--basalt-space-default)",
-			}}
-		>
+		<ChartTooltip data-testid="chart-tooltip">
 			{title ? (
 				<p
 					style={{
@@ -368,7 +390,7 @@ export function ChartTooltipContent({
 					);
 				})}
 			</div>
-		</div>
+		</ChartTooltip>
 	);
 }
 

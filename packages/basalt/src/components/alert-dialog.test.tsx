@@ -96,4 +96,24 @@ describe("AlertDialog", () => {
 			"bg-basalt-danger-solid",
 		);
 	});
+
+	it("supports variant and size overrides on Cancel and Action", () => {
+		render(
+			<AlertDialog defaultOpen>
+				<AlertDialogContent>
+					<AlertDialogTitle>Publish</AlertDialogTitle>
+					<AlertDialogFooter>
+						<AlertDialogCancel size="sm">Later</AlertDialogCancel>
+						<AlertDialogAction variant="default" size="sm">
+							Publish now
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>,
+		);
+		expect(screen.getByRole("button", { name: "Later" }).className).toContain("basalt-action-sm");
+		const action = screen.getByRole("button", { name: "Publish now" });
+		expect(action.className).toContain("bg-basalt-primary");
+		expect(action.className).toContain("basalt-action-sm");
+	});
 });

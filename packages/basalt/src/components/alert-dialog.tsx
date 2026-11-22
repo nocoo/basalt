@@ -1,7 +1,13 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { buttonVariants } from "./button";
+import {
+	MODAL_DESCRIPTION_CLASS,
+	MODAL_FOOTER_CLASS,
+	MODAL_HEADER_CLASS,
+	MODAL_TITLE_CLASS,
+} from "../utils/modal-surface";
+import { type ButtonProps, buttonVariants } from "./button";
 import { type DialogSize, dialogOverlayClass, dialogPanelClass } from "./dialog";
 
 type RadixAlertDialogProps = React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Root>;
@@ -30,18 +36,14 @@ type RadixAlertDialogCancelProps = React.ComponentPropsWithoutRef<
 
 export interface AlertDialogProps
 	extends Omit<RadixAlertDialogProps, "open" | "defaultOpen" | "onOpenChange"> {
-	/**
-	 * Controlled open state of the alert dialog.
-	 */
+	/** Controlled open state of the alert dialog. */
 	open?: RadixAlertDialogProps["open"];
 	/**
 	 * Uncontrolled default open state of the alert dialog on initial render.
 	 * @default false
 	 */
 	defaultOpen?: RadixAlertDialogProps["defaultOpen"];
-	/**
-	 * Callback invoked when the open state changes.
-	 */
+	/** Callback invoked when the open state changes. */
 	onOpenChange?: RadixAlertDialogProps["onOpenChange"];
 }
 
@@ -50,7 +52,6 @@ export const AlertDialog: React.FC<AlertDialogProps> = AlertDialogPrimitive.Root
 export interface AlertDialogTriggerProps extends Omit<RadixAlertDialogTriggerProps, "asChild"> {
 	/**
 	 * Change the default rendered button element to the child element, merging props and behavior.
-	 * Trigger forwards ref to HTMLButtonElement and inherits native button attributes.
 	 * @default false
 	 */
 	asChild?: RadixAlertDialogTriggerProps["asChild"];
@@ -60,13 +61,9 @@ export const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 
 export interface AlertDialogPortalProps
 	extends Omit<RadixAlertDialogPortalProps, "container" | "forceMount"> {
-	/**
-	 * Target container element where the alert dialog overlay and content portal should mount.
-	 */
+	/** Target container element where the alert dialog overlay and content portal should mount. */
 	container?: RadixAlertDialogPortalProps["container"];
-	/**
-	 * Used to force mounting when controlling transition animations externally.
-	 */
+	/** Used to force mounting when controlling transition animations externally. */
 	forceMount?: RadixAlertDialogPortalProps["forceMount"];
 }
 
@@ -76,13 +73,10 @@ export interface AlertDialogOverlayProps
 	extends Omit<RadixAlertDialogOverlayProps, "asChild" | "forceMount"> {
 	/**
 	 * Change the default rendered div element to the child element, merging props and behavior.
-	 * Overlay forwards ref to HTMLDivElement and inherits native div attributes.
 	 * @default false
 	 */
 	asChild?: RadixAlertDialogOverlayProps["asChild"];
-	/**
-	 * Used to force mounting when controlling transition animations externally.
-	 */
+	/** Used to force mounting when controlling transition animations externally. */
 	forceMount?: RadixAlertDialogOverlayProps["forceMount"];
 }
 
@@ -90,9 +84,14 @@ export const AlertDialogOverlay = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
 	AlertDialogOverlayProps
 >(({ className, ...props }, ref) => (
-	<AlertDialogPrimitive.Overlay ref={ref} className={dialogOverlayClass(className)} {...props} />
+	<AlertDialogPrimitive.Overlay
+		ref={ref}
+		data-slot="alert-dialog-overlay"
+		className={dialogOverlayClass(className)}
+		{...props}
+	/>
 ));
-AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName;
+AlertDialogOverlay.displayName = "AlertDialogOverlay";
 
 export interface AlertDialogContentProps
 	extends Omit<
@@ -112,28 +111,16 @@ export interface AlertDialogContentProps
 	size?: DialogSize;
 	/**
 	 * Change the default rendered div element to the child element, merging props and behavior.
-	 * Content forwards ref to HTMLDivElement and inherits native div attributes.
 	 * @default false
 	 */
 	asChild?: RadixAlertDialogContentProps["asChild"];
-	/**
-	 * Force mounting content in DOM for external animation controls.
-	 * When forceMount is true, the content remains mounted even when closed.
-	 * The caller is responsible for visibility transitions and unmounting after animation completes.
-	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
-	 */
+	/** Force mounting content in DOM for external animation controls. */
 	forceMount?: RadixAlertDialogContentProps["forceMount"];
-	/**
-	 * Event handler called when auto-focusing on open. Defaults to focusing the cancel button. Can be prevented with event.preventDefault().
-	 */
+	/** Event handler called when auto-focusing on open. Defaults to focusing the cancel button. */
 	onOpenAutoFocus?: RadixAlertDialogContentProps["onOpenAutoFocus"];
-	/**
-	 * Event handler called when restoring focus on close. Can be prevented with event.preventDefault().
-	 */
+	/** Event handler called when restoring focus on close. */
 	onCloseAutoFocus?: RadixAlertDialogContentProps["onCloseAutoFocus"];
-	/**
-	 * Event handler called when the Escape key is pressed. Can be prevented with event.preventDefault().
-	 */
+	/** Event handler called when the Escape key is pressed. */
 	onEscapeKeyDown?: RadixAlertDialogContentProps["onEscapeKeyDown"];
 }
 
@@ -145,6 +132,7 @@ export const AlertDialogContent = React.forwardRef<
 		<AlertDialogOverlay forceMount={props.forceMount} />
 		<AlertDialogPrimitive.Content
 			ref={ref}
+			data-slot="alert-dialog-content"
 			data-basalt-surface-root=""
 			data-basalt-floating=""
 			className={dialogPanelClass({ size, className })}
@@ -152,12 +140,11 @@ export const AlertDialogContent = React.forwardRef<
 		/>
 	</AlertDialogPortal>
 ));
-AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
+AlertDialogContent.displayName = "AlertDialogContent";
 
 export interface AlertDialogTitleProps extends Omit<RadixAlertDialogTitleProps, "asChild"> {
 	/**
 	 * Change the default rendered heading element to the child element, merging props and behavior.
-	 * Title forwards ref to HTMLHeadingElement and inherits native h2 attributes.
 	 * @default false
 	 */
 	asChild?: RadixAlertDialogTitleProps["asChild"];
@@ -169,17 +156,17 @@ export const AlertDialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<AlertDialogPrimitive.Title
 		ref={ref}
-		className={cn("min-w-0 text-basalt-xl font-semibold wrap-anywhere", className)}
+		data-slot="alert-dialog-title"
+		className={cn(MODAL_TITLE_CLASS, className)}
 		{...props}
 	/>
 ));
-AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName;
+AlertDialogTitle.displayName = "AlertDialogTitle";
 
 export interface AlertDialogDescriptionProps
 	extends Omit<RadixAlertDialogDescriptionProps, "asChild"> {
 	/**
 	 * Change the default rendered paragraph element to the child element, merging props and behavior.
-	 * Description forwards ref to HTMLParagraphElement and inherits native p attributes.
 	 * @default false
 	 */
 	asChild?: RadixAlertDialogDescriptionProps["asChild"];
@@ -191,19 +178,21 @@ export const AlertDialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<AlertDialogPrimitive.Description
 		ref={ref}
-		className={cn(
-			"text-basalt-base leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
-			className,
-		)}
+		data-slot="alert-dialog-description"
+		className={cn(MODAL_DESCRIPTION_CLASS, className)}
 		{...props}
 	/>
 ));
-AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName;
+AlertDialogDescription.displayName = "AlertDialogDescription";
 
 export interface AlertDialogCancelProps extends Omit<RadixAlertDialogCancelProps, "asChild"> {
 	/**
+	 * Button size preset for the cancel button.
+	 * @default "default"
+	 */
+	size?: ButtonProps["size"];
+	/**
 	 * Change the default rendered button element to the child element, merging props and behavior.
-	 * Cancel forwards ref to HTMLButtonElement and inherits native button attributes.
 	 * @default false
 	 */
 	asChild?: RadixAlertDialogCancelProps["asChild"];
@@ -212,19 +201,29 @@ export interface AlertDialogCancelProps extends Omit<RadixAlertDialogCancelProps
 export const AlertDialogCancel = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
 	AlertDialogCancelProps
->(({ className, ...props }, ref) => (
+>(({ className, size = "default", ...props }, ref) => (
 	<AlertDialogPrimitive.Cancel
 		ref={ref}
-		className={cn(buttonVariants({ variant: "outline" }), className)}
+		data-slot="alert-dialog-cancel"
+		className={cn(buttonVariants({ variant: "outline", size }), className)}
 		{...props}
 	/>
 ));
-AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
+AlertDialogCancel.displayName = "AlertDialogCancel";
 
 export interface AlertDialogActionProps extends Omit<RadixAlertDialogActionProps, "asChild"> {
 	/**
+	 * Visual button variant for the primary confirmation action.
+	 * @default "destructive"
+	 */
+	variant?: ButtonProps["variant"];
+	/**
+	 * Button size preset for the primary confirmation action.
+	 * @default "default"
+	 */
+	size?: ButtonProps["size"];
+	/**
 	 * Change the default rendered button element to the child element, merging props and behavior.
-	 * Action forwards ref to HTMLButtonElement and inherits native button attributes.
 	 * @default false
 	 */
 	asChild?: RadixAlertDialogActionProps["asChild"];
@@ -233,31 +232,26 @@ export interface AlertDialogActionProps extends Omit<RadixAlertDialogActionProps
 export const AlertDialogAction = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Action>,
 	AlertDialogActionProps
->(({ className, ...props }, ref) => (
+>(({ className, variant = "destructive", size = "default", ...props }, ref) => (
 	<AlertDialogPrimitive.Action
 		ref={ref}
-		className={cn(buttonVariants({ variant: "destructive" }), className)}
+		data-slot="alert-dialog-action"
+		className={cn(buttonVariants({ variant, size }), className)}
 		{...props}
 	/>
 ));
-AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
+AlertDialogAction.displayName = "AlertDialogAction";
 
 export interface AlertDialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const AlertDialogHeader = ({ className, ...props }: AlertDialogHeaderProps) => (
-	<div className={cn("flex flex-col space-y-basalt-space-md text-left", className)} {...props} />
+	<div data-slot="alert-dialog-header" className={cn(MODAL_HEADER_CLASS, className)} {...props} />
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
 export interface AlertDialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const AlertDialogFooter = ({ className, ...props }: AlertDialogFooterProps) => (
-	<div
-		className={cn(
-			"mt-basalt-layout flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
-			className,
-		)}
-		{...props}
-	/>
+	<div data-slot="alert-dialog-footer" className={cn(MODAL_FOOTER_CLASS, className)} {...props} />
 );
 AlertDialogFooter.displayName = "AlertDialogFooter";

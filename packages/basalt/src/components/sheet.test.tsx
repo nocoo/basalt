@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
 	Sheet,
@@ -52,6 +52,7 @@ describe("Sheet", () => {
 		expect(screen.getByText("Panel").parentElement).toHaveClass(
 			"flex-col",
 			"space-y-basalt-space-md",
+			"pe-basalt-card-xl",
 		);
 		expect(screen.getByText("Done")).toHaveClass("mt-basalt-layout");
 		expect(screen.getByText("Done").className).toContain("sm:justify-end");
@@ -73,7 +74,31 @@ describe("Sheet", () => {
 		expect(panel.className).toContain("p-basalt-card sm:p-basalt-card-lg");
 		expect(screen.getByRole("heading", { name: "Panel" }).className).toContain("text-basalt-xl");
 		expect(screen.getByText("Panel details").className).toContain("text-basalt-base");
-		expect(screen.getByText("Panel details").className).toContain("basalt-line-body");
+		expect(screen.getByText("Panel details").className).toContain("basalt-line-relaxed");
+		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+	});
+
+	it("supports hiding or relabeling the built-in close button", () => {
+		render(
+			<Sheet defaultOpen>
+				<SheetContent closeLabel="Hide drawer">
+					<SheetTitle>Panel</SheetTitle>
+				</SheetContent>
+			</Sheet>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Hide drawer" }));
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+		cleanup();
+
+		render(
+			<Sheet defaultOpen>
+				<SheetContent showCloseButton={false}>
+					<SheetTitle>Locked</SheetTitle>
+				</SheetContent>
+			</Sheet>,
+		);
+		expect(screen.getByRole("dialog", { name: "Locked" })).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
 	});
 
 	it("defaults to the right edge", () => {

@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { ChevronDown } from "../utils/internal-icons";
-import { FOCUS_RING, OVERLAY_MOTION } from "./overlay";
+import { FOCUS_RING, OVERLAY_MOTION } from "../utils/overlay";
 
 type RadixAccordionSingleProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & {
 	type: "single";

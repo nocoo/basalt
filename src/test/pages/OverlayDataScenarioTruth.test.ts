@@ -215,7 +215,8 @@ describe("overlay data scenario truth", () => {
 			"PopoverDescription",
 		]);
 		expect(scenario("dialog", "dialog-basic-dialog").code).toContain("DialogTrigger");
-		expect(scenario("dialog", "dialog-basic-dialog").code).toContain("DialogClose");
+		expect(scenario("dialog", "dialog-basic-dialog").code).toContain("DialogHeader");
+		expect(scenario("dialog", "dialog-basic-dialog").code).not.toContain("DialogCloseButton");
 		expect(hasSingleJsxRoot(scenario("dialog", "dialog-sizes").code)).toBe(true);
 		expect(scenario("dialog", "dialog-sizes").code).toContain('size: "sm"');
 		expect(scenario("dialog", "dialog-sizes").code).toContain('size: "xl"');

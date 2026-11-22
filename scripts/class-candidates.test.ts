@@ -34,10 +34,15 @@ className="border-separate border-spacing-0 caption-bottom"`),
 			expect.arrayContaining(["border-separate", "border-spacing-0", "caption-bottom"]),
 		);
 
+		const modalSurface = classCandidates(
+			readFileSync(path.join(process.cwd(), "packages/basalt/src/utils/modal-surface.tsx"), "utf8"),
+		);
+		expect(modalSurface).toContain("space-y-basalt-space-md");
+
 		const dialog = classCandidates(
 			readFileSync(path.join(process.cwd(), "packages/basalt/src/components/dialog.tsx"), "utf8"),
 		);
-		expect(dialog).toContain("space-y-basalt-space-md");
+		expect(dialog).toContain("size-basalt-icon-sm");
 
 		const commandPalette = classCandidates(
 			readFileSync(

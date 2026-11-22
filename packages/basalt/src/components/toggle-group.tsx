@@ -2,8 +2,8 @@ import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { FOCUS_RING } from "../utils/overlay";
 import { useSelectionIndicator } from "../utils/selection-indicator";
-import { FOCUS_RING } from "./overlay";
 
 const ToggleGroupMode = React.createContext<"single" | "multiple">("single");
 

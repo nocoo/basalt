@@ -17,7 +17,7 @@ import {
 } from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { CartesianGrid, Line, LineChart as RechartsLine, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartShell } from "./frame";
+import { ChartFrame } from "./frame";
 
 export type LineChartAxisDomain =
 	| [number | "auto" | "dataMin", number | "auto" | "dataMax"]
@@ -141,7 +141,7 @@ export function LineChart<
 		) : undefined;
 
 	return (
-		<ChartShell
+		<ChartFrame
 			ariaLabel={ariaLabel}
 			className={className}
 			legend={resolvedLegend}
@@ -177,6 +177,6 @@ export function LineChart<
 					/>
 				))}
 			</RechartsLine>
-		</ChartShell>
+		</ChartFrame>
 	);
 }

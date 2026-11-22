@@ -1,9 +1,9 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { type ComponentPropsWithoutRef, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
+import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "../utils/overlay";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Input, type InputSize } from "./input";
-import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export type AutocompleteItem = {
 	value: string;

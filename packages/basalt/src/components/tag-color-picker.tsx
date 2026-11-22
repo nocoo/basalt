@@ -3,7 +3,7 @@ import { type AriaAttributes, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Check } from "../utils/internal-icons";
-import { FOCUS_RING } from "./overlay";
+import { FOCUS_RING } from "../utils/overlay";
 import { TAG_COLORS, type TagColor } from "./tag-badge";
 
 export interface TagColorPickerProps {

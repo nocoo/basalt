@@ -53,7 +53,12 @@ describe("catalog API generator contract 2/4", () => {
 			Object.entries(generated).map(([slug, values]) => [slug, values.map((value) => value.name)]),
 		);
 		expect(Object.keys(surfaces)).toHaveLength(77);
-		expect(surfaces.chart).toEqual(["ChartFrame", "ChartTooltipContent", "ChartLegend"]);
+		expect(surfaces.chart).toEqual([
+			"ChartFrame",
+			"ChartTooltip",
+			"ChartTooltipContent",
+			"ChartLegend",
+		]);
 		expect(surfaces["stat-card"]).toEqual(["StatCard", "StatGrid"]);
 		expect(surfaces.button).toEqual(["Button"]);
 		for (const values of Object.values(surfaces)) {
@@ -843,6 +848,7 @@ describe("catalog API generator contract 2/4", () => {
 		]);
 		expect(generated["confirm-dialog"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"open",
+			"defaultOpen",
 			"onOpenChange",
 			"onCloseAutoFocus",
 			"onConfirm",
@@ -860,6 +866,7 @@ describe("catalog API generator contract 2/4", () => {
 			"confirmLabel",
 			"cancelLabel",
 			"variant",
+			"onConfirm",
 		]);
 		expect(
 			generated["confirm-dialog"]?.some((surface) =>

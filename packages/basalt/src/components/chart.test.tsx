@@ -6,13 +6,14 @@ import {
 	applyLeadColor,
 	BAR_RADIUS,
 	CHART_COLORS,
+	CHART_FRAME_SIZES,
 	CHART_TOOLTIP_CURSOR_BAR,
 	CHART_TOOLTIP_CURSOR_LINE,
 	CHART_TYPE,
 	ChartFrame,
 	ChartLegend,
 	ChartPalette,
-	ChartShell,
+	ChartTooltip,
 	ChartTooltipContent,
 	ChartTooltipDivider,
 	ChartTooltipRow,
@@ -37,7 +38,7 @@ import {
 describe("ChartFrame", () => {
 	it("renders summary, alternative, legend, and slot zero", () => {
 		const { rerender } = render(
-			<ChartShell
+			<ChartFrame
 				ariaLabel="Requests"
 				summary="Requests rose"
 				dataAlternative={
@@ -52,7 +53,7 @@ describe("ChartFrame", () => {
 				legend={<span>Legend</span>}
 			>
 				<svg aria-label="Requests plot" />
-			</ChartShell>,
+			</ChartFrame>,
 		);
 		const figure = screen.getByRole("group", { name: "Requests" });
 		expect(figure).toHaveAttribute("aria-describedby");
@@ -133,6 +134,26 @@ describe("ChartFrame", () => {
 			"aria-describedby",
 		);
 	});
+
+	it("applies default md and named ChartFrame size presets", () => {
+		const { rerender } = render(
+			<ChartFrame ariaLabel="Default size">
+				<div>Plot</div>
+			</ChartFrame>,
+		);
+		expect(screen.getByText("Plot").parentElement).toHaveClass("h-basalt-56", "w-full");
+
+		for (const key of ["sm", "md", "lg"] as const) {
+			rerender(
+				<ChartFrame ariaLabel={`Size ${key}`} size={key}>
+					<div>Plot</div>
+				</ChartFrame>,
+			);
+			expect(screen.getByText("Plot").parentElement).toHaveClass(
+				...CHART_FRAME_SIZES[key].split(" "),
+			);
+		}
+	});
 });
 
 describe("Chart palette and config", () => {
@@ -156,6 +177,19 @@ describe("Chart palette and config", () => {
 });
 
 describe("ChartTooltipContent", () => {
+	it("renders ChartTooltip surface with floating shadow token and custom style", () => {
+		render(
+			<ChartTooltip style={{ maxWidth: "20rem" }}>
+				<span>Tooltip body</span>
+			</ChartTooltip>,
+		);
+		const surface = screen.getByText("Tooltip body").parentElement as HTMLElement;
+		expect(surface).toHaveAttribute("data-slot", "chart-tooltip");
+		expect(surface).toHaveClass("shadow-basalt-floating");
+		expect(surface.style.maxWidth).toBe("20rem");
+		expect(surface.style.boxShadow).toBe("var(--basalt-shadow-floating)");
+	});
+
 	it("renders a titled panel with a swatch and formatted value", () => {
 		render(
 			<ChartTooltipContent
@@ -165,6 +199,8 @@ describe("ChartTooltipContent", () => {
 			/>,
 		);
 		const root = screen.getByTestId("chart-tooltip");
+		expect(root).toHaveAttribute("data-slot", "chart-tooltip");
+		expect(root).toHaveClass("shadow-basalt-floating");
 		expect(root).toHaveTextContent("Mar");
 		expect(root).toHaveTextContent("Income");
 		expect(root).toHaveTextContent(formatChartNumber(4200));

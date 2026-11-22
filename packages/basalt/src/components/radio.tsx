@@ -9,7 +9,7 @@ import {
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Circle } from "../utils/internal-icons";
-import { FOCUS_RING } from "./overlay";
+import { FOCUS_RING } from "../utils/overlay";
 
 export type RadioSize = "sm" | "default";
 

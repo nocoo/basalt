@@ -92,10 +92,10 @@ describe("public surface documentation ownership and freshness", () => {
 		const manifest = getActualRepoManifest();
 
 		expect(manifest.packageVersion).toBe(rootPkg.version);
-		expect(manifest.totalModules).toBe(105);
-		expect(manifest.totalSymbols).toBe(657);
-		expect(manifest.totalValues).toBe(363);
-		expect(manifest.totalTypes).toBe(294);
+		expect(manifest.totalModules).toBe(104);
+		expect(manifest.totalSymbols).toBe(698);
+		expect(manifest.totalValues).toBe(382);
+		expect(manifest.totalTypes).toBe(316);
 		expect(manifest.totalCssExports).toBe(4);
 
 		// Every module must have valid documentation ownership
@@ -286,12 +286,12 @@ describe("public surface documentation ownership and freshness", () => {
 
 	it("fails fast when an unowned helper is added inside a registered legacy/internal module", () => {
 		const fixtureRoot = createIsolatedRepoFixture({
-			"packages/basalt/src/components/overlay.ts":
-				"export const OVERLAY_GAP = 4;\nexport const __AuditUnownedLegacyHelper = 1;\n",
+			"packages/basalt/src/components/loading-screen.tsx":
+				"export function LoadingScreen() { return null; }\nexport const __AuditUnownedLegacyHelper = 1;\n",
 		});
 
 		expect(() => derivePublicSurfaceManifest(fixtureRoot)).toThrow(
-			/unowned public helper or symbol '__AuditUnownedLegacyHelper' in registered non-catalog module '@nocoo\/basalt\/components\/overlay'/,
+			/unowned public helper or symbol '__AuditUnownedLegacyHelper' in registered non-catalog module '@nocoo\/basalt\/components\/loading-screen'/,
 		);
 	});
 
@@ -357,6 +357,9 @@ describe("public surface documentation ownership and freshness", () => {
 			"PopoverTitle",
 			"PopoverDescription",
 			"CommandShortcut",
+			"DropdownMenuShortcut",
+			"ContextMenuShortcut",
+			"ChartTooltip",
 			"SidebarHeader",
 			"SidebarNav",
 			"SidebarPartition",
@@ -365,7 +368,6 @@ describe("public surface documentation ownership and freshness", () => {
 			"TableHeader",
 			"TableBody",
 			"TableFooter",
-			"GridItem",
 		]);
 
 		for (const key of keys) {

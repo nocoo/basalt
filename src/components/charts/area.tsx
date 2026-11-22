@@ -15,7 +15,7 @@ import {
 } from "@nocoo/basalt/components/chart";
 import type { ReactNode } from "react";
 import { Area, CartesianGrid, AreaChart as RechartsArea, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartShell } from "./frame";
+import { ChartFrame } from "./frame";
 import type {
 	LineChartAxisDomain,
 	LineChartLegendRenderer,
@@ -122,7 +122,7 @@ export function AreaChart<
 		) : undefined;
 
 	return (
-		<ChartShell
+		<ChartFrame
 			ariaLabel={ariaLabel}
 			className={className}
 			legend={resolvedLegend}
@@ -166,6 +166,6 @@ export function AreaChart<
 					);
 				})}
 			</RechartsArea>
-		</ChartShell>
+		</ChartFrame>
 	);
 }

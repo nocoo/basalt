@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Loader2 } from "../utils/internal-icons";
-import { FOCUS_RING } from "./overlay";
+import { FOCUS_RING } from "../utils/overlay";
 
 // Keep rounded corners inside the button's rectangular pointer target.
 const buttonVariants = cva(

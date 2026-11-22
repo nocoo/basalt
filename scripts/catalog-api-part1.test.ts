@@ -807,6 +807,49 @@ describe("catalog API generator contract 1/4", () => {
 				surface: "DropdownMenuItem",
 			},
 			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuCheckboxItemProps",
+				surface: "DropdownMenuCheckboxItem",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuRadioItemProps",
+				surface: "DropdownMenuRadioItem",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuLabelProps",
+				surface: "DropdownMenuLabel",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuSeparatorProps",
+				surface: "DropdownMenuSeparator",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuSubTriggerProps",
+				surface: "DropdownMenuSubTrigger",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuSubContentProps",
+				surface: "DropdownMenuSubContent",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuShortcutProps",
+				surface: "DropdownMenuShortcut",
+				allowEmpty: true,
+			},
+			{
 				slug: "collapsible",
 				sourceFile: "packages/basalt/src/components/collapsible.tsx",
 				propsType: "CollapsibleProps",
@@ -930,13 +973,19 @@ describe("catalog API generator contract 1/4", () => {
 				sourceFile: "packages/basalt/src/components/grid.tsx",
 				propsType: "GridItemProps",
 				surface: "GridItem",
-				allowEmpty: true,
 			},
 			{
 				slug: "chart",
 				sourceFile: "packages/basalt/src/components/chart.tsx",
 				propsType: "ChartFrameProps",
 				surface: "ChartFrame",
+			},
+			{
+				slug: "chart",
+				sourceFile: "packages/basalt/src/components/chart.tsx",
+				propsType: "ChartTooltipProps",
+				surface: "ChartTooltip",
+				allowEmpty: true,
 			},
 			{
 				slug: "chart",
@@ -1286,6 +1335,30 @@ describe("catalog API generator contract 1/4", () => {
 			{
 				slug: "context-menu",
 				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuGroupProps",
+				surface: "ContextMenuGroup",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuPortalProps",
+				surface: "ContextMenuPortal",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuSubProps",
+				surface: "ContextMenuSub",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuRadioGroupProps",
+				surface: "ContextMenuRadioGroup",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
 				propsType: "ContextMenuContentProps",
 				surface: "ContextMenuContent",
 			},
@@ -1298,8 +1371,45 @@ describe("catalog API generator contract 1/4", () => {
 			{
 				slug: "context-menu",
 				sourceFile: "packages/basalt/src/components/context-menu.tsx",
-				propsType: "ContextMenuPanelProps",
-				surface: "ContextMenuPanel",
+				propsType: "ContextMenuCheckboxItemProps",
+				surface: "ContextMenuCheckboxItem",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuRadioItemProps",
+				surface: "ContextMenuRadioItem",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuLabelProps",
+				surface: "ContextMenuLabel",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuSeparatorProps",
+				surface: "ContextMenuSeparator",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuSubTriggerProps",
+				surface: "ContextMenuSubTrigger",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuSubContentProps",
+				surface: "ContextMenuSubContent",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuShortcutProps",
+				surface: "ContextMenuShortcut",
+				allowEmpty: true,
 			},
 
 			{
@@ -1329,7 +1439,7 @@ describe("catalog API generator contract 1/4", () => {
 				surface: "AvatarInitials",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(210);
+		expect(CATALOG_API_TARGETS).toHaveLength(228);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1349,16 +1459,18 @@ describe("catalog API generator contract 1/4", () => {
 			"SidebarFooter",
 			"PopoverTitle",
 			"PopoverDescription",
+			"DropdownMenuShortcut",
 			"TableHeader",
 			"TableBody",
 			"TableFooter",
-			"GridItem",
+			"ChartTooltip",
 			"DialogHeader",
 			"DialogFooter",
 			"SheetHeader",
 			"SheetFooter",
 			"AlertDialogHeader",
 			"AlertDialogFooter",
+			"ContextMenuShortcut",
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames/);

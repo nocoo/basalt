@@ -10,8 +10,8 @@ import {
 } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { FOCUS_INSET } from "../utils/overlay";
 import { Empty } from "./empty";
-import { FOCUS_INSET } from "./overlay";
 import { SkeletonLine } from "./skeleton-line";
 
 const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-card ring-1 ring-basalt-border/80 text-basalt-foreground shadow-basalt-card`;

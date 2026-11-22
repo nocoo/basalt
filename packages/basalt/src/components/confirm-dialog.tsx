@@ -15,13 +15,18 @@ import { Button } from "./button";
 export type ConfirmDialogVariant = "default" | "destructive";
 
 export interface ConfirmDialogProps {
-	/** Whether the confirmation dialog is shown. */
-	open: boolean;
+	/** Whether the confirmation dialog is shown when controlled. */
+	open?: boolean;
+	/**
+	 * Uncontrolled initial open state when `open` is omitted.
+	 * @default false
+	 */
+	defaultOpen?: boolean;
 	/** Called when the dialog requests to open or close. */
-	onOpenChange: (open: boolean) => void;
+	onOpenChange?: (open: boolean) => void;
 	/** Runs after the close focus trap releases. Prevent default to focus a replacement control. */
 	onCloseAutoFocus?: AlertDialogContentProps["onCloseAutoFocus"];
-	/** Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors. */
+	/** Called once when the user confirms. In controlled mode, caller manages loading and closing; uncontrolled dialogs close automatically unless a returned Promise rejects. */
 	onConfirm: () => void | Promise<void>;
 	/** The dialog title. */
 	title: React.ReactNode;
@@ -64,16 +69,23 @@ export interface UseConfirmOptions {
 	cancelLabel?: React.ReactNode;
 	/** Appearance of the confirm button. */
 	variant?: ConfirmDialogVariant;
+	/** Optional async handler awaited with loading state before closing and settling `true`. */
+	onConfirm?: () => void | Promise<void>;
 }
 
 export interface UseConfirmResult {
 	confirm: (options: UseConfirmOptions) => Promise<boolean>;
-	dialogProps: ConfirmDialogProps;
+	dialogProps: ConfirmDialogProps & {
+		open: boolean;
+		loading: boolean;
+		onOpenChange: (open: boolean) => void;
+	};
 }
 
 export function ConfirmDialog({
 	cancelLabel = "Cancel",
 	confirmLabel = "Confirm",
+	defaultOpen = false,
 	description,
 	loading = false,
 	onConfirm,
@@ -88,6 +100,8 @@ export function ConfirmDialog({
 	const panelRef = React.useRef<HTMLDivElement>(null);
 	const cancelRef = React.useRef<HTMLButtonElement>(null);
 	const openerRef = React.useRef<HTMLElement | null>(null);
+	const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
+	const resolvedOpen = open ?? uncontrolledOpen;
 
 	const restoreFocus = React.useCallback(() => {
 		if (triggerRef.current?.isConnected) {
@@ -100,12 +114,15 @@ export function ConfirmDialog({
 
 	return (
 		<AlertDialog
-			open={open}
+			open={resolvedOpen}
 			onOpenChange={(next) => {
 				if (loading && !next) {
 					return;
 				}
-				onOpenChange(next);
+				if (open === undefined) {
+					setUncontrolledOpen(next);
+				}
+				onOpenChange?.(next);
 			}}
 		>
 			{React.isValidElement(trigger) ? (
@@ -169,14 +186,17 @@ export function ConfirmDialog({
 		</AlertDialog>
 	);
 }
+ConfirmDialog.displayName = "ConfirmDialog";
 
 export function useConfirm(): UseConfirmResult {
 	const [open, setOpen] = React.useState(false);
+	const [loading, setLoading] = React.useState(false);
 	const [options, setOptions] = React.useState<UseConfirmOptions>({
 		title: "",
 		description: "",
 	});
 	const resolverRef = React.useRef<((value: boolean) => void) | null>(null);
+	const requestIdRef = React.useRef(0);
 
 	const settle = React.useCallback((value: boolean) => {
 		const resolve = resolverRef.current;
@@ -186,13 +206,16 @@ export function useConfirm(): UseConfirmResult {
 
 	React.useEffect(() => {
 		return () => {
+			requestIdRef.current += 1;
 			settle(false);
 		};
 	}, [settle]);
 
 	const confirm = React.useCallback(
 		(next: UseConfirmOptions) => {
+			requestIdRef.current += 1;
 			settle(false);
+			setLoading(false);
 			setOptions(next);
 			setOpen(true);
 			return new Promise<boolean>((resolve) => {
@@ -206,18 +229,40 @@ export function useConfirm(): UseConfirmResult {
 		confirm,
 		dialogProps: {
 			open,
+			loading,
 			title: options.title,
 			description: options.description,
 			confirmLabel: options.confirmLabel,
 			cancelLabel: options.cancelLabel,
 			variant: options.variant,
 			onOpenChange: (next) => {
+				if (loading && !next) {
+					return;
+				}
 				setOpen(next);
 				if (!next) {
+					requestIdRef.current += 1;
 					settle(false);
 				}
 			},
-			onConfirm: () => {
+			onConfirm: async () => {
+				if (options.onConfirm) {
+					const activeRequestId = requestIdRef.current;
+					setLoading(true);
+					try {
+						await options.onConfirm();
+						if (requestIdRef.current === activeRequestId) {
+							setLoading(false);
+							setOpen(false);
+							settle(true);
+						}
+					} catch {
+						if (requestIdRef.current === activeRequestId) {
+							setLoading(false);
+						}
+					}
+					return;
+				}
 				settle(true);
 				setOpen(false);
 			},

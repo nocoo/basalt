@@ -18,6 +18,7 @@ import {
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
+	DialogHeader,
 	type DialogSize,
 	DialogTitle,
 	DialogTrigger,
@@ -35,7 +36,6 @@ import {
 	SelectValue,
 } from "@nocoo/basalt/components/select";
 import { Separator } from "@nocoo/basalt/components/separator";
-import { X } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
@@ -50,30 +50,12 @@ const DIALOG_SIZES: { size: DialogSize; width: string }[] = [
 	{ size: "xl", width: "768px" },
 ];
 
-function DialogDismiss() {
-	const { t } = useTranslation();
-	return (
-		<DialogClose asChild>
-			<Button
-				variant="ghost"
-				size="icon"
-				className="absolute top-4 right-4"
-				aria-label={t("common.close")}
-			>
-				<X />
-			</Button>
-		</DialogClose>
-	);
-}
-
 function DialogHeading({ title, description }: { title: string; description?: string }) {
 	return (
-		<div className="pr-basalt-card-xl">
+		<DialogHeader>
 			<DialogTitle>{title}</DialogTitle>
-			{description ? (
-				<DialogDescription className="mt-basalt-space-md">{description}</DialogDescription>
-			) : null}
-		</div>
+			{description ? <DialogDescription>{description}</DialogDescription> : null}
+		</DialogHeader>
 	);
 }
 
@@ -119,8 +101,7 @@ export default function DialogsPage() {
 						<DialogTrigger asChild>
 							<Button>{t("pages.dialogs.openStandard")}</Button>
 						</DialogTrigger>
-						<DialogContent size="base">
-							<DialogDismiss />
+						<DialogContent size="base" closeLabel={t("common.close")}>
 							<DialogHeading
 								title={t("pages.dialogs.standardTitle")}
 								description={t("pages.dialogs.standardBody")}
@@ -148,17 +129,11 @@ export default function DialogsPage() {
 										{t(`pages.dialogs.size.${size}`)} ({width})
 									</Button>
 								</DialogTrigger>
-								<DialogContent size={size}>
-									<DialogDismiss />
+								<DialogContent size={size} closeLabel={t("common.close")}>
 									<DialogHeading
 										title={t(`pages.dialogs.size.${size}`)}
 										description={t("pages.dialogs.sizeBody", { size, width })}
 									/>
-									<DialogFooter>
-										<DialogClose asChild>
-											<Button variant="outline">{t("common.close")}</Button>
-										</DialogClose>
-									</DialogFooter>
 								</DialogContent>
 							</Dialog>
 						))}
@@ -173,7 +148,7 @@ export default function DialogsPage() {
 							<DialogTrigger asChild>
 								<Button variant="outline">{t("pages.dialogs.openSend")}</Button>
 							</DialogTrigger>
-							<DialogContent size="sm">
+							<DialogContent size="sm" showCloseButton={false}>
 								<DialogHeading
 									title={t("pages.dialogs.sendTitle")}
 									description={t("pages.dialogs.sendBody")}
@@ -193,8 +168,7 @@ export default function DialogsPage() {
 							<DialogTrigger asChild>
 								<Button variant="outline">{t("pages.dialogs.openLog")}</Button>
 							</DialogTrigger>
-							<DialogContent size="base">
-								<DialogDismiss />
+							<DialogContent size="base" closeLabel={t("common.close")}>
 								<DialogHeading
 									title={t("pages.dialogs.logTitle")}
 									description={t("pages.dialogs.logBody")}
@@ -222,8 +196,7 @@ export default function DialogsPage() {
 							<DialogTrigger asChild>
 								<Button variant="outline">{t("pages.dialogs.openHolding")}</Button>
 							</DialogTrigger>
-							<DialogContent size="lg">
-								<DialogDismiss />
+							<DialogContent size="lg" closeLabel={t("common.close")}>
 								<DialogHeading
 									title={t("pages.dialogs.holdingTitle")}
 									description={t("pages.dialogs.holdingBody")}
@@ -257,8 +230,7 @@ export default function DialogsPage() {
 							<DialogTrigger asChild>
 								<Button variant="outline">{t("pages.dialogs.openReview")}</Button>
 							</DialogTrigger>
-							<DialogContent size="xl">
-								<DialogDismiss />
+							<DialogContent size="xl" closeLabel={t("common.close")}>
 								<DialogHeading
 									title={t("pages.dialogs.reviewTitle")}
 									description={t("pages.dialogs.reviewBody")}
@@ -292,8 +264,11 @@ export default function DialogsPage() {
 							<DialogTrigger asChild>
 								<Button variant="outline">{t("pages.dialogs.openUnit")}</Button>
 							</DialogTrigger>
-							<DialogContent size="xl" className="sm:w-[min(72rem,calc(100vw-2rem))]">
-								<DialogDismiss />
+							<DialogContent
+								size="xl"
+								closeLabel={t("common.close")}
+								className="sm:w-[min(72rem,calc(100vw-2rem))]"
+							>
 								<DialogHeading
 									title={t("pages.dialogs.unitTitle")}
 									description={t("pages.dialogs.unitBody")}
@@ -444,8 +419,7 @@ export default function DialogsPage() {
 						<DialogTrigger asChild>
 							<Button variant="outline">{t("pages.dialogs.openForm")}</Button>
 						</DialogTrigger>
-						<DialogContent size="base">
-							<DialogDismiss />
+						<DialogContent size="base" closeLabel={t("common.close")}>
 							<DialogHeading
 								title={t("pages.dialogs.formTitle")}
 								description={t("pages.dialogs.formBody")}

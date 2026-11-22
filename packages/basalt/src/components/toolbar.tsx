@@ -1,8 +1,8 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { FOCUS_INSET } from "../utils/overlay";
 import { Button, type ButtonProps } from "./button";
 import { Input } from "./input";
-import { FOCUS_INSET } from "./overlay";
 
 const toolbarControlClass = cn(
 	"relative min-w-0 rounded-none border-0 bg-transparent shadow-none",

@@ -1,7 +1,7 @@
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { floatingSurfaceClass, MENU_GAP } from "./overlay";
+import { floatingSurfaceClass, MENU_GAP } from "../utils/overlay";
 
 type RadixHoverCardProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Root>;
 type RadixHoverCardTriggerProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Trigger>;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
-import { FOCUS_BORDER } from "./overlay";
+import { FOCUS_RING } from "../utils/overlay";
 
 export type InputAreaSize = "sm" | "default" | "lg";
 
@@ -43,7 +43,7 @@ export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
 				cn(
 					"flex w-full text-basalt-foreground placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
 					INPUT_AREA_SIZE_CLASS[size],
-					FOCUS_BORDER,
+					FOCUS_RING,
 					"aria-invalid:border-basalt-danger-solid aria-invalid:focus-visible:border-basalt-danger-solid",
 					passwordManagerIgnore && "keeper-ignore",
 					className,

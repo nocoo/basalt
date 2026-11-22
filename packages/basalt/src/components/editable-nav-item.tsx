@@ -3,10 +3,10 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Folder, Pencil } from "../utils/internal-icons";
 import { NAV_ROW_CLASS } from "../utils/navigation";
+import { FOCUS_INSET } from "../utils/overlay";
 import { Button } from "./button";
 import { InlineEditable } from "./inline-editable";
 import { Link } from "./link";
-import { FOCUS_INSET } from "./overlay";
 
 export interface EditableNavItemProps {
 	/** Current display name. */

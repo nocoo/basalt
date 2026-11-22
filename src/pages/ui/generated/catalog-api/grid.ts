@@ -7,10 +7,17 @@ export const API = [
 		props: [
 			{
 				name: "columns",
-				type: "number",
+				type: "number | ResponsiveGridColumns",
 				required: false,
 				default: "2",
-				description: "Number of equal columns.",
+				description: "Number of equal columns or container-responsive column counts per breakpoint.",
+			},
+			{
+				name: "responsive",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "When true and `columns` is a preset count (`2`, `3`, `4`, `6`, `12`), adapt columns at island container breakpoints (or viewport fallback outside islands).",
 			},
 			{
 				name: "gap",
@@ -30,10 +37,35 @@ export const API = [
 				type: "React.ReactNode",
 				required: false,
 			},
+			{
+				name: "ref",
+				type: "React.Ref<HTMLDivElement>",
+				required: false,
+				description: "Ref forwarded to the grid container element.",
+			},
 		],
 	},
 	{
 		name: "GridItem",
-		props: [],
+		props: [
+			{
+				name: "colSpan",
+				type: "ResponsiveGridSpan",
+				required: false,
+				description: "Number of columns the grid item spans (`\"full\"` or responsive breakpoint map).",
+			},
+			{
+				name: "rowSpan",
+				type: "1 | 2 | 3 | 4",
+				required: false,
+				description: "Number of grid rows the item spans.",
+			},
+			{
+				name: "ref",
+				type: "React.Ref<HTMLDivElement>",
+				required: false,
+				description: "Ref forwarded to the grid item surface element.",
+			},
+		],
 	},
 ];

@@ -2,7 +2,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Slottable } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { floatingSurfaceClass, MENU_GAP } from "./overlay";
+import { floatingSurfaceClass, MENU_GAP } from "../utils/overlay";
 
 export const POPOVER_SIDES = ["top", "bottom", "left", "right"] as const;
 export type PopoverSide = (typeof POPOVER_SIDES)[number];

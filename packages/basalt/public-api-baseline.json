@@ -1,6 +1,6 @@
 {
 	"packageVersion": "4.0.0-pending",
-	"sourceBaseline": "4.0-overhaul (95 paths / 479 symbols)",
+	"sourceBaseline": "4.0-overhaul (94 paths / 523 symbols)",
 	"capturedAfter": "P1.1-P1.6 plus round-1 review fixes; package manifests remain 3.4.2 until release",
 	"entries": [
 		{
@@ -485,6 +485,61 @@
 					"name": "useConfirm",
 					"value": true,
 					"type": false
+				},
+				{
+					"name": "DropdownMenuCheckboxItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuPortal",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuRadioGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuShortcut",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSub",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
+					"value": true,
+					"type": false
 				}
 			]
 		},
@@ -952,14 +1007,119 @@
 					"type": false
 				},
 				{
-					"name": "ContextMenuPanel",
+					"name": "ContextMenuTrigger",
 					"value": true,
 					"type": false
 				},
 				{
-					"name": "ContextMenuTrigger",
+					"name": "ContextMenuGroup",
 					"value": true,
 					"type": false
+				},
+				{
+					"name": "ContextMenuGroupProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuPortal",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuPortalProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuSub",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuSubProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuRadioGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuRadioGroupProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuCheckboxItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuCheckboxItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuRadioItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuRadioItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuLabel",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuLabelProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuSeparator",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuSeparatorProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuSubTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuSubTriggerProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuSubContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuSubContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ContextMenuShortcut",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuShortcutProps",
+					"value": false,
+					"type": true
 				}
 			]
 		},
@@ -1195,6 +1355,76 @@
 					"name": "DropdownMenuTrigger",
 					"value": true,
 					"type": false
+				},
+				{
+					"name": "DropdownMenuCheckboxItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuCheckboxItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuRadioItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuLabelProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSeparatorProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSubTriggerProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSubContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuShortcut",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuShortcutProps",
+					"value": false,
+					"type": true
 				}
 			]
 		},
@@ -1263,6 +1493,31 @@
 				},
 				{
 					"name": "GridProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "GridColumnCount",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ResponsiveGridColumns",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "GridSpan",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ResponsiveGridSpan",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "GridItemProps",
 					"value": false,
 					"type": true
 				}
@@ -1458,56 +1713,6 @@
 			"symbols": [
 				{
 					"name": "Meter",
-					"value": true,
-					"type": false
-				}
-			]
-		},
-		{
-			"path": "@nocoo/basalt/components/overlay",
-			"symbols": [
-				{
-					"name": "FOCUS_BORDER",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "FOCUS_INSET",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "FOCUS_RING",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "MENU_GAP",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "OVERLAY_GAP",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "OVERLAY_LAYER",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "OVERLAY_MOTION",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "overlayItemClass",
-					"value": true,
-					"type": false
-				},
-				{
-					"name": "overlayPanelClass",
 					"value": true,
 					"type": false
 				}
@@ -2638,19 +2843,9 @@
 					"type": true
 				},
 				{
-					"name": "ChartShellProps",
-					"value": false,
-					"type": true
-				},
-				{
 					"name": "ChartAccessibilityProps",
 					"value": false,
 					"type": true
-				},
-				{
-					"name": "ChartShell",
-					"value": true,
-					"type": false
 				},
 				{
 					"name": "ChartTooltipItem",
@@ -2821,6 +3016,26 @@
 					"name": "CHART_PLOT_MARGIN_BARE",
 					"value": true,
 					"type": false
+				},
+				{
+					"name": "CHART_FRAME_SIZES",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartFrameSize",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ChartTooltip",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartTooltipProps",
+					"value": false,
+					"type": true
 				}
 			]
 		},

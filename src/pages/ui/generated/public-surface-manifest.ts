@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.5.2",
-	"totalModules": 105,
-	"totalSymbols": 657,
-	"totalValues": 363,
-	"totalTypes": 294,
+	"totalModules": 104,
+	"totalSymbols": 698,
+	"totalValues": 382,
+	"totalTypes": 316,
 	"totalCssExports": 4,
 	"modules": [
 		{
@@ -345,6 +345,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				},
 				{
+					"name": "DropdownMenuCheckboxItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuContent",
 					"isValue": true,
 					"isType": false,
@@ -353,7 +361,87 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				},
 				{
+					"name": "DropdownMenuGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuPortal",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuShortcut",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSub",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/dropdown-menu",
@@ -1559,6 +1647,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/chart"
 				},
 				{
+					"name": "ChartTooltip",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
 					"name": "ChartTooltipContent",
 					"isValue": true,
 					"isType": false,
@@ -1671,7 +1767,15 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/chart"
 				},
 				{
-					"name": "ChartFrameProps",
+					"name": "CHART_FRAME_SIZES",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartFrameSize",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/chart",
@@ -1679,7 +1783,7 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/chart"
 				},
 				{
-					"name": "ChartShellProps",
+					"name": "ChartFrameProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/chart",
@@ -1690,14 +1794,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "ChartAccessibilityProps",
 					"isValue": false,
 					"isType": true,
-					"ownerDoc": "src/pages/ui/chart",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/chart"
-				},
-				{
-					"name": "ChartShell",
-					"isValue": true,
-					"isType": false,
 					"ownerDoc": "src/pages/ui/chart",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/chart"
@@ -1736,6 +1832,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "ChartTooltipDividerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chart",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chart"
+				},
+				{
+					"name": "ChartTooltipProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/chart",
@@ -2429,7 +2533,7 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "ContextMenu component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "ContextMenuPanel",
+					"name": "ContextMenuShortcut",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "src/pages/ui/context-menu",
@@ -2469,6 +2573,70 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/context-menu"
 				},
 				{
+					"name": "ContextMenuGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuPortalProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuPortal",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSub",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioGroup",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
 					"name": "ContextMenuContentProps",
 					"isValue": false,
 					"isType": true,
@@ -2501,7 +2669,103 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/context-menu"
 				},
 				{
-					"name": "ContextMenuPanelProps",
+					"name": "ContextMenuCheckboxItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuCheckboxItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuRadioItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuLabelProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuLabel",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSeparatorProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSeparator",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubTrigger",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuSubContent",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuShortcutProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/context-menu",
@@ -2913,6 +3177,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "DropdownMenu component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "DropdownMenuShortcut",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuProps",
 					"isValue": false,
 					"isType": true,
@@ -3036,6 +3308,110 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "DropdownMenuItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuCheckboxItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuCheckboxItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuRadioItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuLabelProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuLabel",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSeparatorProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSeparator",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubTrigger",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubContent",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuShortcutProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dropdown-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
@@ -3274,6 +3650,38 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "GridItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/grid",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "GridColumnCount",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/grid",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "ResponsiveGridColumns",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/grid",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "GridSpan",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/grid",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "ResponsiveGridSpan",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/grid",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/grid"
@@ -3775,96 +4183,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/multi-select",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/multi-select"
-				}
-			]
-		},
-		{
-			"subpath": "./components/overlay",
-			"importPath": "@nocoo/basalt/components/overlay",
-			"sourceFile": "packages/basalt/src/components/overlay.ts",
-			"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-			"ownerKind": "legacy-internal",
-			"summary": "Internal class generators and spacing constants for overlay menus and select",
-			"symbols": [
-				{
-					"name": "floatingSurfaceClass",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "overlayPanelClass",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "overlayItemClass",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "OVERLAY_GAP",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "MENU_GAP",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "OVERLAY_LAYER",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "OVERLAY_MOTION",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "FOCUS_RING",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "FOCUS_BORDER",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "FOCUS_INSET",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
 				}
 			]
 		},

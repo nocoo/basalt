@@ -1,8 +1,8 @@
 import { type ReactNode, useEffect, useRef } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { OVERLAY_LAYER, OVERLAY_MOTION } from "../utils/overlay";
 import { dialogOverlayClass } from "./dialog";
-import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 const FOCUSABLE =
 	'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';

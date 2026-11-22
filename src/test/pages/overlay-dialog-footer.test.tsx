@@ -13,15 +13,13 @@ describe("overlay dialog action footer", () => {
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/overlay.tsx"),
 			"utf8",
 		);
-		expect(family).not.toMatch(/function DialogFooter\(/);
+		expect(family).not.toMatch(
+			/function DialogFooter\(|function DialogCloseButton\(|function DialogHeaderRow\(/,
+		);
 		expect(family).toContain("function DialogActions(");
 		expect(family).toContain("DialogFooter,");
-		expect(family).toContain(
-			'<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>',
-		);
-		expect(family).toContain(
-			'<DialogTitle className="min-w-0 wrap-anywhere">Modal Title</DialogTitle>',
-		);
+		expect(family).toContain("<DialogHeader>");
+		expect(family).toContain("<DialogTitle>Modal Title</DialogTitle>");
 	});
 
 	it("renders Sizes and confirmation action rows with the shared 16px footer", () => {
@@ -87,15 +85,12 @@ describe("overlay dialog action footer", () => {
 		const actions = catalogContent.dialog?.examples.find(
 			(item) => item.id === "dialog-with-actions",
 		);
-		expect(basic?.code).toContain(
-			'<DialogTitle className="min-w-0 wrap-anywhere">Modal Title</DialogTitle>',
-		);
-		expect(sizes?.code).toContain(
-			'<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>',
-		);
-		expect(actions?.code).toContain(
-			'<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>',
-		);
+		expect(basic?.code).toContain("<DialogHeader>");
+		expect(basic?.code).toContain("<DialogTitle>Modal Title</DialogTitle>");
+		expect(sizes?.code).toContain("<DialogHeader>");
+		expect(sizes?.code).toContain("<DialogTitle>");
+		expect(actions?.code).toContain("<DialogHeader>");
+		expect(actions?.code).toContain("<DialogTitle>Delete Resource?</DialogTitle>");
 		expect(actions).toBeDefined();
 		if (!actions) {
 			return;
@@ -111,7 +106,7 @@ describe("overlay dialog action footer", () => {
 		const title = within(dialog).getByRole("heading", { name: "Delete Resource?" });
 		expect(title).toHaveClass("min-w-0", "wrap-anywhere", "text-basalt-xl");
 		expect(within(dialog).getByRole("button", { name: "Close" })).toHaveClass(
-			"basalt-action-icon",
+			"basalt-action-icon-sm",
 			"shrink-0",
 		);
 		expect(within(dialog).getByRole("button", { name: "Cancel" })).toBeInTheDocument();

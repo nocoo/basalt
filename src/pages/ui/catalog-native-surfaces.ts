@@ -148,6 +148,27 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
+	DropdownMenuShortcut: {
+		justification:
+			"Semantic inline shortcut key indicator span inside dropdown menus; inherits HTMLSpanElement attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLSpanElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	ContextMenuShortcut: {
+		justification:
+			"Semantic inline shortcut key indicator span inside context menus; inherits HTMLSpanElement attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLSpanElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	ChartTooltip: {
+		justification:
+			"Matte floating chart tooltip surface container; inherits HTMLDivElement attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
 	SidebarHeader: {
 		justification:
 			"Sidebar top branding container header; inherits HTMLDivElement attributes without component-specific props.",
@@ -201,13 +222,6 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		justification:
 			"Table footer section wrapper; inherits HTMLTableSectionElement tfoot attributes without exposing a forwarded ref.",
 		inheritedElement: "HTMLTableSectionElement",
-		forwardsRef: false,
-		forwardsRestProps: true,
-	},
-	GridItem: {
-		justification:
-			"Grid item layout cell container; inherits HTMLDivElement attributes without exposing a forwarded ref.",
-		inheritedElement: "HTMLDivElement",
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},

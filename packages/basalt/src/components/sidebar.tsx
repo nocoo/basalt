@@ -18,13 +18,13 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { ChevronUp, LogOut, PanelLeft, Search } from "../utils/internal-icons";
 import { NAV_ITEM_CLASS, NAV_LIST_CLASS, NAV_ROW_CLASS } from "../utils/navigation";
+import { FOCUS_INSET, OVERLAY_LAYER, OVERLAY_MOTION } from "../utils/overlay";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Badge } from "./badge";
 import { Button, type ButtonProps, LinkButton } from "./button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
 import { Link } from "./link";
-import { FOCUS_INSET, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 import {
 	Sheet,
 	SheetContent,

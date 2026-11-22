@@ -17,7 +17,7 @@ export default function ChartDefault() {
 	return (
 		<ChartFrame
 			ariaLabel="Requests by month"
-			size="h-basalt-56 w-full"
+			size="md"
 			summary="Requests rose from 12 in January to 15 in March."
 			legend={<ChartLegend items={series} shape="bar" />}
 		>
