@@ -237,7 +237,12 @@ describe("nested surface CSS", () => {
 			expect(wellRule.get("--basalt-surface-current")).toBe("var(--basalt-card)");
 			expect(wellRule.get("--basalt-control-fill")).toBe("hsl(var(--basalt-bright))");
 		}
-		expect(tokens).not.toContain("--basalt-well");
+		expect(lightValues.get("--basalt-well")).toBe("hsl(var(--basalt-foreground) / 0.065)");
+		expect(darkValues.get("--basalt-well")).toBe("hsl(var(--basalt-foreground) / 0.1)");
+		expect(lightValues.get("--basalt-meter-track-fill")).toBe("var(--basalt-well)");
+		expect(darkValues.get("--basalt-meter-track-fill")).toBe("var(--basalt-well)");
+		expect(lightValues.get("--basalt-shadow-knob")?.trim().length).toBeGreaterThan(0);
+		expect(darkValues.get("--basalt-shadow-knob")?.trim().length).toBeGreaterThan(0);
 	});
 
 	it("paints nested surfaces with descendant selectors and no @scope", () => {

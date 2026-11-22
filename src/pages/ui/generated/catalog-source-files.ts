@@ -92,7 +92,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"input-group": {
 		"file": "packages/basalt/src/components/input-group.tsx",
-		"hash": "8e7e6d0b6a0050c3",
+		"hash": "71f5d8dc65c41608",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input-group.js.map (sourcesContent[0])"
 	},
@@ -104,19 +104,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"checkbox": {
 		"file": "packages/basalt/src/components/checkbox.tsx",
-		"hash": "4f97f0551905a03a",
+		"hash": "f4617a0209293eb4",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/checkbox.js.map (sourcesContent[0])"
 	},
 	"radio": {
 		"file": "packages/basalt/src/components/radio.tsx",
-		"hash": "599e7512caf7df5b",
+		"hash": "11873fb9c44cfa7b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/radio.js.map (sourcesContent[0])"
 	},
 	"switch": {
 		"file": "packages/basalt/src/components/switch.tsx",
-		"hash": "79facf49a7916e28",
+		"hash": "49244c01fda2b33d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/switch.js.map (sourcesContent[0])"
 	},
@@ -140,7 +140,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"slider": {
 		"file": "packages/basalt/src/components/slider.tsx",
-		"hash": "382e20488c3182bf",
+		"hash": "20693a521963a38f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/slider.js.map (sourcesContent[0])"
 	},
@@ -176,7 +176,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"empty": {
 		"file": "packages/basalt/src/components/empty.tsx",
-		"hash": "24fb27e6aa7e88a8",
+		"hash": "cc34ac5c696ae715",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/empty.js.map (sourcesContent[0])"
 	},
@@ -188,7 +188,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"skeleton-line": {
 		"file": "packages/basalt/src/components/skeleton-line.tsx",
-		"hash": "7bbc0c68a8322331",
+		"hash": "58dcff8d76519884",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/skeleton-line.js.map (sourcesContent[0])"
 	},
@@ -230,7 +230,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"accordion": {
 		"file": "packages/basalt/src/components/accordion.tsx",
-		"hash": "3df8f7df7077ad18",
+		"hash": "ed1611c3d45dba9e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/accordion.js.map (sourcesContent[0])"
 	},
@@ -290,7 +290,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tabs": {
 		"file": "packages/basalt/src/components/tabs.tsx",
-		"hash": "8397fb687139e0ed",
+		"hash": "9a09426c9f576a3f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tabs.js.map (sourcesContent[0])"
 	},
@@ -302,7 +302,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "08f3783651fbd755",
+		"hash": "e9223a60298e6386",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},

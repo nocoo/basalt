@@ -3979,8 +3979,8 @@ describe("ui catalog", () => {
 		expect(defaultSize).toBeEnabled();
 		expect(small.className).toContain("h-basalt-4");
 		expect(small.className).toContain("w-basalt-7");
-		expect(defaultSize.className).toContain("h-basalt-6");
-		expect(defaultSize.className).toContain("w-basalt-11");
+		expect(defaultSize.className).toContain("h-basalt-4_5");
+		expect(defaultSize.className).toContain("w-basalt-8");
 		for (const scenario of UI_EXAMPLES.switch ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/switch");

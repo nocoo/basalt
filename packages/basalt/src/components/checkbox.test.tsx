@@ -525,4 +525,15 @@ describe("Checkbox", () => {
 			expect(beta).not.toBeChecked();
 		});
 	});
+
+	it("uses neutral recessed well at rest and animated compact checkmarks when checked", () => {
+		const { container } = render(<Checkbox aria-label="Agree" />);
+		const box = screen.getByRole("checkbox", { name: "Agree" });
+		expect(box).toHaveClass("border-basalt-border", "bg-basalt-control", "shadow-basalt-well");
+		expect(box.className.split(/\s+/)).not.toContain("border-basalt-primary");
+		fireEvent.click(box);
+		const indicator = box.querySelector('[data-state="checked"]');
+		expect(indicator?.className).toContain("animate-basalt-check-in");
+		expect(container.querySelector("svg")?.getAttribute("class")).toContain("h-basalt-3");
+	});
 });

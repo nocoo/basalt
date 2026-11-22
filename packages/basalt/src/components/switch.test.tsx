@@ -79,8 +79,8 @@ describe("Switch", () => {
 		expect(root).toHaveAttribute("id", "alerts");
 		expect(root).toHaveAttribute("data-example", "yes");
 		expect(root.className).toContain("extra");
-		expect(root.className).toContain("h-basalt-6");
-		expect(root.className).toContain("w-basalt-11");
+		expect(root.className).toContain("h-basalt-4_5");
+		expect(root.className).toContain("w-basalt-8");
 		expect(root).not.toHaveAttribute("form");
 	});
 
@@ -275,10 +275,13 @@ describe("Switch", () => {
 	it("keeps default and compact root and thumb sizes", () => {
 		const { rerender } = render(<Switch aria-label="Alerts" />);
 		const root = screen.getByRole("switch", { name: "Alerts" });
-		expect(root.className).toContain("h-basalt-6");
-		expect(root.className).toContain("w-basalt-11");
-		expect(root.querySelector("span")?.className).toContain("h-basalt-5");
-		expect(root.querySelector("span")?.className).toContain("w-basalt-5");
+		expect(root.className).toContain("h-basalt-4_5");
+		expect(root.className).toContain("w-basalt-8");
+		expect(root.className).toContain("data-[state=unchecked]:bg-basalt-well");
+		expect(root.className).toContain("data-[state=unchecked]:shadow-basalt-well");
+		expect(root.querySelector("span")?.className).toContain("h-basalt-3_5");
+		expect(root.querySelector("span")?.className).toContain("w-basalt-3_5");
+		expect(root.querySelector("span")?.className).toContain("shadow-basalt-knob");
 		rerender(<Switch aria-label="Alerts" size="sm" />);
 		const compact = screen.getByRole("switch", { name: "Alerts" });
 		expect(compact.className).toContain("h-basalt-4");

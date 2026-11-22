@@ -313,8 +313,8 @@ describe("form selection scenario truth", () => {
 		expect(defaultSize).toBeEnabled();
 		expect(small.className).toContain("h-basalt-4");
 		expect(small.className).toContain("w-basalt-7");
-		expect(defaultSize.className).toContain("h-basalt-6");
-		expect(defaultSize.className).toContain("w-basalt-11");
+		expect(defaultSize.className).toContain("h-basalt-4_5");
+		expect(defaultSize.className).toContain("w-basalt-8");
 		cleanup();
 	});
 

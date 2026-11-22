@@ -1,5 +1,11 @@
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import * as React from "react";
+import {
+	ChoiceGroupError,
+	ChoiceGroupFieldset,
+	ChoiceGroupLegend,
+	ChoiceItemLabel,
+} from "../utils/choice-group";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Circle } from "../utils/internal-icons";
@@ -13,8 +19,8 @@ const RADIO_SIZE_CLASS: Record<RadioSize, string> = {
 };
 
 const RADIO_INDICATOR_CLASS: Record<RadioSize, string> = {
-	sm: "h-basalt-1_5 w-basalt-1_5 fill-current text-current",
-	default: "h-basalt-2_5 w-basalt-2_5 fill-current text-current",
+	sm: "h-basalt-1 w-basalt-1 fill-current text-current",
+	default: "h-basalt-1_5 w-basalt-1_5 fill-current text-current",
 };
 
 export type RadioGroupProps = Omit<
@@ -63,14 +69,7 @@ export type RadioProps = Omit<
 
 const RadioLegend = React.forwardRef<HTMLLegendElement, RadioLegendProps>(
 	({ className, ...props }, ref) => (
-		<legend
-			ref={ref}
-			className={cn(
-				"mb-basalt-field-gap text-basalt-base font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
-				className,
-			)}
-			{...props}
-		/>
+		<ChoiceGroupLegend ref={ref} className={className} {...props} />
 	),
 );
 RadioLegend.displayName = "Radio.Legend";
@@ -118,7 +117,7 @@ export const RadioGroup = React.forwardRef<
 		const mergedDescribedBy =
 			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
 		return (
-			<fieldset disabled={disabled} className="basalt-ui flex flex-col gap-basalt-field-gap">
+			<ChoiceGroupFieldset disabled={disabled}>
 				{labeledLegends}
 				<RadioGroupPrimitive.Root
 					ref={ref}
@@ -131,12 +130,8 @@ export const RadioGroup = React.forwardRef<
 				>
 					{items}
 				</RadioGroupPrimitive.Root>
-				{invalid ? (
-					<p id={errorId} className="text-basalt-sm text-basalt-danger-solid" role="alert">
-						{error}
-					</p>
-				) : null}
-			</fieldset>
+				{invalid ? <ChoiceGroupError id={errorId}>{error}</ChoiceGroupError> : null}
+			</ChoiceGroupFieldset>
 		);
 	},
 );
@@ -148,14 +143,14 @@ const RadioRoot = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.I
 			ref={ref}
 			className={cn(
 				BASALT_UI_CLASS,
-				"aspect-square shrink-0 rounded-basalt-full border border-basalt-primary text-basalt-primary disabled:cursor-not-allowed disabled:opacity-50",
+				"peer aspect-square shrink-0 cursor-pointer rounded-basalt-full border border-basalt-border bg-basalt-control text-basalt-primary-foreground shadow-basalt-well transition-colors basalt-motion hover:border-basalt-foreground/30 data-[state=checked]:border-basalt-primary data-[state=checked]:bg-basalt-primary data-[state=checked]:shadow-basalt-solid disabled:cursor-not-allowed disabled:opacity-50",
 				RADIO_SIZE_CLASS[size],
 				FOCUS_RING,
 				className,
 			)}
 			{...props}
 		>
-			<RadioGroupPrimitive.Indicator className="flex items-center justify-center">
+			<RadioGroupPrimitive.Indicator className="flex items-center justify-center animate-basalt-check-in motion-reduce:animate-none">
 				<Circle className={RADIO_INDICATOR_CLASS[size]} />
 			</RadioGroupPrimitive.Indicator>
 		</RadioGroupPrimitive.Item>
@@ -163,8 +158,27 @@ const RadioRoot = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.I
 );
 RadioRoot.displayName = RadioGroupPrimitive.Item.displayName;
 
+const RadioItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, RadioProps>(
+	({ children, id, ...props }, ref) => {
+		const generatedId = React.useId();
+		const controlId = id ?? generatedId;
+		if (children == null) {
+			return <RadioRoot ref={ref} id={id} {...props} />;
+		}
+		return (
+			<ChoiceItemLabel
+				htmlFor={controlId}
+				control={<RadioRoot ref={ref} id={controlId} {...props} />}
+			>
+				{children}
+			</ChoiceItemLabel>
+		);
+	},
+);
+RadioItem.displayName = "Radio.Item";
+
 export const Radio = Object.assign(RadioRoot, {
 	Group: RadioGroup,
 	Legend: RadioLegend,
-	Item: RadioRoot,
+	Item: RadioItem,
 });

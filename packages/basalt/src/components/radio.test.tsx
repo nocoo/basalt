@@ -138,4 +138,20 @@ describe("Radio", () => {
 		expect(beta).toBeChecked();
 		expect(alpha).not.toBeChecked();
 	});
+
+	it("wraps labeled Radio.Item with ChoiceItemLabel and uses neutral resting well styling", () => {
+		render(
+			<Radio.Group defaultValue="a" aria-label="Billing cycle">
+				<Radio.Item value="a">Monthly</Radio.Item>
+				<Radio.Item value="b">Yearly</Radio.Item>
+			</Radio.Group>,
+		);
+		const monthly = screen.getByRole("radio", { name: "Monthly" });
+		const yearly = screen.getByRole("radio", { name: "Yearly" });
+		expect(monthly).toHaveClass("border-basalt-border", "bg-basalt-control", "shadow-basalt-well");
+		expect(monthly.className).toContain("data-[state=checked]:border-basalt-primary");
+		expect(yearly).not.toBeChecked();
+		fireEvent.click(screen.getByText("Yearly"));
+		expect(yearly).toBeChecked();
+	});
 });

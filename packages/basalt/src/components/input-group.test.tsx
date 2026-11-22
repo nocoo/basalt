@@ -169,4 +169,24 @@ describe("InputGroup", () => {
 		expect(screen.getByText(".example.com")).toBeInTheDocument();
 		expect(inputRef.current).toBe(screen.getByRole("textbox", { name: "Host" }));
 	});
+
+	it("avoids double-dimming children when the whole InputGroup is disabled", () => {
+		const { rerender } = render(
+			<InputGroup disabled>
+				<InputGroup.Input aria-label="Query" />
+				<InputGroup.Button aria-label="Go" />
+			</InputGroup>,
+		);
+		expect(screen.getByRole("textbox", { name: "Query" })).toHaveClass("disabled:opacity-100");
+		expect(screen.getByRole("button", { name: "Go" })).toHaveClass("disabled:opacity-100");
+
+		rerender(
+			<InputGroup>
+				<InputGroup.Input disabled aria-label="Query" />
+				<InputGroup.Button disabled aria-label="Go" />
+			</InputGroup>,
+		);
+		expect(screen.getByRole("textbox", { name: "Query" })).not.toHaveClass("disabled:opacity-100");
+		expect(screen.getByRole("button", { name: "Go" })).not.toHaveClass("disabled:opacity-100");
+	});
 });

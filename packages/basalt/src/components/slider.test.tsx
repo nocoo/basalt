@@ -87,5 +87,16 @@ describe("Slider", () => {
 		const track = root.querySelector('[data-orientation="vertical"]');
 		expect(track?.className).toContain("h-full");
 		expect(track?.className).toContain("w-basalt-2");
+		expect(track?.className).toContain("bg-basalt-well");
+		expect(track?.className).toContain("shadow-basalt-well");
+	});
+
+	it("renders a knob thumb and disabled opacity", () => {
+		const { container } = render(<Slider defaultValue={[40]} disabled aria-label="Disabled" />);
+		const root = container.firstElementChild as HTMLElement;
+		const thumb = container.querySelector('[role="slider"]') as HTMLElement;
+		expect(root.className).toContain("data-[disabled]:opacity-50");
+		expect(thumb.className).toContain("shadow-basalt-knob");
+		expect(thumb.className).toContain("data-[disabled]:cursor-not-allowed");
 	});
 });

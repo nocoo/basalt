@@ -1007,9 +1007,12 @@ describe("DataTable", () => {
 		expect(screen.queryByText("B")).not.toBeInTheDocument();
 	});
 
-	it("shows a loading status instead of rows", () => {
+	it("shows staggered skeleton bars while loading", () => {
 		render(<DataTable data={rows} columns={columns} loading />);
-		expect(screen.getByRole("status")).toHaveTextContent("Loading");
+		const status = screen.getByRole("status");
+		expect(status).toHaveTextContent("Loading");
+		const bars = Array.from(status.querySelectorAll("div")).map((el) => el.style.width);
+		expect(bars).toEqual(["84%", "60%", "72%"]);
 		expect(screen.getByRole("table")).toHaveAttribute("aria-busy");
 		expect(screen.queryByText("Zed")).not.toBeInTheDocument();
 	});
@@ -1029,9 +1032,34 @@ describe("DataTable", () => {
 		expect(onSelectedChange).toHaveBeenCalledWith([]);
 	});
 
-	it("shows empty copy when no rows remain", () => {
-		render(<DataTable data={[]} columns={columns} empty="Nothing here" />);
-		expect(screen.getByRole("status")).toHaveTextContent("Nothing here");
+	it("shows empty copy with compact Empty when string or renders custom ReactNode", () => {
+		const { rerender } = render(<DataTable data={[]} columns={columns} empty="Nothing here" />);
+		const status = screen.getByRole("status");
+		expect(status).toHaveTextContent("Nothing here");
+		expect(status.firstElementChild).toHaveClass("py-basalt-card", "text-center");
+
+		rerender(
+			<DataTable data={[]} columns={columns} empty={<div data-testid="custom-empty">None</div>} />,
+		);
+		expect(screen.getByTestId("custom-empty")).toBeInTheDocument();
+	});
+
+	it("renders error alert with danger icon and retry action", () => {
+		const onRetry = vi.fn();
+		render(
+			<DataTable
+				data={rows}
+				columns={columns}
+				error="Failed to load rows"
+				onRetry={onRetry}
+				retryLabel="Reload"
+			/>,
+		);
+		const alert = screen.getByRole("alert");
+		expect(alert).toHaveTextContent("Failed to load rows");
+		expect(alert.querySelector("svg.lucide-circle-alert")).toHaveClass("text-basalt-danger");
+		fireEvent.click(screen.getByRole("button", { name: "Reload" }));
+		expect(onRetry).toHaveBeenCalledTimes(1);
 	});
 
 	it("selects a row and reports the id", () => {

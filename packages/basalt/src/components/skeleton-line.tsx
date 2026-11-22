@@ -45,7 +45,7 @@ export function SkeletonLine({
 	return (
 		<div
 			className={cn(
-				"relative h-basalt-2 overflow-hidden rounded-basalt-sm bg-basalt-muted",
+				"relative h-basalt-2 overflow-hidden rounded-basalt-sm bg-basalt-well",
 				className,
 			)}
 			style={lineStyle}

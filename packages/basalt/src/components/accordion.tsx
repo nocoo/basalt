@@ -2,6 +2,8 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { ChevronDown } from "../utils/internal-icons";
+import { FOCUS_RING, OVERLAY_MOTION } from "./overlay";
 
 type RadixAccordionSingleProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & {
 	type: "single";
@@ -126,7 +128,17 @@ export interface AccordionItemProps extends Omit<RadixAccordionItemProps, "value
 	disabled?: RadixAccordionItemProps["disabled"];
 }
 
-export const AccordionItem = AccordionPrimitive.Item;
+export const AccordionItem = React.forwardRef<
+	React.ElementRef<typeof AccordionPrimitive.Item>,
+	AccordionItemProps
+>(({ className, ...props }, ref) => (
+	<AccordionPrimitive.Item
+		ref={ref}
+		className={cn("border-b border-basalt-border last:border-b-0", className)}
+		{...props}
+	/>
+));
+AccordionItem.displayName = AccordionPrimitive.Item.displayName;
 
 export interface AccordionTriggerProps extends Omit<RadixAccordionTriggerProps, "asChild"> {
 	/**
@@ -140,19 +152,34 @@ export interface AccordionTriggerProps extends Omit<RadixAccordionTriggerProps, 
 export const AccordionTrigger = React.forwardRef<
 	React.ElementRef<typeof AccordionPrimitive.Trigger>,
 	AccordionTriggerProps
->(({ className, children, ...props }, ref) => (
+>(({ className, children, asChild = false, ...props }, ref) => (
 	<AccordionPrimitive.Header className={cn(BASALT_UI_CLASS, "flex")}>
-		<AccordionPrimitive.Trigger
-			ref={ref}
-			className={cn(
-				BASALT_UI_CLASS,
-				"flex flex-1 items-center justify-between py-basalt-space-lg text-basalt-base font-medium",
-				className,
-			)}
-			{...props}
-		>
-			{children}
-		</AccordionPrimitive.Trigger>
+		{asChild ? (
+			<AccordionPrimitive.Trigger ref={ref} asChild className={className} {...props}>
+				{children}
+			</AccordionPrimitive.Trigger>
+		) : (
+			<AccordionPrimitive.Trigger
+				ref={ref}
+				className={cn(
+					BASALT_UI_CLASS,
+					"group/accordion flex flex-1 cursor-pointer items-center justify-between gap-basalt-space-lg rounded-basalt-sm py-basalt-card-sm text-left text-basalt-base font-medium text-basalt-foreground transition-colors basalt-motion hover:[&_[data-slot=accordion-chevron]]:text-basalt-foreground disabled:pointer-events-none disabled:opacity-50",
+					FOCUS_RING,
+					className,
+				)}
+				{...props}
+			>
+				<span>{children}</span>
+				<ChevronDown
+					aria-hidden="true"
+					data-slot="accordion-chevron"
+					className={cn(
+						"size-basalt-icon-sm shrink-0 text-basalt-muted-foreground transition-transform basalt-motion duration-basalt-normal ease-basalt group-data-[state=open]/accordion:rotate-180",
+						OVERLAY_MOTION,
+					)}
+				/>
+			</AccordionPrimitive.Trigger>
+		)}
 	</AccordionPrimitive.Header>
 ));
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
@@ -171,4 +198,21 @@ export interface AccordionContentProps
 	forceMount?: RadixAccordionContentProps["forceMount"];
 }
 
-export const AccordionContent = AccordionPrimitive.Content;
+export const AccordionContent = React.forwardRef<
+	React.ElementRef<typeof AccordionPrimitive.Content>,
+	AccordionContentProps
+>(({ className, children, asChild = false, ...props }, ref) => (
+	<AccordionPrimitive.Content
+		ref={ref}
+		asChild={asChild}
+		className={cn(
+			"overflow-hidden text-basalt-base text-basalt-muted-foreground data-[state=closed]:animate-basalt-accordion-up data-[state=open]:animate-basalt-accordion-down",
+			OVERLAY_MOTION,
+			className,
+		)}
+		{...props}
+	>
+		{asChild ? children : <div className="pb-basalt-card-sm pt-0">{children}</div>}
+	</AccordionPrimitive.Content>
+));
+AccordionContent.displayName = AccordionPrimitive.Content.displayName;

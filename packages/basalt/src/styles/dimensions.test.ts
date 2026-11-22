@@ -218,9 +218,18 @@ describe("dimension token contract", () => {
 		}
 	});
 	it("resets native group insets at every public form-group boundary", () => {
-		for (const file of ["radio", "checkbox", "switch", "segment-control"]) {
+		const choiceHelper = readFileSync("packages/basalt/src/utils/choice-group.tsx", "utf8");
+		expect(choiceHelper).toMatch(/<fieldset[\s\S]*?CHOICE_GROUP_FIELDSET_CLASS|basalt-ui/);
+		expect(choiceHelper).toContain(
+			'CHOICE_GROUP_FIELDSET_CLASS = "basalt-ui flex flex-col gap-basalt-field-gap"',
+		);
+		expect(readFileSync("packages/basalt/src/components/segment-control.tsx", "utf8")).toMatch(
+			/<fieldset[\s\S]*?className=[^>]*basalt-ui/,
+		);
+		for (const file of ["radio", "checkbox", "switch"]) {
 			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
-			expect(source, file).toMatch(/<fieldset[\s\S]*?className=[^>]*basalt-ui/);
+			expect(source, file).toContain("ChoiceGroupFieldset");
+			expect(source, file).toContain("ChoiceGroupLegend");
 		}
 		expect(standalone).toContain(":where(.basalt-ui:is(fieldset), .basalt-ui fieldset)");
 		expect(standalone).toContain(":where(.basalt-ui:is(legend), .basalt-ui legend)");
@@ -236,10 +245,9 @@ describe("dimension token contract", () => {
 			expect(known.has(match[1]), match[1]).toBe(true);
 	});
 	it("gives native legends their own field gap instead of relying on fieldset flex gap", () => {
-		for (const file of ["radio", "checkbox", "switch"]) {
-			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
-			expect(source, file).toMatch(/<legend[\s\S]*?className=[^>]*mb-basalt-field-gap/);
-		}
+		const choiceHelper = readFileSync("packages/basalt/src/utils/choice-group.tsx", "utf8");
+		expect(choiceHelper).toMatch(/CHOICE_LEGEND_CLASS[\s\S]*?mb-basalt-field-gap/);
+		expect(choiceHelper).toContain("<legend");
 		expect(standalone).toContain(".mb-basalt-field-gap");
 		const example = readFileSync("src/pages/ui/examples/loader/options.tsx", "utf8");
 		expect(example).not.toMatch(/<Switch.Group[^>]*className/);

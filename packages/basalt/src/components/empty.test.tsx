@@ -47,4 +47,29 @@ describe("Empty", () => {
 		const zeros = screen.getAllByText("0");
 		expect(zeros.length).toBeGreaterThanOrEqual(2);
 	});
+
+	it("supports default and compact sm visual scales", () => {
+		const { rerender } = render(
+			<Empty title="Empty title" description="Details" icon={<span data-testid="empty-icon" />} />,
+		);
+		expect(screen.getByTestId("empty-icon").parentElement).toHaveClass(
+			"size-basalt-10",
+			"bg-basalt-well",
+			"shadow-basalt-well",
+		);
+		expect(screen.getByText("Empty title")).toHaveClass("text-basalt-lg", "font-semibold");
+		expect(screen.getByText("Details")).toHaveClass("text-basalt-base");
+
+		rerender(
+			<Empty
+				size="sm"
+				title="Empty title"
+				description="Details"
+				icon={<span data-testid="empty-icon" />}
+			/>,
+		);
+		expect(screen.getByTestId("empty-icon").parentElement).toHaveClass("size-basalt-8");
+		expect(screen.getByText("Empty title")).toHaveClass("text-basalt-base", "font-medium");
+		expect(screen.getByText("Details")).toHaveClass("text-basalt-sm");
+	});
 });

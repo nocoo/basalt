@@ -52,6 +52,11 @@ describe("standalone css", () => {
 		expect(css).toContain("@keyframes basalt-pixel-orbit");
 		expect(css).toContain("@keyframes basalt-label-shimmer");
 		expect(css).toContain("@keyframes basalt-tab-in");
+		expect(css).toContain("--basalt-well:");
+		expect(css).toContain("--basalt-shadow-knob:");
+		expect(css).toContain("@keyframes basalt-check-in");
+		expect(css).toContain("@keyframes basalt-accordion-down");
+		expect(css).toContain("@keyframes basalt-accordion-up");
 		for (const motion of ["floating", "sheet", "sheet-backdrop"]) {
 			expect(css).toContain(`@keyframes basalt-${motion}-in`);
 			expect(css).toContain(`@keyframes basalt-${motion}-out`);

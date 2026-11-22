@@ -50,6 +50,7 @@
 	--basalt-space-3: calc(var(--basalt-space-unit) * 3);
 	--basalt-space-3_5: calc(var(--basalt-space-unit) * 3.5);
 	--basalt-space-4: calc(var(--basalt-space-unit) * 4);
+	--basalt-space-4_5: calc(var(--basalt-space-unit) * 4.5);
 	--basalt-space-5: calc(var(--basalt-space-unit) * 5);
 	--basalt-space-6: calc(var(--basalt-space-unit) * 6);
 	--basalt-space-7: calc(var(--basalt-space-unit) * 7);
@@ -173,10 +174,14 @@
 	--basalt-border: 0 0% 89%;
 	--basalt-input: 0 0% 86%;
 	--basalt-ring: var(--basalt-primary);
-	--basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.065);
+	--basalt-well: hsl(var(--basalt-foreground) / 0.065);
+	--basalt-meter-track-fill: var(--basalt-well);
 	--basalt-shadow-well:
 		inset 0 1px 1.5px 0 hsl(var(--basalt-backdrop) / 0.05),
 		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.08);
+	--basalt-shadow-knob:
+		inset 0 1px 0 0 rgb(255 255 255 / 0.9), 0 1px 2px 0 rgb(0 0 0 / 0.16),
+		0 0 0 1px rgb(0 0 0 / 0.06);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-card);
 	--basalt-hover-weight: 4%;
@@ -336,10 +341,14 @@
 	--basalt-shadow-modal:
 		inset 0 1px 0 0 rgb(255 255 255 / 0.07), 0 24px 60px -18px rgb(0 0 0 / 0.7);
 	--basalt-scrim: 0 0% 0% / 0.6;
-	--basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.1);
+	--basalt-well: hsl(var(--basalt-foreground) / 0.1);
+	--basalt-meter-track-fill: var(--basalt-well);
 	--basalt-shadow-well:
 		inset 0 1px 2px 0 hsl(var(--basalt-backdrop) / 0.35),
 		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.12);
+	--basalt-shadow-knob:
+		inset 0 1px 0 0 rgb(255 255 255 / 0.28), 0 1px 3px 0 rgb(0 0 0 / 0.5),
+		0 0 0 1px rgb(0 0 0 / 0.28);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-surface-current: var(--basalt-card);
 	--basalt-hover-weight: 6%;
@@ -1044,18 +1053,33 @@
 @keyframes basalt-accordion-down {
 	from {
 		height: 0;
+		opacity: 0;
 	}
 	to {
 		height: var(--radix-accordion-content-height);
+		opacity: 1;
 	}
 }
 
 @keyframes basalt-accordion-up {
 	from {
 		height: var(--radix-accordion-content-height);
+		opacity: 1;
 	}
 	to {
 		height: 0;
+		opacity: 0;
+	}
+}
+
+@keyframes basalt-check-in {
+	from {
+		opacity: 0;
+		scale: 0.72;
+	}
+	to {
+		opacity: 1;
+		scale: 1;
 	}
 }
 

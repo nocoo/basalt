@@ -36,6 +36,13 @@ export const API = [
 				required: false,
 				description: "Custom supporting content or custom layout rendered between description and action.",
 			},
+			{
+				name: "size",
+				type: "\"default\" | \"sm\"",
+				required: false,
+				default: "\"default\"",
+				description: "Vertical density and visual hierarchy scale.",
+			},
 		],
 	},
 ];

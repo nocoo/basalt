@@ -9,9 +9,11 @@ import {
 	useState,
 } from "react";
 import { cn } from "../utils/cn";
+import { CircleAlert } from "../utils/internal-icons";
 import { Pagination } from "../utils/pagination-nav";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
+import { Empty } from "./empty";
 import { SkeletonLine } from "./skeleton-line";
 import {
 	Table,
@@ -633,9 +635,9 @@ export function DataTable<T>({
 											className="flex flex-col gap-basalt-space-lg py-basalt-space-lg"
 										>
 											<span className="sr-only">Loading</span>
-											<SkeletonLine />
-											<SkeletonLine />
-											<SkeletonLine />
+											<SkeletonLine minWidth={72} maxWidth={96} />
+											<SkeletonLine minWidth={48} maxWidth={72} />
+											<SkeletonLine minWidth={60} maxWidth={84} />
 										</div>
 									</TableCell>
 								</TableRow>
@@ -644,9 +646,15 @@ export function DataTable<T>({
 									<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
 										<div
 											role="alert"
-											className="flex flex-wrap items-center justify-between gap-basalt-space-lg py-basalt-space-lg"
+											className="flex flex-wrap items-center justify-between gap-basalt-space-lg py-basalt-card-sm"
 										>
-											<div>{error}</div>
+											<div className="flex min-w-0 items-center gap-basalt-space-lg text-basalt-base text-basalt-foreground">
+												<CircleAlert
+													aria-hidden="true"
+													className="size-basalt-icon-lg shrink-0 text-basalt-danger"
+												/>
+												<div className="min-w-0">{error}</div>
+											</div>
 											{onRetry ? (
 												<Button variant="outline" size="sm" onClick={onRetry}>
 													{retryLabel}
@@ -658,7 +666,9 @@ export function DataTable<T>({
 							) : paged.length === 0 ? (
 								<TableRow>
 									<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
-										<div role="status">{empty}</div>
+										<div role="status">
+											{typeof empty === "string" ? <Empty size="sm" title={empty} /> : empty}
+										</div>
 									</TableCell>
 								</TableRow>
 							) : (

@@ -112,7 +112,7 @@ export const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.R
 				aria-labelledby={ariaLabelledBy}
 				className={cn(
 					BASALT_UI_CLASS,
-					"relative flex touch-none select-none items-center",
+					"relative flex touch-none select-none items-center data-[disabled]:opacity-50",
 					isVertical ? "h-full w-auto flex-col justify-center" : "h-auto w-full",
 					className,
 				)}
@@ -120,7 +120,7 @@ export const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.R
 			>
 				<SliderPrimitive.Track
 					className={cn(
-						"relative grow overflow-hidden rounded-basalt-full bg-basalt-muted",
+						"relative grow overflow-hidden rounded-basalt-full bg-basalt-well shadow-basalt-well",
 						isVertical ? "h-full w-basalt-2" : "h-basalt-2 w-full",
 					)}
 				>
@@ -150,7 +150,7 @@ export const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.R
 
 					const thumbProps: React.ComponentPropsWithoutRef<typeof SliderPrimitive.Thumb> = {
 						className: cn(
-							"block h-basalt-4 w-basalt-4 rounded-basalt-full border border-basalt-primary bg-basalt-background shadow",
+							"block h-basalt-4 w-basalt-4 cursor-grab active:cursor-grabbing rounded-basalt-full border border-basalt-border/80 bg-basalt-on-solid shadow-basalt-knob transition-transform basalt-motion hover:scale-110 active:scale-95 data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed",
 							FOCUS_RING,
 						),
 					};

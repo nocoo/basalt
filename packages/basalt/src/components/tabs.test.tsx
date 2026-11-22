@@ -88,6 +88,11 @@ describe("Tabs", () => {
 		const tab = screen.getByRole("tab", { name: "Home" });
 		expect(tab).toBeInTheDocument();
 		expect(tab).toHaveClass("data-[state=active]:text-basalt-selected-foreground");
+		expect(tab).toHaveClass(
+			"cursor-pointer",
+			"disabled:pointer-events-none",
+			"disabled:opacity-50",
+		);
 		expect(tab).not.toHaveClass("rounded-t-basalt-md", "data-[state=active]:bg-basalt-selected");
 	});
 

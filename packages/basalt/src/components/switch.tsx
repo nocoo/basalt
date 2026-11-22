@@ -1,5 +1,11 @@
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as React from "react";
+import {
+	ChoiceGroupError,
+	ChoiceGroupFieldset,
+	ChoiceGroupLegend,
+	ChoiceItemLabel,
+} from "../utils/choice-group";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { useCheckableGroup } from "../utils/use-checkable-group";
@@ -80,9 +86,9 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 		<SwitchPrimitives.Root
 			className={cn(
 				BASALT_UI_CLASS,
-				"peer inline-flex shrink-0 cursor-pointer items-center rounded-basalt-full border-2 border-transparent transition-colors basalt-motion data-[state=checked]:bg-basalt-primary data-[state=unchecked]:bg-basalt-input disabled:cursor-not-allowed disabled:opacity-50",
+				"peer inline-flex shrink-0 cursor-pointer items-center rounded-basalt-full border-2 border-transparent transition-colors basalt-motion data-[state=unchecked]:bg-basalt-well data-[state=unchecked]:shadow-basalt-well data-[state=unchecked]:hover:bg-basalt-input data-[state=checked]:bg-basalt-primary data-[state=checked]:shadow-basalt-solid data-[state=checked]:hover:bg-basalt-primary-hover disabled:cursor-not-allowed disabled:opacity-50",
 				FOCUS_RING,
-				size === "sm" ? "h-basalt-4 w-basalt-7" : "h-basalt-6 w-basalt-11",
+				size === "sm" ? "h-basalt-4 w-basalt-7" : "h-basalt-4_5 w-basalt-8",
 				className,
 			)}
 			{...props}
@@ -90,10 +96,10 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 		>
 			<SwitchPrimitives.Thumb
 				className={cn(
-					"pointer-events-none block rounded-basalt-full bg-basalt-on-solid shadow-basalt-solid transition-transform basalt-motion data-[state=unchecked]:translate-x-0",
+					"pointer-events-none block rounded-basalt-full bg-basalt-on-solid shadow-basalt-knob transition-transform basalt-motion data-[state=unchecked]:translate-x-0 active:scale-95",
 					size === "sm"
 						? "h-basalt-3 w-basalt-3 data-[state=checked]:translate-x-basalt-3"
-						: "h-basalt-5 w-basalt-5 data-[state=checked]:translate-x-basalt-5",
+						: "h-basalt-3_5 w-basalt-3_5 data-[state=checked]:translate-x-basalt-3_5",
 				)}
 			/>
 		</SwitchPrimitives.Root>
@@ -131,21 +137,17 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 			<SwitchGroupContext.Provider
 				value={{ value: group.current, setValue: group.setValue, disabled, invalid: group.invalid }}
 			>
-				<fieldset
+				<ChoiceGroupFieldset
 					ref={group.setRefs}
 					{...props}
 					disabled={disabled}
 					aria-invalid={group.ariaInvalid}
 					aria-describedby={group.mergedDescribedBy}
-					className={cn("basalt-ui flex flex-col gap-basalt-field-gap", className)}
+					className={className}
 				>
 					{children}
-					{group.invalid ? (
-						<p id={group.errorId} className="text-basalt-sm text-basalt-danger-solid" role="alert">
-							{error}
-						</p>
-					) : null}
-				</fieldset>
+					{group.invalid ? <ChoiceGroupError id={group.errorId}>{error}</ChoiceGroupError> : null}
+				</ChoiceGroupFieldset>
 			</SwitchGroupContext.Provider>
 		);
 	},
@@ -154,14 +156,7 @@ SwitchGroup.displayName = "Switch.Group";
 
 const SwitchLegend = React.forwardRef<HTMLLegendElement, SwitchLegendProps>(
 	({ className, ...props }, ref) => (
-		<legend
-			ref={ref}
-			className={cn(
-				"mb-basalt-field-gap text-basalt-base font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
-				className,
-			)}
-			{...props}
-		/>
+		<ChoiceGroupLegend ref={ref} className={className} {...props} />
 	),
 );
 SwitchLegend.displayName = "Switch.Legend";
@@ -198,13 +193,9 @@ const SwitchItem = React.forwardRef<
 		return box;
 	}
 	return (
-		<label
-			htmlFor={controlId}
-			className="flex items-center gap-basalt-space-lg text-basalt-base text-basalt-foreground"
-		>
-			{box}
+		<ChoiceItemLabel htmlFor={controlId} control={box}>
 			{children}
-		</label>
+		</ChoiceItemLabel>
 	);
 });
 SwitchItem.displayName = "Switch.Item";

@@ -76,6 +76,7 @@ const InputGroupInput = React.forwardRef<HTMLInputElement, InputGroupInputProps>
 				disabled={disabled || groupDisabled}
 				className={cn(
 					"min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-basalt-space-lg shadow-none",
+					groupDisabled && "disabled:opacity-100",
 					className,
 				)}
 				{...props}
@@ -165,7 +166,11 @@ const InputGroupButton = React.forwardRef<HTMLButtonElement, InputGroupButtonPro
 				variant={variant}
 				size={size}
 				disabled={disabled || groupDisabled}
-				className={cn("basalt-action-inset shrink-0 rounded-basalt-sm", className)}
+				className={cn(
+					"basalt-action-inset shrink-0 rounded-basalt-sm",
+					groupDisabled && "disabled:opacity-100",
+					className,
+				)}
 				{...props}
 			/>
 		);

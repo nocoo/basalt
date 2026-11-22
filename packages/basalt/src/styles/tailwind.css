@@ -99,6 +99,7 @@
 	--spacing-basalt-3: var(--basalt-space-3);
 	--spacing-basalt-3_5: var(--basalt-space-3_5);
 	--spacing-basalt-4: var(--basalt-space-4);
+	--spacing-basalt-4_5: var(--basalt-space-4_5);
 	--spacing-basalt-5: var(--basalt-space-5);
 	--spacing-basalt-6: var(--basalt-space-6);
 	--spacing-basalt-7: var(--basalt-space-7);
@@ -168,6 +169,7 @@
 	--color-basalt-popover-foreground: hsl(var(--basalt-popover-foreground));
 	--color-basalt-bright: hsl(var(--basalt-bright));
 	--color-basalt-control: var(--basalt-control-fill);
+	--color-basalt-well: var(--basalt-well);
 	--color-basalt-primary: hsl(var(--basalt-primary));
 	--color-basalt-primary-foreground: hsl(var(--basalt-primary-foreground));
 	--color-basalt-link: hsl(var(--basalt-link));
@@ -249,12 +251,14 @@
 	--shadow-basalt-floating: var(--basalt-shadow-floating);
 	--shadow-basalt-modal: var(--basalt-shadow-modal);
 	--shadow-basalt-well: var(--basalt-shadow-well);
+	--shadow-basalt-knob: var(--basalt-shadow-knob);
 	--font-basalt-sans: var(--basalt-font-sans);
 	--font-basalt-display: var(--basalt-font-display);
 	--font-basalt-mono: var(--basalt-font-mono);
+	--animate-basalt-check-in: basalt-check-in var(--basalt-motion-fast) var(--basalt-motion-ease);
 	--animate-basalt-accordion-down: basalt-accordion-down var(--basalt-motion-normal)
 		var(--basalt-motion-ease);
-	--animate-basalt-accordion-up: basalt-accordion-up var(--basalt-motion-normal)
+	--animate-basalt-accordion-up: basalt-accordion-up var(--basalt-motion-fast)
 		var(--basalt-motion-ease);
 	--animate-basalt-spin: basalt-spin 1s linear infinite;
 	--animate-basalt-pulse: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
