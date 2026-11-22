@@ -36,7 +36,7 @@ describe("useThemeStudioViewModel", () => {
 		act(() => result.current.studio.applyPreset("ops"));
 		await waitFor(() => expect(result.current.accent.accent).toBe("teal"));
 		expect(result.current.studio.presetId).toBe("ops");
-		expect(result.current.studio.scopedVars["--basalt-background"]).toBe("215 12% 95.7%");
+		expect(result.current.studio.scopedVars["--basalt-background"]).toBe("215 12% 95%");
 		expect(window.location.search).toContain(
 			`preset=${encodeStudioPreset(result.current.studio.options)}`,
 		);
@@ -52,7 +52,7 @@ describe("useThemeStudioViewModel", () => {
 		expect(result.current.studio.cssDiff).toContain("--basalt-radius-lg: 1rem;");
 		act(() => document.documentElement.classList.add("dark"));
 		await waitFor(() => expect(result.current.studio.mode).toBe("dark"));
-		expect(result.current.studio.scopedVars["--basalt-background"]).toBe("215 8% 9%");
+		expect(result.current.studio.scopedVars["--basalt-background"]).toBe("215 8% 7.5%");
 		act(() => document.documentElement.setAttribute("data-mode", "dark"));
 		act(() => document.documentElement.classList.remove("dark"));
 		await waitFor(() => expect(result.current.studio.mode).toBe("light"));
@@ -220,7 +220,7 @@ describe("useThemeStudioViewModel", () => {
 		});
 		act(() => result.current.studio.updateOption("surfaceTint", "warm"));
 		expect(result.current.studio.shareUrl).toContain("preset=");
-		expect(result.current.studio.scopedVars["--basalt-background"]).toBe("40 14% 95.7%");
+		expect(result.current.studio.scopedVars["--basalt-background"]).toBe("40 14% 95%");
 		unmount();
 	});
 	it("renders without browser globals", () => {

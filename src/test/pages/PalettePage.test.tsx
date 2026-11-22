@@ -54,7 +54,7 @@ describe("PalettePage", () => {
 		expect(stage?.style.getPropertyValue("--basalt-background")).toBe("");
 		fireEvent.click(screen.getByRole("button", { name: "Signal Ops" }));
 		await waitFor(() => expect(window.localStorage.getItem("basalt-accent")).toBe("teal"));
-		expect(stage?.style.getPropertyValue("--basalt-background")).toBe("215 12% 95.7%");
+		expect(stage?.style.getPropertyValue("--basalt-background")).toBe("215 12% 95%");
 		expect(stage?.style.getPropertyValue("--basalt-radius-sm")).toBe("0.125rem");
 		expect(stage?.style.getPropertyValue("--basalt-chart-1")).toBe("var(--basalt-primary)");
 		expect(
@@ -62,11 +62,11 @@ describe("PalettePage", () => {
 		).toHaveLength(5);
 		act(() => document.documentElement.classList.add("dark"));
 		await waitFor(() =>
-			expect(stage?.style.getPropertyValue("--basalt-background")).toBe("215 8% 9%"),
+			expect(stage?.style.getPropertyValue("--basalt-background")).toBe("215 8% 7.5%"),
 		);
 		act(() => document.documentElement.classList.remove("dark"));
 		await waitFor(() =>
-			expect(stage?.style.getPropertyValue("--basalt-background")).toBe("215 12% 95.7%"),
+			expect(stage?.style.getPropertyValue("--basalt-background")).toBe("215 12% 95%"),
 		);
 		expect(window.location.search).toContain("other=kept");
 		expect(window.location.search).toContain("preset=");
