@@ -71,13 +71,27 @@ describe("Button", () => {
 	});
 
 	it("renders tactile control variants", () => {
-		const { rerender } = render(<Button variant="secondary">Cancel</Button>);
-		expect(screen.getByRole("button", { name: "Cancel" })).toHaveClass("bg-basalt-control");
-		rerender(<Button variant="outline">Cancel</Button>);
+		const { rerender } = render(<Button>Save</Button>);
+		expect(screen.getByRole("button", { name: "Save" })).toHaveClass(
+			"shadow-basalt-solid",
+			"active:translate-y-px",
+		);
+		rerender(<Button variant="destructive">Delete</Button>);
+		expect(screen.getByRole("button", { name: "Delete" })).toHaveClass(
+			"shadow-basalt-solid",
+			"active:translate-y-px",
+		);
+		rerender(<Button variant="secondary">Cancel</Button>);
 		expect(screen.getByRole("button", { name: "Cancel" })).toHaveClass(
+			"border",
+			"border-basalt-border",
 			"bg-basalt-control",
 			"shadow-basalt-control",
 		);
+		rerender(<Button variant="outline">Cancel</Button>);
+		const outline = screen.getByRole("button", { name: "Cancel" });
+		expect(outline).toHaveClass("border", "border-basalt-border", "bg-transparent");
+		expect(outline).not.toHaveClass("bg-basalt-control", "shadow-basalt-control");
 	});
 
 	it("can be disabled", () => {
