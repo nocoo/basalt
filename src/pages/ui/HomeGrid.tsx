@@ -47,7 +47,7 @@ function HomeInput() {
 	return (
 		<div className="grid w-[12.5rem] gap-basalt-layout">
 			<Input placeholder="Search health records" />
-			<Input defaultValue="Invalid date" className="border-destructive" />
+			<Input defaultValue="Invalid date" className="border-basalt-danger-solid" />
 		</div>
 	);
 }

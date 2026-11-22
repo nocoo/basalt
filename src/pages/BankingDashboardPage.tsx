@@ -105,9 +105,11 @@ export default function BankingDashboardPage() {
 											<ArrowUpRight className="size-basalt-icon text-basalt-danger-solid" />
 										)}
 									</div>
-									<span className="text-basalt-base text-foreground">{item.name}</span>
+									<span className="text-basalt-base text-basalt-foreground">{item.name}</span>
 								</div>
-								<span className="text-basalt-base font-medium text-foreground">{item.amount}</span>
+								<span className="text-basalt-base font-medium text-basalt-foreground">
+									{item.amount}
+								</span>
 							</div>
 						))}
 					</LayerCard.Body>

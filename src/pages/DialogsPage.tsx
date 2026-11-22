@@ -59,7 +59,7 @@ function DialogHeading({ title, description }: { title: string; description?: st
 }
 
 function DialogColumnTitle({ children }: { children: string }) {
-	return <p className="text-basalt-sm font-medium text-muted-foreground">{children}</p>;
+	return <p className="text-basalt-sm font-medium text-basalt-muted-foreground">{children}</p>;
 }
 
 const UNIT_LOGS = [
@@ -341,7 +341,9 @@ export default function DialogsPage() {
 												<Input defaultValue="Care account" />
 											</Field>
 											<div className="space-y-basalt-layout">
-												<p className="text-basalt-sm text-muted-foreground">Stage an operation</p>
+												<p className="text-basalt-sm text-basalt-muted-foreground">
+													Stage an operation
+												</p>
 												<div className="flex flex-wrap gap-basalt-space-lg">
 													<Button type="button" variant="outline" size="sm">
 														Add care funds
@@ -370,8 +372,12 @@ export default function DialogsPage() {
 														className="flex flex-wrap items-baseline gap-basalt-card-sm"
 													>
 														<div>
-															<p className="text-basalt-base text-foreground">{log.action}</p>
-															<p className="text-basalt-sm text-muted-foreground">{log.date}</p>
+															<p className="text-basalt-base text-basalt-foreground">
+																{log.action}
+															</p>
+															<p className="text-basalt-sm text-basalt-muted-foreground">
+																{log.date}
+															</p>
 														</div>
 														<p className="ms-auto text-basalt-base tabular-nums">{log.amount}</p>
 													</div>

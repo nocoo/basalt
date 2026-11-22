@@ -63,7 +63,9 @@ function TocLink({
 			className={cn(
 				"basalt-choice rounded-basalt-sm block w-full truncate py-basalt-space-xs text-left text-basalt-base leading-basalt-body no-underline transition-colors basalt-motion duration-basalt-normal",
 				nested ? "pl-basalt-layout" : "pl-basalt-space-lg",
-				active ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
+				active
+					? "font-medium text-basalt-foreground"
+					: "text-basalt-muted-foreground hover:text-basalt-foreground",
 			)}
 			onClick={(event) => {
 				event.preventDefault();
@@ -107,8 +109,8 @@ export function DocToc({
 						<span
 							className={
 								compact
-									? "shrink-0 text-muted-foreground"
-									: "mb-basalt-field-gap block text-muted-foreground"
+									? "shrink-0 text-basalt-muted-foreground"
+									: "mb-basalt-field-gap block text-basalt-muted-foreground"
 							}
 						>
 							On this page
@@ -136,17 +138,17 @@ export function DocToc({
 						</Select>
 					</div>
 					<div className={compact ? "hidden" : "hidden xl:block"}>
-						<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wider text-muted-foreground uppercase">
+						<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wider text-basalt-muted-foreground uppercase">
 							On this page
 						</p>
 						<ul
 							ref={listRef}
-							className="relative flex flex-col gap-basalt-space-lg border-l-2 border-border"
+							className="relative flex flex-col gap-basalt-space-lg border-l-2 border-basalt-border"
 						>
 							<li
 								aria-hidden="true"
 								className={cn(
-									"absolute top-0 left-[-0.125rem] w-0.5 rounded-basalt-full bg-primary",
+									"absolute top-0 left-[-0.125rem] w-0.5 rounded-basalt-full bg-basalt-primary",
 									motionClassName,
 								)}
 								style={{

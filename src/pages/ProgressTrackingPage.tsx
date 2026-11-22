@@ -29,13 +29,13 @@ export default function ProgressTrackingPage() {
 					{categories.map((cat) => (
 						<div key={cat.category}>
 							<div className="flex items-center justify-between mb-basalt-space-md">
-								<span className="text-basalt-base text-foreground">{cat.category}</span>
-								<span className="text-basalt-sm text-muted-foreground">
+								<span className="text-basalt-base text-basalt-foreground">{cat.category}</span>
+								<span className="text-basalt-sm text-basalt-muted-foreground">
 									{formatUsd(cat.spent)} / {formatUsd(cat.limit)}
 								</span>
 							</div>
 							<div
-								className="h-2 rounded-basalt-full bg-card"
+								className="h-2 rounded-basalt-full bg-basalt-muted"
 								role="progressbar"
 								aria-valuenow={cat.progress}
 								aria-valuemin={0}

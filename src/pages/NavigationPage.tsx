@@ -19,17 +19,17 @@ function Stepper({ steps, current }: { steps: string[]; current: number }) {
 						<div
 							className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-basalt-full text-basalt-sm font-medium transition-colors basalt-motion ${
 								i < current
-									? "bg-primary text-primary-foreground"
+									? "bg-basalt-primary text-basalt-primary-foreground"
 									: i === current
-										? "border-2 border-primary text-basalt-link"
-										: "border border-border text-muted-foreground"
+										? "border-2 border-basalt-primary text-basalt-link"
+										: "border border-basalt-border text-basalt-muted-foreground"
 							}`}
 						>
 							{i < current ? <CheckCircle2 className="size-basalt-icon-lg" /> : i + 1}
 						</div>
 						<div className="hidden sm:block">
 							<p
-								className={`text-basalt-sm font-medium ${i <= current ? "text-foreground" : "text-muted-foreground"}`}
+								className={`text-basalt-sm font-medium ${i <= current ? "text-basalt-foreground" : "text-basalt-muted-foreground"}`}
 							>
 								{step}
 							</p>
@@ -37,7 +37,7 @@ function Stepper({ steps, current }: { steps: string[]; current: number }) {
 					</div>
 					{i < steps.length - 1 && (
 						<div
-							className={`mx-basalt-space-sm h-px w-2 sm:mx-basalt-space-lg sm:w-12 ${i < current ? "bg-primary" : "bg-border"}`}
+							className={`mx-basalt-space-sm h-px w-2 sm:mx-basalt-space-lg sm:w-12 ${i < current ? "bg-basalt-primary" : "bg-basalt-border"}`}
 						/>
 					)}
 				</div>
@@ -76,7 +76,7 @@ export default function NavigationPage() {
 			<SectionRule title="Breadcrumbs">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">simple</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">simple</p>
 						<Breadcrumbs
 							className="flex-wrap gap-y-basalt-space-lg"
 							items={[
@@ -88,7 +88,7 @@ export default function NavigationPage() {
 						/>
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">with icons</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">with icons</p>
 						<Breadcrumbs
 							className="flex-wrap gap-y-basalt-space-lg"
 							items={[
@@ -112,16 +112,16 @@ export default function NavigationPage() {
 						/>
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">inside a card</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">inside a card</p>
 						<div>
 							<Breadcrumbs
 								className="flex-wrap gap-y-basalt-space-lg"
 								items={[{ label: "Dashboard" }, { label: "Settings" }, { label: "Notifications" }]}
 							/>
-							<p className="text-basalt-base text-foreground font-medium mt-basalt-card-sm">
+							<p className="text-basalt-base text-basalt-foreground font-medium mt-basalt-card-sm">
 								Notification Preferences
 							</p>
-							<p className="text-basalt-sm text-muted-foreground mt-basalt-space-sm">
+							<p className="text-basalt-sm text-basalt-muted-foreground mt-basalt-space-sm">
 								Choose how you want to be notified about updates.
 							</p>
 						</div>
@@ -133,15 +133,15 @@ export default function NavigationPage() {
 			<SectionRule title="Pagination">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">short (5 pages)</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">short (5 pages)</p>
 						<TablePager page={page1} pageSize={10} totalCount={50} onPageChange={setPage1} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">long (20 pages)</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">long (20 pages)</p>
 						<TablePager page={page2} pageSize={10} totalCount={200} onPageChange={setPage2} />
 					</LayerCard>
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">with context</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">with context</p>
 						<TablePager
 							page={page2}
 							pageSize={10}
@@ -150,10 +150,11 @@ export default function NavigationPage() {
 							formatRange={({ start, end, totalCount }) => (
 								<>
 									Showing{" "}
-									<span className="font-medium text-foreground">
+									<span className="font-medium text-basalt-foreground">
 										{start}-{end}
 									</span>{" "}
-									of <span className="font-medium text-foreground">{totalCount}</span> results
+									of <span className="font-medium text-basalt-foreground">{totalCount}</span>{" "}
+									results
 								</>
 							)}
 						/>
@@ -165,7 +166,9 @@ export default function NavigationPage() {
 			<SectionRule title="Stepper / Wizard">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-card">
-						<p className="text-basalt-sm text-muted-foreground font-mono">horizontal stepper</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">
+							horizontal stepper
+						</p>
 						<Stepper steps={stepperSteps} current={stepperIndex} />
 						<div className="flex items-center gap-basalt-space-lg mt-basalt-card-sm">
 							<Button
@@ -196,7 +199,9 @@ export default function NavigationPage() {
 
 					{/* Vertical stepper */}
 					<LayerCard className="space-y-basalt-card">
-						<p className="text-basalt-sm text-muted-foreground font-mono">vertical stepper</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">
+							vertical stepper
+						</p>
 						<div className="max-w-sm">
 							{stepperSteps.map((step, i) => (
 								<div key={step} className="flex gap-basalt-space-lg">
@@ -204,27 +209,27 @@ export default function NavigationPage() {
 										<div
 											className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-basalt-full text-basalt-sm font-medium ${
 												i < stepperIndex
-													? "bg-primary text-primary-foreground"
+													? "bg-basalt-primary text-basalt-primary-foreground"
 													: i === stepperIndex
-														? "border-2 border-primary text-basalt-link"
-														: "border border-border text-muted-foreground"
+														? "border-2 border-basalt-primary text-basalt-link"
+														: "border border-basalt-border text-basalt-muted-foreground"
 											}`}
 										>
 											{i < stepperIndex ? <CheckCircle2 className="size-basalt-icon" /> : i + 1}
 										</div>
 										{i < stepperSteps.length - 1 && (
 											<div
-												className={`w-px flex-1 min-h-[1.5rem] ${i < stepperIndex ? "bg-primary" : "bg-border"}`}
+												className={`w-px flex-1 min-h-[1.5rem] ${i < stepperIndex ? "bg-basalt-primary" : "bg-basalt-border"}`}
 											/>
 										)}
 									</div>
 									<div className="pb-basalt-card">
 										<p
-											className={`text-basalt-base font-medium ${i <= stepperIndex ? "text-foreground" : "text-muted-foreground"}`}
+											className={`text-basalt-base font-medium ${i <= stepperIndex ? "text-basalt-foreground" : "text-basalt-muted-foreground"}`}
 										>
 											{step}
 										</p>
-										<p className="text-basalt-sm text-muted-foreground">
+										<p className="text-basalt-sm text-basalt-muted-foreground">
 											{i < stepperIndex
 												? "Completed"
 												: i === stepperIndex
@@ -244,7 +249,7 @@ export default function NavigationPage() {
 				<div className="space-y-basalt-card">
 					{/* Standard tabs */}
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">standard tabs</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">standard tabs</p>
 						<Tabs defaultValue="overview">
 							<TabsList>
 								<TabsTrigger value="overview">Overview</TabsTrigger>
@@ -254,25 +259,25 @@ export default function NavigationPage() {
 							</TabsList>
 							<TabsContent value="overview">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Overview content area</p>
-									<p className="text-basalt-sm text-muted-foreground mt-basalt-space-sm">
+									<p className="text-basalt-base text-basalt-foreground">Overview content area</p>
+									<p className="text-basalt-sm text-basalt-muted-foreground mt-basalt-space-sm">
 										Tab panels hold the content for each section.
 									</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="analytics">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Analytics content area</p>
+									<p className="text-basalt-base text-basalt-foreground">Analytics content area</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="reports">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Reports content area</p>
+									<p className="text-basalt-base text-basalt-foreground">Reports content area</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="settings">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Settings content area</p>
+									<p className="text-basalt-base text-basalt-foreground">Settings content area</p>
 								</div>
 							</TabsContent>
 						</Tabs>
@@ -280,7 +285,7 @@ export default function NavigationPage() {
 
 					{/* Underline tabs */}
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">underline style</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">underline style</p>
 						<Tabs defaultValue="all">
 							<TabsList>
 								{underlineTabs.map((tab) => (
@@ -291,22 +296,22 @@ export default function NavigationPage() {
 							</TabsList>
 							<TabsContent value="all">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Showing all items</p>
+									<p className="text-basalt-base text-basalt-foreground">Showing all items</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="active">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Showing active items</p>
+									<p className="text-basalt-base text-basalt-foreground">Showing active items</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="archived">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Showing archived items</p>
+									<p className="text-basalt-base text-basalt-foreground">Showing archived items</p>
 								</div>
 							</TabsContent>
 							<TabsContent value="drafts">
 								<div className="pt-basalt-card-sm">
-									<p className="text-basalt-base text-foreground">Showing draft items</p>
+									<p className="text-basalt-base text-basalt-foreground">Showing draft items</p>
 								</div>
 							</TabsContent>
 						</Tabs>
@@ -314,7 +319,7 @@ export default function NavigationPage() {
 
 					{/* Pill tabs */}
 					<LayerCard className="space-y-basalt-space-sm">
-						<p className="text-basalt-sm text-muted-foreground font-mono">pill style</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground font-mono">pill style</p>
 						<SegmentControl
 							legend="pill style"
 							options={pillTabs}

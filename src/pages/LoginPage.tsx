@@ -10,7 +10,7 @@ function Barcode() {
 			{bars.map((w, i) => (
 				<div
 					key={i}
-					className="rounded-[0.5px] bg-primary-foreground"
+					className="rounded-[0.5px] bg-basalt-primary-foreground"
 					style={{ width: `${w * 1.5}px`, opacity: i % 3 === 0 ? 0.9 : 0.5 }}
 				/>
 			))}
@@ -24,20 +24,20 @@ export default function LoginPage() {
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 
 	return (
-		<div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background p-4">
+		<div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-basalt-background p-4">
 			<div
 				className="pointer-events-none absolute inset-0"
 				style={{
 					background: [
 						"radial-gradient(ellipse 70% 55% at 50% 50%,",
-						"hsl(var(--foreground) / 0.045) 0%,",
-						"hsl(var(--foreground) / 0.042) 10%,",
-						"hsl(var(--foreground) / 0.036) 20%,",
-						"hsl(var(--foreground) / 0.028) 32%,",
-						"hsl(var(--foreground) / 0.020) 45%,",
-						"hsl(var(--foreground) / 0.012) 58%,",
-						"hsl(var(--foreground) / 0.006) 72%,",
-						"hsl(var(--foreground) / 0.002) 86%,",
+						"hsl(var(--basalt-foreground) / 0.045) 0%,",
+						"hsl(var(--basalt-foreground) / 0.042) 10%,",
+						"hsl(var(--basalt-foreground) / 0.036) 20%,",
+						"hsl(var(--basalt-foreground) / 0.028) 32%,",
+						"hsl(var(--basalt-foreground) / 0.020) 45%,",
+						"hsl(var(--basalt-foreground) / 0.012) 58%,",
+						"hsl(var(--basalt-foreground) / 0.006) 72%,",
+						"hsl(var(--basalt-foreground) / 0.002) 86%,",
 						"transparent 100%)",
 					].join(" "),
 				}}
@@ -45,7 +45,7 @@ export default function LoginPage() {
 			<div className="flex flex-col items-center">
 				<div
 					data-basalt-surface-root=""
-					className="relative flex aspect-[54/86] w-72 flex-col overflow-hidden rounded-2xl bg-card ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
+					className="relative flex aspect-[54/86] w-72 flex-col overflow-hidden rounded-2xl bg-basalt-card ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
 					style={{
 						boxShadow: [
 							"0 1px 2px rgba(0,0,0,0.06)",
@@ -57,25 +57,27 @@ export default function LoginPage() {
 						].join(", "),
 					}}
 				>
-					<div className="bg-primary px-5 py-4">
+					<div className="bg-basalt-primary px-5 py-4">
 						<div className="flex items-center justify-between">
 							<div
-								className="h-4 w-8 rounded-full bg-background/80"
+								className="h-4 w-8 rounded-full bg-basalt-background/80"
 								style={{
 									boxShadow:
 										"inset 0 1.5px 3px rgba(0,0,0,0.35), inset 0 -0.5px 1px rgba(255,255,255,0.1)",
 								}}
 							/>
 							<div className="flex items-center gap-2">
-								<Wallet className="h-4 w-4 stroke-[1.5] text-primary-foreground" />
-								<span className="text-sm font-semibold text-primary-foreground">basalt.</span>
+								<Wallet className="h-4 w-4 stroke-[1.5] text-basalt-primary-foreground" />
+								<span className="text-sm font-semibold text-basalt-primary-foreground">
+									basalt.
+								</span>
 							</div>
-							<span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
+							<span className="text-[10px] font-medium uppercase tracking-widest text-basalt-primary-foreground/60">
 								Visitor
 							</span>
 						</div>
 						<div className="mt-3 flex items-center justify-between">
-							<span className="font-mono text-[9px] tracking-wider text-primary-foreground/40">
+							<span className="font-mono text-[9px] tracking-wider text-basalt-primary-foreground/40">
 								ID {year}-{today.slice(4)}
 							</span>
 							<div className="h-6">
@@ -87,10 +89,10 @@ export default function LoginPage() {
 					<div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
 						<BasaltLogo className="h-24 w-24 object-contain" sizes="6rem" />
 
-						<p className="mt-5 text-lg font-semibold text-foreground">Welcome</p>
-						<p className="mt-1 text-xs text-muted-foreground">Sign in to get your badge</p>
+						<p className="mt-5 text-lg font-semibold text-basalt-foreground">Welcome</p>
+						<p className="mt-1 text-xs text-basalt-muted-foreground">Sign in to get your badge</p>
 
-						<div className="mt-5 h-px w-full bg-border" />
+						<div className="mt-5 h-px w-full bg-basalt-border" />
 						<div className="flex-1" />
 
 						<Button variant="outline" className="w-full rounded-xl py-3">
@@ -115,15 +117,17 @@ export default function LoginPage() {
 							Continue with Google
 						</Button>
 
-						<p className="mt-3 text-center text-[10px] leading-relaxed text-muted-foreground/60">
+						<p className="mt-3 text-center text-[10px] leading-relaxed text-basalt-muted-foreground/60">
 							By signing in you agree to our Terms of Service and Privacy Policy
 						</p>
 					</div>
 
-					<div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-border bg-secondary/50 py-2.5">
+					<div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-basalt-border bg-basalt-secondary/50 py-2.5">
 						<div className="flex items-center gap-1.5">
-							<div className="h-1.5 w-1.5 animate-pulse motion-reduce:animate-none rounded-full bg-success" />
-							<span className="text-[10px] text-muted-foreground">Secure authentication</span>
+							<div className="h-1.5 w-1.5 animate-pulse motion-reduce:animate-none rounded-full bg-basalt-success" />
+							<span className="text-[10px] text-basalt-muted-foreground">
+								Secure authentication
+							</span>
 						</div>
 					</div>
 				</div>

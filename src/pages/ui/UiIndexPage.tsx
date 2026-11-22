@@ -209,7 +209,7 @@ export default function UiIndexPage() {
 			) : (
 				<LayerCard
 					padding="md"
-					className="text-center text-basalt-base text-muted-foreground"
+					className="text-center text-basalt-base text-basalt-muted-foreground"
 					data-empty-status
 				>
 					<p className="text-basalt-base font-medium text-basalt-foreground">

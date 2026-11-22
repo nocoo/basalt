@@ -29,7 +29,7 @@ export function PaletteEditor() {
 			<LayerCard.Header className="flex-wrap">
 				<div className="space-y-basalt-space-sm">
 					<h3 className="text-basalt-base font-medium">Your own palette</h3>
-					<p className="max-w-2xl text-basalt-sm leading-basalt-relaxed text-muted-foreground">
+					<p className="max-w-2xl text-basalt-sm leading-basalt-relaxed text-basalt-muted-foreground">
 						Edit the light and dark colors, then save to apply them. Your palette stays in this
 						browser across pages and visits. Chart colors stay fixed.
 					</p>
@@ -60,7 +60,7 @@ export function PaletteEditor() {
 								{ACCENT_SWATCHES.map((swatch) => (
 									<fieldset
 										key={swatch.id}
-										className="min-w-0 space-y-basalt-space-lg rounded-basalt-lg border border-border p-basalt-card"
+										className="min-w-0 space-y-basalt-space-lg rounded-basalt-lg border border-basalt-border p-basalt-card"
 									>
 										<legend className="px-basalt-space-sm text-basalt-sm font-medium">
 											{swatch.label}
@@ -83,14 +83,14 @@ export function PaletteEditor() {
 												>
 													<label
 														htmlFor={`${id}-${swatch.id}-${mode}`}
-														className="text-basalt-sm text-muted-foreground"
+														className="text-basalt-sm text-basalt-muted-foreground"
 													>
 														{modeLabel}
 													</label>
 													<input
 														type="color"
 														aria-label={`${label} color picker`}
-														className="size-9 cursor-pointer rounded-basalt-md border border-border bg-transparent p-basalt-space-sm"
+														className="size-9 cursor-pointer rounded-basalt-md border border-basalt-border bg-transparent p-basalt-space-sm"
 														value={isHexColor(color) ? color : "#000000"}
 														onChange={(event) => update(event.target.value)}
 													/>
@@ -113,7 +113,11 @@ export function PaletteEditor() {
 								))}
 							</div>
 							{!valid && (
-								<p id={`${id}-error`} role="alert" className="text-basalt-sm text-destructive">
+								<p
+									id={`${id}-error`}
+									role="alert"
+									className="text-basalt-sm text-basalt-danger-solid"
+								>
 									Use a six-digit hex color, such as #73c2fb, for every swatch.
 								</p>
 							)}
@@ -150,7 +154,7 @@ export function PaletteEditor() {
 				>
 					Restore classic palette
 				</Button>
-				<p role="status" className="text-basalt-sm text-muted-foreground">
+				<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 					{message}
 				</p>
 			</LayerCard.Footer>

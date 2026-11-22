@@ -59,7 +59,7 @@ export default function UiCategoryOverviewPage() {
 				title="Category not found"
 				description="Choose a category from the library."
 			>
-				<LayerCard className="text-basalt-base text-muted-foreground">
+				<LayerCard className="text-basalt-base text-basalt-muted-foreground">
 					<Link href="/ui">Library index</Link>
 				</LayerCard>
 			</ShowcasePage>

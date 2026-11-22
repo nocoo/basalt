@@ -580,7 +580,7 @@ describe("ui catalog", () => {
 		const empty = beta.parentElement?.querySelector("p");
 		expect(empty).toHaveTextContent("No component-specific props.");
 		expect(empty).toHaveClass("text-basalt-base");
-		expect(empty).toHaveClass("text-muted-foreground");
+		expect(empty).toHaveClass("text-basalt-muted-foreground");
 		expect(empty?.closest("[data-basalt-surface]")).toHaveClass("p-basalt-card");
 		expect(beta.closest("[data-basalt-surface]")).toBeNull();
 	});
@@ -3618,11 +3618,11 @@ describe("ui catalog", () => {
 		);
 		expect(strategy?.parentElement).toHaveAttribute("data-basalt-surface");
 		expect(strategy).toHaveClass("text-basalt-sm");
-		expect(strategy).toHaveClass("text-muted-foreground");
+		expect(strategy).toHaveClass("text-basalt-muted-foreground");
 		const empty = suffixHeading?.parentElement?.querySelectorAll("p")[1];
 		expect(empty).toHaveTextContent("No component-specific props.");
 		expect(empty).toHaveClass("text-basalt-base");
-		expect(empty).toHaveClass("text-muted-foreground");
+		expect(empty).toHaveClass("text-basalt-muted-foreground");
 		expect(markdown).toContain("### InputGroup");
 		expect(markdown).toContain("### InputGroup.Input");
 		expect(markdown).toContain("### InputGroup.Addon");

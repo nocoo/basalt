@@ -151,9 +151,9 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
 					<User className="size-basalt-icon text-basalt-muted-foreground" />
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						Profile Information
-					</h2>
+					<LayerCard.Title asChild>
+						<h2>Profile Information</h2>
+					</LayerCard.Title>
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body>
@@ -300,9 +300,9 @@ function NotificationsSection({ vm }: { vm: SettingsVM }) {
 			<LayerCard.Header className="flex-col">
 				<div className="flex items-center gap-basalt-space-lg">
 					<Bell className="size-basalt-icon text-basalt-muted-foreground" />
-					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-						Notification Preferences
-					</h2>
+					<LayerCard.Title asChild>
+						<h2>Notification Preferences</h2>
+					</LayerCard.Title>
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 divide-y divide-basalt-border/60">
@@ -342,7 +342,9 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Shield className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Password</h2>
+						<LayerCard.Title asChild>
+							<h2>Password</h2>
+						</LayerCard.Title>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body>
@@ -429,9 +431,9 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Smartphone className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">
-							Two-Factor Authentication
-						</h2>
+						<LayerCard.Title asChild>
+							<h2>Two-Factor Authentication</h2>
+						</LayerCard.Title>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body className="min-h-0 flex-1">
@@ -480,7 +482,9 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Globe className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Active Sessions</h2>
+						<LayerCard.Title asChild>
+							<h2>Active Sessions</h2>
+						</LayerCard.Title>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body className="min-h-0 flex-1 divide-y divide-basalt-border/60">
@@ -530,7 +534,9 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Palette className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Theme</h2>
+						<LayerCard.Title asChild>
+							<h2>Theme</h2>
+						</LayerCard.Title>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body className="min-h-0 flex-1">
@@ -547,7 +553,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 								className={`basalt-focus-group relative cursor-pointer flex flex-col items-center gap-basalt-card-sm rounded-basalt-md border p-basalt-card-sm transition-colors basalt-motion ${
 									theme.key === activeTheme
 										? "border-basalt-primary bg-basalt-selected"
-										: "border-border hover:border-primary/50 hover:bg-basalt-hover"
+										: "border-basalt-border hover:border-basalt-primary/50 hover:bg-basalt-hover"
 								}`}
 							>
 								<input
@@ -580,7 +586,9 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Header className="flex-col">
 					<div className="flex items-center gap-basalt-space-lg">
 						<CreditCard className="size-basalt-icon text-basalt-muted-foreground" />
-						<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Preferences</h2>
+						<LayerCard.Title asChild>
+							<h2>Preferences</h2>
+						</LayerCard.Title>
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body

@@ -60,23 +60,23 @@ const areaData = [
 // ── Color swatch data ──
 
 const baseColors = [
-	{ token: "--background", label: "Background", tier: "L0" },
-	{ token: "--card", label: "Card", tier: "L1" },
-	{ token: "--secondary", label: "Secondary", tier: "L2" },
-	{ token: "--foreground", label: "Foreground", tier: "" },
-	{ token: "--primary", label: "Primary", tier: "" },
-	{ token: "--muted", label: "Muted", tier: "" },
-	{ token: "--muted-foreground", label: "Muted FG", tier: "" },
-	{ token: "--accent", label: "Accent", tier: "" },
-	{ token: "--border", label: "Border", tier: "" },
-	{ token: "--destructive", label: "Destructive", tier: "" },
-	{ token: "--success", label: "Success", tier: "" },
-	{ token: "--badge-red", label: "Badge Red", tier: "" },
+	{ token: "--basalt-background", label: "Background", tier: "L0" },
+	{ token: "--basalt-card", label: "Card", tier: "L1" },
+	{ token: "--basalt-secondary", label: "Secondary", tier: "L2" },
+	{ token: "--basalt-foreground", label: "Foreground", tier: "" },
+	{ token: "--basalt-primary", label: "Primary", tier: "" },
+	{ token: "--basalt-muted", label: "Muted", tier: "" },
+	{ token: "--basalt-muted-foreground", label: "Muted FG", tier: "" },
+	{ token: "--basalt-accent", label: "Accent", tier: "" },
+	{ token: "--basalt-border", label: "Border", tier: "" },
+	{ token: "--basalt-danger-solid", label: "Destructive", tier: "" },
+	{ token: "--basalt-success", label: "Success", tier: "" },
+	{ token: "--basalt-warning", label: "Warning", tier: "" },
 ];
 
 const utilityColors = [
-	{ token: "--chart-axis", label: "Axis Text" },
-	{ token: "--chart-muted", label: "Muted Fill" },
+	{ token: "--basalt-chart-axis", label: "Axis Text" },
+	{ token: "--basalt-chart-muted", label: "Muted Fill" },
 ];
 
 // ── Components ──
@@ -85,11 +85,13 @@ function Swatch({ token, label }: { token: string; label: string }) {
 	return (
 		<div className="flex w-24 flex-col items-center gap-basalt-card-sm">
 			<div
-				className="size-12 rounded-basalt-md border border-border"
+				className="size-12 rounded-basalt-md border border-basalt-border"
 				style={{ background: `hsl(var(${token}))` }}
 			/>
-			<p className="text-center text-basalt-sm font-medium text-foreground">{label}</p>
-			<code className="break-all text-center text-basalt-sm text-muted-foreground">{token}</code>
+			<p className="text-center text-basalt-sm font-medium text-basalt-foreground">{label}</p>
+			<code className="break-all text-center text-basalt-sm text-basalt-muted-foreground">
+				{token}
+			</code>
 		</div>
 	);
 }
@@ -107,7 +109,7 @@ export default function PalettePage() {
 			<SectionRule title="Control accents · 12 colors">
 				<div className="space-y-basalt-card">
 					<LayerCard className="space-y-basalt-card">
-						<p className="max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
+						<p className="max-w-3xl text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
 							Inspired by the translucent iMac and the playful iPhone 5C. Choose an accent for
 							buttons, links and focus rings.
 						</p>
@@ -124,14 +126,14 @@ export default function PalettePage() {
 									aria-pressed={color.id === accent}
 									data-accent-choice={color.id}
 									onClick={() => setAccent(color.id)}
-									className={`basalt-focus group min-w-0 rounded-basalt-lg border p-basalt-card-sm text-left transition-colors basalt-motion ${color.id === accent ? "border-basalt-primary bg-basalt-selected" : "border-border hover:border-primary/50"}`}
+									className={`basalt-focus group min-w-0 rounded-basalt-lg border p-basalt-card-sm text-left transition-colors basalt-motion ${color.id === accent ? "border-basalt-primary bg-basalt-selected" : "border-basalt-border hover:border-basalt-primary/50"}`}
 								>
 									<span
 										data-accent-swatch={color.id}
 										className="block h-16 rounded-basalt-md sm:h-20"
 										style={{ background: `hsl(var(${color.token}))` }}
 									/>
-									<span className="mt-basalt-card-sm flex items-center justify-between gap-basalt-space-sm px-basalt-space-xs text-basalt-sm font-medium text-foreground">
+									<span className="mt-basalt-card-sm flex items-center justify-between gap-basalt-space-sm px-basalt-space-xs text-basalt-sm font-medium text-basalt-foreground">
 										{color.label}
 										{color.id === accent && (
 											<Check
@@ -165,7 +167,7 @@ export default function PalettePage() {
 							<Switch id={`${previewId}-switch`} defaultChecked />
 							Enabled option
 						</label>
-						<span className="text-basalt-sm text-muted-foreground">
+						<span className="text-basalt-sm text-basalt-muted-foreground">
 							Text and button shades adapt for contrast.
 						</span>
 					</LayerCard>
@@ -179,7 +181,7 @@ export default function PalettePage() {
 
 			<SectionRule title="Chart palette · 5 colors">
 				<LayerCard>
-					<p className="mb-basalt-card max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
+					<p className="mb-basalt-card max-w-3xl text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
 						Blue, pink, green and yellow match the classic control palette, with the existing gray
 						alongside them. Chart colors stay fixed when you choose or customize an accent.
 					</p>
@@ -191,7 +193,7 @@ export default function PalettePage() {
 									style={{ background: color }}
 									data-chart-swatch={index}
 								/>
-								<p className="text-basalt-sm text-muted-foreground">
+								<p className="text-basalt-sm text-basalt-muted-foreground">
 									{["Blue", "Pink", "Green", "Yellow", "Gray"][index]}
 								</p>
 							</div>
@@ -231,7 +233,7 @@ export default function PalettePage() {
 							<div className="mt-basalt-card grid w-full grid-cols-3 gap-x-basalt-card-sm gap-y-basalt-card-sm">
 								{pieData.map((item, i) => (
 									<div key={item.name} className="flex flex-col items-center gap-basalt-space-xs">
-										<span className="font-display text-basalt-base font-medium text-foreground">
+										<span className="font-basalt-display text-basalt-base font-medium text-basalt-foreground">
 											{item.value}%
 										</span>
 										<div className="flex items-center gap-basalt-space-md">
@@ -239,7 +241,9 @@ export default function PalettePage() {
 												className="h-2 w-2 rounded-basalt-full"
 												style={{ background: CHART_COLORS[i] }}
 											/>
-											<span className="text-basalt-sm text-muted-foreground">{item.name}</span>
+											<span className="text-basalt-sm text-basalt-muted-foreground">
+												{item.name}
+											</span>
 										</div>
 									</div>
 								))}
@@ -299,7 +303,7 @@ export default function PalettePage() {
 							))}
 						</LayerCard.Header>
 						<LayerCard.Body>
-							<p className="text-basalt-sm leading-basalt-relaxed text-muted-foreground">
+							<p className="text-basalt-sm leading-basalt-relaxed text-basalt-muted-foreground">
 								Empty, partial and complete. A quiet surface-colored track shows the remaining
 								capacity; values keep the same readable text color.
 							</p>

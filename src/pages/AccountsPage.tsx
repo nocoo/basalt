@@ -71,7 +71,7 @@ export default function AccountsPage() {
 						variant="ghost"
 						type="button"
 						onClick={() => setShowBalance(!showBalance)}
-						className="flex items-center gap-basalt-space-lg text-muted-foreground"
+						className="flex items-center gap-basalt-space-lg text-basalt-muted-foreground"
 					>
 						{showBalance ? (
 							<Eye className="size-basalt-icon-lg" />
@@ -128,13 +128,15 @@ export default function AccountsPage() {
 					{cards.map((card) => (
 						<LayerCard key={card.name}>
 							<div className="flex items-center justify-between gap-basalt-card-sm mb-basalt-card-sm">
-								<span className="text-basalt-base font-medium text-foreground">
+								<span className="text-basalt-base font-medium text-basalt-foreground">
 									{card.bank} {card.name}
 								</span>
-								<span className="text-basalt-sm text-muted-foreground">{card.utilization}%</span>
+								<span className="text-basalt-sm text-basalt-muted-foreground">
+									{card.utilization}%
+								</span>
 							</div>
 							<div
-								className="h-1.5 rounded-basalt-full bg-muted"
+								className="h-1.5 rounded-basalt-full bg-basalt-muted"
 								role="progressbar"
 								aria-valuenow={card.utilization}
 								aria-valuemin={0}
@@ -142,12 +144,12 @@ export default function AccountsPage() {
 								aria-label={`${card.bank} ${card.name} credit utilization: ${card.utilization}%`}
 							>
 								<div
-									className="h-full rounded-basalt-full bg-foreground/60 transition-[width,opacity] basalt-motion"
+									className="h-full rounded-basalt-full bg-basalt-foreground/60 transition-[width,opacity] basalt-motion"
 									style={{ width: `${card.utilization}%` }}
 									aria-hidden="true"
 								/>
 							</div>
-							<p className="text-basalt-sm text-muted-foreground mt-basalt-space-md">
+							<p className="text-basalt-sm text-basalt-muted-foreground mt-basalt-space-md">
 								${card.balance.toLocaleString()} / ${card.limit.toLocaleString()} limit
 							</p>
 						</LayerCard>
@@ -170,7 +172,7 @@ export default function AccountsPage() {
 						<div key={feat.key} className="flex items-center justify-between gap-basalt-card">
 							<label
 								htmlFor={`switch-${feat.key}`}
-								className="text-basalt-base text-foreground cursor-pointer"
+								className="text-basalt-base text-basalt-foreground cursor-pointer"
 							>
 								{feat.label}
 							</label>
@@ -203,8 +205,8 @@ export default function AccountsPage() {
 									)}
 								</div>
 								<div>
-									<p className="text-basalt-base text-foreground">{item.desc}</p>
-									<p className="text-basalt-sm text-muted-foreground">{item.date}</p>
+									<p className="text-basalt-base text-basalt-foreground">{item.desc}</p>
+									<p className="text-basalt-sm text-basalt-muted-foreground">{item.date}</p>
 								</div>
 							</div>
 							<span
@@ -225,7 +227,7 @@ export default function AccountsPage() {
 					<Button
 						variant="ghost"
 						type="button"
-						className="flex items-center gap-basalt-space-lg text-muted-foreground"
+						className="flex items-center gap-basalt-space-lg text-basalt-muted-foreground"
 					>
 						<Filter className="size-basalt-icon" /> Filter
 					</Button>
@@ -308,8 +310,8 @@ export default function AccountsPage() {
 									)}
 								</div>
 								<div className="flex-1 min-w-0">
-									<p className="text-basalt-base text-foreground truncate">{tx.name}</p>
-									<p className="text-basalt-sm text-muted-foreground">
+									<p className="text-basalt-base text-basalt-foreground truncate">{tx.name}</p>
+									<p className="text-basalt-sm text-basalt-muted-foreground">
 										{tx.category} · {tx.date}
 									</p>
 								</div>

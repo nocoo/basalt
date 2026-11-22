@@ -62,8 +62,8 @@ describe("table example library controls", () => {
 		expect(page.match(/className="pe-basalt-table-edge">Description<\/TableHead>/g)?.length).toBe(
 			2,
 		);
-		expect(page.match(/font-medium text-foreground ps-basalt-table-edge/g)?.length).toBe(2);
-		expect(page.match(/text-muted-foreground pe-basalt-table-edge/g)?.length).toBe(2);
+		expect(page.match(/font-medium text-basalt-foreground ps-basalt-table-edge/g)?.length).toBe(2);
+		expect(page.match(/text-basalt-muted-foreground pe-basalt-table-edge/g)?.length).toBe(2);
 	});
 	it("filters the async device inventory using the shared select", async () => {
 		render(<OperationsTable />);

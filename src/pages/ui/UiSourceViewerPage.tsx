@@ -127,7 +127,7 @@ export function UiSourceViewerPage() {
 			{error ? (
 				<Banner tone="danger" title="Source unavailable" description={error} />
 			) : content === null ? (
-				<LayerCard role="status" className="text-basalt-base text-muted-foreground">
+				<LayerCard role="status" className="text-basalt-base text-basalt-muted-foreground">
 					Loading source…
 				</LayerCard>
 			) : (
