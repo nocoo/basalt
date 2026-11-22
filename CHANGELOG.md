@@ -19,6 +19,7 @@ were prepared but never published are folded into the next published version.
 - Add `@nocoo/basalt/fonts.css` exporting self-hosted `Inter` and `JetBrains Mono` `@font-face` declarations
 - Add elevation tokens, edge-lit button variants, 5-tone semantic system (`neutral | info | success | warning | danger`), `ChartFrame` sizes, full `DropdownMenu`/`ContextMenu` subcomponents, and `SidebarGroup` sibling `action` slot
 - Add [`docs/08-overhaul-changes.md`](docs/08-overhaul-changes.md) covering Phases 0–4 changes and downstream migration
+- Add compact dismissible `Badge` (`onDismiss` / `dismissLabel`), hash-based edge `Content-Security-Policy`, `Permissions-Policy`, `COOP`/`CORP` headers, `color-scheme`/`text-scale` document metadata, catalog `<search>` filter landmark, and progressive `::details-content` landing transitions
 
 ### Changed
 
@@ -29,6 +30,7 @@ were prepared but never published are folded into the next published version.
 ### Fixed
 
 - Isolate `app-main` to prevent `ContentIsland` corner leakage, disable ligatures in code blocks, fix `cn` shadow merges, hover geometry, mobile `AppHeader` breadcrumb overflow, `PageHeader` props, and `TablePager` alignment
+- Improve scrollbar contrast (`>= 3:1`) and `prefers-contrast: more` outlines, Safari IME composition guards (`keyCode === 229`), `ClipboardText`/`CodeBlock` live-region and error feedback, `Dialog` `100dvh`/`overscroll-contain`, `Textarea` `resize-y` and progressive `field-sizing: content`, `SensitiveInput` `aria-controls`, auth/login semantics, landing `<body>` preload leak, and balanced `22px` close-button geometry across `Badge`, `FilterChip`, and `MultiSelect`
 
 ### Removed
 
