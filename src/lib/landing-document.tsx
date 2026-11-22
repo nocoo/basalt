@@ -6,7 +6,10 @@ import { SITE } from "./site";
 
 /** Build-only renderer. Keep react-dom/server out of the interactive route. */
 export function renderLandingBody(): string {
-	return renderToStaticMarkup(<LandingContent />);
+	return renderToStaticMarkup(<LandingContent />).replace(
+		/^(?:<link\s+rel="preload"[^>]*\/?>)+/,
+		"",
+	);
 }
 
 /** Self-hosted display and UI fonts; every document preloads the latin subsets. */

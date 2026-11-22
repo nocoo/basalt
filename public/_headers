@@ -21,3 +21,25 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'self'; frame-src 'self'; form-action 'self'; img-src 'self' data: blob:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-Blj9pzXsoTiAvbuv3y+j6MDGLAo5TkR+6lmDAK6L5Yc=' 'sha256-2kDh5TTpi4+pKniLasm5+a5FywWrC6p25mj5iCT6E78='
+  Permissions-Policy: camera=(), geolocation=(), microphone=(), focus-without-user-activation=()
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Cross-Origin-Resource-Policy: same-origin
+
+/opengraph-image.png
+  Cross-Origin-Resource-Policy: cross-origin
+
+/favicon.ico
+  Cross-Origin-Resource-Policy: cross-origin
+
+/favicon.png
+  Cross-Origin-Resource-Policy: cross-origin
+
+/apple-touch-icon.png
+  Cross-Origin-Resource-Policy: cross-origin
+
+/landing/*
+  Cross-Origin-Resource-Policy: cross-origin
+
+/fonts/*
+  Cross-Origin-Resource-Policy: cross-origin

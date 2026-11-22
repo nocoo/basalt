@@ -22,6 +22,10 @@ describe("edge worker", () => {
 		expect(response.headers.get("Cache-Control")).toBe("no-store");
 		expect(response.headers.get("X-Robots-Tag")).toBe("noindex");
 		expect(response.headers.get("Strict-Transport-Security")).toContain("max-age=31536000");
+		expect(response.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'self'");
+		expect(response.headers.get("Permissions-Policy")).toContain("camera=()");
+		expect(response.headers.get("Cross-Origin-Opener-Policy")).toBe("same-origin-allow-popups");
+		expect(response.headers.get("Cross-Origin-Resource-Policy")).toBe("same-origin");
 		const head = await handleEdgeRequest(
 			new Request("https://basaltui.com/api/live", { method: "HEAD" }),
 			env,
@@ -66,7 +70,16 @@ describe("edge worker", () => {
 		expect(response.status).toBe(200);
 		expect(await response.text()).toBe("ok");
 		expect(response.headers.get("Strict-Transport-Security")).toContain("max-age=31536000");
+		expect(response.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'self'");
+		expect(response.headers.get("Permissions-Policy")).toContain("camera=()");
+		expect(response.headers.get("Cross-Origin-Opener-Policy")).toBe("same-origin-allow-popups");
+		expect(response.headers.get("Cross-Origin-Resource-Policy")).toBe("same-origin");
 		expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
+		const ogImage = await handleEdgeRequest(
+			request("https://basaltui.com/opengraph-image.png"),
+			env,
+		);
+		expect(ogImage.headers.get("Cross-Origin-Resource-Policy")).toBe("cross-origin");
 	});
 
 	describe("unknown paths", () => {
@@ -103,6 +116,10 @@ describe("edge worker", () => {
 			expect(response.headers.get("X-Robots-Tag")).toBe("noindex");
 			expect(response.headers.get("Cache-Control")).toBe("no-store");
 			expect(response.headers.get("Strict-Transport-Security")).toContain("max-age=31536000");
+			expect(response.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'self'");
+			expect(response.headers.get("Permissions-Policy")).toContain("camera=()");
+			expect(response.headers.get("Cross-Origin-Opener-Policy")).toBe("same-origin-allow-popups");
+			expect(response.headers.get("Cross-Origin-Resource-Policy")).toBe("same-origin");
 			expect(new URL(seen[1].url).pathname).toBe("/404");
 			expect(seen[1].headers.get("If-None-Match")).toBeNull();
 			for (const path of [

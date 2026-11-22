@@ -144,6 +144,11 @@ describe("site metadata", () => {
 		expect(headers).toContain('rel="service-doc"');
 		expect(headers).not.toContain("X-Robots-Tag");
 		expect(headers).toContain("X-Content-Type-Options: nosniff");
+		expect(headers).toContain("Content-Security-Policy:");
+		expect(headers).toContain("Permissions-Policy:");
+		expect(headers).toContain("Cross-Origin-Opener-Policy: same-origin-allow-popups");
+		expect(headers).toContain("Cross-Origin-Resource-Policy: same-origin");
+		expect(headers).toContain("/opengraph-image.png\n  Cross-Origin-Resource-Policy: cross-origin");
 	});
 
 	it("keeps index.html snippets aligned with the live document", () => {

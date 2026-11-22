@@ -50,6 +50,7 @@ describe("landing document", () => {
 	});
 	it("exposes the complete landing content and template destinations without JavaScript", () => {
 		const body = renderLandingBody();
+		expect(body).not.toContain('<link rel="preload"');
 		const document = parse(body);
 		expect(document.querySelectorAll("h1")).toHaveLength(1);
 		expect(document.querySelector("h1")?.textContent).toBe(LANDING_HEADING);
@@ -102,6 +103,13 @@ describe("landing document", () => {
 		expect(document.querySelector("footer #landing-version")?.textContent).toBe(`v${APP_VERSION}`);
 		expect(document.querySelector("header")?.textContent).not.toContain(`v${APP_VERSION}`);
 		expect(document.querySelector('meta[name="basalt-version"]')).toBeNull();
+		expect(document.querySelector('meta[name="color-scheme"]')?.getAttribute("content")).toBe(
+			"light dark",
+		);
+		expect(document.querySelector('meta[name="text-scale"]')?.getAttribute("content")).toBe(
+			"scale",
+		);
+		expect(document.body.querySelectorAll('link[rel="preload"]')).toHaveLength(0);
 	});
 
 	it("removes the old global width styles on regeneration and loads CSS without JavaScript", () => {

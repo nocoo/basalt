@@ -4,6 +4,7 @@ import {
 	type CatalogCategory,
 	catalogCategoryPath,
 } from "../pages/ui/catalog-categories";
+import { SECURITY_HEADERS } from "./edge";
 
 export const SITE_ORIGIN = "https://basaltui.com";
 
@@ -278,10 +279,25 @@ export function renderHeaders(): string {
 		"",
 		"/*",
 		`  Link: <${llms}>; rel="service-doc"; type="text/plain"`,
-		"  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload",
-		"  X-Content-Type-Options: nosniff",
-		"  X-Frame-Options: SAMEORIGIN",
-		"  Referrer-Policy: strict-origin-when-cross-origin",
+		...Object.entries(SECURITY_HEADERS).map(([name, value]) => `  ${name}: ${value}`),
+		"",
+		"/opengraph-image.png",
+		"  Cross-Origin-Resource-Policy: cross-origin",
+		"",
+		"/favicon.ico",
+		"  Cross-Origin-Resource-Policy: cross-origin",
+		"",
+		"/favicon.png",
+		"  Cross-Origin-Resource-Policy: cross-origin",
+		"",
+		"/apple-touch-icon.png",
+		"  Cross-Origin-Resource-Policy: cross-origin",
+		"",
+		"/landing/*",
+		"  Cross-Origin-Resource-Policy: cross-origin",
+		"",
+		"/fonts/*",
+		"  Cross-Origin-Resource-Policy: cross-origin",
 		"",
 	].join("\n");
 }
@@ -289,6 +305,8 @@ export function renderHeaders(): string {
 export function requiredIndexHtmlSnippets(): string[] {
 	return [
 		`<title>${escapeXml(SITE.homeTitle)}</title>`,
+		'<meta name="color-scheme" content="light dark" />',
+		'<meta name="text-scale" content="scale" />',
 		`<meta name="description" content="${SITE.description}" />`,
 		'<meta name="robots" content="index, follow, max-image-preview:large" />',
 		`<meta name="theme-color" media="(prefers-color-scheme: light)" content="${SITE.themeColorLight}" />`,

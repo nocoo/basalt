@@ -36,11 +36,11 @@ export async function handleEdgeRequest(request: Request, env: AssetEnv): Promis
 	}
 	const asset = await env.ASSETS.fetch(request);
 	if (asset.status !== 404 || (request.method !== "GET" && request.method !== "HEAD")) {
-		return stamp(asset, preview);
+		return stamp(asset, preview, url.pathname);
 	}
 	// No static file: client routes get the app shell, everything else a real 404 document.
 	if (isKnownAppPath(url.pathname)) {
-		return stamp(await env.ASSETS.fetch(documentRequest(request, url, "/", true)), preview);
+		return stamp(await env.ASSETS.fetch(documentRequest(request, url, "/", true)), preview, "/");
 	}
 	const page = await env.ASSETS.fetch(documentRequest(request, url, NOT_FOUND_PATH, false));
 	const headers = withSecurityHeaders(page.headers, preview);
@@ -48,11 +48,11 @@ export async function handleEdgeRequest(request: Request, env: AssetEnv): Promis
 	return new Response(page.ok ? page.body : null, { status: 404, headers });
 }
 
-function stamp(asset: Response, preview: boolean): Response {
+function stamp(asset: Response, preview: boolean, pathname?: string): Response {
 	return new Response(asset.body, {
 		status: asset.status,
 		statusText: asset.statusText,
-		headers: withSecurityHeaders(asset.headers, preview),
+		headers: withSecurityHeaders(asset.headers, preview, pathname),
 	});
 }
 
