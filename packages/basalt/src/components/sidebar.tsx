@@ -366,7 +366,7 @@ export function Sidebar({
 						className={cn(
 							frameClass,
 							OVERLAY_LAYER,
-							"fixed inset-y-0 overflow-hidden shadow-md",
+							"fixed inset-y-0 overflow-hidden shadow-basalt-floating",
 							side === "right" ? "right-0" : "left-0",
 						)}
 						style={{ width, ...style }}

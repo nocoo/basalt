@@ -112,6 +112,24 @@ describe("design audit rules (without scanning the repository)", () => {
 			),
 		).toEqual([]);
 	});
+
+	it("flags raw Tailwind elevation utilities and backdrop blur while allowing basalt shadow tokens", () => {
+		expect(
+			auditDesignSource(
+				"overlay.tsx",
+				'<div className="shadow-lg backdrop-blur-md shadow-basalt-floating"/>',
+			),
+		).toEqual([
+			{ file: "overlay.tsx", rule: "elevation-token", value: "shadow-lg" },
+			{ file: "overlay.tsx", rule: "elevation-token", value: "backdrop-blur-md" },
+		]);
+		expect(
+			auditDesignSource(
+				"overlay.tsx",
+				'<div className="shadow-basalt-floating shadow-basalt-modal shadow-basalt-solid"/>',
+			),
+		).toEqual([]);
+	});
 	it("checks CSS declarations and explicit component categories", () => {
 		expect(
 			auditDesignCss(

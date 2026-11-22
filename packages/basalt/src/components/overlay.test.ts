@@ -5,6 +5,7 @@ import {
 	FOCUS_BORDER,
 	FOCUS_INSET,
 	FOCUS_RING,
+	floatingSurfaceClass,
 	MENU_GAP,
 	OVERLAY_GAP,
 	OVERLAY_LAYER,
@@ -48,6 +49,10 @@ describe("overlay", () => {
 	});
 
 	it("insets the highlight from the panel edge", () => {
+		expect(floatingSurfaceClass()).toContain("shadow-basalt-floating");
+		expect(floatingSurfaceClass()).not.toContain("shadow-md");
+		expect(overlayPanelClass()).toContain("shadow-basalt-floating");
+		expect(overlayPanelClass()).not.toContain("shadow-md");
 		expect(overlayPanelClass()).toContain("py-basalt-menu-inset");
 		expect(overlayItemClass()).toContain("mx-basalt-menu-inset");
 		expect(overlayItemClass()).toContain("py-basalt-menu-y");

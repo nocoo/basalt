@@ -181,6 +181,7 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
 		kind: "legacy-internal",
 		summary: "Internal class generators and spacing constants for overlay menus and select",
 		knownSymbols: [
+			"floatingSurfaceClass",
 			"FOCUS_BORDER",
 			"FOCUS_INSET",
 			"FOCUS_RING",

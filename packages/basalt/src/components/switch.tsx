@@ -90,7 +90,7 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 		>
 			<SwitchPrimitives.Thumb
 				className={cn(
-					"pointer-events-none block rounded-basalt-full bg-basalt-on-solid shadow-lg ring-0 transition-transform basalt-motion data-[state=unchecked]:translate-x-0",
+					"pointer-events-none block rounded-basalt-full bg-basalt-on-solid shadow-basalt-solid transition-transform basalt-motion data-[state=unchecked]:translate-x-0",
 					size === "sm"
 						? "h-basalt-3 w-basalt-3 data-[state=checked]:translate-x-basalt-3"
 						: "h-basalt-5 w-basalt-5 data-[state=checked]:translate-x-basalt-5",

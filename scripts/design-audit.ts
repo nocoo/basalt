@@ -78,6 +78,8 @@ export function auditDesignSource(
 		if (/^leading-(?:\d|\[\d|none|tight|normal|relaxed|loose|snug)/.test(utility))
 			add("type-token", token);
 		if (GEOMETRY.test(utility) && /px/.test(utility)) add("relative-geometry", token);
+		if (/^shadow-(?:2xs|xs|sm|md|lg|xl|2xl)$/.test(utility) || /^backdrop-blur/.test(utility))
+			add("elevation-token", token);
 	}
 	const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 	const application = /^(?:src\/pages\/|src\/components\/|src\/templates\/)/.test(file);

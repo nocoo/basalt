@@ -1,7 +1,7 @@
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { MENU_GAP, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
+import { floatingSurfaceClass, MENU_GAP } from "./overlay";
 
 type RadixHoverCardProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Root>;
 type RadixHoverCardTriggerProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Trigger>;
@@ -150,12 +150,7 @@ export const HoverCardContent = React.forwardRef<
 		<HoverCardPrimitive.Content
 			ref={ref}
 			sideOffset={sideOffset}
-			className={cn(
-				OVERLAY_LAYER,
-				OVERLAY_MOTION,
-				"basalt-floating w-basalt-64 rounded-basalt-md border border-basalt-border bg-basalt-popover p-basalt-space-lg text-basalt-popover-foreground shadow-md",
-				className,
-			)}
+			className={floatingSurfaceClass(cn("w-basalt-64 p-basalt-space-lg", className))}
 			{...props}
 		/>
 	</HoverCardPrimitive.Portal>

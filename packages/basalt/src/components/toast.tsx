@@ -295,7 +295,7 @@ export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 				unstyled: true,
 				classNames: {
 					toast:
-						"basalt-ui basalt-toast flex w-full items-center gap-basalt-space-lg rounded-basalt-md bg-basalt-popover px-basalt-card-lg py-basalt-card text-basalt-base leading-[var(--basalt-leading-banner)] text-basalt-foreground shadow-lg [&_[data-content]]:min-w-0 [&_[data-content]]:flex-1",
+						"basalt-ui basalt-toast flex w-full items-center gap-basalt-space-lg rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-card-lg py-basalt-card text-basalt-base leading-[var(--basalt-leading-banner)] text-basalt-foreground shadow-basalt-floating [&_[data-content]]:min-w-0 [&_[data-content]]:flex-1",
 					title: "font-medium",
 					description:
 						"text-basalt-sm leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",

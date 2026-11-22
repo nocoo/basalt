@@ -105,10 +105,10 @@ export const SheetDescription = React.forwardRef<
 SheetDescription.displayName = DialogPrimitive.Description.displayName;
 
 const SIDE = {
-	right: `fixed inset-y-0 right-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-space-lg border-l border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-lg`,
-	left: `fixed inset-y-0 left-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-space-lg border-r border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-lg`,
-	top: `fixed inset-x-0 top-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-space-lg border-b border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-lg`,
-	bottom: `fixed inset-x-0 bottom-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-space-lg border-t border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-lg`,
+	right: `fixed inset-y-0 right-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-space-lg border-l border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-basalt-modal`,
+	left: `fixed inset-y-0 left-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-space-lg border-r border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-basalt-modal`,
+	top: `fixed inset-x-0 top-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-space-lg border-b border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-basalt-modal`,
+	bottom: `fixed inset-x-0 bottom-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-space-lg border-t border-basalt-border p-basalt-card sm:p-basalt-card-lg text-basalt-base text-basalt-foreground shadow-basalt-modal`,
 } as const;
 
 export type SheetSide = keyof typeof SIDE;

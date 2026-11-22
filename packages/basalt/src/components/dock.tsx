@@ -147,7 +147,7 @@ export function Dock({
 	const panelStyle = { width: open ? width : 0 };
 	const inner = (
 		<div
-			className="flex h-full flex-col bg-basalt-card shadow-lg ring-1 ring-basalt-border/40"
+			className="flex h-full flex-col bg-basalt-card shadow-basalt-floating ring-1 ring-basalt-border/40"
 			style={{ width }}
 		>
 			{children}

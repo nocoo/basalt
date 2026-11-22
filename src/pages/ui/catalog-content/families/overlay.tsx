@@ -974,7 +974,7 @@ export default function Example() {
 	},
 	popover: {
 		docs: {
-			description: "Floating panel with a title, description, and arrow.",
+			description: "Floating panel with a title and description.",
 			usage: `import { Button } from "@nocoo/basalt/components/button";
 import {
 	Popover,

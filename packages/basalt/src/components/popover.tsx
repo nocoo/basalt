@@ -2,7 +2,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Slottable } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { MENU_GAP, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
+import { floatingSurfaceClass, MENU_GAP } from "./overlay";
 
 export const POPOVER_SIDES = ["top", "bottom", "left", "right"] as const;
 export type PopoverSide = (typeof POPOVER_SIDES)[number];
@@ -179,7 +179,7 @@ export interface PopoverContentProps
 	onInteractOutside?: RadixPopoverContentProps["onInteractOutside"];
 	/**
 	 * Show the pointing arrow.
-	 * @default true
+	 * @default false
 	 */
 	arrow?: boolean;
 }
@@ -194,7 +194,7 @@ export const PopoverContent = React.forwardRef<
 			align = "center",
 			side = "bottom",
 			sideOffset = MENU_GAP,
-			arrow = true,
+			arrow = false,
 			children,
 			...props
 		},
@@ -206,11 +206,11 @@ export const PopoverContent = React.forwardRef<
 				align={align}
 				side={side}
 				sideOffset={sideOffset}
-				className={cn(
-					OVERLAY_LAYER,
-					OVERLAY_MOTION,
-					"basalt-floating rounded-basalt-md border border-basalt-border bg-basalt-popover p-basalt-card text-basalt-base leading-[var(--basalt-line-body)] text-basalt-popover-foreground shadow-md outline-hidden",
-					className,
+				className={floatingSurfaceClass(
+					cn(
+						"p-basalt-card text-basalt-base leading-[var(--basalt-line-body)] outline-hidden",
+						className,
+					),
 				)}
 				{...props}
 			>

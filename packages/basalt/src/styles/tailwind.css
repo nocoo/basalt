@@ -257,9 +257,12 @@
 	--radius-basalt-island: var(--basalt-radius-island);
 	--radius-basalt-card: var(--basalt-radius-card);
 	--radius-basalt-widget: var(--basalt-radius-widget);
-	--shadow-basalt-card: var(--basalt-shadow-card);
 	--shadow-basalt-control: var(--basalt-shadow-control);
+	--shadow-basalt-solid: var(--basalt-shadow-solid);
+	--shadow-basalt-card: var(--basalt-shadow-card);
+	--shadow-basalt-floating: var(--basalt-shadow-floating);
 	--shadow-basalt-modal: var(--basalt-shadow-modal);
+	--shadow-basalt-well: var(--basalt-shadow-well);
 	--font-basalt-sans: var(--basalt-font-sans);
 	--font-basalt-display: var(--basalt-font-display);
 	--font-basalt-mono: var(--basalt-font-mono);

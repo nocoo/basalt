@@ -18,11 +18,25 @@ describe("Popover", () => {
 		expect(screen.getByText("Open Popover")).toBeInTheDocument();
 	});
 
-	it("renders a title, description, and arrow", () => {
+	it("omits the pointing arrow by default", () => {
 		render(
 			<Popover defaultOpen>
 				<PopoverTrigger>Open Popover</PopoverTrigger>
 				<PopoverContent>
+					<PopoverTitle>Default Popover</PopoverTitle>
+					<PopoverDescription>No arrow by default.</PopoverDescription>
+				</PopoverContent>
+			</Popover>,
+		);
+		const panel = screen.getByText("Default Popover").closest("[data-side]");
+		expect(panel?.querySelector('svg[viewBox="0 0 12 6"]')).toBeNull();
+	});
+
+	it("renders a title, description, and arrow when requested", () => {
+		render(
+			<Popover defaultOpen>
+				<PopoverTrigger>Open Popover</PopoverTrigger>
+				<PopoverContent arrow>
 					<PopoverTitle>Popover Title</PopoverTitle>
 					<PopoverDescription>This is a popover.</PopoverDescription>
 				</PopoverContent>
@@ -59,6 +73,7 @@ describe("Popover", () => {
 				<PopoverTrigger>Open</PopoverTrigger>
 				<PopoverContent
 					asChild
+					arrow
 					ref={(node) => {
 						refTarget = node;
 					}}

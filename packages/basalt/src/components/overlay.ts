@@ -14,13 +14,22 @@ export const FOCUS_RING = "basalt-focus";
 export const FOCUS_BORDER = FOCUS_RING;
 export const FOCUS_INSET = "basalt-focus basalt-focus-inset";
 
-export function overlayPanelClass(className?: string) {
+export function floatingSurfaceClass(className?: string) {
 	return cn(
 		BASALT_UI_CLASS,
 		OVERLAY_LAYER,
-		"basalt-floating overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-basalt-menu-inset text-basalt-base text-basalt-popover-foreground shadow-md [--basalt-hover-radius:var(--basalt-radius-sm)]",
+		"basalt-floating rounded-basalt-md border border-basalt-border bg-basalt-popover text-basalt-popover-foreground shadow-basalt-floating",
 		OVERLAY_MOTION,
 		className,
+	);
+}
+
+export function overlayPanelClass(className?: string) {
+	return floatingSurfaceClass(
+		cn(
+			"overflow-hidden py-basalt-menu-inset text-basalt-base [--basalt-hover-radius:var(--basalt-radius-sm)]",
+			className,
+		),
 	);
 }
 

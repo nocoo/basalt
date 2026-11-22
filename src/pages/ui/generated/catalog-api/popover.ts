@@ -196,7 +196,7 @@ export const API = [
 				name: "arrow",
 				type: "boolean",
 				required: false,
-				default: "true",
+				default: "false",
 				description: "Show the pointing arrow.",
 			},
 		],

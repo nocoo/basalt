@@ -3,8 +3,8 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.5.2",
 	"totalModules": 105,
-	"totalSymbols": 652,
-	"totalValues": 361,
+	"totalSymbols": 653,
+	"totalValues": 362,
 	"totalTypes": 291,
 	"totalCssExports": 3,
 	"modules": [
@@ -3770,6 +3770,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"ownerKind": "legacy-internal",
 			"summary": "Internal class generators and spacing constants for overlay menus and select",
 			"symbols": [
+				{
+					"name": "floatingSurfaceClass",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
+					"ownerKind": "legacy-internal",
+					"originModule": "@nocoo/basalt/components/overlay"
+				},
 				{
 					"name": "overlayPanelClass",
 					"isValue": true,

@@ -311,16 +311,37 @@ describe("nested surface CSS", () => {
 		}
 	});
 
-	it("gives L2 island cards an edge-lit specular rim and gathered shadow in both themes", () => {
+	it("defines semantic elevation tokens without legacy tail shadows in both themes", () => {
+		const elevationKeys = [
+			"control",
+			"solid",
+			"card",
+			"card-foot",
+			"floating",
+			"modal",
+			"well",
+		] as const;
 		for (const selector of themeSelectors) {
 			const values = tokenValues(selector);
+			for (const key of elevationKeys) {
+				expect(
+					values.get(`--basalt-shadow-${key}`),
+					`${selector} --basalt-shadow-${key}`,
+				).toBeTruthy();
+			}
 			const cardShadow = values.get("--basalt-shadow-card")?.replace(/\s+/g, " ") ?? "";
-			expect(cardShadow, `${selector} top rim`).toContain("inset 0 1px 0 0");
-			expect(cardShadow, `${selector} downward shadow`).toContain("0 12px 30px -13px");
+			if (selector.includes("dark")) {
+				expect(cardShadow, `${selector} top rim`).toContain("inset 0 1px 0 0");
+			}
+			expect(cardShadow).not.toContain("0 12px 30px -13px");
 			expect(values.get("--basalt-shadow-card-foot")?.replace(/\s+/g, " ")).toContain(
 				"inset 0 -1px 0 0",
 			);
 		}
+		for (const key of ["control", "solid", "card", "floating", "modal", "well"]) {
+			expect(tailwind).toContain(`--shadow-basalt-${key}: var(--basalt-shadow-${key});`);
+		}
+		expect(tokens).not.toContain("--basalt-meter-track-shadow");
 		expect(tokens).toContain(
 			'[data-basalt-surface] > [data-slot="card-well"]:last-child:not([data-outlined])',
 		);

@@ -50,7 +50,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tooltip": {
 		"file": "packages/basalt/src/components/tooltip.tsx",
-		"hash": "2fb2579cf8f37aea",
+		"hash": "afb0e323d7a0c9d4",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tooltip.js.map (sourcesContent[0])"
 	},
@@ -116,7 +116,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"switch": {
 		"file": "packages/basalt/src/components/switch.tsx",
-		"hash": "8ffbe4d89f701300",
+		"hash": "b2feb4e94c5bb2ce",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/switch.js.map (sourcesContent[0])"
 	},
@@ -200,7 +200,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"toast": {
 		"file": "packages/basalt/src/components/toast.tsx",
-		"hash": "e46586870964f90f",
+		"hash": "df3239f3e39cfaf4",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toast.js.map (sourcesContent[0])"
 	},
@@ -254,7 +254,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"popover": {
 		"file": "packages/basalt/src/components/popover.tsx",
-		"hash": "f1e88ecb360ec0fb",
+		"hash": "97916267c06662c0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/popover.js.map (sourcesContent[0])"
 	},
@@ -272,13 +272,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"hover-card": {
 		"file": "packages/basalt/src/components/hover-card.tsx",
-		"hash": "1b7978f9246b671f",
+		"hash": "cb2d23f084798656",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/hover-card.js.map (sourcesContent[0])"
 	},
 	"sheet": {
 		"file": "packages/basalt/src/components/sheet.tsx",
-		"hash": "5fc86275299625d8",
+		"hash": "7d1b10ceb878ab8c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sheet.js.map (sourcesContent[0])"
 	},
@@ -320,7 +320,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"toolbar": {
 		"file": "packages/basalt/src/components/toolbar.tsx",
-		"hash": "62a687042f479109",
+		"hash": "4fcdbcc5cee68da3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toolbar.js.map (sourcesContent[0])"
 	},
@@ -344,7 +344,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "cd47b555ab5adb78",
+		"hash": "f44e28ad7085facc",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -362,13 +362,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"fab": {
 		"file": "packages/basalt/src/components/fab.tsx",
-		"hash": "6578c2bf8ad0a9be",
+		"hash": "2b13e4b242e0b31e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/fab.js.map (sourcesContent[0])"
 	},
 	"dock": {
 		"file": "packages/basalt/src/components/dock.tsx",
-		"hash": "25708f74de8b5e75",
+		"hash": "7d7535f231516419",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dock.js.map (sourcesContent[0])"
 	},

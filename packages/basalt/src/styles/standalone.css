@@ -191,7 +191,7 @@
   --basalt-input: 0 0% 86%;
   --basalt-ring: var(--basalt-primary);
   --basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.065);
-  --basalt-meter-track-shadow: inset 0 1px 1.5px 0 hsl(var(--basalt-backdrop) / 0.05),
+  --basalt-shadow-well: inset 0 1px 1.5px 0 hsl(var(--basalt-backdrop) / 0.05),
 		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.08);
   --basalt-control-fill: hsl(var(--basalt-secondary));
   --basalt-surface-current: var(--basalt-card);
@@ -231,13 +231,13 @@
   --basalt-font-display: "DM Sans", "Inter", system-ui, sans-serif;
   --basalt-font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
   --basalt-font-features: "cv02", "cv03", "cv04", "cv11";
-  --basalt-shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.72),
-		inset 0 -1px 0 0 rgb(0 0 0 / 0.038),
-		inset 0 0 0 1px rgb(255 255 255 / 0.45),
-		0 1px 2px 0 rgb(0 0 0 / 0.04),
-		0 12px 30px -13px rgb(0 0 0 / 0.11);
-  --basalt-shadow-card-foot: inset 0 -1px 0 0 rgb(0 0 0 / 0.038), inset 0 0 0 1px rgb(255 255 255 / 0.45);
-  --basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --basalt-shadow-control: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --basalt-shadow-solid: inset 0 1px 0 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 0 rgb(0 0 0 / 0.12),
+		0 1px 2px 0 rgb(0 0 0 / 0.12);
+  --basalt-shadow-card: inset 0 -1px 0 0 rgb(0 0 0 / 0.03), 0 1px 2px 0 rgb(0 0 0 / 0.04),
+		0 4px 12px -6px rgb(0 0 0 / 0.06);
+  --basalt-shadow-card-foot: inset 0 -1px 0 0 rgb(0 0 0 / 0.03);
+  --basalt-shadow-floating: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 12px 28px -8px rgb(0 0 0 / 0.12);
   --basalt-shadow-modal: 0 8px 24px -6px rgb(0 0 0 / 0.1), 0 24px 60px -18px rgb(0 0 0 / 0.26);
   --basalt-chart-blue: 204 88% 62%;
   --basalt-chart-pink: 345 88% 72%;
@@ -344,17 +344,17 @@
   --basalt-border: 0 0% 19%;
   --basalt-input: 0 0% 22%;
   --basalt-ring: var(--basalt-primary);
-  --basalt-shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.085),
-		inset 0 -1px 0 0 rgb(0 0 0 / 0.32),
-		inset 0 0 0 1px rgb(255 255 255 / 0.028),
-		0 1px 2px 0 rgb(0 0 0 / 0.22),
-		0 12px 30px -13px rgb(0 0 0 / 0.4);
-  --basalt-shadow-card-foot: inset 0 -1px 0 0 rgb(0 0 0 / 0.32), inset 0 0 0 1px rgb(255 255 255 / 0.028);
-  --basalt-shadow-control: 0 0 #0000;
+  --basalt-shadow-control: inset 0 1px 0 0 rgb(255 255 255 / 0.05), 0 1px 2px 0 rgb(0 0 0 / 0.32);
+  --basalt-shadow-solid: inset 0 1px 0 0 rgb(255 255 255 / 0.18), 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --basalt-shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.06), inset 0 -1px 0 0 rgb(0 0 0 / 0.28),
+		0 1px 2px 0 rgb(0 0 0 / 0.3), 0 4px 12px -6px rgb(0 0 0 / 0.4);
+  --basalt-shadow-card-foot: inset 0 -1px 0 0 rgb(0 0 0 / 0.28);
+  --basalt-shadow-floating: inset 0 1px 0 0 rgb(255 255 255 / 0.06), 0 4px 12px -2px rgb(0 0 0 / 0.4),
+		0 16px 32px -8px rgb(0 0 0 / 0.5);
   --basalt-shadow-modal: inset 0 1px 0 0 rgb(255 255 255 / 0.07), 0 24px 60px -18px rgb(0 0 0 / 0.7);
   --basalt-scrim: 0 0% 0% / 0.6;
   --basalt-meter-track-fill: hsl(var(--basalt-foreground) / 0.1);
-  --basalt-meter-track-shadow: inset 0 1px 2px 0 hsl(var(--basalt-backdrop) / 0.35),
+  --basalt-shadow-well: inset 0 1px 2px 0 hsl(var(--basalt-backdrop) / 0.35),
 		inset 0 0 0 var(--basalt-border-width) hsl(var(--basalt-foreground) / 0.12);
   --basalt-control-fill: hsl(var(--basalt-secondary));
   --basalt-surface-current: var(--basalt-card);
@@ -856,7 +856,7 @@
   }
   .basalt-meter-track {
     background-color: var(--basalt-meter-track-fill);
-    box-shadow: var(--basalt-meter-track-shadow);
+    box-shadow: var(--basalt-shadow-well);
   }
   .basalt-meter-fill {
     box-shadow: inset 0 1px 0 0 hsl(var(--basalt-on-solid) / 0.24);
@@ -871,7 +871,7 @@
   }
   .basalt-meter-cell[data-filled="false"] {
     background-color: var(--basalt-meter-track-fill);
-    box-shadow: var(--basalt-meter-track-shadow);
+    box-shadow: var(--basalt-shadow-well);
   }
   .basalt-meter-cell[data-filled="true"] {
     box-shadow: inset 0 1px 0 0 hsl(var(--basalt-on-solid) / 0.24);
@@ -3025,24 +3025,20 @@
     --tw-shadow: var(--basalt-shadow-control);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-basalt-floating {
+    --tw-shadow: var(--basalt-shadow-floating);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .shadow-basalt-modal {
     --tw-shadow: var(--basalt-shadow-modal);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .shadow-lg {
-    --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .shadow-md {
-    --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+  .shadow-basalt-solid {
+    --tw-shadow: var(--basalt-shadow-solid);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .shadow-none {
     --tw-shadow: 0 0 #0000;
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .shadow-xs {
-    --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .ring-0 {

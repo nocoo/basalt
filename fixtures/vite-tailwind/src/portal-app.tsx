@@ -150,6 +150,7 @@ const RENDERERS: Record<ModuleStem, (config: AuditConfig) => React.ReactNode> = 
 				data-audit-content="popover-aschild"
 				forceMount={forceMount}
 				asChild
+				arrow
 				ref={(node) => {
 					window.auditRefTag = node?.tagName ?? null;
 				}}
