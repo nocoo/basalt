@@ -11,6 +11,27 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+### Added
+
+- Add `Spinner`, `Kbd`, `Progress`, `Pagination`, and `Combobox` primitives (`@nocoo/basalt` and granular subpaths)
+- Add `@nocoo/basalt/fonts.css` exporting self-hosted `Inter` and `JetBrains Mono` `@font-face` declarations
+- Add elevation tokens, edge-lit button variants, 5-tone semantic system (`neutral | info | success | warning | danger`), `ChartFrame` sizes, full `DropdownMenu`/`ContextMenu` subcomponents, and `SidebarGroup` sibling `action` slot
+- Add [`docs/08-overhaul-changes.md`](docs/08-overhaul-changes.md) covering Phases 0–4 changes and downstream migration
+
+### Changed
+
+- Rebuild light/dark L0–L3 matte surface ladder, neutral hover and smoked selection states, blur-free scrims, unified icon stroke, and zero tracking on `sm`/`md` text
+- Normalize `"default"`/`"base"` control sizes to `"md"`, unify `tone` props on `Badge`/`Banner`/`toast`, upgrade `Grid`, `Chart`, `LayerCard`, `Textarea`, `Skeleton`, refs, and uncontrolled APIs
+- Streamline showcase catalog to English-only MVVM navigation, remove legacy shadcn CSS alias layer in `src/index.css`, unify component doc right-sticky TOC (`ComponentDocPage`), and polish `CodeBlock` headers, `/ui` gallery demos, and showcase copy
+
+### Fixed
+
+- Isolate `app-main` to prevent `ContentIsland` corner leakage, disable ligatures in code blocks, fix `cn` shadow merges, hover geometry, mobile `AppHeader` breadcrumb overflow, `PageHeader` props, and `TablePager` alignment
+
+### Removed
+
+- Remove legacy aliases and redundant subpaths (`InputArea`, `SkeletonLine`, `StatStrip`, `ChartShell`, `ContextMenuPanel`, `Toast`, and `@nocoo/basalt/components/overlay`) plus showcase `i18n` and 5 redundant demo pages
+
 ## [3.5.2] - 2026-11-21
 
 ### Changed

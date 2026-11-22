@@ -69,7 +69,7 @@ The matte floating header uses an icon-only GitHub link and one light/dark theme
 
 When `AppHeader` already has breadcrumbs, **omit** `PageHeader.breadcrumbs`.
 
-Live: `/login`, shell, first page `/data`, surfaces `/layout`. Catalog: `/ui/page-header`, `/ui/section-rule`.
+Live: `/login`, shell, first page `/dashboard`, surfaces `/layout`. Catalog: `/ui/page-header`, `/ui/section-rule`.
 
 ---
 
@@ -1622,7 +1622,7 @@ export function UserPreferencesForm() {
 
 Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 34px high. Explicit `sm`/`lg` sizes remain available; Textarea remains multiline. Compact application headers retain their 44px minimum touch targets.
 
-Select, DropdownMenu, ContextMenuPanel, Autocomplete and MultiSelect use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
+Select, DropdownMenu, ContextMenuContent, Autocomplete and MultiSelect use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
 
 Loader uses eight perimeter cells with an empty center, moving clockwise continuously. Label, shimmer and delayed elapsed-time controls are unchanged.
 

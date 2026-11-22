@@ -8,31 +8,34 @@ Component geometry and DOM styling are intentional major-version changes. Rechec
 
 IconPicker trigger names include the current value (`Folder icon: Folder`, then `Folder icon: Book`). Exact-name automation must follow that value; Field labels, validation and descriptions remain attached to the trigger. Standalone application recipes scope native-element resets with `basalt-ui` and explicitly focus mobile drawer openers before opening them. The catalog's visitor-badge login is an intentional layout exception, not a general application-shell template.
 
-The initial **`2.0.3`** release established a historical 110-entrypoint / 572-symbol inventory. The 4.0 overhaul intentionally replaces that inventory with the live 95-path / 477-symbol baseline captured in `public-api-baseline.json`; the historical counts are context, not the artifact currently verified by the package checks.
+The initial **`2.0.3`** release established a historical 110-entrypoint / 572-symbol inventory. The overhaul replaces that inventory with the live **98-path / 545-symbol** baseline captured in `public-api-baseline.json`; the historical counts are context, not the artifact currently verified by the package checks.
 
 This document defines the stability contracts, export architecture, and semantic versioning guarantees for `@nocoo/basalt`.
 
-## 4.0 migration
+## 4.0 migration & post-3.5.2 overhaul
 
 - Basalt no longer owns Recharts chart implementations or a `recharts` peer. Compose application-owned Recharts, ECharts, or SVG inside `@nocoo/basalt/components/chart`; `StatCard` moved to `@nocoo/basalt/components/stat-card` and accepts `icon?: ReactNode`.
-- Thirteen AI/chat widgets and eight zero-consumer/site-brand controls were removed. Migrate `BasaltMark`, `Combobox`, `Pagination`, `DeleteResource`, `BatteryMeter`, `Flow`, `MenuBar`, and `NavigationMenu` out of the package contract; `LoadingScreen` now renders only caller-supplied `mark` content.
+- Thirteen AI/chat widgets and legacy controls (`BasaltMark`, `DeleteResource`, `BatteryMeter`, `Flow`, `MenuBar`, `NavigationMenu`, `InputArea`, `SkeletonLine`, `StatStrip`, `ChartShell`, `ContextMenuPanel`, and `@nocoo/basalt/components/overlay`) were removed from the public contract; `LoadingScreen` renders only caller-supplied `mark` content.
+- `Combobox` and `Pagination` returned during the overhaul as clean, controlled/uncontrolled primitives (`@nocoo/basalt/components/combobox`, `@nocoo/basalt/components/pagination`) alongside `Spinner`, `Kbd`, `Progress`, `Textarea` (replacing `InputArea`), and `Skeleton` (replacing `SkeletonLine`).
+- Component sizing and semantic tones were normalized across the overhaul (`"default"` / `"base"` sizes -> `"md"`; `Banner` and `toast` use `tone` instead of `variant`; `Badge` splits `tone` and `variant` `"soft" | "solid" | "outline"`). See [the overhaul change guide](../../../docs/08-overhaul-changes.md) for the complete module-by-module summary and migration table.
 - Install only `@nocoo/basalt`. Lucide ships as a dependency; import public icons from `@nocoo/basalt/icons`, and retained Radix passthroughs from `@nocoo/basalt/primitives/*`.
-- Tailwind CSS v4 consumers use `@import "@nocoo/basalt/styles"; @import "tailwindcss";`; the package embeds its own `@source` scan. No app-relative package glob is required.
+- Tailwind CSS v4 consumers use `@import "@nocoo/basalt/styles"; @import "tailwindcss";`; the package embeds its own `@source` scan. No app-relative package glob is required. Optionally import `@nocoo/basalt/fonts.css` for self-hosted `Inter` and `JetBrains Mono`.
 
 ---
 
 ## 1. Compatibility Baseline
 
-The historical **`2.0.3`** release (commit `e61efc1`) exposed 110 entrypoints and 572 symbols. The 4.0 public contract is captured separately in `packages/basalt/public-api-baseline.json` and currently verifies **95 entrypoints / 477 symbols**. The package manifest remains `3.4.2` until the authorized 4.0 release step.
+The historical **`2.0.3`** release (commit `e61efc1`) exposed 110 entrypoints and 572 symbols. The live public contract is captured separately in `packages/basalt/public-api-baseline.json` and currently verifies **98 entrypoints / 545 symbols** (`ai/registry.json` catalogs 108 modules, 717 symbols, 4 CSS exports, and 81 ready catalog entries). The package manifest remains `3.5.2` until final release versioning is selected.
 
-- **CSS Export Contracts:** 3 export paths:
+- **CSS Export Contracts:** 4 CSS export paths:
   - `@nocoo/basalt/styles` (Tailwind contract alias)
   - `@nocoo/basalt/styles/tailwind` (Tailwind token definition)
   - `@nocoo/basalt/styles/standalone` (Zero-dependency compiled tokens and utility CSS)
+  - `@nocoo/basalt/fonts.css` (Self-hosted `Inter` and `JetBrains Mono` `@font-face` rules)
 
 ### Machine Verification
 
-All 95 current entrypoints, their export targets, 3 CSS paths, and all 477 current symbols (with value/type fidelity) are cataloged in `packages/basalt/public-api-baseline.json` and verified via `packages/basalt/scripts/verify-public-api.ts`. The file protects the pending 4.0 contract, not the historical 2.0.3 inventory.
+All 98 verified entrypoints, their export targets, CSS paths, and all 545 verified symbols (with value/type fidelity) are cataloged in `packages/basalt/public-api-baseline.json` and verified via `packages/basalt/scripts/verify-public-api.ts`. The file protects the current overhaul contract, not the historical 2.0.3 inventory.
 
 ---
 

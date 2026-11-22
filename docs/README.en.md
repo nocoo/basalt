@@ -66,6 +66,8 @@ import "@nocoo/basalt/styles/standalone";
 
 Standalone CSS includes tokens, control styles, and animations without a global reset. The application owns container height and its base layout.
 
+To bundle self-hosted `Inter` + `JetBrains Mono` fonts with the package, also import `@nocoo/basalt/fonts.css` (`@import "@nocoo/basalt/fonts.css";` in CSS or `import "@nocoo/basalt/fonts.css";` in JS).
+
 <a id="component-usage"></a>
 
 ### Use components
@@ -144,7 +146,7 @@ Run `bun run playwright:install` before browser tests. External-consumer tests p
 | --------------------- | ----------------------------------------------------------------------------- |
 | Component library     | React, TypeScript, Radix UI, ESM subpath exports                              |
 | Styles and charts     | CSS tokens, Tailwind CSS / standalone CSS, Recharts, Lucide                   |
-| Showcase              | Vite, React Router, i18next, Cloudflare Workers static assets                 |
+| Showcase              | Vite, React Router, Cloudflare Workers static assets                          |
 | Development and tests | Bun, Biome, Vitest, Testing Library, Playwright, TypeScript consumer fixtures |
 
 ## Documentation

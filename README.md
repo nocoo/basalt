@@ -146,7 +146,7 @@ bun run --cwd packages/basalt build
 | ---------- | ---------------------------------------------------------------------- |
 | 组件库     | React、TypeScript、Radix UI、ESM 分路径导出                            |
 | 样式与图表 | CSS tokens、Tailwind CSS / standalone CSS、Recharts、Lucide            |
-| 示例站     | Vite、React Router、i18next、Cloudflare Workers 静态资源               |
+| 示例站     | Vite、React Router、Cloudflare Workers 静态资源                        |
 | 开发与测试 | Bun、Biome、Vitest、Testing Library、Playwright、TypeScript 消费者夹具 |
 
 ## 文档

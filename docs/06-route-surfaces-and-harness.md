@@ -6,10 +6,10 @@ Companion reference to [AGENTS.md](../AGENTS.md) and [DESIGN.md](../DESIGN.md) c
 
 ### Public catalog showcase
 
-- Routes inside `DashboardLayout` (`/dashboard`, `/components`, `/layout`, `/palette`, `/templates`, `/ui/*`) are visitor-facing pages listed in navigation, `SHOWCASE_PAGES`, and `sitemap.xml`.
+- Routes inside `DashboardLayout` (`/dashboard`, `/layout`, `/palette`, `/templates`, `/ui/*`) are visitor-facing pages listed in navigation, `SHOWCASE_PAGES`, and `sitemap.xml`.
 - Every catalog route under `DashboardLayout` uses app-local `ShowcasePage`, including all category overviews, documentation pages, and source viewers. `ContentIsland` owns the page inset; card slots own their padding (see [DESIGN.md#page-composition](../DESIGN.md#page-composition)).
 - `/dashboard` (`src/pages/DashboardPage.tsx`) verifies multi-card analytics/chart grids and `@[...]/island` container responsiveness inside the full app shell.
-- `/components`, `/layout`, and `/palette` host `MicroSceneWall`, `SurfaceDisciplineInspector`, and `ThemeStudio`.
+- `/layout` and `/palette` host `SurfaceDisciplineInspector` and `ThemeStudio`; `/dev/examples` mounts `MicroSceneWall` alongside isolated primitive panels.
 
 ### Standalone templates
 
