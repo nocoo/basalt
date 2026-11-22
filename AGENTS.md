@@ -32,7 +32,7 @@ Run `bun run consumer:docs` only after building the package. `bun run design:che
 - **Page composition**: All `DashboardLayout` routes use `ShowcasePage`; `ContentIsland` owns page inset and card slots own padding ([DESIGN.md](DESIGN.md#page-composition)).
 - **Role-based spacing**: Controls use 2/4/6/8px; cards/layouts use 12/16/24/32px (`sm/md/lg/xl` rem; 16px cards/grids, 24px sections); never enlarge control tokens ([DESIGN.md](DESIGN.md#spacing)).
 - **Container boundaries**: Disclosures use `LayerCard.Header asChild` on `CollapsibleTrigger`, Body in unstyled content, attached code owns inset; no `p-0` slot repairs or native dashboard disclosures.
-- **Selection & nav**: Brighter selected tokens (no bars/frames or accent/muted fills), distinct from hover/focus/disabled; sidebar groups are disclosures ([DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy)).
+- **Selection & nav**: Selected contrasts with its container (light smoked tint + hairline edge, dark raised neutral; no bars or accent/muted fills), distinct from hover/focus/disabled; sidebar groups are disclosures ([DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy)).
 - **Package boundary**: Root is private; publish only `packages/basalt` with CSS tokens and Tailwind + standalone entrypoints (`packages/basalt/scripts/verify-pack.ts`); never include secrets.
 - **Architecture & API**: Preserve matte surfaces, theme/a11y, public API (`packages/basalt/ai/`), and client/SSR boundaries ([INTEGRATION.md](INTEGRATION.md)); ViewModels never import Views/DOM; mock data only.
 - **Worker & routes**: Worker `theme-basalt` serves `dist/` (`not_found_handling = "none"`): app shell for `src/lib/routes.ts`, `dist/404.html` (404) otherwise; keep `/api/live` status/version and prod `no-store`.

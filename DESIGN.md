@@ -211,14 +211,33 @@ interaction contracts; do not change their containment as a global workaround.
   (`src/styles/landing.css`), LoginPage (`src/pages/LoginPage.tsx`) and the 404
   display in NotFound (`src/pages/NotFound.tsx`, `text-basalt-10xl` only). Every
   other `src/` font-size class must use one of the seven canonical utilities.
-- Surfaces preserve the matte L0/L1/L2/L3 hierarchy. LayerCard adds a subtle
-  `ring-1 ring-basalt-border/80` perimeter and edge-lit card shadow in both themes; `outlined`
-  strengthens the perimeter. Structured non-`asChild` headers use 15px semibold
-  foreground text with tight tracking; disclosure headers slotted with `asChild`
-  retain 14px medium text. Controls contrast
-  with their parent: document/surface roots use `--basalt-secondary`, while cards
-  and deeper surfaces use `--basalt-bright` for their control fill. Hover uses `--basalt-hover`,
-  `--basalt-primary-hover` or `--basalt-destructive-hover`, not caller opacity.
+- Surfaces preserve the L0/L1/L2/L3 island hierarchy (`95%` / `98%` / `100%`
+  light matte island ladder with `#fff` control fills and `98%` recessed `LayerCard.Well`;
+  `7.5%` / `10%` / `12.5%` / `15.5%` dark depth ladder with `10%` recessed `LayerCard.Well`
+  and `16.5%` `--basalt-popover` on overlays). Floating modal shells (`Dialog`,
+  `AlertDialog`, `Sheet`) set `data-basalt-surface-root` and `data-basalt-floating`
+  (`100%` light / `16.5%` dark) over a translucent `--basalt-scrim`, without
+  `backdrop-filter`. `LayerCard` adds a subtle `ring-1 ring-basalt-border/80` perimeter
+  and edge-lit `--basalt-shadow-card` in both themes; `outlined` strengthens the
+  perimeter. Structured non-`asChild` headers use 15px semibold foreground text with
+  tight tracking; disclosure headers slotted with `asChild` retain 14px medium text.
+  Controls contrast with their parent: secondary/control buttons and inputs fill with
+  `--basalt-control-fill` (`#fff` in light mode; `--basalt-secondary` on roots and
+  `--basalt-bright` inside cards in dark mode) with edge-lit `--basalt-shadow-control`.
+  Solid `--basalt-primary` / `--basalt-destructive` actions use saturated ink-safe fills
+  with `--basalt-shadow-solid` (white foreground contrast `>= 4.5:1`); `outline`
+  renders transparent hairline-only framing. Hover uses `--basalt-hover`,
+  `--basalt-primary-hover`, or `--basalt-destructive-hover`, not caller opacity.
+- Accent links, inline icon/text highlights, and focus rings read `--basalt-link`
+  (`--basalt-primary` in light mode; lifted `204 90% 70%` in dark mode), while solid
+  primary actions/badges stay on `--basalt-primary` (`204 90% 40%` in dark mode with
+  white text).
+- Elevation uses shared shadow tokens only (`--basalt-shadow-control`, `--basalt-shadow-solid`,
+  `--basalt-shadow-card`, `--basalt-shadow-card-foot`, `--basalt-shadow-floating`,
+  `--basalt-shadow-modal`, `--basalt-shadow-well`); do not use raw Tailwind
+  `shadow-sm`/`shadow-md`/`shadow-lg`/`shadow-xl` utilities or `backdrop-filter`.
+  `Popover` sets `arrow={false}` by default; opt in with `arrow` only when directional
+  anchor attribution is needed.
 - Semantic states, tags, data series and brand imagery may choose semantic
   palettes; keep foreground/background pairs and verify both themes. Centralize
   shared values rather than declaring hex colors in component classes. Site-only
@@ -226,18 +245,21 @@ interaction contracts; do not change their containment as a global workaround.
 
 ## Selection and navigation hierarchy
 
-- Neutral selection uses `--basalt-selected` and `--basalt-selected-foreground`.
-  Selected surfaces are brighter than their container (white in light mode, 22%
-  lightness in dark mode), never the darker decorative `accent` or `muted` fill.
-  Do not add decorative side bars, selection outlines, shadows or pseudo-element
-  frames. Navigation uses foreground contrast and medium weight alongside fill;
-  existing semantic checkmarks and tab underlines remain. Underline tabs use
-  active foreground text and the bottom indicator only, without a rounded box
-  or selected background. Both primary and secondary text retain at least 4.5:1 contrast.
-- Hover is transient and follows the configured primary. `--basalt-hover` is
-  a complete CSS color, mixed against `--basalt-surface-elevated` at 18% primary
-  in both light and dark modes. Moving menu and command highlights use
-  this uniform matte fill, without gradients or decorative borders.
+- Neutral selection uses `--basalt-selected` and `--basalt-selected-foreground`,
+  contrasting clearly with its container: a smoked neutral tint (`0 0% 10% / 0.055`)
+  plus `--basalt-selected-edge` hairline in light mode, and a raised `22%` neutral
+  surface plus `--basalt-selected-edge` top rim in dark mode — never decorative
+  `accent` or `muted` fills. Do not add decorative side bars, outer selection
+  outlines, or pseudo-element frames. Navigation uses foreground contrast and
+  medium weight alongside fill; existing semantic checkmarks and tab underlines
+  remain. Underline tabs use active foreground text and the bottom indicator only,
+  without a rounded box or selected background. Both primary and secondary text
+  retain at least 4.5:1 contrast.
+- Hover is transient neutral shading: `--basalt-hover` tints foreground ink (`4%`
+  in light mode, `6%` in dark mode) so hover remains quieter than committed
+  selection across any accent hue. Moving menu and command highlights use this
+  uniform fill, without gradients or decorative borders. `CommandPalette` renders as
+  a single unified floating frame.
   SegmentControl and ToggleGroup selected items use `--basalt-primary` and its
   contrast-corrected foreground; they are accent controls, not neutral navigation.
   Neutral row selection retains its independent selected tokens.
@@ -364,9 +386,11 @@ chart/canvas geometry remain separate from shared control geometry.
 
 ### Island hierarchy
 
-The shell is L0 (`--basalt-background`). `ContentIsland` is the L1 gray canvas
-(`--basalt-card`); its first `LayerCard` islands are L2 (`--basalt-secondary`),
-white-toned in light mode and elevated in both themes.
+The shell is L0 (`--basalt-background`, `95%` light / `7.5%` dark). `ContentIsland`
+is the L1 canvas (`--basalt-card`, `98%` light / `10%` dark); its first `LayerCard`
+islands are L2 (`--basalt-secondary`, `100%` pure white in light mode, `12.5%`
+elevated in dark mode). Inside a `LayerCard`, `LayerCard.Well` recesses to L1 (`98%`
+light / `10%` dark) with `--basalt-shadow-well`.
 
 Inside `ShowcasePage` / `ContentIsland`, only structural chrome sits directly on
 L1: `PageHeader`, `SectionRule` headings, and top-level navigation tabs or filter

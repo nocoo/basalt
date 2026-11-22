@@ -219,7 +219,7 @@ One tree for the whole app. Login and the shell both sit under it.
 
 ### AccentProvider and useAccent
 
-`AccentProvider` manages dynamic primary accent color overrides (`--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent`). It also supplies twelve raw candy swatches (`--basalt-accent-1` through `--basalt-accent-12`). It does not alter chart palette tokens (`--basalt-chart-*`).
+`AccentProvider` manages dynamic primary accent color overrides (`--basalt-primary`, `--basalt-primary-foreground`, `--basalt-link`, `--basalt-ring`, and `dataset.accent`). It also supplies twelve raw candy swatches (`--basalt-accent-1` through `--basalt-accent-12`). It does not alter chart palette tokens (`--basalt-chart-*`).
 
 #### AccentProvider Configuration
 
@@ -245,7 +245,7 @@ One tree for the whole app. Login and the shell both sit under it.
   - `DEFAULT_ACCENT_ID`: Default accent ID (`"primary"`).
   - `accentSwatchById(id: string | null | undefined): AccentSwatch`: Finds a preset by `id`, mapping legacy IDs to their closest retained hue and defaulting to `ACCENT_SWATCHES[0]` if not found. For example, `jade` becomes `teal`, `magenta` becomes `rose`, and `gold` becomes `amber`; the full mapping is in `ai/COMPATIBILITY.md`.
   - `accentForeground(hsl: string)`: Compares WCAG contrast against white and dark text and returns the higher-contrast pairing (`"0 0% 10%"` or `"0 0% 100%"`). Note: selecting higher contrast does not guarantee arbitrary custom colors reach 4.5:1.
-  - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent` on the document root element. For built-in palette swatches, semantic `--basalt-primary` is derived to guarantee WCAG 4.5:1 text/button contrast across L0–L3 surfaces and 90% hover states without mutating the raw control swatches (`ACCENT_SWATCHES`) or chart palette tokens. This helper applies presets; use `paletteOverrides` on the provider for custom colors. Badge variants pair corresponding semantic foreground tokens (`text-basalt-badge-*-foreground` / `text-basalt-*-foreground`). Accepts optional `dark` flag (defaults to `false`).
+  - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-link`, `--basalt-ring`, and `dataset.accent` on the document root element. For built-in palette swatches, semantic `--basalt-primary` (used on filled buttons/badges with white text) and `--basalt-link` (lifted in dark mode for readable inline links, accent icons, and focus rings) are derived to guarantee WCAG 4.5:1 contrast across L0–L3 surfaces without mutating the raw control swatches (`ACCENT_SWATCHES`) or chart palette tokens. This helper applies presets; use `paletteOverrides` on the provider for custom colors. Badge variants pair corresponding semantic foreground tokens (`text-basalt-badge-*-foreground` / `text-basalt-*-foreground`). Accepts optional `dark` flag (defaults to `false`).
 - **Known Limitations & Resilience**: Storage access gracefully degrades in sandboxed or quota-exceeded environments by preserving in-memory choices without throwing. SSR hydration serves controlled `accent` (if provided) or server snapshot defaults (`DEFAULT_ACCENT_ID = "primary"`). Built-in palette accents satisfy WCAG 4.5:1 across surfaces in both themes.
 
 ### Control and chart palettes
@@ -345,7 +345,7 @@ export function HostPreferencesApp() {
 
 Every chrome class uses the `basalt-` prefix:
 
-- surfaces: `bg-basalt-background` (L0), `bg-basalt-card` (L1 island), `bg-basalt-secondary` (L2 card), `bg-basalt-bright` (L3 well), `bg-basalt-control` (current-surface controls), `bg-basalt-primary`, `bg-basalt-accent`
+- surfaces: `bg-basalt-background` (L0), `bg-basalt-card` (L1 island / recessed Well), `bg-basalt-secondary` (L2 card), `bg-basalt-bright` (L3 bright fill), `bg-basalt-control` (current-surface controls), `bg-basalt-primary`, `bg-basalt-accent`
 - nest: see **§14**. `ContentIsland` / Dialog / Sheet / AlertDialog set `data-basalt-surface-root`. `LayerCard` and `LayerCard.Well` set `data-basalt-surface`. Do not hand-write `bg-card` wells.
 - text: `text-basalt-foreground`, `text-basalt-muted-foreground`, `text-basalt-primary-foreground`
 - line: `ring-basalt-border`, `border-basalt-border`
@@ -534,7 +534,7 @@ Pass `resizable={false}` on the inner `Sidebar`. Put `<SidebarToggle mode="dismi
 
 `SidebarDrawer` bounds its sidebar to the available height. The drawer owns the sidebar-width column and the portal safe area. Radix Sheet owns modal scroll locking; do not set body overflow separately.
 
-Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
+Sheets slide from their declared edge in 350ms and return in 250ms, while the neutral scrim (`--basalt-scrim`) fades cleanly without backdrop blur. DropdownMenu, Select, ContextMenu, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
 
 `AppHeader` `leading` is the menu button on mobile only: render `AppHeaderMenuButton` (a `HeaderAction` with the `Menu` glyph, default label "Open navigation", forwarded ref). Keep its ref for focus restore, or use it as `SheetTrigger asChild`. Inside the drawer, close with `SidebarToggle mode="dismiss"`. With `density="compact"`, compact header controls have a 44px minimum target.
 
@@ -864,16 +864,17 @@ Pages render **inside** `ContentIsland`. That island is already L1. Paint is CSS
 
 ### Levels
 
-| Where   | Mark                                                     | Paint                                 |
-| ------- | -------------------------------------------------------- | ------------------------------------- |
-| L0      | `AppShell`, login viewport                               | `--basalt-background` 94% / 9%        |
-| L1      | `ContentIsland`, Dialog, Sheet, AlertDialog, login badge | `--basalt-card` 97% / 10.6%           |
-| L2      | first `LayerCard` under a root                           | `--basalt-secondary` 99% / 12.2%      |
-| L3      | `LayerCard.Well` or a nested `LayerCard`                 | `--basalt-bright` 100% / 14%          |
-| L3+     | deeper nested surface                                    | transparent, no ring by default       |
-| Overlay | Tooltip, Popover, Dropdown, HoverCard                    | `--basalt-popover` — not a stack step |
+| Where    | Mark                                                       | Paint                                            |
+| -------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| L0       | `AppShell`, login viewport                                 | `--basalt-background` 95% / 7.5%                 |
+| L1       | `ContentIsland`, login badge                               | `--basalt-card` 98% / 10%                        |
+| L2       | first `LayerCard` under a root                             | `--basalt-secondary` 100% / 12.5%                |
+| Well     | `LayerCard.Well` inside L2                                 | `--basalt-card` 98% / 10% recessed (`shadow-basalt-well`) |
+| L3       | a nested `LayerCard` or deeper control fill                | `--basalt-bright` 100% / 15.5%                   |
+| L3+      | deeper nested surface                                      | transparent, no ring by default                  |
+| Floating | `Dialog`, `Sheet`, `AlertDialog` (`data-basalt-floating`), and `Tooltip`, `Popover`, `Dropdown`, `HoverCard` | `--basalt-popover` 100% / 16.5%                  |
 
-`--basalt-muted` is not a content step. Isolated (no root): the outermost `LayerCard` paints as L1; its Well is L2.
+`--basalt-muted` is not a content step. Isolated (no root): the outermost `LayerCard` paints as L1; its Well recesses to L0.
 
 `LayerCard.Primary` is `Well`. `LayerCard.Secondary` is `Header`. Keep the names; teach Header / Body / Well.
 
@@ -888,7 +889,7 @@ Unstructured card (KPI, metric, tile) — root padding, one surface:
 </LayerCard>;
 ```
 
-Structured card — root padding drops. `Body` stays on L2. `Well` raises to L3:
+Structured card — root padding drops. `Body` stays on L2. `Well` recesses to L1:
 
 ```tsx excerpt:layercard-structured-body
 <LayerCard>
@@ -914,19 +915,19 @@ Place cards with Grid or flex. Those classes do not paint. A grid of `LayerCard`
 
 ### Controls and tables
 
-Input, Select, secondary / outline Button use `bg-basalt-control` (`--basalt-control-fill` from the current surface) plus border. Do not override with `bg-card`, `bg-basalt-card`, or `bg-basalt-background`.
+Input, Select, and secondary Button use `bg-basalt-control` (`--basalt-control-fill` from the current surface) plus border and `--basalt-shadow-control`; `outline` Button stays transparent with a hairline border. Do not override with `bg-card`, `bg-basalt-card`, or `bg-basalt-background`.
 
 `Table` sets `data-basalt-table`. Zebra, hover, and selected paint on `td`, from `--basalt-surface-current`, `--basalt-hover` and `--basalt-selected`. Selection adds no decorative side bar or frame; semantic add/remove diff tints are preserved.
 
-Neutral selected states use the brighter `--basalt-selected` surface, readable `--basalt-selected-foreground` and navigation font weight, without decorative side bars or selected borders. Never use `accent` or `muted` to signal selection. Existing semantic checkmarks and tab underlines remain; do not add a decorative frame at the white ceiling. A moving hover layer must not erase the selected row. Sidebar and editable navigation share this behavior and inset keyboard focus; neutral Button variants also honor `aria-pressed` and `aria-current`. Focus is separate from selection: ordinary targets use the 1px theme `--basalt-ring` stroke with a 2px outer offset; flush targets use the same stroke inset with a 2px negative offset. External focus targets need at least 4px clearance inside their nearest clipping container; existing 4px padding counts and is not stacked. Focus does not shift layout, error indicators stay independent, and forced-colors mode may use a 2px system outline. Segments and tabs retain their existing measured indicator motion. Primary/destructive actions, check/radio/switch glyphs and semantic diffs keep their semantic colors. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
+Neutral selected states use `--basalt-selected` and `--basalt-selected-foreground` (a smoked tint plus `--basalt-selected-edge` hairline in light mode, and a brighter 22% step plus top rim in dark mode) and navigation font weight, without decorative side bars or outer selection borders. Never use `accent` or `muted` to signal selection. Existing semantic checkmarks and tab underlines remain; do not add a decorative frame at the white ceiling. A moving hover layer (`--basalt-hover`: 4% light / 6% dark neutral ink tint) must not erase the selected row. Sidebar and editable navigation share this behavior and inset keyboard focus; neutral Button variants also honor `aria-pressed` and `aria-current`. Focus is separate from selection: ordinary targets use the 1px theme `--basalt-ring` stroke with a 2px outer offset; flush targets use the same stroke inset with a 2px negative offset. External focus targets need at least 4px clearance inside their nearest clipping container; existing 4px padding counts and is not stacked. Focus does not shift layout, error indicators stay independent, and forced-colors mode may use a 2px system outline. Segments and tabs retain their existing measured indicator motion. Primary/destructive actions, check/radio/switch glyphs and semantic diffs keep their semantic colors. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
 
 `DescriptionList` is layout and type only. It is not a surface.
 
 ### Overlays
 
-Dialog, AlertDialog, and Sheet portal to `body` and start a **new** L1 root. Do not nest `data-basalt-surface-root` in the same tree.
+Dialog, AlertDialog, and Sheet portal to `body` and start a **new** floating L1 root (`data-basalt-surface-root` with `data-basalt-floating`: 100% light / 16.5% dark) over `--basalt-scrim`, without `backdrop-filter`. Do not nest `data-basalt-surface-root` in the same tree.
 
-Popover, Tooltip, Dropdown, and HoverCard stay on the popover token. They do not open the stack.
+Popover, Tooltip, Dropdown, and HoverCard stay on the popover token (`100%` light / `16.5%` dark) and `--basalt-shadow-floating`. They do not open the stack. `Popover` sets `arrow={false}` by default.
 
 ### Don't
 
