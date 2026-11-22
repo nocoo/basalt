@@ -302,7 +302,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "ee8b301d3034848f",
+		"hash": "1c9eb590514603f1",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},
@@ -344,7 +344,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "a58dd0c797d49199",
+		"hash": "2d47a835a2b3573f",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -356,7 +356,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table-pager": {
 		"file": "packages/basalt/src/components/table-pager.tsx",
-		"hash": "debfe1fa990b05ae",
+		"hash": "946b08db67d8864e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table-pager.js.map (sourcesContent[0])"
 	},
@@ -467,5 +467,35 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"hash": "c7e505f394b39699",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/resource-list.js.map (sourcesContent[0])"
+	},
+	"spinner": {
+		"file": "packages/basalt/src/components/spinner.tsx",
+		"hash": "648dd70c83d33384",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/spinner.js.map (sourcesContent[0])"
+	},
+	"kbd": {
+		"file": "packages/basalt/src/components/kbd.tsx",
+		"hash": "98fe97d15fa2dfe5",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/kbd.js.map (sourcesContent[0])"
+	},
+	"progress": {
+		"file": "packages/basalt/src/components/progress.tsx",
+		"hash": "0f75a13f0a66cac2",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/progress.js.map (sourcesContent[0])"
+	},
+	"pagination": {
+		"file": "packages/basalt/src/components/pagination.tsx",
+		"hash": "283d338e0b9ffc22",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/pagination.js.map (sourcesContent[0])"
+	},
+	"combobox": {
+		"file": "packages/basalt/src/components/combobox.tsx",
+		"hash": "b291470303692bc2",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/combobox.js.map (sourcesContent[0])"
 	}
 };

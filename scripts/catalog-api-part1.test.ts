@@ -1438,8 +1438,38 @@ describe("catalog API generator contract 1/4", () => {
 				propsType: "AvatarInitialsProps",
 				surface: "AvatarInitials",
 			},
+			{
+				slug: "spinner",
+				sourceFile: "packages/basalt/src/components/spinner.tsx",
+				propsType: "SpinnerProps",
+				surface: "Spinner",
+			},
+			{
+				slug: "kbd",
+				sourceFile: "packages/basalt/src/components/kbd.tsx",
+				propsType: "KbdProps",
+				surface: "Kbd",
+			},
+			{
+				slug: "progress",
+				sourceFile: "packages/basalt/src/components/progress.tsx",
+				propsType: "ProgressProps",
+				surface: "Progress",
+			},
+			{
+				slug: "pagination",
+				sourceFile: "packages/basalt/src/components/pagination.tsx",
+				propsType: "PaginationProps",
+				surface: "Pagination",
+			},
+			{
+				slug: "combobox",
+				sourceFile: "packages/basalt/src/components/combobox.tsx",
+				propsType: "ComboboxProps",
+				surface: "Combobox",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(228);
+		expect(CATALOG_API_TARGETS).toHaveLength(233);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1567,6 +1597,11 @@ describe("catalog API generator contract 1/4", () => {
 			"breadcrumbs",
 			"theme-provider",
 			"link-provider",
+			"spinner",
+			"kbd",
+			"progress",
+			"pagination",
+			"combobox",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",

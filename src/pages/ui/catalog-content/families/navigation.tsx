@@ -17,6 +17,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
+import { Pagination } from "@nocoo/basalt/components/pagination";
 import { Skeleton } from "@nocoo/basalt/components/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
@@ -43,6 +44,7 @@ import { TABLE_OF_CONTENTS_EXAMPLES } from "../../examples/table-of-contents";
 import { API as breadcrumbsApi } from "../../generated/catalog-api/breadcrumbs";
 import { API as commandPaletteApi } from "../../generated/catalog-api/command-palette";
 import { API as editableNavItemApi } from "../../generated/catalog-api/editable-nav-item";
+import { API as paginationApi } from "../../generated/catalog-api/pagination";
 import { API as sidebarApi } from "../../generated/catalog-api/sidebar";
 import { API as tableOfContentsApi } from "../../generated/catalog-api/table-of-contents";
 import { API as tabsApi } from "../../generated/catalog-api/tabs";
@@ -577,5 +579,41 @@ export default function Example() {
 	sidebar: {
 		docs: { ...sidebarDocs, api: sidebarApi },
 		examples: SIDEBAR_EXAMPLES,
+	},
+	pagination: {
+		docs: {
+			description: "Segmented page navigator supporting compact, simple, and numbered page modes.",
+			usage: scenarioModule("<Pagination defaultPage={2} pageCount={10} />", [
+				'import { Pagination } from "@nocoo/basalt/components/pagination";',
+			]),
+			variants: ["default", "numbered", "simple"],
+			api: paginationApi,
+		},
+		examples: [
+			{
+				id: catalogScenarioId("pagination", "default"),
+				title: "Compact navigator",
+				code: scenarioModule("<Pagination defaultPage={2} pageCount={10} />", [
+					'import { Pagination } from "@nocoo/basalt/components/pagination";',
+				]),
+				render: () => <Pagination defaultPage={2} pageCount={10} />,
+			},
+			{
+				id: catalogScenarioId("pagination", "numbered"),
+				title: "Numbered pages",
+				code: scenarioModule("<Pagination defaultPage={5} pageCount={12} showPageNumbers />", [
+					'import { Pagination } from "@nocoo/basalt/components/pagination";',
+				]),
+				render: () => <Pagination defaultPage={5} pageCount={12} showPageNumbers />,
+			},
+			{
+				id: catalogScenarioId("pagination", "simple"),
+				title: "Simple previous and next",
+				code: scenarioModule("<Pagination defaultPage={3} pageCount={10} simple />", [
+					'import { Pagination } from "@nocoo/basalt/components/pagination";',
+				]),
+				render: () => <Pagination defaultPage={3} pageCount={10} simple />,
+			},
+		],
 	},
 });

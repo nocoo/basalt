@@ -276,6 +276,8 @@
 		var(--basalt-motion-ease);
 	--animate-basalt-shimmer: basalt-shimmer 1.5s ease-in-out infinite;
 	--animate-basalt-tab-in: basalt-tab-in var(--basalt-motion-normal) var(--basalt-motion-ease);
+	--animate-basalt-progress-indeterminate: basalt-progress-indeterminate 1.4s
+		var(--basalt-motion-ease) infinite;
 }
 
 .basalt-chart .recharts-sector:focus:not(:focus-visible),

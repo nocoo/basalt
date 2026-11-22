@@ -78,4 +78,9 @@ export const CATALOG_PAGE_STATUS = {
 	"stat-card": "ready",
 	"page-header": "ready",
 	"resource-list": "ready",
+	spinner: "ready",
+	kbd: "ready",
+	progress: "ready",
+	pagination: "ready",
+	combobox: "ready",
 } as const;

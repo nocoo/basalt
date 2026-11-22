@@ -1,3 +1,4 @@
+import { Combobox, type ComboboxOption } from "@nocoo/basalt/components/combobox";
 import { Slider } from "@nocoo/basalt/components/slider";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
@@ -26,6 +27,7 @@ import { TEXTAREA_EXAMPLES } from "../../examples/textarea";
 import { UPLOAD_QUEUE_EXAMPLES } from "../../examples/upload-queue";
 import { API as autocompleteApi } from "../../generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "../../generated/catalog-api/checkbox";
+import { API as comboboxApi } from "../../generated/catalog-api/combobox";
 import { API as datePickerApi } from "../../generated/catalog-api/date-picker";
 import { API as fieldApi } from "../../generated/catalog-api/field";
 import { API as fileDropzoneApi } from "../../generated/catalog-api/file-dropzone";
@@ -68,6 +70,13 @@ const EXTRA_PROVENANCE = provenanceFromLegacy({
 	sha: "97a890fabe6e",
 	file: "packages/web/src/components",
 });
+
+const COMBOBOX_FRAMEWORK_OPTIONS: readonly ComboboxOption[] = [
+	{ value: "next", label: "Next.js", description: "Full-stack React framework" },
+	{ value: "vite", label: "Vite", description: "Fast native ESM bundler" },
+	{ value: "remix", label: "Remix", description: "Web-standard routing and mutations" },
+	{ value: "astro", label: "Astro", description: "Content-driven islands architecture" },
+];
 
 export default catalogContentFamily({
 	"tag-color-picker": {
@@ -568,5 +577,99 @@ export default function Example() {
 			}),
 		},
 		examples: SEGMENT_CONTROL_EXAMPLES,
+	},
+	combobox: {
+		docs: {
+			description:
+				"Searchable single- or multi-value picker combining Select trigger geometry with cmdk filtering.",
+			usage: usage(
+				"Combobox",
+				"@nocoo/basalt/components/combobox",
+				`<Combobox
+	label="Framework"
+	options={[
+		{ value: "next", label: "Next.js" },
+		{ value: "vite", label: "Vite" },
+	]}
+/>`,
+			),
+			variants: ["sm", "md", "lg"],
+			api: comboboxApi,
+		},
+		examples: [
+			{
+				id: catalogScenarioId("combobox", "single"),
+				title: "Single selection",
+				code: scenarioModule(
+					`<Combobox
+	label="Framework"
+	clearable
+	className="max-w-xs"
+	options={[
+		{ value: "next", label: "Next.js", description: "Full-stack React framework" },
+		{ value: "vite", label: "Vite", description: "Fast native ESM bundler" },
+		{ value: "remix", label: "Remix", description: "Web-standard routing and mutations" },
+		{ value: "astro", label: "Astro", description: "Content-driven islands architecture" },
+	]}
+/>`,
+					['import { Combobox } from "@nocoo/basalt/components/combobox";'],
+				),
+				render: () => (
+					<Combobox
+						label="Framework"
+						clearable
+						className="max-w-xs"
+						options={COMBOBOX_FRAMEWORK_OPTIONS}
+					/>
+				),
+			},
+			{
+				id: catalogScenarioId("combobox", "multiple"),
+				title: "Multiple selection",
+				code: scenarioModule(
+					`<Combobox
+	multiple
+	clearable
+	label="Target runtimes"
+	defaultValue={["next", "vite"]}
+	className="max-w-xs"
+	options={[
+		{ value: "next", label: "Next.js" },
+		{ value: "vite", label: "Vite" },
+		{ value: "remix", label: "Remix" },
+		{ value: "astro", label: "Astro" },
+	]}
+/>`,
+					['import { Combobox } from "@nocoo/basalt/components/combobox";'],
+				),
+				render: () => (
+					<Combobox
+						multiple
+						clearable
+						label="Target runtimes"
+						defaultValue={["next", "vite"]}
+						className="max-w-xs"
+						options={COMBOBOX_FRAMEWORK_OPTIONS}
+					/>
+				),
+			},
+			{
+				id: catalogScenarioId("combobox", "async-loading"),
+				title: "Async loading state",
+				code: scenarioModule(
+					'<Combobox label="Packages" loading loadingLabel="Querying registry…" className="max-w-xs" options={[]} />',
+					['import { Combobox } from "@nocoo/basalt/components/combobox";'],
+				),
+				render: () => (
+					<Combobox
+						label="Packages"
+						loading
+						loadingLabel="Querying registry…"
+						className="max-w-xs"
+						options={[]}
+					/>
+				),
+			},
+		],
 	},
 });

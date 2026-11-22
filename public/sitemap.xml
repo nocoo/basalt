@@ -124,6 +124,9 @@
     <loc>https://basaltui.com/ui/collapsible</loc>
   </url>
   <url>
+    <loc>https://basaltui.com/ui/combobox</loc>
+  </url>
+  <url>
     <loc>https://basaltui.com/ui/command-palette</loc>
   </url>
   <url>
@@ -187,6 +190,9 @@
     <loc>https://basaltui.com/ui/input-group</loc>
   </url>
   <url>
+    <loc>https://basaltui.com/ui/kbd</loc>
+  </url>
+  <url>
     <loc>https://basaltui.com/ui/label</loc>
   </url>
   <url>
@@ -238,7 +244,13 @@
     <loc>https://basaltui.com/ui/page-header</loc>
   </url>
   <url>
+    <loc>https://basaltui.com/ui/pagination</loc>
+  </url>
+  <url>
     <loc>https://basaltui.com/ui/popover</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/progress</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/radio</loc>
@@ -278,6 +290,9 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/slider</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/spinner</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/stat-card</loc>

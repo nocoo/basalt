@@ -24,6 +24,7 @@ import { Badge } from "./badge";
 import { Button, type ButtonProps, LinkButton } from "./button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
+import { Kbd } from "./kbd";
 import { Link } from "./link";
 import {
 	Sheet,
@@ -652,9 +653,7 @@ export function SidebarSearch({
 				{collapsed && shortcut ? ` (${shortcut})` : null}
 			</span>
 			{!collapsed ? (
-				<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-basalt-muted-foreground sm:inline-block">
-					{shortcut}
-				</kbd>
+				<Kbd className="pointer-events-none hidden sm:inline-flex">{shortcut}</Kbd>
 			) : null}
 		</button>
 	);

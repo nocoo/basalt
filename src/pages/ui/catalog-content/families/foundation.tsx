@@ -1,3 +1,4 @@
+import { Kbd } from "@nocoo/basalt/components/kbd";
 import { Link } from "@nocoo/basalt/components/link";
 import { Text } from "@nocoo/basalt/components/text";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
@@ -18,6 +19,7 @@ import { HostPreferences, IndependentPreferences } from "../../examples/theme-pr
 import preferencesRaw from "../../examples/theme-provider/preferences.tsx?raw";
 import { THEME_TOGGLE_EXAMPLES } from "../../examples/theme-toggle";
 import { API as buttonApi } from "../../generated/catalog-api/button";
+import { API as kbdApi } from "../../generated/catalog-api/kbd";
 import { API as labelApi } from "../../generated/catalog-api/label";
 import { API as layerCardApi } from "../../generated/catalog-api/layer-card";
 import { API as linkApi } from "../../generated/catalog-api/link";
@@ -326,6 +328,68 @@ export default function Example() {
 					<LinkProvider>
 						<Link href="#section">Link</Link>
 					</LinkProvider>
+				),
+			},
+		],
+	},
+	kbd: {
+		docs: {
+			description: "Matte keyboard shortcut keycap for inline hints, triggers, and command rows.",
+			usage: usage("Kbd", "@nocoo/basalt/components/kbd", "<Kbd>⌘K</Kbd>"),
+			variants: ["sm", "md"],
+			api: kbdApi,
+		},
+		examples: [
+			{
+				id: catalogScenarioId("kbd", "sizes"),
+				title: "Sizes",
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
+	<Kbd size="sm">⌘K</Kbd>
+	<Kbd size="md">⇧⌘P</Kbd>
+	<Kbd size="md">Enter</Kbd>
+</div>`,
+					['import { Kbd } from "@nocoo/basalt/components/kbd";'],
+				),
+				render: () => (
+					<div className="flex flex-wrap items-center gap-basalt-space-lg">
+						<Kbd size="sm">⌘K</Kbd>
+						<Kbd size="md">⇧⌘P</Kbd>
+						<Kbd size="md">Enter</Kbd>
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("kbd", "shortcuts"),
+				title: "Shortcut combinations",
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-basalt-layout text-basalt-sm text-basalt-muted-foreground">
+	<span className="inline-flex items-center gap-basalt-space-sm">
+		Search
+		<Kbd>⌘</Kbd>
+		<Kbd>K</Kbd>
+	</span>
+	<span className="inline-flex items-center gap-basalt-space-sm">
+		Save
+		<Kbd>⌘</Kbd>
+		<Kbd>S</Kbd>
+	</span>
+</div>`,
+					['import { Kbd } from "@nocoo/basalt/components/kbd";'],
+				),
+				render: () => (
+					<div className="flex flex-wrap items-center gap-basalt-layout text-basalt-sm text-basalt-muted-foreground">
+						<span className="inline-flex items-center gap-basalt-space-sm">
+							Search
+							<Kbd>⌘</Kbd>
+							<Kbd>K</Kbd>
+						</span>
+						<span className="inline-flex items-center gap-basalt-space-sm">
+							Save
+							<Kbd>⌘</Kbd>
+							<Kbd>S</Kbd>
+						</span>
+					</div>
 				),
 			},
 		],

@@ -7,7 +7,9 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { Meter } from "@nocoo/basalt/components/meter";
+import { Progress } from "@nocoo/basalt/components/progress";
 import { Skeleton } from "@nocoo/basalt/components/skeleton";
+import { Spinner } from "@nocoo/basalt/components/spinner";
 import { Text } from "@nocoo/basalt/components/text";
 import { toast } from "@nocoo/basalt/components/toast";
 import {
@@ -42,7 +44,9 @@ import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
 import { API as emptyApi } from "../../generated/catalog-api/empty";
 import { API as loaderApi } from "../../generated/catalog-api/loader";
 import { API as meterApi } from "../../generated/catalog-api/meter";
+import { API as progressApi } from "../../generated/catalog-api/progress";
 import { API as skeletonApi } from "../../generated/catalog-api/skeleton";
+import { API as spinnerApi } from "../../generated/catalog-api/spinner";
 import { API as toastApi } from "../../generated/catalog-api/toast";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
@@ -1256,6 +1260,116 @@ export default function Example() {
 						<AvatarFallback>ZL</AvatarFallback>
 					</Avatar>
 				),
+			},
+		],
+	},
+	spinner: {
+		docs: {
+			description: "Matte rotating ring indicator for inline and localized busy states.",
+			usage: scenarioModule("<Spinner />", [
+				'import { Spinner } from "@nocoo/basalt/components/spinner";',
+			]),
+			variants: ["sm", "md", "lg"],
+			api: spinnerApi,
+		},
+		examples: [
+			{
+				id: catalogScenarioId("spinner", "sizes"),
+				title: "Sizes",
+				code: scenarioModule(
+					`<div className="flex items-center gap-basalt-layout">
+	<Spinner size="sm" label="Small spinner" />
+	<Spinner size="md" label="Medium spinner" />
+	<Spinner size="lg" label="Large spinner" />
+</div>`,
+					['import { Spinner } from "@nocoo/basalt/components/spinner";'],
+				),
+				render: () => (
+					<div className="flex items-center gap-basalt-layout">
+						<Spinner size="sm" label="Small spinner" />
+						<Spinner size="md" label="Medium spinner" />
+						<Spinner size="lg" label="Large spinner" />
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("spinner", "with-label"),
+				title: "Inline busy status",
+				code: scenarioModule(
+					`<div className="inline-flex items-center gap-basalt-space-md text-basalt-sm text-basalt-muted-foreground">
+	<Spinner size="sm" aria-hidden="true" />
+	<span>Syncing deployment state…</span>
+</div>`,
+					['import { Spinner } from "@nocoo/basalt/components/spinner";'],
+				),
+				render: () => (
+					<div className="inline-flex items-center gap-basalt-space-md text-basalt-sm text-basalt-muted-foreground">
+						<Spinner size="sm" aria-hidden="true" />
+						<span>Syncing deployment state…</span>
+					</div>
+				),
+			},
+		],
+	},
+	progress: {
+		docs: {
+			description:
+				"Matte horizontal task progress bar supporting determinate completion and indeterminate motion.",
+			usage: scenarioModule('<Progress value={64} aria-label="Upload progress" />', [
+				'import { Progress } from "@nocoo/basalt/components/progress";',
+			]),
+			variants: ["default", "success", "warning", "danger"],
+			api: progressApi,
+		},
+		examples: [
+			{
+				id: catalogScenarioId("progress", "tones"),
+				title: "Semantic tones",
+				code: scenarioModule(
+					`<div className="flex w-full max-w-md flex-col gap-basalt-layout">
+	<Progress value={68} aria-label="Default task progress" />
+	<Progress value={100} tone="success" aria-label="Completed task progress" />
+	<Progress value={78} tone="warning" aria-label="Warning task progress" />
+	<Progress value={92} tone="danger" aria-label="Critical task progress" />
+</div>`,
+					['import { Progress } from "@nocoo/basalt/components/progress";'],
+				),
+				render: () => (
+					<div className="flex w-full max-w-md flex-col gap-basalt-layout">
+						<Progress value={68} aria-label="Default task progress" />
+						<Progress value={100} tone="success" aria-label="Completed task progress" />
+						<Progress value={78} tone="warning" aria-label="Warning task progress" />
+						<Progress value={92} tone="danger" aria-label="Critical task progress" />
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("progress", "sizes"),
+				title: "Sizes",
+				code: scenarioModule(
+					`<div className="flex w-full max-w-md flex-col gap-basalt-layout">
+	<Progress value={45} size="sm" aria-label="Small progress" />
+	<Progress value={45} size="md" aria-label="Medium progress" />
+	<Progress value={45} size="lg" aria-label="Large progress" />
+</div>`,
+					['import { Progress } from "@nocoo/basalt/components/progress";'],
+				),
+				render: () => (
+					<div className="flex w-full max-w-md flex-col gap-basalt-layout">
+						<Progress value={45} size="sm" aria-label="Small progress" />
+						<Progress value={45} size="md" aria-label="Medium progress" />
+						<Progress value={45} size="lg" aria-label="Large progress" />
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("progress", "indeterminate"),
+				title: "Indeterminate",
+				code: scenarioModule(
+					'<Progress className="max-w-md" aria-label="Installing dependencies" />',
+					['import { Progress } from "@nocoo/basalt/components/progress";'],
+				),
+				render: () => <Progress className="max-w-md" aria-label="Installing dependencies" />,
 			},
 		],
 	},

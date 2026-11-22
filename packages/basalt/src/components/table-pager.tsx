@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
-import { Pagination } from "../utils/pagination-nav";
+import { Pagination } from "./pagination";
 
 export interface TablePagerRange {
 	start: number;

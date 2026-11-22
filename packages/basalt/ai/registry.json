@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.5.2",
-	"totalModules": 104,
-	"totalSymbols": 703,
-	"totalValues": 384,
-	"totalTypes": 319,
+	"totalModules": 109,
+	"totalSymbols": 723,
+	"totalValues": 394,
+	"totalTypes": 329,
 	"totalCssExports": 4,
-	"totalCatalogEntries": 77,
+	"totalCatalogEntries": 82,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -14,7 +14,7 @@
 			"importPath": "@nocoo/basalt",
 			"subpath": ".",
 			"sourceFile": "packages/basalt/src/index.ts",
-			"sourceHash": "9ebaa6f3d158a069",
+			"sourceHash": "55902707917acbaf",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -167,6 +167,14 @@
 					"ownerDoc": "src/pages/ui/collapsible",
 					"packageDoc": "ai/registry.json#collapsible",
 					"originModule": "@nocoo/basalt/components/collapsible"
+				},
+				{
+					"name": "Combobox",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/combobox",
+					"packageDoc": "ai/registry.json#combobox",
+					"originModule": "@nocoo/basalt/components/combobox"
 				},
 				{
 					"name": "CommandEmpty",
@@ -481,6 +489,14 @@
 					"originModule": "@nocoo/basalt/components/input"
 				},
 				{
+					"name": "Kbd",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/kbd",
+					"packageDoc": "ai/registry.json#kbd",
+					"originModule": "@nocoo/basalt/components/kbd"
+				},
+				{
 					"name": "Label",
 					"isValue": true,
 					"isType": false,
@@ -511,6 +527,14 @@
 					"ownerDoc": "src/pages/ui/meter",
 					"packageDoc": "ai/registry.json#meter",
 					"originModule": "@nocoo/basalt/components/meter"
+				},
+				{
+					"name": "Pagination",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/pagination",
+					"packageDoc": "ai/registry.json#pagination",
+					"originModule": "@nocoo/basalt/components/pagination"
 				},
 				{
 					"name": "Popover",
@@ -559,6 +583,14 @@
 					"ownerDoc": "src/pages/ui/popover",
 					"packageDoc": "ai/registry.json#popover",
 					"originModule": "@nocoo/basalt/components/popover"
+				},
+				{
+					"name": "Progress",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/progress",
+					"packageDoc": "ai/registry.json#progress",
+					"originModule": "@nocoo/basalt/components/progress"
 				},
 				{
 					"name": "ScrollArea",
@@ -775,6 +807,14 @@
 					"ownerDoc": "src/pages/ui/skeleton",
 					"packageDoc": "ai/registry.json#skeleton",
 					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
+					"name": "Spinner",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/spinner",
+					"packageDoc": "ai/registry.json#spinner",
+					"originModule": "@nocoo/basalt/components/spinner"
 				},
 				{
 					"name": "StatStrip",
@@ -4758,6 +4798,396 @@
 			]
 		},
 		{
+			"displayName": "Combobox",
+			"exportName": "Combobox",
+			"importPath": "@nocoo/basalt/components/combobox",
+			"subpath": "./components/combobox",
+			"sourceFile": "packages/basalt/src/components/combobox.tsx",
+			"sourceHash": "b291470303692bc2",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/combobox",
+			"packageDoc": "ai/registry.json#combobox",
+			"summary": "Combobox component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ComboboxOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/combobox",
+					"packageDoc": "ai/registry.json#combobox",
+					"originModule": "@nocoo/basalt/components/combobox"
+				},
+				{
+					"name": "ComboboxProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/combobox",
+					"packageDoc": "ai/registry.json#combobox",
+					"originModule": "@nocoo/basalt/components/combobox"
+				},
+				{
+					"name": "Combobox",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/combobox",
+					"packageDoc": "ai/registry.json#combobox",
+					"originModule": "@nocoo/basalt/components/combobox"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "combobox",
+					"name": "Combobox",
+					"exportName": "Combobox",
+					"rootAvailable": true,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#combobox",
+					"api": [
+						{
+							"name": "Combobox",
+							"props": [
+								{
+									"name": "options",
+									"type": "readonly ComboboxOption[]",
+									"required": true,
+									"description": "Available selectable options."
+								},
+								{
+									"name": "multiple",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Enable multi-value toggling without closing the popup on each pick."
+								},
+								{
+									"name": "value",
+									"type": "string | string[]",
+									"required": false,
+									"description": "Controlled selected value (`string` for single, `string[]` when `multiple`)."
+								},
+								{
+									"name": "defaultValue",
+									"type": "string | string[]",
+									"required": false,
+									"description": "Initial uncontrolled value (`string` for single, `string[]` when `multiple`)."
+								},
+								{
+									"name": "onValueChange",
+									"type": "(value: string | string[]) => void",
+									"required": false,
+									"description": "Called when the selection changes."
+								},
+								{
+									"name": "search",
+									"type": "string",
+									"required": false,
+									"description": "Controlled search input query."
+								},
+								{
+									"name": "onSearchChange",
+									"type": "(search: string) => void",
+									"required": false,
+									"description": "Called when the search input changes."
+								},
+								{
+									"name": "shouldFilter",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Filter options client-side using command search matching. Disable for async server filtering."
+								},
+								{
+									"name": "loading",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Show busy spinner inside the search header and option list."
+								},
+								{
+									"name": "loadingLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Loading…\"",
+									"description": "Status copy rendered when `loading` is true."
+								},
+								{
+									"name": "clearable",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Render an adjacent clear button whenever a value is selected."
+								},
+								{
+									"name": "clearLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Clear selection\"",
+									"description": "Accessible label for the clear selection button."
+								},
+								{
+									"name": "size",
+									"type": "SelectTriggerSize",
+									"required": false,
+									"default": "\"md\"",
+									"description": "Trigger height preset matching control inputs."
+								},
+								{
+									"name": "placeholder",
+									"type": "string",
+									"required": false,
+									"default": "\"Select option…\"",
+									"description": "Prompt shown inside the trigger when nothing is selected."
+								},
+								{
+									"name": "searchPlaceholder",
+									"type": "string",
+									"required": false,
+									"default": "\"Search…\"",
+									"description": "Prompt shown inside the search input."
+								},
+								{
+									"name": "emptyLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"No results found.\"",
+									"description": "Empty result message when no options match the query."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable interaction with the combobox trigger and clear control."
+								},
+								{
+									"name": "open",
+									"type": "boolean",
+									"required": false,
+									"description": "Controlled popup visibility."
+								},
+								{
+									"name": "defaultOpen",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Initial uncontrolled popup visibility."
+								},
+								{
+									"name": "onOpenChange",
+									"type": "(open: boolean) => void",
+									"required": false,
+									"description": "Called when popup visibility changes."
+								},
+								{
+									"name": "label",
+									"type": "string",
+									"required": false,
+									"description": "Accessible name applied to the combobox trigger and command menu."
+								},
+								{
+									"name": "id",
+									"type": "string",
+									"required": false,
+									"description": "Optional HTML id applied to the trigger button."
+								},
+								{
+									"name": "aria-invalid",
+									"type": "\"false\" | \"true\" | boolean",
+									"required": false,
+									"description": "Invalid state styling attribute forwarded to the trigger button."
+								},
+								{
+									"name": "aria-describedby",
+									"type": "string",
+									"required": false,
+									"description": "Reference to external helper or error text describing the combobox."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional classes merged onto the root container."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "Combobox",
+					"props": [
+						{
+							"name": "options",
+							"type": "readonly ComboboxOption[]",
+							"required": true,
+							"description": "Available selectable options."
+						},
+						{
+							"name": "multiple",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Enable multi-value toggling without closing the popup on each pick."
+						},
+						{
+							"name": "value",
+							"type": "string | string[]",
+							"required": false,
+							"description": "Controlled selected value (`string` for single, `string[]` when `multiple`)."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string | string[]",
+							"required": false,
+							"description": "Initial uncontrolled value (`string` for single, `string[]` when `multiple`)."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string | string[]) => void",
+							"required": false,
+							"description": "Called when the selection changes."
+						},
+						{
+							"name": "search",
+							"type": "string",
+							"required": false,
+							"description": "Controlled search input query."
+						},
+						{
+							"name": "onSearchChange",
+							"type": "(search: string) => void",
+							"required": false,
+							"description": "Called when the search input changes."
+						},
+						{
+							"name": "shouldFilter",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Filter options client-side using command search matching. Disable for async server filtering."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show busy spinner inside the search header and option list."
+						},
+						{
+							"name": "loadingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading…\"",
+							"description": "Status copy rendered when `loading` is true."
+						},
+						{
+							"name": "clearable",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Render an adjacent clear button whenever a value is selected."
+						},
+						{
+							"name": "clearLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Clear selection\"",
+							"description": "Accessible label for the clear selection button."
+						},
+						{
+							"name": "size",
+							"type": "SelectTriggerSize",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Trigger height preset matching control inputs."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Select option…\"",
+							"description": "Prompt shown inside the trigger when nothing is selected."
+						},
+						{
+							"name": "searchPlaceholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Search…\"",
+							"description": "Prompt shown inside the search input."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No results found.\"",
+							"description": "Empty result message when no options match the query."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable interaction with the combobox trigger and clear control."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled popup visibility."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Initial uncontrolled popup visibility."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false,
+							"description": "Called when popup visibility changes."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": false,
+							"description": "Accessible name applied to the combobox trigger and command menu."
+						},
+						{
+							"name": "id",
+							"type": "string",
+							"required": false,
+							"description": "Optional HTML id applied to the trigger button."
+						},
+						{
+							"name": "aria-invalid",
+							"type": "\"false\" | \"true\" | boolean",
+							"required": false,
+							"description": "Invalid state styling attribute forwarded to the trigger button."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "Reference to external helper or error text describing the combobox."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional classes merged onto the root container."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "CommandPalette",
 			"exportName": "CommandPalette",
 			"importPath": "@nocoo/basalt/components/command-palette",
@@ -6961,7 +7391,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "ee8b301d3034848f",
+			"sourceHash": "1c9eb590514603f1",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -12912,6 +13342,86 @@
 			]
 		},
 		{
+			"displayName": "Kbd",
+			"exportName": "Kbd",
+			"importPath": "@nocoo/basalt/components/kbd",
+			"subpath": "./components/kbd",
+			"sourceFile": "packages/basalt/src/components/kbd.tsx",
+			"sourceHash": "98fe97d15fa2dfe5",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/kbd",
+			"packageDoc": "ai/registry.json#kbd",
+			"summary": "Kbd component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "KbdSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/kbd",
+					"packageDoc": "ai/registry.json#kbd",
+					"originModule": "@nocoo/basalt/components/kbd"
+				},
+				{
+					"name": "KbdProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/kbd",
+					"packageDoc": "ai/registry.json#kbd",
+					"originModule": "@nocoo/basalt/components/kbd"
+				},
+				{
+					"name": "Kbd",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/kbd",
+					"packageDoc": "ai/registry.json#kbd",
+					"originModule": "@nocoo/basalt/components/kbd"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "kbd",
+					"name": "Kbd",
+					"exportName": "Kbd",
+					"rootAvailable": true,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#kbd",
+					"api": [
+						{
+							"name": "Kbd",
+							"props": [
+								{
+									"name": "size",
+									"type": "KbdSize",
+									"required": false,
+									"default": "\"sm\"",
+									"description": "Visual size tier of the keycap badge."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "Kbd",
+					"props": [
+						{
+							"name": "size",
+							"type": "KbdSize",
+							"required": false,
+							"default": "\"sm\"",
+							"description": "Visual size tier of the keycap badge."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "Label",
 			"exportName": "Label",
 			"importPath": "@nocoo/basalt/components/label",
@@ -14334,6 +14844,172 @@
 			]
 		},
 		{
+			"displayName": "Pagination",
+			"exportName": "Pagination",
+			"importPath": "@nocoo/basalt/components/pagination",
+			"subpath": "./components/pagination",
+			"sourceFile": "packages/basalt/src/components/pagination.tsx",
+			"sourceHash": "283d338e0b9ffc22",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/pagination",
+			"packageDoc": "ai/registry.json#pagination",
+			"summary": "Pagination component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "PaginationProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/pagination",
+					"packageDoc": "ai/registry.json#pagination",
+					"originModule": "@nocoo/basalt/components/pagination"
+				},
+				{
+					"name": "Pagination",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/pagination",
+					"packageDoc": "ai/registry.json#pagination",
+					"originModule": "@nocoo/basalt/components/pagination"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "pagination",
+					"name": "Pagination",
+					"exportName": "Pagination",
+					"rootAvailable": true,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#pagination",
+					"api": [
+						{
+							"name": "Pagination",
+							"props": [
+								{
+									"name": "page",
+									"type": "number",
+									"required": false,
+									"description": "Controlled 1-based page."
+								},
+								{
+									"name": "defaultPage",
+									"type": "number",
+									"required": false,
+									"default": "1",
+									"description": "Uncontrolled initial page."
+								},
+								{
+									"name": "pageCount",
+									"type": "number",
+									"required": false,
+									"default": "10",
+									"description": "Last page number."
+								},
+								{
+									"name": "onPageChange",
+									"type": "(page: number) => void",
+									"required": false,
+									"description": "Called when the page changes."
+								},
+								{
+									"name": "simple",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Hide first, last, and page number controls."
+								},
+								{
+									"name": "showPageNumbers",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Render clickable numbered page buttons with ellipsis truncation instead of a single current-page badge."
+								},
+								{
+									"name": "siblingCount",
+									"type": "number",
+									"required": false,
+									"default": "1",
+									"description": "Number of sibling pages displayed on each side of the current page when `showPageNumbers` is enabled."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable every control."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "Pagination",
+					"props": [
+						{
+							"name": "page",
+							"type": "number",
+							"required": false,
+							"description": "Controlled 1-based page."
+						},
+						{
+							"name": "defaultPage",
+							"type": "number",
+							"required": false,
+							"default": "1",
+							"description": "Uncontrolled initial page."
+						},
+						{
+							"name": "pageCount",
+							"type": "number",
+							"required": false,
+							"default": "10",
+							"description": "Last page number."
+						},
+						{
+							"name": "onPageChange",
+							"type": "(page: number) => void",
+							"required": false,
+							"description": "Called when the page changes."
+						},
+						{
+							"name": "simple",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Hide first, last, and page number controls."
+						},
+						{
+							"name": "showPageNumbers",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Render clickable numbered page buttons with ellipsis truncation instead of a single current-page badge."
+						},
+						{
+							"name": "siblingCount",
+							"type": "number",
+							"required": false,
+							"default": "1",
+							"description": "Number of sibling pages displayed on each side of the current page when `showPageNumbers` is enabled."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable every control."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "Popover",
 			"exportName": "Popover",
 			"importPath": "@nocoo/basalt/components/popover",
@@ -14888,6 +15564,134 @@
 				{
 					"name": "PopoverDescription",
 					"props": []
+				}
+			]
+		},
+		{
+			"displayName": "Progress",
+			"exportName": "Progress",
+			"importPath": "@nocoo/basalt/components/progress",
+			"subpath": "./components/progress",
+			"sourceFile": "packages/basalt/src/components/progress.tsx",
+			"sourceHash": "0f75a13f0a66cac2",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/progress",
+			"packageDoc": "ai/registry.json#progress",
+			"summary": "Progress component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ProgressSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/progress",
+					"packageDoc": "ai/registry.json#progress",
+					"originModule": "@nocoo/basalt/components/progress"
+				},
+				{
+					"name": "ProgressTone",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/progress",
+					"packageDoc": "ai/registry.json#progress",
+					"originModule": "@nocoo/basalt/components/progress"
+				},
+				{
+					"name": "ProgressProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/progress",
+					"packageDoc": "ai/registry.json#progress",
+					"originModule": "@nocoo/basalt/components/progress"
+				},
+				{
+					"name": "Progress",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/progress",
+					"packageDoc": "ai/registry.json#progress",
+					"originModule": "@nocoo/basalt/components/progress"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "progress",
+					"name": "Progress",
+					"exportName": "Progress",
+					"rootAvailable": true,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#progress",
+					"api": [
+						{
+							"name": "Progress",
+							"props": [
+								{
+									"name": "value",
+									"type": "number | null",
+									"required": false,
+									"description": "Current completion value in `0..max`. Omit or pass `null` for an indeterminate task."
+								},
+								{
+									"name": "max",
+									"type": "number",
+									"required": false,
+									"default": "100",
+									"description": "Maximum completion bound. Must be a positive finite number."
+								},
+								{
+									"name": "size",
+									"type": "ProgressSize",
+									"required": false,
+									"default": "\"md\"",
+									"description": "Height tier of the progress track."
+								},
+								{
+									"name": "tone",
+									"type": "ProgressTone",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Semantic fill tone of the active bar."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "Progress",
+					"props": [
+						{
+							"name": "value",
+							"type": "number | null",
+							"required": false,
+							"description": "Current completion value in `0..max`. Omit or pass `null` for an indeterminate task."
+						},
+						{
+							"name": "max",
+							"type": "number",
+							"required": false,
+							"default": "100",
+							"description": "Maximum completion bound. Must be a positive finite number."
+						},
+						{
+							"name": "size",
+							"type": "ProgressSize",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Height tier of the progress track."
+						},
+						{
+							"name": "tone",
+							"type": "ProgressTone",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Semantic fill tone of the active bar."
+						}
+					]
 				}
 			]
 		},
@@ -16959,7 +17763,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "a58dd0c797d49199",
+			"sourceHash": "2d47a835a2b3573f",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18530,6 +19334,100 @@
 			]
 		},
 		{
+			"displayName": "Spinner",
+			"exportName": "Spinner",
+			"importPath": "@nocoo/basalt/components/spinner",
+			"subpath": "./components/spinner",
+			"sourceFile": "packages/basalt/src/components/spinner.tsx",
+			"sourceHash": "648dd70c83d33384",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/spinner",
+			"packageDoc": "ai/registry.json#spinner",
+			"summary": "Spinner component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "SpinnerSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/spinner",
+					"packageDoc": "ai/registry.json#spinner",
+					"originModule": "@nocoo/basalt/components/spinner"
+				},
+				{
+					"name": "SpinnerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/spinner",
+					"packageDoc": "ai/registry.json#spinner",
+					"originModule": "@nocoo/basalt/components/spinner"
+				},
+				{
+					"name": "Spinner",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/spinner",
+					"packageDoc": "ai/registry.json#spinner",
+					"originModule": "@nocoo/basalt/components/spinner"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "spinner",
+					"name": "Spinner",
+					"exportName": "Spinner",
+					"rootAvailable": true,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#spinner",
+					"api": [
+						{
+							"name": "Spinner",
+							"props": [
+								{
+									"name": "size",
+									"type": "SpinnerSize",
+									"required": false,
+									"default": "\"md\"",
+									"description": "Visual diameter of the spinner ring."
+								},
+								{
+									"name": "label",
+									"type": "string",
+									"required": false,
+									"default": "\"Loading\"",
+									"description": "Accessible status label announced when the spinner is not marked decorative."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "Spinner",
+					"props": [
+						{
+							"name": "size",
+							"type": "SpinnerSize",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Visual diameter of the spinner ring."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading\"",
+							"description": "Accessible status label announced when the spinner is not marked decorative."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "StatCard",
 			"exportName": "StatCard",
 			"importPath": "@nocoo/basalt/components/stat-card",
@@ -19751,7 +20649,7 @@
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"subpath": "./components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "debfe1fa990b05ae",
+			"sourceHash": "946b08db67d8864e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -30312,7 +31210,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "ee8b301d3034848f",
+			"sourceHash": "1c9eb590514603f1",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -30899,7 +31797,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "a58dd0c797d49199",
+			"sourceHash": "2d47a835a2b3573f",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -31425,7 +32323,7 @@
 			"exportName": "TablePager",
 			"importPath": "@nocoo/basalt/components/table-pager",
 			"sourceFile": "packages/basalt/src/components/table-pager.tsx",
-			"sourceHash": "debfe1fa990b05ae",
+			"sourceHash": "946b08db67d8864e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table-pager",
@@ -33263,6 +34161,360 @@
 							"type": "() => void",
 							"required": false,
 							"description": "Retry callback for the default table."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "spinner",
+			"name": "Spinner",
+			"exportName": "Spinner",
+			"importPath": "@nocoo/basalt/components/spinner",
+			"sourceFile": "packages/basalt/src/components/spinner.tsx",
+			"sourceHash": "648dd70c83d33384",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#spinner",
+			"api": [
+				{
+					"name": "Spinner",
+					"props": [
+						{
+							"name": "size",
+							"type": "SpinnerSize",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Visual diameter of the spinner ring."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading\"",
+							"description": "Accessible status label announced when the spinner is not marked decorative."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "kbd",
+			"name": "Kbd",
+			"exportName": "Kbd",
+			"importPath": "@nocoo/basalt/components/kbd",
+			"sourceFile": "packages/basalt/src/components/kbd.tsx",
+			"sourceHash": "98fe97d15fa2dfe5",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#kbd",
+			"api": [
+				{
+					"name": "Kbd",
+					"props": [
+						{
+							"name": "size",
+							"type": "KbdSize",
+							"required": false,
+							"default": "\"sm\"",
+							"description": "Visual size tier of the keycap badge."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "progress",
+			"name": "Progress",
+			"exportName": "Progress",
+			"importPath": "@nocoo/basalt/components/progress",
+			"sourceFile": "packages/basalt/src/components/progress.tsx",
+			"sourceHash": "0f75a13f0a66cac2",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#progress",
+			"api": [
+				{
+					"name": "Progress",
+					"props": [
+						{
+							"name": "value",
+							"type": "number | null",
+							"required": false,
+							"description": "Current completion value in `0..max`. Omit or pass `null` for an indeterminate task."
+						},
+						{
+							"name": "max",
+							"type": "number",
+							"required": false,
+							"default": "100",
+							"description": "Maximum completion bound. Must be a positive finite number."
+						},
+						{
+							"name": "size",
+							"type": "ProgressSize",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Height tier of the progress track."
+						},
+						{
+							"name": "tone",
+							"type": "ProgressTone",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Semantic fill tone of the active bar."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "pagination",
+			"name": "Pagination",
+			"exportName": "Pagination",
+			"importPath": "@nocoo/basalt/components/pagination",
+			"sourceFile": "packages/basalt/src/components/pagination.tsx",
+			"sourceHash": "283d338e0b9ffc22",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#pagination",
+			"api": [
+				{
+					"name": "Pagination",
+					"props": [
+						{
+							"name": "page",
+							"type": "number",
+							"required": false,
+							"description": "Controlled 1-based page."
+						},
+						{
+							"name": "defaultPage",
+							"type": "number",
+							"required": false,
+							"default": "1",
+							"description": "Uncontrolled initial page."
+						},
+						{
+							"name": "pageCount",
+							"type": "number",
+							"required": false,
+							"default": "10",
+							"description": "Last page number."
+						},
+						{
+							"name": "onPageChange",
+							"type": "(page: number) => void",
+							"required": false,
+							"description": "Called when the page changes."
+						},
+						{
+							"name": "simple",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Hide first, last, and page number controls."
+						},
+						{
+							"name": "showPageNumbers",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Render clickable numbered page buttons with ellipsis truncation instead of a single current-page badge."
+						},
+						{
+							"name": "siblingCount",
+							"type": "number",
+							"required": false,
+							"default": "1",
+							"description": "Number of sibling pages displayed on each side of the current page when `showPageNumbers` is enabled."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable every control."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "combobox",
+			"name": "Combobox",
+			"exportName": "Combobox",
+			"importPath": "@nocoo/basalt/components/combobox",
+			"sourceFile": "packages/basalt/src/components/combobox.tsx",
+			"sourceHash": "b291470303692bc2",
+			"rootAvailable": true,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#combobox",
+			"api": [
+				{
+					"name": "Combobox",
+					"props": [
+						{
+							"name": "options",
+							"type": "readonly ComboboxOption[]",
+							"required": true,
+							"description": "Available selectable options."
+						},
+						{
+							"name": "multiple",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Enable multi-value toggling without closing the popup on each pick."
+						},
+						{
+							"name": "value",
+							"type": "string | string[]",
+							"required": false,
+							"description": "Controlled selected value (`string` for single, `string[]` when `multiple`)."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string | string[]",
+							"required": false,
+							"description": "Initial uncontrolled value (`string` for single, `string[]` when `multiple`)."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string | string[]) => void",
+							"required": false,
+							"description": "Called when the selection changes."
+						},
+						{
+							"name": "search",
+							"type": "string",
+							"required": false,
+							"description": "Controlled search input query."
+						},
+						{
+							"name": "onSearchChange",
+							"type": "(search: string) => void",
+							"required": false,
+							"description": "Called when the search input changes."
+						},
+						{
+							"name": "shouldFilter",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Filter options client-side using command search matching. Disable for async server filtering."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show busy spinner inside the search header and option list."
+						},
+						{
+							"name": "loadingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading…\"",
+							"description": "Status copy rendered when `loading` is true."
+						},
+						{
+							"name": "clearable",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Render an adjacent clear button whenever a value is selected."
+						},
+						{
+							"name": "clearLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Clear selection\"",
+							"description": "Accessible label for the clear selection button."
+						},
+						{
+							"name": "size",
+							"type": "SelectTriggerSize",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Trigger height preset matching control inputs."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Select option…\"",
+							"description": "Prompt shown inside the trigger when nothing is selected."
+						},
+						{
+							"name": "searchPlaceholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Search…\"",
+							"description": "Prompt shown inside the search input."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No results found.\"",
+							"description": "Empty result message when no options match the query."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable interaction with the combobox trigger and clear control."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled popup visibility."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Initial uncontrolled popup visibility."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false,
+							"description": "Called when popup visibility changes."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": false,
+							"description": "Accessible name applied to the combobox trigger and command menu."
+						},
+						{
+							"name": "id",
+							"type": "string",
+							"required": false,
+							"description": "Optional HTML id applied to the trigger button."
+						},
+						{
+							"name": "aria-invalid",
+							"type": "\"false\" | \"true\" | boolean",
+							"required": false,
+							"description": "Invalid state styling attribute forwarded to the trigger button."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "Reference to external helper or error text describing the combobox."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional classes merged onto the root container."
 						}
 					]
 				}

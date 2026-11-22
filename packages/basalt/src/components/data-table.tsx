@@ -10,10 +10,10 @@ import {
 } from "react";
 import { cn } from "../utils/cn";
 import { CircleAlert } from "../utils/internal-icons";
-import { Pagination } from "../utils/pagination-nav";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Empty } from "./empty";
+import { Pagination } from "./pagination";
 import { Skeleton } from "./skeleton";
 import {
 	Table,

@@ -16,7 +16,7 @@ const CONSUMERS = [
 	"src/components/input-group.tsx",
 	"src/components/clipboard-text.tsx",
 	"src/components/code.tsx",
-	"src/utils/pagination-nav.tsx",
+	"src/components/pagination.tsx",
 ] as const;
 
 const PICKER_TRIGGERS = [
@@ -68,11 +68,7 @@ describe("control surface", () => {
 
 	it.each(CONSUMERS)("%s imports and calls the shared helper", (file) => {
 		const source = sourceOf(file);
-		expect(source).toContain(
-			file === "src/utils/pagination-nav.tsx"
-				? 'from "./control-surface"'
-				: 'from "../utils/control-surface"',
-		);
+		expect(source).toContain('from "../utils/control-surface"');
 		expect(source).toContain("controlSurfaceClass(");
 	});
 

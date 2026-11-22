@@ -110,6 +110,14 @@ export const Copy = /* @__PURE__ */ createIcon(
 		<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
 	</>,
 );
+export const Ellipsis = /* @__PURE__ */ createIcon(
+	"Ellipsis",
+	<>
+		<circle cx="12" cy="12" r="1" />
+		<circle cx="19" cy="12" r="1" />
+		<circle cx="5" cy="12" r="1" />
+	</>,
+);
 export const Eye = /* @__PURE__ */ createIcon(
 	"Eye",
 	<>

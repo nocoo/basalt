@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.5.2",
-	"totalModules": 104,
-	"totalSymbols": 703,
-	"totalValues": 384,
-	"totalTypes": 319,
+	"totalModules": 109,
+	"totalSymbols": 723,
+	"totalValues": 394,
+	"totalTypes": 329,
 	"totalCssExports": 4,
 	"modules": [
 		{
@@ -159,6 +159,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/collapsible",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/collapsible"
+				},
+				{
+					"name": "Combobox",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/combobox",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/combobox"
 				},
 				{
 					"name": "CommandEmpty",
@@ -473,6 +481,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/input"
 				},
 				{
+					"name": "Kbd",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/kbd",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/kbd"
+				},
+				{
 					"name": "Label",
 					"isValue": true,
 					"isType": false,
@@ -503,6 +519,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/meter",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/meter"
+				},
+				{
+					"name": "Pagination",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/pagination",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/pagination"
 				},
 				{
 					"name": "Popover",
@@ -551,6 +575,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/popover",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/popover"
+				},
+				{
+					"name": "Progress",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/progress",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/progress"
 				},
 				{
 					"name": "ScrollArea",
@@ -767,6 +799,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/skeleton",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/skeleton"
+				},
+				{
+					"name": "Spinner",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/spinner",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/spinner"
 				},
 				{
 					"name": "StatStrip",
@@ -2293,6 +2333,40 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/collapsible",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/collapsible"
+				}
+			]
+		},
+		{
+			"subpath": "./components/combobox",
+			"importPath": "@nocoo/basalt/components/combobox",
+			"sourceFile": "packages/basalt/src/components/combobox.tsx",
+			"ownerDoc": "src/pages/ui/combobox",
+			"ownerKind": "catalog-component",
+			"summary": "Combobox component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ComboboxOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/combobox",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/combobox"
+				},
+				{
+					"name": "ComboboxProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/combobox",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/combobox"
+				},
+				{
+					"name": "Combobox",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/combobox",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/combobox"
 				}
 			]
 		},
@@ -3939,6 +4013,40 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
+			"subpath": "./components/kbd",
+			"importPath": "@nocoo/basalt/components/kbd",
+			"sourceFile": "packages/basalt/src/components/kbd.tsx",
+			"ownerDoc": "src/pages/ui/kbd",
+			"ownerKind": "catalog-component",
+			"summary": "Kbd component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "KbdSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/kbd",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/kbd"
+				},
+				{
+					"name": "KbdProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/kbd",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/kbd"
+				},
+				{
+					"name": "Kbd",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/kbd",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/kbd"
+				}
+			]
+		},
+		{
 			"subpath": "./components/label",
 			"importPath": "@nocoo/basalt/components/label",
 			"sourceFile": "packages/basalt/src/components/label.tsx",
@@ -4219,6 +4327,32 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
+			"subpath": "./components/pagination",
+			"importPath": "@nocoo/basalt/components/pagination",
+			"sourceFile": "packages/basalt/src/components/pagination.tsx",
+			"ownerDoc": "src/pages/ui/pagination",
+			"ownerKind": "catalog-component",
+			"summary": "Pagination component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "PaginationProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/pagination",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/pagination"
+				},
+				{
+					"name": "Pagination",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/pagination",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/pagination"
+				}
+			]
+		},
+		{
 			"subpath": "./components/popover",
 			"importPath": "@nocoo/basalt/components/popover",
 			"sourceFile": "packages/basalt/src/components/popover.tsx",
@@ -4337,6 +4471,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/popover",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/popover"
+				}
+			]
+		},
+		{
+			"subpath": "./components/progress",
+			"importPath": "@nocoo/basalt/components/progress",
+			"sourceFile": "packages/basalt/src/components/progress.tsx",
+			"ownerDoc": "src/pages/ui/progress",
+			"ownerKind": "catalog-component",
+			"summary": "Progress component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ProgressSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/progress",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/progress"
+				},
+				{
+					"name": "ProgressTone",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/progress",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/progress"
+				},
+				{
+					"name": "ProgressProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/progress",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/progress"
+				},
+				{
+					"name": "Progress",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/progress",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/progress"
 				}
 			]
 		},
@@ -5227,6 +5403,40 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/slider",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/slider"
+				}
+			]
+		},
+		{
+			"subpath": "./components/spinner",
+			"importPath": "@nocoo/basalt/components/spinner",
+			"sourceFile": "packages/basalt/src/components/spinner.tsx",
+			"ownerDoc": "src/pages/ui/spinner",
+			"ownerKind": "catalog-component",
+			"summary": "Spinner component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "SpinnerSize",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/spinner",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/spinner"
+				},
+				{
+					"name": "SpinnerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/spinner",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/spinner"
+				},
+				{
+					"name": "Spinner",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/spinner",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/spinner"
 				}
 			]
 		},

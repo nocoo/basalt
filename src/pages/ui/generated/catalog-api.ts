@@ -14,6 +14,7 @@ import { API as clipboardTextApi } from "./catalog-api/clipboard-text";
 import { API as codeApi } from "./catalog-api/code";
 import { API as codeBlockApi } from "./catalog-api/code-block";
 import { API as collapsibleApi } from "./catalog-api/collapsible";
+import { API as comboboxApi } from "./catalog-api/combobox";
 import { API as commandPaletteApi } from "./catalog-api/command-palette";
 import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
 import { API as contextMenuApi } from "./catalog-api/context-menu";
@@ -35,6 +36,7 @@ import { API as iconPickerApi } from "./catalog-api/icon-picker";
 import { API as inlineEditableApi } from "./catalog-api/inline-editable";
 import { API as inputApi } from "./catalog-api/input";
 import { API as inputGroupApi } from "./catalog-api/input-group";
+import { API as kbdApi } from "./catalog-api/kbd";
 import { API as labelApi } from "./catalog-api/label";
 import { API as layerCardApi } from "./catalog-api/layer-card";
 import { API as linkApi } from "./catalog-api/link";
@@ -44,7 +46,9 @@ import { API as loaderApi } from "./catalog-api/loader";
 import { API as meterApi } from "./catalog-api/meter";
 import { API as multiSelectApi } from "./catalog-api/multi-select";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
+import { API as paginationApi } from "./catalog-api/pagination";
 import { API as popoverApi } from "./catalog-api/popover";
+import { API as progressApi } from "./catalog-api/progress";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as resourceListApi } from "./catalog-api/resource-list";
 import { API as responsiveMasterDetailApi } from "./catalog-api/responsive-master-detail";
@@ -58,6 +62,7 @@ import { API as sheetApi } from "./catalog-api/sheet";
 import { API as sidebarApi } from "./catalog-api/sidebar";
 import { API as skeletonApi } from "./catalog-api/skeleton";
 import { API as sliderApi } from "./catalog-api/slider";
+import { API as spinnerApi } from "./catalog-api/spinner";
 import { API as statCardApi } from "./catalog-api/stat-card";
 import { API as statStripApi } from "./catalog-api/stat-strip";
 import { API as switchApi } from "./catalog-api/switch";
@@ -93,6 +98,7 @@ export const CATALOG_API = {
 	code: codeApi,
 	"code-block": codeBlockApi,
 	collapsible: collapsibleApi,
+	combobox: comboboxApi,
 	"command-palette": commandPaletteApi,
 	"confirm-dialog": confirmDialogApi,
 	"context-menu": contextMenuApi,
@@ -114,6 +120,7 @@ export const CATALOG_API = {
 	"inline-editable": inlineEditableApi,
 	input: inputApi,
 	"input-group": inputGroupApi,
+	kbd: kbdApi,
 	label: labelApi,
 	"layer-card": layerCardApi,
 	link: linkApi,
@@ -123,7 +130,9 @@ export const CATALOG_API = {
 	meter: meterApi,
 	"multi-select": multiSelectApi,
 	"page-header": pageHeaderApi,
+	pagination: paginationApi,
 	popover: popoverApi,
+	progress: progressApi,
 	radio: radioApi,
 	"resource-list": resourceListApi,
 	"responsive-master-detail": responsiveMasterDetailApi,
@@ -137,6 +146,7 @@ export const CATALOG_API = {
 	sidebar: sidebarApi,
 	skeleton: skeletonApi,
 	slider: sliderApi,
+	spinner: spinnerApi,
 	"stat-card": statCardApi,
 	"stat-strip": statStripApi,
 	switch: switchApi,

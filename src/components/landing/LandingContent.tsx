@@ -1,3 +1,4 @@
+import { Kbd } from "@nocoo/basalt/components/kbd";
 import {
 	ArrowRight,
 	ArrowUp,
@@ -131,7 +132,7 @@ function HeroConsole() {
 				<span className="landing-console-search">
 					<Search size={14} />
 					Search accounts, metrics, reports…
-					<kbd>⌘K</kbd>
+					<Kbd className="ml-auto border-0 bg-transparent text-current shadow-none">⌘K</Kbd>
 				</span>
 				<span className="landing-console-tabs">
 					<span data-active="">Overview</span>

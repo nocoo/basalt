@@ -1,6 +1,6 @@
 {
 	"packageVersion": "4.0.0-pending",
-	"sourceBaseline": "4.0-overhaul (94 paths / 529 symbols)",
+	"sourceBaseline": "4.0-overhaul (99 paths / 549 symbols)",
 	"capturedAfter": "P1.1-P1.6 plus round-1 review fixes; package manifests remain 3.4.2 until release",
 	"entries": [
 		{
@@ -93,6 +93,11 @@
 				},
 				{
 					"name": "CollapsibleTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Combobox",
 					"value": true,
 					"type": false
 				},
@@ -227,6 +232,11 @@
 					"type": false
 				},
 				{
+					"name": "Kbd",
+					"value": true,
+					"type": false
+				},
+				{
 					"name": "Label",
 					"value": true,
 					"type": false
@@ -248,6 +258,11 @@
 				},
 				{
 					"name": "Meter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Pagination",
 					"value": true,
 					"type": false
 				},
@@ -282,6 +297,11 @@
 					"type": false
 				},
 				{
+					"name": "Progress",
+					"value": true,
+					"type": false
+				},
+				{
 					"name": "ScrollArea",
 					"value": true,
 					"type": false
@@ -298,6 +318,11 @@
 				},
 				{
 					"name": "Skeleton",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Spinner",
 					"value": true,
 					"type": false
 				},
@@ -3089,6 +3114,106 @@
 				},
 				{
 					"name": "StatGridProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/spinner",
+			"symbols": [
+				{
+					"name": "Spinner",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SpinnerProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SpinnerSize",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/kbd",
+			"symbols": [
+				{
+					"name": "Kbd",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "KbdProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "KbdSize",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/progress",
+			"symbols": [
+				{
+					"name": "Progress",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ProgressProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ProgressSize",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ProgressTone",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/pagination",
+			"symbols": [
+				{
+					"name": "Pagination",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PaginationProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/combobox",
+			"symbols": [
+				{
+					"name": "Combobox",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ComboboxOption",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ComboboxProps",
 					"value": false,
 					"type": true
 				}

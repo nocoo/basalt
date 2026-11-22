@@ -10,6 +10,7 @@ Each URL below is a public documentation surface.
 [Overview](https://basaltui.com/ui/overview/inline): Small pieces of context that belong beside text, not above it.
 
 - [Badge](https://basaltui.com/ui/badge)
+- [Kbd](https://basaltui.com/ui/kbd)
 - [Tag Badge](https://basaltui.com/ui/tag-badge)
 ## Actions
 
@@ -18,12 +19,14 @@ Each URL below is a public documentation surface.
 - [Autocomplete](https://basaltui.com/ui/autocomplete)
 - [Button](https://basaltui.com/ui/button)
 - [Clipboard Text](https://basaltui.com/ui/clipboard-text)
+- [Combobox](https://basaltui.com/ui/combobox)
 - [Date Picker](https://basaltui.com/ui/date-picker)
 - [Icon Picker](https://basaltui.com/ui/icon-picker)
 - [Inline Editable](https://basaltui.com/ui/inline-editable)
 - [Input](https://basaltui.com/ui/input)
 - [InputGroup](https://basaltui.com/ui/input-group)
 - [LinkButton](https://basaltui.com/ui/link-button)
+- [Pagination](https://basaltui.com/ui/pagination)
 - [Searchable Multi Select](https://basaltui.com/ui/multi-select)
 - [Segment Control](https://basaltui.com/ui/segment-control)
 - [Select](https://basaltui.com/ui/select)
@@ -103,9 +106,11 @@ Each URL below is a public documentation surface.
 - [Link](https://basaltui.com/ui/link)
 - [Loader](https://basaltui.com/ui/loader)
 - [Meter](https://basaltui.com/ui/meter)
+- [Progress](https://basaltui.com/ui/progress)
 - [Radio](https://basaltui.com/ui/radio)
 - [Skeleton](https://basaltui.com/ui/skeleton)
 - [Slider](https://basaltui.com/ui/slider)
+- [Spinner](https://basaltui.com/ui/spinner)
 - [Switch](https://basaltui.com/ui/switch)
 - [Text](https://basaltui.com/ui/text)
 ## Blocks

@@ -35,12 +35,13 @@ const FOUNDATION_SLUGS = [
 	"layer-card",
 	"theme-provider",
 	"link-provider",
+	"kbd",
 ] as const;
 
 describe("foundation catalog content family", () => {
-	it("owns exactly thirteen foundation slugs", () => {
+	it("owns all foundation slugs", () => {
 		expect(Object.keys(foundation)).toEqual([...FOUNDATION_SLUGS]);
-		expect(Object.keys(foundation)).toHaveLength(12);
+		expect(Object.keys(foundation)).toHaveLength(13);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "foundation")
@@ -206,7 +207,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.docs.usage).toContain('as="h1"');
 		expect(
 			FOUNDATION_SLUGS.reduce((count, slug) => count + (foundation[slug]?.examples.length ?? 0), 0),
-		).toBe(39);
+		).toBe(41);
 		for (const slug of FOUNDATION_SLUGS) {
 			const content = foundation[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

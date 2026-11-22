@@ -73,9 +73,9 @@ describe("documentation tarball compilation gate", () => {
 
 	it("generates installation snippets for all ready catalog entries using strict metadata", () => {
 		const result = generateCatalogInstallationSnippets();
-		expect(result.readyCount).toBe(77);
-		expect(result.granularCount).toBe(77);
-		expect(result.barrelCount).toBe(36);
+		expect(result.readyCount).toBe(82);
+		expect(result.granularCount).toBe(82);
+		expect(result.barrelCount).toBe(41);
 
 		expect(result.code).toContain("import { ChartFrame as Granular_");
 		expect(result.code).toContain("import { PageHeader as Granular_");
@@ -218,7 +218,7 @@ describe("documentation tarball compilation gate", () => {
 
 	it("loads verbatim usage modules for all ready catalog items", async () => {
 		const usageModules = await loadCatalogUsageModules();
-		expect(usageModules).toHaveLength(77);
+		expect(usageModules).toHaveLength(82);
 
 		for (const [index, mod] of usageModules.entries()) {
 			expect(mod.slug.length).toBeGreaterThan(0);
@@ -367,8 +367,8 @@ describe("documentation tarball compilation gate", () => {
 
 	it("loads verbatim scenario modules for all ready catalog items and validates complete consumer modules", async () => {
 		const { usageModules, scenarioModules } = await loadCatalogModules();
-		expect(usageModules).toHaveLength(77);
-		expect(scenarioModules).toHaveLength(251);
+		expect(usageModules).toHaveLength(82);
+		expect(scenarioModules).toHaveLength(264);
 
 		const seenScenarioIds = new Set<string>();
 		const seenFilenames = new Set<string>();

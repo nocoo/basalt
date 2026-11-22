@@ -121,7 +121,7 @@ describe("AppSidebar", () => {
 		const disabledButtons = rows.filter(
 			(row): row is HTMLButtonElement => row instanceof HTMLButtonElement && row.disabled,
 		);
-		expect(rows).toHaveLength(77);
+		expect(rows).toHaveLength(82);
 		expect(disabledButtons).toEqual([]);
 	});
 
@@ -161,10 +161,10 @@ describe("AppSidebar", () => {
 			(option) => option.getAttribute("data-disabled") === "true",
 		);
 
-		expect(catalogOptions).toHaveLength(77);
+		expect(catalogOptions).toHaveLength(82);
 		expect(
 			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
-		).toHaveLength(77);
+		).toHaveLength(82);
 		expect(disabledOptions).toEqual([]);
 
 		const search = within(dialog).getByPlaceholderText("Search pages...");
@@ -182,7 +182,7 @@ describe("AppSidebar", () => {
 	it("does not show pending maturity badges in the components sidebar", () => {
 		renderSidebar();
 		const rows = catalogRows();
-		expect(rows).toHaveLength(77);
+		expect(rows).toHaveLength(82);
 		expect(document.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
 		expect(document.querySelector("aside")?.textContent).not.toContain("待规范");
 		for (const row of rows) {

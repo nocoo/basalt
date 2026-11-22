@@ -15,6 +15,7 @@ const NAVIGATION_SCENARIOS = {
 		"table-of-contents-without-title",
 	],
 	sidebar: ["sidebar-default", "sidebar-drawer", "sidebar-provider"],
+	pagination: ["pagination-default", "pagination-numbered", "pagination-simple"],
 } as const;
 
 const NAVIGATION_DESCRIPTIONS = {
@@ -29,19 +30,19 @@ const NAVIGATION_DESCRIPTIONS = {
 } as const;
 
 describe("navigation catalog content family", () => {
-	it("owns exactly ten slugs with generated owners", () => {
+	it("owns all navigation slugs with generated owners", () => {
 		expect(Object.keys(navigation)).toEqual(Object.keys(NAVIGATION_SCENARIOS));
-		expect(Object.keys(navigation)).toHaveLength(7);
+		expect(Object.keys(navigation)).toHaveLength(8);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "navigation")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(NAVIGATION_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(77);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(82);
 	});
 
-	it("keeps the twenty-three scenarios in their audited order", () => {
+	it("keeps all navigation scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(NAVIGATION_SCENARIOS)) {
 			const examples = navigation[slug]?.examples ?? [];
@@ -60,7 +61,7 @@ describe("navigation catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(16);
+		expect(count).toBe(19);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

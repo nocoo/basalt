@@ -14,6 +14,7 @@ export { Badge } from "./components/badge";
 export { Button } from "./components/button";
 export { Checkbox } from "./components/checkbox";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./components/collapsible";
+export { Combobox } from "./components/combobox";
 export {
 	CommandEmpty,
 	CommandGroup,
@@ -58,10 +59,12 @@ export {
 } from "./components/dropdown-menu";
 export { Field } from "./components/field";
 export { Input } from "./components/input";
+export { Kbd } from "./components/kbd";
 export { Label } from "./components/label";
 export { LayerCard } from "./components/layer-card";
 export { Link } from "./components/link";
 export { Meter } from "./components/meter";
+export { Pagination } from "./components/pagination";
 export {
 	Popover,
 	PopoverClose,
@@ -70,6 +73,7 @@ export {
 	PopoverTitle,
 	PopoverTrigger,
 } from "./components/popover";
+export { Progress } from "./components/progress";
 export { ScrollArea } from "./components/scroll-area";
 export { SegmentControl } from "./components/segment-control";
 export { Separator } from "./components/separator";
@@ -101,6 +105,7 @@ export {
 	SidebarUser,
 } from "./components/sidebar";
 export { Skeleton } from "./components/skeleton";
+export { Spinner } from "./components/spinner";
 export { StatStrip } from "./components/stat-strip";
 export { Switch } from "./components/switch";
 export { TablePager } from "./components/table-pager";
