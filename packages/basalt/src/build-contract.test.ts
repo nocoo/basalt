@@ -208,6 +208,7 @@ describe("package build contract", () => {
 			"./styles",
 			"./styles/tailwind",
 			"./styles/standalone",
+			"./fonts.css",
 		]);
 		expect(pkg.exports["."]).toEqual({
 			types: "./dist/index.d.ts",
@@ -228,6 +229,7 @@ describe("package build contract", () => {
 		expect(pkg.exports["./styles"]).toBe("./dist/styles/tailwind.css");
 		expect(pkg.exports["./styles/tailwind"]).toBe("./dist/styles/tailwind.css");
 		expect(pkg.exports["./styles/standalone"]).toBe("./dist/styles/standalone.css");
+		expect(pkg.exports["./fonts.css"]).toBe("./dist/styles/fonts.css");
 		for (const key of [
 			".",
 			"./icons",
@@ -306,9 +308,18 @@ describe("package build contract", () => {
 			expect(existsSync(path.join(dist, "index.d.ts"))).toBe(true);
 			expect(readdirSync(path.join(dist, "styles")).sort()).toEqual([
 				"base.css",
+				"fonts",
+				"fonts.css",
 				"standalone.css",
 				"tailwind.css",
 				"tokens.css",
+			]);
+			expect(readdirSync(path.join(dist, "styles/fonts")).sort()).toEqual([
+				"Inter-OFL.txt",
+				"JetBrains-Mono-OFL.txt",
+				"inter-latin-ext.woff2",
+				"inter-latin.woff2",
+				"jetbrains-mono-latin.woff2",
 			]);
 			expect(
 				readFileSync(path.join(dist, "styles/tailwind.css"), "utf8").includes("./tokens.css"),
