@@ -16,10 +16,13 @@ export function ItemListCard() {
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Care Plans</h2>
 				</div>
 			</LayerCard.Header>
-			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
-				<div className="flex flex-1 flex-col gap-basalt-card-sm">
+			<LayerCard.Body className="min-h-0 flex-1 flex flex-col gap-basalt-card-sm">
+				<div className="divide-y divide-basalt-border/60">
 					{accountItems.map((acc) => (
-						<div key={acc.name} className="flex items-center justify-between gap-basalt-space-lg">
+						<div
+							key={acc.name}
+							className="flex items-center justify-between gap-basalt-space-lg py-basalt-card-sm first:pt-0 last:pb-0"
+						>
 							<span className="text-basalt-base text-basalt-foreground">{acc.name}</span>
 							<div className="text-right">
 								<span className="text-basalt-base font-medium text-basalt-foreground font-basalt-display tabular-nums">
@@ -31,8 +34,10 @@ export function ItemListCard() {
 							</div>
 						</div>
 					))}
-					<p className="text-basalt-sm text-basalt-muted-foreground">Changes: vs. prior 30 days</p>
 				</div>
+				<p className="mt-auto text-basalt-sm text-basalt-muted-foreground">
+					Changes: vs. prior 30 days
+				</p>
 			</LayerCard.Body>
 		</LayerCard>
 	);

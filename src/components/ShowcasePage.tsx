@@ -25,11 +25,7 @@ export function ShowcasePage({
 		<div
 			data-showcase-page=""
 			data-page-variant={variant}
-			className={cn(
-				"min-w-0 flex flex-col gap-basalt-layout-lg",
-				variant === "document" ? "max-w-[84rem]" : "max-w-[96rem]",
-				className,
-			)}
+			className={cn("min-w-0 flex w-full flex-col gap-basalt-layout-lg", className)}
 			{...props}
 		>
 			<PageHeader {...{ title, description, actions, filters, breadcrumbs }} />
