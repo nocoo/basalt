@@ -4,12 +4,29 @@
 
 Basalt is the matte React design system `@nocoo/basalt` and its public catalog.
 Public pages welcome search engines and AI crawlers. This file, the sitemap,
-and the catalog list do not require JavaScript.
+the Markdown endpoints, and the catalog list do not require JavaScript.
+
+## Markdown Retrieval
+
+Fetch raw Markdown directly instead of scraping HTML:
+- Component pages: `https://basaltui.com/ui/<slug>.md`
+- Category overviews: `https://basaltui.com/ui/overview/<category>.md`
+- Application templates: `https://basaltui.com/templates/<slug>.md`
+- [UI index (Markdown)](https://basaltui.com/ui.md): All 81 components grouped by category
+- [Templates index (Markdown)](https://basaltui.com/templates.md): All 5 page templates
+- [Markdown route catalog](https://basaltui.com/md-catalog.json): Machine-readable index of all Markdown routes
+
+## Agent Entrypoints
+
+- [Agent rules snippet](https://basaltui.com/agents.md): Drop-in `<!-- basalt:start -->` block for `AGENTS.md` / `CLAUDE.md`
+- [Setup playbook](https://basaltui.com/setup.md): Step-by-step installation, CSS tokens, and provider setup
+- [AI crawler policy](https://basaltui.com/ai.txt): Permissions, attribution, and scope
 
 ## Catalog
 
 - [Design system catalog](https://basaltui.com/ui): Components, charts and blocks
 - [Full catalog list](https://basaltui.com/llms-full.txt): One entry per published surface
+- [Templates gallery](https://basaltui.com/templates): Full-page application templates
 - [App frame](https://basaltui.com/layout): Shell, island and page heading recipe
 - [Login](https://basaltui.com/login): Full-viewport identity badge
 
@@ -33,3 +50,4 @@ and the catalog list do not require JavaScript.
 
 - [Sitemap](https://basaltui.com/sitemap.xml)
 - [Crawler policy](https://basaltui.com/robots.txt)
+- [AI crawler policy](https://basaltui.com/ai.txt)

@@ -3,120 +3,130 @@
 > Build with Basalt: an open-source React UI library with matte components, charts, and dashboard templates. TypeScript, light and dark themes, MIT licensed.
 
 Install `@nocoo/basalt`. Browse the live catalog at https://basaltui.com/ui.
-Each URL below is a public documentation surface.
+Each URL below is a public documentation surface with a matching `.md` endpoint.
 
 ## Inline
 
-[Overview](https://basaltui.com/ui/overview/inline): Small pieces of context that belong beside text, not above it.
+[Overview](https://basaltui.com/ui/overview/inline) ([Markdown](https://basaltui.com/ui/overview/inline.md)): Small pieces of context that belong beside text, not above it.
 
-- [Badge](https://basaltui.com/ui/badge)
-- [Kbd](https://basaltui.com/ui/kbd)
-- [Tag Badge](https://basaltui.com/ui/tag-badge)
+- [Badge](https://basaltui.com/ui/badge) ([Markdown](https://basaltui.com/ui/badge.md) — `@nocoo/basalt/components/badge` — Display non-interactive semantic status, counts, or short state labels in five tones (neutral, info, success, warning, danger), defaulting to soft (solid for high-emphasis counts, soft with dot in table status cells) or optional onDismiss chips.)
+- [Kbd](https://basaltui.com/ui/kbd) ([Markdown](https://basaltui.com/ui/kbd.md) — `@nocoo/basalt/components/kbd` — Show keyboard shortcuts and keycap hints (sm 20px or md 24px monospace) inside command palette rows, sidebar search triggers, or tooltips.)
+- [Tag Badge](https://basaltui.com/ui/tag-badge) ([Markdown](https://basaltui.com/ui/tag-badge.md) — `@nocoo/basalt/components/tag-badge` — Label items with user-defined categories or entity tags using deterministic tagColorFor(colorKey ?? name) hashing across six non-semantic hues (slate, blue, violet, teal, amber, rose) or explicit TagColor values.)
 ## Actions
 
-[Overview](https://basaltui.com/ui/overview/action): Controls for entering values, choosing options and committing intent.
+[Overview](https://basaltui.com/ui/overview/action) ([Markdown](https://basaltui.com/ui/overview/action.md)): Controls for entering values, choosing options and committing intent.
 
-- [Autocomplete](https://basaltui.com/ui/autocomplete)
-- [Button](https://basaltui.com/ui/button)
-- [Clipboard Text](https://basaltui.com/ui/clipboard-text)
-- [Combobox](https://basaltui.com/ui/combobox)
-- [Date Picker](https://basaltui.com/ui/date-picker)
-- [Icon Picker](https://basaltui.com/ui/icon-picker)
-- [Inline Editable](https://basaltui.com/ui/inline-editable)
-- [Input](https://basaltui.com/ui/input)
-- [InputGroup](https://basaltui.com/ui/input-group)
-- [LinkButton](https://basaltui.com/ui/link-button)
-- [Pagination](https://basaltui.com/ui/pagination)
-- [Searchable Multi Select](https://basaltui.com/ui/multi-select)
-- [Segment Control](https://basaltui.com/ui/segment-control)
-- [Select](https://basaltui.com/ui/select)
-- [Sensitive Input](https://basaltui.com/ui/sensitive-input)
-- [Table Pager](https://basaltui.com/ui/table-pager)
-- [Tag Color Picker](https://basaltui.com/ui/tag-color-picker)
-- [Textarea](https://basaltui.com/ui/textarea)
-- [ThemeToggle](https://basaltui.com/ui/theme-toggle)
-- [Toggle](https://basaltui.com/ui/toggle)
-- [ToggleGroup](https://basaltui.com/ui/toggle-group)
+- [Autocomplete](https://basaltui.com/ui/autocomplete) ([Markdown](https://basaltui.com/ui/autocomplete.md) — `@nocoo/basalt/components/autocomplete` — Let users type directly into an Input to filter and pick from a suggestion list (items) with keyboard navigation, IME safety, and native form reset support.)
+- [Button](https://basaltui.com/ui/button) ([Markdown](https://basaltui.com/ui/button.md) — `@nocoo/basalt/components/button` — Trigger an operation, form submission, dialog action, or pressed-state control (aria-pressed or aria-current) across default, secondary, destructive, outline, ghost, and link variants.)
+- [Clipboard Text](https://basaltui.com/ui/clipboard-text) ([Markdown](https://basaltui.com/ui/clipboard-text.md) — `@nocoo/basalt/components/clipboard-text` — Display a short read-only command, ID, or token in monospace with an attached copy button and screen-reader copy/error status announcement.)
+- [Combobox](https://basaltui.com/ui/combobox) ([Markdown](https://basaltui.com/ui/combobox.md) — `@nocoo/basalt/components/combobox` — Provide a searchable picker (cmdk filtering or async shouldFilter={false}) pairing Select trigger geometry with optional clearable, loading, and multiple modes.)
+- [Date Picker](https://basaltui.com/ui/date-picker) ([Markdown](https://basaltui.com/ui/date-picker.md) — `@nocoo/basalt/components/date-picker` — Select a single ISO date (YYYY-MM-DD) or a date range (mode="range") with calendar grid navigation, optional presets, min/max bounds, and timeZone/locale formatting.)
+- [Icon Picker](https://basaltui.com/ui/icon-picker) ([Markdown](https://basaltui.com/ui/icon-picker.md) — `@nocoo/basalt/components/icon-picker` — Let users pick one icon from a small caller-supplied IconPickerOption subset inside a searchable popover grid.)
+- [Inline Editable](https://basaltui.com/ui/inline-editable) ([Markdown](https://basaltui.com/ui/inline-editable.md) — `@nocoo/basalt/components/inline-editable` — Edit a short committed string in place with click-to-edit, Enter to save, Escape to cancel, saveOnBlur, async onSave pending state, and inline validation.)
+- [Input](https://basaltui.com/ui/input) ([Markdown](https://basaltui.com/ui/input.md) — `@nocoo/basalt/components/input` — Capture single-line text, numbers, search queries, or native input types (sm, md, lg) on the shared matte control surface, with passwordManagerIgnore for fields that should stay ignored by password managers.)
+- [InputGroup](https://basaltui.com/ui/input-group) ([Markdown](https://basaltui.com/ui/input-group.md) — `@nocoo/basalt/components/input-group` — Combine one InputGroup.Input with leading/trailing InputGroup.Addon icons, InputGroup.Suffix units or domains, or InputGroup.Button actions under a single shared outer border and focus ring.)
+- [LinkButton](https://basaltui.com/ui/link-button) ([Markdown](https://basaltui.com/ui/link-button.md) — `@nocoo/basalt/components/button` — Render a navigation anchor (<a>) that needs full Button visual weight, variants, and action sizing (sm, md, lg, icon, icon-sm, tile).)
+- [Pagination](https://basaltui.com/ui/pagination) ([Markdown](https://basaltui.com/ui/pagination.md) — `@nocoo/basalt/components/pagination` — Navigate discrete page numbers (page, pageCount, onPageChange) with optional simple prev/next mode or showPageNumbers ellipsis mode inside one joined control frame.)
+- [Searchable Multi Select](https://basaltui.com/ui/multi-select) ([Markdown](https://basaltui.com/ui/multi-select.md) — `@nocoo/basalt/components/multi-select` — Pick multiple options from a searchable popover list with optional removable chips (showChips), async query/filterOptions={false} support, and repeated native form entries.)
+- [Segment Control](https://basaltui.com/ui/segment-control) ([Markdown](https://basaltui.com/ui/segment-control.md) — `@nocoo/basalt/components/segment-control` — Switch between mutually exclusive views, scopes, or status filters using options, optional legend, and optional leading allOption (All by default) with a sliding primary indicator.)
+- [Select](https://basaltui.com/ui/select) ([Markdown](https://basaltui.com/ui/select.md) — `@nocoo/basalt/components/select` — Pick one option from a short, fixed list (~2-12 items) without search filtering, using Radix Select semantics and shared sm/md/lg trigger sizing.)
+- [Sensitive Input](https://basaltui.com/ui/sensitive-input) ([Markdown](https://basaltui.com/ui/sensitive-input.md) — `@nocoo/basalt/components/sensitive-input` — Accept passwords, passphrases, or masked credentials that need an accessible reveal/hide toggle (revealLabel, hideLabel) sharing one compound control border.)
+- [Table Pager](https://basaltui.com/ui/table-pager) ([Markdown](https://basaltui.com/ui/table-pager.md) — `@nocoo/basalt/components/table-pager` — Pair a tabular range summary (Showing X-Y of Z or custom formatRange) with Pagination controls in a responsive bar beneath a Table or DataTable.)
+- [Tag Color Picker](https://basaltui.com/ui/tag-color-picker) ([Markdown](https://basaltui.com/ui/tag-color-picker.md) — `@nocoo/basalt/components/tag-color-picker` — Choose a TagColor from Basalt's TAG_COLORS palette (or a restricted colors subset) in a responsive radio swatch grid paired with visible color names.)
+- [Textarea](https://basaltui.com/ui/textarea) ([Markdown](https://basaltui.com/ui/textarea.md) — `@nocoo/basalt/components/textarea` — Collect multi-line text such as notes, descriptions, or prompts, optionally using autoResize and maxRows so the field grows with content before scrolling internally.)
+- [ThemeToggle](https://basaltui.com/ui/theme-toggle) ([Markdown](https://basaltui.com/ui/theme-toggle.md) — `@nocoo/basalt/components/theme-toggle` — Expose the shared header control that cycles system -> light -> dark -> system via ThemeProvider (useTheme), complete with current-mode icon and next-mode tooltip.)
+- [Toggle](https://basaltui.com/ui/toggle) ([Markdown](https://basaltui.com/ui/toggle.md) — `@nocoo/basalt/components/toggle` — Expose a single two-state pressed button (pressed / onPressedChange) for toolbar formatting, pin/star states, or view flags (default or outline).)
+- [ToggleGroup](https://basaltui.com/ui/toggle-group) ([Markdown](https://basaltui.com/ui/toggle-group.md) — `@nocoo/basalt/components/toggle-group` — Group related toggle buttons for single-choice (type="single" with sliding accent indicator) or multi-choice (type="multiple") options in a compact pill track.)
 ## Banners
 
-[Overview](https://basaltui.com/ui/overview/banner): Concise feedback that explains what changed and what to do next.
+[Overview](https://basaltui.com/ui/overview/banner) ([Markdown](https://basaltui.com/ui/overview/banner.md)): Concise feedback that explains what changed and what to do next.
 
-- [Banner](https://basaltui.com/ui/banner)
-- [Toast](https://basaltui.com/ui/toast)
+- [Banner](https://basaltui.com/ui/banner) ([Markdown](https://basaltui.com/ui/banner.md) — `@nocoo/basalt/components/banner` — Surface a persistent regional notice, warning, or error (tone: neutral, info, success, warning, danger) with optional title, description, icon, and <Banner.Action> CTAs.)
+- [Toast](https://basaltui.com/ui/toast) ([Markdown](https://basaltui.com/ui/toast.md) — `@nocoo/basalt/components/toast` — Emit transient feedback (toast(), toast.success(), toast.danger(), toast.warning(), toast.info(), toast.loading(), toast.promise()) on --basalt-popover via a single root <Toaster />.)
 ## Cards
 
-[Overview](https://basaltui.com/ui/overview/card): Content surfaces that group related information through matte depth.
+[Overview](https://basaltui.com/ui/overview/card) ([Markdown](https://basaltui.com/ui/overview/card.md)): Content surfaces that group related information through matte depth.
 
-- [CodeBlock](https://basaltui.com/ui/code-block)
-- [CodeHighlighted](https://basaltui.com/ui/code)
-- [Empty](https://basaltui.com/ui/empty)
-- [File Dropzone](https://basaltui.com/ui/file-dropzone)
-- [Layer Card](https://basaltui.com/ui/layer-card)
-- [StatCard](https://basaltui.com/ui/stat-card)
-- [Upload Queue](https://basaltui.com/ui/upload-queue)
+- [CodeBlock](https://basaltui.com/ui/code-block) ([Markdown](https://basaltui.com/ui/code-block.md) — `@nocoo/basalt/components/code` — Presenting plain monospace source, config, or log output with an optional header title, copy control, line-number gutter, and `attached` card-edge mode.)
+- [CodeHighlighted](https://basaltui.com/ui/code) ([Markdown](https://basaltui.com/ui/code.md) — `@nocoo/basalt/components/code` — Rendering syntax-highlighted multi-line source snippets (CodeHighlighted) with the built-in tokenizer, file header, copy button, and optional line numbers, or inline Code spans.)
+- [Empty](https://basaltui.com/ui/empty) ([Markdown](https://basaltui.com/ui/empty.md) — `@nocoo/basalt/components/empty` — Communicating an empty collection, zero-result search, or unconfigured region with an icon, title, description, and optional next-step action.)
+- [File Dropzone](https://basaltui.com/ui/file-dropzone) ([Markdown](https://basaltui.com/ui/file-dropzone.md) — `@nocoo/basalt/components/file-dropzone` — Accepting keyboard-accessible file browsing or drag-and-drop uploads with extension/MIME, byte-size, and count validation plus structured rejection reasons.)
+- [Layer Card](https://basaltui.com/ui/layer-card) ([Markdown](https://basaltui.com/ui/layer-card.md) — `@nocoo/basalt/components/layer-card` — Grouping a coherent content block on an L2 surface with optional structured Header, Title, Description, Body, Well, and Footer slots or collapsible headers.)
+- [StatCard](https://basaltui.com/ui/stat-card) ([Markdown](https://basaltui.com/ui/stat-card.md) — `@nocoo/basalt/components/stat-card` — Presenting dashboard KPIs and compact metrics with a title, 24px tabular value, optional trend or status slot, heading icon cue, and compact supporting chart.)
+- [Upload Queue](https://basaltui.com/ui/upload-queue) ([Markdown](https://basaltui.com/ui/upload-queue.md) — `@nocoo/basalt/components/upload-queue` — Displaying application-owned queued, uploading, success, error, and cancelled upload states via UploadItem rows with progress bars and cancel, retry, or remove actions.)
 ## Layouts
 
-[Overview](https://basaltui.com/ui/overview/layout): Compositions that organize content, navigation and application structure.
+[Overview](https://basaltui.com/ui/overview/layout) ([Markdown](https://basaltui.com/ui/overview/layout.md)): Compositions that organize content, navigation and application structure.
 
-- [Accordion](https://basaltui.com/ui/accordion)
-- [Breadcrumbs](https://basaltui.com/ui/breadcrumbs)
-- [Chart](https://basaltui.com/ui/chart)
-- [Collapsible](https://basaltui.com/ui/collapsible)
-- [DataTable](https://basaltui.com/ui/data-table)
-- [Description List](https://basaltui.com/ui/description-list)
-- [Editable Navigation](https://basaltui.com/ui/editable-nav-item)
-- [Field](https://basaltui.com/ui/field)
-- [Filter Bar](https://basaltui.com/ui/filter-bar)
-- [Grid](https://basaltui.com/ui/grid)
-- [LinkProvider](https://basaltui.com/ui/link-provider)
-- [Responsive Master Detail](https://basaltui.com/ui/responsive-master-detail)
-- [Scroll Area](https://basaltui.com/ui/scroll-area)
-- [Section Rule](https://basaltui.com/ui/section-rule)
-- [Separator](https://basaltui.com/ui/separator)
-- [Sidebar](https://basaltui.com/ui/sidebar)
-- [Table](https://basaltui.com/ui/table)
-- [Table of Contents](https://basaltui.com/ui/table-of-contents)
-- [Tabs](https://basaltui.com/ui/tabs)
-- [ThemeProvider](https://basaltui.com/ui/theme-provider)
-- [Toolbar](https://basaltui.com/ui/toolbar)
+- [Accordion](https://basaltui.com/ui/accordion) ([Markdown](https://basaltui.com/ui/accordion.md) — `@nocoo/basalt/components/accordion` — Organizing a vertical group of related expandable sections with shared item dividers, roving keyboard focus, and single or multiple open modes.)
+- [Breadcrumbs](https://basaltui.com/ui/breadcrumbs) ([Markdown](https://basaltui.com/ui/breadcrumbs.md) — `@nocoo/basalt/components/breadcrumbs` — Showing hierarchical ancestor links leading to the current non-linked `aria-current` route inside a shell header or PageHeader.)
+- [Chart](https://basaltui.com/ui/chart) ([Markdown](https://basaltui.com/ui/chart.md) — `@nocoo/basalt/components/chart` — Framing Recharts, ECharts, or custom SVG visualizations with engine-agnostic ChartFrame, ChartTooltip, ChartLegend, summary text, and accessible data alternatives.)
+- [Collapsible](https://basaltui.com/ui/collapsible) ([Markdown](https://basaltui.com/ui/collapsible.md) — `@nocoo/basalt/components/collapsible` — Toggling a single disclosure region, composing a collapsible LayerCard (`Collapsible asChild`), or revealing attached code (`CollapsibleContent unstyled`).)
+- [DataTable](https://basaltui.com/ui/data-table) ([Markdown](https://basaltui.com/ui/data-table.md) — `@nocoo/basalt/components/data-table` — Displaying structured record collections requiring sorting, row selection, manual server pagination, staggered loading skeletons, error retry, and Empty states.)
+- [Description List](https://basaltui.com/ui/description-list) ([Markdown](https://basaltui.com/ui/description-list.md) — `@nocoo/basalt/components/description-list` — Displaying stacked key-value metadata pairs (such as resource status, plan, or timestamps) without full table columns.)
+- [Editable Navigation](https://basaltui.com/ui/editable-nav-item) ([Markdown](https://basaltui.com/ui/editable-nav-item.md) — `@nocoo/basalt/components/editable-nav-item` — Rendering sidebar or folder navigation items that combine route links, caller icons, inline rename editing, and trailing action menus.)
+- [Field](https://basaltui.com/ui/field) ([Markdown](https://basaltui.com/ui/field.md) — `@nocoo/basalt/components/field` — Wrapping a form control with an accessible Label, optional indicator, label tooltip, supporting hint text, and validation error message.)
+- [Filter Bar](https://basaltui.com/ui/filter-bar) ([Markdown](https://basaltui.com/ui/filter-bar.md) — `@nocoo/basalt/components/filter-bar` — Composing wrapping search, multi-select, date-range, preset, and removable FilterChip controls for page-owned filtering and URL state.)
+- [Grid](https://basaltui.com/ui/grid) ([Markdown](https://basaltui.com/ui/grid.md) — `@nocoo/basalt/components/grid` — Arranging cards, fields, or dashboard panels in responsive columns using Basalt's layout gap scale (`sm`/`md`/`lg`/`xl`, defaulting to 16px `md`).)
+- [LinkProvider](https://basaltui.com/ui/link-provider) ([Markdown](https://basaltui.com/ui/link-provider.md) — `@nocoo/basalt/providers/link` — Injecting your framework router's link component so all Basalt Link, LinkButton, Breadcrumbs, and Sidebar items navigate natively.)
+- [Responsive Master Detail](https://basaltui.com/ui/responsive-master-detail) ([Markdown](https://basaltui.com/ui/responsive-master-detail.md) — `@nocoo/basalt/components/responsive-master-detail` — Coordinating a split list/detail workspace that shows two columns from 768px and switches between inert panes with focus restoration on mobile.)
+- [Scroll Area](https://basaltui.com/ui/scroll-area) ([Markdown](https://basaltui.com/ui/scroll-area.md) — `@nocoo/basalt/components/scroll-area` — Bounding an overflowing list, sidebar rail, or wide panel inside a keyboard-accessible vertical, horizontal, or bidirectional scroll viewport.)
+- [Section Rule](https://basaltui.com/ui/section-rule) ([Markdown](https://basaltui.com/ui/section-rule.md) — `@nocoo/basalt/components/section-rule` — Introducing a page or card region with either a compact uppercase label plus dashed rule (`variant="label"`) or a sentence-case 18px h2 heading (`variant="heading"`).)
+- [Separator](https://basaltui.com/ui/separator) ([Markdown](https://basaltui.com/ui/separator.md) — `@nocoo/basalt/components/separator` — Drawing a thin horizontal or vertical hairline rule to separate adjacent groups inside a panel, toolbar, menu, or sidebar.)
+- [Sidebar](https://basaltui.com/ui/sidebar) ([Markdown](https://basaltui.com/ui/sidebar.md) — `@nocoo/basalt/components/sidebar` — Building the persistent application navigation shell (`SidebarProvider`, `Sidebar`, `SidebarHeader`, `SidebarNav`, `SidebarGroup`, `SidebarItem`, `ContentIsland`, `SidebarDrawer`).)
+- [Table](https://basaltui.com/ui/table) ([Markdown](https://basaltui.com/ui/table.md) — `@nocoo/basalt/components/table` — Rendering static or custom-markup tabular data with full control over TableHeader, TableRow, TableHead, TableCell, striping, and compact/default density.)
+- [Table of Contents](https://basaltui.com/ui/table-of-contents) ([Markdown](https://basaltui.com/ui/table-of-contents.md) — `@nocoo/basalt/components/table-of-contents` — Providing an on-this-page anchor list (`TableOfContentsItem` with `active` state) for long documentation or multi-section reading views.)
+- [Tabs](https://basaltui.com/ui/tabs) ([Markdown](https://basaltui.com/ui/tabs.md) — `@nocoo/basalt/components/tabs` — Switching between distinct full content panels in place using underline-only active tabs with an animated bottom indicator.)
+- [ThemeProvider](https://basaltui.com/ui/theme-provider) ([Markdown](https://basaltui.com/ui/theme-provider.md) — `@nocoo/basalt/providers/theme` — Supplying `system`/`light`/`dark` theme state and document synchronization at the app root (or scoped previews with `persist={false}` and `applyToDocument={false}`).)
+- [Toolbar](https://basaltui.com/ui/toolbar) ([Markdown](https://basaltui.com/ui/toolbar.md) — `@nocoo/basalt/components/toolbar` — Grouping explicit compact actions and an inline search input (`Toolbar.Input`, `Toolbar.Button`) into one cohesive control strip.)
 ## Overlays
 
-[Overview](https://basaltui.com/ui/overview/overlay): Temporary surfaces that reveal detail without losing the current context.
+[Overview](https://basaltui.com/ui/overview/overlay) ([Markdown](https://basaltui.com/ui/overview/overlay.md)): Temporary surfaces that reveal detail without losing the current context.
 
-- [AlertDialog](https://basaltui.com/ui/alert-dialog)
-- [Command Palette](https://basaltui.com/ui/command-palette)
-- [Confirm Dialog](https://basaltui.com/ui/confirm-dialog)
-- [ContextMenu](https://basaltui.com/ui/context-menu)
-- [Dialog](https://basaltui.com/ui/dialog)
-- [Dock](https://basaltui.com/ui/dock)
-- [Dropdown](https://basaltui.com/ui/dropdown-menu)
-- [HoverCard](https://basaltui.com/ui/hover-card)
-- [Popover](https://basaltui.com/ui/popover)
-- [Sheet](https://basaltui.com/ui/sheet)
-- [Tooltip](https://basaltui.com/ui/tooltip)
+- [AlertDialog](https://basaltui.com/ui/alert-dialog) ([Markdown](https://basaltui.com/ui/alert-dialog.md) — `@nocoo/basalt/components/alert-dialog` — Requiring an explicit modal decision for an urgent interruption or irreversible action that cannot be dismissed by clicking outside.)
+- [Command Palette](https://basaltui.com/ui/command-palette) ([Markdown](https://basaltui.com/ui/command-palette.md) — `@nocoo/basalt/components/command-palette` — Offering keyboard-first fuzzy search across pages, records, and commands (`CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`) in a unified floating frame.)
+- [Confirm Dialog](https://basaltui.com/ui/confirm-dialog) ([Markdown](https://basaltui.com/ui/confirm-dialog.md) — `@nocoo/basalt/components/confirm-dialog` — Confirming a consequential or destructive resource operation with controlled open/loading state, focus restoration, or the Promise-based `useConfirm()` hook.)
+- [ContextMenu](https://basaltui.com/ui/context-menu) ([Markdown](https://basaltui.com/ui/context-menu.md) — `@nocoo/basalt/components/context-menu` — Providing secondary-click (right-click) or long-press contextual commands on a canvas, card row, or workspace item.)
+- [Dialog](https://basaltui.com/ui/dialog) ([Markdown](https://basaltui.com/ui/dialog.md) — `@nocoo/basalt/components/dialog` — Focusing user attention on a rich modal task, multi-field form, or review panel (`sm`/`md`/`lg`/`xl` widths) that renders background content inert.)
+- [Dock](https://basaltui.com/ui/dock) ([Markdown](https://basaltui.com/ui/dock.md) — `@nocoo/basalt/components/dock` — Mounting a persistent right utility rail in `push` mode (shrinking the main column) or local `overlay` mode (non-modal region scrim with Escape dismissal).)
+- [Dropdown](https://basaltui.com/ui/dropdown-menu) ([Markdown](https://basaltui.com/ui/dropdown-menu.md) — `@nocoo/basalt/components/dropdown-menu` — Exposing a button-triggered list of commands, checkable options, radio groups, nested submenus, shortcuts, and destructive items with roving focus.)
+- [HoverCard](https://basaltui.com/ui/hover-card) ([Markdown](https://basaltui.com/ui/hover-card.md) — `@nocoo/basalt/components/hover-card` — Revealing a rich, non-modal preview card (such as user details or linked record summary) when hovering or focusing a link or trigger.)
+- [Popover](https://basaltui.com/ui/popover) ([Markdown](https://basaltui.com/ui/popover.md) — `@nocoo/basalt/components/popover` — Anchoring an interactive floating panel with controls, mini-forms, or PopoverTitle/PopoverDescription next to a trigger (arrow off by default).)
+- [Sheet](https://basaltui.com/ui/sheet) ([Markdown](https://basaltui.com/ui/sheet.md) — `@nocoo/basalt/components/sheet` — Opening a modal edge-anchored side drawer (`top`/`right`/`bottom`/`left`) with backdrop scrim and modal focus handling for inspection or editing.)
+- [Tooltip](https://basaltui.com/ui/tooltip) ([Markdown](https://basaltui.com/ui/tooltip.md) — `@nocoo/basalt/components/tooltip` — Showing a short, non-interactive hint or accessible label clarification on hover or keyboard focus (wrapped in TooltipProvider).)
 ## Primitives
 
-[Overview](https://basaltui.com/ui/overview/primitive): Text, identity marks and graphic controls with their own natural geometry.
+[Overview](https://basaltui.com/ui/overview/primitive) ([Markdown](https://basaltui.com/ui/overview/primitive.md)): Text, identity marks and graphic controls with their own natural geometry.
 
-- [Avatar](https://basaltui.com/ui/avatar)
-- [Checkbox](https://basaltui.com/ui/checkbox)
-- [Fab](https://basaltui.com/ui/fab)
-- [Label](https://basaltui.com/ui/label)
-- [Link](https://basaltui.com/ui/link)
-- [Loader](https://basaltui.com/ui/loader)
-- [Meter](https://basaltui.com/ui/meter)
-- [Progress](https://basaltui.com/ui/progress)
-- [Radio](https://basaltui.com/ui/radio)
-- [Skeleton](https://basaltui.com/ui/skeleton)
-- [Slider](https://basaltui.com/ui/slider)
-- [Spinner](https://basaltui.com/ui/spinner)
-- [Switch](https://basaltui.com/ui/switch)
-- [Text](https://basaltui.com/ui/text)
+- [Avatar](https://basaltui.com/ui/avatar) ([Markdown](https://basaltui.com/ui/avatar.md) — `@nocoo/basalt/components/avatar` — Represent a user or organization with Avatar + AvatarImage + AvatarFallback, or use AvatarInitials (sm 24px / md 36px) for deterministic two-letter colored fallbacks.)
+- [Checkbox](https://basaltui.com/ui/checkbox) ([Markdown](https://basaltui.com/ui/checkbox.md) — `@nocoo/basalt/components/checkbox` — Toggle an independent boolean option (checked: boolean | "indeterminate") or pick multiple values in Checkbox.Group with Checkbox.Legend, Checkbox.Item, and error.)
+- [Fab](https://basaltui.com/ui/fab) ([Markdown](https://basaltui.com/ui/fab.md) — `@nocoo/basalt/components/fab` — Pin a floating circular corner launcher (placement="fixed" or "absolute") that hides smoothly when open is true so a Dock can occupy the corner.)
+- [Label](https://basaltui.com/ui/label) ([Markdown](https://basaltui.com/ui/label.md) — `@nocoo/basalt/components/label` — Associate an accessible, clickable caption (htmlFor) with a form input or choice control, optionally displaying (optional) via showOptional or an info tooltip.)
+- [Link](https://basaltui.com/ui/link) ([Markdown](https://basaltui.com/ui/link.md) — `@nocoo/basalt/components/link` — Render inline navigational text using --basalt-link that delegates client routing to the app's LinkProvider.)
+- [Loader](https://basaltui.com/ui/loader) ([Markdown](https://basaltui.com/ui/loader.md) — `@nocoo/basalt/components/loader` — Indicate active, ongoing work with Basalt's 3x3 pixel-orbit status indicator, optional shimmer label, and automatic showElapsed timer after elapsedDelayMs (default 5s).)
+- [Meter](https://basaltui.com/ui/meter) ([Markdown](https://basaltui.com/ui/meter.md) — `@nocoo/basalt/components/meter` — Display a scalar measurement within a known 0..100 range (bar or 20-cell segmented variant, optional auto threshold tones warning >= 70 / danger >= 90) using role="meter".)
+- [Progress](https://basaltui.com/ui/progress) ([Markdown](https://basaltui.com/ui/progress.md) — `@nocoo/basalt/components/progress` — Track determinate task completion (value in 0..max) or indeterminate task execution (value omitted or null) across sm/md/lg tracks and semantic tones.)
+- [Radio](https://basaltui.com/ui/radio) ([Markdown](https://basaltui.com/ui/radio.md) — `@nocoo/basalt/components/radio` — Select one mutually exclusive option from a small visible set (2-6 choices) using Radio.Group, Radio.Legend, Radio.Item, and error.)
+- [Skeleton](https://basaltui.com/ui/skeleton) ([Markdown](https://basaltui.com/ui/skeleton.md) — `@nocoo/basalt/components/skeleton` — Reserve layout geometry (line, block, circle with explicit width/height and reduced-motion-safe shimmer) while initial content loads.)
+- [Slider](https://basaltui.com/ui/slider) ([Markdown](https://basaltui.com/ui/slider.md) — `@nocoo/basalt/components/slider` — Adjust a numeric value or bounded range (value/defaultValue array, min, max, step, orientation, labels) along a continuous matte well track.)
+- [Spinner](https://basaltui.com/ui/spinner) ([Markdown](https://basaltui.com/ui/spinner.md) — `@nocoo/basalt/components/spinner` — Show a lightweight rotating ring (sm, md, lg, role="status" unless aria-hidden) inside buttons, search inputs, or tight inline loading slots.)
+- [Switch](https://basaltui.com/ui/switch) ([Markdown](https://basaltui.com/ui/switch.md) — `@nocoo/basalt/components/switch` — Toggle an immediate binary setting on or off (18x32px md or 16x28px sm matte well track) standalone or in Switch.Group.)
+- [Text](https://basaltui.com/ui/text) ([Markdown](https://basaltui.com/ui/text.md) — `@nocoo/basalt/components/text` — Render semantic prose, headings, or monospace spans (variant: body | heading | mono, size: xs-xl, tone: default | muted, as element) locked to Basalt's canonical type scale.)
 ## Blocks
 
-[Overview](https://basaltui.com/ui/overview/block): Reusable page-level patterns composed from the same component rules.
+[Overview](https://basaltui.com/ui/overview/block) ([Markdown](https://basaltui.com/ui/overview/block.md)): Reusable page-level patterns composed from the same component rules.
 
-- [Page Header](https://basaltui.com/ui/page-header)
-- [Resource List](https://basaltui.com/ui/resource-list)
+- [Page Header](https://basaltui.com/ui/page-header) ([Markdown](https://basaltui.com/ui/page-header.md) — `@nocoo/basalt/components/page-header` — Rendering the top heading of an application page with `breadcrumbs`, one 24px `h1` `title`, 65ch `description`, right-aligned `actions` (create button last), and optional `filters`.)
+- [Resource List](https://basaltui.com/ui/resource-list) ([Markdown](https://basaltui.com/ui/resource-list.md) — `@nocoo/basalt/components/resource-list` — Scaffolding a standard resource index page combining PageHeader, toolbar, filters, bulkActions, DataTable (or custom children) with loading/empty/error states, and footer.)
+
+## Templates
+
+[Templates index](https://basaltui.com/templates) ([Markdown](https://basaltui.com/templates.md)): Full-page application templates built with `@nocoo/basalt`.
+
+- [Agent workspace](https://basaltui.com/templates/agent-workspace.md) ([View](https://basaltui.com/view/agent-workspace) — A collaborative agent session with a trace, composer and file inspector.)
+- [Ops inbox](https://basaltui.com/templates/ops-inbox.md) ([View](https://basaltui.com/view/ops-inbox) — Triage incidents, follow a runbook and update their status.)
+- [Executive dashboard](https://basaltui.com/templates/executive-dashboard.md) ([View](https://basaltui.com/view/executive-dashboard) — A concise performance overview with capacity and account data.)
+- [Workspace settings](https://basaltui.com/templates/workspace-settings.md) ([View](https://basaltui.com/view/workspace-settings) — Manage team preferences, access keys and quotas.)
+- [Visitor login](https://basaltui.com/templates/visitor-login.md) ([View](https://basaltui.com/view/visitor-login) — A compact sign-in badge with optional verification.)
 
 See https://basaltui.com/llms.txt for package docs and crawler policy.

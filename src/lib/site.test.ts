@@ -8,10 +8,13 @@ import {
 	imageUrl,
 	jsonLd,
 	jsonLdScript,
+	renderAgentsMd,
+	renderAiTxt,
 	renderHeaders,
 	renderLlms,
 	renderLlmsFull,
 	renderRobots,
+	renderSetupMd,
 	renderSitemap,
 	requiredIndexHtmlSnippets,
 	SHOWCASE_PATHS,
@@ -99,6 +102,7 @@ describe("site metadata", () => {
 		expect(robots).not.toContain("Disallow:");
 		expect(robots).toContain(`Sitemap: ${SITE_ORIGIN}/sitemap.xml`);
 		expect(robots).toContain("/llms.txt");
+		expect(robots).toContain("/ai.txt");
 	});
 
 	it("orients agents at the catalog, package docs and related portfolio", () => {
@@ -113,20 +117,50 @@ describe("site metadata", () => {
 		expect(llms).toContain("https://lizheng.me/");
 		expect(llms).toContain("/llms-full.txt");
 		expect(llms).toContain(SITE.usageGuide);
+		for (const endpoint of [
+			"/ui/<slug>.md",
+			"/ui/overview/<category>.md",
+			"/templates/<slug>.md",
+			"/templates",
+			"/templates.md",
+			"/agents.md",
+			"/setup.md",
+			"/ui.md",
+			"/md-catalog.json",
+			"/ai.txt",
+		]) {
+			expect(llms, endpoint).toContain(endpoint);
+		}
 	});
 
 	it("groups the full catalog by family and links each surface", () => {
 		const full = renderLlmsFull([
 			{ slug: "chart", name: "Chart", category: "layout" },
-			{ slug: "button", name: "Button", category: "action" },
+			{
+				slug: "button",
+				name: "Button",
+				category: "action",
+				importPath: "@nocoo/basalt/components/button",
+				useWhen: "Trigger primary or secondary actions.",
+			},
 			{ slug: "page-header", name: "Page Header", category: "block" },
 			{ slug: "text", name: "Text", category: "action" },
 		]);
 		expect(full).toContain("## Actions");
 		expect(full.indexOf("- [Button]")).toBeLessThan(full.indexOf("- [Text]"));
 		expect(full).toContain(`${SITE_ORIGIN}/ui/chart`);
+		expect(full).toContain(`${SITE_ORIGIN}/ui/chart.md`);
+		expect(full).toContain(`${SITE_ORIGIN}/ui/button.md`);
+		expect(full).toContain("@nocoo/basalt/components/button");
+		expect(full).toContain("Trigger primary or secondary actions.");
+		expect(full).toContain(`${SITE_ORIGIN}/ui/overview/action.md`);
 		expect(full).toContain("## Layouts");
 		expect(full).toContain("## Blocks");
+		expect(full).toContain("## Templates");
+		expect(full).toContain(`${SITE_ORIGIN}/templates.md`);
+		expect(full).toContain(`${SITE_ORIGIN}/templates/agent-workspace.md`);
+		expect(full).toContain(`${SITE_ORIGIN}/view/agent-workspace`);
+		expect(full).toContain(`${SITE_ORIGIN}/templates/visitor-login.md`);
 		expect(full).toContain("/llms.txt");
 	});
 
@@ -149,6 +183,65 @@ describe("site metadata", () => {
 		expect(headers).toContain("Cross-Origin-Opener-Policy: same-origin-allow-popups");
 		expect(headers).toContain("Cross-Origin-Resource-Policy: same-origin");
 		expect(headers).toContain("/opengraph-image.png\n  Cross-Origin-Resource-Policy: cross-origin");
+		expect(headers).toContain(
+			"/llms.txt\n  Content-Type: text/plain; charset=utf-8\n  X-Content-Type-Options: nosniff\n  Access-Control-Allow-Origin: *",
+		);
+		expect(headers).toContain(
+			"/ai.txt\n  Content-Type: text/plain; charset=utf-8\n  X-Content-Type-Options: nosniff\n  Access-Control-Allow-Origin: *",
+		);
+		expect(headers).toContain(
+			"/md-catalog.json\n  Content-Type: application/json; charset=utf-8\n  X-Content-Type-Options: nosniff\n  Access-Control-Allow-Origin: *",
+		);
+		for (const mdPath of [
+			"/agents.md",
+			"/setup.md",
+			"/index.md",
+			"/ui.md",
+			"/ui/*.md",
+			"/ui/overview/*.md",
+			"/templates.md",
+			"/templates/*.md",
+		]) {
+			expect(headers, mdPath).toContain(
+				`${mdPath}\n  Content-Type: text/markdown; charset=utf-8\n  X-Content-Type-Options: nosniff\n  Access-Control-Allow-Origin: *`,
+			);
+		}
+	});
+
+	it("renders agents.md, setup.md, and ai.txt discovery documents", () => {
+		const agents = renderAgentsMd();
+		expect(agents.startsWith("<!-- basalt:start -->\n")).toBe(true);
+		expect(agents).toContain("<!-- basalt:end -->");
+		expect(agents).toContain("L0–L3");
+		expect(agents).toContain("backdrop-blur");
+		expect(agents).toContain("2/4/6/8px");
+		expect(agents).toContain("12/16/24/32px");
+		expect(agents).toContain("@nocoo/basalt/styles/standalone");
+		expect(agents).toContain('"use client"');
+		expect(agents).toContain("<Toaster />");
+		expect(agents).toContain("## Components (81)");
+		expect(agents).toMatch(/\|\s*Button\s*\|\s*`button`\s*\|\s*action\s*\|/);
+		expect(agents).toMatch(/\|\s*Chart\s*\|\s*`chart`\s*\|\s*layout\s*\|/);
+		expect(agents).toContain("## Templates (5)");
+		expect(agents).toMatch(/\|\s*Agent workspace\s*\|\s*`agent-workspace`\s*\|\s*agents\s*\|/);
+
+		const setup = renderSetupMd();
+		expect(setup).toContain("@nocoo/basalt");
+		expect(setup).toContain("@nocoo/basalt/styles");
+		expect(setup).toContain("@nocoo/basalt/styles/standalone");
+		expect(setup).toContain("@nocoo/basalt/fonts.css");
+		expect(setup).toContain("ThemeProvider");
+		expect(setup).toContain("LinkProvider");
+		expect(setup).toContain("<Toaster />");
+		expect(setup).toContain(`${SITE_ORIGIN}/agents.md`);
+
+		const ai = renderAiTxt();
+		expect(ai).toContain("User-Agent: *");
+		expect(ai).toContain("Allow: /");
+		expect(ai).toContain(`Attribution: ${SITE.name} (${SITE_ORIGIN})`);
+		expect(ai).toContain(`Scope:`);
+		expect(ai).toContain("/ui/*.md");
+		expect(ai).toContain("/templates/*.md");
 	});
 
 	it("keeps index.html snippets aligned with the live document", () => {

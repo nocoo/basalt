@@ -1,5 +1,6 @@
 # Public catalog. Search engines and AI crawlers are welcome.
 # Machine-readable orientation: /llms.txt
+# AI crawler policy: /ai.txt
 
 User-agent: *
 Allow: /

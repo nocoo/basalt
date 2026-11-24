@@ -419,6 +419,49 @@ describe("ui catalog", () => {
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
+	it("copies guide-enriched markdown and exposes Markdown actions in Copy page options", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+		try {
+			renderCatalog("/ui/button");
+			await act(async () => {
+				fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+			});
+			expect(writeText).toHaveBeenCalledTimes(1);
+			const markdown = String(writeText.mock.calls[0]?.[0]);
+			expect(markdown).toContain("## When to use");
+			expect(markdown).toContain("- Use when:");
+			expect(markdown).toContain("- Avoid when:");
+			expect(markdown).toContain("- Placement:");
+			expect(markdown).toContain("## API Reference");
+
+			const optionsButton = screen.getByRole("button", { name: "Copy page options" });
+			await act(async () => {
+				fireEvent.pointerDown(optionsButton, { button: 0, ctrlKey: false });
+			});
+			const viewMarkdownItem = await screen.findByRole("menuitem", { name: "View as Markdown" });
+			const copyUrlItem = screen.getByRole("menuitem", { name: "Copy Markdown URL" });
+
+			await act(async () => {
+				fireEvent.click(copyUrlItem);
+			});
+			expect(writeText).toHaveBeenLastCalledWith(`${window.location.origin}/ui/button.md`);
+
+			await act(async () => {
+				fireEvent.pointerDown(optionsButton, { button: 0, ctrlKey: false });
+			});
+			const viewItemReopened = await screen.findByRole("menuitem", { name: "View as Markdown" });
+			await act(async () => {
+				fireEvent.click(viewItemReopened);
+			});
+			expect(openSpy).toHaveBeenCalledWith("/ui/button.md", "_blank", "noopener,noreferrer");
+			expect(viewMarkdownItem).toBeDefined();
+		} finally {
+			openSpy.mockRestore();
+		}
+	});
+
 	it("does not infer github owner from a repo name", () => {
 		const page = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/ComponentDocPage.tsx"),

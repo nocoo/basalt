@@ -12,6 +12,14 @@ describe("seo file generation", () => {
 		expect(Object.keys(files)).toEqual([...SEO_FILES]);
 		expect(files["public/sitemap.xml"]).toContain(`${SITE_ORIGIN}/ui/${CATALOG[0].slug}`);
 		expect(files["public/llms-full.txt"]).toContain(CATALOG[0].name);
+		expect(files["public/llms-full.txt"]).toContain(CATALOG[0].importPath);
+		expect(files["public/agents.md"]).toContain("<!-- basalt:start -->");
+		expect(files["public/agents.md"]).toMatch(
+			new RegExp(`\\|\\s*${CATALOG[0].name}\\s*\\|\\s*\`${CATALOG[0].slug}\``),
+		);
+		expect(files["public/setup.md"]).toContain("@nocoo/basalt/styles/standalone");
+		expect(files["public/ai.txt"]).toContain(`Attribution: Basalt (${SITE_ORIGIN})`);
+		expect(files["public/robots.txt"]).toContain("/ai.txt");
 		for (const showcasePath of SHOWCASE_PATHS) {
 			expect(files["public/sitemap.xml"]).toContain(
 				`${SITE_ORIGIN}${showcasePath === "/" ? "/" : showcasePath}`,

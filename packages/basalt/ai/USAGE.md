@@ -97,3 +97,14 @@ export function App() {
 Read [RECIPES.md](RECIPES.md) for complete AppFrame, Login, Resources, and MobileLayout modules. Each module is compiled and exercised from the installed tarball in standalone, Tailwind, and Next.js consumers. These recipes keep authentication, routing, data and network requests in the application.
 
 Read [INTEGRATION.md#accent-provider](INTEGRATION.md#accent-provider) for the twelve control accents, optional `paletteOverrides`, and the fixed five-color chart cycle matching the classic candy swatches with its existing gray retained. Check [COMPATIBILITY.md](COMPATIBILITY.md) before migrating old color indices or stored IDs. The catalog at https://basaltui.com/palette provides an application-owned editor with localStorage persistence.
+
+---
+
+## 7. Online Machine-Readable Documentation
+
+Coding agents can fetch up-to-date Markdown and discovery endpoints directly from the live catalog:
+- Catalog orientation: https://basaltui.com/llms.txt
+- Agent instructions snippet (`AGENTS.md` / `CLAUDE.md`): https://basaltui.com/agents.md
+- Setup playbook: https://basaltui.com/setup.md
+- Component documentation: `https://basaltui.com/ui/<slug>.md`
+- Application template documentation: `https://basaltui.com/templates/<slug>.md`

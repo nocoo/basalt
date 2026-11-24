@@ -25047,6 +25047,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#button",
+			"guide": {
+				"useWhen": "Trigger an operation, form submission, dialog action, or pressed-state control (aria-pressed or aria-current) across default, secondary, destructive, outline, ghost, and link variants.",
+				"avoidWhen": "Navigating to another route or external URL with an anchor element.",
+				"instead": "link-button",
+				"placement": "Form footers, toolbars, PageHeader actions (primary create action last), and LayerCard headers (size=\"sm\" with -my-basalt-space-sm in compact headers)."
+			},
 			"api": [
 				{
 					"name": "Button",
@@ -25106,6 +25112,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-button",
+			"guide": {
+				"useWhen": "Render a navigation anchor (<a>) that needs full Button visual weight, variants, and action sizing (sm, md, lg, icon, icon-sm, tile).",
+				"avoidWhen": "Running an in-page mutation or placing a subtle inline text link inside body prose.",
+				"instead": "Button for operations; Link for inline prose navigation",
+				"placement": "Toolbar CTAs, empty-state navigation actions, and PageHeader or card footer links pointing to another URL."
+			},
 			"api": [
 				{
 					"name": "LinkButton",
@@ -25144,6 +25156,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#text",
+			"guide": {
+				"useWhen": "Render semantic prose, headings, or monospace spans (variant: body | heading | mono, size: xs-xl, tone: default | muted, as element) locked to Basalt's canonical type scale.",
+				"avoidWhen": "Labeling form controls or rendering navigational links.",
+				"instead": "Label for form controls; Link for navigation",
+				"placement": "Inside LayerCard.Body, DescriptionList, empty states, and prose regions."
+			},
 			"api": [
 				{
 					"name": "Text",
@@ -25202,6 +25220,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#label",
+			"guide": {
+				"useWhen": "Associate an accessible, clickable caption (htmlFor) with a form input or choice control, optionally displaying (optional) via showOptional or an info tooltip.",
+				"avoidWhen": "Rendering non-form section headings or plain body paragraphs.",
+				"instead": "text",
+				"placement": "Directly above or beside its associated control (8px gap) or managed automatically inside Field."
+			},
 			"api": [
 				{
 					"name": "Label",
@@ -25233,6 +25257,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#separator",
+			"guide": {
+				"useWhen": "Drawing a thin horizontal or vertical hairline rule to separate adjacent groups inside a panel, toolbar, menu, or sidebar.",
+				"avoidWhen": "Introducing a named page section or separating major L2 LayerCard islands that already use layout gaps.",
+				"instead": "section-rule",
+				"placement": "Between sibling item groups inside L2 cards, floating menus, or horizontal toolbars without adding extra outer padding."
+			},
 			"api": [
 				{
 					"name": "Separator",
@@ -25265,6 +25295,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#scroll-area",
+			"guide": {
+				"useWhen": "Bounding an overflowing list, sidebar rail, or wide panel inside a keyboard-accessible vertical, horizontal, or bidirectional scroll viewport.",
+				"avoidWhen": "Scrolling an entire page or wrapping natural-height prose or code panels that should hand off vertical scrolling to the page.",
+				"instead": "the natural document or ContentIsland flow",
+				"placement": "Inside fixed-height panes, sidebars, or constrained L2 card regions where a single scroll owner is required."
+			},
 			"api": [
 				{
 					"name": "ScrollArea",
@@ -25302,6 +25338,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link",
+			"guide": {
+				"useWhen": "Render inline navigational text using --basalt-link that delegates client routing to the app's LinkProvider.",
+				"avoidWhen": "Triggering state mutations or needing button-sized CTA framing.",
+				"instead": "Button for actions; LinkButton for button-styled links",
+				"placement": "Inline within prose sentences, breadcrumbs, or secondary metadata lines."
+			},
 			"api": [
 				{
 					"name": "Link",
@@ -25326,6 +25368,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tooltip",
+			"guide": {
+				"useWhen": "Showing a short, non-interactive hint or accessible label clarification on hover or keyboard focus (wrapped in TooltipProvider).",
+				"avoidWhen": "Containing links, buttons, forms, rich multi-line previews, or critical instructions users must read before acting.",
+				"instead": "popover",
+				"placement": "Portal-mounted via `TooltipTrigger asChild` on interactive triggers such as icon-only buttons or SectionRule info icons."
+			},
 			"api": [
 				{
 					"name": "Tooltip",
@@ -25538,6 +25586,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#theme-toggle",
+			"guide": {
+				"useWhen": "Expose the shared header control that cycles system -> light -> dark -> system via ThemeProvider (useTheme), complete with current-mode icon and next-mode tooltip.",
+				"avoidWhen": "Building an explicit multi-option theme radio selector in settings or mounting outside ThemeProvider.",
+				"instead": "segment-control",
+				"placement": "Inside the top-right utility action slot of AppHeader."
+			},
 			"api": [
 				{
 					"name": "ThemeToggle",
@@ -25575,6 +25629,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#layer-card",
+			"guide": {
+				"useWhen": "Grouping a coherent content block on an L2 surface with optional structured Header, Title, Description, Body, Well, and Footer slots or collapsible headers.",
+				"avoidWhen": "Displaying a single KPI metric with trend or sparkline, or wrapping an entire page or region heading in another card.",
+				"instead": "stat-card",
+				"placement": "Inside L1 ContentIsland sections separated by 24px gaps; compose Header asChild on CollapsibleTrigger with Body inside unstyled CollapsibleContent, and use LayerCard.Well for recessed L1 sub-surfaces."
+			},
 			"api": [
 				{
 					"name": "LayerCard",
@@ -25729,6 +25789,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#description-list",
+			"guide": {
+				"useWhen": "Displaying stacked key-value metadata pairs (such as resource status, plan, or timestamps) without full table columns.",
+				"avoidWhen": "Comparing multi-column records across rows or presenting sortable, selectable datasets.",
+				"instead": "table",
+				"placement": "Inside an L2 LayerCard.Body or Sheet/Dialog detail panel; it is not a painted surface on its own."
+			},
 			"api": [
 				{
 					"name": "DescriptionList",
@@ -25765,6 +25831,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#field",
+			"guide": {
+				"useWhen": "Wrapping a form control with an accessible Label, optional indicator, label tooltip, supporting hint text, and validation error message.",
+				"avoidWhen": "Adding outer form margins or labeling a standalone control that needs no hint, optional, or error wiring.",
+				"instead": "label",
+				"placement": "Inside form stacks (16px layout gaps between related fields, 24px between sections) inside L2 LayerCards or Dialog forms."
+			},
 			"api": [
 				{
 					"name": "Field",
@@ -25831,6 +25903,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input",
+			"guide": {
+				"useWhen": "Capture single-line text, numbers, search queries, or native input types (sm, md, lg) on the shared matte control surface, with passwordManagerIgnore for fields that should stay ignored by password managers.",
+				"avoidWhen": "Entering multi-line copy, secrets needing a reveal toggle, or values requiring inline prefixes, suffixes, or action buttons.",
+				"instead": "Textarea for multi-line; SensitiveInput for secrets; InputGroup for addons",
+				"placement": "Inside Field stacks with persistent Label and validation copy (8px label-to-control gap, 16px between related fields), or inline inside FilterBar and Toolbar."
+			},
 			"api": [
 				{
 					"name": "Input",
@@ -25869,6 +25947,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#textarea",
+			"guide": {
+				"useWhen": "Collect multi-line text such as notes, descriptions, or prompts, optionally using autoResize and maxRows so the field grows with content before scrolling internally.",
+				"avoidWhen": "Capturing single-line values or syntax-highlighted code editing.",
+				"instead": "input",
+				"placement": "Inside Field within forms, dialogs, or chat composers, keeping 16px layout gaps from neighboring fields."
+			},
 			"api": [
 				{
 					"name": "Textarea",
@@ -25920,6 +26004,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#input-group",
+			"guide": {
+				"useWhen": "Combine one InputGroup.Input with leading/trailing InputGroup.Addon icons, InputGroup.Suffix units or domains, or InputGroup.Button actions under a single shared outer border and focus ring.",
+				"avoidWhen": "Rendering a plain single-line text field without addons, or toggling password visibility.",
+				"instead": "Input for plain fields; SensitiveInput for password reveal",
+				"placement": "Inside Field for URLs, currency or unit inputs, or inline search-with-clear controls."
+			},
 			"api": [
 				{
 					"name": "InputGroup",
@@ -26011,6 +26101,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sensitive-input",
+			"guide": {
+				"useWhen": "Accept passwords, passphrases, or masked credentials that need an accessible reveal/hide toggle (revealLabel, hideLabel) sharing one compound control border.",
+				"avoidWhen": "Displaying ordinary unmasked text or read-only copyable values that do not require masking.",
+				"instead": "clipboard-text",
+				"placement": "Inside Field within login forms, credential configuration forms, and security settings panels."
+			},
 			"api": [
 				{
 					"name": "SensitiveInput",
@@ -26055,6 +26151,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#checkbox",
+			"guide": {
+				"useWhen": "Toggle an independent boolean option (checked: boolean | \"indeterminate\") or pick multiple values in Checkbox.Group with Checkbox.Legend, Checkbox.Item, and error.",
+				"avoidWhen": "Applying an instant-effect system toggle or choosing one option from a mutually exclusive set.",
+				"instead": "Switch for instant settings; Radio for mutually exclusive choices",
+				"placement": "Inside Checkbox.Group in forms, table row selection columns, or inline beside a clickable Label."
+			},
 			"api": [
 				{
 					"name": "Checkbox",
@@ -26144,6 +26246,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#radio",
+			"guide": {
+				"useWhen": "Select one mutually exclusive option from a small visible set (2-6 choices) using Radio.Group, Radio.Legend, Radio.Item, and error.",
+				"avoidWhen": "Picking from long option lists or allowing multiple selections.",
+				"instead": "select",
+				"placement": "Inside Radio.Group stacks in forms or dialogs where all options benefit from being visible together."
+			},
 			"api": [
 				{
 					"name": "Radio",
@@ -26215,6 +26323,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#switch",
+			"guide": {
+				"useWhen": "Toggle an immediate binary setting on or off (18x32px md or 16x28px sm matte well track) standalone or in Switch.Group.",
+				"avoidWhen": "Requiring a form Submit button to commit the choice, or representing a tri-state selection.",
+				"instead": "checkbox",
+				"placement": "Beside a setting Label inside preference rows, LayerCard settings lists, or Switch.Group."
+			},
 			"api": [
 				{
 					"name": "Switch",
@@ -26304,6 +26418,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#select",
+			"guide": {
+				"useWhen": "Pick one option from a short, fixed list (~2-12 items) without search filtering, using Radix Select semantics and shared sm/md/lg trigger sizing.",
+				"avoidWhen": "Filtering long option lists, typing free-form queries, or selecting multiple values.",
+				"instead": "Combobox for searchable single select; MultiSelect for multiple values",
+				"placement": "Inside Field rows, FilterBar controls, or compact toolbar selectors."
+			},
 			"api": [
 				{
 					"name": "Select",
@@ -26431,6 +26551,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#autocomplete",
+			"guide": {
+				"useWhen": "Let users type directly into an Input to filter and pick from a suggestion list (items) with keyboard navigation, IME safety, and native form reset support.",
+				"avoidWhen": "Picking from a closed fixed list without free-text input or selecting multiple items.",
+				"instead": "combobox",
+				"placement": "Inside Field for address, tag-name, or entity lookup inputs where typing narrows suggestions."
+			},
 			"api": [
 				{
 					"name": "Autocomplete",
@@ -26494,6 +26620,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#date-picker",
+			"guide": {
+				"useWhen": "Select a single ISO date (YYYY-MM-DD) or a date range (mode=\"range\") with calendar grid navigation, optional presets, min/max bounds, and timeZone/locale formatting.",
+				"avoidWhen": "Choosing broad relative presets (such as \"Last 7 days\") without needing calendar day picking.",
+				"instead": "select",
+				"placement": "Inside Field in scheduling forms or inside FilterBar and PageHeader filter slots."
+			},
 			"api": [
 				{
 					"name": "DatePicker",
@@ -26647,6 +26779,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#slider",
+			"guide": {
+				"useWhen": "Adjust a numeric value or bounded range (value/defaultValue array, min, max, step, orientation, labels) along a continuous matte well track.",
+				"avoidWhen": "Entering an exact arbitrary number where keyboard typing is faster.",
+				"instead": "input",
+				"placement": "Inside Field or inspector panels alongside a live numeric readout or Label."
+			},
 			"api": [
 				{
 					"name": "Slider",
@@ -26737,6 +26875,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toggle",
+			"guide": {
+				"useWhen": "Expose a single two-state pressed button (pressed / onPressedChange) for toolbar formatting, pin/star states, or view flags (default or outline).",
+				"avoidWhen": "Toggling persistent boolean settings in a form or switching between mutually exclusive views.",
+				"instead": "Switch for immediate settings; SegmentControl for exclusive views",
+				"placement": "Inside Toolbar rows or compact action strips alongside related icon buttons."
+			},
 			"api": [
 				{
 					"name": "Toggle",
@@ -26795,6 +26939,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toggle-group",
+			"guide": {
+				"useWhen": "Group related toggle buttons for single-choice (type=\"single\" with sliding accent indicator) or multi-choice (type=\"multiple\") options in a compact pill track.",
+				"avoidWhen": "Building labeled view-mode switchers with an optional All segment or switching entire tab panels.",
+				"instead": "SegmentControl for labeled view switchers; Tabs for content panels",
+				"placement": "Inside Toolbar, FilterBar, or card headers for alignment, density, or multi-flag controls."
+			},
 			"api": [
 				{
 					"name": "ToggleGroup (Single)",
@@ -26926,6 +27076,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#segment-control",
+			"guide": {
+				"useWhen": "Switch between mutually exclusive views, scopes, or status filters using options, optional legend, and optional leading allOption (All by default) with a sliding primary indicator.",
+				"avoidWhen": "Allowing multiple active choices, zero active choices, or switching full tab content panels.",
+				"instead": "Tabs for content panels; ToggleGroup for multi-select toggles",
+				"placement": "In PageHeader filter slots, LayerCard headers, or chart toolbars where 2-6 exclusive modes fit horizontally."
+			},
 			"api": [
 				{
 					"name": "SegmentControl",
@@ -26987,6 +27143,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#badge",
+			"guide": {
+				"useWhen": "Display non-interactive semantic status, counts, or short state labels in five tones (neutral, info, success, warning, danger), defaulting to soft (solid for high-emphasis counts, soft with dot in table status cells) or optional onDismiss chips.",
+				"avoidWhen": "Triggering actions, toggling filters, or assigning non-semantic categorical hues to user-created tags.",
+				"instead": "Button or Toggle for actions; TagBadge for non-semantic categorical hues",
+				"placement": "Inline beside the heading, row title, or table status cell it describes; never inside an extra padded container."
+			},
 			"api": [
 				{
 					"name": "Badge",
@@ -27039,6 +27201,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#banner",
+			"guide": {
+				"useWhen": "Surface a persistent regional notice, warning, or error (tone: neutral, info, success, warning, danger) with optional title, description, icon, and <Banner.Action> CTAs.",
+				"avoidWhen": "Acknowledging brief, non-blocking completion events that can auto-dismiss.",
+				"instead": "toast",
+				"placement": "At the top of the affected region, form, or LayerCard (never as a replacement for field-level validation)."
+			},
 			"api": [
 				{
 					"name": "Banner",
@@ -27152,6 +27320,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#empty",
+			"guide": {
+				"useWhen": "Communicating an empty collection, zero-result search, or unconfigured region with an icon, title, description, and optional next-step action.",
+				"avoidWhen": "Showing a transient status update, persistent warning notice, or active loading placeholder.",
+				"instead": "banner",
+				"placement": "Inside an L2 LayerCard, LayerCard.Empty, or a DataTable empty slot on the same surface boundary where populated content appears."
+			},
 			"api": [
 				{
 					"name": "Empty",
@@ -27208,6 +27382,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#loader",
+			"guide": {
+				"useWhen": "Indicate active, ongoing work with Basalt's 3x3 pixel-orbit status indicator, optional shimmer label, and automatic showElapsed timer after elapsedDelayMs (default 5s).",
+				"avoidWhen": "Showing a tiny inline spinner inside a button or representing known completion percentage.",
+				"instead": "Spinner for compact inline busy states; Progress for known completion",
+				"placement": "Inside pending LayerCard regions, async task banners, or LoadingScreen while work is actively running."
+			},
 			"api": [
 				{
 					"name": "Loader",
@@ -27275,6 +27455,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#skeleton",
+			"guide": {
+				"useWhen": "Reserve layout geometry (line, block, circle with explicit width/height and reduced-motion-safe shimmer) while initial content loads.",
+				"avoidWhen": "Showing indeterminate action progress or reporting active streaming status with elapsed time.",
+				"instead": "loader",
+				"placement": "Inside LayerCard, DataTable loading rows (84% / 60% / 72% staggered widths), or card placeholders matching final content shape."
+			},
 			"api": [
 				{
 					"name": "Skeleton",
@@ -27319,6 +27505,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#meter",
+			"guide": {
+				"useWhen": "Display a scalar measurement within a known 0..100 range (bar or 20-cell segmented variant, optional auto threshold tones warning >= 70 / danger >= 90) using role=\"meter\".",
+				"avoidWhen": "Tracking an active task's completion over time or indeterminate loading.",
+				"instead": "progress",
+				"placement": "Inside quota cards, StatCard details, or resource usage rows with a clear label and customValue."
+			},
 			"api": [
 				{
 					"name": "Meter",
@@ -27396,6 +27588,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toast",
+			"guide": {
+				"useWhen": "Emit transient feedback (toast(), toast.success(), toast.danger(), toast.warning(), toast.info(), toast.loading(), toast.promise()) on --basalt-popover via a single root <Toaster />.",
+				"avoidWhen": "Displaying persistent warnings, required decisions, or actionable form errors that must remain visible.",
+				"instead": "banner",
+				"placement": "Mount <Toaster /> once near the app provider root and trigger toast.* imperatively from ViewModels or event handlers."
+			},
 			"api": [
 				{
 					"name": "Toaster",
@@ -28005,6 +28203,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#clipboard-text",
+			"guide": {
+				"useWhen": "Display a short read-only command, ID, or token in monospace with an attached copy button and screen-reader copy/error status announcement.",
+				"avoidWhen": "Displaying multi-line source snippets or editable text.",
+				"instead": "code-block",
+				"placement": "Inside LayerCard.Body, DescriptionList values, or onboarding and API key panels."
+			},
 			"api": [
 				{
 					"name": "ClipboardText",
@@ -28049,6 +28253,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#code",
+			"guide": {
+				"useWhen": "Rendering syntax-highlighted multi-line source snippets (CodeHighlighted) with the built-in tokenizer, file header, copy button, and optional line numbers, or inline Code spans.",
+				"avoidWhen": "Displaying plain unhighlighted terminal output, raw logs, or copyable single-line values without syntax coloring.",
+				"instead": "code-block",
+				"placement": "Inside an L2 LayerCard or as a direct child of unstyled CollapsibleContent using `attached` so CodeHighlighted owns its 16px/12px panel insets without double padding."
+			},
 			"api": [
 				{
 					"name": "Code",
@@ -28123,6 +28333,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#code-block",
+			"guide": {
+				"useWhen": "Presenting plain monospace source, config, or log output with an optional header title, copy control, line-number gutter, and `attached` card-edge mode.",
+				"avoidWhen": "Needing syntax-highlighted code panels (CodeHighlighted) or inline code snippets.",
+				"instead": "code",
+				"placement": "Inside L2 content regions or directly inside unstyled CollapsibleContent with `attached` so the panel owns its horizontal/vertical insets and scroll containment."
+			},
 			"api": [
 				{
 					"name": "CodeBlock",
@@ -28186,6 +28402,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#avatar",
+			"guide": {
+				"useWhen": "Represent a user or organization with Avatar + AvatarImage + AvatarFallback, or use AvatarInitials (sm 24px / md 36px) for deterministic two-letter colored fallbacks.",
+				"avoidWhen": "Displaying generic product icons, status dots, or clickable actions without an accessible interactive wrapper.",
+				"instead": "badge",
+				"placement": "In SidebarUser footers (36px), table assignee cells, comments, and ResourceList items."
+			},
 			"api": [
 				{
 					"name": "Avatar",
@@ -28294,6 +28516,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#accordion",
+			"guide": {
+				"useWhen": "Organizing a vertical group of related expandable sections with shared item dividers, roving keyboard focus, and single or multiple open modes.",
+				"avoidWhen": "Toggling a single standalone disclosure, an attached code panel, or a collapsible LayerCard.",
+				"instead": "collapsible",
+				"placement": "Inside an L2 LayerCard or FAQ/settings region; do not nest full LayerCards inside individual AccordionItems."
+			},
 			"api": [
 				{
 					"name": "Accordion (Single)",
@@ -28464,6 +28692,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dialog",
+			"guide": {
+				"useWhen": "Focusing user attention on a rich modal task, multi-field form, or review panel (`sm`/`md`/`lg`/`xl` widths) that renders background content inert.",
+				"avoidWhen": "Interrupting for a simple urgent binary choice or destructive deletion confirmation.",
+				"instead": "alert-dialog",
+				"placement": "Portal-mounted L1 floating surface (`data-basalt-floating`) over `--basalt-scrim`, triggered via `DialogTrigger asChild` with DialogHeader and DialogFooter."
+			},
 			"api": [
 				{
 					"name": "Dialog",
@@ -28681,6 +28915,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#alert-dialog",
+			"guide": {
+				"useWhen": "Requiring an explicit modal decision for an urgent interruption or irreversible action that cannot be dismissed by clicking outside.",
+				"avoidWhen": "Collecting form inputs, showing rich content, or running an async confirmation flow with built-in loading and `useConfirm()` helpers.",
+				"instead": "confirm-dialog",
+				"placement": "Portal-mounted modal alert triggered via `AlertDialogTrigger asChild` with explicit AlertDialogCancel and AlertDialogAction buttons."
+			},
 			"api": [
 				{
 					"name": "AlertDialog",
@@ -28885,6 +29125,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#confirm-dialog",
+			"guide": {
+				"useWhen": "Confirming a consequential or destructive resource operation with controlled open/loading state, focus restoration, or the Promise-based `useConfirm()` hook.",
+				"avoidWhen": "Presenting a multi-field creation form or non-confirming informational modal.",
+				"instead": "dialog",
+				"placement": "Controlled at the feature or page root alongside async ViewModel handlers that surface failures without silently closing."
+			},
 			"api": [
 				{
 					"name": "ConfirmDialog",
@@ -29021,6 +29267,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#popover",
+			"guide": {
+				"useWhen": "Anchoring an interactive floating panel with controls, mini-forms, or PopoverTitle/PopoverDescription next to a trigger (arrow off by default).",
+				"avoidWhen": "Rendering a brief non-interactive hover hint or a keyboard-roved action menu.",
+				"instead": "dropdown-menu",
+				"placement": "Portal-mounted `--basalt-popover` panel anchored to `PopoverTrigger asChild`; opt into `arrow` only when directional anchor attribution is needed."
+			},
 			"api": [
 				{
 					"name": "Popover",
@@ -29241,6 +29493,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dropdown-menu",
+			"guide": {
+				"useWhen": "Exposing a button-triggered list of commands, checkable options, radio groups, nested submenus, shortcuts, and destructive items with roving focus.",
+				"avoidWhen": "Selecting a single form field value or hosting arbitrary form controls.",
+				"instead": "select",
+				"placement": "Portal-mounted `--basalt-popover` menu anchored to `DropdownMenuTrigger asChild` in headers, toolbars, or table row action buttons."
+			},
 			"api": [
 				{
 					"name": "DropdownMenu",
@@ -29759,6 +30017,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#context-menu",
+			"guide": {
+				"useWhen": "Providing secondary-click (right-click) or long-press contextual commands on a canvas, card row, or workspace item.",
+				"avoidWhen": "Serving as the only discoverable trigger for primary actions, or opening from a standard left-click button.",
+				"instead": "dropdown-menu",
+				"placement": "Wrapping an interactive target region via `ContextMenuTrigger asChild`, mirroring actions available in visible menus or toolbars."
+			},
 			"api": [
 				{
 					"name": "ContextMenu",
@@ -30237,6 +30501,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#hover-card",
+			"guide": {
+				"useWhen": "Revealing a rich, non-modal preview card (such as user details or linked record summary) when hovering or focusing a link or trigger.",
+				"avoidWhen": "Showing a concise one-line text hint or hosting interactive form controls that need click persistence.",
+				"instead": "tooltip",
+				"placement": "Portal-mounted floating card anchored to `HoverCardTrigger asChild` inside lists, tables, or inline references."
+			},
 			"api": [
 				{
 					"name": "HoverCard",
@@ -30405,6 +30675,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sheet",
+			"guide": {
+				"useWhen": "Opening a modal edge-anchored side drawer (`top`/`right`/`bottom`/`left`) with backdrop scrim and modal focus handling for inspection or editing.",
+				"avoidWhen": "Keeping a persistent, non-modal assistant or inspector rail open alongside active main-column work.",
+				"instead": "dock",
+				"placement": "Portal-mounted floating L1 drawer (`data-basalt-floating`) triggered via `SheetTrigger asChild` with SheetHeader and footer actions."
+			},
 			"api": [
 				{
 					"name": "Sheet",
@@ -30580,6 +30856,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#command-palette",
+			"guide": {
+				"useWhen": "Offering keyboard-first fuzzy search across pages, records, and commands (`CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`) in a unified floating frame.",
+				"avoidWhen": "Filtering and selecting options inline inside a form field.",
+				"instead": "combobox",
+				"placement": "Mounted at the app shell or feature root and opened via CommandPaletteTrigger or global keyboard shortcut (such as ⌘K)."
+			},
 			"api": [
 				{
 					"name": "CommandPalette",
@@ -30824,6 +31106,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tabs",
+			"guide": {
+				"useWhen": "Switching between distinct full content panels in place using underline-only active tabs with an animated bottom indicator.",
+				"avoidWhen": "Filtering a single collection or toggling a compact view mode inside a toolbar or card header.",
+				"instead": "segment-control",
+				"placement": "On L1 ContentIsland above regional content or inside an L2 LayerCard to partition parallel views."
+			},
 			"api": [
 				{
 					"name": "Tabs",
@@ -30901,6 +31189,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table",
+			"guide": {
+				"useWhen": "Rendering static or custom-markup tabular data with full control over TableHeader, TableRow, TableHead, TableCell, striping, and compact/default density.",
+				"avoidWhen": "Needing built-in column sorting, row selection, pagination orchestration, or standardized loading, error, and empty states.",
+				"instead": "data-table",
+				"placement": "Direct child of an L2 LayerCard using `ps-basalt-table-edge`/`pe-basalt-table-edge` (or `data-edge=\"attached\"`) so rows span edge-to-edge without `p-0` Body overrides."
+			},
 			"api": [
 				{
 					"name": "Table",
@@ -31042,6 +31336,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
+			"guide": {
+				"useWhen": "Displaying structured record collections requiring sorting, row selection, manual server pagination, staggered loading skeletons, error retry, and Empty states.",
+				"avoidWhen": "Showing a small static table or custom multi-line layout without interactive data state.",
+				"instead": "table",
+				"placement": "Spanning full column width inside an L2 LayerCard with `edge=\"attached\"` or inside ResourceList, paired with TablePager when paginated."
+			},
 			"api": [
 				{
 					"name": "DataTable",
@@ -31261,6 +31561,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#collapsible",
+			"guide": {
+				"useWhen": "Toggling a single disclosure region, composing a collapsible LayerCard (`Collapsible asChild`), or revealing attached code (`CollapsibleContent unstyled`).",
+				"avoidWhen": "Managing a multi-item group of disclosures that share dividers and roving arrow-key navigation.",
+				"instead": "accordion",
+				"placement": "Wrap LayerCard with `Collapsible asChild`, slot `LayerCard.Header asChild` onto CollapsibleTrigger, and place LayerCard.Body or `attached` code inside `CollapsibleContent unstyled`."
+			},
 			"api": [
 				{
 					"name": "Collapsible",
@@ -31361,6 +31667,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#breadcrumbs",
+			"guide": {
+				"useWhen": "Showing hierarchical ancestor links leading to the current non-linked `aria-current` route inside a shell header or PageHeader.",
+				"avoidWhen": "Switching between peer sections at the same hierarchy level or rendering primary app navigation.",
+				"instead": "tabs",
+				"placement": "At the top of the app shell header or inside PageHeader's `breadcrumbs` prop on L1 ContentIsland, scrolling horizontally on narrow viewports."
+			},
 			"api": [
 				{
 					"name": "Breadcrumbs",
@@ -31398,6 +31710,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toolbar",
+			"guide": {
+				"useWhen": "Grouping explicit compact actions and an inline search input (`Toolbar.Input`, `Toolbar.Button`) into one cohesive control strip.",
+				"avoidWhen": "Composing wrapping multi-facet filter controls with date ranges, presets, and removable filter chips.",
+				"instead": "filter-bar",
+				"placement": "Above a table, editor, or ResourceList results region, keeping internal buttons and inputs on the compact control scale."
+			},
 			"api": [
 				{
 					"name": "Toolbar",
@@ -31446,6 +31764,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table-of-contents",
+			"guide": {
+				"useWhen": "Providing an on-this-page anchor list (`TableOfContentsItem` with `active` state) for long documentation or multi-section reading views.",
+				"avoidWhen": "Navigating between separate application pages or routes.",
+				"instead": "sidebar",
+				"placement": "In a sticky secondary rail beside long-form L1/L2 document content, keeping the panel's background and inset on the panel itself."
+			},
 			"api": [
 				{
 					"name": "TableOfContents",
@@ -31507,6 +31831,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#grid",
+			"guide": {
+				"useWhen": "Arranging cards, fields, or dashboard panels in responsive columns using Basalt's layout gap scale (`sm`/`md`/`lg`/`xl`, defaulting to 16px `md`).",
+				"avoidWhen": "Aligning a single inline row of compact buttons, icons, or badges.",
+				"instead": "a flex row with control spacing",
+				"placement": "Inside L1 ContentIsland sections or L2 LayerCard bodies to lay out StatCards, cards, or multi-column panels."
+			},
 			"api": [
 				{
 					"name": "Grid",
@@ -31586,6 +31916,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#section-rule",
+			"guide": {
+				"useWhen": "Introducing a page or card region with either a compact uppercase label plus dashed rule (`variant=\"label\"`) or a sentence-case 18px h2 heading (`variant=\"heading\"`).",
+				"avoidWhen": "Rendering the top-level page title or drawing a plain divider without a heading.",
+				"instead": "page-header",
+				"placement": "Directly on L1 ContentIsland between 24px-separated sections (or inside L2 cards for subsection labels), never wrapping content in a redundant card."
+			},
 			"api": [
 				{
 					"name": "SectionRule",
@@ -31629,6 +31965,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
+			"guide": {
+				"useWhen": "Building the persistent application navigation shell (`SidebarProvider`, `Sidebar`, `SidebarHeader`, `SidebarNav`, `SidebarGroup`, `SidebarItem`, `ContentIsland`, `SidebarDrawer`).",
+				"avoidWhen": "Rendering in-page anchor links or horizontal view tabs.",
+				"instead": "table-of-contents",
+				"placement": "At the application root on the L0 shell flanking L1 ContentIsland, using SidebarGroup disclosures and SidebarDrawer on mobile viewports."
+			},
 			"api": [
 				{
 					"name": "SidebarProvider",
@@ -32124,6 +32466,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table-pager",
+			"guide": {
+				"useWhen": "Pair a tabular range summary (Showing X-Y of Z or custom formatRange) with Pagination controls in a responsive bar beneath a Table or DataTable.",
+				"avoidWhen": "Paging non-tabular content where a row-range summary makes no sense.",
+				"instead": "pagination",
+				"placement": "Directly below a Table, DataTable, or ResourceList inside its LayerCard or footer."
+			},
 			"api": [
 				{
 					"name": "TablePager",
@@ -32192,6 +32540,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#fab",
+			"guide": {
+				"useWhen": "Pin a floating circular corner launcher (placement=\"fixed\" or \"absolute\") that hides smoothly when open is true so a Dock can occupy the corner.",
+				"avoidWhen": "Replacing primary page-header create actions or placing standard buttons inside forms and cards.",
+				"instead": "button",
+				"placement": "Bottom-right corner of the viewport (fixed) or a bounded preview container (absolute), paired with Dock."
+			},
 			"api": [
 				{
 					"name": "Fab",
@@ -32250,6 +32604,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dock",
+			"guide": {
+				"useWhen": "Mounting a persistent right utility rail in `push` mode (shrinking the main column) or local `overlay` mode (non-modal region scrim with Escape dismissal).",
+				"avoidWhen": "Requiring a modal focus-trapped drawer that blocks interaction across the entire viewport.",
+				"instead": "sheet",
+				"placement": "Beside the main content column inside an app workspace for `push` mode, or inside a `relative` local container for `overlay` mode."
+			},
 			"api": [
 				{
 					"name": "Dock",
@@ -32332,6 +32692,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#theme-provider",
+			"guide": {
+				"useWhen": "Supplying `system`/`light`/`dark` theme state and document synchronization at the app root (or scoped previews with `persist={false}` and `applyToDocument={false}`).",
+				"avoidWhen": "Rendering the user-facing button that cycles theme modes.",
+				"instead": "theme-toggle",
+				"placement": "Once at the application root wrapping the shell and portals, or isolated around embedded theme preference demos."
+			},
 			"api": [
 				{
 					"name": "ThemeProvider",
@@ -32396,6 +32762,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-provider",
+			"guide": {
+				"useWhen": "Injecting your framework router's link component so all Basalt Link, LinkButton, Breadcrumbs, and Sidebar items navigate natively.",
+				"avoidWhen": "Rendering an individual inline hyperlink inside prose.",
+				"instead": "link",
+				"placement": "Once near the application root above Sidebar, Breadcrumbs, and page routes."
+			},
 			"api": [
 				{
 					"name": "LinkProvider",
@@ -32426,6 +32798,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#multi-select",
+			"guide": {
+				"useWhen": "Pick multiple options from a searchable popover list with optional removable chips (showChips), async query/filterOptions={false} support, and repeated native form entries.",
+				"avoidWhen": "Choosing only one value or picking from a tiny static set of 2-4 checkboxes.",
+				"instead": "Combobox for single select; Checkbox.Group for short static lists",
+				"placement": "Inside Field for multi-tag or assignee forms, or inside FilterBar (with showChips={false} when FilterBar renders its own chips)."
+			},
 			"api": [
 				{
 					"name": "MultiSelect",
@@ -32600,6 +32978,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#filter-bar",
+			"guide": {
+				"useWhen": "Composing wrapping search, multi-select, date-range, preset, and removable FilterChip controls for page-owned filtering and URL state.",
+				"avoidWhen": "Placing a simple single-row search input alongside one or two action buttons.",
+				"instead": "toolbar",
+				"placement": "Inside an L2 LayerCard or ResourceList `filters` slot (or directly on L1 as a top-level non-card filter strip; revealed filter forms belong in LayerCard)."
+			},
 			"api": [
 				{
 					"name": "FilterBar",
@@ -32704,6 +33088,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#file-dropzone",
+			"guide": {
+				"useWhen": "Accepting keyboard-accessible file browsing or drag-and-drop uploads with extension/MIME, byte-size, and count validation plus structured rejection reasons.",
+				"avoidWhen": "Tracking per-file upload progress, cancellation, retry, and completion states after files are queued.",
+				"instead": "upload-queue",
+				"placement": "Inside an L2 LayerCard or form section, paired with an application ViewModel that owns File objects, object URLs, and upload transport."
+			},
 			"api": [
 				{
 					"name": "FileDropzone",
@@ -32813,6 +33203,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#upload-queue",
+			"guide": {
+				"useWhen": "Displaying application-owned queued, uploading, success, error, and cancelled upload states via UploadItem rows with progress bars and cancel, retry, or remove actions.",
+				"avoidWhen": "Capturing initial file selection via drag-and-drop or file picker browsing.",
+				"instead": "file-dropzone",
+				"placement": "Inside an L2 LayerCard below or beside a FileDropzone, driven by application ViewModel state rather than internal network logic."
+			},
 			"api": [
 				{
 					"name": "UploadQueue",
@@ -32921,6 +33317,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#inline-editable",
+			"guide": {
+				"useWhen": "Edit a short committed string in place with click-to-edit, Enter to save, Escape to cancel, saveOnBlur, async onSave pending state, and inline validation.",
+				"avoidWhen": "Renaming sidebar navigation destinations or editing multi-field forms.",
+				"instead": "editable-nav-item",
+				"placement": "Inside LayerCard headers, PageHeader titles, or DescriptionList detail rows."
+			},
 			"api": [
 				{
 					"name": "InlineEditable",
@@ -33078,6 +33480,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#editable-nav-item",
+			"guide": {
+				"useWhen": "Rendering sidebar or folder navigation items that combine route links, caller icons, inline rename editing, and trailing action menus.",
+				"avoidWhen": "Editing an isolated text field outside a navigation list.",
+				"instead": "inline-editable",
+				"placement": "Inside SidebarNav or a master-list navigation rail, backed by LinkProvider and application-owned rename persistence."
+			},
 			"api": [
 				{
 					"name": "EditableNavItem",
@@ -33179,6 +33587,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#icon-picker",
+			"guide": {
+				"useWhen": "Let users pick one icon from a small caller-supplied IconPickerOption subset inside a searchable popover grid.",
+				"avoidWhen": "Picking arbitrary text options or exposing an unbounded icon catalog.",
+				"instead": "select",
+				"placement": "Inside Field in category, workspace, or tag creation forms and dialogs."
+			},
 			"api": [
 				{
 					"name": "IconPicker",
@@ -33279,6 +33693,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tag-badge",
+			"guide": {
+				"useWhen": "Label items with user-defined categories or entity tags using deterministic tagColorFor(colorKey ?? name) hashing across six non-semantic hues (slate, blue, violet, teal, amber, rose) or explicit TagColor values.",
+				"avoidWhen": "Communicating system status severity, SLA alerts, or interactive toggleable filter buttons.",
+				"instead": "badge",
+				"placement": "Inline in resource cards, table cells, and tag lists using compact control spacing between adjacent tags."
+			},
 			"api": [
 				{
 					"name": "TagBadge",
@@ -33338,6 +33758,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tag-color-picker",
+			"guide": {
+				"useWhen": "Choose a TagColor from Basalt's TAG_COLORS palette (or a restricted colors subset) in a responsive radio swatch grid paired with visible color names.",
+				"avoidWhen": "Picking arbitrary hex colors or semantic system status tones.",
+				"instead": "radio",
+				"placement": "Inside Field in tag creation or editing dialogs, paired with a tag name Input and TagBadge preview."
+			},
 			"api": [
 				{
 					"name": "TagColorPicker",
@@ -33424,6 +33850,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#responsive-master-detail",
+			"guide": {
+				"useWhen": "Coordinating a split list/detail workspace that shows two columns from 768px and switches between inert panes with focus restoration on mobile.",
+				"avoidWhen": "Displaying a single-column list or opening a temporary detail panel over the current page.",
+				"instead": "sheet",
+				"placement": "Inside a bounded ContentIsland workspace (`h-full min-h-0`), keeping selection, routing, and draft state in the ViewModel."
+			},
 			"api": [
 				{
 					"name": "ResponsiveMasterDetail",
@@ -33511,6 +33943,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#chart",
+			"guide": {
+				"useWhen": "Framing Recharts, ECharts, or custom SVG visualizations with engine-agnostic ChartFrame, ChartTooltip, ChartLegend, summary text, and accessible data alternatives.",
+				"avoidWhen": "Showing a single headline KPI number with a compact 4rem sparkline inside a metric grid.",
+				"instead": "stat-card",
+				"placement": "Inside an L2 LayerCard with an explicit height preset (`sm`/`md`/`lg`) and numbered chart tokens; keep full-axis charts out of StatCard."
+			},
 			"api": [
 				{
 					"name": "ChartFrame",
@@ -33615,6 +34053,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stat-card",
+			"guide": {
+				"useWhen": "Presenting dashboard KPIs and compact metrics with a title, 24px tabular value, optional trend or status slot, heading icon cue, and compact supporting chart.",
+				"avoidWhen": "Building general content cards with hand-built LayerCard.Header/Body splits or full analytical charts with axes.",
+				"instead": "layer-card",
+				"placement": "Arranged in a StatGrid inside L1 ContentIsland sections, keeping comparison text next to the primary numeral before any compact 4rem trend plot."
+			},
 			"api": [
 				{
 					"name": "StatCard",
@@ -33739,6 +34183,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#page-header",
+			"guide": {
+				"useWhen": "Rendering the top heading of an application page with `breadcrumbs`, one 24px `h1` `title`, 65ch `description`, right-aligned `actions` (create button last), and optional `filters`.",
+				"avoidWhen": "Labeling an internal section below the page heading or titling an L2 LayerCard.",
+				"instead": "section-rule",
+				"placement": "Directly on the L1 ContentIsland rail as the first element of a page (or composed by ShowcasePage / ResourceList), never wrapped in a LayerCard."
+			},
 			"api": [
 				{
 					"name": "PageHeader",
@@ -33800,6 +34250,12 @@
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#resource-list",
+			"guide": {
+				"useWhen": "Scaffolding a standard resource index page combining PageHeader, toolbar, filters, bulkActions, DataTable (or custom children) with loading/empty/error states, and footer.",
+				"avoidWhen": "Embedding a standalone table inside an existing card or building a bespoke multi-pane workspace that does not follow the standard index-page scaffold.",
+				"instead": "data-table",
+				"placement": "Inside ContentIsland (L1), keeping business queries, selection state, and mutations in the page ViewModel."
+			},
 			"api": [
 				{
 					"name": "ResourceList",
@@ -33906,6 +34362,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#spinner",
+			"guide": {
+				"useWhen": "Show a lightweight rotating ring (sm, md, lg, role=\"status\" unless aria-hidden) inside buttons, search inputs, or tight inline loading slots.",
+				"avoidWhen": "Indicating multi-second workspace work that benefits from a status label and elapsed timer, or known percentage completion.",
+				"instead": "Loader for labeled work with elapsed time; Progress for task completion",
+				"placement": "Inline inside busy buttons, Combobox search headers, or compact table/cell loading indicators."
+			},
 			"api": [
 				{
 					"name": "Spinner",
@@ -33938,6 +34400,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#kbd",
+			"guide": {
+				"useWhen": "Show keyboard shortcuts and keycap hints (sm 20px or md 24px monospace) inside command palette rows, sidebar search triggers, or tooltips.",
+				"avoidWhen": "Rendering inline code identifiers, CLI snippets, or clickable shortcut buttons.",
+				"instead": "code",
+				"placement": "Trailing inside menu items, command rows, sidebar search buttons, or inline beside keyboard documentation."
+			},
 			"api": [
 				{
 					"name": "Kbd",
@@ -33963,6 +34431,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#progress",
+			"guide": {
+				"useWhen": "Track determinate task completion (value in 0..max) or indeterminate task execution (value omitted or null) across sm/md/lg tracks and semantic tones.",
+				"avoidWhen": "Measuring static capacity or utilization gauges like disk usage or CPU load.",
+				"instead": "meter",
+				"placement": "Inside UploadQueue rows, import/export dialogs, or task-status LayerCard panels with a visible label."
+			},
 			"api": [
 				{
 					"name": "Progress",
@@ -34008,6 +34482,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#pagination",
+			"guide": {
+				"useWhen": "Navigate discrete page numbers (page, pageCount, onPageChange) with optional simple prev/next mode or showPageNumbers ellipsis mode inside one joined control frame.",
+				"avoidWhen": "Paging a data table that also needs a row-count range summary, or loading infinite streams.",
+				"instead": "table-pager",
+				"placement": "Centered or end-aligned below paginated lists, search results, or gallery grids."
+			},
 			"api": [
 				{
 					"name": "Pagination",
@@ -34080,6 +34560,12 @@
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#combobox",
+			"guide": {
+				"useWhen": "Provide a searchable picker (cmdk filtering or async shouldFilter={false}) pairing Select trigger geometry with optional clearable, loading, and multiple modes.",
+				"avoidWhen": "Choosing from a tiny fixed list that needs no search, or allowing arbitrary unvalidated text entry.",
+				"instead": "Select for short fixed lists; Autocomplete for free-text input",
+				"placement": "Inside Field forms, FilterBar, or toolbars when options exceed ~10 items or require keyword search."
+			},
 			"api": [
 				{
 					"name": "Combobox",

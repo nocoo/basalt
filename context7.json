@@ -1,0 +1,41 @@
+{
+	"projectTitle": "Basalt",
+	"description": "Matte React 19 design system (@nocoo/basalt) with Tailwind CSS v4 and standalone CSS entrypoints, layered matte surfaces, charts, and application shell recipes.",
+	"folders": [".", "packages/basalt/ai", "packages/basalt/src", "public", "docs"],
+	"excludeFolders": [
+		"node_modules",
+		"dist",
+		"coverage",
+		"assets",
+		"fixtures",
+		"scripts",
+		"src",
+		"worker",
+		"packages/basalt/dist",
+		"packages/basalt/scripts",
+		"public/fonts",
+		"public/landing"
+	],
+	"excludeFiles": [
+		"AGENTS.md",
+		"CHANGELOG.md",
+		"Retrospective.md",
+		"bun.lock",
+		"osv-scanner.toml",
+		"docs/01-plan-2-0.md",
+		"docs/02-implementation.md",
+		"docs/03-maturity-program.md",
+		"docs/04-systematic-library-review.md",
+		"docs/05-plan-4-0.md",
+		"public/loading-lab.html",
+		"public/loading-lab-02.html",
+		"public/loading-ripple.html"
+	],
+	"rules": [
+		"Follow DESIGN.md for spacing tokens, typography scales, matte surface hierarchy (L0/L1/L2), and component selection rules.",
+		"Follow INTEGRATION.md and packages/basalt/ai/RECIPES.md for AppShell, Sidebar, AppHeader, ContentIsland, PageHeader, and SectionRule composition.",
+		"Use README.md, public/agents.md, and public/setup.md for installation, CSS contracts (@nocoo/basalt/styles with Tailwind v4 or @nocoo/basalt/styles/standalone), and machine discovery docs.",
+		"Import icons from @nocoo/basalt/icons and heavy subpaths such as @nocoo/basalt/components/chart, @nocoo/basalt/components/date-picker, and @nocoo/basalt/components/data-table directly.",
+		"Mount one global <Toaster /> at the application root and avoid duplicating toast containers."
+	]
+}

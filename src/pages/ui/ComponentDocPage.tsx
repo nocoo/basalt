@@ -20,6 +20,7 @@ import { use, useState } from "react";
 import { useParams } from "react-router";
 import { Github } from "@/components/icons/github";
 import { ShowcasePage } from "@/components/ShowcasePage";
+import { renderComponentMarkdown } from "@/lib/catalog-markdown";
 import {
 	CATALOG_BY_SLUG,
 	type CatalogEntry,
@@ -28,6 +29,7 @@ import {
 	catalogNavName,
 } from "./catalog";
 import { loadCatalogPageContent } from "./catalog-content-loader";
+import { getCatalogComponentGuide } from "./catalog-guides";
 import {
 	DOCUMENTED_NATIVE_ONLY_SURFACES,
 	formatNativeSurfaceStrategy,
@@ -37,7 +39,6 @@ import type { CatalogScenario } from "./catalog-scenario";
 import {
 	type CatalogApiSurface,
 	type CatalogDocs,
-	catalogSourceCopyText,
 	catalogSourceViewerHref,
 	githubSourceHref,
 	githubSourceLabel,
@@ -45,7 +46,7 @@ import {
 import { DocCode, DocExample } from "./DocCode";
 import { type DocHeading, DocToc } from "./DocToc";
 
-function CopyPageButton({ markdown }: { markdown: string }) {
+function CopyPageButton({ markdown, slug }: { markdown: string; slug: string }) {
 	const [copied, setCopied] = useState(false);
 	return (
 		<div className="flex shrink-0 items-stretch">
@@ -80,6 +81,20 @@ function CopyPageButton({ markdown }: { markdown: string }) {
 					>
 						Copy page link
 					</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={() => {
+							window.open(`/ui/${slug}.md`, "_blank", "noopener,noreferrer");
+						}}
+					>
+						View as Markdown
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={async () => {
+							await navigator.clipboard.writeText(`${window.location.origin}/ui/${slug}.md`);
+						}}
+					>
+						Copy Markdown URL
+					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>
@@ -88,62 +103,6 @@ function CopyPageButton({ markdown }: { markdown: string }) {
 
 export function catalogApiSurfaceId(name: string): string {
 	return `api-${name}`;
-}
-
-function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
-	return [
-		"## API Reference",
-		...api.flatMap((surface) => {
-			if (surface.callSignature) {
-				const lines = [`### ${surface.name}`, `\`${surface.callSignature}\``];
-				if (surface.description) {
-					lines.push(surface.description);
-				}
-				if (surface.parameters && surface.parameters.length > 0) {
-					lines.push(
-						"Parameters:",
-						...surface.parameters.map((p) => {
-							const req = p.required ? ", required" : ", optional";
-							return `- ${p.name} (${p.type}${req}): ${p.description ?? ""}`;
-						}),
-					);
-				}
-				if (surface.returns) {
-					const retDesc = surface.returns.description ? `: ${surface.returns.description}` : "";
-					lines.push(`Returns: \`${surface.returns.type}\`${retDesc}`);
-				}
-				if (surface.options && surface.options.props.length > 0) {
-					lines.push(
-						`Options (${surface.options.name}):`,
-						...surface.options.props.map((p) => {
-							const req = p.required ? ", required" : ", optional";
-							return `- ${p.name} (${p.type}${req}, default ${p.default ?? "—"}): ${p.description ?? ""}`;
-						}),
-					);
-				}
-				return lines;
-			}
-			const nativeDoc = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
-			const isNative = isDocumentedNativeSurface(
-				surface.name,
-				surface.props.length,
-				surface.props[0]?.name,
-			);
-			const strategyLine = isNative && nativeDoc ? [formatNativeSurfaceStrategy(nativeDoc)] : [];
-			return [
-				`### ${surface.name}`,
-				...(surface.typeParameters ? [`Type parameters: \`${surface.typeParameters}\``] : []),
-				...strategyLine,
-				...(surface.props.length === 0
-					? ["No component-specific props."]
-					: surface.props.map((prop) => {
-							const required =
-								prop.required === undefined ? "" : prop.required ? ", required" : ", optional";
-							return `- ${prop.name} (${prop.type}${required}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`;
-						})),
-			];
-		}),
-	];
 }
 
 export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
@@ -364,19 +323,12 @@ function ReadyDoc({
 	}
 	const barrel = catalogBarrelImport(entry);
 	const granular = catalogGranularImport(entry);
-	const pageMarkdown = [
-		`# ${catalogNavName(entry)}`,
-		docs.description,
-		"## Installation",
-		...(barrel ? [barrel] : []),
-		granular,
-		"## Usage",
-		docs.usage,
-		"## Examples",
-		...examples.flatMap((example) => [`### ${example.title}`, example.code]),
-		...catalogApiCopyLines(docs.api),
-		catalogSourceCopyText(docs, entry.slug),
-	].join("\n\n");
+	const pageMarkdown = renderComponentMarkdown({
+		entry,
+		docs,
+		examples,
+		guide: getCatalogComponentGuide(entry.slug),
+	});
 	const headings: DocHeading[] = [
 		{ id: "installation", text: "Installation", depth: 2 as const },
 		...(barrel ? [{ id: "barrel", text: "Barrel", depth: 3 as const }] : []),
@@ -411,7 +363,7 @@ function ReadyDoc({
 						<Github />
 						Source
 					</LinkButton>
-					<CopyPageButton markdown={pageMarkdown} />
+					<CopyPageButton markdown={pageMarkdown} slug={entry.slug} />
 				</>
 			}
 		>

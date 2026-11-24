@@ -49,9 +49,19 @@ describe("package registry generator and AI package assets", () => {
 			expect(cat.sourceFile.startsWith("packages/basalt/src/")).toBe(true);
 			expect(cat.sourceHash).toHaveLength(16);
 			expect(cat.packageDoc).toBe(`ai/registry.json#${cat.slug}`);
+			expect(cat.guide.useWhen.length).toBeGreaterThan(0);
+			expect(cat.guide.avoidWhen.length).toBeGreaterThan(0);
+			expect(cat.guide.placement.length).toBeGreaterThan(0);
 			expect(Array.isArray(cat.api)).toBe(true);
 			expect(cat.api.length).toBeGreaterThan(0);
 		}
+
+		const usageMd = readFileSync("packages/basalt/ai/USAGE.md", "utf8");
+		expect(usageMd).toContain("https://basaltui.com/llms.txt");
+		expect(usageMd).toContain("/agents.md");
+		expect(usageMd).toContain("/setup.md");
+		expect(usageMd).toContain("/ui/<slug>.md");
+		expect(usageMd).toContain("/templates/<slug>.md");
 
 		// CSS exports
 		expect(registry.cssExports).toHaveLength(4);

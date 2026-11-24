@@ -37,6 +37,8 @@ const CROSS_ORIGIN_PUBLIC_ASSETS = new Set([
 	"/apple-touch-icon.png",
 ]);
 
+const MACHINE_DOC_PATHS = new Set(["/llms.txt", "/llms-full.txt", "/ai.txt", "/md-catalog.json"]);
+
 export function isCrossOriginAssetPath(pathname: string): boolean {
 	return (
 		CROSS_ORIGIN_PUBLIC_ASSETS.has(pathname) ||
@@ -44,6 +46,14 @@ export function isCrossOriginAssetPath(pathname: string): boolean {
 		pathname.startsWith("/landing/") ||
 		pathname.startsWith("/fonts/")
 	);
+}
+
+export function isMarkdownPath(pathname: string): boolean {
+	return pathname.endsWith(".md");
+}
+
+export function isMachineDocPath(pathname: string): boolean {
+	return isMarkdownPath(pathname) || MACHINE_DOC_PATHS.has(pathname);
 }
 
 export function isPreviewHost(hostname: string): boolean {
@@ -89,6 +99,12 @@ export function withSecurityHeaders(
 	}
 	if (pathname && isCrossOriginAssetPath(pathname)) {
 		next.set("Cross-Origin-Resource-Policy", "cross-origin");
+	}
+	if (pathname && isMachineDocPath(pathname)) {
+		next.set("Access-Control-Allow-Origin", "*");
+	}
+	if (pathname && isMarkdownPath(pathname)) {
+		next.set("Content-Type", "text/markdown; charset=utf-8");
 	}
 	if (preview) {
 		next.set("X-Robots-Tag", "noindex");

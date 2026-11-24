@@ -1,0 +1,26 @@
+# ai.txt — AI Crawler & Agent Policy for Basalt
+# Canonical URL: https://basaltui.com/ai.txt
+
+User-Agent: *
+Allow: /
+Allow: https://basaltui.com/llms.txt
+Allow: https://basaltui.com/llms-full.txt
+Allow: https://basaltui.com/agents.md
+Allow: https://basaltui.com/setup.md
+Allow: https://basaltui.com/md-catalog.json
+Allow: /ui/*.md
+Allow: /ui/overview/*.md
+Allow: /templates/*.md
+
+# Scope
+Scope: Public documentation, API references, and copyable templates at https://basaltui.com/
+Package: @nocoo/basalt (MIT License)
+Source: https://github.com/nocoo/basalt
+
+# Attribution
+Attribution: Basalt (https://basaltui.com)
+
+# Restrictions
+# - Do not treat sample healthcare, finance, or telemetry mock data in the showcase as real user data.
+# - Do not redistribute Basalt brand marks (assets/brand/) as a third-party brand identity.
+# - Respect standard HTTP caching and reasonable crawl rates.
