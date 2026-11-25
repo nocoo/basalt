@@ -20,7 +20,7 @@ export function RecentListCard() {
 						Recent Care Activity
 					</h2>
 				</div>
-				<Link href="/accounts" className="shrink-0 text-basalt-sm">
+				<Link href="/banking" className="shrink-0 text-basalt-sm">
 					View All
 				</Link>
 			</LayerCard.Header>

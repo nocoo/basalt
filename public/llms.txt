@@ -26,9 +26,9 @@ Fetch raw Markdown directly instead of scraping HTML:
 
 - [Design system catalog](https://basaltui.com/ui): Components, charts and blocks
 - [Full catalog list](https://basaltui.com/llms-full.txt): One entry per published surface
-- [Templates gallery](https://basaltui.com/templates): Full-page application templates
+- [Agent workspace](https://basaltui.com/templates/agent-workspace): Interactive workbench and standalone template
 - [App frame](https://basaltui.com/layout): Shell, island and page heading recipe
-- [Login](https://basaltui.com/login): Full-viewport identity badge
+- [Visitor login](https://basaltui.com/templates/visitor-login): Full-viewport identity badge
 
 ## Package
 

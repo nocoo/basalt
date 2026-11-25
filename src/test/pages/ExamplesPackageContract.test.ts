@@ -3,40 +3,29 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 const EXAMPLE_PAGES = [
-	"AccountsPage.tsx",
 	"BankingDashboardPage.tsx",
 	"DashboardPage.tsx",
 	"DevExamplesPage.tsx",
 	"DialogsPage.tsx",
-	"FlowComparisonPage.tsx",
 	"FormsPage.tsx",
 	"HealthPage.tsx",
 	"LayoutPage.tsx",
-	"LoadingPage.tsx",
 	"LoadingStatesPage.tsx",
 	"AnimationPage.tsx",
 	"TablesPage.tsx",
-	"LoginPage.tsx",
 	"NavigationPage.tsx",
 	"NetworkOpsDashboardPage.tsx",
 	"NotFound.tsx",
 	"PalettePage.tsx",
-	"PortfolioPage.tsx",
-	"ProgressTrackingPage.tsx",
-	"SettingsPage.tsx",
-	"StaticPage.tsx",
 	"TypefacePage.tsx",
 	"TemplateDetailPage.tsx",
 ] as const;
 
 const CHART_PAGES = [
 	"DashboardPage.tsx",
-	"FlowComparisonPage.tsx",
 	"HealthPage.tsx",
 	"NetworkOpsDashboardPage.tsx",
 	"PalettePage.tsx",
-	"PortfolioPage.tsx",
-	"ProgressTrackingPage.tsx",
 	"BankingDashboardPage.tsx",
 ] as const;
 

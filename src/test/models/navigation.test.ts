@@ -4,16 +4,18 @@ import {
 	buildCommandPaletteResults,
 	CATALOG_ICON_IDS,
 	CATEGORY_OVERVIEW_ITEMS,
+	FOUNDATION_NAV_ITEMS,
 	LIBRARY_CATEGORY_GROUPS,
-	LIBRARY_GUIDE_ITEMS,
+	LIBRARY_INDEX_ITEM,
 	matchesSearchQuery,
 	normalizePathname,
+	PATTERN_NAV_ITEMS,
 	resolveCatalogContext,
 	resolveRouteBreadcrumbs,
 	resolveRouteTitle,
 	SHOWCASE_ROUTES,
 	SHOWCASE_TITLES,
-	SIDEBAR_NAV_GROUPS,
+	TEMPLATE_NAV_GROUPS,
 } from "@/models/navigation";
 import { CATALOG } from "@/pages/ui/catalog";
 
@@ -24,23 +26,39 @@ describe("navigation model", () => {
 		expect(Object.keys(CATALOG_ICON_IDS)).toHaveLength(81);
 	});
 
-	it("keeps routes, titles, and streamlined IA coherent", () => {
+	it("keeps routes, titles, and 4-partition IA coherent", () => {
 		expect(SHOWCASE_TITLES["/"]).toBe("Home");
-		expect(SHOWCASE_TITLES["/dashboard"]).toBe("Dashboard");
-		expect(SHOWCASE_TITLES["/wearable"]).toBeUndefined();
-		expect(SHOWCASE_TITLES["/components"]).toBeUndefined();
-		expect(SHOWCASE_ROUTES.some((route) => route.path === "/loading" && !route.inSitemap)).toBe(
-			true,
-		);
-		expect(SIDEBAR_NAV_GROUPS.map((group) => group.label)).toEqual([
-			"Overview",
-			"Scenarios",
-			"Pages",
+		expect(SHOWCASE_TITLES["/dashboard"]).toBe("Analytics overview");
+		expect(SHOWCASE_TITLES["/templates"]).toBeUndefined();
+		expect(SHOWCASE_TITLES["/settings"]).toBeUndefined();
+		expect(SHOWCASE_TITLES["/login"]).toBeUndefined();
+		expect(SHOWCASE_TITLES["/accounts"]).toBeUndefined();
+		expect(SHOWCASE_ROUTES.some((route) => route.path === "/404" && !route.inSitemap)).toBe(true);
+
+		expect(TEMPLATE_NAV_GROUPS.map((group) => group.label)).toEqual([
+			"Workspaces",
+			"Dashboards",
+			"Standalone",
 		]);
-		expect(LIBRARY_GUIDE_ITEMS).toHaveLength(10);
+		expect(PATTERN_NAV_ITEMS.map((item) => item.label)).toEqual([
+			"Forms",
+			"Tables",
+			"Navigation",
+			"Dialogs",
+		]);
+		expect(FOUNDATION_NAV_ITEMS.map((item) => item.label)).toEqual([
+			"Color Palette",
+			"Typeface",
+			"Layout",
+			"Motion",
+			"Loading",
+		]);
+		expect(LIBRARY_INDEX_ITEM.path).toBe("/ui");
 		expect(ALL_COLLAPSED_NAV_ITEMS).toHaveLength(
-			SIDEBAR_NAV_GROUPS.reduce((sum, group) => sum + group.items.length, 0) +
-				LIBRARY_GUIDE_ITEMS.length,
+			TEMPLATE_NAV_GROUPS.reduce((sum, group) => sum + group.items.length, 0) +
+				PATTERN_NAV_ITEMS.length +
+				FOUNDATION_NAV_ITEMS.length +
+				1,
 		);
 		expect(CATEGORY_OVERVIEW_ITEMS).toHaveLength(LIBRARY_CATEGORY_GROUPS.length);
 	});
@@ -63,29 +81,39 @@ describe("navigation model", () => {
 		expect(resolveCatalogContext("/ui/unknown/extra")).toEqual({ isSource: false });
 	});
 
-	it("resolves titles and breadcrumb chains across showcase and library routes", () => {
-		expect(resolveRouteTitle("/dashboard")).toBe("Dashboard");
+	it("resolves titles and partition breadcrumb chains across templates, patterns, foundations, and library", () => {
+		expect(resolveRouteTitle("/dashboard")).toBe("Analytics overview");
+		expect(resolveRouteTitle("/templates/agent-workspace")).toBe("Agent workspace");
+		expect(resolveRouteTitle("/templates/not-found")).toBe("Error 404");
 		expect(resolveRouteTitle("/ui/overview/action")).toBe("Actions overview");
 		expect(resolveRouteTitle("/ui/command-palette")).toBe("Command Palette");
 		expect(resolveRouteTitle("/ui/button/source")).toBe("Button source");
-		expect(resolveRouteTitle("/unknown-route")).toBe("Dashboard");
+		expect(resolveRouteTitle("/unknown-route")).toBe("Analytics overview");
 
-		expect(resolveRouteBreadcrumbs("/dashboard")).toEqual([{ label: "Dashboard" }]);
-		expect(resolveRouteBreadcrumbs("/settings")).toEqual([
-			{ href: "/dashboard", label: "Dashboard" },
-			{ label: "Settings" },
+		expect(resolveRouteBreadcrumbs("/dashboard")).toEqual([
+			{ label: "Templates" },
+			{ label: "Analytics overview" },
 		]);
-		expect(resolveRouteBreadcrumbs("/ui")).toEqual([
-			{ href: "/dashboard", label: "Dashboard" },
-			{ label: "Component library" },
+		expect(resolveRouteBreadcrumbs("/templates/agent-workspace")).toEqual([
+			{ label: "Templates" },
+			{ label: "Agent workspace" },
 		]);
+		expect(resolveRouteBreadcrumbs("/forms")).toEqual([{ label: "Patterns" }, { label: "Forms" }]);
+		expect(resolveRouteBreadcrumbs("/palette")).toEqual([
+			{ label: "Foundations" },
+			{ label: "Color Palette" },
+		]);
+		expect(resolveRouteBreadcrumbs("/ui")).toEqual([{ label: "Component library" }]);
 		expect(resolveRouteBreadcrumbs("/ui/overview/action")).toEqual([
-			{ href: "/dashboard", label: "Dashboard" },
 			{ href: "/ui", label: "Component library" },
 			{ label: "Actions" },
 		]);
+		expect(resolveRouteBreadcrumbs("/ui/button")).toEqual([
+			{ href: "/ui", label: "Component library" },
+			{ href: "/ui/overview/action", label: "Actions" },
+			{ label: "Button" },
+		]);
 		expect(resolveRouteBreadcrumbs("/ui/button/source")).toEqual([
-			{ href: "/dashboard", label: "Dashboard" },
 			{ href: "/ui", label: "Component library" },
 			{ href: "/ui/overview/action", label: "Actions" },
 			{ href: "/ui/button", label: "Button" },
@@ -93,17 +121,26 @@ describe("navigation model", () => {
 		]);
 	});
 
-	it("filters command palette entries by tokenized query", () => {
+	it("filters command palette entries across all four partitions", () => {
 		expect(matchesSearchQuery("Actions overview", "  overview   actions ")).toBe(true);
 		expect(matchesSearchQuery("Actions overview", "missing")).toBe(false);
 
 		const all = buildCommandPaletteResults("");
-		expect(all.navGroups).toHaveLength(SIDEBAR_NAV_GROUPS.length);
+		expect(all.templateGroups).toHaveLength(TEMPLATE_NAV_GROUPS.length);
+		expect(all.patterns).toHaveLength(PATTERN_NAV_ITEMS.length);
+		expect(all.foundations).toHaveLength(FOUNDATION_NAV_ITEMS.length);
 		expect(all.catalogEntries).toHaveLength(81);
 
 		const filtered = buildCommandPaletteResults("actions overview");
-		expect(filtered.navGroups).toEqual([]);
+		expect(filtered.templateGroups).toEqual([]);
+		expect(filtered.patterns).toEqual([]);
+		expect(filtered.foundations).toEqual([]);
 		expect(filtered.libraryEntries.map((item) => item.path)).toEqual(["/ui/overview/action"]);
 		expect(filtered.catalogEntries).toEqual([]);
+
+		const agent = buildCommandPaletteResults("agent workspace");
+		expect(agent.templateGroups.flatMap((group) => group.items).map((item) => item.path)).toEqual([
+			"/templates/agent-workspace",
+		]);
 	});
 });

@@ -33,6 +33,7 @@ import {
 	BarChart3,
 	Bell,
 	BookOpen,
+	Bot,
 	Calendar,
 	ChevronRight,
 	ChevronsDown,
@@ -119,6 +120,7 @@ const NAV_ICONS: Record<NavIconId, LucideIcon> = {
 	"bar-chart": BarChart3,
 	bell: Bell,
 	"book-open": BookOpen,
+	bot: Bot,
 	calendar: Calendar,
 	"chevron-right": ChevronRight,
 	"chevrons-down": ChevronsDown,
@@ -242,29 +244,41 @@ function NavGroupSection({ group, currentPath }: { group: ShellNavGroup; current
 	);
 }
 
+function NavFlatList({
+	items,
+	currentPath,
+}: {
+	items: readonly ShellNavItem[];
+	currentPath: string;
+}) {
+	return (
+		<div className="flex flex-col gap-basalt-nav-gap">
+			{items.map((item) => (
+				<NavItemButton
+					key={item.path}
+					path={item.path}
+					label={item.label}
+					iconId={item.iconId}
+					external={item.external}
+					currentPath={currentPath}
+				/>
+			))}
+		</div>
+	);
+}
+
 function LibraryNav({
-	guideItems,
+	indexItem,
 	categoryGroups,
 	currentPath,
 }: {
-	guideItems: readonly ShellNavItem[];
+	indexItem: ShellNavItem;
 	categoryGroups: ReturnType<typeof useShellNavigationViewModel>["libraryCategoryGroups"];
 	currentPath: string;
 }) {
 	return (
 		<div>
-			<div className="flex flex-col gap-basalt-nav-gap">
-				{guideItems.map((item) => (
-					<NavItemButton
-						key={item.path}
-						path={item.path}
-						label={item.label}
-						iconId={item.iconId}
-						external={item.external}
-						currentPath={currentPath}
-					/>
-				))}
-			</div>
+			<NavFlatList items={[indexItem]} currentPath={currentPath} />
 			{categoryGroups.map((group) => (
 				<SidebarGroup
 					key={group.category}
@@ -404,14 +418,20 @@ export function AppSidebar({
 						))
 					) : (
 						<>
-							<SidebarPartition>Examples</SidebarPartition>
-							{vm.navGroups.map((group) => (
+							<SidebarPartition>Templates</SidebarPartition>
+							{vm.templateNavGroups.map((group) => (
 								<NavGroupSection key={group.id} group={group} currentPath={vm.pathname} />
 							))}
 							<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
+							<SidebarPartition>Patterns</SidebarPartition>
+							<NavFlatList items={vm.patternNavItems} currentPath={vm.pathname} />
+							<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
+							<SidebarPartition>Foundations</SidebarPartition>
+							<NavFlatList items={vm.foundationNavItems} currentPath={vm.pathname} />
+							<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
 							<SidebarPartition>Library</SidebarPartition>
 							<LibraryNav
-								guideItems={vm.libraryGuideItems}
+								indexItem={vm.libraryIndexItem}
 								categoryGroups={vm.libraryCategoryGroups}
 								currentPath={vm.pathname}
 							/>
@@ -439,9 +459,27 @@ export function AppSidebar({
 					/>
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
-						{vm.commandResults.navGroups.map((group) => (
+						{vm.commandResults.templateGroups.map((group) => (
 							<CommandGroup key={group.id} heading={group.label}>
 								{group.items.map((item) => {
+									const Icon = NAV_ICONS[item.iconId];
+									return (
+										<CommandItem
+											key={item.path}
+											value={`${item.label} ${item.path}`}
+											onSelect={() => handleSelect(item.path)}
+											className="cursor-pointer gap-basalt-space-lg"
+										>
+											<Icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
+											<span>{item.label}</span>
+										</CommandItem>
+									);
+								})}
+							</CommandGroup>
+						))}
+						{vm.commandResults.patterns.length > 0 && (
+							<CommandGroup heading="Patterns">
+								{vm.commandResults.patterns.map((item) => {
 									const Icon = NAV_ICONS[item.iconId];
 									return (
 										<CommandItem
@@ -456,20 +494,23 @@ export function AppSidebar({
 									);
 								})}
 							</CommandGroup>
-						))}
-						{vm.commandResults.templates.length > 0 && (
-							<CommandGroup heading="Templates">
-								{vm.commandResults.templates.map((entry) => (
-									<CommandItem
-										key={entry.slug}
-										value={`${entry.title} ${entry.slug}`}
-										onSelect={() => handleSelect(`/view/${entry.slug}`)}
-										className="cursor-pointer gap-basalt-space-lg"
-									>
-										<LayoutTemplate className="size-basalt-icon-lg text-basalt-muted-foreground" />
-										<span>{entry.title}</span>
-									</CommandItem>
-								))}
+						)}
+						{vm.commandResults.foundations.length > 0 && (
+							<CommandGroup heading="Foundations">
+								{vm.commandResults.foundations.map((item) => {
+									const Icon = NAV_ICONS[item.iconId];
+									return (
+										<CommandItem
+											key={item.path}
+											value={item.label}
+											onSelect={() => handleSelect(item.path)}
+											className="cursor-pointer gap-basalt-space-lg"
+										>
+											<Icon className="size-basalt-icon-lg text-basalt-muted-foreground" />
+											<span>{item.label}</span>
+										</CommandItem>
+									);
+								})}
 							</CommandGroup>
 						)}
 						{vm.commandResults.libraryEntries.length > 0 ||

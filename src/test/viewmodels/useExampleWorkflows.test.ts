@@ -2,7 +2,6 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useDemoSubmission } from "@/viewmodels/useDemoSubmission";
 import { useFormsViewModel } from "@/viewmodels/useFormsViewModel";
-import { useSettingsViewModel } from "@/viewmodels/useSettingsViewModel";
 
 describe("local example service lifecycle", () => {
 	beforeEach(() => vi.useFakeTimers());
@@ -56,52 +55,5 @@ describe("local example service lifecycle", () => {
 		});
 		expect(result.current.files).toEqual([{ name: "report.pdf", size: 1024 }]);
 		expect(result.current.detailsOpen).toBe(true);
-	});
-	it("saves, cancels, and restores settings while keeping preferences across section switches", () => {
-		const { result } = renderHook(() => useSettingsViewModel());
-		act(() => result.current.changeField("firstName", "Taylor"));
-		act(() => result.current.saveProfile());
-		act(() => vi.advanceTimersByTime(500));
-		expect(result.current.profile.firstName).toBe("Taylor");
-		act(() => result.current.changeField("firstName", "Unsaved"));
-		act(() => result.current.cancelProfile());
-		expect(result.current.draft.firstName).toBe("Taylor");
-		act(() => {
-			result.current.setNotification("email", false);
-			result.current.setSecurityPreference("authenticator", true);
-			result.current.setPhoto("portrait.png");
-			result.current.setCurrency("EUR");
-			result.current.setCompact(true);
-			result.current.setActiveSection("appearance");
-		});
-		expect(result.current).toMatchObject({
-			activeSection: "appearance",
-			photo: "portrait.png",
-			currency: "EUR",
-			compact: true,
-			notice: "preferences",
-		});
-		expect(result.current.notifications.email).toBe(false);
-		expect(result.current.securityPreferences.authenticator).toBe(true);
-	});
-	it("validates security updates and prevents removal of the current session", () => {
-		const { result } = renderHook(() => useSettingsViewModel());
-		act(() => result.current.updatePassword("", "valid-pass", "valid-pass"));
-		expect(result.current.passwordError).toBe(true);
-		act(() => result.current.updatePassword("current", "short", "short"));
-		expect(result.current.passwordError).toBe(true);
-		act(() => result.current.updatePassword("current", "valid-pass", "different"));
-		expect(result.current.passwordSave.status).toBe("idle");
-		act(() => result.current.updatePassword("current", "valid-pass", "valid-pass"));
-		act(() => vi.advanceTimersByTime(500));
-		expect(result.current.passwordSave.result).toEqual({ changed: true });
-		act(() => result.current.revoke("iPhone 15 — Safari"));
-		expect(result.current.sessions.map((session) => session.device)).toEqual([
-			"MacBook Pro — Chrome",
-			"Windows PC — Firefox",
-		]);
-		act(() => result.current.revoke("MacBook Pro — Chrome"));
-		expect(result.current.sessions).toHaveLength(2);
-		expect(result.current.notice).toBe("revoked");
 	});
 });

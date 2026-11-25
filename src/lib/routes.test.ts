@@ -14,6 +14,7 @@ describe("known app paths", () => {
 		const paths = [
 			...SHOWCASE_PAGES.map((page) => page.path),
 			...STANDALONE_EXAMPLE_PATHS,
+			...TEMPLATE_SLUGS.map((slug) => `/templates/${slug}`),
 			...TEMPLATE_SLUGS.map((slug) => `/view/${slug}`),
 			...CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id)),
 			...slugs.flatMap((slug) => [`/ui/${slug}`, `/ui/${slug}/source`]),
@@ -27,12 +28,17 @@ describe("known app paths", () => {
 	it("matches every concrete route declared in the client router", () => {
 		const app = readFileSync(resolve(__dirname, "../App.tsx"), "utf8");
 		const declared = [...app.matchAll(/<Route\s+path="([^"]+)"/g)].map((match) => match[1]);
-		expect(declared.length).toBeGreaterThan(30);
+		expect(declared.length).toBeGreaterThanOrEqual(25);
 		for (const path of declared) {
 			if (path === "*") continue;
 			const concrete = path
 				.replace(":category", CATALOG_CATEGORIES[0].id)
-				.replace(":slug", path.startsWith("/view/") ? TEMPLATE_SLUGS[0] : slugs[0]);
+				.replace(
+					":slug",
+					path.startsWith("/view/") || path.startsWith("/templates/")
+						? TEMPLATE_SLUGS[0]
+						: slugs[0],
+				);
 			expect(isKnownAppPath(concrete), path).toBe(true);
 		}
 	});
@@ -46,6 +52,9 @@ describe("known app paths", () => {
 			"/ui/overview/not-a-category",
 			"/examples",
 			"/examples/unknown",
+			"/templates",
+			"/templates/unknown",
+			"/templates/%E0%A4%A",
 			"/view/unknown",
 			"/view/%E0%A4%A",
 			"/ui/%E0%A4%A",
@@ -53,6 +62,7 @@ describe("known app paths", () => {
 		]) {
 			expect(isKnownAppPath(path), path).toBe(false);
 		}
+		expect(isKnownAppPath("/templates/agent-workspace")).toBe(true);
 		expect(isKnownAppPath("/view/agent-workspace")).toBe(true);
 	});
 

@@ -54,64 +54,76 @@ describe("AppSidebar", () => {
 		Element.prototype.scrollIntoView = vi.fn();
 	});
 
-	it("keeps example pages, sibling category overviews, and all library exports", {
+	it("organizes the sidebar into Templates, Patterns, Foundations, and Library without legacy duplicates", {
 		timeout: 45_000,
 	}, () => {
 		renderSidebar();
-		expect(screen.getByText("Examples")).toBeInTheDocument();
+		expect(screen.getByText("Templates")).toBeInTheDocument();
+		expect(screen.getByText("Patterns")).toBeInTheDocument();
+		expect(screen.getByText("Foundations")).toBeInTheDocument();
 		expect(screen.getByText("Library")).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Overview" })).toBeInTheDocument();
-		expect(screen.getByText("Scenarios")).toBeInTheDocument();
-		expect(screen.getByText("Pages")).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Component library" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Layout" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Color Palette" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Typeface" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Settings" })).toBeInTheDocument();
-		expect(screen.queryByRole("link", { name: "Components" })).not.toBeInTheDocument();
-		expect(screen.queryByRole("link", { name: "Data" })).not.toBeInTheDocument();
-		expect(screen.queryByRole("link", { name: "Interactive" })).not.toBeInTheDocument();
-		expect(screen.queryByRole("link", { name: /Wearable/ })).not.toBeInTheDocument();
-		expect(screen.queryByText("WIP")).not.toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Dashboard" })).toBeInTheDocument();
+
+		expect(screen.getByText("Workspaces")).toBeInTheDocument();
+		expect(screen.getByText("Dashboards")).toBeInTheDocument();
+		expect(screen.getByText("Standalone")).toBeInTheDocument();
+
+		expect(screen.getByRole("link", { name: "Agent workspace" })).toHaveAttribute(
+			"href",
+			"/templates/agent-workspace",
+		);
+		expect(screen.getByRole("link", { name: "Workspace settings" })).toHaveAttribute(
+			"href",
+			"/templates/workspace-settings",
+		);
+		expect(screen.getByRole("link", { name: "Visitor login" })).toHaveAttribute(
+			"href",
+			"/templates/visitor-login",
+		);
+		expect(screen.getByRole("link", { name: "Analytics overview" })).toHaveAttribute(
+			"href",
+			"/dashboard",
+		);
+		expect(screen.getByRole("link", { name: "Component library" })).toHaveAttribute("href", "/ui");
+
+		expect(screen.queryByRole("link", { name: "Templates" })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: "Settings" })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: "Login" })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: "Care accounts" })).not.toBeInTheDocument();
+		expect(screen.queryByText("Scenarios")).not.toBeInTheDocument();
+		expect(screen.queryByText("Pages")).not.toBeInTheDocument();
+
 		const following = Node.DOCUMENT_POSITION_FOLLOWING;
-		const links = [
-			"Component library",
+		const orderedLinks = [
+			"Agent workspace",
+			"Ops inbox",
+			"Workspace settings",
+			"Executive dashboard",
+			"Analytics overview",
+			"Visitor login",
+			"Document page",
+			"Error 404",
+			"Forms",
+			"Tables",
+			"Navigation",
+			"Dialogs",
 			"Color Palette",
 			"Typeface",
 			"Layout",
+			"Motion",
 			"Loading",
-			"Animation",
-			"Tables",
-			"Forms",
-			"Navigation",
-			"Dialogs",
+			"Component library",
 		] as const;
-		for (let index = 0; index < links.length - 1; index += 1) {
-			const currentRows = screen.getAllByRole("link", { name: links[index] });
-			const nextRows = screen.getAllByRole("link", { name: links[index + 1] });
+		for (let index = 0; index < orderedLinks.length - 1; index += 1) {
+			const currentRows = screen.getAllByRole("link", { name: orderedLinks[index] });
+			const nextRows = screen.getAllByRole("link", { name: orderedLinks[index + 1] });
 			const current = currentRows[currentRows.length - 1];
 			const next = nextRows[nextRows.length - 1];
 			expect(current && next && current.compareDocumentPosition(next) & following).toBeTruthy();
 		}
-		expect(
-			screen
-				.getByRole("link", { name: "Templates" })
-				.compareDocumentPosition(screen.getByRole("link", { name: "Settings" })) & following,
-		).toBeTruthy();
-		expect(
-			screen
-				.getByRole("link", { name: "Settings" })
-				.compareDocumentPosition(screen.getByRole("link", { name: "Health" })) & following,
-		).toBeTruthy();
+
 		for (const entry of CATALOG) {
 			expect(navRows(new RegExp(`^${catalogNavName(entry)}`))).not.toHaveLength(0);
 		}
-		expect(screen.queryByRole("button", { name: /^Installation$/ })).not.toBeInTheDocument();
-		expect(screen.queryByRole("button", { name: /^Changelog$/ })).not.toBeInTheDocument();
-		expect(screen.getByRole("link", { name: /^Clipboard Text/ })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Page Header" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Section Rule" })).toBeInTheDocument();
 		const actionsTrigger = screen.getByRole("button", { name: "Actions", expanded: true });
 		const actionsOverview = screen.getByRole("link", { name: "Actions overview" });
 		expect(actionsOverview).toHaveAttribute("href", "/ui/overview/action");
@@ -120,9 +132,6 @@ describe("AppSidebar", () => {
 		expect(actionsTrigger).toHaveAttribute("aria-expanded", "true");
 		fireEvent.click(actionsTrigger);
 		expect(actionsTrigger).toHaveAttribute("aria-expanded", "false");
-		expect(screen.getByRole("link", { name: "Dashboard" })).toBeInTheDocument();
-		expect(navRows("Layouts")).not.toHaveLength(0);
-		expect(navRows("Blocks")).toHaveLength(1);
 		expect(screen.getByRole("img", { name: "Zheng Li" })).toHaveTextContent("ZL");
 		expect(document.querySelector('aside img[src*="avatar.vercel.sh"]')).toBeNull();
 	});
@@ -149,16 +158,15 @@ describe("AppSidebar", () => {
 		);
 	});
 
-	it("finds the templates gallery and individual standalone templates", async () => {
+	it("navigates directly to the template workbench from command palette search", async () => {
 		renderSidebar();
-		expect(screen.getByRole("link", { name: "Templates" })).toHaveAttribute("href", "/templates");
 		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
 		const search = screen.getByPlaceholderText("Search pages...");
 		fireEvent.change(search, { target: { value: "agent workspace" } });
 		fireEvent.click(await screen.findByRole("option", { name: "Agent workspace" }));
 		expect(screen.getByTestId("router-location")).toHaveAttribute(
 			"data-pathname",
-			"/view/agent-workspace",
+			"/templates/agent-workspace",
 		);
 	});
 

@@ -144,12 +144,11 @@ describe("edge worker", () => {
 		it("serves the app shell with 200 for client routes without a prerendered file", async () => {
 			for (const path of [
 				"/ui/button/source",
-				"/templates",
+				"/templates/agent-workspace",
 				"/view/agent-workspace",
 				"/view/visitor-login",
 				"/examples/reader",
 				"/examples/workspace/",
-				"/loading",
 			]) {
 				const seen: Request[] = [];
 				const response = await handleEdgeRequest(

@@ -16,30 +16,22 @@ const DashboardLayout = lazy(() =>
 	import("./components/DashboardLayout").then((module) => ({ default: module.DashboardLayout })),
 );
 
-const AccountsPage = lazy(() => import("./pages/AccountsPage"));
 const AnimationPage = lazy(() => import("./pages/AnimationPage"));
 const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const DevExamplesPage = lazy(() => import("./pages/DevExamplesPage"));
 const DialogsPage = lazy(() => import("./pages/DialogsPage"));
-const FlowComparisonPage = lazy(() => import("./pages/FlowComparisonPage"));
 const FormsPage = lazy(() => import("./pages/FormsPage"));
 const HealthPage = lazy(() => import("./pages/HealthPage"));
 const LayoutPage = lazy(() => import("./pages/LayoutPage"));
-const LoadingPage = lazy(() => import("./pages/LoadingPage"));
 const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
-const TablesPage = lazy(() => import("./pages/TablesPage"));
-const TemplateDetailPage = lazy(() => import("./pages/TemplateDetailPage"));
-const TemplateViewportPage = lazy(() => import("./pages/TemplateViewportPage"));
-const LoginPage = lazy(() => import("./pages/LoginPage"));
 const NavigationPage = lazy(() => import("./pages/NavigationPage"));
 const NetworkOpsDashboardPage = lazy(() => import("./pages/NetworkOpsDashboardPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PalettePage = lazy(() => import("./pages/PalettePage"));
-const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
-const ProgressTrackingPage = lazy(() => import("./pages/ProgressTrackingPage"));
-const SettingsPage = lazy(() => import("./pages/SettingsPage"));
-const StaticPage = lazy(() => import("./pages/StaticPage"));
+const TablesPage = lazy(() => import("./pages/TablesPage"));
+const TemplateDetailPage = lazy(() => import("./pages/TemplateDetailPage"));
+const TemplateViewportPage = lazy(() => import("./pages/TemplateViewportPage"));
 const TypefacePage = lazy(() => import("./pages/TypefacePage"));
 const UiIndexPage = lazy(() => import("./pages/ui/UiIndexPage"));
 const UiCategoryOverviewPage = lazy(() => import("./pages/ui/UiCategoryOverviewPage"));
@@ -112,25 +104,20 @@ function AppProviders() {
 									</Suspense>
 								}
 							>
-								<Route path="/forms" element={routeElement(FormsPage)} />
-								<Route path="/navigation" element={routeElement(NavigationPage)} />
-								<Route path="/dashboard" element={routeElement(DashboardPage)} />
 								<Route path="/templates/:slug" element={routeElement(TemplateDetailPage)} />
-								<Route path="/accounts" element={routeElement(AccountsPage)} />
-								<Route path="/progress-tracking" element={routeElement(ProgressTrackingPage)} />
-								<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />
-								<Route path="/portfolio" element={routeElement(PortfolioPage)} />
-								<Route path="/layout" element={routeElement(LayoutPage)} />
-								<Route path="/loading-states" element={routeElement(LoadingStatesPage)} />
-								<Route path="/animation" element={routeElement(AnimationPage)} />
-								<Route path="/tables" element={routeElement(TablesPage)} />
-								<Route path="/dialogs" element={routeElement(DialogsPage)} />
-								<Route path="/settings" element={routeElement(SettingsPage)} />
-								<Route path="/palette" element={routeElement(PalettePage)} />
-								<Route path="/typeface" element={routeElement(TypefacePage)} />
-								<Route path="/health" element={routeElement(HealthPage)} />
+								<Route path="/dashboard" element={routeElement(DashboardPage)} />
 								<Route path="/banking" element={routeElement(BankingDashboardPage)} />
 								<Route path="/network" element={routeElement(NetworkOpsDashboardPage)} />
+								<Route path="/health" element={routeElement(HealthPage)} />
+								<Route path="/forms" element={routeElement(FormsPage)} />
+								<Route path="/tables" element={routeElement(TablesPage)} />
+								<Route path="/navigation" element={routeElement(NavigationPage)} />
+								<Route path="/dialogs" element={routeElement(DialogsPage)} />
+								<Route path="/palette" element={routeElement(PalettePage)} />
+								<Route path="/typeface" element={routeElement(TypefacePage)} />
+								<Route path="/layout" element={routeElement(LayoutPage)} />
+								<Route path="/animation" element={routeElement(AnimationPage)} />
+								<Route path="/loading-states" element={routeElement(LoadingStatesPage)} />
 								<Route path="/ui" element={routeElement(UiIndexPage)} />
 								<Route
 									path="/ui/overview/:category"
@@ -145,9 +132,6 @@ function AppProviders() {
 							<Route path="/examples/reader" element={routeElement(ReaderPage)} />
 							<Route path="/examples/list-detail" element={routeElement(ListDetailPage)} />
 							<Route path="/examples/workspace" element={routeElement(WorkspacePage)} />
-							<Route path="/login" element={routeElement(LoginPage)} />
-							<Route path="/static-page" element={routeElement(StaticPage)} />
-							<Route path="/loading" element={routeElement(LoadingPage)} />
 							<Route path="/404" element={routeElement(NotFound)} />
 							<Route path="*" element={routeElement(NotFound)} />
 						</Routes>

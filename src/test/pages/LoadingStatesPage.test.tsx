@@ -19,10 +19,7 @@ describe("LoadingStatesPage", () => {
 		expect(screen.getByRole("button", { name: "Saving" })).toHaveAttribute("aria-busy", "true");
 		expect(screen.getByRole("table")).toHaveAttribute("aria-busy", "true");
 		expect(document.querySelectorAll(".animate-basalt-shimmer").length).toBeGreaterThan(0);
-		expect(screen.getByRole("link", { name: "Open loading screen" })).toHaveAttribute(
-			"href",
-			"/loading",
-		);
+		expect(screen.queryByRole("link", { name: "Open loading screen" })).toBeNull();
 	});
 
 	it("replays the same compositions after data arrives", () => {

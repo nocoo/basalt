@@ -72,9 +72,9 @@ describe("site metadata", () => {
 			expect(app).toContain(`path="${path}"`);
 		}
 		expect(SHOWCASE_PATHS).not.toContain("/404");
-		expect(SHOWCASE_PATHS).not.toContain("/loading");
+		expect(SHOWCASE_PATHS).not.toContain("/templates");
 		expect(SHOWCASE_TITLES["/404"]).toBe("404 Page");
-		expect(SHOWCASE_TITLES["/loading"]).toBe("Loading");
+		expect(SHOWCASE_TITLES["/dashboard"]).toBe("Analytics overview");
 		expect(SHOWCASE_TITLES["/ui"]).toBe("Component library");
 	});
 
@@ -121,7 +121,7 @@ describe("site metadata", () => {
 			"/ui/<slug>.md",
 			"/ui/overview/<category>.md",
 			"/templates/<slug>.md",
-			"/templates",
+			"/templates/agent-workspace",
 			"/templates.md",
 			"/agents.md",
 			"/setup.md",

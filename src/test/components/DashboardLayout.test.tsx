@@ -26,7 +26,7 @@ function TestLink({
 	);
 }
 
-function renderLayout(initialPath = "/") {
+function renderLayout(initialPath = "/dashboard") {
 	return render(
 		<ThemeProvider>
 			<AccentProvider>
@@ -36,16 +36,12 @@ function renderLayout(initialPath = "/") {
 							<Route element={<DashboardLayout />}>
 								<Route path="/ui" element={<div>Library</div>} />
 								<Route path="/dashboard" element={<div>Dashboard</div>} />
+								<Route path="/banking" element={<div data-testid="banking-outlet">Banking</div>} />
+								<Route path="/templates/:slug" element={<div>Template workbench</div>} />
+								<Route path="/forms" element={<div>Forms</div>} />
+								<Route path="/palette" element={<div>Palette</div>} />
 								<Route path="/ui/:slug/source" element={<div>Source</div>} />
 								<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
-								<Route
-									path="/accounts"
-									element={<div data-testid="accounts-outlet">Accounts</div>}
-								/>
-								<Route
-									path="/settings"
-									element={<div data-testid="settings-outlet">Settings</div>}
-								/>
 								<Route path="/ui/:slug" element={<div data-testid="catalog-outlet">Catalog</div>} />
 								<Route path="/ui/overview/:category" element={<div>Overview</div>} />
 							</Route>
@@ -68,20 +64,26 @@ describe("DashboardLayout", () => {
 		document.body.style.overflow = "";
 	});
 
-	it("shows the dashboard root as the current breadcrumb", () => {
+	it("shows partition breadcrumbs for template and workbench routes", () => {
 		mockIsMobile = false;
-		const { container } = renderLayout("/dashboard");
+		const { container, unmount } = renderLayout("/dashboard");
 		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
-			"Dashboard",
+			"Analytics overview",
 		);
+		expect(container.querySelector("[data-basalt-header] nav")).toHaveTextContent("Templates");
+		unmount();
+
+		const wb = renderLayout("/templates/agent-workspace");
+		expect(
+			wb.container.querySelector('[data-basalt-header] [aria-current="page"]'),
+		).toHaveTextContent("Agent workspace");
+		expect(wb.container.querySelector("[data-basalt-header] nav")).toHaveTextContent("Templates");
 	});
 
-	it("marks the component library root as current", () => {
+	it("marks the component library root as current without a dashboard ancestor", () => {
 		mockIsMobile = false;
 		const { container } = renderLayout("/ui");
-		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
-			"Dashboard",
-		);
+		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toBeNull();
 		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
 			"Component library",
 		);
@@ -91,9 +93,6 @@ describe("DashboardLayout", () => {
 	it("shows full catalog paths and a non-link current page", () => {
 		mockIsMobile = false;
 		const { container } = renderLayout("/ui/button");
-		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
-			"Dashboard",
-		);
 		expect(container.querySelector('[data-basalt-header] a[href="/ui"]')).toHaveTextContent(
 			"Component library",
 		);
@@ -108,9 +107,6 @@ describe("DashboardLayout", () => {
 	it("includes all source ancestors", () => {
 		mockIsMobile = false;
 		const { container } = renderLayout("/ui/button/source");
-		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
-			"Dashboard",
-		);
 		expect(container.querySelector('[data-basalt-header] a[href="/ui"]')).toHaveTextContent(
 			"Component library",
 		);
@@ -127,9 +123,6 @@ describe("DashboardLayout", () => {
 
 	it("shows the full breadcrumb path on mobile", () => {
 		const { container } = renderLayout("/ui/overview/action");
-		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
-			"Dashboard",
-		);
 		expect(container.querySelector('[data-basalt-header] a[href="/ui"]')).toHaveTextContent(
 			"Component library",
 		);
@@ -201,19 +194,14 @@ describe("DashboardLayout", () => {
 	it("closes the mobile drawer when navigating to a new route", () => {
 		renderLayout("/");
 
-		// Open the drawer.
 		fireEvent.click(screen.getByLabelText("Open navigation menu"));
 		expect(document.body.style.overflow).toBe("hidden");
 
-		// Click a nav item that lives in the drawer (there are two Accounts buttons
-		// after opening — desktop sidebar is hidden by the mock, so the last visible
-		// nav item is the drawer's).
-		const accountLinks = screen.getAllByRole("link", { name: /Accounts/i });
+		const financeLinks = screen.getAllByRole("link", { name: /Finance & wealth/i });
 		act(() => {
-			fireEvent.click(accountLinks[accountLinks.length - 1]);
+			fireEvent.click(financeLinks[financeLinks.length - 1]);
 		});
 
-		// Route change must reset the drawer state — body scroll unlocks.
 		expect(document.body.style.overflow).toBe("");
 	});
 
@@ -223,15 +211,12 @@ describe("DashboardLayout", () => {
 		openButton.focus();
 		expect(document.activeElement).toBe(openButton);
 
-		// Open drawer
 		fireEvent.click(openButton);
 		expect(document.body.style.overflow).toBe("hidden");
 
-		// Press Escape on the open sheet
 		const sheet = screen.getByRole("dialog");
 		fireEvent.keyDown(sheet, { key: "Escape" });
 
-		// Focus must return to the open button, and body scroll must unlock
 		await waitFor(() => {
 			expect(openButton).toHaveFocus();
 		});
@@ -243,7 +228,6 @@ describe("DashboardLayout", () => {
 		const openButton = screen.getByLabelText("Open navigation menu");
 		fireEvent.click(openButton);
 
-		// Inside the drawer, the brand action is a dismiss-mode SidebarToggle
 		expect(screen.queryByRole("button", { name: "Collapse sidebar" })).not.toBeInTheDocument();
 		const closeButton = screen.getByRole("button", { name: "Close navigation menu" });
 		expect(closeButton).toHaveAttribute("data-mode", "dismiss");
@@ -262,7 +246,6 @@ describe("DashboardLayout", () => {
 		expect(document.body.style.overflow).toBe("hidden");
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
 
-		// Resize to desktop (isMobile: false)
 		mockIsMobile = false;
 		rerender(
 			<ThemeProvider>
@@ -280,11 +263,9 @@ describe("DashboardLayout", () => {
 			</ThemeProvider>,
 		);
 
-		// Body overflow must be cleaned up and sheet unmounted
 		expect(document.body.style.overflow).toBe("");
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
-		// Resize back to mobile (isMobile: true)
 		mockIsMobile = true;
 		rerender(
 			<ThemeProvider>
@@ -302,7 +283,6 @@ describe("DashboardLayout", () => {
 			</ThemeProvider>,
 		);
 
-		// Must NOT automatically reopen
 		expect(document.body.style.overflow).toBe("");
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 	});

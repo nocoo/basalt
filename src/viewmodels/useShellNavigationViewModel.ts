@@ -4,11 +4,13 @@ import { pageMetadata } from "@/lib/metadata";
 import {
 	ALL_COLLAPSED_NAV_ITEMS,
 	buildCommandPaletteResults,
+	FOUNDATION_NAV_ITEMS,
 	LIBRARY_CATEGORY_GROUPS,
-	LIBRARY_GUIDE_ITEMS,
+	LIBRARY_INDEX_ITEM,
+	PATTERN_NAV_ITEMS,
 	resolveRouteBreadcrumbs,
 	resolveRouteTitle,
-	SIDEBAR_NAV_GROUPS,
+	TEMPLATE_NAV_GROUPS,
 } from "@/models/navigation";
 
 export function useShellNavigationViewModel(searchQuery = "") {
@@ -24,8 +26,10 @@ export function useShellNavigationViewModel(searchQuery = "") {
 		title,
 		breadcrumbs,
 		metadata,
-		navGroups: SIDEBAR_NAV_GROUPS,
-		libraryGuideItems: LIBRARY_GUIDE_ITEMS,
+		templateNavGroups: TEMPLATE_NAV_GROUPS,
+		patternNavItems: PATTERN_NAV_ITEMS,
+		foundationNavItems: FOUNDATION_NAV_ITEMS,
+		libraryIndexItem: LIBRARY_INDEX_ITEM,
 		libraryCategoryGroups: LIBRARY_CATEGORY_GROUPS,
 		collapsedNavItems: ALL_COLLAPSED_NAV_ITEMS,
 		commandResults,

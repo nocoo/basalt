@@ -4,7 +4,6 @@ import { DataTable } from "@nocoo/basalt/components/data-table";
 import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { LoadingScreen } from "@nocoo/basalt/components/loading-screen";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
@@ -282,18 +281,15 @@ export default function LoadingStatesPage() {
 
 			<SectionRule
 				title="Full screen"
-				hint="LoadingScreen is a route, not a card. The Pages item opens it full viewport."
+				hint="LoadingScreen fills the viewport as a route-level loading state."
 			>
 				<LayerCard>
-					<div className="space-y-basalt-card">
-						<div className="relative h-40 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
-							<LoadingScreen
-								label="Loading"
-								mark={<BasaltMark className="h-basalt-8 w-basalt-8 text-basalt-foreground" />}
-								className="absolute inset-0 z-0"
-							/>
-						</div>
-						<Link href="/loading">Open loading screen</Link>
+					<div className="relative h-40 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
+						<LoadingScreen
+							label="Loading"
+							mark={<BasaltMark className="h-basalt-8 w-basalt-8 text-basalt-foreground" />}
+							className="absolute inset-0 z-0"
+						/>
 					</div>
 				</LayerCard>
 			</SectionRule>

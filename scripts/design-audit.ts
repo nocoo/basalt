@@ -223,14 +223,7 @@ export function auditDesignSource(
 	}
 	visit(ast);
 	if (pageTemplate && !hasTemplate) add("page-template-missing", "ShowcasePage");
-	return file === "src/pages/LoginPage.tsx"
-		? issues.filter(
-				(issue) =>
-					!["spacing-token", "radius-token", "type-token", "control-spacing-owner"].includes(
-						issue.rule,
-					),
-			)
-		: issues;
+	return issues;
 }
 
 export function dashboardPageFiles(source: string): string[] {

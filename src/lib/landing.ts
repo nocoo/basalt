@@ -16,7 +16,7 @@ export interface LandingLink {
 
 export const LANDING_PRIMARY_LINKS: readonly LandingLink[] = [
 	{ href: "/ui", label: "Components" },
-	{ href: "/templates", label: "Templates" },
+	{ href: "/templates/agent-workspace", label: "Templates" },
 	{ href: "/palette", label: "Palette" },
 	{ href: "#get-started", label: "Get started" },
 ];

@@ -29,11 +29,8 @@ describe("design audit rules (without scanning the repository)", () => {
 			),
 		).toEqual([]);
 	});
-	it("preserves the visitor badge scale without exempting ordinary controls or motion", () => {
+	it("enforces control spacing ownership on application pages", () => {
 		const source = '<Button className="px-6 py-3 rounded-xl text-sm h-12 duration-200" />';
-		expect(auditDesignSource("src/pages/LoginPage.tsx", source).map((issue) => issue.rule)).toEqual(
-			["motion-token", "intrinsic-action-size"],
-		);
 		expect(
 			auditDesignSource("src/pages/FormsPage.tsx", source).map((issue) => issue.rule),
 		).toContain("control-spacing-owner");

@@ -330,7 +330,7 @@ function TemplateShowcase({ Link }: { Link: LandingLinkComponent }) {
 						Application shell
 						<ArrowUpRight size={13} aria-hidden="true" />
 					</Link>
-					<Link href="/login">
+					<Link href="/templates/visitor-login">
 						Sign-in page
 						<ArrowUpRight size={13} aria-hidden="true" />
 					</Link>
@@ -730,7 +730,7 @@ export function LandingContent({
 						<nav aria-label="Product">
 							<h2>Explore</h2>
 							<Link href="/ui">Components</Link>
-							<Link href="/templates">Templates</Link>
+							<Link href="/templates/agent-workspace">Templates</Link>
 							<Link href="/palette">Color palette</Link>
 						</nav>
 						<nav aria-label="Resources">

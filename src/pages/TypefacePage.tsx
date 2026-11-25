@@ -266,7 +266,7 @@ export default function TypefacePage() {
 						</Table>
 					</div>
 					<LayerCard.Footer className="justify-start text-basalt-sm text-basalt-muted-foreground">
-						Independent display exemptions remain isolated to LandingPage, LoginPage, and NotFound
+						Independent display exemptions remain isolated to LandingPage and NotFound
 						(text-basalt-10xl). Never use sm:text-basalt-* responsive size jumps.
 					</LayerCard.Footer>
 				</LayerCard>

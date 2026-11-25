@@ -20,19 +20,20 @@ describe("useShellNavigationViewModel", () => {
 		expect(result.current.title).toBe("Button");
 		expect(result.current.metadata.title).toBe("Button · basalt.");
 		expect(result.current.breadcrumbs).toEqual([
-			{ href: "/dashboard", label: "Dashboard" },
 			{ href: "/ui", label: "Component library" },
 			{ href: "/ui/overview/action", label: "Actions" },
 			{ label: "Button" },
 		]);
-		expect(result.current.navGroups.map((group) => group.id)).toEqual([
-			"overview",
-			"scenarios",
-			"pages",
+		expect(result.current.templateNavGroups.map((group) => group.id)).toEqual([
+			"workspaces",
+			"dashboards",
+			"standalone",
 		]);
-		expect(result.current.commandResults.templates.map((entry) => entry.slug)).toEqual([
-			"agent-workspace",
-		]);
+		expect(
+			result.current.commandResults.templateGroups
+				.flatMap((group) => group.items)
+				.map((item) => item.path),
+		).toEqual(["/templates/agent-workspace"]);
 	});
 
 	it("returns unfiltered navigation collections by default", () => {
@@ -40,8 +41,10 @@ describe("useShellNavigationViewModel", () => {
 			wrapper: wrapperFor("/dashboard"),
 		});
 
-		expect(result.current.title).toBe("Dashboard");
+		expect(result.current.title).toBe("Analytics overview");
 		expect(result.current.commandResults.catalogEntries).toHaveLength(81);
-		expect(result.current.libraryGuideItems).toHaveLength(10);
+		expect(result.current.patternNavItems).toHaveLength(4);
+		expect(result.current.foundationNavItems).toHaveLength(5);
+		expect(result.current.libraryIndexItem.path).toBe("/ui");
 	});
 });
