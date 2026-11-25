@@ -87,8 +87,8 @@ describe("catalog page-status generator", () => {
 		expect(pkg.scripts["catalog-page-status:check"]).toBe(
 			"bun scripts/catalog-page-status-cli.ts check",
 		);
+		expect(pkg.scripts.build).toContain("bun run catalog-page-status:check");
 		for (const script of [pkg.scripts.typecheck, pkg.scripts.build]) {
-			expect(script).toContain("bun run catalog-page-status:check");
 			expect(script).not.toContain("catalog-page-status:generate");
 		}
 		expect(pkg.scripts.build).toContain("bun scripts/catalog-page-status-build.ts");

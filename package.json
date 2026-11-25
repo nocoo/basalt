@@ -26,7 +26,7 @@
 		"test:watch": "vitest --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
 		"test:browser": "vitest run scripts/consumer-browser.test.ts scripts/consumer-gate.browser.test.ts --maxWorkers=1",
 		"prepare": "husky",
-		"typecheck": "bun run catalog-api:check && bun run catalog-page-status:check && bun run catalog-content:check && bun run seo:check && tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+		"typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
 		"catalog-api:generate": "bun scripts/catalog-api-cli.ts generate",
 		"catalog-api:check": "bun scripts/catalog-api-cli.ts check",
 		"catalog-page-status:generate": "bun scripts/catalog-page-status-cli.ts generate",

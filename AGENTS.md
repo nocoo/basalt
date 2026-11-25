@@ -12,7 +12,7 @@ Run from root (TS 7, Bun 1.4.0, Node 26+ for consumers). Consumer gates need net
 ```sh
 bun install --frozen-lockfile # Husky + install fingerprint
 bun run dev # https://basalt.dev.hexly.ai -> 127.0.0.1:7003
-bun run typecheck # S1: catalog/API/content/SEO + tsc (app/node)
+bun run typecheck # S1: tsc (app/node)
 bun run lint # S2: Biome check-only, 0 errors / 0 warnings
 bun run build # catalog/SEO checks + site dist/
 bun run --cwd packages/basalt build # library packages/basalt/dist/

@@ -23,7 +23,6 @@ describe("catalog API generator contract 1/4", () => {
 		expect(pkg.devDependencies["typescript-api"]).toBe("npm:typescript@5.9.3");
 		expect(pkg.scripts["catalog-api:generate"]).toBe("bun scripts/catalog-api-cli.ts generate");
 		expect(pkg.scripts["catalog-api:check"]).toBe("bun scripts/catalog-api-cli.ts check");
-		expect(pkg.scripts.typecheck.startsWith("bun run catalog-api:check &&")).toBe(true);
 		expect(pkg.scripts.build.startsWith("bun run catalog-api:check &&")).toBe(true);
 		expect(pkg.scripts.build).not.toContain("catalog-api:generate");
 		expect(pkg.scripts.typecheck).not.toContain("catalog-api:generate");

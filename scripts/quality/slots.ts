@@ -43,7 +43,7 @@ export const SLOTS: SlotDefinition[] = [
 		id: "S1",
 		name: "S1: Types",
 		stages: ["pre-commit"],
-		target: "catalog/API/content/SEO checks plus tsc --noEmit for app and node lanes",
+		target: "tsc --noEmit for app and node lanes",
 		steps: [{ label: "typecheck", command: "bun run typecheck", timeoutMs: 5 * MINUTE }],
 	},
 	{
