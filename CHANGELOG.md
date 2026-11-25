@@ -11,6 +11,28 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.6.1] - 2026-11-25
+
+### Added
+
+- Build per-template workbench and dashboard anatomy strips
+- Add local theme override and bidirectional scroll spy to template viewport
+- Add semantic anchors, config blocks, and scripted agent workflow
+- Enrich manifest with anatomy parts, component links, and customize steps
+- Promote document and 404 pages to standalone templates and consolidate settings
+- Add agent-readable markdown endpoints, component guides, and discovery docs
+
+### Changed
+
+- Eliminate landing page flash in template preview iframes
+- Sync markdown mirror, seo, DESIGN.md, and Playwright showcase gates
+- Reorganize sidebar into templates, patterns, foundations, and library
+
+### Fixed
+
+- Center header content and balance vertical header padding
+- Fill content island width and widen cramped UI gallery cards
+
 ## [3.6.0] - 2026-11-23
 
 ### Added
