@@ -5,9 +5,8 @@
 # Steps are inlined; base-ci composite actions are pinned by full SHA.
 #
 # L2 Runtime and L3 Integration are declared na in AGENTS.md and stay skipped.
-# `consumer-next`, `hook-self-test` and `cross-browser-layouts` are outside the
-# 12 slots; the first two block and are aggregated by Z1, the cross-browser matrix
-# is non-blocking nightly coverage.
+# Multi-job slots (L1: Unit, P1: Package) use `<ID>: <SlotName> (<Subscope>)`
+# and are aggregated by Z1; nightly sweeps live in `.github/workflows/nightly.yml`.
 name: Quality slots
 
 on:
@@ -186,7 +185,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-1:
-    name: "Unit shard 1/4"
+    name: "L1: Unit (Shard 1/4)"
     needs: b1-build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -220,7 +219,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-2:
-    name: "Unit shard 2/4"
+    name: "L1: Unit (Shard 2/4)"
     needs: b1-build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -254,7 +253,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-3:
-    name: "Unit shard 3/4"
+    name: "L1: Unit (Shard 3/4)"
     needs: b1-build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -288,7 +287,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-4:
-    name: "Unit shard 4/4"
+    name: "L1: Unit (Shard 4/4)"
     needs: b1-build
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -473,7 +472,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   consumer-next:
-    name: "Next.js consumer"
+    name: "P1: Package (Next.js)"
     runs-on: ubuntu-latest
     timeout-minutes: 25
     outputs:
@@ -513,7 +512,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   hook-self-test:
-    name: "Hook self-test"
+    name: "L1: Unit (Pre-commit Gate)"
     runs-on: ubuntu-latest
     timeout-minutes: 35
     outputs:
@@ -545,46 +544,6 @@ jobs:
         id: record-sha
         if: always()
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
-  cross-browser-layouts:
-    name: "Cross-browser layouts (nightly)"
-    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
-        with:
-          runtime-version: ${{ env.BUN_VERSION }}
-          node-version: ${{ env.NODE_VERSION }}
-          install-policy: project
-      - name: Install Chromium and WebKit
-        run: bunx playwright install --with-deps chromium webkit
-      - name: Mobile layouts in both engines
-        run: bun run test:layouts
-
-  full-showcase:
-    name: "Full showcase sweep (nightly)"
-    if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@6424d395d36a815d931f10e557762eb635d511c0 # v2026.16
-        with:
-          runtime-version: ${{ env.BUN_VERSION }}
-          node-version: ${{ env.NODE_VERSION }}
-          install-policy: project
-      - name: Install Chromium
-        run: bunx playwright install --with-deps chromium
-      - name: Full showcase gate
-        run: bun run test:showcase
 
   z1-gate:
     name: "Z1: Gate"

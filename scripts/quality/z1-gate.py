@@ -20,13 +20,13 @@ SLOT_JOBS = {
     "L4": ("l4-e2e", "L4: E2E"),
     "P1": ("p1-package", "P1: Package"),
 }
-EXTRA_BLOCKING = {
-    "consumer-next": "Next.js consumer",
-    "hook-self-test": "Hook self-test",
-    "unit-shard-1": "Unit shard 1/4",
-    "unit-shard-2": "Unit shard 2/4",
-    "unit-shard-3": "Unit shard 3/4",
-    "unit-shard-4": "Unit shard 4/4",
+SLOT_SUBJOBS = {
+    "consumer-next": ("P1", "P1: Package (Next.js)"),
+    "hook-self-test": ("L1", "L1: Unit (Pre-commit Gate)"),
+    "unit-shard-1": ("L1", "L1: Unit (Shard 1/4)"),
+    "unit-shard-2": ("L1", "L1: Unit (Shard 2/4)"),
+    "unit-shard-3": ("L1", "L1: Unit (Shard 3/4)"),
+    "unit-shard-4": ("L1", "L1: Unit (Shard 4/4)"),
 }
 VALID = ("impl", "na", "todo")
 TARGET_SECONDS = 5 * 60
@@ -154,12 +154,12 @@ def main():
         if not verified:
             raise GateError("no implemented slot besides Z1")
 
-        for job, name in EXTRA_BLOCKING.items():
+        for job, (slot, name) in SLOT_SUBJOBS.items():
             state = needs.get(job, {})
             result = state.get("result", "missing")
             sha = (state.get("outputs") or {}).get("tested-sha", "")
             rows.append(
-                f"| {name} | extra | blocking, not a slot | {result} | {timings.get(name, '-') or '-'} |"
+                f"| {slot} | impl | {name} | {result} | {timings.get(name, '-') or '-'} |"
             )
             if result != "success":
                 raise GateError(f"blocking job {name} finished '{result}'")

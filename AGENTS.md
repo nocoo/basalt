@@ -46,7 +46,7 @@ Run `bun run consumer:docs` only after building the package. `bun run design:che
 Follows `system1-quality`; CI slots and pinned `base-ci` revision live in `.github/workflows/quality-slots.yml` (`quality / Z1: Gate` required on `main`). Statuses: `enforced`, `planned`, `manual`, `N/A`.
 
 - **Exceptions**: `L2 Runtime` is `N/A` (Worker tests mock `ASSETS` in Node/L1; no workerd suite); `L3 Integration` is `N/A` (static catalog/Worker, no service/storage boundary).
-- **Coverage & CI jobs**: `L1` enforces 95% on all four metrics across `src/{models,viewmodels,lib}` and `packages/basalt/src`; `Next.js consumer` and `Hook self-test` block in `Z1`; nightlies are non-blocking.
+- **Coverage & CI jobs**: `L1` enforces 95% on all four metrics across `src/{models,viewmodels,lib}` and `packages/basalt/src`; `P1: Package (Next.js)` and `L1: Unit (Pre-commit Gate)` block in `Z1`; nightlies live in `.github/workflows/nightly.yml` and are non-blocking.
 - **Local hooks**: `bun install` (`prepare`) installs `.husky/`; `pre-commit` checks staged index (`S1/S2/S3/G1`), `pre-push` checks per-OID worktrees (`G1/G2/B1` serial, `L1/L4/P1` parallel); never `--no-verify`.
 - **Gate safety**: Hooks reuse `node_modules` only on a verified install fingerprint and register detached process groups in `PgidRegistry` ([gates & release](docs/07-quality-gates-and-release.md)).
 
