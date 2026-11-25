@@ -40,4 +40,11 @@
 		background-color: hsl(var(--basalt-primary) / 0.22);
 		color: hsl(var(--basalt-foreground));
 	}
+	[data-basalt-template-focus="true"] {
+		outline: 2px solid hsl(var(--basalt-ring));
+		outline-offset: 2px;
+		transition-property: outline-color;
+		transition-duration: var(--basalt-motion-normal);
+		transition-timing-function: var(--basalt-motion-ease);
+	}
 }
