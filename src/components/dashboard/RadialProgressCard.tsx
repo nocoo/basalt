@@ -9,7 +9,7 @@ const pct = Math.round((saved / goal) * 100);
 export function RadialProgressCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
-			<LayerCard.Header className="flex-col">
+			<LayerCard.Header className="flex-col items-start">
 				<div className="flex items-center gap-basalt-space-lg">
 					<Goal className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Care Plan Goal</h2>

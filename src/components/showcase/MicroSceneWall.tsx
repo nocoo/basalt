@@ -183,7 +183,7 @@ export function MicroSceneWall({ className }: { className?: string }) {
 
 			<LayerCard padding="none">
 				<LayerCard.Header>Workspace navigation</LayerCard.Header>
-				<SidebarNav aria-label="Workspace navigation" className="pt-basalt-card-sm pb-basalt-card">
+				<SidebarNav aria-label="Workspace navigation" className="pt-0 pb-basalt-card">
 					{WORKSPACE_ITEMS.map((item) => {
 						const Icon = WORKSPACE_ICONS[item.id];
 						const label = WORKSPACE_LABELS[item.id];

@@ -23,9 +23,11 @@ describe("LayerCard", () => {
 		);
 		const trigger = screen.getByRole("button", { name: "Details" });
 		expect(trigger).toHaveAttribute("data-slot", "card-header");
+		expect(trigger).toHaveAttribute("data-as-child", "true");
 		expect(trigger).toHaveClass(
 			"basalt-focus",
 			"basalt-focus-inset",
+			"items-center",
 			"rounded-t-basalt-card",
 			"last:rounded-b-basalt-card",
 			"data-[state=closed]:rounded-b-basalt-card",
@@ -187,14 +189,26 @@ describe("LayerCard", () => {
 		expect(screen.getByLabelText("Deployment").className).toContain(
 			"[data-slot=card-body]]:pt-basalt-card-sm",
 		);
+		expect(screen.getByLabelText("Deployment").className).toContain(
+			"[&>[data-slot=card-header]:not([data-divided]):not([data-as-child]):not(:has(+[data-slot=card-body])):not(:has(+[data-slot=card-well]))]:pb-basalt-card",
+		);
+		expect(screen.getByLabelText("Deployment").className).toContain(
+			"[&>[data-slot=card-header][data-divided]+[data-basalt-code][data-code-attached]]:border-t-0",
+		);
 		expect(screen.getByLabelText("Deployment")).toHaveAttribute("data-basalt-surface");
 		expect(screen.getByTestId("header")).toHaveClass(
+			"items-center",
 			"px-basalt-card",
 			"pt-basalt-card",
 			"pb-0",
 			"gap-basalt-space-lg",
 		);
-		expect(screen.getByTestId("header")).not.toHaveClass("border-b", "p-basalt-card");
+		expect(screen.getByTestId("header")).not.toHaveAttribute("data-as-child");
+		expect(screen.getByTestId("header")).not.toHaveClass(
+			"border-b",
+			"p-basalt-card",
+			"items-start",
+		);
 		expect(screen.getByTestId("body")).toHaveClass("p-basalt-card");
 		expect(screen.getByTestId("body")).not.toHaveAttribute("data-basalt-surface");
 		expect(screen.getByTestId("footer")).toHaveAttribute("data-slot", "card-footer");
@@ -244,11 +258,13 @@ describe("LayerCard", () => {
 			</LayerCard>,
 		);
 		expect(screen.getByTestId("header")).toHaveClass(
+			"items-center",
 			"p-basalt-card",
 			"border-b",
 			"border-basalt-border",
 			"gap-basalt-space-lg",
 		);
+		expect(screen.getByTestId("header")).not.toHaveClass("items-start");
 		expect(screen.getByTestId("header")).not.toHaveAttribute("divided");
 		expect(screen.getByTestId("header")).toHaveAttribute("data-divided", "true");
 		rerender(

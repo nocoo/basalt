@@ -14,7 +14,7 @@ const data = [
 export function DonutChartCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
-			<LayerCard.Header className="flex-col">
+			<LayerCard.Header className="flex-col items-start">
 				<div className="flex items-center gap-basalt-space-lg">
 					<Target className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">

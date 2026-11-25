@@ -3360,10 +3360,6 @@
     --tw-leading: var(--basalt-line-relaxed);
     line-height: var(--basalt-line-relaxed);
   }
-  .leading-\[var\(--basalt-line-snug\)\] {
-    --tw-leading: var(--basalt-line-snug);
-    line-height: var(--basalt-line-snug);
-  }
   .leading-basalt-relaxed {
     --tw-leading: var(--basalt-leading-relaxed);
     line-height: var(--basalt-leading-relaxed);
@@ -4352,6 +4348,13 @@
   }
   .\[\&\>\[data-slot\=card-header\]\:not\(\[data-divided\]\)\:has\(\+\[data-slot\=card-well\]\)\]\:pb-basalt-card-sm > [data-slot=card-header]:not([data-divided]):has( + [data-slot=card-well]) {
     padding-bottom: var(--basalt-space-card-sm);
+  }
+  .\[\&\>\[data-slot\=card-header\]\:not\(\[data-divided\]\)\:not\(\[data-as-child\]\)\:not\(\:has\(\+\[data-slot\=card-body\]\)\)\:not\(\:has\(\+\[data-slot\=card-well\]\)\)\]\:pb-basalt-card > [data-slot=card-header]:not([data-divided]):not([data-as-child]):not(:has( + [data-slot=card-body])):not(:has( + [data-slot=card-well])) {
+    padding-bottom: var(--basalt-space-card);
+  }
+  .\[\&\>\[data-slot\=card-header\]\[data-divided\]\+\[data-basalt-code\]\[data-code-attached\]\]\:border-t-0 > [data-slot=card-header][data-divided] + [data-basalt-code][data-code-attached] {
+    border-top-style: var(--tw-border-style);
+    border-top-width: 0px;
   }
   .\[\&\>a\]\:flex > a {
     display: flex;

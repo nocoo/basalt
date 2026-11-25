@@ -130,7 +130,7 @@ const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 				className={cn(
 					ROOT_CLASSES,
 					structured
-						? "flex w-full flex-col [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-body]]:pt-basalt-card-sm [&>[data-slot=card-header]:not([data-divided]):has(+[data-slot=card-well])]:pb-basalt-card-sm [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-well]]:border-t [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-well]]:border-basalt-border/60 [&>[data-slot=card-body]+[data-slot=card-well]]:border-t [&>[data-slot=card-body]+[data-slot=card-well]]:border-basalt-border/60"
+						? "flex w-full flex-col [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-body]]:pt-basalt-card-sm [&>[data-slot=card-header]:not([data-divided]):has(+[data-slot=card-well])]:pb-basalt-card-sm [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-well]]:border-t [&>[data-slot=card-header]:not([data-divided])+[data-slot=card-well]]:border-basalt-border/60 [&>[data-slot=card-body]+[data-slot=card-well]]:border-t [&>[data-slot=card-body]+[data-slot=card-well]]:border-basalt-border/60 [&>[data-slot=card-header]:not([data-divided]):not([data-as-child]):not(:has(+[data-slot=card-body])):not(:has(+[data-slot=card-well]))]:pb-basalt-card [&>[data-slot=card-header][data-divided]+[data-basalt-code][data-code-attached]]:border-t-0"
 						: PADDING_CLASSES[padding],
 					outlined && "ring-basalt-border",
 					className,
@@ -154,15 +154,16 @@ function LayerCardHeader({
 	return (
 		<Component
 			data-slot="card-header"
+			data-as-child={asChild || undefined}
 			data-divided={divided || undefined}
 			className={cn(
-				"flex min-w-0 justify-between gap-basalt-space-lg text-basalt-foreground",
+				"flex min-w-0 items-center justify-between gap-basalt-space-lg text-basalt-foreground",
 				asChild ? "text-basalt-base font-medium" : "text-basalt-lg font-semibold",
 				asChild
-					? "w-full items-center rounded-none rounded-t-basalt-card last:rounded-b-basalt-card data-[state=closed]:rounded-b-basalt-card px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
+					? "w-full rounded-none rounded-t-basalt-card last:rounded-b-basalt-card data-[state=closed]:rounded-b-basalt-card px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
 					: divided
-						? "items-start p-basalt-card border-b border-basalt-border"
-						: "items-start px-basalt-card pt-basalt-card pb-0",
+						? "p-basalt-card border-b border-basalt-border"
+						: "px-basalt-card pt-basalt-card pb-0",
 				asChild && FOCUS_INSET,
 				className,
 			)}
@@ -186,10 +187,7 @@ const LayerCardTitle = forwardRef<HTMLHeadingElement, LayerCardTitleProps>(
 			<Component
 				ref={ref}
 				data-slot="card-title"
-				className={cn(
-					"min-w-0 text-basalt-lg font-semibold leading-[var(--basalt-line-snug)] text-basalt-foreground",
-					className,
-				)}
+				className={cn("min-w-0 text-basalt-lg font-semibold text-basalt-foreground", className)}
 				{...props}
 			/>
 		);

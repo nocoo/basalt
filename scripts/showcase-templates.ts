@@ -17,9 +17,84 @@ export async function assertTemplatesShowcase(page: Page, baseUrl: string) {
 		"/templates/agent-workspace.md",
 	);
 
+	// Verify CardHeader vertical padding symmetry and vertical content alignment on Agent workspace.
+	const hostHeaderGeometry = await page.evaluate(() => {
+		const headers = Array.from(document.querySelectorAll<HTMLElement>('[data-slot="card-header"]'));
+		const toolbar = headers[0];
+		const anatomyHeaders = headers.slice(1, -2);
+		const rootSetupHeader = headers[headers.length - 1];
+		if (!toolbar || anatomyHeaders.length === 0 || !rootSetupHeader) {
+			throw new Error("Missing expected Agent workspace headers");
+		}
+		const toolbarStyle = getComputedStyle(toolbar);
+		const rootSetupStyle = getComputedStyle(rootSetupHeader);
+		const anatomyAlignments = anatomyHeaders.map((header) => {
+			const title = header.querySelector<HTMLElement>("span");
+			const button = header.querySelector<HTMLElement>("button");
+			if (!title || !button) throw new Error("Missing anatomy header title or Locate button");
+			const titleRect = title.getBoundingClientRect();
+			const buttonRect = button.getBoundingClientRect();
+			return {
+				alignItems: getComputedStyle(header).alignItems,
+				centerDiff: Math.abs(
+					titleRect.top + titleRect.height / 2 - (buttonRect.top + buttonRect.height / 2),
+				),
+			};
+		});
+		return {
+			toolbar: {
+				divided: toolbar.getAttribute("data-divided"),
+				paddingTop: toolbarStyle.paddingTop,
+				paddingBottom: toolbarStyle.paddingBottom,
+				alignItems: toolbarStyle.alignItems,
+				borderBottomWidth: toolbarStyle.borderBottomWidth,
+			},
+			anatomyAlignments,
+			rootSetup: {
+				paddingTop: rootSetupStyle.paddingTop,
+				paddingBottom: rootSetupStyle.paddingBottom,
+				alignItems: rootSetupStyle.alignItems,
+			},
+		};
+	});
+	assert.deepEqual(hostHeaderGeometry.toolbar, {
+		divided: "true",
+		paddingTop: "16px",
+		paddingBottom: "16px",
+		alignItems: "center",
+		borderBottomWidth: "1px",
+	});
+	for (const entry of hostHeaderGeometry.anatomyAlignments) {
+		assert.equal(entry.alignItems, "center");
+		assert.ok(entry.centerDiff <= 1, JSON.stringify(entry));
+	}
+	assert.deepEqual(hostHeaderGeometry.rootSetup, {
+		paddingTop: "16px",
+		paddingBottom: "16px",
+		alignItems: "center",
+	});
+
 	const iframe = page.locator("iframe");
 	await iframe.scrollIntoViewIfNeeded();
 	const agent = iframe.contentFrame();
+	await agent.locator("#agent-approval").waitFor();
+	const approvalHeaderGeometry = await agent
+		.locator("#agent-approval [data-slot='card-header']")
+		.evaluate((header) => {
+			const title = header.querySelector<HTMLElement>("span");
+			const badge = header.querySelector<HTMLElement>('[data-slot="badge"]');
+			if (!title || !badge) throw new Error("Missing approval header title or badge");
+			const titleRect = title.getBoundingClientRect();
+			const badgeRect = badge.getBoundingClientRect();
+			return {
+				alignItems: getComputedStyle(header).alignItems,
+				centerDiff: Math.abs(
+					titleRect.top + titleRect.height / 2 - (badgeRect.top + badgeRect.height / 2),
+				),
+			};
+		});
+	assert.equal(approvalHeaderGeometry.alignItems, "center");
+	assert.ok(approvalHeaderGeometry.centerDiff <= 1, JSON.stringify(approvalHeaderGeometry));
 	await agent.getByRole("button", { name: "Approve migration" }).click();
 	await agent.getByText("Approved", { exact: true }).waitFor();
 	await agent.getByText("Approved migration plan for release.").waitFor();
@@ -68,6 +143,11 @@ export async function assertTemplatesShowcase(page: Page, baseUrl: string) {
 
 	await page.getByRole("radio", { name: "Code", exact: true }).click();
 	assert.equal(await page.locator("iframe").count(), 0);
+	const attachedCodeBorderTop = await page
+		.locator("[data-basalt-code][data-code-attached]")
+		.first()
+		.evaluate((el) => getComputedStyle(el).borderTopWidth);
+	assert.equal(attachedCodeBorderTop, "0px");
 	await page.evaluate(() => {
 		Object.defineProperty(navigator, "clipboard", {
 			configurable: true,

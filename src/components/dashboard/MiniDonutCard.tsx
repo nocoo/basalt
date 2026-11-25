@@ -10,7 +10,7 @@ const data = [
 export function MiniDonutCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
-			<LayerCard.Header className="flex-col">
+			<LayerCard.Header className="flex-col items-start">
 				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Mini donut</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex items-center gap-basalt-card">

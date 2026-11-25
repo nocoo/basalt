@@ -28,7 +28,7 @@ const actions = [
 export function ActionGridCard({ demo = false }: { demo?: boolean }) {
 	return (
 		<LayerCard className="flex flex-col h-full">
-			<LayerCard.Header className="flex-col">
+			<LayerCard.Header className="flex-col items-start">
 				<div className="flex items-center gap-basalt-space-lg">
 					<Zap className="size-basalt-icon text-basalt-muted-foreground" />
 					<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Quick Actions</h2>

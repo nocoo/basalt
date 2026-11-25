@@ -46,11 +46,17 @@ or content surface. Card and layout boundaries use their own four-step roles:
 | Large       | `--basalt-space-card-lg` | `--basalt-space-layout-lg` | `1.5rem` | 24px      |
 | Extra large | `--basalt-space-card-xl` | `--basalt-space-layout-xl` | `2rem`   | 32px      |
 
-Card padding defaults to medium. LayerCard headers flow into Body by default:
-16px horizontal/top insets, no bottom inset and an 8px internal gap, without a divider.
-An undivided structured header is followed by 12px top body inset so the heading and
-body read as one surface; the Body still owns its 16px outer horizontal and bottom insets.
-`Header divided` uses 16px on all sides and a bottom rule. Disclosure headers
+Card padding defaults to medium. LayerCard headers center horizontal row content
+(`items-center`; column-stacked headers pass `flex-col items-start`) and flow
+into Body by default: 16px horizontal/top insets, no bottom inset and an 8px
+internal gap, without a divider. An undivided structured header is followed by
+12px top body inset so the heading and body read as one surface, or by 12px
+bottom inset before `LayerCard.Well`. When an undivided ordinary header is
+followed by any other direct child (such as attached code, attached tables or
+preview stages) or stands alone, it keeps symmetric 16px top/bottom insets; the
+Body still owns its 16px outer horizontal and bottom insets. `Header divided`
+uses 16px on all sides and a bottom rule, and suppresses a following attached
+code block's top border so only a single 1px divider renders. Disclosure headers
 (`Header asChild`) keep 16px horizontal / 12px vertical insets and show their
 bottom rule only when open. Footer keeps 16px horizontal / 12px vertical insets;
 Body/Well use 16px. `padding="sm|md|lg|xl"` selects unstructured

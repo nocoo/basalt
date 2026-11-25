@@ -12,7 +12,7 @@ const radarData = [
 export function RadarChartCard() {
 	return (
 		<LayerCard className="flex flex-col h-full">
-			<LayerCard.Header className="flex-col">
+			<LayerCard.Header className="flex-col items-start">
 				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Capability radar</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">

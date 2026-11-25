@@ -273,7 +273,7 @@ export default function AgentWorkspaceTemplate() {
 											</LayerCard>
 										</Collapsible>
 										<LayerCard id="agent-approval" padding="none">
-											<LayerCard.Header className="justify-between">
+											<LayerCard.Header>
 												<span>Choose how to proceed</span>
 												<Badge
 													tone={

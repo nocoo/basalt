@@ -175,7 +175,7 @@ export default function StatCardStateTransition() {
 
 			{/* Composite LayerCard container pairing metrics and chart with fixed height */}
 			<LayerCard outlined className="overflow-hidden">
-				<LayerCard.Header className="flex-col sm:flex-row sm:items-center">
+				<LayerCard.Header className="flex-col items-start sm:flex-row sm:items-center">
 					<div>
 						<h3 className="text-basalt-base font-semibold text-basalt-foreground">
 							Telemetry Timeline

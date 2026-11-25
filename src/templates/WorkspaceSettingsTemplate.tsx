@@ -264,7 +264,7 @@ export default function WorkspaceSettingsTemplate() {
 									</TabsContent>
 									<TabsContent value="keys">
 										<LayerCard padding="none">
-											<LayerCard.Header className="justify-between">
+											<LayerCard.Header>
 												<span>API keys</span>
 												<Button
 													size="sm"

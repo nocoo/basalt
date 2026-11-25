@@ -15,7 +15,7 @@ const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 export function HeatmapCard() {
 	return (
 		<LayerCard className="flex h-full flex-col">
-			<LayerCard.Header className="flex-col">
+			<LayerCard.Header className="flex-col items-start">
 				<h2 className="text-basalt-lg font-semibold text-basalt-foreground">Engagement heatmap</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1">

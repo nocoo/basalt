@@ -179,7 +179,7 @@ export default function ExecutiveDashboardTemplate() {
 								</LayerCard>
 							</div>
 							<LayerCard id="account-list" padding="none">
-								<LayerCard.Header className="flex-wrap justify-between">
+								<LayerCard.Header divided className="flex-wrap">
 									<span>Accounts</span>
 									<Input
 										aria-label="Filter accounts"

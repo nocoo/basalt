@@ -202,7 +202,7 @@ function TemplateWorkbench({
 			}
 		>
 			<LayerCard padding="none">
-				<LayerCard.Header className="flex-wrap justify-between gap-basalt-space-lg">
+				<LayerCard.Header divided className="flex-wrap">
 					<div className="flex flex-wrap items-center gap-basalt-space-lg">
 						<SegmentControl
 							aria-label="Display mode"
@@ -289,7 +289,7 @@ function TemplateWorkbench({
 						const active = vm.activePartId === part.id;
 						return (
 							<LayerCard key={part.id} padding="none" outlined={active}>
-								<LayerCard.Header className="flex-wrap justify-between gap-basalt-space-lg">
+								<LayerCard.Header className="flex-wrap">
 									<span>{part.label}</span>
 									<Button
 										type="button"
