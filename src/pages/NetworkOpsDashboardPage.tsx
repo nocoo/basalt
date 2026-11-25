@@ -3,6 +3,7 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
 import { AlertTriangle, Clock, Router, Server, Wifi } from "lucide-react";
 import { Timeline } from "@/components/charts/timeline";
+import { DashboardTemplateAnatomy } from "@/components/DashboardTemplateAnatomy";
 import { HeatmapCard } from "@/components/dashboard/HeatmapCard";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { RadarChartCard } from "@/components/dashboard/RadarChartCard";
@@ -75,8 +76,8 @@ export default function NetworkOpsDashboardPage() {
 
 	return (
 		<ShowcasePage
-			title="Care platform operations"
-			description="Care platform connectivity, wearable synchronization, and service incidents. Sample data, not a live service."
+			title="Network operations"
+			description="Latency trends, traffic topology, service health, and recent incidents. Sample data, not a live service."
 		>
 			<StatGrid columns={4} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				{statCards.map((stat) => (
@@ -130,6 +131,12 @@ export default function NetworkOpsDashboardPage() {
 					</LayerCard.Body>
 				</LayerCard>
 			</div>
+
+			<DashboardTemplateAnatomy
+				patternSummary="Observability cockpit pairing latency series, Stacked Area/Bar throughput, Sankey routing, Radar profile, and 2-column Timeline."
+				layoutNote="All chart figures use ChartFrame chrome so Recharts surfaces resize cleanly whenever the host sidebar toggles."
+				components={["stat-card", "layer-card", "chart"]}
+			/>
 		</ShowcasePage>
 	);
 }

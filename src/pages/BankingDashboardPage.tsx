@@ -8,6 +8,7 @@ import {
 	TrendingUp,
 	Wallet,
 } from "lucide-react";
+import { DashboardTemplateAnatomy } from "@/components/DashboardTemplateAnatomy";
 import { BulletChartCard } from "@/components/dashboard/BulletChartCard";
 import { GroupedBarCard } from "@/components/dashboard/GroupedBarCard";
 import { ItemListCard } from "@/components/dashboard/ItemListCard";
@@ -58,8 +59,8 @@ const statCards = [
 export default function BankingDashboardPage() {
 	return (
 		<ShowcasePage
-			title="Care funding dashboard"
-			description="Treatment funds, reimbursements, care spending, and reserves. Sample data, not a live service."
+			title="Finance & wealth"
+			description="Balances, portfolio allocation, funding flows, and recent transfers. Sample data, not a live service."
 		>
 			<StatGrid columns={4} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				{statCards.map((stat) => (
@@ -115,6 +116,12 @@ export default function BankingDashboardPage() {
 					</LayerCard.Body>
 				</LayerCard>
 			</div>
+
+			<DashboardTemplateAnatomy
+				patternSummary="Executive wealth grid combining 4-up StatGrid, Stacked Area, Mini Donut, Bullet Chart, Sankey flow, and transfer ledger."
+				layoutNote="Balanced three-column lg:grid-cols-3 tiers keep comparative flows and account lists aligned on a single L2 LayerCard plane."
+				components={["stat-card", "layer-card", "chart", "link"]}
+			/>
 		</ShowcasePage>
 	);
 }

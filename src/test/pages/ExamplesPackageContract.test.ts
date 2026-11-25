@@ -26,7 +26,7 @@ const EXAMPLE_PAGES = [
 	"SettingsPage.tsx",
 	"StaticPage.tsx",
 	"TypefacePage.tsx",
-	"TemplatesPage.tsx",
+	"TemplateDetailPage.tsx",
 ] as const;
 
 const CHART_PAGES = [

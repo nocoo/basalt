@@ -22,6 +22,7 @@ import {
 import { HeatmapCalendar, heatmapColorScales } from "@/components/charts/heatmap-calendar";
 import { SlotBarChart } from "@/components/charts/slot-bar";
 import { Timeline } from "@/components/charts/timeline";
+import { DashboardTemplateAnatomy } from "@/components/DashboardTemplateAnatomy";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
@@ -183,7 +184,7 @@ const recommendations = [
 export default function HealthPage() {
 	return (
 		<ShowcasePage
-			title="Health activity"
+			title="Health telemetry"
 			description="Sample sleep, heart rate, activity, and insight data."
 		>
 			<SectionRule
@@ -464,6 +465,11 @@ export default function HealthPage() {
 					</LayerCard>
 				</div>
 			</SectionRule>
+			<DashboardTemplateAnatomy
+				patternSummary="Daily slot bars, 365-day activity heatmap, weekly telemetry charts, timeline stream, and prompt studio."
+				layoutNote="SectionRule anchors divide telemetry, trends, and insights cleanly with responsive 12/16/24px card spacing."
+				components={["stat-card", "section-rule", "layer-card", "chart", "textarea", "button"]}
+			/>
 		</ShowcasePage>
 	);
 }

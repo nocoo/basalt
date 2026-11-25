@@ -29,7 +29,7 @@ const LayoutPage = lazy(() => import("./pages/LayoutPage"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage"));
 const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
 const TablesPage = lazy(() => import("./pages/TablesPage"));
-const TemplatesPage = lazy(() => import("./pages/TemplatesPage"));
+const TemplateDetailPage = lazy(() => import("./pages/TemplateDetailPage"));
 const TemplateViewportPage = lazy(() => import("./pages/TemplateViewportPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const NavigationPage = lazy(() => import("./pages/NavigationPage"));
@@ -115,7 +115,7 @@ function AppProviders() {
 								<Route path="/forms" element={routeElement(FormsPage)} />
 								<Route path="/navigation" element={routeElement(NavigationPage)} />
 								<Route path="/dashboard" element={routeElement(DashboardPage)} />
-								<Route path="/templates" element={routeElement(TemplatesPage)} />
+								<Route path="/templates/:slug" element={routeElement(TemplateDetailPage)} />
 								<Route path="/accounts" element={routeElement(AccountsPage)} />
 								<Route path="/progress-tracking" element={routeElement(ProgressTrackingPage)} />
 								<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />

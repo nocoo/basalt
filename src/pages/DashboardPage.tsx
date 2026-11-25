@@ -1,4 +1,5 @@
 import { StatCard, StatGrid } from "@nocoo/basalt/components/stat-card";
+import { DashboardTemplateAnatomy } from "@/components/DashboardTemplateAnatomy";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
 import { BarChartCard } from "@/components/dashboard/BarChartCard";
@@ -25,8 +26,8 @@ export default function DashboardPage() {
 
 	return (
 		<ShowcasePage
-			title="Health overview"
-			description="Care funding, appointments, and wellness progress in one place. Sample data, not a live service."
+			title="Analytics overview"
+			description="Metrics, trends, and the bigger picture in one place. Sample data, not a live service."
 		>
 			{/* Row 0: analytics stat cards */}
 			<StatGrid>
@@ -88,6 +89,12 @@ export default function DashboardPage() {
 				<ActionGridCard demo />
 				<ItemListCard />
 			</div>
+
+			<DashboardTemplateAnatomy
+				patternSummary="KPI StatGrid paired with summary Sparklines, Bar/Donut splits, Area + radial gauges, and recent activity."
+				layoutNote="Container queries (@[38rem]/island, @[56rem]/island) adapt multi-column rows cleanly to sidebar collapse and narrow viewports."
+				components={["stat-card", "layer-card", "chart", "badge", "button", "link"]}
+			/>
 		</ShowcasePage>
 	);
 }

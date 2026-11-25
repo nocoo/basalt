@@ -28,6 +28,7 @@ const CATALOG_SLUGS: ReadonlySet<string> = new Set(Object.keys(CATALOG_PAGE_STAT
 
 const CATALOG_ROUTE = /^\/ui\/([^/]+)(\/source)?$/;
 const TEMPLATE_VIEW_ROUTE = /^\/view\/([^/]+)$/;
+const TEMPLATE_DETAIL_ROUTE = /^\/templates\/([^/]+)$/;
 const TEMPLATE_SLUG_SET: ReadonlySet<string> = new Set(TEMPLATE_SLUGS);
 
 /** Drops one trailing slash so `/ui/button/` matches the canonical `/ui/button`. */
@@ -38,7 +39,7 @@ export function normalizeAppPath(pathname: string): string {
 export function isKnownAppPath(pathname: string): boolean {
 	const path = normalizeAppPath(pathname);
 	if (STATIC_APP_PATHS.has(path)) return true;
-	const template = TEMPLATE_VIEW_ROUTE.exec(path);
+	const template = TEMPLATE_DETAIL_ROUTE.exec(path) ?? TEMPLATE_VIEW_ROUTE.exec(path);
 	const match = template ?? CATALOG_ROUTE.exec(path);
 	if (!match) return false;
 	try {
