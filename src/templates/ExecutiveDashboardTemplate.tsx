@@ -36,6 +36,13 @@ function serverMobile() {
 	return false;
 }
 
+export const EXECUTIVE_CONFIG = {
+	brandName: "Northstar",
+	headerTitle: "Overview",
+	title: "Executive overview",
+	description: "A clear view of performance and capacity.",
+} as const;
+
 type Account = { name: string; owner: string; revenue: number; status: "On track" | "At risk" };
 const ACCOUNTS: Account[] = [
 	{ name: "Northstar", owner: "Maya Chen", revenue: 124000, status: "On track" },
@@ -80,7 +87,7 @@ export default function ExecutiveDashboardTemplate() {
 				<SidebarHeader>
 					<SidebarBrand
 						logo={<BarChart3 />}
-						name="Northstar"
+						name={EXECUTIVE_CONFIG.brandName}
 						action={
 							drawer ? (
 								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
@@ -108,7 +115,9 @@ export default function ExecutiveDashboardTemplate() {
 		<SidebarProvider>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				<div className="hidden md:block">{sidebar(false)}</div>
+				<div id="exec-sidebar" className="hidden md:block">
+					{sidebar(false)}
+				</div>
 				<SidebarDrawer
 					id="dashboard-navigation"
 					returnFocusRef={navigationTrigger}
@@ -120,7 +129,7 @@ export default function ExecutiveDashboardTemplate() {
 				</SidebarDrawer>
 				<AppMain>
 					<AppHeader
-						title="Overview"
+						title={EXECUTIVE_CONFIG.headerTitle}
 						leading={
 							mobile && (
 								<AppHeaderMenuButton
@@ -134,22 +143,24 @@ export default function ExecutiveDashboardTemplate() {
 					/>
 					<ContentIsland className="overflow-auto">
 						<div className="space-y-basalt-layout-lg">
-							<PageHeader
-								title="Executive overview"
-								description="A clear view of performance and capacity."
-							/>
-							<StatGrid columns={4}>
-								<StatCard
-									title="Revenue"
-									value="$482k"
-									subtitle="This quarter"
-									trend={{ value: 8.2, label: "vs. last quarter" }}
+							<div id="exec-kpis" className="space-y-basalt-layout-lg">
+								<PageHeader
+									title={EXECUTIVE_CONFIG.title}
+									description={EXECUTIVE_CONFIG.description}
 								/>
-								<StatCard title="Active accounts" value="128" subtitle="Across all regions" />
-								<StatCard title="Retention" value="96.4%" subtitle="Trailing 12 months" />
-								<StatCard title="Open orders" value="42" subtitle="Awaiting fulfillment" />
-							</StatGrid>
-							<div className="grid gap-basalt-layout sm:grid-cols-2">
+								<StatGrid columns={4}>
+									<StatCard
+										title="Revenue"
+										value="$482k"
+										subtitle="This quarter"
+										trend={{ value: 8.2, label: "vs. last quarter" }}
+									/>
+									<StatCard title="Active accounts" value="128" subtitle="Across all regions" />
+									<StatCard title="Retention" value="96.4%" subtitle="Trailing 12 months" />
+									<StatCard title="Open orders" value="42" subtitle="Awaiting fulfillment" />
+								</StatGrid>
+							</div>
+							<div id="exec-capacity" className="grid gap-basalt-layout sm:grid-cols-2">
 								<LayerCard padding="none">
 									<LayerCard.Header>Capacity</LayerCard.Header>
 									<LayerCard.Body className="space-y-basalt-card">

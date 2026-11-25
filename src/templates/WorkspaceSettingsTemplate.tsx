@@ -110,7 +110,9 @@ export default function WorkspaceSettingsTemplate() {
 		<SidebarProvider>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				<div className="hidden md:block">{sidebar(false)}</div>
+				<div id="settings-sidebar" className="hidden md:block">
+					{sidebar(false)}
+				</div>
 				<SidebarDrawer
 					id="settings-navigation"
 					returnFocusRef={navigationTrigger}
@@ -136,179 +138,183 @@ export default function WorkspaceSettingsTemplate() {
 					/>
 					<ContentIsland className="overflow-auto">
 						<div className="mx-auto space-y-basalt-layout-lg" style={{ maxWidth: "64rem" }}>
-							<PageHeader
-								title={WORKSPACE_SETTINGS_CONFIG.title}
-								description={WORKSPACE_SETTINGS_CONFIG.description}
-							/>
+							<div id="settings-header">
+								<PageHeader
+									title={WORKSPACE_SETTINGS_CONFIG.title}
+									description={WORKSPACE_SETTINGS_CONFIG.description}
+								/>
+							</div>
 							<Tabs value={tab} onValueChange={setTab}>
-								<TabsList>
+								<TabsList id="settings-tabs">
 									<TabsTrigger value="general">General</TabsTrigger>
 									<TabsTrigger value="members">Members</TabsTrigger>
 									<TabsTrigger value="security">Security</TabsTrigger>
 									<TabsTrigger value="keys">API Keys</TabsTrigger>
 									<TabsTrigger value="quotas">Quotas</TabsTrigger>
 								</TabsList>
-								<TabsContent value="general">
-									<LayerCard padding="none">
-										<LayerCard.Header>Workspace profile</LayerCard.Header>
-										<LayerCard.Body className="space-y-basalt-card">
-											<div className="space-y-basalt-space-lg">
-												<Label htmlFor="workspace-name">Workspace name</Label>
-												<Input
-													id="workspace-name"
-													value={name}
-													onChange={(event) => {
-														setName(event.target.value);
-														setSaved(false);
-													}}
-												/>
-											</div>
-											<div className="space-y-basalt-space-lg">
-												<Label htmlFor="workspace-email">Contact email</Label>
-												<Input
-													id="workspace-email"
-													type="email"
-													value={email}
-													onChange={(event) => {
-														setEmail(event.target.value);
-														setSaved(false);
-													}}
-												/>
-											</div>
-											<Button onClick={() => setSaved(true)}>Save changes</Button>
-											{saved && (
-												<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
-													Changes saved locally.
-												</p>
-											)}
-										</LayerCard.Body>
-									</LayerCard>
-								</TabsContent>
-								<TabsContent value="members">
-									<LayerCard padding="none">
-										<LayerCard.Header>Team access</LayerCard.Header>
-										<LayerCard.Body className="space-y-basalt-card">
-											<div className="flex items-center justify-between gap-basalt-layout">
-												<div>
-													<p>Allow member invitations</p>
-													<p className="text-basalt-sm text-basalt-muted-foreground">
-														Members can invite colleagues to this workspace.
-													</p>
+								<div id="settings-panel">
+									<TabsContent value="general">
+										<LayerCard padding="none">
+											<LayerCard.Header>Workspace profile</LayerCard.Header>
+											<LayerCard.Body className="space-y-basalt-card">
+												<div className="space-y-basalt-space-lg">
+													<Label htmlFor="workspace-name">Workspace name</Label>
+													<Input
+														id="workspace-name"
+														value={name}
+														onChange={(event) => {
+															setName(event.target.value);
+															setSaved(false);
+														}}
+													/>
 												</div>
-												<Switch
-													aria-label="Allow member invitations"
-													checked={invites}
-													onCheckedChange={setInvites}
-												/>
-											</div>
-											<div className="flex items-center justify-between gap-basalt-layout">
-												<div>
-													<p>Security alerts</p>
-													<p className="text-basalt-sm text-basalt-muted-foreground">
-														Notify owners about access changes.
-													</p>
+												<div className="space-y-basalt-space-lg">
+													<Label htmlFor="workspace-email">Contact email</Label>
+													<Input
+														id="workspace-email"
+														type="email"
+														value={email}
+														onChange={(event) => {
+															setEmail(event.target.value);
+															setSaved(false);
+														}}
+													/>
 												</div>
-												<Switch
-													aria-label="Security alerts"
-													checked={alerts}
-													onCheckedChange={setAlerts}
-												/>
-											</div>
-											<p className="text-basalt-sm text-basalt-muted-foreground">
-												3 members · 2 administrators
-											</p>
-										</LayerCard.Body>
-									</LayerCard>
-								</TabsContent>
-								<TabsContent value="security">
-									<LayerCard padding="none">
-										<LayerCard.Header>Active sessions</LayerCard.Header>
-										<LayerCard.Body className="space-y-basalt-card-sm">
-											{sessions.map((session) => (
-												<div
-													key={session.device}
-													className="flex items-center justify-between gap-basalt-layout"
-												>
+												<Button onClick={() => setSaved(true)}>Save changes</Button>
+												{saved && (
+													<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
+														Changes saved locally.
+													</p>
+												)}
+											</LayerCard.Body>
+										</LayerCard>
+									</TabsContent>
+									<TabsContent value="members">
+										<LayerCard padding="none">
+											<LayerCard.Header>Team access</LayerCard.Header>
+											<LayerCard.Body className="space-y-basalt-card">
+												<div className="flex items-center justify-between gap-basalt-layout">
 													<div>
-														<div className="flex flex-wrap items-center gap-basalt-space-md">
-															<span>{session.device}</span>
-															{session.current && <Badge tone="success">Current</Badge>}
-														</div>
+														<p>Allow member invitations</p>
 														<p className="text-basalt-sm text-basalt-muted-foreground">
-															{session.location}
+															Members can invite colleagues to this workspace.
 														</p>
 													</div>
-													{!session.current && (
+													<Switch
+														aria-label="Allow member invitations"
+														checked={invites}
+														onCheckedChange={setInvites}
+													/>
+												</div>
+												<div className="flex items-center justify-between gap-basalt-layout">
+													<div>
+														<p>Security alerts</p>
+														<p className="text-basalt-sm text-basalt-muted-foreground">
+															Notify owners about access changes.
+														</p>
+													</div>
+													<Switch
+														aria-label="Security alerts"
+														checked={alerts}
+														onCheckedChange={setAlerts}
+													/>
+												</div>
+												<p className="text-basalt-sm text-basalt-muted-foreground">
+													3 members · 2 administrators
+												</p>
+											</LayerCard.Body>
+										</LayerCard>
+									</TabsContent>
+									<TabsContent value="security">
+										<LayerCard padding="none">
+											<LayerCard.Header>Active sessions</LayerCard.Header>
+											<LayerCard.Body className="space-y-basalt-card-sm">
+												{sessions.map((session) => (
+													<div
+														key={session.device}
+														className="flex items-center justify-between gap-basalt-layout"
+													>
+														<div>
+															<div className="flex flex-wrap items-center gap-basalt-space-md">
+																<span>{session.device}</span>
+																{session.current && <Badge tone="success">Current</Badge>}
+															</div>
+															<p className="text-basalt-sm text-basalt-muted-foreground">
+																{session.location}
+															</p>
+														</div>
+														{!session.current && (
+															<Button
+																size="sm"
+																variant="outline"
+																aria-label={`Revoke ${session.device}`}
+																onClick={() =>
+																	setSessions((current) =>
+																		current.filter((item) => item.device !== session.device),
+																	)
+																}
+															>
+																Revoke
+															</Button>
+														)}
+													</div>
+												))}
+											</LayerCard.Body>
+										</LayerCard>
+									</TabsContent>
+									<TabsContent value="keys">
+										<LayerCard padding="none">
+											<LayerCard.Header className="justify-between">
+												<span>API keys</span>
+												<Button
+													size="sm"
+													onClick={() => {
+														setKeys((current) => [...current, `New key ${nextKey}`]);
+														setNextKey((current) => current + 1);
+													}}
+												>
+													Create key
+												</Button>
+											</LayerCard.Header>
+											<LayerCard.Body className="space-y-basalt-card-sm">
+												{keys.map((key) => (
+													<div
+														key={key}
+														className="flex items-center justify-between gap-basalt-space-lg"
+													>
+														<span>
+															{key} <Badge variant="outline">Active</Badge>
+														</span>
 														<Button
 															size="sm"
 															variant="outline"
-															aria-label={`Revoke ${session.device}`}
 															onClick={() =>
-																setSessions((current) =>
-																	current.filter((item) => item.device !== session.device),
-																)
+																setKeys((current) => current.filter((item) => item !== key))
 															}
 														>
 															Revoke
 														</Button>
-													)}
-												</div>
-											))}
-										</LayerCard.Body>
-									</LayerCard>
-								</TabsContent>
-								<TabsContent value="keys">
-									<LayerCard padding="none">
-										<LayerCard.Header className="justify-between">
-											<span>API keys</span>
-											<Button
-												size="sm"
-												onClick={() => {
-													setKeys((current) => [...current, `New key ${nextKey}`]);
-													setNextKey((current) => current + 1);
-												}}
-											>
-												Create key
-											</Button>
-										</LayerCard.Header>
-										<LayerCard.Body className="space-y-basalt-card-sm">
-											{keys.map((key) => (
-												<div
-													key={key}
-													className="flex items-center justify-between gap-basalt-space-lg"
-												>
-													<span>
-														{key} <Badge variant="outline">Active</Badge>
-													</span>
-													<Button
-														size="sm"
-														variant="outline"
-														onClick={() =>
-															setKeys((current) => current.filter((item) => item !== key))
-														}
-													>
-														Revoke
-													</Button>
-												</div>
-											))}
-											{keys.length === 0 && (
-												<p className="text-basalt-sm text-basalt-muted-foreground">
-													No active keys.
-												</p>
-											)}
-										</LayerCard.Body>
-									</LayerCard>
-								</TabsContent>
-								<TabsContent value="quotas">
-									<LayerCard padding="none">
-										<LayerCard.Header>Usage this month</LayerCard.Header>
-										<LayerCard.Body className="space-y-basalt-card">
-											<Meter label="API requests" value={62} customValue="62k / 100k" />
-											<Meter label="Storage" value={38} customValue="38 GB / 100 GB" />
-											<Meter label="Members" value={30} customValue="3 / 10" />
-										</LayerCard.Body>
-									</LayerCard>
-								</TabsContent>
+													</div>
+												))}
+												{keys.length === 0 && (
+													<p className="text-basalt-sm text-basalt-muted-foreground">
+														No active keys.
+													</p>
+												)}
+											</LayerCard.Body>
+										</LayerCard>
+									</TabsContent>
+									<TabsContent value="quotas">
+										<LayerCard padding="none">
+											<LayerCard.Header>Usage this month</LayerCard.Header>
+											<LayerCard.Body className="space-y-basalt-card">
+												<Meter label="API requests" value={62} customValue="62k / 100k" />
+												<Meter label="Storage" value={38} customValue="38 GB / 100 GB" />
+												<Meter label="Members" value={30} customValue="3 / 10" />
+											</LayerCard.Body>
+										</LayerCard>
+									</TabsContent>
+								</div>
 							</Tabs>
 						</div>
 					</ContentIsland>

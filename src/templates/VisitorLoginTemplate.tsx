@@ -8,6 +8,13 @@ import { Switch } from "@nocoo/basalt/components/switch";
 import { Mountain } from "lucide-react";
 import { useState } from "react";
 
+export const VISITOR_LOGIN_CONFIG = {
+	brandName: "Northstar",
+	title: "Welcome back",
+	subtitle: "Sign in to your workspace.",
+	footerNote: "Demo only · no information leaves this page",
+} as const;
+
 export default function VisitorLoginTemplate() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -23,15 +30,18 @@ export default function VisitorLoginTemplate() {
 			className="flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-layout"
 		>
 			<LayerCard padding="none" className="w-full overflow-hidden" style={{ maxWidth: "18rem" }}>
-				<div className="flex items-center gap-basalt-space-lg bg-basalt-primary px-basalt-card py-basalt-card-sm text-basalt-primary-foreground">
+				<div
+					id="login-brand"
+					className="flex items-center gap-basalt-space-lg bg-basalt-primary px-basalt-card py-basalt-card-sm text-basalt-primary-foreground"
+				>
 					<Mountain className="size-basalt-icon-lg" aria-hidden="true" />
-					<span className="font-semibold">Northstar</span>
+					<span className="font-semibold">{VISITOR_LOGIN_CONFIG.brandName}</span>
 				</div>
-				<LayerCard.Body className="space-y-basalt-card">
+				<LayerCard.Body id="login-form" className="space-y-basalt-card">
 					<div>
-						<h1 className="text-basalt-xl font-semibold">Welcome back</h1>
+						<h1 className="text-basalt-xl font-semibold">{VISITOR_LOGIN_CONFIG.title}</h1>
 						<p className="text-basalt-sm text-basalt-muted-foreground">
-							Sign in to your workspace.
+							{VISITOR_LOGIN_CONFIG.subtitle}
 						</p>
 					</div>
 					<form
@@ -104,9 +114,9 @@ export default function VisitorLoginTemplate() {
 						) : null}
 					</form>
 				</LayerCard.Body>
-				<LayerCard.Footer>
+				<LayerCard.Footer id="login-footer">
 					<p className="text-basalt-xs text-basalt-muted-foreground">
-						Demo only · no information leaves this page
+						{VISITOR_LOGIN_CONFIG.footerNote}
 					</p>
 				</LayerCard.Footer>
 			</LayerCard>

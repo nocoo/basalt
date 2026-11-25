@@ -79,6 +79,16 @@ describe("template registry", () => {
 			}
 			expect(resolveTemplateComponents(template).length).toBeGreaterThanOrEqual(1);
 		}
+		for (const entry of TEMPLATES) {
+			for (const part of entry.parts) {
+				expect(entry.consumerSource, `${entry.slug}#${part.id}`).toContain(`id="${part.id}"`);
+			}
+			for (const step of entry.customizeSteps) {
+				if (step.symbol) {
+					expect(entry.consumerSource, `${entry.slug}:${step.symbol}`).toContain(step.symbol);
+				}
+			}
+		}
 		expect(getTemplateByManifestSlug("agent-workspace")?.slug).toBe("agent-workspace");
 		expect(getTemplateByManifestSlug("unknown")).toBeUndefined();
 		expect(getTemplateNeighbors("agent-workspace")).toEqual({

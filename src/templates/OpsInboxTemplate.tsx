@@ -37,6 +37,18 @@ function serverMobile() {
 	return false;
 }
 
+export const OPS_CONFIG = {
+	brandName: "Signal desk",
+	title: "Operations inbox",
+	description: "Triage the signals that need attention.",
+} as const;
+
+export const RUNBOOK_STEPS = [
+	"Confirm the alert",
+	"Check service health",
+	"Notify the owner",
+] as const;
+
 type Incident = {
 	id: string;
 	title: string;
@@ -44,7 +56,7 @@ type Incident = {
 	status: "open" | "resolved" | "escalated";
 	sla: number;
 };
-const INITIAL: Incident[] = [
+export const INITIAL_INCIDENTS: Incident[] = [
 	{
 		id: "INC-1042",
 		title: "Elevated API latency",
@@ -76,8 +88,8 @@ export default function OpsInboxTemplate() {
 	}, [mobile]);
 	const navigationTrigger = useRef<HTMLButtonElement>(null);
 	const navigationReturnTarget = useRef<HTMLElement | null>(null);
-	const [items, setItems] = useState(INITIAL);
-	const [selected, setSelected] = useState(INITIAL[0].id);
+	const [items, setItems] = useState(INITIAL_INCIDENTS);
+	const [selected, setSelected] = useState(INITIAL_INCIDENTS[0].id);
 	const [filter, setFilter] = useState("all");
 	const [query, setQuery] = useState("");
 	const [checks, setChecks] = useState<Record<string, boolean>>({});
@@ -99,7 +111,7 @@ export default function OpsInboxTemplate() {
 				<SidebarHeader>
 					<SidebarBrand
 						logo={<Activity />}
-						name="Signal desk"
+						name={OPS_CONFIG.brandName}
 						action={
 							drawer ? (
 								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
@@ -131,7 +143,9 @@ export default function OpsInboxTemplate() {
 		<SidebarProvider>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				<div className="hidden md:block">{sidebar(false)}</div>
+				<div id="ops-sidebar" className="hidden md:block">
+					{sidebar(false)}
+				</div>
 				<SidebarDrawer
 					id="ops-navigation"
 					returnFocusRef={navigationReturnTarget}
@@ -143,7 +157,7 @@ export default function OpsInboxTemplate() {
 				</SidebarDrawer>
 				<AppMain>
 					<AppHeader
-						title="Operations inbox"
+						title={OPS_CONFIG.title}
 						leading={
 							mobile && (
 								<AppHeaderMenuButton
@@ -161,13 +175,11 @@ export default function OpsInboxTemplate() {
 					<ContentIsland className="overflow-auto">
 						<div className="space-y-basalt-layout">
 							<div>
-								<h1 className="text-basalt-3xl font-semibold">Operations inbox</h1>
-								<p className="text-basalt-muted-foreground">
-									Triage the signals that need attention.
-								</p>
+								<h1 className="text-basalt-3xl font-semibold">{OPS_CONFIG.title}</h1>
+								<p className="text-basalt-muted-foreground">{OPS_CONFIG.description}</p>
 							</div>
 							<div className="grid min-w-0 gap-basalt-layout md:grid-cols-[minmax(12rem,20rem)_minmax(0,1fr)]">
-								<LayerCard padding="none">
+								<LayerCard id="ops-queue" padding="none">
 									<LayerCard.Header>Incident queue</LayerCard.Header>
 									<LayerCard.Body className="space-y-basalt-card-sm">
 										<Input
@@ -207,7 +219,7 @@ export default function OpsInboxTemplate() {
 										</div>
 									</LayerCard.Body>
 								</LayerCard>
-								<LayerCard padding="none">
+								<LayerCard id="ops-detail" padding="none">
 									<LayerCard.Header>{incident?.title ?? "Select an incident"}</LayerCard.Header>
 									{incident ? (
 										<LayerCard.Body className="space-y-basalt-layout">
@@ -241,29 +253,27 @@ export default function OpsInboxTemplate() {
 												value={incident.sla}
 												tone={incident.sla >= 90 ? "danger" : "default"}
 											/>
-											<div className="space-y-basalt-card-sm">
+											<div id="ops-runbook" className="space-y-basalt-card-sm">
 												<h2 className="text-basalt-lg font-semibold">Runbook</h2>
-												{["Confirm the alert", "Check service health", "Notify the owner"].map(
-													(step, index) => (
-														<label
-															key={step}
-															htmlFor={`${incident.id}-${index}`}
-															className="flex items-center gap-basalt-space-lg"
-														>
-															<Checkbox
-																id={`${incident.id}-${index}`}
-																checked={Boolean(checks[`${incident.id}:${step}`])}
-																onCheckedChange={(checked) =>
-																	setChecks((current) => ({
-																		...current,
-																		[`${incident.id}:${step}`]: checked === true,
-																	}))
-																}
-															/>
-															{step}
-														</label>
-													),
-												)}
+												{RUNBOOK_STEPS.map((step, index) => (
+													<label
+														key={step}
+														htmlFor={`${incident.id}-${index}`}
+														className="flex items-center gap-basalt-space-lg"
+													>
+														<Checkbox
+															id={`${incident.id}-${index}`}
+															checked={Boolean(checks[`${incident.id}:${step}`])}
+															onCheckedChange={(checked) =>
+																setChecks((current) => ({
+																	...current,
+																	[`${incident.id}:${step}`]: checked === true,
+																}))
+															}
+														/>
+														{step}
+													</label>
+												))}
 											</div>
 											<div className="flex flex-wrap gap-basalt-space-lg">
 												<Button

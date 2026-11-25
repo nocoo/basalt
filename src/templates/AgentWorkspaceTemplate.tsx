@@ -66,14 +66,19 @@ const ARTIFACTS = [
 	{ name: "health.json", code: '{\n  "status": "healthy",\n  "checks": 12\n}' },
 ];
 
+export const AGENT_CONFIG = {
+	brandName: "Fieldwork",
+	workspaceLabel: "Local workspace",
+	defaultModel: "balanced",
+	eyebrow: "WORKSPACE / SESSIONS",
+} as const;
+
+export const INITIAL_SESSIONS = ["Release readiness", "API migration", "Weekly summary"];
+
 export default function AgentWorkspaceTemplate() {
 	const mobile = useSyncExternalStore(subscribeMobile, isMobile, serverMobile);
 	const [search, setSearch] = useState("");
-	const [sessions, setSessions] = useState([
-		"Release readiness",
-		"API migration",
-		"Weekly summary",
-	]);
+	const [sessions, setSessions] = useState<string[]>(INITIAL_SESSIONS);
 	const [session, setSession] = useState("Release readiness");
 	const [turns, setTurns] = useState<Record<string, string[]>>({});
 	const [collapsed, setCollapsed] = useState(false);
@@ -86,7 +91,10 @@ export default function AgentWorkspaceTemplate() {
 	const [files, setFiles] = useState(["release-notes.md", "checks.json"]);
 	const [artifact, setArtifact] = useState(ARTIFACTS[0]);
 	const [running, setRunning] = useState(true);
-	const [model, setModel] = useState("balanced");
+	const [model, setModel] = useState<string>(AGENT_CONFIG.defaultModel);
+	const [approvalStatus, setApprovalStatus] = useState<"pending" | "approved" | "changes">(
+		"pending",
+	);
 
 	function send(message: string) {
 		if (!message.trim()) return;
@@ -103,7 +111,7 @@ export default function AgentWorkspaceTemplate() {
 				<SidebarHeader>
 					<SidebarBrand
 						logo={<Bot />}
-						name="Fieldwork"
+						name={AGENT_CONFIG.brandName}
 						action={
 							drawer ? (
 								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
@@ -179,7 +187,9 @@ export default function AgentWorkspaceTemplate() {
 		<SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
 			<AppShell layout="responsive">
 				<AppSkipLink>Skip to content</AppSkipLink>
-				<div className="hidden md:block">{sidebar(false)}</div>
+				<div id="agent-sidebar" className="hidden md:block">
+					{sidebar(false)}
+				</div>
 				<SidebarDrawer
 					id="agent-navigation"
 					returnFocusRef={navigationTrigger}
@@ -202,7 +212,7 @@ export default function AgentWorkspaceTemplate() {
 							)
 						}
 						title={session}
-						actions={<Badge variant="outline">Local workspace</Badge>}
+						actions={<Badge variant="outline">{AGENT_CONFIG.workspaceLabel}</Badge>}
 					/>
 					<ContentIsland className="overflow-auto">
 						<div
@@ -212,7 +222,7 @@ export default function AgentWorkspaceTemplate() {
 							<div className="min-w-0 space-y-basalt-layout">
 								<div>
 									<p className="text-basalt-sm text-basalt-muted-foreground">
-										WORKSPACE / SESSIONS
+										{AGENT_CONFIG.eyebrow}
 									</p>
 									<h1 className="text-basalt-3xl font-semibold">
 										{session === "Release readiness" ? "Prepare the release" : "Start a session"}
@@ -233,7 +243,7 @@ export default function AgentWorkspaceTemplate() {
 											</p>
 										</LayerCard>
 										<Collapsible asChild defaultOpen>
-											<LayerCard padding="none">
+											<LayerCard id="agent-trace" padding="none">
 												<LayerCard.Header asChild>
 													<CollapsibleTrigger className="w-full">
 														<Loader
@@ -262,13 +272,51 @@ export default function AgentWorkspaceTemplate() {
 												</CollapsibleContent>
 											</LayerCard>
 										</Collapsible>
-										<LayerCard padding="none">
-											<LayerCard.Header>Choose how to proceed</LayerCard.Header>
+										<LayerCard id="agent-approval" padding="none">
+											<LayerCard.Header className="justify-between">
+												<span>Choose how to proceed</span>
+												<Badge
+													tone={
+														approvalStatus === "approved"
+															? "success"
+															: approvalStatus === "changes"
+																? "warning"
+																: "neutral"
+													}
+													variant="outline"
+												>
+													{approvalStatus === "approved"
+														? "Approved"
+														: approvalStatus === "changes"
+															? "Changes requested"
+															: "Pending approval"}
+												</Badge>
+											</LayerCard.Header>
 											<LayerCard.Body className="space-y-basalt-card-sm">
 												<p className="text-basalt-sm text-basalt-muted-foreground">
-													The release is ready for review. What should the agent prepare next?
+													The release is ready for review. Approve the staged migration or request a
+													follow-up step.
 												</p>
 												<div className="flex flex-wrap gap-basalt-space-lg">
+													<Button
+														onClick={() => {
+															setApprovalStatus("approved");
+															setArtifact(ARTIFACTS[0]);
+															send("Approved migration plan for release.");
+														}}
+													>
+														Approve migration
+													</Button>
+													<Button
+														variant="outline"
+														onClick={() => {
+															setApprovalStatus("changes");
+															setArtifact(ARTIFACTS[1]);
+															send("Requested follow-up diff review.");
+														}}
+													>
+														Request changes
+													</Button>
 													<Button
 														variant="outline"
 														onClick={() => send("Prepare a deployment plan.")}
@@ -292,7 +340,7 @@ export default function AgentWorkspaceTemplate() {
 										<p>{turn}</p>
 									</LayerCard>
 								))}
-								<LayerCard padding="none">
+								<LayerCard id="agent-composer" padding="none">
 									<LayerCard.Body className="space-y-basalt-card-sm">
 										<Textarea
 											aria-label="Message"
@@ -334,7 +382,7 @@ export default function AgentWorkspaceTemplate() {
 									</LayerCard.Body>
 								</LayerCard>
 							</div>
-							<aside className="min-w-0 space-y-basalt-layout">
+							<aside id="agent-inspector" className="min-w-0 space-y-basalt-layout">
 								<LayerCard padding="none">
 									<LayerCard.Header>Workspace files</LayerCard.Header>
 									<LayerCard.Body className="space-y-basalt-space-sm">

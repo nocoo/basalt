@@ -20,6 +20,13 @@ describe("standalone template interactions", () => {
 		);
 		fireEvent.click(screen.getByRole("button", { name: "Prepare deployment plan" }));
 		expect(screen.getByText("Prepare a deployment plan.")).toBeInTheDocument();
+		expect(screen.getByText("Pending approval")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Request changes" }));
+		expect(screen.getByText("Changes requested")).toBeInTheDocument();
+		expect(screen.getByText("Requested follow-up diff review.")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Approve migration" }));
+		expect(screen.getByText("Approved")).toBeInTheDocument();
+		expect(screen.getByText("Approved migration plan for release.")).toBeInTheDocument();
 		fireEvent.change(screen.getByRole("textbox", { name: "Message" }), {
 			target: { value: "Review the logs" },
 		});
