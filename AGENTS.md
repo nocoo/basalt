@@ -18,13 +18,13 @@ bun run build # catalog/SEO checks + site dist/
 bun run --cwd packages/basalt build # library packages/basalt/dist/
 bun run test:coverage # L1: Vitest/V8 (>=80% four floors)
 bun run playwright:install # Chromium + WebKit
-bun run consumer:next # blocking Next.js SSR/hydration/HTTP
+bun run consumer:next # blocking Next.js install/build/SSR
 bun run test:showcase # full catalog showcase suite
 bun run test:layouts # Chromium + WebKit mobile layouts
 bun run package:prepublish # full pre-npm gate (pack/publint/consumers/e2e)
 ```
 
-Run `bun run consumer:docs` only after building the package. `bun run design:check` runs at pre-push/CI (`L4`), not dev/build/pre-commit.
+Run `bun run consumer:docs` only after building the package. `bun run design:check` and `bun run test:browser` run in `L4`, not dev/build/pre-commit.
 
 ## Invariants
 

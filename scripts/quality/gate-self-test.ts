@@ -116,6 +116,7 @@ function writeFixturePackage(
 		"test:coverage": failing === "L1" ? "exit 1" : "echo 'Tests 1 passed'; echo 'coverage ok'",
 		"verify-pre-commit-coverage": "true",
 		"design:check": "true",
+		"test:browser": "true",
 		"test:showcase:smoke": failing === "L4" ? "exit 1" : "echo 'Showcase smoke passed'",
 		"pack:check": failing === "P1" ? "exit 1" : "true",
 		publint: "true",
@@ -873,131 +874,68 @@ function slotMapProbe() {
 	);
 }
 
-function z1Probes() {
-	const root = tempRoot("basalt-z1-");
-	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), { recursive: true });
-	const declarations = Object.fromEntries(
-		["S1", "S2", "S3", "G1", "G2", "B1", "L1", "L4", "P1"].map((slot) => [
-			slot,
-			{ status: "impl" },
-		]),
-	) as Record<string, { status: string; reason?: string }>;
-	declarations.L2 = {
-		status: "na",
-		reason: "Node tests use a mocked ASSETS binding; no workerd suite",
-	};
-	declarations.L3 = {
-		status: "na",
-		reason: "No service, protocol or storage boundary",
-	};
-	declarations.Z1 = { status: "impl" };
-	const needs = Object.fromEntries(
-		[
-			"s1-types",
-			"s2-lint",
-			"s3-workflow",
-			"g1-secrets",
-			"g2-dependencies",
-			"b1-build",
-			"l1-unit",
-			"l4-e2e",
-			"p1-package",
-		].map((job) => [job, { result: "success", outputs: { "tested-sha": "a".repeat(40) } }]),
-	);
-	needs["l2-runtime"] = { result: "skipped", outputs: {} };
-	needs["l3-integration"] = { result: "skipped", outputs: {} };
-	needs["consumer-next"] = {
-		result: "success",
-		outputs: { "tested-sha": "a".repeat(40) },
-	};
-	for (const shard of [1, 2, 3, 4]) {
-		needs[`unit-shard-${shard}`] = {
-			result: "success",
-			outputs: { "tested-sha": "a".repeat(40) },
-		};
+function workflowContractProbe() {
+	const workflowsDir = join(repoRoot, ".github/workflows");
+	const files = readdirSync(workflowsDir)
+		.filter((name) => name.endsWith(".yml") || name.endsWith(".yaml"))
+		.sort();
+	const baseCiPin = "bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18";
+	const unpinned: string[] = [];
+	for (const file of files) {
+		const lines = readFileSync(join(workflowsDir, file), "utf8").split("\n");
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			if (line.includes("nocoo/base-ci/") && !line.includes(baseCiPin)) {
+				unpinned.push(`${file}:${i + 1}`);
+			}
+		}
 	}
-
-	const runZ1 = (
-		nextNeeds: unknown,
-		nextDeclarations: unknown,
-		sha = "a".repeat(40),
-		outputFile = "",
-	) =>
-		run("python3", ["scripts/quality/z1-gate.py"], {
-			cwd: root,
-			env: {
-				NEEDS_JSON: JSON.stringify(nextNeeds),
-				SLOT_STATUS: JSON.stringify(nextDeclarations),
-				EXPECTED_SHA: sha,
-				GITHUB_TOKEN: "",
-				GITHUB_REPOSITORY: "",
-				GITHUB_RUN_ID: "",
-				GITHUB_STEP_SUMMARY: "",
-				GITHUB_OUTPUT: outputFile,
-			},
-		});
-
-	const healthy = runZ1(needs, declarations);
-	record("z1-healthy", healthy.status === 0, `exit=${healthy.status}`);
-	const outputFile = join(tempRoot("basalt-z1-output-"), "output");
-	const outputRun = runZ1(needs, declarations, "a".repeat(40), outputFile);
-	const output = outputRun.status === 0 ? readFileSync(outputFile, "utf8").trim() : "";
 	record(
-		"z1-tested-sha-output",
-		output === `tested-sha=${"a".repeat(40)}`,
-		`exit=${outputRun.status} output=${output}`,
+		"workflow-base-ci-pin",
+		unpinned.length === 0,
+		unpinned.length ? `unpinned: ${unpinned.join(",")}` : "all base-ci refs pinned to v2026.18",
 	);
 
-	const implFailure = structuredClone(needs);
-	implFailure["s1-types"].result = "failure";
-	expectReject("z1-impl-failure", runZ1(implFailure, declarations), /declared impl/);
-
-	const naRan = structuredClone(needs);
-	naRan["l2-runtime"].result = "success";
-	expectReject("z1-na-ran", runZ1(naRan, declarations), /declared na/);
-
-	const shaMismatch = structuredClone(needs);
-	shaMismatch["s2-lint"].outputs["tested-sha"] = "b".repeat(40);
-	expectReject("z1-sha-mismatch", runZ1(shaMismatch, declarations), /different commits/);
-
-	const missingSha = structuredClone(needs);
-	missingSha["p1-package"].outputs["tested-sha"] = "";
-	expectReject("z1-missing-sha", runZ1(missingSha, declarations), /no tested SHA/);
-
-	const unknown = structuredClone(declarations);
-	unknown.S4 = { status: "impl" };
-	expectReject("z1-unknown-slot", runZ1(needs, unknown), /unknown slots/);
-
-	const missingDeclaration = structuredClone(declarations);
-	delete missingDeclaration.L1;
-	expectReject(
-		"z1-missing-declaration",
-		runZ1(needs, missingDeclaration),
-		/missing slot declarations/,
+	const qualitySlots = readFileSync(join(workflowsDir, "quality-slots.yml"), "utf8");
+	const hasSetupPlaywright = qualitySlots.includes(
+		`nocoo/base-ci/.github/actions/setup-playwright@${baseCiPin}`,
 	);
+	const hasZ1Action = qualitySlots.includes(`nocoo/base-ci/.github/actions/z1-gate@${baseCiPin}`);
+	const p1Section = qualitySlots.slice(
+		qualitySlots.indexOf("  p1-package:"),
+		qualitySlots.indexOf("  z1-gate:"),
+	);
+	const p1HasPlaywright = /playwright/i.test(p1Section);
+	const p1DownloadsArtifact = p1Section.includes("basalt-package-dist");
 
-	const invalidStatus = structuredClone(declarations);
-	invalidStatus.S1.status = "enforced";
-	expectReject("z1-invalid-status", runZ1(needs, invalidStatus), /invalid status/);
+	const z1Section = qualitySlots.slice(qualitySlots.indexOf("  z1-gate:"));
+	const needsBlock = z1Section.split("runs-on:")[0] ?? "";
+	const needsJobs = [...needsBlock.matchAll(/^\s+-\s+([a-z0-9-]+)\s*$/gm)].map((m) => m[1]);
+	const reqStart = z1Section.indexOf("required-jobs:");
+	const skipStart = z1Section.indexOf("skipped-jobs:");
+	const declaredJobs = [
+		...z1Section.slice(reqStart, skipStart).matchAll(/^\s+([a-z0-9-]+)=/gm),
+		...z1Section.slice(skipStart).matchAll(/^\s+([a-z0-9-]+)=/gm),
+	].map((m) => m[1]);
+	const missingInZ1 = needsJobs.filter((id) => !declaredJobs.includes(id));
 
-	const z1NotImpl = structuredClone(declarations);
-	z1NotImpl.Z1.status = "na";
-	expectReject("z1-not-impl", runZ1(needs, z1NotImpl), /Z1 must be declared impl/);
-
-	const noReason = structuredClone(declarations);
-	delete noReason.L3.reason;
-	expectReject("z1-na-without-reason", runZ1(needs, noReason), /without a reason/);
-
-	const extraFailure = structuredClone(needs);
-	extraFailure["consumer-next"].result = "cancelled";
-	expectReject("z1-extra-blocking-failure", runZ1(extraFailure, declarations), /blocking job/);
-
-	const extraMissingSha = structuredClone(needs);
-	extraMissingSha["consumer-next"].outputs["tested-sha"] = "";
-	expectReject("z1-extra-missing-sha", runZ1(extraMissingSha, declarations), /no tested SHA/);
-
-	const expectedMismatch = runZ1(needs, declarations, "c".repeat(40));
-	expectReject("z1-expected-sha", expectedMismatch, /this run/);
+	record(
+		"workflow-l4-setup-playwright",
+		hasSetupPlaywright,
+		hasSetupPlaywright ? "L4 uses setup-playwright" : "missing setup-playwright",
+	);
+	record(
+		"workflow-p1-no-playwright",
+		!p1HasPlaywright && p1DownloadsArtifact,
+		`p1HasPlaywright=${p1HasPlaywright} p1DownloadsArtifact=${p1DownloadsArtifact}`,
+	);
+	record(
+		"workflow-z1-coverage",
+		hasZ1Action && needsJobs.length > 0 && missingInZ1.length === 0,
+		missingInZ1.length
+			? `missing in z1: ${missingInZ1.join(",")}`
+			: `all ${needsJobs.length} needs covered`,
+	);
 }
 
 try {
@@ -1011,7 +949,7 @@ try {
 	await supervisorKillsRegisteredToolProbe();
 	timeoutProbes();
 	missingToolProbe();
-	z1Probes();
+	workflowContractProbe();
 	if (!probesOnly) {
 		gateFixtureProbes();
 		gateDescendantProbe();

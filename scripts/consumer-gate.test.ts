@@ -444,12 +444,11 @@ describe("next consumer gate helpers", () => {
 		expect(rootScripts["test:browser"]).toContain("scripts/consumer-browser.test.ts");
 		expect(rootScripts["test:browser"]).toContain("scripts/consumer-gate.browser.test.ts");
 		expect(rootScripts["test:browser"]).toContain("--maxWorkers=1");
-		expect(rootScripts["consumer:next"]).toMatch(
-			/^bun run test:browser && bun scripts\/consumer-gate\.ts next$/,
-		);
+		expect(rootScripts["consumer:next"]).toBe("bun scripts/consumer-gate.ts next");
 		const runner = readFileSync("scripts/consumer-gate.ts", "utf8");
 		expect(runner).toContain("nextStartLaunch");
-		expect(runner).toContain("proveNextHydration");
+		expect(runner).toContain("assertNextHttpBody");
+		expect(runner).not.toContain("withChromiumPage");
 		expect(runner).not.toContain('["run", "start"');
 	});
 

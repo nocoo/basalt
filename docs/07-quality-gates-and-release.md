@@ -10,7 +10,7 @@ Companion reference to [AGENTS.md](../AGENTS.md) covering Basalt's `system1-qual
   - `L3 Integration`: `N/A` — static Vite catalog and static-asset Worker with no service, protocol, or storage boundary to integrate. `L3` is not hidden inside `L4`: `test:showcase:smoke` is a browser journey (`L4`), while external package consumption is `P1`.
 - **Coverage sharding (`L1`):** CI runs four unit shards (`L1: Unit (Shard 1/4)`..`4/4`, `test:coverage:shard`) consuming the shared `B1` package artifact and merges them in `L1: Unit` with `scripts/merge-coverage.ts` rather than Vitest's blob merge (which dropped one duplicate same-location function from the denominator). `scripts/verify-pre-commit-coverage.ts` verifies the four 80% floors (`statements`, `branches`, `functions`, `lines`) over `src/models/**/*.ts`, `src/viewmodels/**/*.ts`, `src/lib/**/*.ts`, and `packages/basalt/src/**/*.{ts,tsx}` (excluding showcase Views).
 - **Additional in-slot blocking jobs (aggregated by `Z1`):**
-  - `P1: Package (Next.js)` (`bun run consumer:next`): Next.js tarball install, SSR, hydration, and real HTTP.
+  - `P1: Package (Next.js)` (`bun run consumer:next`): Next.js tarball install, build, and real HTTP SSR.
 - **Non-blocking nightly workflow (`.github/workflows/nightly.yml`, `schedule` / `workflow_dispatch`):**
   - `Cross-browser layouts (nightly)` (`bun run test:layouts`, Chromium + WebKit).
   - `Full showcase sweep (nightly)` (`bun run test:showcase`).
@@ -28,7 +28,7 @@ Companion reference to [AGENTS.md](../AGENTS.md) covering Basalt's `system1-qual
 
 ### Hook self-test scope (`bun run test:gate-self-test`)
 
-Verifies healthy execution; `S1`/`S2`/`S3`/`G1`/`G2`/`B1`/`L1`/`L4`/`P1` failures; missing Gitleaks/actionlint/OSV; scanner failure vs findings; unresolvable and empty secret ranges; step and stage timeouts; hanging hook and descendant cleanup; supervisor `SIGINT`/`SIGTERM` before and after hook start (including registered process groups); hanging tool query and detached HTTP server under step timeout; toolchain and lockfile drift; empty coverage; staged-index and pushed-range secrets; pushed OID selection; new-ref range scanning commits; deleted refs; install fingerprint reuse, missing, and stale proofs; focus guard; and Z1 result, skip, SHA, declaration, blocking-job, and output checks.
+Verifies healthy execution; `S1`/`S2`/`S3`/`G1`/`G2`/`B1`/`L1`/`L4`/`P1` failures; missing Gitleaks/actionlint/OSV; scanner failure vs findings; unresolvable and empty secret ranges; step and stage timeouts; hanging hook and descendant cleanup; supervisor `SIGINT`/`SIGTERM` before and after hook start (including registered process groups); hanging tool query and detached HTTP server under step timeout; toolchain and lockfile drift; empty coverage; staged-index and pushed-range secrets; pushed OID selection; new-ref range scanning commits; deleted refs; install fingerprint reuse, missing, and stale proofs; and workflow contract pin/Z1 coverage checks.
 
 ## 3. Measured Baseline (2026-11-12 Migration)
 

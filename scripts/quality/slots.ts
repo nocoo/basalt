@@ -136,11 +136,16 @@ export const SLOTS: SlotDefinition[] = [
 		id: "L4",
 		name: "L4: E2E",
 		stages: ["pre-push"],
-		target: "catalog showcase journeys in Chromium against the built site",
+		target: "catalog showcase journeys and browser helpers in Chromium against the built site",
 		steps: [
 			{
 				label: "design contract",
 				command: "bun run design:check",
+				timeoutMs: 2 * MINUTE,
+			},
+			{
+				label: "browser helpers",
+				command: "bun run test:browser",
 				timeoutMs: 2 * MINUTE,
 			},
 			{

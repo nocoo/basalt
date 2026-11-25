@@ -15,25 +15,7 @@ import { fileURLToPath } from "node:url";
 import { parseSync } from "@swc/core";
 import { TEMPLATE_MANIFEST } from "../src/models/template-manifest";
 import { normalizeConsumerTemplateSource } from "../src/models/templates";
-import {
-	assertBrowserCleaned,
-	assertNoPageFaults,
-	attachPageFaults,
-	combineErrors,
-	createBrowserProfileDir,
-	proveNextHydration,
-	settleWithCleanup,
-	withChromiumPage,
-} from "./consumer-browser";
-import { assertConsumerCalendar } from "./consumer-calendar";
-import { assertConsumerCharts } from "./consumer-charts";
-import { assertConsumerConfirm } from "./consumer-confirm";
-import { assertConsumerContrast } from "./consumer-contrast";
-import { assertConsumerDock } from "./consumer-dock";
-import { assertConsumerEditing } from "./consumer-editing";
-import { assertConsumerEmpty } from "./consumer-empty";
-import { assertConsumerFilters } from "./consumer-filters";
-import { assertConsumerGeometry } from "./consumer-geometry";
+import { assertBrowserCleaned, combineErrors, settleWithCleanup } from "./consumer-browser";
 import {
 	allocatePort,
 	assertNextHttpBody,
@@ -43,13 +25,7 @@ import {
 	startHttpServer,
 	stopChild,
 } from "./consumer-http";
-import { assertConsumerPortal } from "./consumer-portal";
-import { assertConsumerProviders } from "./consumer-providers";
-import { assertConsumerRecipes, materializeApplicationRecipes } from "./consumer-recipes";
-import { assertConsumerResources } from "./consumer-resources";
-import { assertConsumerSlider } from "./consumer-slider";
-import { assertConsumerTemplates } from "./consumer-template";
-import { assertConsumerToast } from "./consumer-toast";
+import { materializeApplicationRecipes } from "./consumer-recipes";
 
 export const HEAVY_PEERS = ["tailwindcss", "react-day-picker", "@tanstack/react-table"] as const;
 
@@ -1052,7 +1028,6 @@ export async function runConsumerGate(repoRoot: string, config: ConsumerGateConf
 	}
 
 	let child: ChildProcess | undefined;
-	let profileDir: string | undefined;
 	let nextUrl: string | undefined;
 	return settleWithCleanup(
 		async () => {
@@ -1259,50 +1234,10 @@ console.log(JSON.stringify({
 				child = started.child;
 				const body = await started.response.text();
 				assertNextHttpBody(started.response.status, body, config.httpMarker);
-				profileDir = createBrowserProfileDir();
-				const hydration = await proveNextHydration(url, profileDir);
 				evidence.port = port;
 				evidence.httpStatus = started.response.status;
 				evidence.marker = true;
 				evidence.launch = `${launch.command} ${launch.args[0]}`;
-				evidence.hydration = hydration;
-				evidence.templates = await withChromiumPage(profileDir, async (page) => {
-					const faults = attachPageFaults(page);
-					const result = await assertConsumerTemplates(page, `http://127.0.0.1:${port}`);
-					assertNoPageFaults(faults);
-					return result;
-				});
-				evidence.filters = await withChromiumPage(profileDir, async (page) => {
-					const faults = attachPageFaults(page);
-					await page.goto(`http://127.0.0.1:${port}/filters`, { waitUntil: "domcontentloaded" });
-					const result = await assertConsumerFilters(page);
-					assertNoPageFaults(faults);
-					return result;
-				});
-				evidence.editing = await withChromiumPage(profileDir, async (page) => {
-					const faults = attachPageFaults(page);
-					const response = await page.goto(`http://127.0.0.1:${port}/editing`, {
-						waitUntil: "domcontentloaded",
-					});
-					try {
-						const result = await assertConsumerEditing(page);
-						assertNoPageFaults(faults);
-						return result;
-					} catch (error) {
-						throw combineErrors(
-							error,
-							new Error(
-								`Editing route ${response?.status()} ${page.url()}\n${await page.locator("body").textContent()}\n${JSON.stringify(faults)}`,
-							),
-						);
-					}
-				});
-				evidence.recipes = await withChromiumPage(profileDir, async (page) => {
-					const faults = attachPageFaults(page);
-					const result = await assertConsumerRecipes(page, `http://127.0.0.1:${port}/recipes`);
-					assertNoPageFaults(faults);
-					return result;
-				});
 			} else {
 				const distRoot = join(consumerRoot, "dist");
 				const distFiles = walkFiles(distRoot);
@@ -1330,196 +1265,13 @@ console.log(JSON.stringify({
 				evidence.distFiles = distFiles.map((file) => posixPath(relative(distRoot, file))).sort();
 				evidence.cssBytes = Buffer.byteLength(css);
 				evidence.cssEvidence = cssEvidence;
-
-				if (config.mode === "standalone" || config.mode === "tailwind") {
-					const port = await allocatePort();
-					const url = `http://127.0.0.1:${port}/`;
-					nextUrl = url;
-					const viteCli = join(consumerRoot, "node_modules", "vite", "bin", "vite.js");
-					const started = await startHttpServer({
-						cwd: consumerRoot,
-						command: "node",
-						args: [
-							viteCli,
-							"preview",
-							"--port",
-							String(port),
-							"--host",
-							"127.0.0.1",
-							"--strictPort",
-						],
-						url,
-						needles: [tempRoot, basename(tempRoot)],
-					});
-					child = started.child;
-					profileDir = createBrowserProfileDir();
-					const geometryUrl = `http://127.0.0.1:${port}/geometry.html`;
-					evidence.geometry = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(geometryUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerGeometry(page, config.mode);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const dockUrl = `http://127.0.0.1:${port}/dock.html`;
-					evidence.dock = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(dockUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerDock(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const confirmUrl = `http://127.0.0.1:${port}/confirm.html`;
-					evidence.confirm = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(confirmUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerConfirm(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const portalUrl = `http://127.0.0.1:${port}/portal.html`;
-					evidence.portal = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(portalUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerPortal(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const toastUrl = `http://127.0.0.1:${port}/toast.html`;
-					evidence.toast = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(toastUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerToast(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const sliderUrl = `http://127.0.0.1:${port}/slider.html`;
-					evidence.slider = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(sliderUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerSlider(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const calendarUrl = `http://127.0.0.1:${port}/calendar.html`;
-					evidence.calendar = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(calendarUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerCalendar(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const emptyUrl = `http://127.0.0.1:${port}/empty.html`;
-					evidence.empty = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(emptyUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerEmpty(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					evidence.resources = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(`http://127.0.0.1:${port}/resources.html`, {
-							waitUntil: "domcontentloaded",
-						});
-						const result = await assertConsumerResources(page);
-						assertNoPageFaults(faults);
-						return result;
-					});
-
-					evidence.filters = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(`http://127.0.0.1:${port}/filters.html`, {
-							waitUntil: "domcontentloaded",
-						});
-						const result = await assertConsumerFilters(page);
-						assertNoPageFaults(faults);
-						return result;
-					});
-
-					evidence.editing = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(`http://127.0.0.1:${port}/editing.html`, {
-							waitUntil: "domcontentloaded",
-						});
-						const result = await assertConsumerEditing(page);
-						assertNoPageFaults(faults);
-						return result;
-					});
-					evidence.recipes = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						const result = await assertConsumerRecipes(
-							page,
-							`http://127.0.0.1:${port}/recipes.html`,
-						);
-						assertNoPageFaults(faults);
-						return result;
-					});
-
-					const providersUrl = `http://127.0.0.1:${port}/providers.html`;
-					evidence.providers = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(providersUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerProviders(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-
-					const contrastUrl = `http://127.0.0.1:${port}/contrast.html`;
-					evidence.contrast = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(contrastUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerContrast(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-				} else if (config.mode === "heavy") {
-					const port = await allocatePort();
-					const url = `http://127.0.0.1:${port}/`;
-					nextUrl = url;
-					const viteCli = join(consumerRoot, "node_modules", "vite", "bin", "vite.js");
-					const started = await startHttpServer({
-						cwd: consumerRoot,
-						command: "node",
-						args: [
-							viteCli,
-							"preview",
-							"--port",
-							String(port),
-							"--host",
-							"127.0.0.1",
-							"--strictPort",
-						],
-						url,
-						needles: [tempRoot, basename(tempRoot)],
-					});
-					child = started.child;
-					profileDir = createBrowserProfileDir();
-
-					const chartsUrl = `http://127.0.0.1:${port}/charts.html`;
-					evidence.charts = await withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(chartsUrl, { waitUntil: "domcontentloaded" });
-						const res = await assertConsumerCharts(page);
-						assertNoPageFaults(faults);
-						return res;
-					});
-				}
 			}
 
 			console.log(`consumer ${config.mode} ok ${JSON.stringify(evidence, null, 2)}`);
 			return evidence;
 		},
 		async () => {
-			await cleanupConsumerGate({ profileDir, child, nextUrl, tempRoot });
+			await cleanupConsumerGate({ child, nextUrl, tempRoot });
 		},
 	);
 }

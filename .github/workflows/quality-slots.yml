@@ -1,4 +1,4 @@
-# System0 quality slots, native mode (system0-quality v1.3.0, base-ci v2026.17).
+# System0 quality slots, native mode (system0-quality v1.3.0, base-ci v2026.18).
 #
 # Every slot is a top-level job named exactly "<ID>: <Name>", so the caller
 # (ci.yml job `quality`) renders `quality / S1: Types` ... `quality / Z1: Gate`.
@@ -20,19 +20,6 @@ env:
   BUN_VERSION: "1.4.0"
   NODE_VERSION: "26.12.1"
   NO_COLOR: "1"
-  SLOT_STATUS: >-
-    {"S1": {"status": "impl"},
-    "S2": {"status": "impl"},
-    "S3": {"status": "impl"},
-    "G1": {"status": "impl"},
-    "G2": {"status": "impl"},
-    "B1": {"status": "impl"},
-    "L1": {"status": "impl"},
-    "L2": {"status": "na", "reason": "worker tests run in Node with a mocked ASSETS binding (L1 evidence); no workerd or vitest-pool-workers suite exists"},
-    "L3": {"status": "na", "reason": "static Vite catalog plus static-asset Worker; no service, protocol or storage boundary to integrate"},
-    "L4": {"status": "impl"},
-    "P1": {"status": "impl"},
-    "Z1": {"status": "impl"}}
 
 jobs:
   s1-types:
@@ -45,7 +32,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -67,7 +54,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -89,7 +76,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/lint-workflows@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/lint-workflows@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
       - name: Record tested SHA
         id: record-sha
         if: always()
@@ -106,7 +93,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 1
-      - uses: nocoo/base-ci/.github/actions/scan-secrets@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/scan-secrets@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
       - name: Record tested SHA
         id: record-sha
         if: always()
@@ -122,7 +109,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/scan-dependencies@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/scan-dependencies@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           lockfiles: bun.lock
       - name: Record tested SHA
@@ -140,7 +127,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
@@ -153,7 +140,7 @@ jobs:
         env:
           CI: "true"
       - name: Upload package build
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
@@ -175,19 +162,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
       - name: Coverage shard 1/4
         run: bun run test:coverage:shard -- --shard=1/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-1"
       - name: Upload coverage shard
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: coverage-shard-1
           path: ${{ runner.temp }}/coverage-shard-1
@@ -209,19 +196,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
       - name: Coverage shard 2/4
         run: bun run test:coverage:shard -- --shard=2/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-2"
       - name: Upload coverage shard
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: coverage-shard-2
           path: ${{ runner.temp }}/coverage-shard-2
@@ -243,19 +230,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
       - name: Coverage shard 3/4
         run: bun run test:coverage:shard -- --shard=3/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-3"
       - name: Upload coverage shard
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: coverage-shard-3
           path: ${{ runner.temp }}/coverage-shard-3
@@ -277,19 +264,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
       - name: Coverage shard 4/4
         run: bun run test:coverage:shard -- --shard=4/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-4"
       - name: Upload coverage shard
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: coverage-shard-4
           path: ${{ runner.temp }}/coverage-shard-4
@@ -315,12 +302,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: coverage-shard-*
           path: ${{ runner.temp }}/coverage-shards
@@ -334,7 +321,7 @@ jobs:
         run: bun run scripts/verify-pre-commit-coverage.ts
       - name: Upload L1 evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: l1-unit-results
           path: coverage/
@@ -373,15 +360,21 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - name: Install Chromium
-        run: bunx playwright install --with-deps chromium
+      - uses: nocoo/base-ci/.github/actions/setup-playwright@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
+        with:
+          package-manager: bun
+          browsers: chromium
+          install-deps: "true"
+          cache: "true"
       - name: Design contract
         run: bun run design:check
+      - name: Browser helper tests
+        run: bun run test:browser
       - name: Showcase journeys
         run: |
           set -euo pipefail
@@ -397,7 +390,7 @@ jobs:
           perl -pe 's/\e\[[0-9;]*[A-Za-z]//g' "$RUNNER_TEMP/l4.log" | grep -Eq 'Showcase smoke passed'
       - name: Upload L4 evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: l4-e2e-results
           path: |
@@ -412,23 +405,24 @@ jobs:
 
   p1-package:
     name: "P1: Package"
+    needs: b1-build
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     outputs:
       tested-sha: ${{ steps.record-sha.outputs.sha }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - name: Build the publishable package
-        run: bun run --cwd packages/basalt build
-      - name: Install Chromium
-        run: bunx playwright install --with-deps chromium
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
       - name: Type declarations, pack contents and publint
         run: |
           set -euo pipefail
@@ -451,37 +445,38 @@ jobs:
 
   consumer-next:
     name: "P1: Package (Next.js)"
+    needs: b1-build
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     outputs:
       tested-sha: ${{ steps.record-sha.outputs.sha }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
+      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - name: Install Chromium
-        run: bunx playwright install --with-deps chromium
-      - name: Next.js install, SSR, hydration and real HTTP
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Next.js install, build and SSR HTTP
         run: |
           set -euo pipefail
-          if ! bun run consumer:next > "$RUNNER_TEMP/next.log" 2>&1; then
+          if ! BASALT_SKIP_PACKAGE_BUILD=1 bun run consumer:next > "$RUNNER_TEMP/next.log" 2>&1; then
             tail -200 "$RUNNER_TEMP/next.log"
             exit 1
           fi
           tail -40 "$RUNNER_TEMP/next.log"
       - name: Upload Next consumer evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: consumer-next-results
-          path: |
-            test-results/
-            ${{ runner.temp }}/next.log
+          path: ${{ runner.temp }}/next.log
           if-no-files-found: warn
           retention-days: 7
       - name: Record tested SHA
@@ -514,13 +509,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
       - name: Verify slot declarations, results and tested SHA
         id: gate
-        env:
-          NEEDS_JSON: ${{ toJSON(needs) }}
-          EXPECTED_SHA: ${{ github.sha }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 scripts/quality/z1-gate.py
+        uses: nocoo/base-ci/.github/actions/z1-gate@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
+        with:
+          needs-json: ${{ toJSON(needs) }}
+          expected-sha: ${{ github.sha }}
+          required-jobs: |
+            s1-types=S1: Types
+            s2-lint=S2: Lint
+            s3-workflow=S3: Workflow
+            g1-secrets=G1: Secrets
+            g2-dependencies=G2: Dependencies
+            b1-build=B1: Build
+            unit-shard-1=L1: Unit (Shard 1/4)
+            unit-shard-2=L1: Unit (Shard 2/4)
+            unit-shard-3=L1: Unit (Shard 3/4)
+            unit-shard-4=L1: Unit (Shard 4/4)
+            l1-unit=L1: Unit
+            l4-e2e=L4: E2E
+            p1-package=P1: Package
+            consumer-next=P1: Package (Next.js)
+          skipped-jobs: |
+            l2-runtime=L2: Runtime
+            l3-integration=L3: Integration
