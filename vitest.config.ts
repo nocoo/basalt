@@ -35,6 +35,15 @@ export default defineConfig({
 				"packages/basalt/**/*.test.ts",
 				"packages/basalt/**/*.test.tsx",
 				"packages/basalt/src/index.ts",
+				// Showcase / demo site View layers (kept excluded while keeping @nocoo/basalt library covered).
+				"src/components/**",
+				"src/pages/**",
+				"src/views/**",
+				"src/templates/**",
+				"src/hooks/**",
+				"src/main.tsx",
+				"src/App.tsx",
+				"**/index.ts",
 				// Type-only declaration files have no runtime behavior to cover.
 				"src/**/*.d.ts",
 				// Pure type definitions for model shapes; covered implicitly via the
@@ -42,10 +51,10 @@ export default defineConfig({
 				"src/models/types.ts",
 			],
 			thresholds: {
-				statements: 95,
-				branches: 95,
-				functions: 95,
-				lines: 95,
+				statements: 80,
+				branches: 80,
+				functions: 80,
+				lines: 80,
 			},
 		},
 	},

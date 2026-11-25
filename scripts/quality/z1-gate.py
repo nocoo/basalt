@@ -22,7 +22,6 @@ SLOT_JOBS = {
 }
 SLOT_SUBJOBS = {
     "consumer-next": ("P1", "P1: Package (Next.js)"),
-    "hook-self-test": ("L1", "L1: Unit (Pre-commit Gate)"),
     "unit-shard-1": ("L1", "L1: Unit (Shard 1/4)"),
     "unit-shard-2": ("L1", "L1: Unit (Shard 2/4)"),
     "unit-shard-3": ("L1", "L1: Unit (Shard 3/4)"),

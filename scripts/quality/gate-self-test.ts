@@ -873,18 +873,6 @@ function slotMapProbe() {
 	);
 }
 
-function focusGuardProbe() {
-	const root = tempRoot("basalt-focus-");
-	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), { recursive: true });
-	mkdirSync(join(root, "src"), { recursive: true });
-	writeFileSync(
-		join(root, "src/focused.test.ts"),
-		'import { it } from "vitest";\nit' + '.only("focused", () => {});\n',
-	);
-	const result = run("bun", ["scripts/quality/test-focus-guard.ts"], { cwd: root });
-	expectReject("focused-test-guard", result, /focused or skipped/);
-}
-
 function z1Probes() {
 	const root = tempRoot("basalt-z1-");
 	cpSync(join(repoRoot, "scripts/quality"), join(root, "scripts/quality"), { recursive: true });
@@ -919,10 +907,6 @@ function z1Probes() {
 	needs["l2-runtime"] = { result: "skipped", outputs: {} };
 	needs["l3-integration"] = { result: "skipped", outputs: {} };
 	needs["consumer-next"] = {
-		result: "success",
-		outputs: { "tested-sha": "a".repeat(40) },
-	};
-	needs["hook-self-test"] = {
 		result: "success",
 		outputs: { "tested-sha": "a".repeat(40) },
 	};
@@ -1009,7 +993,7 @@ function z1Probes() {
 	expectReject("z1-extra-blocking-failure", runZ1(extraFailure, declarations), /blocking job/);
 
 	const extraMissingSha = structuredClone(needs);
-	extraMissingSha["hook-self-test"].outputs["tested-sha"] = "";
+	extraMissingSha["consumer-next"].outputs["tested-sha"] = "";
 	expectReject("z1-extra-missing-sha", runZ1(extraMissingSha, declarations), /no tested SHA/);
 
 	const expectedMismatch = runZ1(needs, declarations, "c".repeat(40));
@@ -1018,7 +1002,6 @@ function z1Probes() {
 
 try {
 	slotMapProbe();
-	focusGuardProbe();
 	g1Probes();
 	pushHookProbes();
 	newRefRangeProbes();

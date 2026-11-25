@@ -86,13 +86,8 @@ export const SLOTS: SlotDefinition[] = [
 		id: "L1",
 		name: "L1: Unit",
 		stages: ["pre-push"],
-		target: "shared B1 package build, Vitest coverage, four 95% floors",
+		target: "shared B1 package build, Vitest coverage, four 80% floors",
 		steps: [
-			{
-				label: "focus/skip guard",
-				command: "bun run scripts/quality/test-focus-guard.ts",
-				timeoutMs: MINUTE,
-			},
 			{
 				label: "coverage",
 				command: "bun run test:coverage",

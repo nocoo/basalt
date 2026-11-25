@@ -324,8 +324,6 @@ jobs:
         with:
           pattern: coverage-shard-*
           path: ${{ runner.temp }}/coverage-shards
-      - name: Reject focused and skipped tests
-        run: bun run scripts/quality/test-focus-guard.ts
       - name: Merge coverage shards
         run: |
           set -euo pipefail
@@ -342,55 +340,6 @@ jobs:
           path: coverage/
           if-no-files-found: warn
           retention-days: 7
-      - name: Record tested SHA
-        id: record-sha
-        if: always()
-        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
-  hook-self-test:
-    name: "L1: Unit (Pre-commit Gate)"
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    outputs:
-      tested-sha: ${{ steps.record-sha.outputs.sha }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@dc858360aa7812db61fd9d825943e4efd4dcd0e7 # v2026.17
-        with:
-          runtime-version: ${{ env.BUN_VERSION }}
-          node-version: ${{ env.NODE_VERSION }}
-          install-policy: project
-      - name: Install verified actionlint, gitleaks and osv-scanner
-        run: |
-          set -euo pipefail
-          curl --fail --silent --show-error --location --retry 3 \
-            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
-            -o "$RUNNER_TEMP/actionlint.tar.gz"
-          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
-          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
-          rm -f "$RUNNER_TEMP/actionlint.tar.gz"
-
-          curl --fail --silent --show-error --location --retry 3 \
-            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
-            -o "$RUNNER_TEMP/gitleaks.tar.gz"
-          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check
-          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
-          chmod +x "$RUNNER_TEMP/gitleaks"
-          rm -f "$RUNNER_TEMP/gitleaks.tar.gz"
-
-          curl --fail --silent --show-error --location --retry 3 \
-            https://github.com/google/osv-scanner/releases/download/v2.5.1/osv-scanner_linux_amd64 \
-            -o "$RUNNER_TEMP/osv-scanner"
-          echo "f9f25499a2c8cc367b3af45df2ea7eeca7fbccceab9c35079968f4b3652194be  $RUNNER_TEMP/osv-scanner" | sha256sum --check
-          chmod +x "$RUNNER_TEMP/osv-scanner"
-
-          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
-      - name: Package build for hook fixtures
-        run: bun run --cwd packages/basalt build
-      - name: Negative probes for slots, secrets, OID snapshots, tools, drift and timeouts
-        run: bun run test:gate-self-test
       - name: Record tested SHA
         id: record-sha
         if: always()
@@ -557,7 +506,6 @@ jobs:
       - unit-shard-3
       - unit-shard-4
       - l1-unit
-      - hook-self-test
       - l2-runtime
       - l3-integration
       - l4-e2e

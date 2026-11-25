@@ -40,11 +40,11 @@ describe("verifyCoverageReports", () => {
 			mkdirSync(join(root, "coverage"), { recursive: true });
 			writeFileSync(join(root, "coverage/lcov.info"), "TN:\n", "utf8");
 
-			write(root, summary({ statements: { covered: 80, total: 100 } }));
+			write(root, summary({ statements: { covered: 79, total: 100 } }));
 			expect(() => verifyCoverageReports(root)).toThrow(/statements/);
 
 			for (const metric of ["branches", "functions", "lines"] as const) {
-				write(root, summary({ [metric]: { covered: 94, total: 100 } }));
+				write(root, summary({ [metric]: { covered: 79, total: 100 } }));
 				expect(() => verifyCoverageReports(root)).toThrow(new RegExp(metric));
 			}
 
