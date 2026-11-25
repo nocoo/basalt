@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { filterTemplates, getTemplateBySlug, TEMPLATES } from "@/lib/template-catalog";
 import { isKnownTemplateSlug, TEMPLATE_MANIFEST, TEMPLATE_SLUGS } from "@/models/template-manifest";
-import { normalizeConsumerTemplateSource, viewportContainerClass } from "@/models/templates";
+import {
+	getTemplateByManifestSlug,
+	getTemplateNeighbors,
+	normalizeConsumerTemplateSource,
+	resolveTemplateComponents,
+	viewportContainerClass,
+} from "@/models/templates";
+import { CATALOG_BY_SLUG } from "@/pages/ui/catalog";
 
 describe("template registry", () => {
 	it("has one standalone source and matching metadata for each slug", () => {
@@ -50,5 +57,42 @@ describe("template registry", () => {
 		expect(viewportContainerClass("desktop")).toBe("w-full");
 		expect(viewportContainerClass("tablet")).toContain("48rem");
 		expect(viewportContainerClass("mobile")).toContain("24.375rem");
+	});
+	it("defines valid anatomy parts, component slugs, customize steps, and neighbors", () => {
+		for (const template of TEMPLATE_MANIFEST) {
+			expect(template.parts.length).toBeGreaterThanOrEqual(1);
+			expect(template.customizeSteps.length).toBeGreaterThanOrEqual(3);
+			const partIds = new Set<string>();
+			for (const part of template.parts) {
+				expect(partIds.has(part.id)).toBe(false);
+				partIds.add(part.id);
+				for (const componentSlug of part.components) {
+					expect(CATALOG_BY_SLUG.has(componentSlug), `${template.slug}:${componentSlug}`).toBe(
+						true,
+					);
+				}
+			}
+			for (const step of template.customizeSteps) {
+				if (step.anchor) {
+					expect(partIds.has(step.anchor), `${template.slug}:${step.anchor}`).toBe(true);
+				}
+			}
+			expect(resolveTemplateComponents(template).length).toBeGreaterThanOrEqual(1);
+		}
+		expect(getTemplateByManifestSlug("agent-workspace")?.slug).toBe("agent-workspace");
+		expect(getTemplateByManifestSlug("unknown")).toBeUndefined();
+		expect(getTemplateNeighbors("agent-workspace")).toEqual({
+			prev: undefined,
+			next: TEMPLATE_MANIFEST[1],
+		});
+		expect(getTemplateNeighbors("ops-inbox")).toEqual({
+			prev: TEMPLATE_MANIFEST[0],
+			next: TEMPLATE_MANIFEST[2],
+		});
+		expect(getTemplateNeighbors("not-found")).toEqual({
+			prev: TEMPLATE_MANIFEST[TEMPLATE_MANIFEST.length - 2],
+			next: undefined,
+		});
+		expect(getTemplateNeighbors("unknown" as "not-found")).toEqual({});
 	});
 });
