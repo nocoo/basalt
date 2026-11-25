@@ -237,6 +237,7 @@ export function renderTemplatesIndexMarkdown(origin = SITE_ORIGIN): string {
 		[
 			`- Category: \`${template.category}\``,
 			`- Height: \`${template.heightRem}rem\``,
+			`- Workbench: ${baseOrigin}/templates/${template.slug}`,
 			`- Live preview: ${baseOrigin}/view/${template.slug}`,
 			`- Markdown: ${baseOrigin}/templates/${template.slug}.md`,
 		].join("\n"),
@@ -244,7 +245,7 @@ export function renderTemplatesIndexMarkdown(origin = SITE_ORIGIN): string {
 	return [
 		"# Basalt Templates",
 		`> Browse all ${TEMPLATE_MANIFEST.length} full-page application templates built with @nocoo/basalt.`,
-		`URL: ${baseOrigin}/templates · Markdown: ${baseOrigin}/templates.md`,
+		`URL: ${baseOrigin}/templates/agent-workspace · Markdown: ${baseOrigin}/templates.md`,
 		...items,
 	].join("\n\n");
 }
@@ -278,24 +279,43 @@ export function renderTemplateMarkdown(input: {
 	const imports = extractPackageImports(consumerSource);
 	const importLines =
 		imports.length > 0 ? imports.map((pkg) => `- \`${pkg}\``).join("\n") : "- None";
+	const partsLines = template.parts
+		.map((part) => {
+			const componentLinks = part.components
+				.map((slug) => {
+					const catalogEntry = CATALOG_BY_SLUG.get(slug);
+					return catalogEntry
+						? `[${catalogNavName(catalogEntry)}](${baseOrigin}/ui/${catalogEntry.slug}.md)`
+						: `\`${slug}\``;
+				})
+				.join(", ");
+			return `- **${part.label}** (\`#${part.id}\`): ${part.summary} Components: ${componentLinks}.`;
+		})
+		.join("\n");
+	const customizeLines = [
+		...template.customizeSteps.map((step, index) => {
+			const symbol = step.symbol ? ` (\`${step.symbol}\`)` : "";
+			return `${index + 1}. **${step.title}**${symbol}: ${step.detail}`;
+		}),
+		`${template.customizeSteps.length + 1}. **Mount styles & providers**: Wrap your application root in \`ThemeProvider\` and \`LinkProvider\`, and import \`@nocoo/basalt/styles\` (or \`@nocoo/basalt/styles/tailwind\` / \`@nocoo/basalt/styles/standalone\`) plus \`@nocoo/basalt/fonts.css\`.`,
+	].join("\n");
 
 	return [
 		`# ${template.title}`,
 		`> ${template.description}`,
-		`URL: ${baseOrigin}/view/${template.slug} · Markdown: ${baseOrigin}/templates/${template.slug}.md`,
+		`URL: ${baseOrigin}/templates/${template.slug} · Markdown: ${baseOrigin}/templates/${template.slug}.md`,
 		[
 			`- Category: \`${template.category}\``,
 			`- Height: \`${template.heightRem}rem\``,
+			`- Workbench: ${baseOrigin}/templates/${template.slug}`,
 			`- Live preview: ${baseOrigin}/view/${template.slug}`,
 		].join("\n"),
 		"## Package Imports",
 		importLines,
-		"## Customization Notes",
-		[
-			"- Wrap your application root in `ThemeProvider` and `LinkProvider`, and import `@nocoo/basalt/styles` (or `@nocoo/basalt/styles/tailwind` / `@nocoo/basalt/styles/standalone`) plus `@nocoo/basalt/fonts.css`.",
-			"- Replace local mock state and sample arrays with your application ViewModel or API queries.",
-			"- Connect `Sidebar` and header actions to your router and permission checks.",
-		].join("\n"),
+		"## What's inside",
+		partsLines,
+		"## Make it yours",
+		customizeLines,
 		"## Source",
 		fencedCode("tsx", consumerSource),
 	].join("\n\n");

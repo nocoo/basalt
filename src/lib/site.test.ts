@@ -158,6 +158,7 @@ describe("site metadata", () => {
 		expect(full).toContain("## Blocks");
 		expect(full).toContain("## Templates");
 		expect(full).toContain(`${SITE_ORIGIN}/templates.md`);
+		expect(full).toContain(`${SITE_ORIGIN}/templates/agent-workspace`);
 		expect(full).toContain(`${SITE_ORIGIN}/templates/agent-workspace.md`);
 		expect(full).toContain(`${SITE_ORIGIN}/view/agent-workspace`);
 		expect(full).toContain(`${SITE_ORIGIN}/templates/visitor-login.md`);

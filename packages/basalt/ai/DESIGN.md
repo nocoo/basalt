@@ -503,27 +503,25 @@ and source text must align to the same horizontal inset. Attached code selects a
 public prop, not caller border/radius/padding overrides. Sticky placement wrappers
 own only position; their panel owns its background and inset.
 
-Landing, login, loading, error, static documents and full-page layout recipes keep
+Landing, error, static documents and full-page layout recipes keep
 their independent root contracts; do not apply dashboard chrome to them. The landing
 route additionally owns its marketing spacing, radius and display type scale, which
 the compact global tiers cannot express; its CSS is exempt from those token rules and
 keeps motion tokens only. Explicit
 specialist controls remain in the palette demos: color swatches and native color
 pickers display the colors being edited. Hidden file inputs and theme-preview
-radio inputs preserve native form behavior. The catalog Login visitor badge keeps
-its accepted independent 54:86 artwork composition, bespoke spacing/type/radii,
-provider-button padding and reserved footer clearance. Do not normalize it to
-dashboard/control tiers. The exception is scoped to `src/pages/LoginPage.tsx`;
-motion, intrinsic action sizing and library-control requirements still apply.
-These exceptions are not permission
+radio inputs preserve native form behavior. These exceptions are not permission
 to recreate ordinary actions, selects or inputs.
 
 ### Standalone template isolation
 
-Multi-region application templates render in isolated `/view/:slug` viewports outside
-`DashboardLayout` and are curated in `/templates` (`TemplatesPage`). Previews switch
-between Desktop, Tablet and Mobile widths. Copied source uses consumer-normalized
-`@nocoo/basalt/*` imports, never catalog-private `@/components/*` imports or host wrappers.
+Multi-region and full-viewport templates render in isolated `/view/:slug` viewports
+outside `DashboardLayout` and are hosted individually inside per-template workbenches
+at `/templates/:slug` (`TemplateDetailPage`), alongside four in-shell chart dashboards
+under the **Templates** sidebar partition. Previews switch between Desktop, Tablet and
+Mobile widths with optional local light/dark overrides and bidirectional anatomy focus.
+Copied source uses consumer-normalized `@nocoo/basalt/*` imports, never catalog-private
+`@/components/*` imports or host wrappers.
 
 ### Signal restraint
 
@@ -539,8 +537,7 @@ templates (`src/templates/`), including CSS, for raw spacing/type/radius/motion 
 and inline design repairs. The landing route's own CSS is exempt from the spacing,
 radius and type rules and still keeps motion tokens. Noncanonical Basalt font-size
 classes are rejected, including responsive and important variants; only NotFound's
-`text-basalt-10xl` and LoginPage's independent scale are exempt from the source
-font-size check. It derives dashboard page requirements from App routes
+`text-basalt-10xl` display exemption remains scoped to `src/pages/NotFound.tsx`. It derives dashboard page requirements from App routes
 and checks template ownership, duplicate slot spacing, recreated card surfaces,
 ordinary native controls in pages and page-level control padding overrides.
 It rejects compact control padding on content panels, raw application disclosures,

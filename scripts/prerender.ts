@@ -7,10 +7,12 @@ import {
 	categoryCrawlPage,
 	homeCrawlPage,
 	showcaseCrawlPage,
+	templateDetailCrawlPage,
 	uiIndexCrawlPage,
 } from "../src/lib/crawl";
 import { NOT_FOUND_PATH } from "../src/lib/routes";
 import { SHOWCASE_PAGES } from "../src/lib/site";
+import { TEMPLATE_MANIFEST } from "../src/models/template-manifest";
 import { CATALOG, catalogNavName } from "../src/pages/ui/catalog";
 import { CATALOG_CATEGORIES } from "../src/pages/ui/catalog-categories";
 
@@ -22,6 +24,7 @@ export function crawlPages() {
 		...SHOWCASE_PAGES.filter(
 			(page) => page.inSitemap && page.path !== "/" && page.path !== "/ui",
 		).map((page) => showcaseCrawlPage(page.path, page.title)),
+		...TEMPLATE_MANIFEST.map(templateDetailCrawlPage),
 		...CATALOG.map((entry) => catalogCrawlPage(entry.slug, catalogNavName(entry))),
 	];
 }

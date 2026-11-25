@@ -1,3 +1,5 @@
+import type { TemplateMetadata } from "../models/template-manifest";
+import { resolveTemplateComponents } from "../models/templates";
 import { catalogNavName, libraryNavEntries } from "../pages/ui/catalog";
 import {
 	CATALOG_CATEGORIES,
@@ -116,6 +118,30 @@ export function showcaseCrawlPage(path: string, name: string): CrawlPage {
 					: "",
 				`<p>This example uses sample data. Adapt the layout with <code>${SITE.packageName}</code>, then connect your own application services.</p>`,
 				`<p><a href="/ui">Explore the component library</a> · <a href="${SITE.github}">Source and integration guides</a> · <a href="/#templates">More templates</a></p>`,
+			].join(""),
+		),
+	};
+}
+
+export function templateDetailCrawlPage(template: TemplateMetadata): CrawlPage {
+	const path = `/templates/${template.slug}`;
+	const metadata = pageMetadata(path, template.title);
+	const partsList = template.parts
+		.map((part) => `<li><strong>${escapeXml(part.label)}</strong>: ${escapeXml(part.summary)}</li>`)
+		.join("");
+	const componentLinks = resolveTemplateComponents(template)
+		.map((slug) => `<a href="/ui/${escapeXml(slug)}">${escapeXml(slug)}</a>`)
+		.join(" · ");
+	return {
+		...metadata,
+		heading: template.title,
+		html: crawlShell(
+			template.title,
+			[
+				`<p>${escapeXml(metadata.description)}</p>`,
+				`<h2>What's inside</h2><ul>${partsList}</ul>`,
+				`<p>Components: ${componentLinks}</p>`,
+				`<p><a href="/view/${escapeXml(template.slug)}">Open fullscreen preview</a> · <a href="/templates/${escapeXml(template.slug)}.md">View Markdown source</a> · <a href="/ui">Component library</a></p>`,
 			].join(""),
 		),
 	};

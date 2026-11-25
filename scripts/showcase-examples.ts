@@ -3,28 +3,26 @@ import type { Locator, Page } from "playwright";
 import { setShowcaseTheme } from "./showcase-theme";
 
 const ROUTES = [
+	"/templates/agent-workspace",
+	"/templates/ops-inbox",
+	"/templates/workspace-settings",
+	"/templates/executive-dashboard",
+	"/templates/visitor-login",
+	"/templates/document-page",
+	"/templates/not-found",
 	"/dashboard",
-	"/templates",
-	"/accounts",
-	"/portfolio",
-	"/progress-tracking",
-	"/flow-comparison",
-	"/forms",
-	"/navigation",
-	"/layout",
-	"/loading-states",
-	"/animation",
-	"/tables",
-	"/dialogs",
-	"/settings",
-	"/palette",
-	"/typeface",
-	"/health",
 	"/banking",
 	"/network",
-	"/login",
-	"/static-page",
-	"/loading",
+	"/health",
+	"/forms",
+	"/tables",
+	"/navigation",
+	"/dialogs",
+	"/palette",
+	"/typeface",
+	"/layout",
+	"/animation",
+	"/loading-states",
 	"/404",
 ];
 
@@ -116,10 +114,7 @@ async function assertNetwork(page: Page, baseUrl: string, width: number) {
 }
 
 async function assertAnalytics(page: Page, route: string, width: number) {
-	if (
-		["/health", "/banking", "/network", "/progress-tracking", "/flow-comparison"].includes(route) &&
-		width === 390
-	) {
+	if (["/health", "/banking", "/network"].includes(route) && width === 390) {
 		const cards = page.locator('[data-showcase-page] [data-slot="stat-card"]');
 		const [first, second] = await Promise.all([
 			cards.nth(0).boundingBox(),
@@ -182,36 +177,6 @@ async function assertForms(page: Page, baseUrl: string) {
 	await page.getByText("report.pdf · 1 KB", { exact: true }).waitFor();
 }
 
-async function assertSettings(page: Page, baseUrl: string) {
-	await page.goto(`${baseUrl}/settings`);
-	const profile = page.getByRole("form", { name: "Profile Information", exact: true });
-	await profile.waitFor();
-	await profile.getByLabel("First name", { exact: true }).fill("Morgan");
-	await profile.getByRole("button", { name: "Cancel", exact: true }).click();
-	assert.equal(await profile.getByLabel("First name", { exact: true }).inputValue(), "Alex");
-	await profile.getByLabel("First name", { exact: true }).fill("Morgan");
-	await profile.getByRole("button", { name: "Save changes", exact: true }).click();
-	await profile.getByText("Morgan Johnson", { exact: true }).waitFor();
-	await page.getByRole("button", { name: "Appearance", exact: true }).click();
-	await page.getByRole("radio", { name: "Dark", exact: true }).focus();
-	await page.keyboard.press("Space");
-	assert.equal(
-		await page.locator("html").evaluate((node) => node.classList.contains("dark")),
-		true,
-	);
-	await page.getByRole("radio", { name: "Dark", exact: true }).focus();
-	await page.keyboard.press("ArrowLeft");
-	assert.equal(await page.getByRole("radio", { name: "Light", exact: true }).isChecked(), true);
-	assert.equal(
-		await page.locator("html").evaluate((node) => node.classList.contains("dark")),
-		false,
-	);
-	await page.getByRole("button", { name: "Security", exact: true }).click();
-	await page.getByRole("button", { name: "Revoke iPhone 15 — Safari", exact: true }).click();
-	assert.equal(await page.getByText("iPhone 15 — Safari", { exact: true }).count(), 0);
-	assert.equal(await page.getByText(/^MacBook Pro — Chrome\s*Current$/).count(), 1);
-}
-
 async function assertTablesLedger(page: Page, baseUrl: string) {
 	await page.goto(`${baseUrl}/tables`);
 	const ledger = page.locator('[data-table-showcase="ledger"]');
@@ -256,14 +221,14 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		for (const route of ROUTES) {
 			console.log(`Example smoke ${width} ${route}`);
 			await page.goto(`${baseUrl}${route}`);
-			if (!["/login", "/loading", "/static-page", "/404"].includes(route)) {
+			if (route !== "/404") {
 				await page.locator("[data-doc-scroll] h1").waitFor();
 				const template = page.locator("[data-doc-scroll] [data-showcase-page]");
 				assert.equal(await template.count(), 1, `${route}: shared page template`);
 				assert.equal(await template.locator("main").count(), 0, `${route}: nested main`);
-			} else if (route === "/login") await page.getByRole("button", { name: /Google/ }).waitFor();
-			else if (route === "/loading") await page.getByRole("status").waitFor();
-			else await page.locator("h1").waitFor();
+			} else {
+				await page.locator("h1").waitFor();
+			}
 			await settle(page);
 			await assertNoDuplicateIds(page, `${width} ${route}`);
 			await assertPageWidth(page, `${width} ${route}`);
@@ -273,27 +238,26 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		}
 		await assertNetwork(page, baseUrl, width);
 		await assertForms(page, baseUrl);
-		await assertSettings(page, baseUrl);
 		await assertTablesLedger(page, baseUrl);
-		cases.push(`${width}:light:network/forms/settings/tables`);
+		cases.push(`${width}:light:network/forms/tables`);
 		await setShowcaseTheme(page, true);
 		await assertNetwork(page, baseUrl, width);
 		await assertForms(page, baseUrl);
-		await assertSettings(page, baseUrl);
 		await assertTablesLedger(page, baseUrl);
-		cases.push(`${width}:dark:network/forms/settings/tables`);
+		cases.push(`${width}:dark:network/forms/tables`);
 		await setShowcaseTheme(page, false);
 	}
 	for (const rootFont of [16, 32]) {
 		await page.setViewportSize({ width: 320, height: 900 });
-		await page.goto(`${baseUrl}/portfolio`);
+		await page.goto(`${baseUrl}/tables`);
 		await page.addStyleTag({ content: `html { font-size: ${rootFont}px }` });
-		const region = page.getByRole("region", { name: "Holdings table, scroll horizontally" });
+		const ledger = page.locator('[data-table-showcase="ledger"]');
+		const region = ledger.locator('[tabindex="0"]').first();
 		await region.waitFor();
 		assert.ok(await region.evaluate((node) => node.scrollWidth > node.clientWidth));
 		await assertKeyboardScroll(page, region);
-		await assertPageWidth(page, `portfolio 320/${rootFont}`);
-		cases.push(`portfolio:320/${rootFont}:keyboard-scroll`);
+		await assertPageWidth(page, `tables 320/${rootFont}`);
+		cases.push(`tables:320/${rootFont}:keyboard-scroll`);
 	}
 	for (const width of [320, 390, 640]) {
 		await page.setViewportSize({ width, height: 900 });

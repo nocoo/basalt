@@ -4,16 +4,16 @@ Companion reference to [AGENTS.md](../AGENTS.md) and [DESIGN.md](../DESIGN.md) c
 
 ## 1. Route Surfaces
 
-### Public catalog showcase
+### Public catalog showcase & 4-partition navigation
 
-- Routes inside `DashboardLayout` (`/dashboard`, `/layout`, `/palette`, `/templates`, `/ui/*`) are visitor-facing pages listed in navigation, `SHOWCASE_PAGES`, and `sitemap.xml`.
-- Every catalog route under `DashboardLayout` uses app-local `ShowcasePage`, including all category overviews, documentation pages, and source viewers. `ContentIsland` owns the page inset; card slots own their padding (see [DESIGN.md#page-composition](../DESIGN.md#page-composition)).
-- `/dashboard` (`src/pages/DashboardPage.tsx`) verifies multi-card analytics/chart grids and `@[...]/island` container responsiveness inside the full app shell.
+- Routes inside `DashboardLayout` (`/templates/:slug`, `/dashboard`, `/banking`, `/network`, `/health`, `/forms`, `/tables`, `/navigation`, `/dialogs`, `/palette`, `/typeface`, `/layout`, `/animation`, `/loading-states`, `/ui/*`) are organized across four top-level sidebar partitions: **Templates**, **Patterns**, **Foundations**, and **Library**.
+- Every catalog route under `DashboardLayout` uses app-local `ShowcasePage`, including template workbenches, category overviews, documentation pages, and source viewers. `ContentIsland` owns the page inset; card slots own their padding (see [DESIGN.md#page-composition](../DESIGN.md#page-composition)).
+- `/dashboard`, `/banking`, `/network`, and `/health` verify multi-card analytics/chart grids and `@[...]/island` container responsiveness inside the full app shell, each paired with a `Built with` composition anatomy strip (`DashboardTemplateAnatomy`).
 - `/layout` and `/palette` host `SurfaceDisciplineInspector` and `ThemeStudio`; `/dev/examples` mounts `MicroSceneWall` alongside isolated primitive panels.
 
-### Standalone templates
+### Standalone templates & per-template workbenches
 
-- Reference screens in `src/templates/*.tsx` render outside `DashboardLayout` at `/view/:slug` (`src/pages/TemplateViewportPage.tsx`) with `applyToDocument={false}` in `src/App.tsx`, synced from `/templates` via same-origin `postMessage`.
+- Reference screens in `src/templates/*.tsx` render outside `DashboardLayout` at `/view/:slug` (`src/pages/TemplateViewportPage.tsx`) with `applyToDocument={false}` in `src/App.tsx`, embedded inside individual workbenches at `/templates/:slug` (`src/pages/TemplateDetailPage.tsx`) via same-origin `postMessage` (`basalt-template-theme`, `basalt-template-focus`, and `basalt-template-active-part`).
 - Templates are copyable `"use client";` modules that must import only public `@nocoo/basalt/*` entrypoints and use classes shipped in `@nocoo/basalt/styles/standalone` (no catalog-private `@/` imports).
 - Enforced by `bun run design:check`, `src/test/pages/TemplateStyles.test.ts`, and `bun run consumer:next`.
 
@@ -30,7 +30,7 @@ Companion reference to [AGENTS.md](../AGENTS.md) and [DESIGN.md](../DESIGN.md) c
 ## 2. AI Verification & Maintenance Workflow
 
 - Use `/dev/examples` (`?theme=`, `?q=`, `?hover=`) for fast, isolated primitive, token, and hover checks without mutating `localStorage` or loading heavy chart shells like `/dashboard`.
-- Use `/dashboard` and `/templates` to verify full-shell layout, container queries, and iframe isolation.
+- Use `/dashboard` and `/templates/agent-workspace` to verify full-shell layout, container queries, bidirectional anatomy focus, and iframe isolation.
 - Whenever adding or modifying core primitives, surface contracts, or templates, keep these files synchronized in the same change:
   1. `src/pages/DevExamplesPage.tsx` panels
   2. `TEMPLATE_MANIFEST` in `src/models/template-manifest.ts`

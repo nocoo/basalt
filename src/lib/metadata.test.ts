@@ -9,10 +9,10 @@ describe("page metadata", () => {
 		expect(pageMetadata("/ui/", "Component library").path).toBe("/ui");
 		for (const [path, name] of [
 			["/ui", "Component library"],
-			["/dashboard", "Dashboard"],
-			["/templates", "Templates"],
-			["/banking", "Banking & Wealth"],
-			["/network", "Network Ops"],
+			["/dashboard", "Analytics overview"],
+			["/templates/agent-workspace", "Agent workspace"],
+			["/banking", "Finance & wealth"],
+			["/network", "Network operations"],
 			["/ui/button", "Button"],
 			["/typeface", "Typeface"],
 			["/forms", "Forms"],
@@ -25,7 +25,9 @@ describe("page metadata", () => {
 			);
 		}
 		expect(pageMetadata("/ui/custom").description).toContain("Component");
-		expect(pageMetadata("/templates").description).toContain("standalone React source");
+		expect(pageMetadata("/templates/agent-workspace", "Agent workspace").description).toContain(
+			"standalone React source",
+		);
 		expect(pageMetadata("/custom").description).toContain("Interface");
 		expect(pageMetadata("/ui/overview/action", "Actions overview").description).toContain(
 			"Design thinking",

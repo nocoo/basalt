@@ -61,7 +61,7 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	const toggle = sidebar.locator("[data-sidebar-toggle]");
 	await logo.waitFor();
 	await toggle.waitFor();
-	const dashboardLink = sidebar.getByRole("link", { name: "Dashboard", exact: true });
+	const dashboardLink = sidebar.getByRole("link", { name: "Analytics overview", exact: true });
 	const linkHref = await dashboardLink.getAttribute("href");
 	assert.equal(linkHref, "/dashboard");
 	const [newTab] = await Promise.all([

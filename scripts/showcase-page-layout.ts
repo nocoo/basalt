@@ -557,23 +557,22 @@ async function assertNestedSurfaces(page: Page, baseUrl: string) {
 		assert.ok(layout.dashboardWellBottomDiff <= 1, JSON.stringify(layout));
 		assert.ok(layout.dashboardCardsBottomDiff <= 1, JSON.stringify(layout));
 
-		await page.goto(`${baseUrl}/settings`);
-		await page.locator('nav[aria-label="Settings"]').waitFor();
+		await page.goto(`${baseUrl}/view/document-page`);
+		await page.locator("#doc-footer").waitFor();
 		await setShowcaseTheme(page, dark);
-		const settings = await page.evaluate(() => {
-			const nav = document.querySelector<HTMLElement>('nav[aria-label="Settings"]');
-			const leftCard = nav?.closest<HTMLElement>("[data-basalt-surface]");
-			const footer = leftCard?.querySelector<HTMLElement>(':scope > [data-slot="card-footer"]');
-			if (!leftCard || !footer) throw new Error("Missing settings left navigation footer");
-			const cardBox = leftCard.getBoundingClientRect();
+		const docFooter = await page.evaluate(() => {
+			const footer = document.querySelector<HTMLElement>("#doc-footer");
+			const card = footer?.closest<HTMLElement>("[data-basalt-surface]");
+			if (!card || !footer) throw new Error("Missing document footer card geometry");
+			const cardBox = card.getBoundingClientRect();
 			const footerBox = footer.getBoundingClientRect();
 			return {
 				bottomDiff: Math.abs(footerBox.bottom - cardBox.bottom),
 				widthDiff: Math.abs(footerBox.width - cardBox.width),
 			};
 		});
-		assert.ok(settings.bottomDiff <= 1, JSON.stringify(settings));
-		assert.ok(settings.widthDiff <= 2, JSON.stringify(settings));
+		assert.ok(docFooter.bottomDiff <= 1, JSON.stringify(docFooter));
+		assert.ok(docFooter.widthDiff <= 2, JSON.stringify(docFooter));
 	}
 }
 

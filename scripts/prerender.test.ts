@@ -6,6 +6,7 @@ import { applyNotFoundDocument } from "../src/lib/crawl";
 import { LANDING_HEADING } from "../src/lib/landing";
 import { SHOWCASE_PATHS } from "../src/lib/site";
 import { APP_VERSION } from "../src/lib/version";
+import { TEMPLATE_MANIFEST } from "../src/models/template-manifest";
 import { CATALOG, CATALOG_CATEGORIES } from "../src/pages/ui/catalog";
 import { catalogCategoryPath } from "../src/pages/ui/catalog-categories";
 import { fileForPath, prerenderHtml } from "./prerender";
@@ -21,6 +22,7 @@ describe("prerender", () => {
 		expect(written).toContain(path.join(dist, "ui/button.html"));
 		const paths = [
 			...SHOWCASE_PATHS,
+			...TEMPLATE_MANIFEST.map((template) => `/templates/${template.slug}`),
 			...CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id)),
 			...CATALOG.map((entry) => `/ui/${entry.slug}`),
 		];

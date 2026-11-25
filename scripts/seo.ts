@@ -15,6 +15,7 @@ import {
 	SHOWCASE_PATHS,
 	sitemapPaths,
 } from "../src/lib/site";
+import { TEMPLATE_MANIFEST } from "../src/models/template-manifest";
 import { CATALOG, catalogNavName } from "../src/pages/ui/catalog";
 import { CATALOG_CATEGORIES, catalogCategoryPath } from "../src/pages/ui/catalog-categories";
 import { getCatalogComponentGuide } from "../src/pages/ui/catalog-guides";
@@ -50,6 +51,7 @@ export function renderSeoFiles(): Record<(typeof SEO_FILES)[number], string> {
 			sitemapPaths(
 				[
 					...SHOWCASE_PATHS,
+					...TEMPLATE_MANIFEST.map((template) => `/templates/${template.slug}`),
 					...CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id)),
 				],
 				links.map((entry) => entry.slug),

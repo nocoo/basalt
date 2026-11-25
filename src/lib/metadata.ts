@@ -1,3 +1,5 @@
+import { TEMPLATE_MANIFEST } from "../models/template-manifest";
+import { getTemplateByManifestSlug } from "../models/templates";
 import { catalogCategory } from "../pages/ui/catalog-categories";
 import {
 	canonicalUrl,
@@ -9,27 +11,30 @@ import {
 } from "./site";
 
 const PAGE_DESCRIPTIONS: Readonly<Record<string, string>> = {
-	"/templates":
-		"Explore interactive Basalt templates for agents, dashboards, workspaces, and sign-in. Preview responsive layouts and copy standalone React source.",
 	"/ui":
 		"Explore Basalt React components, charts, and reusable blocks. Browse live examples, TypeScript APIs, and source code for your next application.",
 	"/dashboard":
-		"A React analytics dashboard template with financial metrics, activity, bar charts, and expense breakdowns. Explore the live Basalt layout and source.",
+		"An analytics overview template with KPI stat cards, sparklines, bar charts, radial gauges, and recent activity built with @nocoo/basalt.",
 	"/banking":
-		"A React banking and wealth dashboard template with balances, portfolios, and transaction views. Built with the open-source Basalt design system.",
+		"A finance and wealth dashboard template with balances, asset allocation, funding flows, and transfer history built with @nocoo/basalt.",
 	"/network":
-		"A React network operations dashboard template for traffic, service health, and system activity. Explore the live Basalt components and charts.",
+		"A network operations dashboard template for latency trends, traffic topology, service health, and incident timelines built with @nocoo/basalt.",
 	"/health":
-		"A React health and activity dashboard template with sleep, readiness, activity, and timeline views. Explore the live example built with Basalt components and charts.",
+		"A health telemetry dashboard template with daily slot bars, activity heatmap, trends, and timeline views built with @nocoo/basalt.",
 	"/layout":
 		"Build a responsive React application shell with Basalt: sidebar navigation, a header, scrollable content, page headings, and layered surfaces.",
-	"/login":
-		"A responsive React sign-in page example built with Basalt form controls and matte surfaces. Preview the layout and adapt the open-source code.",
 	"/palette":
 		"Explore the Basalt design system color palette. Customize accent colors, chart palettes, and matte surfaces across light and dark themes.",
 	"/typeface":
 		"Explore the Basalt typography system: Inter and JetBrains Mono across the 7-tier positional type scale, integer line boxes, OpenType features, and tabular numerals.",
 };
+
+const TEMPLATE_DESCRIPTIONS: Readonly<Record<string, string>> = Object.fromEntries(
+	TEMPLATE_MANIFEST.map((template) => [
+		`/templates/${template.slug}`,
+		`${template.description} Preview responsive widths, inspect template anatomy, and copy standalone React source.`,
+	]),
+);
 
 export function pageMetadata(pathname: string, pageName?: string): PageMetadata {
 	const path = pathname.replace(/\/+$/, "") || "/";
@@ -37,14 +42,19 @@ export function pageMetadata(pathname: string, pageName?: string): PageMetadata 
 	const category = path.startsWith("/ui/overview/")
 		? catalogCategory(path.slice("/ui/overview/".length))
 		: undefined;
+	const template = path.startsWith("/templates/")
+		? getTemplateByManifestSlug(path.slice("/templates/".length))
+		: undefined;
 	const description = category
 		? `${category.description} Design thinking, sizing, interaction and best practices for Basalt ${category.label.toLowerCase()}.`
-		: path === "/"
-			? SITE.description
-			: (PAGE_DESCRIPTIONS[path] ??
-				(path.startsWith("/ui/")
-					? `${pageName?.trim() || "Component"} in the Basalt React UI library. Explore live examples, TypeScript APIs, accessibility details, and source code.`
-					: `${pageName?.trim() || "Interface"} examples built with Basalt React components. Explore the working layout, matte surfaces, and open-source implementation.`));
+		: template
+			? (TEMPLATE_DESCRIPTIONS[path] ?? template.description)
+			: path === "/"
+				? SITE.description
+				: (PAGE_DESCRIPTIONS[path] ??
+					(path.startsWith("/ui/")
+						? `${pageName?.trim() || "Component"} in the Basalt React UI library. Explore live examples, TypeScript APIs, accessibility details, and source code.`
+						: `${pageName?.trim() || "Interface"} examples built with Basalt React components. Explore the working layout, matte surfaces, and open-source implementation.`));
 	return { path, title, description };
 }
 

@@ -281,7 +281,7 @@ export function renderLlmsFull(entries: readonly CatalogLink[]): string {
 	});
 	const templateLines = TEMPLATE_MANIFEST.map(
 		(template) =>
-			`- [${template.title}](${absoluteUrl(`/templates/${template.slug}.md`)}) ([View](${absoluteUrl(`/view/${template.slug}`)}) — ${template.description})`,
+			`- [${template.title}](${absoluteUrl(`/templates/${template.slug}`)}) ([Markdown](${absoluteUrl(`/templates/${template.slug}.md`)}) · [Fullscreen](${absoluteUrl(`/view/${template.slug}`)}) — ${template.description})`,
 	);
 	return [
 		`# ${SITE.name} catalog`,
@@ -295,7 +295,7 @@ export function renderLlmsFull(entries: readonly CatalogLink[]): string {
 		"",
 		"## Templates",
 		"",
-		`[Templates index](${absoluteUrl("/templates")}) ([Markdown](${absoluteUrl("/templates.md")})): Full-page application templates built with \`${SITE.packageName}\`.`,
+		`[Templates index (Markdown)](${absoluteUrl("/templates.md")}): Full-page application templates built with \`${SITE.packageName}\`.`,
 		"",
 		...templateLines,
 		"",

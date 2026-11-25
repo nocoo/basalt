@@ -247,6 +247,7 @@ describe("category, index, home, and template renderers", () => {
 			`Browse all ${TEMPLATE_MANIFEST.length} full-page application templates`,
 		);
 		for (const template of TEMPLATE_MANIFEST) {
+			expect(indexMd).toContain(`${SITE_ORIGIN}/templates/${template.slug}`);
 			expect(indexMd).toContain(`${SITE_ORIGIN}/view/${template.slug}`);
 			expect(indexMd).toContain(`${SITE_ORIGIN}/templates/${template.slug}.md`);
 		}
@@ -265,7 +266,10 @@ describe("category, index, home, and template renderers", () => {
 			].join("\n"),
 		});
 		expect(templateMd).toContain(`# ${sampleTemplate.title}`);
+		expect(templateMd).toContain(`${SITE_ORIGIN}/templates/${sampleTemplate.slug}`);
 		expect(templateMd).toContain("## Package Imports");
+		expect(templateMd).toContain("## What's inside");
+		expect(templateMd).toContain("## Make it yours");
 		expect(templateMd).toContain("- `@nocoo/basalt/components/badge`");
 		expect(templateMd).toContain("- `@nocoo/basalt/components/button`");
 		expect(templateMd).toContain("- `lucide-react`");

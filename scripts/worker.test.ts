@@ -128,6 +128,8 @@ describe("edge worker", () => {
 				"/ui/not-a-component",
 				"/ui/button/extra",
 				"/dashboard/extra",
+				"/templates",
+				"/templates/unknown",
 				"/view/unknown",
 			]) {
 				const miss = await handleEdgeRequest(request(`https://basaltui.com${path}`), assets());
@@ -145,6 +147,8 @@ describe("edge worker", () => {
 			for (const path of [
 				"/ui/button/source",
 				"/templates/agent-workspace",
+				"/templates/document-page",
+				"/templates/not-found",
 				"/view/agent-workspace",
 				"/view/visitor-login",
 				"/examples/reader",
