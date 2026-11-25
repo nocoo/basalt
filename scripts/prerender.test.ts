@@ -26,7 +26,19 @@ describe("prerender", () => {
 			...CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id)),
 			...CATALOG.map((entry) => `/ui/${entry.slug}`),
 		];
-		expect(written).toHaveLength(paths.length + 1);
+		expect(written).toHaveLength(paths.length + TEMPLATE_MANIFEST.length + 1);
+		for (const entry of TEMPLATE_MANIFEST) {
+			const viewPath = fileForPath(dist, `/view/${entry.slug}`);
+			expect(written).toContain(viewPath);
+			const raw = readFileSync(viewPath, "utf8");
+			expect(raw).not.toContain("data-landing-page");
+			expect(raw).not.toContain("scene-hero");
+			const viewDoc = new DOMParser().parseFromString(raw, "text/html");
+			expect(viewDoc.querySelector("#root")?.children).toHaveLength(0);
+			expect(viewDoc.querySelector("h1")).toBeNull();
+			expect(viewDoc.querySelector('meta[name="robots"]')?.getAttribute("content")).toBe("noindex");
+			expect(viewDoc.querySelector('link[rel="canonical"]')).toBeNull();
+		}
 		const notFound = new DOMParser().parseFromString(
 			readFileSync(path.join(dist, "404.html"), "utf8"),
 			"text/html",

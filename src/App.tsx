@@ -1,7 +1,7 @@
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
+import { type ComponentType, lazy, type ReactNode, Suspense, useLayoutEffect } from "react";
 import { BrowserRouter, Route, Link as RouterLink, Routes, useLocation } from "react-router";
 import { DeferredToaster } from "@/components/DeferredToaster";
 import { RouteScrollReset } from "@/components/RouteScrollReset";
@@ -63,6 +63,17 @@ function AppLink({
 }
 
 function RouteLoadingFallback() {
+	const { pathname } = useLocation();
+	if (pathname.startsWith("/view/")) {
+		return (
+			<div
+				role="status"
+				aria-live="polite"
+				aria-label="Loading preview"
+				className="min-h-full w-full bg-basalt-background"
+			/>
+		);
+	}
 	return (
 		<div
 			role="status"
@@ -86,6 +97,9 @@ function routeElement(Page: ComponentType) {
 
 function AppProviders() {
 	const { pathname } = useLocation();
+	useLayoutEffect(() => {
+		delete document.documentElement.dataset.basaltRoute;
+	}, []);
 	return (
 		<ThemeProvider
 			applyToDocument={!pathname.startsWith("/view/") && !/^\/dev\/examples\/?$/.test(pathname)}

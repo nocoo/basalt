@@ -6,11 +6,24 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="text-scale" content="scale" />
     <script>
-      // Resolve the theme before CSS and the prerendered page can paint.
+      // Resolve route guard and theme before CSS and the prerendered page can paint.
       (() => {
+        const path = window.location.pathname;
+        const isView = path.startsWith("/view/");
+        if (path !== "/") {
+          document.documentElement.dataset.basaltRoute = isView ? "view" : "app";
+        }
+        let requested = null;
+        if (isView) {
+          try { requested = new URLSearchParams(window.location.search).get("theme"); } catch {}
+        }
         let stored = null;
         try { stored = window.localStorage.getItem("theme"); } catch {}
-        const dark = stored === "dark" || (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        const dark =
+          requested === "dark" ||
+          (requested !== "light" &&
+            (stored === "dark" ||
+              (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches)));
         document.documentElement.classList.toggle("dark", dark);
         document.documentElement.classList.toggle("light", !dark);
         document.documentElement.dataset.mode = dark ? "dark" : "light";

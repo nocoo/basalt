@@ -175,6 +175,29 @@ export function applyNotFoundDocument(html: string): string {
 		: next.replace("</head>", `    ${robots}\n  </head>`);
 }
 
+/** Standalone template viewport routes render inside an empty app root with no landing HTML. */
+export function applyTemplateViewportDocument(html: string, template: TemplateMetadata): string {
+	const robots = '<meta name="robots" content="noindex" />';
+	const metadataApplied = applyMetadataToHtml(html, {
+		path: `/view/${template.slug}`,
+		title: documentTitle(template.title),
+		description: template.description,
+	});
+	const stripped = stripHeroPreload(metadataApplied).replace(/\s*<link rel="canonical"[^>]*>/, "");
+	const emptyBody = stripped.includes("<!--seo:body-->")
+		? stripped.replace(
+				/<!--seo:body-->[\s\S]*?<!--\/seo:body-->/,
+				"<!--seo:body--><!--/seo:body-->",
+			)
+		: stripped.replace(
+				/<div id="root">[\s\S]*?<\/div>/,
+				'<div id="root"><!--seo:body--><!--/seo:body--></div>',
+			);
+	return /<meta name="robots"[^>]*>/.test(emptyBody)
+		? emptyBody.replace(/<meta name="robots"[^>]*>/, robots)
+		: emptyBody.replace("</head>", `    ${robots}\n  </head>`);
+}
+
 export function applyCrawlPage(html: string, page: CrawlPage): string {
 	const metadataApplied = applyMetadataToHtml(html, page);
 	// The homepage document is the template; only the homepage itself keeps its hero preload.

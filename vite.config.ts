@@ -14,10 +14,25 @@ function applyPreviewHeaders(res: { setHeader: (name: string, value: string) => 
 	res.setHeader("Link", '<https://basaltui.com/llms.txt>; rel="service-doc"; type="text/plain"');
 }
 
+function stripNonRootLandingShell(html: string, originalUrl?: string): string {
+	if (!originalUrl) return html;
+	const pathname = originalUrl.split("?")[0];
+	if (pathname === "/" || pathname === "/index.html") return html;
+	return html
+		.replace(/\s*<!--landing:preload-->[\s\S]*?<!--\/landing:preload-->/g, "")
+		.replace(/<!--seo:body-->[\s\S]*?<!--\/seo:body-->/, "<!--seo:body--><!--/seo:body-->");
+}
+
 /** Dev-server middleware that serves GET /api/live and preview crawler headers */
 function apiLivePlugin(): PluginOption {
 	return {
 		name: "api-live",
+		transformIndexHtml: {
+			order: "pre",
+			handler(html, ctx) {
+				return stripNonRootLandingShell(html, ctx.originalUrl);
+			},
+		},
 		configureServer(server) {
 			server.middlewares.use((_req, res, next) => {
 				applyPreviewHeaders(res);

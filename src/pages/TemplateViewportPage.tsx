@@ -1,9 +1,11 @@
+import { Loader } from "@nocoo/basalt/components/loader";
 import { ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
 import { lazy, Suspense, useEffect, useRef } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { isKnownTemplateSlug, type TemplateSlug } from "@/models/template-manifest";
 import {
 	createTemplateActivePartMessage,
+	createTemplateReadyMessage,
 	parseTemplateParentMessage,
 } from "@/models/template-protocol";
 import { getTemplateByManifestSlug } from "@/models/templates";
@@ -20,6 +22,15 @@ const COMPONENTS: Record<TemplateSlug, ReturnType<typeof lazy>> = {
 };
 
 const FOCUS_HIGHLIGHT_MS = 1400;
+
+function ViewportReadySignal({ slug }: { slug: TemplateSlug }) {
+	useEffect(() => {
+		if (window.parent !== window) {
+			window.parent.postMessage(createTemplateReadyMessage(slug), window.location.origin);
+		}
+	}, [slug]);
+	return null;
+}
 
 function Viewport({ slug }: { slug: TemplateSlug }) {
 	const { setTheme } = useTheme();
@@ -139,7 +150,14 @@ function Viewport({ slug }: { slug: TemplateSlug }) {
 
 	const Template = COMPONENTS[slug];
 	return (
-		<Suspense fallback={<div role="status">Loading template…</div>}>
+		<Suspense
+			fallback={
+				<div className="flex min-h-full w-full items-center justify-center bg-basalt-background p-basalt-layout">
+					<Loader label="Loading template" showElapsed={false} />
+				</div>
+			}
+		>
+			<ViewportReadySignal slug={slug} />
 			<Template />
 		</Suspense>
 	);

@@ -3,11 +3,24 @@ import type { Page } from "playwright";
 import { setShowcaseTheme } from "./showcase-theme";
 
 export async function assertTemplatesShowcase(page: Page, baseUrl: string) {
+	const viewResponse = await page.request.get(`${baseUrl}/view/agent-workspace`);
+	assert.equal(viewResponse.status(), 200);
+	const viewHtml = await viewResponse.text();
+	assert.ok(viewHtml.includes("<!--seo:body--><!--/seo:body-->"));
+	assert.ok(!viewHtml.includes("data-landing-page"));
+	assert.ok(!viewHtml.includes("scene-hero"));
+	assert.ok(viewHtml.includes('content="noindex"'));
+
 	await page.setViewportSize({ width: 1440, height: 1000 });
 	await page.goto(`${baseUrl}/templates/agent-workspace`);
 	await page.getByRole("heading", { name: "Agent workspace", exact: true }).waitFor();
 	await setShowcaseTheme(page, false);
 	assert.equal(await page.locator("iframe").count(), 1);
+	assert.notEqual(await page.locator("iframe").getAttribute("loading"), "lazy");
+	await page.waitForFunction(() => {
+		const el = document.querySelector("iframe");
+		return el !== null && getComputedStyle(el).opacity === "1";
+	});
 	assert.equal(
 		await page.getByRole("link", { name: "Open fullscreen" }).getAttribute("href"),
 		"/view/agent-workspace",

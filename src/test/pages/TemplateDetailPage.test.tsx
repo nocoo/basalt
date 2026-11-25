@@ -45,6 +45,17 @@ describe("TemplateDetailPage", () => {
 		expect(screen.getByRole("heading", { name: "Agent workspace" })).toBeInTheDocument();
 		const frame = screen.getByTitle("AgentWorkspaceTemplate.tsx") as HTMLIFrameElement;
 		expect(frame).toHaveAttribute("src", "/view/agent-workspace?theme=light");
+		expect(frame).not.toHaveAttribute("loading", "lazy");
+		expect(frame).toHaveClass("opacity-0");
+		act(() => {
+			window.dispatchEvent(
+				new MessageEvent("message", {
+					origin: window.location.origin,
+					data: { type: "basalt-template-ready", slug: "agent-workspace" },
+				}),
+			);
+		});
+		expect(frame).toHaveClass("opacity-100");
 		expect(screen.getByRole("link", { name: "Open fullscreen" })).toHaveAttribute(
 			"href",
 			"/view/agent-workspace",
@@ -72,7 +83,9 @@ describe("TemplateDetailPage", () => {
 		expect(frame.parentElement).toHaveClass("max-w-[24.375rem]");
 
 		fireEvent.click(screen.getByRole("button", { name: "Reload preview" }));
-		expect(screen.getByTitle("AgentWorkspaceTemplate.tsx")).not.toBe(frame);
+		const reloadedFrame = screen.getByTitle("AgentWorkspaceTemplate.tsx");
+		expect(reloadedFrame).not.toBe(frame);
+		expect(reloadedFrame).toHaveClass("opacity-0");
 
 		fireEvent.click(screen.getByRole("radio", { name: "Code" }));
 		expect(document.querySelector("iframe")).toBeNull();

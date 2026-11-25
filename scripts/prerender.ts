@@ -3,6 +3,7 @@ import path from "node:path";
 import {
 	applyCrawlPage,
 	applyNotFoundDocument,
+	applyTemplateViewportDocument,
 	catalogCrawlPage,
 	categoryCrawlPage,
 	homeCrawlPage,
@@ -45,6 +46,12 @@ export function prerenderHtml(distDir: string, template: string): string[] {
 		mkdirSync(path.dirname(filePath), { recursive: true });
 		writeFileSync(filePath, applyCrawlPage(template, page));
 		written.push(filePath);
+	}
+	for (const entry of TEMPLATE_MANIFEST) {
+		const viewFile = fileForPath(distDir, `/view/${entry.slug}`);
+		mkdirSync(path.dirname(viewFile), { recursive: true });
+		writeFileSync(viewFile, applyTemplateViewportDocument(template, entry));
+		written.push(viewFile);
 	}
 	// Served by the worker with HTTP 404 for unknown URLs (and as-is for the /404 showcase route).
 	const notFoundFile = fileForPath(distDir, NOT_FOUND_PATH);

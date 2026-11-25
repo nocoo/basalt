@@ -3,15 +3,24 @@ import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { CodeHighlighted } from "@nocoo/basalt/components/code";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
+import { Loader } from "@nocoo/basalt/components/loader";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { SegmentControl } from "@nocoo/basalt/components/segment-control";
 import { TagBadge } from "@nocoo/basalt/components/tag-badge";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { ArrowLeft, ArrowRight, Copy, ExternalLink, FileText, RotateCw } from "lucide-react";
-import { type RefObject, useEffect, useRef, useSyncExternalStore } from "react";
+import {
+	type RefObject,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+	useSyncExternalStore,
+} from "react";
 import { useParams } from "react-router";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { getTemplateBySlug, type TemplateEntry } from "@/lib/template-catalog";
+import { cn } from "@/lib/utils";
 import {
 	isKnownTemplateSlug,
 	type TemplateCategory,
@@ -79,26 +88,38 @@ function TemplateFrame({
 	entry,
 	theme,
 	viewport,
+	ready,
 	frameRef,
 	onLoad,
 }: {
 	entry: TemplateEntry;
 	theme: "light" | "dark";
 	viewport: TemplateViewport;
+	ready: boolean;
 	frameRef: RefObject<HTMLIFrameElement | null>;
 	onLoad: () => void;
 }) {
 	const initialTheme = useRef(theme);
 	return (
 		<div className="overflow-hidden bg-basalt-background p-basalt-layout">
-			<div className={viewportContainerClass(viewport)}>
+			<div className={cn("relative", viewportContainerClass(viewport))}>
+				{!ready && (
+					<div
+						aria-hidden="true"
+						className="pointer-events-none absolute inset-0 flex items-center justify-center bg-basalt-background"
+					>
+						<Loader label="Loading preview" showElapsed={false} />
+					</div>
+				)}
 				<iframe
 					ref={frameRef}
 					title={entry.fileName}
 					src={`/view/${entry.slug}?theme=${initialTheme.current}`}
-					className="block w-full border-0"
+					className={cn(
+						"block w-full border-0 bg-basalt-background transition-opacity basalt-motion duration-basalt-normal",
+						ready ? "opacity-100" : "opacity-0",
+					)}
 					style={{ height: `${entry.heightRem}rem` }}
-					loading="lazy"
 					onLoad={onLoad}
 				/>
 			</div>
@@ -118,7 +139,18 @@ function TemplateWorkbench({
 	const vm = useTemplateWorkbenchViewModel(slug, resolvedSiteTheme);
 	const frameRef = useRef<HTMLIFrameElement>(null);
 	const pendingFocusRef = useRef<string | null>(null);
+	const readyFallbackTimerRef = useRef<number | null>(null);
+	const frameKey = `${entry.slug}-${vm.reloadKey}`;
+	const [readyFrameKey, setReadyFrameKey] = useState<string | null>(null);
+	const frameReady = readyFrameKey === frameKey;
 	const neighbors = getTemplateNeighbors(slug);
+
+	const clearReadyFallbackTimer = useCallback(() => {
+		if (readyFallbackTimerRef.current !== null) {
+			window.clearTimeout(readyFallbackTimerRef.current);
+			readyFallbackTimerRef.current = null;
+		}
+	}, []);
 
 	function postTheme() {
 		frameRef.current?.contentWindow?.postMessage(
@@ -141,17 +173,34 @@ function TemplateWorkbench({
 		);
 	}, [vm.effectiveTheme]);
 
+	useEffect(() => clearReadyFallbackTimer, [clearReadyFallbackTimer]);
+
 	useEffect(() => {
 		function onMessage(event: MessageEvent) {
 			if (event.origin !== window.location.origin) return;
 			const parsed = parseTemplateChildMessage(event.data);
-			if (parsed && parsed.slug === slug) {
-				vm.setActivePartId(parsed.partId);
+			if (!parsed || parsed.slug !== slug) return;
+			if (parsed.type === "basalt-template-ready") {
+				clearReadyFallbackTimer();
+				setReadyFrameKey(frameKey);
+				frameRef.current?.contentWindow?.postMessage(
+					createTemplateThemeMessage(vm.effectiveTheme),
+					window.location.origin,
+				);
+				if (pendingFocusRef.current) {
+					frameRef.current?.contentWindow?.postMessage(
+						createTemplateFocusMessage(pendingFocusRef.current),
+						window.location.origin,
+					);
+					pendingFocusRef.current = null;
+				}
+				return;
 			}
+			vm.setActivePartId(parsed.partId);
 		}
 		window.addEventListener("message", onMessage);
 		return () => window.removeEventListener("message", onMessage);
-	}, [slug, vm.setActivePartId]);
+	}, [slug, frameKey, vm.effectiveTheme, vm.setActivePartId, clearReadyFallbackTimer]);
 
 	function focusPart(partId: string) {
 		const wasPreview = vm.mode === "preview";
@@ -167,7 +216,15 @@ function TemplateWorkbench({
 		postTheme();
 		if (pendingFocusRef.current) {
 			postFocus(pendingFocusRef.current);
-			pendingFocusRef.current = null;
+			if (frameReady) {
+				pendingFocusRef.current = null;
+			}
+		}
+		if (!frameReady) {
+			clearReadyFallbackTimer();
+			readyFallbackTimerRef.current = window.setTimeout(() => {
+				setReadyFrameKey(frameKey);
+			}, 2000);
 		}
 	}
 
@@ -262,10 +319,11 @@ function TemplateWorkbench({
 				)}
 				{vm.mode === "preview" ? (
 					<TemplateFrame
-						key={`${entry.slug}-${vm.reloadKey}`}
+						key={frameKey}
 						entry={entry}
 						theme={vm.effectiveTheme}
 						viewport={vm.viewport}
+						ready={frameReady}
 						frameRef={frameRef}
 						onLoad={handleFrameLoad}
 					/>

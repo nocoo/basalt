@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { TEMPLATE_MANIFEST } from "../models/template-manifest";
 import {
 	CATALOG_CATEGORIES,
 	type CatalogCategory,
@@ -8,6 +9,7 @@ import {
 import { CATEGORY_GUIDES } from "../pages/ui/catalog-category-guides";
 import {
 	applyCrawlPage,
+	applyTemplateViewportDocument,
 	catalogCrawlPage,
 	categoryCrawlPage,
 	homeCrawlPage,
@@ -153,5 +155,12 @@ describe("landing document", () => {
 			homeCrawlPage(),
 		);
 		expect(parse(applied).querySelector("h1")?.textContent).toBe(LANDING_HEADING);
+		const viewHtml = applyTemplateViewportDocument(
+			'<html><head><link rel="canonical" href="https://basaltui.com/" /></head><body><div id="root"><div data-landing-page="true">hero</div></div></body></html>',
+			TEMPLATE_MANIFEST[0],
+		);
+		expect(viewHtml).toContain('<meta name="robots" content="noindex" />');
+		expect(viewHtml).not.toContain("canonical");
+		expect(parse(viewHtml).querySelector("#root")?.children).toHaveLength(0);
 	});
 });

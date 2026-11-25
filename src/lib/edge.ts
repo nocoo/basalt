@@ -1,7 +1,7 @@
 export const APEX_HOST = "basaltui.com";
 
 export const INLINE_SCRIPT_HASHES = [
-	"sha256-Blj9pzXsoTiAvbuv3y+j6MDGLAo5TkR+6lmDAK6L5Yc=",
+	"sha256-D6OmfAhsbP/lba5sPApvo0Qz4dD3KX9yJ+D0nmhYs3U=",
 	"sha256-2kDh5TTpi4+pKniLasm5+a5FywWrC6p25mj5iCT6E78=",
 ] as const;
 

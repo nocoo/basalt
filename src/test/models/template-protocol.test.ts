@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
 	createTemplateActivePartMessage,
 	createTemplateFocusMessage,
+	createTemplateReadyMessage,
 	createTemplateThemeMessage,
 	parseTemplateChildMessage,
 	parseTemplateParentMessage,
@@ -34,7 +35,13 @@ describe("template viewport postMessage protocol", () => {
 		expect(parseTemplateParentMessage({ type: "basalt-template-focus", partId: 42 })).toBeNull();
 	});
 
-	it("builds and parses child active-part messages and rejects invalid payloads", () => {
+	it("builds and parses child ready and active-part messages and rejects invalid payloads", () => {
+		const readyMsg = createTemplateReadyMessage("agent-workspace");
+		expect(parseTemplateChildMessage(readyMsg)).toEqual({
+			type: "basalt-template-ready",
+			slug: "agent-workspace",
+		});
+
 		const activeMsg = createTemplateActivePartMessage("ops-inbox", "ops-runbook");
 		expect(parseTemplateChildMessage(activeMsg)).toEqual({
 			type: "basalt-template-active-part",

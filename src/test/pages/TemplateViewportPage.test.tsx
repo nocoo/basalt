@@ -129,6 +129,11 @@ describe("template viewport", () => {
 		);
 		await screen.findByRole("heading", { name: "Welcome back" });
 
+		expect(postMessage).toHaveBeenCalledWith(
+			{ type: "basalt-template-ready", slug: "visitor-login" },
+			window.location.origin,
+		);
+
 		await waitFor(() => expect(observedTargets.length).toBeGreaterThanOrEqual(3));
 		const formEl = document.getElementById("login-form") as Element;
 		const footerEl = document.getElementById("login-footer") as Element;

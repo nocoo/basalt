@@ -3,19 +3,22 @@
 /* Dark only: every color comes from the --basalt-scene-* tokens in site-tokens.css. */
 @media (prefers-reduced-motion: no-preference) {
 	/* Anchor navigation scrolls the document, not the landing wrapper. */
-	:root:has([data-landing-page]) {
+	:root:not([data-basalt-route]):has([data-landing-page]) {
 		scroll-behavior: smooth;
 	}
 }
-:root:has([data-landing-page]),
-:root:has([data-landing-page]) body {
+:root[data-basalt-route] [data-landing-page] {
+	display: none;
+}
+:root:not([data-basalt-route]):has([data-landing-page]),
+:root:not([data-basalt-route]):has([data-landing-page]) body {
 	height: auto;
 	min-height: 100%;
 	background: var(--basalt-scene-night);
 	color: var(--basalt-scene-ink);
 	color-scheme: dark;
 }
-:root:has([data-landing-page]) #root {
+:root:not([data-basalt-route]):has([data-landing-page]) #root {
 	height: auto;
 	min-height: 100%;
 }
