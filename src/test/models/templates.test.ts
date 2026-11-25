@@ -6,7 +6,7 @@ import { normalizeConsumerTemplateSource, viewportContainerClass } from "@/model
 describe("template registry", () => {
 	it("has one standalone source and matching metadata for each slug", () => {
 		expect(TEMPLATES.map((entry) => entry.slug)).toEqual(TEMPLATE_SLUGS);
-		expect(TEMPLATE_MANIFEST).toHaveLength(5);
+		expect(TEMPLATE_MANIFEST).toHaveLength(7);
 		for (const entry of TEMPLATES) {
 			expect(entry.consumerSource.startsWith('"use client";\n')).toBe(true);
 			expect(isKnownTemplateSlug(entry.slug)).toBe(true);
@@ -24,15 +24,19 @@ describe("template registry", () => {
 		expect(getTemplateBySlug("unknown")).toBeUndefined();
 	});
 	it("filters categories and featured entries", () => {
-		expect(filterTemplates("all")).toHaveLength(5);
+		expect(filterTemplates("all")).toHaveLength(7);
 		expect(filterTemplates("featured")).toHaveLength(4);
-		expect(filterTemplates("agents").map((entry) => entry.slug)).toEqual([
+		expect(filterTemplates("workspaces").map((entry) => entry.slug)).toEqual([
 			"agent-workspace",
 			"ops-inbox",
+			"workspace-settings",
 		]);
 		expect(filterTemplates("dashboards")).toHaveLength(1);
-		expect(filterTemplates("workspaces")).toHaveLength(1);
-		expect(filterTemplates("auth")).toHaveLength(1);
+		expect(filterTemplates("standalone").map((entry) => entry.slug)).toEqual([
+			"visitor-login",
+			"document-page",
+			"not-found",
+		]);
 	});
 	it("cleans preview-only comments and maps viewport widths", () => {
 		expect(normalizeConsumerTemplateSource('"use client";\n\nexport default 1;\n')).toBe(

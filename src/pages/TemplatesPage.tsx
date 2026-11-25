@@ -16,10 +16,9 @@ import { useTemplatesShowcaseViewModel } from "@/viewmodels/useTemplatesShowcase
 const FILTERS: readonly TemplateFilter[] = [
 	"all",
 	"featured",
-	"agents",
-	"dashboards",
 	"workspaces",
-	"auth",
+	"dashboards",
+	"standalone",
 ];
 const VIEWPORTS: readonly TemplateViewport[] = ["desktop", "tablet", "mobile"];
 const mediaQuery = "(prefers-color-scheme: dark)";
@@ -72,10 +71,9 @@ function TemplateFrame({
 const FILTER_LABELS: Record<TemplateFilter, string> = {
 	all: "All",
 	featured: "Featured",
-	agents: "Agents",
-	dashboards: "Dashboards",
 	workspaces: "Workspaces",
-	auth: "Auth",
+	dashboards: "Dashboards",
+	standalone: "Standalone",
 };
 
 const VIEWPORT_LABELS: Record<TemplateViewport, string> = {

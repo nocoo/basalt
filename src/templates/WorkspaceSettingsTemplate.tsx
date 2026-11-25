@@ -22,8 +22,24 @@ import {
 } from "@nocoo/basalt/components/sidebar";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
-import { KeyRound, Settings, Users } from "lucide-react";
+import { KeyRound, Settings, Shield, Users } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+export const WORKSPACE_SETTINGS_CONFIG = {
+	brandName: "Northstar",
+	title: "Workspace settings",
+	description: "Manage your team, access, security and usage.",
+	defaultName: "Northstar studio",
+	defaultEmail: "team@example.com",
+} as const;
+
+export const INITIAL_KEYS = ["Production key", "Development key"];
+
+export const INITIAL_SESSIONS = [
+	{ device: "MacBook Pro — Chrome", location: "San Francisco · Active now", current: true },
+	{ device: "iPhone 15 — Safari", location: "San Francisco · 2 hours ago", current: false },
+	{ device: "Windows PC — Firefox", location: "Austin · Yesterday", current: false },
+] as const;
 
 const mobileQuery = "(width < 768px)";
 function subscribeMobile(notify: () => void) {
@@ -45,12 +61,13 @@ export default function WorkspaceSettingsTemplate() {
 		if (!mobile) setDrawerOpen(false);
 	}, [mobile]);
 	const navigationTrigger = useRef<HTMLButtonElement>(null);
-	const [name, setName] = useState("Northstar studio");
-	const [email, setEmail] = useState("team@example.com");
+	const [name, setName] = useState<string>(WORKSPACE_SETTINGS_CONFIG.defaultName);
+	const [email, setEmail] = useState<string>(WORKSPACE_SETTINGS_CONFIG.defaultEmail);
 	const [saved, setSaved] = useState(false);
 	const [invites, setInvites] = useState(true);
 	const [alerts, setAlerts] = useState(true);
-	const [keys, setKeys] = useState(["Production key", "Development key"]);
+	const [keys, setKeys] = useState<string[]>(INITIAL_KEYS);
+	const [sessions, setSessions] = useState(INITIAL_SESSIONS.map((item) => ({ ...item })));
 	const [nextKey, setNextKey] = useState(1);
 	const [tab, setTab] = useState("general");
 	function navigate(value: string) {
@@ -63,7 +80,7 @@ export default function WorkspaceSettingsTemplate() {
 				<SidebarHeader>
 					<SidebarBrand
 						logo={<Settings />}
-						name="Northstar"
+						name={WORKSPACE_SETTINGS_CONFIG.brandName}
 						action={
 							drawer ? (
 								<SidebarToggle mode="dismiss" onDismiss={() => setDrawerOpen(false)} />
@@ -77,6 +94,9 @@ export default function WorkspaceSettingsTemplate() {
 					</SidebarItem>
 					<SidebarItem active={tab === "members"} onClick={() => navigate("members")}>
 						<Users /> Members
+					</SidebarItem>
+					<SidebarItem active={tab === "security"} onClick={() => navigate("security")}>
+						<Shield /> Security
 					</SidebarItem>
 					<SidebarItem active={tab === "keys"} onClick={() => navigate("keys")}>
 						<KeyRound /> API keys
@@ -117,13 +137,14 @@ export default function WorkspaceSettingsTemplate() {
 					<ContentIsland className="overflow-auto">
 						<div className="mx-auto space-y-basalt-layout-lg" style={{ maxWidth: "64rem" }}>
 							<PageHeader
-								title="Workspace settings"
-								description="Manage your team, access and usage."
+								title={WORKSPACE_SETTINGS_CONFIG.title}
+								description={WORKSPACE_SETTINGS_CONFIG.description}
 							/>
 							<Tabs value={tab} onValueChange={setTab}>
 								<TabsList>
 									<TabsTrigger value="general">General</TabsTrigger>
 									<TabsTrigger value="members">Members</TabsTrigger>
+									<TabsTrigger value="security">Security</TabsTrigger>
 									<TabsTrigger value="keys">API Keys</TabsTrigger>
 									<TabsTrigger value="quotas">Quotas</TabsTrigger>
 								</TabsList>
@@ -196,6 +217,43 @@ export default function WorkspaceSettingsTemplate() {
 											<p className="text-basalt-sm text-basalt-muted-foreground">
 												3 members · 2 administrators
 											</p>
+										</LayerCard.Body>
+									</LayerCard>
+								</TabsContent>
+								<TabsContent value="security">
+									<LayerCard padding="none">
+										<LayerCard.Header>Active sessions</LayerCard.Header>
+										<LayerCard.Body className="space-y-basalt-card-sm">
+											{sessions.map((session) => (
+												<div
+													key={session.device}
+													className="flex items-center justify-between gap-basalt-layout"
+												>
+													<div>
+														<div className="flex flex-wrap items-center gap-basalt-space-md">
+															<span>{session.device}</span>
+															{session.current && <Badge tone="success">Current</Badge>}
+														</div>
+														<p className="text-basalt-sm text-basalt-muted-foreground">
+															{session.location}
+														</p>
+													</div>
+													{!session.current && (
+														<Button
+															size="sm"
+															variant="outline"
+															aria-label={`Revoke ${session.device}`}
+															onClick={() =>
+																setSessions((current) =>
+																	current.filter((item) => item.device !== session.device),
+																)
+															}
+														>
+															Revoke
+														</Button>
+													)}
+												</div>
+											))}
 										</LayerCard.Body>
 									</LayerCard>
 								</TabsContent>

@@ -7,7 +7,7 @@ describe("useTemplatesShowcaseViewModel", () => {
 	it("keeps filter, display mode, viewport and reload state independent", () => {
 		const { result } = renderHook(() => useTemplatesShowcaseViewModel());
 		expect(result.current.filter).toBe("all");
-		expect(result.current.entries).toHaveLength(5);
+		expect(result.current.entries).toHaveLength(7);
 		expect(result.current.mode("agent-workspace")).toBe("preview");
 		expect(result.current.viewport("agent-workspace")).toBe("desktop");
 		expect(result.current.reloadKey("agent-workspace")).toBe(0);

@@ -125,8 +125,10 @@ Each URL below is a public documentation surface with a matching `.md` endpoint.
 
 - [Agent workspace](https://basaltui.com/templates/agent-workspace.md) ([View](https://basaltui.com/view/agent-workspace) — A collaborative agent session with a trace, composer and file inspector.)
 - [Ops inbox](https://basaltui.com/templates/ops-inbox.md) ([View](https://basaltui.com/view/ops-inbox) — Triage incidents, follow a runbook and update their status.)
+- [Workspace settings](https://basaltui.com/templates/workspace-settings.md) ([View](https://basaltui.com/view/workspace-settings) — Manage team preferences, active sessions, access keys and quotas.)
 - [Executive dashboard](https://basaltui.com/templates/executive-dashboard.md) ([View](https://basaltui.com/view/executive-dashboard) — A concise performance overview with capacity and account data.)
-- [Workspace settings](https://basaltui.com/templates/workspace-settings.md) ([View](https://basaltui.com/view/workspace-settings) — Manage team preferences, access keys and quotas.)
 - [Visitor login](https://basaltui.com/templates/visitor-login.md) ([View](https://basaltui.com/view/visitor-login) — A compact sign-in badge with optional verification.)
+- [Document page](https://basaltui.com/templates/document-page.md) ([View](https://basaltui.com/view/document-page) — A standalone terms and policy reading page on a bounded card surface.)
+- [Error 404](https://basaltui.com/templates/not-found.md) ([View](https://basaltui.com/view/not-found) — A full-viewport missing route page with a clear recovery action.)
 
 See https://basaltui.com/llms.txt for package docs and crawler policy.

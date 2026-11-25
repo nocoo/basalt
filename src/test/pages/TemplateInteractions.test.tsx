@@ -2,7 +2,9 @@ import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AgentWorkspaceTemplate from "@/templates/AgentWorkspaceTemplate";
+import DocumentPageTemplate from "@/templates/DocumentPageTemplate";
 import ExecutiveDashboardTemplate from "@/templates/ExecutiveDashboardTemplate";
+import NotFoundTemplate from "@/templates/NotFoundTemplate";
 import OpsInboxTemplate from "@/templates/OpsInboxTemplate";
 import VisitorLoginTemplate from "@/templates/VisitorLoginTemplate";
 import WorkspaceSettingsTemplate from "@/templates/WorkspaceSettingsTemplate";
@@ -245,6 +247,11 @@ describe("standalone template interactions", () => {
 		const invite = screen.getByRole("switch", { name: "Allow member invitations" });
 		fireEvent.click(invite);
 		expect(invite).not.toBeChecked();
+		fireEvent.mouseDown(screen.getByRole("tab", { name: "Security" }));
+		expect(screen.getByText("MacBook Pro — Chrome")).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Revoke MacBook Pro — Chrome" })).toBeNull();
+		fireEvent.click(screen.getByRole("button", { name: "Revoke iPhone 15 — Safari" }));
+		expect(screen.queryByText("iPhone 15 — Safari")).not.toBeInTheDocument();
 		fireEvent.mouseDown(screen.getByRole("tab", { name: "API Keys" }));
 		fireEvent.click(screen.getByRole("button", { name: "Create key" }));
 		const row = screen.getByText(/New key 1/).closest("div");
@@ -276,5 +283,17 @@ describe("standalone template interactions", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
 		expect(screen.getByRole("status")).toHaveTextContent("No credentials were sent");
 		expect(code).not.toHaveAttribute("aria-invalid");
+	});
+	it("renders document and not-found standalone templates with structured sections", () => {
+		const { unmount } = render(<DocumentPageTemplate />);
+		expect(screen.getByRole("heading", { name: "Terms of Service" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "1. Acceptance of Terms" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Back" })).toHaveAttribute("href", "/");
+		unmount();
+
+		render(<NotFoundTemplate />);
+		expect(screen.getByText("404")).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Page not found" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Back to Homepage" })).toHaveAttribute("href", "/");
 	});
 });

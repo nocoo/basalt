@@ -10,6 +10,8 @@ const COMPONENTS: Record<TemplateSlug, ReturnType<typeof lazy>> = {
 	"executive-dashboard": lazy(() => import("@/templates/ExecutiveDashboardTemplate")),
 	"workspace-settings": lazy(() => import("@/templates/WorkspaceSettingsTemplate")),
 	"visitor-login": lazy(() => import("@/templates/VisitorLoginTemplate")),
+	"document-page": lazy(() => import("@/templates/DocumentPageTemplate")),
+	"not-found": lazy(() => import("@/templates/NotFoundTemplate")),
 };
 
 function Viewport({ slug }: { slug: TemplateSlug }) {

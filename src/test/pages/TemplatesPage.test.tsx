@@ -12,13 +12,13 @@ describe("TemplatesPage", () => {
 				<TemplatesPage />
 			</ThemeProvider>,
 		);
-		expect(screen.getAllByTitle(/Template\.tsx$/)).toHaveLength(5);
+		expect(screen.getAllByTitle(/Template\.tsx$/)).toHaveLength(7);
 		fireEvent.click(
 			within(screen.getByRole("radiogroup", { name: "Filter templates" })).getByRole("radio", {
-				name: "Agents",
+				name: "Workspaces",
 			}),
 		);
-		expect(screen.getAllByTitle(/Template\.tsx$/)).toHaveLength(2);
+		expect(screen.getAllByTitle(/Template\.tsx$/)).toHaveLength(3);
 		const section = screen.getByRole("heading", { name: "Agent workspace" }).closest("section");
 		if (!section) throw new Error("Missing template section");
 		const controls = within(section);

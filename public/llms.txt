@@ -13,7 +13,7 @@ Fetch raw Markdown directly instead of scraping HTML:
 - Category overviews: `https://basaltui.com/ui/overview/<category>.md`
 - Application templates: `https://basaltui.com/templates/<slug>.md`
 - [UI index (Markdown)](https://basaltui.com/ui.md): All 81 components grouped by category
-- [Templates index (Markdown)](https://basaltui.com/templates.md): All 5 page templates
+- [Templates index (Markdown)](https://basaltui.com/templates.md): All 7 page templates
 - [Markdown route catalog](https://basaltui.com/md-catalog.json): Machine-readable index of all Markdown routes
 
 ## Agent Entrypoints

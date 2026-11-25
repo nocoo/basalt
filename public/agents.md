@@ -104,13 +104,15 @@ Package: `@nocoo/basalt` · Catalog: https://basaltui.com · Setup: https://basa
 | Pagination               | `pagination`               | action    | `@nocoo/basalt/components/pagination`               | `@nocoo/basalt` | https://basaltui.com/ui/pagination.md               |
 | Combobox                 | `combobox`                 | action    | `@nocoo/basalt/components/combobox`                 | `@nocoo/basalt` | https://basaltui.com/ui/combobox.md                 |
 
-## Templates (5)
+## Templates (7)
 
 | Title               | Slug                  | Category   | Markdown                                              |
 | ------------------- | --------------------- | ---------- | ----------------------------------------------------- |
-| Agent workspace     | `agent-workspace`     | agents     | https://basaltui.com/templates/agent-workspace.md     |
-| Ops inbox           | `ops-inbox`           | agents     | https://basaltui.com/templates/ops-inbox.md           |
-| Executive dashboard | `executive-dashboard` | dashboards | https://basaltui.com/templates/executive-dashboard.md |
+| Agent workspace     | `agent-workspace`     | workspaces | https://basaltui.com/templates/agent-workspace.md     |
+| Ops inbox           | `ops-inbox`           | workspaces | https://basaltui.com/templates/ops-inbox.md           |
 | Workspace settings  | `workspace-settings`  | workspaces | https://basaltui.com/templates/workspace-settings.md  |
-| Visitor login       | `visitor-login`       | auth       | https://basaltui.com/templates/visitor-login.md       |
+| Executive dashboard | `executive-dashboard` | dashboards | https://basaltui.com/templates/executive-dashboard.md |
+| Visitor login       | `visitor-login`       | standalone | https://basaltui.com/templates/visitor-login.md       |
+| Document page       | `document-page`       | standalone | https://basaltui.com/templates/document-page.md       |
+| Error 404           | `not-found`           | standalone | https://basaltui.com/templates/not-found.md           |
 <!-- basalt:end -->

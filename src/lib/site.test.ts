@@ -222,8 +222,8 @@ describe("site metadata", () => {
 		expect(agents).toContain("## Components (81)");
 		expect(agents).toMatch(/\|\s*Button\s*\|\s*`button`\s*\|\s*action\s*\|/);
 		expect(agents).toMatch(/\|\s*Chart\s*\|\s*`chart`\s*\|\s*layout\s*\|/);
-		expect(agents).toContain("## Templates (5)");
-		expect(agents).toMatch(/\|\s*Agent workspace\s*\|\s*`agent-workspace`\s*\|\s*agents\s*\|/);
+		expect(agents).toContain("## Templates (7)");
+		expect(agents).toMatch(/\|\s*Agent workspace\s*\|\s*`agent-workspace`\s*\|\s*workspaces\s*\|/);
 
 		const setup = renderSetupMd();
 		expect(setup).toContain("@nocoo/basalt");
