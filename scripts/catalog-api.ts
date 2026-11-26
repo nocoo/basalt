@@ -2295,7 +2295,76 @@ function resolveSourceFile(
 	failCatalogApi(`missing source ${relativeFile}`);
 }
 
-export function createCatalogApiProgram(repoRoot: string, tsconfigPath: string): ts.Program {
+const sharedLibSourceFileCache = new Map<string, ts.SourceFile>();
+
+function sourceFileCacheKey(
+	normalizedPath: string,
+	languageVersionOrOptions: ts.ScriptTarget | ts.CreateSourceFileOptions,
+): string {
+	if (typeof languageVersionOrOptions === "number") {
+		return `${normalizedPath}\0${languageVersionOrOptions}`;
+	}
+	return `${normalizedPath}\0${languageVersionOrOptions.languageVersion}\0${languageVersionOrOptions.impliedNodeFormat ?? ""}\0${languageVersionOrOptions.jsDocParsingMode ?? ""}`;
+}
+
+export function createCachedLibCompilerHost(
+	options: ts.CompilerOptions = {},
+	cache: Map<string, ts.SourceFile> = sharedLibSourceFileCache,
+): ts.CompilerHost {
+	const host = ts.createCompilerHost(options);
+	const defaultLibDir = normalizeFsPath(
+		host.getDefaultLibLocation?.() ?? path.dirname(ts.getDefaultLibFilePath(options)),
+	);
+	const nodeModulesMarker = "/node_modules/";
+	const firstNodeModulesIdx = defaultLibDir.indexOf(nodeModulesMarker);
+	const immutableNodeModulesPrefix =
+		firstNodeModulesIdx >= 0
+			? defaultLibDir.slice(0, firstNodeModulesIdx + nodeModulesMarker.length)
+			: undefined;
+	const originalGetSourceFile = host.getSourceFile.bind(host);
+	host.getSourceFile = (fileName, languageVersionOrOptions, onError, shouldCreateNewSourceFile) => {
+		if (!shouldCreateNewSourceFile) {
+			const normalized = normalizeFsPath(fileName);
+			const isImmutableDefaultLib =
+				path.dirname(normalized) === defaultLibDir &&
+				/^lib(?:\..+)?\.d\.ts$/i.test(path.basename(normalized));
+			const isImmutableNodeModuleDts =
+				immutableNodeModulesPrefix !== undefined &&
+				normalized.startsWith(immutableNodeModulesPrefix) &&
+				/\.d\.[cm]?ts$/i.test(normalized);
+			if (isImmutableDefaultLib || isImmutableNodeModuleDts) {
+				const key = sourceFileCacheKey(normalized, languageVersionOrOptions);
+				const cached = cache.get(key);
+				if (cached) {
+					return cached;
+				}
+				const parsed = originalGetSourceFile(
+					fileName,
+					languageVersionOrOptions,
+					onError,
+					shouldCreateNewSourceFile,
+				);
+				if (parsed) {
+					cache.set(key, parsed);
+				}
+				return parsed;
+			}
+		}
+		return originalGetSourceFile(
+			fileName,
+			languageVersionOrOptions,
+			onError,
+			shouldCreateNewSourceFile,
+		);
+	};
+	return host;
+}
+
+export function createCatalogApiProgram(
+	repoRoot: string,
+	tsconfigPath: string,
+	host?: ts.CompilerHost,
+): ts.Program {
 	const configFile = path.resolve(repoRoot, tsconfigPath);
 	if (!existsSync(configFile)) {
 		failCatalogApi(`missing tsconfig ${tsconfigPath}`);
@@ -2312,6 +2381,7 @@ export function createCatalogApiProgram(repoRoot: string, tsconfigPath: string):
 	const program = ts.createProgram({
 		rootNames: parsed.fileNames,
 		options: parsed.options,
+		host: host ?? createCachedLibCompilerHost(parsed.options),
 	});
 	const semanticErrors = errorDiagnostics(ts.getPreEmitDiagnostics(program));
 	if (semanticErrors.length > 0) {
@@ -2667,6 +2737,7 @@ export function generateCatalogApi(input: {
 	repoRoot: string;
 	tsconfigPath: string;
 	targets: CatalogApiTarget[];
+	host?: ts.CompilerHost;
 }): Record<string, CatalogApiSurface[]> {
 	const surfacesBySlug = new Map<string, Set<string>>();
 	for (const target of input.targets) {
@@ -2680,7 +2751,7 @@ export function generateCatalogApi(input: {
 		names.add(target.surface);
 		surfacesBySlug.set(target.slug, names);
 	}
-	const program = createCatalogApiProgram(input.repoRoot, input.tsconfigPath);
+	const program = createCatalogApiProgram(input.repoRoot, input.tsconfigPath, input.host);
 	const result: Record<string, CatalogApiSurface[]> = {};
 	for (const target of input.targets) {
 		const props = extractTargetProps(program, input.repoRoot, target);

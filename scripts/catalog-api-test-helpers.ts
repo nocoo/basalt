@@ -2,10 +2,16 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, expect } from "vitest";
-import { CATALOG_API_TARGETS, DEFAULT_TSCONFIG, generateCatalogApi } from "./catalog-api";
+import {
+	CATALOG_API_TARGETS,
+	createCachedLibCompilerHost,
+	DEFAULT_TSCONFIG,
+	generateCatalogApi,
+} from "./catalog-api";
 
 export const repoRoot = process.cwd();
 const fixtureRoots: string[] = [];
+const sharedFixtureHost = createCachedLibCompilerHost();
 
 afterEach(() => {
 	while (fixtureRoots.length > 0) {
@@ -51,6 +57,7 @@ export function generateFixture(root: string, sourceFile = "widget.ts", slug = "
 		repoRoot: root,
 		tsconfigPath: "tsconfig.json",
 		targets: [{ slug, sourceFile, propsType: "WidgetProps", surface: "Widget" }],
+		host: sharedFixtureHost,
 	});
 }
 
