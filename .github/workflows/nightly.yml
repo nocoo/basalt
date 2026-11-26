@@ -24,12 +24,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
+      - uses: nocoo/base-ci/.github/actions/setup-js@98fc023423f82b010f17e0ebbc9dd580fe68736a # v2026.19
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: nocoo/base-ci/.github/actions/setup-playwright@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
+      - uses: nocoo/base-ci/.github/actions/setup-playwright@98fc023423f82b010f17e0ebbc9dd580fe68736a # v2026.19
         with:
           package-manager: bun
           browsers: chromium webkit
@@ -47,12 +47,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: nocoo/base-ci/.github/actions/setup-js@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
+      - uses: nocoo/base-ci/.github/actions/setup-js@98fc023423f82b010f17e0ebbc9dd580fe68736a # v2026.19
         with:
           runtime-version: ${{ env.BUN_VERSION }}
           node-version: ${{ env.NODE_VERSION }}
           install-policy: project
-      - uses: nocoo/base-ci/.github/actions/setup-playwright@bfaac83b5a4d5c7ed26320bb5b09f3ca0a01932c # v2026.18
+      - uses: nocoo/base-ci/.github/actions/setup-playwright@98fc023423f82b010f17e0ebbc9dd580fe68736a # v2026.19
         with:
           package-manager: bun
           browsers: chromium
