@@ -1,13 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { chromium, type Page } from "playwright";
 import { build } from "vite";
 import { showcaseBuildConfig } from "./catalog-page-status-build";
-import {
-	assertNoPageFaults,
-	attachPageFaults,
-	createBrowserProfileDir,
-	withChromiumPage,
-} from "./consumer-browser";
+import { assertNoPageFaults, assertPinnedChromium, attachPageFaults } from "./consumer-browser";
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
 import { prerenderHtml } from "./prerender";
 import { assertLandingShowcase } from "./showcase-landing";
@@ -43,19 +39,71 @@ export async function runShowcaseSmoke() {
 		url,
 	});
 	try {
-		const evidence = await withChromiumPage(createBrowserProfileDir(), async (page) => {
-			const faults = attachPageFaults(page);
-			page.setDefaultTimeout(12_000);
-			const landing = await assertLandingShowcase(page, url);
-			const library = await assertLibraryShowcases(page, url);
-			const navigation = await assertNavigationLists(page, url);
-			const selection = await assertSelectionHierarchy(page, url);
-			const pageLayout = await assertPageLayout(page, url);
-			const templates = await assertTemplatesShowcase(page, url);
-			assertNoPageFaults(faults);
-			return { landing, library, navigation, selection, pageLayout, templates };
-		});
-		console.log(`Showcase smoke passed ${JSON.stringify(evidence)}`);
+		const executablePath = assertPinnedChromium();
+		const browser = await chromium.launch({ headless: true, executablePath });
+		try {
+			const libraryCombos: Array<{ key: string; width: 390 | 1280; dark: boolean }> = [
+				{ key: "library-390-light", width: 390, dark: false },
+				{ key: "library-390-dark", width: 390, dark: true },
+				{ key: "library-1280-light", width: 1280, dark: false },
+				{ key: "library-1280-dark", width: 1280, dark: true },
+			];
+			const tasks: Array<[string, (page: Page, baseUrl: string) => Promise<unknown>]> = [
+				["landing", assertLandingShowcase],
+				["pageLayout", assertPageLayout],
+				["navigation", assertNavigationLists],
+				...libraryCombos.map(
+					({ key, width, dark }): [string, (page: Page, baseUrl: string) => Promise<unknown>] => [
+						key,
+						(page, baseUrl) => assertLibraryShowcases(page, baseUrl, [{ width, dark }]),
+					],
+				),
+				["templates", assertTemplatesShowcase],
+				["selection", assertSelectionHierarchy],
+			];
+			const results = new Map<string, unknown>();
+			let cursor = 0;
+			const rawWorkers = Number(process.env.BASALT_SHOWCASE_WORKERS);
+			const workerCount = Math.min(
+				Number.isInteger(rawWorkers) && rawWorkers > 0 ? rawWorkers : 4,
+				tasks.length,
+			);
+			await Promise.all(
+				Array.from({ length: workerCount }, async () => {
+					while (cursor < tasks.length) {
+						const [key, runTask] = tasks[cursor++];
+						const started = Date.now();
+						const context = await browser.newContext();
+						try {
+							const page = await context.newPage();
+							const faults = attachPageFaults(page);
+							page.setDefaultTimeout(12_000);
+							results.set(key, await runTask(page, url));
+							assertNoPageFaults(faults);
+						} finally {
+							await context.close();
+							console.log(`Showcase smoke task ${key} finished in ${Date.now() - started}ms`);
+						}
+					}
+				}),
+			);
+			const firstLibrary = results.get(libraryCombos[0].key) as Record<string, unknown>;
+			const library = {
+				...firstLibrary,
+				cases: libraryCombos.flatMap(({ key }) => (results.get(key) as { cases: string[] }).cases),
+			};
+			const evidence = {
+				landing: results.get("landing"),
+				library,
+				navigation: results.get("navigation"),
+				selection: results.get("selection"),
+				pageLayout: results.get("pageLayout"),
+				templates: results.get("templates"),
+			};
+			console.log(`Showcase smoke passed ${JSON.stringify(evidence)}`);
+		} finally {
+			await browser.close();
+		}
 	} finally {
 		await stopChild(child);
 		assertServerCleaned(child.pid, []);
