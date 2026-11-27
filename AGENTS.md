@@ -43,7 +43,7 @@ Run `bun run consumer:docs` only after building the package. `bun run design:che
 
 ## Quality & Local Gates
 
-Follows `system1-quality`; `.github/workflows/pipeline.yml` orchestrates `quality` (`S1`–`Z1` in `.github/workflows/quality-slots.yml`, `quality / Z1: Gate` required on `main`) followed by `deploy` (`D1`–`D5` via `base-ci` `deploy-worker.yml` `v2026.21` on `main` only; `pull_request` runs skip `deploy`). Statuses: `enforced`, `planned`, `manual`, `N/A`.
+Follows `system1-quality`; `.github/workflows/pipeline.yml` orchestrates `quality` (`S1`–`Z1` in `.github/workflows/quality-slots.yml`, `quality / Z1: Gate` required on `main`) followed by `deploy` (`D1`–`D5` via `base-ci` `deploy-worker.yml` `v2026.24` on `main` only; `pull_request` runs skip `deploy`). Statuses: `enforced`, `planned`, `manual`, `N/A`.
 
 - **Exceptions**: `L2 Runtime` is `N/A` (Worker tests mock `ASSETS` in Node/L1; no workerd suite); `L3 Integration` is `N/A` (static catalog/Worker, no service/storage boundary).
 - **Coverage & CI jobs**: `L1` enforces 80% on all four metrics across `src/{models,viewmodels,lib}` and `packages/basalt/src` (excluding showcase Views); `P1: Package (Next.js)` blocks in `Z1`; nightlies live in `.github/workflows/nightly.yml` and are non-blocking.
