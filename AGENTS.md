@@ -39,11 +39,11 @@ Run `bun run consumer:docs` only after building the package. `bun run design:che
 - **Surfaces & harness**: Templates (`src/templates/`) import only `@nocoo/basalt/*` + standalone classes; use `/dev/examples` for isolated checks ([route surfaces](docs/06-route-surfaces-and-harness.md)).
 - **Contract sync**: Core primitive, surface, or template changes update `DevExamplesPage.tsx`, `TEMPLATE_MANIFEST`, `src/lib/routes.ts`, and byte-identical `DESIGN.md` / `packages/basalt/ai/DESIGN.md` together.
 - **Lockfile & overrides**: Never delete `bun.lock` or commit mirror URLs in it; direct-dependency overrides use `$name`.
-- **Release**: Keep root/`packages/basalt` versions, `src/lib/version.ts`, metadata, and `CHANGELOG.md` aligned; site CD via `release.yml` only, npm needs 2FA ([runbook](docs/07-quality-gates-and-release.md)).
+- **Release**: Keep root/`packages/basalt` versions, `src/lib/version.ts`, metadata, and `CHANGELOG.md` aligned; site CD runs automatically on `main` push (or `workflow_dispatch` with `deploy=true`) via `pipeline.yml` (`D1`–`D5` reusing `B1` `basalt-site-dist`), npm publishes locally with 2FA ([runbook](docs/07-quality-gates-and-release.md)).
 
 ## Quality & Local Gates
 
-Follows `system1-quality`; CI slots and pinned `base-ci` revision live in `.github/workflows/quality-slots.yml` (`quality / Z1: Gate` required on `main`). Statuses: `enforced`, `planned`, `manual`, `N/A`.
+Follows `system1-quality`; `.github/workflows/pipeline.yml` orchestrates `quality` (`S1`–`Z1` in `.github/workflows/quality-slots.yml`, `quality / Z1: Gate` required on `main`) followed by `deploy` (`D1`–`D5` via `base-ci` `deploy-worker.yml` `v2026.21` on `main` only; `pull_request` runs skip `deploy`). Statuses: `enforced`, `planned`, `manual`, `N/A`.
 
 - **Exceptions**: `L2 Runtime` is `N/A` (Worker tests mock `ASSETS` in Node/L1; no workerd suite); `L3 Integration` is `N/A` (static catalog/Worker, no service/storage boundary).
 - **Coverage & CI jobs**: `L1` enforces 80% on all four metrics across `src/{models,viewmodels,lib}` and `packages/basalt/src` (excluding showcase Views); `P1: Package (Next.js)` blocks in `Z1`; nightlies live in `.github/workflows/nightly.yml` and are non-blocking.
@@ -52,11 +52,11 @@ Follows `system1-quality`; CI slots and pinned `base-ci` revision live in `.gith
 
 ## Resources & Isolation
 
-| Lane  | Endpoint / State                            | Boundary                                               |
-| ----- | ------------------------------------------- | ------------------------------------------------------ |
-| Dev   | `127.0.0.1:7003` (`basalt.dev.hexly.ai`)    | Local catalog; mock data, no DB/auth/R2                |
-| Tests | Temp roots, loopback ports, fresh profiles  | Isolated storage; showcase build writes shared `dist/` |
-| Prod  | `https://basaltui.com`, npm `@nocoo/basalt` | `release.yml` (Z1-gated) for site; 2FA for npm         |
+| Lane  | Endpoint / State                            | Boundary                                                          |
+| ----- | ------------------------------------------- | ----------------------------------------------------------------- |
+| Dev   | `127.0.0.1:7003` (`basalt.dev.hexly.ai`)    | Local catalog; mock data, no DB/auth/R2                           |
+| Tests | Temp roots, loopback ports, fresh profiles  | Isolated storage; showcase build writes shared `dist/`            |
+| Prod  | `https://basaltui.com`, npm `@nocoo/basalt` | `pipeline.yml` (`Z1`-gated `D1`–`D5`) for site; local 2FA for npm |
 
 ## Retrospective
 
