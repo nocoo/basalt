@@ -1,0 +1,41 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy after quality gate passes
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality-slots.yml
+
+  deploy:
+    name: deploy
+    needs: [quality]
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.deploy == true)
+    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@1bf0b015de41d57d6a620773b955b5c386c387de # v2026.21
+    with:
+      runtime-version: "1.4.0"
+      node-version: "26.12.1"
+      install-policy: "blocked"
+      artifact-name: basalt-site-dist
+      artifact-path: dist
+      environment: production
+      concurrency-group: deploy-worker-production
+      timeout-minutes: 15
+      verify-command: bun scripts/deploy-smoke.ts
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
