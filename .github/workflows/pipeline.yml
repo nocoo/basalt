@@ -26,7 +26,7 @@ jobs:
     if: >-
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.deploy == true)
-    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@1bf0b015de41d57d6a620773b955b5c386c387de # v2026.21
+    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@3703a073693d598159e87f77f99587e586c14cfe # v2026.24
     with:
       runtime-version: "1.4.0"
       node-version: "26.12.1"

@@ -879,7 +879,7 @@ function workflowContractProbe() {
 	const files = readdirSync(workflowsDir)
 		.filter((name) => name.endsWith(".yml") || name.endsWith(".yaml"))
 		.sort();
-	const baseCiPin = "e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20";
+	const baseCiPin = "3703a073693d598159e87f77f99587e586c14cfe # v2026.24";
 	const unpinned: string[] = [];
 	for (const file of files) {
 		const lines = readFileSync(join(workflowsDir, file), "utf8").split("\n");
@@ -893,7 +893,7 @@ function workflowContractProbe() {
 	record(
 		"workflow-base-ci-pin",
 		unpinned.length === 0,
-		unpinned.length ? `unpinned: ${unpinned.join(",")}` : "all base-ci refs pinned to v2026.20",
+		unpinned.length ? `unpinned: ${unpinned.join(",")}` : "all base-ci refs pinned to v2026.24",
 	);
 
 	const qualitySlots = readFileSync(join(workflowsDir, "quality-slots.yml"), "utf8");
