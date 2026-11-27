@@ -100,7 +100,7 @@ function parseDirectDependencies(filePath: string): FileDependencyFacts {
 		filePath,
 		content,
 		ts.ScriptTarget.Latest,
-		true,
+		false,
 		ts.ScriptKind.TSX,
 	);
 
@@ -113,61 +113,78 @@ function parseDirectDependencies(filePath: string): FileDependencyFacts {
 	let hasJsx = false;
 	const relativeFiles: string[] = [];
 	const externalPackages: string[] = [];
+	const mayHaveDynamicImport = content.includes("import(");
+	const mayHaveJsx =
+		(filePath.endsWith(".tsx") || filePath.endsWith(".jsx")) && content.includes("<");
 
-	function visit(node: ts.Node) {
-		if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node) || ts.isJsxFragment(node)) {
-			hasJsx = true;
+	function recordSpecifier(specifier: string) {
+		if (specifier.startsWith(".")) {
+			const resolved = path.resolve(path.dirname(filePath), specifier);
+			const candidates = [
+				resolved,
+				`${resolved}.tsx`,
+				`${resolved}.ts`,
+				path.join(resolved, "index.tsx"),
+				path.join(resolved, "index.ts"),
+			];
+			for (const cand of candidates) {
+				if (existsSync(cand)) {
+					relativeFiles.push(cand);
+					break;
+				}
+			}
+		} else {
+			externalPackages.push(packageName(specifier));
 		}
-		let specifier: string | null = null;
+	}
+
+	function visitBody(node: ts.Node) {
+		if (mayHaveJsx && !hasJsx) {
+			if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node) || ts.isJsxFragment(node)) {
+				hasJsx = true;
+			}
+		}
 		if (
-			ts.isImportDeclaration(node) &&
-			node.moduleSpecifier &&
-			ts.isStringLiteral(node.moduleSpecifier)
-		) {
-			if (!node.importClause?.isTypeOnly) {
-				specifier = node.moduleSpecifier.text;
-			}
-		} else if (
-			ts.isExportDeclaration(node) &&
-			node.moduleSpecifier &&
-			ts.isStringLiteral(node.moduleSpecifier)
-		) {
-			if (!node.isTypeOnly) {
-				specifier = node.moduleSpecifier.text;
-			}
-		} else if (
+			mayHaveDynamicImport &&
 			ts.isCallExpression(node) &&
 			node.expression.kind === ts.SyntaxKind.ImportKeyword &&
 			node.arguments[0] &&
 			ts.isStringLiteral(node.arguments[0])
 		) {
-			specifier = node.arguments[0].text;
+			recordSpecifier(node.arguments[0].text);
 		}
-
-		if (specifier) {
-			if (specifier.startsWith(".")) {
-				const resolved = path.resolve(path.dirname(filePath), specifier);
-				const candidates = [
-					resolved,
-					`${resolved}.tsx`,
-					`${resolved}.ts`,
-					path.join(resolved, "index.tsx"),
-					path.join(resolved, "index.ts"),
-				];
-				for (const cand of candidates) {
-					if (existsSync(cand)) {
-						relativeFiles.push(cand);
-						break;
-					}
-				}
-			} else {
-				externalPackages.push(packageName(specifier));
-			}
+		if (!mayHaveDynamicImport && (!mayHaveJsx || hasJsx)) {
+			return;
 		}
-		ts.forEachChild(node, visit);
+		ts.forEachChild(node, visitBody);
 	}
 
-	visit(source);
+	for (const stmt of source.statements) {
+		if (
+			ts.isImportDeclaration(stmt) &&
+			stmt.moduleSpecifier &&
+			ts.isStringLiteral(stmt.moduleSpecifier)
+		) {
+			if (!stmt.importClause?.isTypeOnly) {
+				recordSpecifier(stmt.moduleSpecifier.text);
+			}
+			continue;
+		}
+		if (
+			ts.isExportDeclaration(stmt) &&
+			stmt.moduleSpecifier &&
+			ts.isStringLiteral(stmt.moduleSpecifier)
+		) {
+			if (!stmt.isTypeOnly) {
+				recordSpecifier(stmt.moduleSpecifier.text);
+			}
+			continue;
+		}
+		if (mayHaveDynamicImport || (mayHaveJsx && !hasJsx)) {
+			ts.forEachChild(stmt, visitBody);
+		}
+	}
+
 	return { relativeFiles, externalPackages, hasJsx };
 }
 
@@ -223,7 +240,24 @@ export function loadCatalogApiSurface(slug: string, repoRoot = process.cwd()): C
 		throw new Error(`Missing generated catalog API shard for slug '${slug}' at ${shardPath}`);
 	}
 	const content = readFileSync(shardPath, "utf8");
-	const source = ts.createSourceFile("shard.ts", content, ts.ScriptTarget.Latest, true);
+	const marker = "export const API = ";
+	const markerIdx = content.indexOf(marker);
+	if (markerIdx !== -1) {
+		const jsonStart = markerIdx + marker.length;
+		const trimmedEnd = content.trimEnd();
+		const jsonSlice = trimmedEnd.endsWith(";")
+			? trimmedEnd.slice(jsonStart, -1)
+			: trimmedEnd.slice(jsonStart);
+		try {
+			const parsed = JSON.parse(jsonSlice) as unknown;
+			if (Array.isArray(parsed)) {
+				return parsed as CatalogApiSurface[];
+			}
+		} catch {
+			// Fall back to TypeScript AST evaluation for non-JSON TS literals.
+		}
+	}
+	const source = ts.createSourceFile("shard.ts", content, ts.ScriptTarget.Latest, false);
 
 	let apiNode: ts.Expression | null = null;
 	for (const stmt of source.statements) {
@@ -355,14 +389,24 @@ export function generatePackageRegistry(
 		}
 	}
 
+	const sourceHashByFile = new Map<string, string>();
+	const getSourceHash = (fullPath: string): string => {
+		const cached = sourceHashByFile.get(fullPath);
+		if (cached !== undefined) return cached;
+		const content = existsSync(fullPath) ? readFileSync(fullPath, "utf8") : "";
+		const hash = content ? createHash("sha256").update(content).digest("hex").slice(0, 16) : "";
+		sourceHashByFile.set(fullPath, hash);
+		return hash;
+	};
+
+	const catalogsByImportPath = new Map<string, typeof readyCatalog>();
 	for (const cat of readyCatalog) {
 		const mod = slugToModule.get(cat.slug);
 		if (!mod) {
 			throw new Error(`Failed to find module for catalog slug '${cat.slug}'`);
 		}
 		const fullSource = path.resolve(repoRoot, mod.sourceFile);
-		const content = readFileSync(fullSource, "utf8");
-		const sourceHash = createHash("sha256").update(content).digest("hex").slice(0, 16);
+		const sourceHash = getSourceHash(fullSource);
 		const api = catalogApiMap.get(cat.slug);
 		if (!api) {
 			throw new Error(`Missing API surface for catalog entry '${cat.slug}'`);
@@ -371,6 +415,10 @@ export function generatePackageRegistry(
 		if (!guide) {
 			throw new Error(`Missing component guide for catalog entry '${cat.slug}'`);
 		}
+
+		const list = catalogsByImportPath.get(mod.importPath) ?? [];
+		list.push(cat);
+		catalogsByImportPath.set(mod.importPath, list);
 
 		catalogEntries.push({
 			slug: cat.slug,
@@ -392,10 +440,7 @@ export function generatePackageRegistry(
 
 	for (const mod of surfaceManifest.modules) {
 		const fullSource = path.resolve(repoRoot, mod.sourceFile);
-		const sourceContent = existsSync(fullSource) ? readFileSync(fullSource, "utf8") : "";
-		const sourceHash = sourceContent
-			? createHash("sha256").update(sourceContent).digest("hex").slice(0, 16)
-			: "";
+		const sourceHash = getSourceHash(fullSource);
 
 		const ext = collectStaticImports(
 			fullSource,
@@ -408,9 +453,7 @@ export function generatePackageRegistry(
 		const optionalPeers = [...ext].filter((p) => declaredOptional.has(p)).sort();
 
 		// Find all catalog entries served by this module
-		const matchingCatalogs = readyCatalog.filter(
-			(c) => slugToModule.get(c.slug)?.importPath === mod.importPath,
-		);
+		const matchingCatalogs = catalogsByImportPath.get(mod.importPath) ?? [];
 
 		const rootAvailable =
 			mod.subpath === "."
@@ -653,7 +696,7 @@ export function findPureReExportSourceFiles(
 			filePath,
 			content,
 			ts.ScriptTarget.Latest,
-			true,
+			false,
 			ts.ScriptKind.TSX,
 		);
 
@@ -714,7 +757,8 @@ export function formatJsonDeterministic(rawJson: string, filePath = "registry.js
 }
 
 export function syncAiPackageAssets(repoRoot = process.cwd()): void {
-	const registry = generatePackageRegistry(repoRoot);
+	const surfaceManifest = derivePublicSurfaceManifest(repoRoot);
+	const registry = generatePackageRegistry(repoRoot, surfaceManifest);
 	const aiDir = path.join(repoRoot, "packages/basalt/ai");
 	mkdirSync(aiDir, { recursive: true });
 
@@ -741,7 +785,7 @@ export function syncAiPackageAssets(repoRoot = process.cwd()): void {
 		);
 
 	// 4. Write packages/basalt/ai/sources.json for pure re-export files that bundlers do not emit sourcemaps for
-	const sourcesBundle = generateSourcesBundle(repoRoot);
+	const sourcesBundle = generateSourcesBundle(repoRoot, surfaceManifest);
 	const rawSourcesJson = `${JSON.stringify(sourcesBundle, null, "\t")}\n`;
 	writeFileSync(
 		path.join(aiDir, "sources.json"),
@@ -829,20 +873,51 @@ export function validatePackageDocReferences(
 	}
 }
 
-export function checkAiPackageAssetsFreshness(repoRoot = process.cwd()): void {
-	const surfaceManifest = derivePublicSurfaceManifest(repoRoot);
-	const expectedRegistry = generatePackageRegistry(repoRoot, surfaceManifest);
-	validatePackageDocReferences(expectedRegistry, repoRoot);
+export function checkAiPackageAssetsFreshness(
+	repoRoot = process.cwd(),
+	surfaceManifestInput?: ReturnType<typeof derivePublicSurfaceManifest>,
+): void {
 	const aiDir = path.join(repoRoot, "packages/basalt/ai");
 	const registryPath = path.join(aiDir, "registry.json");
 	const usagePath = path.join(aiDir, "USAGE.md");
+	const integrationSrc = path.join(repoRoot, "INTEGRATION.md");
 	const integrationDst = path.join(aiDir, "INTEGRATION.md");
+	const designSrc = path.join(repoRoot, "DESIGN.md");
+	const designDst = path.join(aiDir, "DESIGN.md");
 	const sourcesPath = path.join(aiDir, "sources.json");
 	const sourceFilesPath = path.join(repoRoot, "src/pages/ui/generated/catalog-source-files.ts");
 
 	if (!existsSync(registryPath)) {
 		throw new Error("Missing packages/basalt/ai/registry.json. Run sync or build.");
 	}
+	if (!existsSync(usagePath)) {
+		throw new Error("Missing packages/basalt/ai/USAGE.md. Run sync or build.");
+	}
+	if (existsSync(integrationSrc)) {
+		if (!existsSync(integrationDst)) {
+			throw new Error("Missing packages/basalt/ai/INTEGRATION.md. Run sync or build.");
+		}
+		if (readFileSync(integrationDst, "utf8") !== readFileSync(integrationSrc, "utf8")) {
+			throw new Error("Stale packages/basalt/ai/INTEGRATION.md. Run sync or build.");
+		}
+	}
+	if (
+		existsSync(designSrc) &&
+		(!existsSync(designDst) || readFileSync(designSrc, "utf8") !== readFileSync(designDst, "utf8"))
+	) {
+		throw new Error("Missing or stale packages/basalt/ai/DESIGN.md. Run sync or build.");
+	}
+	if (!existsSync(sourcesPath)) {
+		throw new Error("Missing packages/basalt/ai/sources.json. Run sync or build.");
+	}
+	if (!existsSync(sourceFilesPath)) {
+		throw new Error("Missing src/pages/ui/generated/catalog-source-files.ts. Run sync or build.");
+	}
+
+	const surfaceManifest = surfaceManifestInput ?? derivePublicSurfaceManifest(repoRoot);
+	const expectedRegistry = generatePackageRegistry(repoRoot, surfaceManifest);
+	validatePackageDocReferences(expectedRegistry, repoRoot);
+
 	const actualRegistryStr = readFileSync(registryPath, "utf8");
 	const expectedRegistryStr = formatJsonDeterministic(
 		`${JSON.stringify(expectedRegistry, null, "\t")}\n`,
@@ -852,36 +927,11 @@ export function checkAiPackageAssetsFreshness(repoRoot = process.cwd()): void {
 		throw new Error("Stale packages/basalt/ai/registry.json. Run sync or build.");
 	}
 
-	if (!existsSync(usagePath)) {
-		throw new Error("Missing packages/basalt/ai/USAGE.md. Run sync or build.");
-	}
 	const expectedUsage = generateBasicUsageGuide(expectedRegistry);
 	if (readFileSync(usagePath, "utf8") !== expectedUsage) {
 		throw new Error("Stale packages/basalt/ai/USAGE.md. Run sync or build.");
 	}
 
-	const integrationSrc = path.join(repoRoot, "INTEGRATION.md");
-	if (existsSync(integrationSrc)) {
-		if (!existsSync(integrationDst)) {
-			throw new Error("Missing packages/basalt/ai/INTEGRATION.md. Run sync or build.");
-		}
-		if (readFileSync(integrationDst, "utf8") !== readFileSync(integrationSrc, "utf8")) {
-			throw new Error("Stale packages/basalt/ai/INTEGRATION.md. Run sync or build.");
-		}
-	}
-
-	const designSrc = path.join(repoRoot, "DESIGN.md");
-	const designDst = path.join(aiDir, "DESIGN.md");
-	if (
-		existsSync(designSrc) &&
-		(!existsSync(designDst) || readFileSync(designSrc, "utf8") !== readFileSync(designDst, "utf8"))
-	) {
-		throw new Error("Missing or stale packages/basalt/ai/DESIGN.md. Run sync or build.");
-	}
-
-	if (!existsSync(sourcesPath)) {
-		throw new Error("Missing packages/basalt/ai/sources.json. Run sync or build.");
-	}
 	const expectedSourcesBundle = generateSourcesBundle(repoRoot, surfaceManifest);
 	const expectedSourcesStr = formatJsonDeterministic(
 		`${JSON.stringify(expectedSourcesBundle, null, "\t")}\n`,
@@ -891,9 +941,6 @@ export function checkAiPackageAssetsFreshness(repoRoot = process.cwd()): void {
 		throw new Error("Stale packages/basalt/ai/sources.json. Run sync or build.");
 	}
 
-	if (!existsSync(sourceFilesPath)) {
-		throw new Error("Missing src/pages/ui/generated/catalog-source-files.ts. Run sync or build.");
-	}
 	const expectedSourceFilesStr = generateCatalogSourceFilesModule(
 		expectedRegistry,
 		expectedSourcesBundle,

@@ -217,7 +217,7 @@ describe("package registry generator and AI package assets", () => {
 	});
 
 	it("passes asset freshness check on sync", () => {
-		expect(() => checkAiPackageAssetsFreshness()).not.toThrow();
+		expect(() => checkAiPackageAssetsFreshness(process.cwd(), referenceManifest)).not.toThrow();
 	}, 30_000);
 
 	describe("isolated negative regression fixtures for registry freshness & validation", () => {
@@ -303,7 +303,7 @@ describe("package registry generator and AI package assets", () => {
 				writeFileSync(p, JSON.stringify({ stale: true }));
 			});
 			try {
-				expect(() => checkAiPackageAssetsFreshness(fixture)).toThrow(
+				expect(() => checkAiPackageAssetsFreshness(fixture, referenceManifest)).toThrow(
 					/Stale packages\/basalt\/ai\/sources\.json/,
 				);
 			} finally {
@@ -319,7 +319,7 @@ describe("package registry generator and AI package assets", () => {
 				writeFileSync(p, JSON.stringify(json, null, "\t"));
 			});
 			try {
-				expect(() => checkAiPackageAssetsFreshness(fixture)).toThrow(
+				expect(() => checkAiPackageAssetsFreshness(fixture, referenceManifest)).toThrow(
 					/Stale packages\/basalt\/ai\/registry\.json/,
 				);
 			} finally {

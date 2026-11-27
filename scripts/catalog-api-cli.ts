@@ -20,8 +20,8 @@ if (mode === "generate") {
 	syncAiPackageAssets(repoRoot);
 } else if (mode === "check") {
 	checkCatalogApiFiles(repoRoot, files);
-	checkSurfaceManifestFreshness(repoRoot);
-	checkAiPackageAssetsFreshness(repoRoot);
+	const surfaceManifest = checkSurfaceManifestFreshness(repoRoot);
+	checkAiPackageAssetsFreshness(repoRoot, surfaceManifest);
 } else {
 	failCatalogApi("usage: bun scripts/catalog-api-cli.ts generate|check");
 }

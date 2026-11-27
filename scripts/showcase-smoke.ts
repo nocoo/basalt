@@ -50,8 +50,8 @@ export async function runShowcaseSmoke() {
 			];
 			const tasks: Array<[string, (page: Page, baseUrl: string) => Promise<unknown>]> = [
 				["landing", assertLandingShowcase],
-				["pageLayout", assertPageLayout],
 				["navigation", assertNavigationLists],
+				["pageLayout", assertPageLayout],
 				...libraryCombos.map(
 					({ key, width, dark }): [string, (page: Page, baseUrl: string) => Promise<unknown>] => [
 						key,
@@ -65,7 +65,7 @@ export async function runShowcaseSmoke() {
 			let cursor = 0;
 			const rawWorkers = Number(process.env.BASALT_SHOWCASE_WORKERS);
 			const workerCount = Math.min(
-				Number.isInteger(rawWorkers) && rawWorkers > 0 ? rawWorkers : 4,
+				Number.isInteger(rawWorkers) && rawWorkers > 0 ? rawWorkers : 5,
 				tasks.length,
 			);
 			await Promise.all(

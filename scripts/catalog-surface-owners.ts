@@ -3,12 +3,12 @@ import path from "node:path";
 import * as tsApi from "typescript-api";
 import { resolvePackageExportTarget } from "../packages/basalt/scripts/verify-public-api";
 import { CATALOG } from "../src/pages/ui/catalog";
-
 import {
 	DOCUMENTED_NATIVE_ONLY_SURFACES,
 	formatNativeSurfaceStrategy,
 	type NativeOnlySurfaceDocumentation,
 } from "../src/pages/ui/catalog-native-surfaces";
+import { createCachedLibCompilerHost } from "./catalog-api";
 
 // Robust TypeScript compiler API interop across runtimes
 const ts = (tsApi as unknown as { default?: typeof tsApi }).default ?? tsApi;
@@ -481,7 +481,11 @@ export function discoverExportedModulesFromSource(
 /**
  * Creates a source-only TypeScript program for compiler API analysis.
  */
-export function createSourceProgram(repoRoot: string, filePaths: string[]) {
+export function createSourceProgram(
+	repoRoot: string,
+	filePaths: string[],
+	host?: tsApi.CompilerHost,
+) {
 	const tsconfigPath = path.join(repoRoot, "tsconfig.catalog-api.json");
 	let compilerOptions: tsApi.CompilerOptions = {
 		target: ts.ScriptTarget.ES2022,
@@ -500,7 +504,11 @@ export function createSourceProgram(repoRoot: string, filePaths: string[]) {
 			if (conv.options) compilerOptions = { ...compilerOptions, ...conv.options };
 		}
 	}
-	return ts.createProgram(filePaths, compilerOptions);
+	return ts.createProgram(
+		filePaths,
+		compilerOptions,
+		host ?? createCachedLibCompilerHost(compilerOptions),
+	);
 }
 
 /**
@@ -757,7 +765,7 @@ export function renderPublicSurfaceManifest(manifest: PublicSurfaceManifest): st
 	].join("\n");
 }
 
-export function checkSurfaceManifestFreshness(repoRoot = process.cwd()): void {
+export function checkSurfaceManifestFreshness(repoRoot = process.cwd()): PublicSurfaceManifest {
 	const targetPath = path.join(repoRoot, GENERATED_SURFACE_MANIFEST_RELATIVE);
 	if (!existsSync(targetPath)) {
 		throw new Error(
@@ -773,6 +781,7 @@ export function checkSurfaceManifestFreshness(repoRoot = process.cwd()): void {
 			`stale public surface manifest at ${GENERATED_SURFACE_MANIFEST_RELATIVE}; run ${SURFACE_MANIFEST_COMMAND}`,
 		);
 	}
+	return manifest;
 }
 
 export function writeSurfaceManifest(repoRoot = process.cwd()): void {
