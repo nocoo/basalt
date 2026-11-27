@@ -185,7 +185,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-1:
-    name: "L1: Unit (Shard 1/4)"
+    name: "L1: Unit (Shard 1/8)"
     needs: b1-build-package
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -204,8 +204,8 @@ jobs:
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
-      - name: Coverage shard 1/4
-        run: bun run test:coverage:shard -- --shard=1/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-1"
+      - name: Coverage shard 1/8
+        run: bun run test:coverage:shard -- --shard=1/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-1"
       - name: Upload coverage shard
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -219,7 +219,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-2:
-    name: "L1: Unit (Shard 2/4)"
+    name: "L1: Unit (Shard 2/8)"
     needs: b1-build-package
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -238,8 +238,8 @@ jobs:
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
-      - name: Coverage shard 2/4
-        run: bun run test:coverage:shard -- --shard=2/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-2"
+      - name: Coverage shard 2/8
+        run: bun run test:coverage:shard -- --shard=2/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-2"
       - name: Upload coverage shard
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -253,7 +253,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-3:
-    name: "L1: Unit (Shard 3/4)"
+    name: "L1: Unit (Shard 3/8)"
     needs: b1-build-package
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -272,8 +272,8 @@ jobs:
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
-      - name: Coverage shard 3/4
-        run: bun run test:coverage:shard -- --shard=3/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-3"
+      - name: Coverage shard 3/8
+        run: bun run test:coverage:shard -- --shard=3/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-3"
       - name: Upload coverage shard
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -287,7 +287,7 @@ jobs:
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   unit-shard-4:
-    name: "L1: Unit (Shard 4/4)"
+    name: "L1: Unit (Shard 4/8)"
     needs: b1-build-package
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -306,13 +306,149 @@ jobs:
         with:
           name: basalt-package-dist
           path: packages/basalt/dist
-      - name: Coverage shard 4/4
-        run: bun run test:coverage:shard -- --shard=4/4 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-4"
+      - name: Coverage shard 4/8
+        run: bun run test:coverage:shard -- --shard=4/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-4"
       - name: Upload coverage shard
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: coverage-shard-4
           path: ${{ runner.temp }}/coverage-shard-4
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  unit-shard-5:
+    name: "L1: Unit (Shard 5/8)"
+    needs: b1-build-package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 5/8
+        run: bun run test:coverage:shard -- --shard=5/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-5"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-shard-5
+          path: ${{ runner.temp }}/coverage-shard-5
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  unit-shard-6:
+    name: "L1: Unit (Shard 6/8)"
+    needs: b1-build-package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 6/8
+        run: bun run test:coverage:shard -- --shard=6/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-6"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-shard-6
+          path: ${{ runner.temp }}/coverage-shard-6
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  unit-shard-7:
+    name: "L1: Unit (Shard 7/8)"
+    needs: b1-build-package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 7/8
+        run: bun run test:coverage:shard -- --shard=7/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-7"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-shard-7
+          path: ${{ runner.temp }}/coverage-shard-7
+          if-no-files-found: error
+          retention-days: 1
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  unit-shard-8:
+    name: "L1: Unit (Shard 8/8)"
+    needs: b1-build-package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-package-dist
+          path: packages/basalt/dist
+      - name: Coverage shard 8/8
+        run: bun run test:coverage:shard -- --shard=8/8 --coverage.reportsDirectory="$RUNNER_TEMP/coverage-shard-8"
+      - name: Upload coverage shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-shard-8
+          path: ${{ runner.temp }}/coverage-shard-8
           if-no-files-found: error
           retention-days: 1
       - name: Record tested SHA
@@ -327,6 +463,10 @@ jobs:
       - unit-shard-2
       - unit-shard-3
       - unit-shard-4
+      - unit-shard-5
+      - unit-shard-6
+      - unit-shard-7
+      - unit-shard-8
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -348,7 +488,7 @@ jobs:
         run: |
           set -euo pipefail
           bun run scripts/merge-coverage.ts \
-            --input="$RUNNER_TEMP/coverage-shards/coverage-shard-1,$RUNNER_TEMP/coverage-shards/coverage-shard-2,$RUNNER_TEMP/coverage-shards/coverage-shard-3,$RUNNER_TEMP/coverage-shards/coverage-shard-4" \
+            --input="$RUNNER_TEMP/coverage-shards/coverage-shard-1,$RUNNER_TEMP/coverage-shards/coverage-shard-2,$RUNNER_TEMP/coverage-shards/coverage-shard-3,$RUNNER_TEMP/coverage-shards/coverage-shard-4,$RUNNER_TEMP/coverage-shards/coverage-shard-5,$RUNNER_TEMP/coverage-shards/coverage-shard-6,$RUNNER_TEMP/coverage-shards/coverage-shard-7,$RUNNER_TEMP/coverage-shards/coverage-shard-8" \
             --output=coverage
       - name: Verify coverage reports
         run: bun run scripts/verify-pre-commit-coverage.ts
@@ -383,11 +523,39 @@ jobs:
       - name: Declared na
         run: echo "L3 Integration is declared na"
 
-  l4-e2e:
-    name: "L4: E2E"
-    needs:
-      - b1-build-package
-      - b1-build-site
+  l4-e2e-browser:
+    name: "L4: E2E (Browser)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: nocoo/base-ci/.github/actions/setup-playwright@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          package-manager: bun
+          browsers: chromium
+          install-deps: "auto"
+          cache: "true"
+      - name: Design contract
+        run: bun run design:check
+      - name: Browser helper tests
+        run: bun run test:browser
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  l4-e2e-showcase-1:
+    name: "L4: E2E (Showcase 1/3)"
+    needs: b1-build-site
     runs-on: ubuntu-latest
     timeout-minutes: 25
     outputs:
@@ -409,39 +577,146 @@ jobs:
           cache: "true"
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: basalt-package-dist
-          path: packages/basalt/dist
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
           name: basalt-site-dist
           path: dist
-      - name: Design contract
-        run: bun run design:check
-      - name: Browser helper tests
-        run: bun run test:browser
-      - name: Showcase journeys
+      - name: Showcase journeys (1/3)
         env:
           BASALT_SKIP_SHOWCASE_BUILD: "1"
+          BASALT_SHOWCASE_TASKS: "landing,templates,selection"
         run: |
           set -euo pipefail
           mkdir -p test-results
-          if ! bun run test:showcase:smoke > "$RUNNER_TEMP/l4.log" 2>&1; then
-            tail -200 "$RUNNER_TEMP/l4.log"
+          if ! bun run test:showcase:smoke > "$RUNNER_TEMP/l4-1.log" 2>&1; then
+            tail -200 "$RUNNER_TEMP/l4-1.log"
             exit 1
           fi
-          tail -30 "$RUNNER_TEMP/l4.log"
+          tail -30 "$RUNNER_TEMP/l4-1.log"
       - name: Assert showcase gate ran
         run: |
           set -euo pipefail
-          perl -pe 's/\e\[[0-9;]*[A-Za-z]//g' "$RUNNER_TEMP/l4.log" | grep -Eq 'Showcase smoke passed'
+          perl -pe 's/\e\[[0-9;]*[A-Za-z]//g' "$RUNNER_TEMP/l4-1.log" | grep -Eq 'Showcase smoke passed'
       - name: Upload L4 evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: l4-e2e-results
+          name: l4-e2e-results-1
           path: |
             test-results/
-            ${{ runner.temp }}/l4.log
+            ${{ runner.temp }}/l4-1.log
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  l4-e2e-showcase-2:
+    name: "L4: E2E (Showcase 2/3)"
+    needs: b1-build-site
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: nocoo/base-ci/.github/actions/setup-playwright@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          package-manager: bun
+          browsers: chromium
+          install-deps: "auto"
+          cache: "true"
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-site-dist
+          path: dist
+      - name: Showcase journeys (2/3)
+        env:
+          BASALT_SKIP_SHOWCASE_BUILD: "1"
+          BASALT_SHOWCASE_TASKS: "navigation,library-390-light,library-390-dark"
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          if ! bun run test:showcase:smoke > "$RUNNER_TEMP/l4-2.log" 2>&1; then
+            tail -200 "$RUNNER_TEMP/l4-2.log"
+            exit 1
+          fi
+          tail -30 "$RUNNER_TEMP/l4-2.log"
+      - name: Assert showcase gate ran
+        run: |
+          set -euo pipefail
+          perl -pe 's/\e\[[0-9;]*[A-Za-z]//g' "$RUNNER_TEMP/l4-2.log" | grep -Eq 'Showcase smoke passed'
+      - name: Upload L4 evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: l4-e2e-results-2
+          path: |
+            test-results/
+            ${{ runner.temp }}/l4-2.log
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Record tested SHA
+        id: record-sha
+        if: always()
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  l4-e2e-showcase-3:
+    name: "L4: E2E (Showcase 3/3)"
+    needs: b1-build-site
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      tested-sha: ${{ steps.record-sha.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: nocoo/base-ci/.github/actions/setup-js@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          runtime-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          install-policy: project
+      - uses: nocoo/base-ci/.github/actions/setup-playwright@e5876a604547b1ddb0916f16dd841a4f832609a0 # v2026.20
+        with:
+          package-manager: bun
+          browsers: chromium
+          install-deps: "auto"
+          cache: "true"
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: basalt-site-dist
+          path: dist
+      - name: Showcase journeys (3/3)
+        env:
+          BASALT_SKIP_SHOWCASE_BUILD: "1"
+          BASALT_SHOWCASE_TASKS: "pageLayout,library-1280-light,library-1280-dark"
+        run: |
+          set -euo pipefail
+          mkdir -p test-results
+          if ! bun run test:showcase:smoke > "$RUNNER_TEMP/l4-3.log" 2>&1; then
+            tail -200 "$RUNNER_TEMP/l4-3.log"
+            exit 1
+          fi
+          tail -30 "$RUNNER_TEMP/l4-3.log"
+      - name: Assert showcase gate ran
+        run: |
+          set -euo pipefail
+          perl -pe 's/\e\[[0-9;]*[A-Za-z]//g' "$RUNNER_TEMP/l4-3.log" | grep -Eq 'Showcase smoke passed'
+      - name: Upload L4 evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: l4-e2e-results-3
+          path: |
+            test-results/
+            ${{ runner.temp }}/l4-3.log
           if-no-files-found: warn
           retention-days: 7
       - name: Record tested SHA
@@ -547,10 +822,17 @@ jobs:
       - unit-shard-2
       - unit-shard-3
       - unit-shard-4
+      - unit-shard-5
+      - unit-shard-6
+      - unit-shard-7
+      - unit-shard-8
       - l1-unit
       - l2-runtime
       - l3-integration
-      - l4-e2e
+      - l4-e2e-browser
+      - l4-e2e-showcase-1
+      - l4-e2e-showcase-2
+      - l4-e2e-showcase-3
       - p1-package
       - consumer-next
     runs-on: ubuntu-latest
@@ -570,12 +852,19 @@ jobs:
             g2-dependencies=G2: Dependencies
             b1-build-package=B1: Build (Package)
             b1-build-site=B1: Build (Site)
-            unit-shard-1=L1: Unit (Shard 1/4)
-            unit-shard-2=L1: Unit (Shard 2/4)
-            unit-shard-3=L1: Unit (Shard 3/4)
-            unit-shard-4=L1: Unit (Shard 4/4)
+            unit-shard-1=L1: Unit (Shard 1/8)
+            unit-shard-2=L1: Unit (Shard 2/8)
+            unit-shard-3=L1: Unit (Shard 3/8)
+            unit-shard-4=L1: Unit (Shard 4/8)
+            unit-shard-5=L1: Unit (Shard 5/8)
+            unit-shard-6=L1: Unit (Shard 6/8)
+            unit-shard-7=L1: Unit (Shard 7/8)
+            unit-shard-8=L1: Unit (Shard 8/8)
             l1-unit=L1: Unit
-            l4-e2e=L4: E2E
+            l4-e2e-browser=L4: E2E (Browser)
+            l4-e2e-showcase-1=L4: E2E (Showcase 1/3)
+            l4-e2e-showcase-2=L4: E2E (Showcase 2/3)
+            l4-e2e-showcase-3=L4: E2E (Showcase 3/3)
             p1-package=P1: Package
             consumer-next=P1: Package (Next.js)
           skipped-jobs: |

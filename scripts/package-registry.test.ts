@@ -531,10 +531,10 @@ describe("package registry generator and AI package assets", () => {
 				const baselineBytesBefore = readFileSync(baselinePath);
 
 				// Run sync on the bumped fixture
-				syncAiPackageAssets(fixture);
+				const syncedManifest = syncAiPackageAssets(fixture);
 
 				// Verify assets freshness passes
-				expect(() => checkAiPackageAssetsFreshness(fixture)).not.toThrow();
+				expect(() => checkAiPackageAssetsFreshness(fixture, syncedManifest)).not.toThrow();
 
 				// Verify registry.json has bumped version
 				const registryJson = JSON.parse(

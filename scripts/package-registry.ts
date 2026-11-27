@@ -740,23 +740,38 @@ export function generateSourcesBundle(
 
 const require = createRequire(import.meta.url);
 const BIOME_BIN = require.resolve("@biomejs/biome/bin/biome");
+const BIOME_NATIVE_BIN = (() => {
+	const pkgMap: Record<string, Partial<Record<string, string>>> = {
+		darwin: { x64: "@biomejs/cli-darwin-x64/biome", arm64: "@biomejs/cli-darwin-arm64/biome" },
+		linux: { x64: "@biomejs/cli-linux-x64/biome", arm64: "@biomejs/cli-linux-arm64/biome" },
+	};
+	const target = pkgMap[process.platform]?.[process.arch];
+	if (!target || existsSync("/etc/alpine-release")) return null;
+	try {
+		return require.resolve(target);
+	} catch {
+		return null;
+	}
+})();
 
 export function formatJsonDeterministic(rawJson: string, filePath = "registry.json"): string {
-	const formatted = execFileSync(
-		process.execPath,
-		[BIOME_BIN, "format", `--stdin-file-path=${filePath}`],
-		{
-			input: rawJson,
-			encoding: "utf8",
-			stdio: ["pipe", "pipe", "pipe"],
-			maxBuffer: 10 * 1024 * 1024,
-			timeout: 10000,
-		},
-	);
+	const command = BIOME_NATIVE_BIN ?? process.execPath;
+	const args = BIOME_NATIVE_BIN
+		? ["format", `--stdin-file-path=${filePath}`]
+		: [BIOME_BIN, "format", `--stdin-file-path=${filePath}`];
+	const formatted = execFileSync(command, args, {
+		input: rawJson,
+		encoding: "utf8",
+		stdio: ["pipe", "pipe", "pipe"],
+		maxBuffer: 10 * 1024 * 1024,
+		timeout: 10000,
+	});
 	return formatted;
 }
 
-export function syncAiPackageAssets(repoRoot = process.cwd()): void {
+export function syncAiPackageAssets(
+	repoRoot = process.cwd(),
+): ReturnType<typeof derivePublicSurfaceManifest> {
 	const surfaceManifest = derivePublicSurfaceManifest(repoRoot);
 	const registry = generatePackageRegistry(repoRoot, surfaceManifest);
 	const aiDir = path.join(repoRoot, "packages/basalt/ai");
@@ -795,6 +810,7 @@ export function syncAiPackageAssets(repoRoot = process.cwd()): void {
 	// 5. Generate and sync src/pages/ui/generated/catalog-source-files.ts
 	const sourceFilesPath = path.join(repoRoot, "src/pages/ui/generated/catalog-source-files.ts");
 	writeFileSync(sourceFilesPath, generateCatalogSourceFilesModule(registry, sourcesBundle));
+	return surfaceManifest;
 }
 
 export function validatePackageDocReferences(

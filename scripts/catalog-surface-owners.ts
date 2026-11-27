@@ -537,9 +537,14 @@ export function derivePublicSurfaceManifest(repoRoot = process.cwd()): PublicSur
 		catalogByImportPath.set(c.importPath, list);
 	}
 
-	// 3. Create TypeScript compiler API program over all exported source files
+	// 3. Create TypeScript compiler API program over all non-passthrough exported source files
 	const validFiles = exportedModules
-		.filter((m) => m.sourceFile && existsSync(path.join(repoRoot, m.sourceFile)))
+		.filter(
+			(m) =>
+				m.sourceFile &&
+				!NON_CATALOG_SURFACE_OWNERS[m.importPath]?.passthroughExternal &&
+				existsSync(path.join(repoRoot, m.sourceFile)),
+		)
 		.map((m) => path.resolve(repoRoot, m.sourceFile));
 
 	const program = createSourceProgram(repoRoot, validFiles);
@@ -585,17 +590,20 @@ export function derivePublicSurfaceManifest(repoRoot = process.cwd()): PublicSur
 
 		// Analyze exports using Compiler API
 		const absPath = path.resolve(repoRoot, mod.sourceFile);
-		const sf = program.getSourceFile(absPath);
-		if (!sf) {
-			throw new Error(`failed to load TypeScript source file: ${absPath}`);
-		}
+		let rawExports: tsApi.Symbol[] = [];
+		if (!modOwner.passthroughExternal) {
+			const sf = program.getSourceFile(absPath);
+			if (!sf) {
+				throw new Error(`failed to load TypeScript source file: ${absPath}`);
+			}
 
-		const modSym = checker.getSymbolAtLocation(sf);
-		if (!modSym) {
-			throw new Error(`failed to resolve module symbol: ${absPath}`);
-		}
+			const modSym = checker.getSymbolAtLocation(sf);
+			if (!modSym) {
+				throw new Error(`failed to resolve module symbol: ${absPath}`);
+			}
 
-		const rawExports = modOwner.passthroughExternal ? [] : checker.getExportsOfModule(modSym);
+			rawExports = checker.getExportsOfModule(modSym);
+		}
 		const symbols: DiscoveredPublicSymbol[] = [];
 
 		for (const exp of rawExports) {

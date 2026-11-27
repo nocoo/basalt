@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { CATALOG_API_TARGETS } from "./catalog-api";
 import {
 	fixture,
@@ -9,6 +9,9 @@ import {
 } from "./catalog-api-test-helpers";
 
 describe("catalog API generator contract 1/4", () => {
+	beforeAll(() => {
+		generateProductionProps();
+	}, 60_000);
 	it("imports compiler API from typescript-api and keeps official typescript at 7.0.2", () => {
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		const cli = readFileSync("scripts/catalog-api-cli.ts", "utf8");

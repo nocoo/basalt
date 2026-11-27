@@ -48,7 +48,7 @@ export async function runShowcaseSmoke() {
 				{ key: "library-1280-light", width: 1280, dark: false },
 				{ key: "library-1280-dark", width: 1280, dark: true },
 			];
-			const tasks: Array<[string, (page: Page, baseUrl: string) => Promise<unknown>]> = [
+			const allTasks: Array<[string, (page: Page, baseUrl: string) => Promise<unknown>]> = [
 				["landing", assertLandingShowcase],
 				["navigation", assertNavigationLists],
 				["pageLayout", assertPageLayout],
@@ -61,11 +61,24 @@ export async function runShowcaseSmoke() {
 				["templates", assertTemplatesShowcase],
 				["selection", assertSelectionHierarchy],
 			];
+			const requestedTasks = process.env.BASALT_SHOWCASE_TASKS
+				? new Set(
+						process.env.BASALT_SHOWCASE_TASKS.split(",")
+							.map((item) => item.trim())
+							.filter(Boolean),
+					)
+				: null;
+			const tasks = requestedTasks ? allTasks.filter(([key]) => requestedTasks.has(key)) : allTasks;
+			if (tasks.length === 0) {
+				throw new Error(
+					`BASALT_SHOWCASE_TASKS matched zero tasks: ${process.env.BASALT_SHOWCASE_TASKS}`,
+				);
+			}
 			const results = new Map<string, unknown>();
 			let cursor = 0;
 			const rawWorkers = Number(process.env.BASALT_SHOWCASE_WORKERS);
 			const workerCount = Math.min(
-				Number.isInteger(rawWorkers) && rawWorkers > 0 ? rawWorkers : 5,
+				Number.isInteger(rawWorkers) && rawWorkers > 0 ? rawWorkers : 4,
 				tasks.length,
 			);
 			await Promise.all(
@@ -87,18 +100,23 @@ export async function runShowcaseSmoke() {
 					}
 				}),
 			);
-			const firstLibrary = results.get(libraryCombos[0].key) as Record<string, unknown>;
-			const library = {
-				...firstLibrary,
-				cases: libraryCombos.flatMap(({ key }) => (results.get(key) as { cases: string[] }).cases),
-			};
+			const ranLibraryCombos = libraryCombos.filter(({ key }) => results.has(key));
+			const library =
+				ranLibraryCombos.length > 0
+					? {
+							...(results.get(ranLibraryCombos[0].key) as Record<string, unknown>),
+							cases: ranLibraryCombos.flatMap(
+								({ key }) => (results.get(key) as { cases: string[] }).cases,
+							),
+						}
+					: undefined;
 			const evidence = {
-				landing: results.get("landing"),
-				library,
-				navigation: results.get("navigation"),
-				selection: results.get("selection"),
-				pageLayout: results.get("pageLayout"),
-				templates: results.get("templates"),
+				...(results.has("landing") ? { landing: results.get("landing") } : {}),
+				...(library ? { library } : {}),
+				...(results.has("navigation") ? { navigation: results.get("navigation") } : {}),
+				...(results.has("selection") ? { selection: results.get("selection") } : {}),
+				...(results.has("pageLayout") ? { pageLayout: results.get("pageLayout") } : {}),
+				...(results.has("templates") ? { templates: results.get("templates") } : {}),
 			};
 			console.log(`Showcase smoke passed ${JSON.stringify(evidence)}`);
 		} finally {

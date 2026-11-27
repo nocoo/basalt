@@ -1,8 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { generateCatalogApi } from "./catalog-api";
 import { fixture, generateFixture, generateProductionApi } from "./catalog-api-test-helpers";
 
 describe("catalog API generator contract 2/4", () => {
+	beforeAll(() => {
+		generateProductionApi();
+	}, 60_000);
 	it("fails when the tsconfig is missing", () => {
 		expect(() =>
 			generateCatalogApi({
