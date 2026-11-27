@@ -495,6 +495,7 @@ export function createSourceProgram(
 		skipLibCheck: true,
 		jsx: ts.JsxEmit.ReactJSX,
 		noEmit: true,
+		types: [],
 	};
 	if (existsSync(tsconfigPath)) {
 		const raw = readFileSync(tsconfigPath, "utf8");
@@ -504,11 +505,22 @@ export function createSourceProgram(
 			if (conv.options) compilerOptions = { ...compilerOptions, ...conv.options };
 		}
 	}
-	return ts.createProgram(
-		filePaths,
-		compilerOptions,
-		host ?? createCachedLibCompilerHost(compilerOptions),
-	);
+	const resolvedHost = host ?? createCachedLibCompilerHost(compilerOptions);
+	if (!host) {
+		resolvedHost.resolveModuleNames = (
+			moduleNames,
+			containingFile,
+			_reusedNames,
+			_redirectedReference,
+			options,
+		) =>
+			moduleNames.map((name) =>
+				name.startsWith(".")
+					? ts.resolveModuleName(name, containingFile, options, resolvedHost).resolvedModule
+					: undefined,
+			);
+	}
+	return ts.createProgram(filePaths, compilerOptions, resolvedHost);
 }
 
 /**
