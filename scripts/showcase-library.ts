@@ -401,17 +401,24 @@ export async function assertLibraryShowcases(
 			await demo.getByRole("button", { name: "Error", exact: true }).click();
 			await demo.getByRole("alert").waitFor();
 			await demo.getByRole("button", { name: "Try again", exact: true }).click();
-			await page.waitForFunction(
-				() =>
-					document.querySelector("[data-hero-scenario] table")?.getAttribute("aria-busy") !==
-					"true",
-			);
+			await demo.getByRole("alert").waitFor({ state: "detached" });
+			await page.waitForFunction(() => {
+				const t = document.querySelector("[data-hero-scenario] table");
+				return (
+					t?.getAttribute("aria-busy") !== "true" && t?.querySelectorAll("tbody tr").length === 4
+				);
+			});
+			const firstRowBefore = await table.locator("tbody tr").first().textContent();
 			await table.getByRole("checkbox").first().check();
 			await demo.getByRole("button", { name: "Next page", exact: true }).click();
 			await page.waitForFunction(
-				() =>
-					document.querySelector("[data-hero-scenario] table")?.getAttribute("aria-busy") !==
-					"true",
+				({ expectedCount, prevText }) => {
+					const t = document.querySelector("[data-hero-scenario] table");
+					if (!t || t.getAttribute("aria-busy") === "true") return false;
+					const rows = t.querySelectorAll("tbody tr");
+					return rows.length === expectedCount && rows[0]?.textContent !== prevText;
+				},
+				{ expectedCount: devices ? 4 : 2, prevText: firstRowBefore },
 			);
 			assert.equal(await table.locator("tbody tr").count(), devices ? 4 : 2);
 			await demo
