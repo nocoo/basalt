@@ -740,6 +740,7 @@ export function generateSourcesBundle(
 
 const require = createRequire(import.meta.url);
 const BIOME_BIN = require.resolve("@biomejs/biome/bin/biome");
+const biomeRequire = createRequire(BIOME_BIN);
 const BIOME_NATIVE_BIN = (() => {
 	const pkgMap: Record<string, Partial<Record<string, string>>> = {
 		darwin: { x64: "@biomejs/cli-darwin-x64/biome", arm64: "@biomejs/cli-darwin-arm64/biome" },
@@ -748,7 +749,7 @@ const BIOME_NATIVE_BIN = (() => {
 	const target = pkgMap[process.platform]?.[process.arch];
 	if (!target || existsSync("/etc/alpine-release")) return null;
 	try {
-		return require.resolve(target);
+		return biomeRequire.resolve(target);
 	} catch {
 		return null;
 	}
@@ -764,7 +765,7 @@ export function formatJsonDeterministic(rawJson: string, filePath = "registry.js
 		encoding: "utf8",
 		stdio: ["pipe", "pipe", "pipe"],
 		maxBuffer: 10 * 1024 * 1024,
-		timeout: 10000,
+		timeout: 30000,
 	});
 	return formatted;
 }
