@@ -89,6 +89,7 @@ describe("navigation model", () => {
 		expect(resolveRouteTitle("/ui/command-palette")).toBe("Command Palette");
 		expect(resolveRouteTitle("/ui/button/source")).toBe("Button source");
 		expect(resolveRouteTitle("/unknown-route")).toBe("Analytics overview");
+		expect(resolveRouteBreadcrumbs("/unknown-route")).toEqual([{ label: "Analytics overview" }]);
 
 		expect(resolveRouteBreadcrumbs("/dashboard")).toEqual([
 			{ label: "Templates" },

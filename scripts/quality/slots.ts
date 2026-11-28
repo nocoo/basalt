@@ -86,7 +86,7 @@ export const SLOTS: SlotDefinition[] = [
 		id: "L1",
 		name: "L1: Unit",
 		stages: ["pre-push"],
-		target: "shared B1 package build, Vitest coverage, four 80% floors",
+		target: "shared B1 package build, Vitest coverage, 90/85/90/90 floors",
 		steps: [
 			{
 				label: "coverage",

@@ -16,7 +16,7 @@ bun run typecheck # S1: tsc (app/node)
 bun run lint # S2: Biome check-only, 0 errors / 0 warnings
 bun run build # catalog/SEO checks + site dist/
 bun run --cwd packages/basalt build # library packages/basalt/dist/
-bun run test:coverage # L1: Vitest/V8 (>=80% four floors)
+bun run test:coverage # L1: Vitest/V8 (>=90% stmts/fn/lines, >=85% branches)
 bun run playwright:install # Chromium + WebKit
 bun run consumer:next # blocking Next.js install/build/SSR
 bun run test:showcase # full catalog showcase suite
@@ -46,7 +46,7 @@ Run `bun run consumer:docs` only after building the package. `bun run design:che
 Follows `system1-quality`; `.github/workflows/pipeline.yml` orchestrates `quality` (`S1`–`Z1` in `.github/workflows/quality-slots.yml`, `quality / Z1: Gate` required on `main`) followed by `deploy` (`D1`–`D5` via `base-ci` `deploy-worker.yml` `v2026.24` on `main` only; `pull_request` runs skip `deploy`). Statuses: `enforced`, `planned`, `manual`, `N/A`.
 
 - **Exceptions**: `L2 Runtime` is `N/A` (Worker tests mock `ASSETS` in Node/L1; no workerd suite); `L3 Integration` is `N/A` (static catalog/Worker, no service/storage boundary).
-- **Coverage & CI jobs**: `L1` enforces 80% on all four metrics across `src/{models,viewmodels,lib}` and `packages/basalt/src` (excluding showcase Views); `P1: Package (Next.js)` blocks in `Z1`; nightlies live in `.github/workflows/nightly.yml` and are non-blocking.
+- **Coverage & CI jobs**: `L1` enforces 90% statements/functions/lines and 85% branches across `src/{models,viewmodels,lib}` and `packages/basalt/src` (excluding showcase Views); `P1: Package (Next.js)` blocks in `Z1`; nightlies live in `.github/workflows/nightly.yml` and are non-blocking.
 - **Local hooks**: `bun install` (`prepare`) installs `.husky/`; `pre-commit` checks staged index (`S1/S2/S3/G1`), `pre-push` checks per-OID worktrees (`G1/G2/B1` serial, `L1/L4/P1` parallel); never `--no-verify`.
 - **Gate safety**: Hooks reuse `node_modules` only on a verified install fingerprint and register detached process groups in `PgidRegistry` ([gates & release](docs/07-quality-gates-and-release.md)).
 
